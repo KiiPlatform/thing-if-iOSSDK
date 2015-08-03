@@ -6,7 +6,7 @@ import Foundation
 import Swift
 
 /** Represents ErrorResponse from IoT Cloud */
-public class ErrorResponse {
+public struct ErrorResponse {
     public let httpStatusCode: Int
     public let errorCode: String
     public let errorMessage: String
