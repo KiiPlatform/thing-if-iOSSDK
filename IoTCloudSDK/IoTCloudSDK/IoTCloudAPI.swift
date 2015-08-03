@@ -77,6 +77,53 @@ public class IoTCloudAPI: NSObject, NSCoding {
         return Target()
     }
 
+    /** Install push notification to receive notification from IoT Cloud.
+    IoT Cloud will send notification when the Target replies to the Command.
+    Application can receive the notification and check the result of Command
+    fired by Application or registered Trigger.
+    After installation is done Installation ID is managed in this class.
+    - Parameter deviceToken: device token for APNS.
+    - Parameter development: flag indicate whether the cert is development or
+    production.
+    - Returns: installationID published by IoT Cloud.
+    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
+    Server returns error.
+    */
+    public func installPush(
+        deviceToken:String,
+        development:Bool
+    ) throws -> String!
+    {
+        // TODO: implement it.
+        return ""
+    }
+
+    /** Uninstall push notification.
+    After done, notification from IoT Cloud won't be notified.
+    - Parameter installationID: installation ID returned from installPush().
+    If null is specified, value of the installationID property is used.
+    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
+    Server returns error.
+    */
+    public func uninstallPush(
+        installationID:String?
+    ) throws
+    {
+        // TODO: implement it.
+    }
+
+    private var _installationID:String?
+
+    /** Get installationID if the push is already installed.
+    null will be returned if the push installation has not been done.
+    - Returns: Installation ID used in IoT Cloud.
+    */
+    public var installationID: String? {
+        get {
+            return _installationID
+        }
+    }
+
     /** Post new command to IoT Cloud.
     Command will be delivered to specified target and result will be notified
     through push notification.
