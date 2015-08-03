@@ -6,7 +6,22 @@
 import Foundation
 
 /** Class represents Trigger */
-public class Trigger {
+public class Trigger: NSObject, NSCoding {
+
+    // MARK: - Implements NSCoding protocol
+    public func encodeWithCoder(aCoder: NSCoder) {
+        // TODO: implement it.
+    }
+
+    // MARK: - Implements NSCoding protocol
+    public required init(coder aDecoder: NSCoder) {
+        // TODO: implement it.
+        self.targetID = TypedID(type:"",id:"")
+        self.enabled = true
+        self.predicate = Predicate()
+        self.command = Command()
+    }
+
     /** ID of the Target */
     public var targetID: TypedID
     /** Flag indicate whether the Trigger is enabled */
@@ -16,7 +31,7 @@ public class Trigger {
     /** Command to be fired */
     public var command: Command
 
-    init() {
+    public override init() {
         // TODO: implement it with proper initializer.
         self.targetID = TypedID(type:"",id:"")
         self.enabled = true

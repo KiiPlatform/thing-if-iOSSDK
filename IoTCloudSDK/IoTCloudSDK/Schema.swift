@@ -5,7 +5,21 @@
 import Foundation
 
 /// Class represents Schema.
-public class Schema {
+public class Schema: NSObject, NSCoding {
+
+    // MARK: - Implements NSCoding protocol
+    public func encodeWithCoder(aCoder: NSCoder) {
+        // TODO: implement it.
+    }
+
+    // MARK: - Implements NSCoding protocol
+    public required init(coder aDecoder: NSCoder) {
+        // TODO: implement it.
+        self.thingType = ""
+        self.name = ""
+        self.version = 0
+    }
+
     /// Type of the Thing to which the Schema bounds
     public let thingType: String
     /// Name of the Schema.

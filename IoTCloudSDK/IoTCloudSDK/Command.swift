@@ -5,7 +5,26 @@
 import Foundation
 
 /** Class represents Command */
-public class Command {
+public class Command: NSObject, NSCoding {
+
+    // MARK: - Implements NSCoding protocol
+    public func encodeWithCoder(aCoder: NSCoder) {
+        // TODO: implement it.
+    }
+
+    // MARK: - Implements NSCoding protocol
+    public required init(coder aDecoder: NSCoder) {
+        // TODO: implement it.
+        commandID = ""
+        targetID = TypedID(type: "", id: "")
+        issuerID = TypedID(type:"", id:"")
+        schemaName = ""
+        schemaVersion = 0
+        actions = []
+        actionResults = []
+        commandState = CommandState.SENDING
+    }
+
 
     /** ID of the Command. */
     public let commandID: String
@@ -31,7 +50,7 @@ public class Command {
     /** State of the Command. */
     public let commandState: CommandState
 
-    public init() {
+    public override init() {
         // TODO: implement it with proper initilizer.
         self.commandID = ""
         self.targetID = TypedID(type: "", id: "")

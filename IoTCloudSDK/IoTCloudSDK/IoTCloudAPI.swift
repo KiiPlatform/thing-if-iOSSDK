@@ -6,7 +6,22 @@
 import Foundation
 
 /** Class provides API of the IoTCloud. */
-public class IoTCloudAPI {
+public class IoTCloudAPI: NSObject, NSCoding {
+
+    // MARK: - Implements NSCoding protocol
+    public func encodeWithCoder(aCoder: NSCoder) {
+        // TODO: implement it.
+    }
+
+    // MARK: - Implements NSCoding protocol
+    public required init(coder aDecoder: NSCoder) {
+        super.init()
+        // TODO: implement it.
+    }
+
+    public override init() {
+        // TODO: define proper initializer.
+    }
 
     /** On board IoT Cloud with the specified vendor thing ID.
     Specified thing will be owned by owner who consumes this API.
