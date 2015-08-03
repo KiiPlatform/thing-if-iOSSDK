@@ -7,34 +7,34 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>A011084B-ACD5-423D-8FF9-004B3C448731</string>
 	<key>IDESourceControlProjectName</key>
-	<string>IoTCloudSDK</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>BC3D14D9003FCC2967221ED34204B3B709EE626C</key>
-		<string>github.com:KiiCorp/IoTCloud.git</string>
+		<key>3B3BA86DDD9A16759269AFD3B0483AD0BB1941AD</key>
+		<string>github.com:KiiPlatform/IoTCloud-iOSSDK.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>iOS/IoTCloudSDK/IoTCloudSDK.xcodeproj</string>
+	<string>IoTCloudSDK/IoTCloudSDK.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>BC3D14D9003FCC2967221ED34204B3B709EE626C</key>
-		<string>../../../..</string>
+		<key>3B3BA86DDD9A16759269AFD3B0483AD0BB1941AD</key>
+		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>github.com:KiiCorp/IoTCloud.git</string>
+	<string>github.com:KiiPlatform/IoTCloud-iOSSDK.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>BC3D14D9003FCC2967221ED34204B3B709EE626C</string>
+	<string>3B3BA86DDD9A16759269AFD3B0483AD0BB1941AD</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>BC3D14D9003FCC2967221ED34204B3B709EE626C</string>
+			<string>3B3BA86DDD9A16759269AFD3B0483AD0BB1941AD</string>
 			<key>IDESourceControlWCCName</key>
-			<string>IoTCloud</string>
+			<string>IoTCloud-iOSSDK</string>
 		</dict>
 	</array>
 </dict>
