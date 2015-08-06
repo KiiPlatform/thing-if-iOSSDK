@@ -23,6 +23,8 @@
 		745088CB1B68C21100821F7D /* IoTCloudSDKUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745088CA1B68C21100821F7D /* IoTCloudSDKUsage.swift */; };
 		745088CD1B68C21100821F7D /* IoTCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7417A3031B65CF8400D116A5 /* IoTCloudSDK.framework */; };
 		74DE33BA1B6A01B000F3E923 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DE33B91B6A01B000F3E923 /* PromiseKit.framework */; };
+		7D108B181B736D3B006EA12B /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D108B171B736D3B006EA12B /* RequestExecutor.swift */; };
+		7D108B191B736D3B006EA12B /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D108B171B736D3B006EA12B /* RequestExecutor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,7 @@
 		745088CA1B68C21100821F7D /* IoTCloudSDKUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoTCloudSDKUsage.swift; sourceTree = "<group>"; };
 		745088CC1B68C21100821F7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74DE33B91B6A01B000F3E923 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PromiseKit.framework; sourceTree = "<group>"; };
+		7D108B171B736D3B006EA12B /* RequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +130,7 @@
 				7417A3231B65DC1B00D116A5 /* Owner.swift */,
 				7417A3251B65DCA300D116A5 /* TypedID.swift */,
 				7417A3361B66287700D116A5 /* IoTCloudError.swift */,
+				7D108B171B736D3B006EA12B /* RequestExecutor.swift */,
 			);
 			path = IoTCloudSDK;
 			sourceTree = "<group>";
@@ -333,6 +337,7 @@
 				7417A3351B66038000D116A5 /* IoTCloudAPIBuilder.swift in Sources */,
 				7417A3371B66287700D116A5 /* IoTCloudError.swift in Sources */,
 				7417A3221B65D2B300D116A5 /* Target.swift in Sources */,
+				7D108B181B736D3B006EA12B /* RequestExecutor.swift in Sources */,
 				7417A3241B65DC1B00D116A5 /* Owner.swift in Sources */,
 				7417A3201B65D05200D116A5 /* IoTCloudAPI.swift in Sources */,
 				7417A3291B65F55100D116A5 /* Command.swift in Sources */,
@@ -345,6 +350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D108B191B736D3B006EA12B /* RequestExecutor.swift in Sources */,
 				7417A3161B65CF8500D116A5 /* IoTCloudSDKTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
