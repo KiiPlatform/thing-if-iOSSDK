@@ -7,6 +7,11 @@ import Foundation
 
 /** Class provides API of the IoTCloud. */
 public class IoTCloudAPI: NSObject, NSCoding {
+    
+    public var baseURL: String!
+    public var appID: String!
+    public var appKey: String!
+
 
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
@@ -38,20 +43,29 @@ public class IoTCloudAPI: NSObject, NSCoding {
     IoT Cloud.
     Refer to the [REST API DOC](http://docs.kii.com/rest/#thing_management-register_a_thing)
     About the format of this Document.
-    - Returns: Target instance can be used to perate target,
-    manage resources of the Target.
-    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
-    Server returns error.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an IoTCloudError
     */
     public func onBoard(
         vendorThingID:String,
         thingPassword:String,
         thingType:String?,
-        thingProperties:Dictionary<String,Any>?
-        ) throws -> Target!
+        thingProperties:Dictionary<String,Any>?,
+        completionHandler: (Target?, IoTCloudError?)-> Void
+        )->Void
     {
-        // TODO: implement it.
-        return Target()
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/onboardings"
+        let requestBodyDict: Dictionary<String, String>!
+        requestBodyDict.updateValue(vendorThingID, forKey: "vendorThingID")
+        requestBodyDict.updateValue(thingPassword, forKey: "thingPassword")
+        if thingProperties ! = nil {
+            requestBodyDict.updateValue(thingProperties, forKey: "thingProperties")
+        }
+        
+        // add owner
+        
+        // generate header
+        
+        // do request
     }
 
     /** On board IoT Cloud with the specified thing ID.
