@@ -11,6 +11,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     public var baseURL: String!
     public var appID: String!
     public var appKey: String!
+    public var owner: Owner!
 
 
     // MARK: - Implements NSCoding protocol
@@ -49,23 +50,33 @@ public class IoTCloudAPI: NSObject, NSCoding {
         vendorThingID:String,
         thingPassword:String,
         thingType:String?,
-        thingProperties:Dictionary<String,Any>?,
+        thingProperties:NSDictionary?,
         completionHandler: (Target?, IoTCloudError?)-> Void
-        )->Void
+        ) throws ->Void
     {
         let requestURL = "\(baseURL)/iot-api/apps/\(appID)/onboardings"
-        let requestBodyDict: Dictionary<String, String>!
-        requestBodyDict.updateValue(vendorThingID, forKey: "vendorThingID")
-        requestBodyDict.updateValue(thingPassword, forKey: "thingPassword")
-        if thingProperties ! = nil {
-            requestBodyDict.updateValue(thingProperties, forKey: "thingProperties")
+        let requestBodyDict = NSMutableDictionary(dictionary: ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": owner.ownerID.toString()])
+
+        if thingProperties != nil {
+            requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
         }
-        
-        // add owner
-        
-        // generate header
-        
-        // do request
+
+        do{
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // generate header
+            let requestHeaderDict: Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID, "Content-type": "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
+
+            // do request
+            let requestExecutor = RequestExecutor()
+            requestExecutor.postRequest(requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
+                // TODO: generate target from response
+                let target = Target()
+                completionHandler(target, error)
+            })
+
+        }catch(let e){
+            throw e
+        }
     }
 
     /** On board IoT Cloud with the specified thing ID.

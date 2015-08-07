@@ -32,4 +32,8 @@ public class TypedID : NSObject, NSCoding {
         self.type = type
         self.id = id
     }
+
+    public func toString() -> String {
+        return "\(type):\(id)"
+    }
 }
