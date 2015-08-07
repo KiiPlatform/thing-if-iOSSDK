@@ -40,22 +40,27 @@ class EntitySerializationTests: XCTestCase {
         let aTypedID = TypedID(type: "camera", id: "cameraID")
         self.doSerialization(aTypedID)
     }
-    
+    //Owner
     func testOwner_NSUserDefaultSerialization() {
         let aTypedID = TypedID(type: "camera", id: "cameraID")
         let anOwner = Owner(ownerID: aTypedID, accessToken: "accessToken")
         self.doSerialization(anOwner)
     }
-    
+    //Schema
     func testSchema_NSUserDefaultSerialization() {
         let aSchema = Schema(thingType: "camera", name: "MyCamera", version: 1)
         self.doSerialization(aSchema)
         
     }
-    
+    //Command
     func testCommand_NSUserDefaultSerialization() {
         let aCommand = Command()
         self.doSerialization(aCommand)
+    }
+    //Trigger
+    func testTrigger_NSUserDefaultSerialization() {
+        let aTrigger = Trigger()
+        self.doSerialization(aTrigger)
     }
     
     
