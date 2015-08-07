@@ -54,32 +54,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
         completionHandler: (Target?, IoTCloudError?)-> Void
         ) throws ->Void
     {
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/onboardings"
-        let requestBodyDict = NSMutableDictionary(dictionary: ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": owner.ownerID.toString()])
-
-        if thingType != nil {
-            requestBodyDict.setObject(thingType!, forKey: "thingType")
-        }
-
-        if thingProperties != nil {
-            requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
-        }
-
-        do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
-            // generate header
-            let requestHeaderDict: Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID, "Content-type": "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
-
-            // do request
-            let requestExecutor = RequestExecutor()
-            requestExecutor.postRequest(requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                // TODO: generate target from response
-                let target = Target()
-                completionHandler(target, error)
-            })
-
-        }catch(let e){
-            throw e
+        try _onBoard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
+            completionHandler(target, error)
         }
     }
 
@@ -92,18 +68,64 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
     - Parameter thingPassword: Thing Password given by vendor.
     Must be specified.
-    - Returns: Target instance can be used to perate target,
-    manage resources of the Target.
-    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
-    Server returns error.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an IoTCloudError
     */
     public func onBoard(
         thingID:String,
-        thingPassword:String
-        ) throws -> Target!
+        thingPassword:String,
+        completionHandler: (Target?, IoTCloudError?)-> Void
+        ) throws ->Void
     {
-        // TODO: implement it.
-        return Target()
+        try _onBoard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
+            completionHandler(target, error)
+        }
+    }
+
+    private func _onBoard(
+        byVendorThingID: Bool,
+        IDString: String,
+        thingPassword:String,
+        thingType:String?,
+        thingProperties:NSDictionary?,
+        completionHandler: (Target?, IoTCloudError?)-> Void
+        ) throws ->Void {
+
+            let requestURL = "\(baseURL)/iot-api/apps/\(appID)/onboardings"
+
+            // genrate body
+            let requestBodyDict = NSMutableDictionary(dictionary: ["thingPassword": thingPassword, "owner": owner.ownerID.toString()])
+
+            // generate header
+            var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
+
+            if byVendorThingID {
+                requestBodyDict.setObject(IDString, forKey: "vendorThingID")
+                requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
+            }else {
+                requestBodyDict.setObject(IDString, forKey: "thingID")
+                requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithThingIDByOwner+json"
+            }
+
+            if thingType != nil {
+                requestBodyDict.setObject(thingType!, forKey: "thingType")
+            }
+
+            if thingProperties != nil {
+                requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
+            }
+
+            do{
+                let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+                // do request
+                let requestExecutor = RequestExecutor()
+                requestExecutor.postRequest(requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
+                    // TODO: generate target from response
+                    let target = Target()
+                    completionHandler(target, error)
+                })
+            }catch(let e){
+                throw e
+            }
     }
 
     /** Install push notification to receive notification from IoT Cloud.
