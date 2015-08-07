@@ -57,6 +57,10 @@ public class IoTCloudAPI: NSObject, NSCoding {
         let requestURL = "\(baseURL)/iot-api/apps/\(appID)/onboardings"
         let requestBodyDict = NSMutableDictionary(dictionary: ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": owner.ownerID.toString()])
 
+        if thingType != nil {
+            requestBodyDict.setObject(thingType!, forKey: "thingType")
+        }
+
         if thingProperties != nil {
             requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
         }
