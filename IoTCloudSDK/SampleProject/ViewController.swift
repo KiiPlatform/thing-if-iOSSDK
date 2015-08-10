@@ -13,7 +13,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        onBoardWithVendorThingIDByOwner()
+        onBoardWithVendorThingIDByOwner()
         onBoardWithThingIDByOwner()
     }
 
@@ -37,7 +37,7 @@ class ViewController: UIViewController {
             
             try api.onBoard("th.abcd-efgh", thingPassword: "dummyPassword", thingType: "LED", thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    print(target)
+                    print(target!.thingID)
                 }else {
                     print(error)
                 }
@@ -62,7 +62,7 @@ class ViewController: UIViewController {
 
             try api.onBoard("th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", thingPassword: "dummyPassword") { ( target, error) -> Void in
                 if error == nil{
-                    print(target)
+                    print(target!.thingID)
                 }else {
                     print(error)
                 }
