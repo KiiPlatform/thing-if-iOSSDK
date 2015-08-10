@@ -25,6 +25,7 @@
 		74DE33BA1B6A01B000F3E923 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DE33B91B6A01B000F3E923 /* PromiseKit.framework */; };
 		7D108B181B736D3B006EA12B /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D108B171B736D3B006EA12B /* RequestExecutor.swift */; };
 		7D108B191B736D3B006EA12B /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D108B171B736D3B006EA12B /* RequestExecutor.swift */; };
+		D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		745088CC1B68C21100821F7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74DE33B91B6A01B000F3E923 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PromiseKit.framework; sourceTree = "<group>"; };
 		7D108B171B736D3B006EA12B /* RequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutor.swift; sourceTree = "<group>"; };
+		D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitySerializationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 			children = (
 				7417A3151B65CF8500D116A5 /* IoTCloudSDKTests.swift */,
 				7417A3131B65CF8500D116A5 /* Supporting Files */,
+				D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */,
 			);
 			path = IoTCloudSDKTests;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D108B191B736D3B006EA12B /* RequestExecutor.swift in Sources */,
+				D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */,
 				7417A3161B65CF8500D116A5 /* IoTCloudSDKTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

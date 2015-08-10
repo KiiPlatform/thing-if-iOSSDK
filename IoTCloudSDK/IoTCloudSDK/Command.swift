@@ -9,20 +9,24 @@ public class Command: NSObject, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
-        // TODO: implement it.
+        aCoder.encodeObject(self.commandID, forKey: "commandID")
+        aCoder.encodeObject(self.targetID, forKey: "targetID")
+        aCoder.encodeObject(self.issuerID, forKey: "issuerID")
+        aCoder.encodeObject(self.schemaName, forKey: "schemaName")
+        aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         // TODO: implement it.
-        commandID = ""
-        targetID = TypedID(type: "", id: "")
-        issuerID = TypedID(type:"", id:"")
-        schemaName = ""
-        schemaVersion = 0
-        actions = []
-        actionResults = []
-        commandState = CommandState.SENDING
+        self.commandID = aDecoder.decodeObjectForKey("commandID") as! String
+        self.targetID = aDecoder.decodeObjectForKey("targetID") as! TypedID
+        self.issuerID = aDecoder.decodeObjectForKey("issuerID") as! TypedID
+        self.schemaName = aDecoder.decodeObjectForKey("schemaName") as! String
+        self.schemaVersion = aDecoder.decodeIntegerForKey("schemaVersion")
+        self.actions = []
+        self.actionResults = []
+        self.commandState = CommandState.SENDING
     }
 
 
@@ -60,6 +64,19 @@ public class Command: NSObject, NSCoding {
         self.actions = []
         self.actionResults = []
         self.commandState = CommandState.SENDING
+    }
+    
+    public override func isEqual(object: AnyObject?) -> Bool {
+        guard let aCommand = object as? Command else{
+            return false
+        }
+        
+        return self.commandID == aCommand.commandID &&
+            self.targetID == aCommand.targetID &&
+            self.issuerID == aCommand.issuerID &&
+            self.schemaName == aCommand.schemaName &&
+            self.schemaVersion == aCommand.schemaVersion
+        
     }
 }
 
