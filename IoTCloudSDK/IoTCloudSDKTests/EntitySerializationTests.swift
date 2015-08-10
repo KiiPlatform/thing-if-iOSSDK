@@ -21,7 +21,7 @@ class EntitySerializationTests: XCTestCase {
         super.tearDown()
     }
     
-    func doSerialization<T:NSObject> (anEntity :T ){
+    func doSerializationTest<T:NSObject> (anEntity :T ){
         let data = NSKeyedArchiver.archivedDataWithRootObject(anEntity)
         let key = _stdlib_getDemangledTypeName(anEntity)
         NSUserDefaults.standardUserDefaults().setObject(data, forKey: key)
@@ -38,29 +38,29 @@ class EntitySerializationTests: XCTestCase {
     //TypeID
     func testTypedID_NSUserDefaultSerialization() {
         let aTypedID = TypedID(type: "camera", id: "cameraID")
-        self.doSerialization(aTypedID)
+        self.doSerializationTest(aTypedID)
     }
     //Owner
     func testOwner_NSUserDefaultSerialization() {
         let aTypedID = TypedID(type: "camera", id: "cameraID")
         let anOwner = Owner(ownerID: aTypedID, accessToken: "accessToken")
-        self.doSerialization(anOwner)
+        self.doSerializationTest(anOwner)
     }
     //Schema
     func testSchema_NSUserDefaultSerialization() {
         let aSchema = Schema(thingType: "camera", name: "MyCamera", version: 1)
-        self.doSerialization(aSchema)
+        self.doSerializationTest(aSchema)
         
     }
     //Command
     func testCommand_NSUserDefaultSerialization() {
         let aCommand = Command()
-        self.doSerialization(aCommand)
+        self.doSerializationTest(aCommand)
     }
     //Trigger
     func testTrigger_NSUserDefaultSerialization() {
         let aTrigger = Trigger()
-        self.doSerialization(aTrigger)
+        self.doSerializationTest(aTrigger)
     }
     
     
