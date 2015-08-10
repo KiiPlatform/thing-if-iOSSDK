@@ -121,6 +121,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
                 requestExecutor.postRequest(requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                     // TODO: generate target from response
                     let target = Target()
+                    if let thingID = response?["thingID"] as? String{
+                        target.thingID = thingID
+                    }
                     completionHandler(target, error)
                 })
             }catch(let e){

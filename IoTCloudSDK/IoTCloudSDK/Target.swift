@@ -6,6 +6,7 @@ import Foundation
 
 /** Represents Target */
 public class Target : NSObject, NSCoding {
+    public var thingID: String?
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
         // TODO: implement it.

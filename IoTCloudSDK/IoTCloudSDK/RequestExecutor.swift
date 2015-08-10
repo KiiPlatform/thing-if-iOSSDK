@@ -6,9 +6,9 @@
 
 import Foundation
 
-public class RequestExecutor{
+class RequestExecutor{
 
-public func postRequest(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData, completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void) -> Void
+func postRequest(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData, completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void) -> Void
 {
     let url = NSURL(string: urlString)
     let request = NSMutableURLRequest(URL: url!)
