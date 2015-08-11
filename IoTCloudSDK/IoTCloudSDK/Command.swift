@@ -65,6 +65,24 @@ public class Command: NSObject, NSCoding {
         self.actionResults = []
         self.commandState = CommandState.SENDING
     }
+    public init(commandID: String, targetID: TypedID, issuerID: TypedID, schemaName: String, schemaVersion: Int, actions:[Dictionary<String, Any>], actionResults:[Dictionary<String, Any>]?, commandState: CommandState?) {
+        self.commandID = commandID
+        self.targetID = targetID
+        self.issuerID = issuerID
+        self.schemaName = schemaName
+        self.schemaVersion = schemaVersion
+        self.actions = actions
+        if actionResults != nil {
+            self.actionResults = actionResults!
+        }else {
+            self.actionResults = []
+        }
+        if commandState != nil {
+            self.commandState = commandState!
+        }else {
+            self.commandState = CommandState.SENDING
+        }
+    }
     
     public override func isEqual(object: AnyObject?) -> Bool {
         guard let aCommand = object as? Command else{
