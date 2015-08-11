@@ -24,6 +24,8 @@ struct IotRequest {
     let completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void
     
 }
+//use for dependency injection
+var iotSession = NSURLSession.self
 
 class IoTRequestOperation: GroupOperation {
     init(request : IotRequest){
@@ -51,7 +53,7 @@ class IoTRequestOperation: GroupOperation {
         setHeader(requestHeaderDict, request: request)
         
         request.HTTPBody = requestBodyData
-        let session = NSURLSession.sharedSession()
+        let session = iotSession.sharedSession()
         let task = session.dataTaskWithRequest(request, completionHandler: { (responseDataOptional: NSData?, responseOptional: NSURLResponse?, errorOptional: NSError?) -> Void in
             if responseOptional != nil {
                 let httpResponse = responseOptional as! NSHTTPURLResponse
