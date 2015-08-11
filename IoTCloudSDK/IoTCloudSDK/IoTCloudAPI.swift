@@ -8,6 +8,7 @@ import Foundation
 /** Class provides API of the IoTCloud. */
 public class IoTCloudAPI: NSObject, NSCoding {
     
+    let operationQueue = OperationQueue()
     public var baseURL: String!
     public var appID: String!
     public var appKey: String!
@@ -117,15 +118,19 @@ public class IoTCloudAPI: NSObject, NSCoding {
             do{
                 let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
                 // do request
-                let requestExecutor = RequestExecutor()
-                requestExecutor.postRequest(requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
+                let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                     // TODO: generate target from response
                     let target = Target()
                     if let thingID = response?["thingID"] as? String{
                         target.thingID = thingID
                     }
-                    completionHandler(target, error)
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler(target, error)
+                    }
                 })
+                let onboardRequestOperation = IoTRequestOperation(request: request)
+                operationQueue.addOperation(onboardRequestOperation)
+                
             }catch(let e){
                 throw e
             }
