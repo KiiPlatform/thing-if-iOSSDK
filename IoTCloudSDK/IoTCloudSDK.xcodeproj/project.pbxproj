@@ -176,6 +176,7 @@
 				7417A3231B65DC1B00D116A5 /* Owner.swift */,
 				7417A3251B65DCA300D116A5 /* TypedID.swift */,
 				7417A3361B66287700D116A5 /* IoTCloudError.swift */,
+				7D108B171B736D3B006EA12B /* RequestExecutor.swift */,
 			);
 			path = IoTCloudSDK;
 			sourceTree = "<group>";
@@ -488,6 +489,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D108B191B736D3B006EA12B /* RequestExecutor.swift in Sources */,
 				D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */,
 				7417A3161B65CF8500D116A5 /* IoTCloudSDKTests.swift in Sources */,
 			);
