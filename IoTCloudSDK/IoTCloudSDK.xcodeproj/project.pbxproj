@@ -46,6 +46,7 @@
 		D55D29161B78923B006759C4 /* UIUserNotifications+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F71B78923B006759C4 /* UIUserNotifications+Operations.swift */; };
 		D55D29171B78923B006759C4 /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F81B78923B006759C4 /* URLSessionTaskOperation.swift */; };
 		D55D29181B78923B006759C4 /* UserNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F91B78923B006759C4 /* UserNotificationCondition.swift */; };
+		D55D291F1B79872B006759C4 /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D291E1B79872B006759C4 /* RequestExecutor.swift */; };
 		D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -110,6 +111,7 @@
 		D55D28F71B78923B006759C4 /* UIUserNotifications+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIUserNotifications+Operations.swift"; sourceTree = "<group>"; };
 		D55D28F81B78923B006759C4 /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionTaskOperation.swift; sourceTree = "<group>"; };
 		D55D28F91B78923B006759C4 /* UserNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNotificationCondition.swift; sourceTree = "<group>"; };
+		D55D291E1B79872B006759C4 /* RequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutor.swift; sourceTree = "<group>"; };
 		D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitySerializationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -164,6 +166,7 @@
 		7417A3051B65CF8400D116A5 /* IoTCloudSDK */ = {
 			isa = PBXGroup;
 			children = (
+				D55D291E1B79872B006759C4 /* RequestExecutor.swift */,
 				D55D28DA1B78923B006759C4 /* Operations */,
 				7417A3311B6600BE00D116A5 /* Schema */,
 				7417A32B1B65F9F300D116A5 /* Trigger */,
@@ -176,7 +179,6 @@
 				7417A3231B65DC1B00D116A5 /* Owner.swift */,
 				7417A3251B65DCA300D116A5 /* TypedID.swift */,
 				7417A3361B66287700D116A5 /* IoTCloudError.swift */,
-				7D108B171B736D3B006EA12B /* RequestExecutor.swift */,
 			);
 			path = IoTCloudSDK;
 			sourceTree = "<group>";
@@ -463,6 +465,7 @@
 				D55D29131B78923B006759C4 /* RemoteNotificationCondition.swift in Sources */,
 				7417A3371B66287700D116A5 /* IoTCloudError.swift in Sources */,
 				7417A3221B65D2B300D116A5 /* Target.swift in Sources */,
+				D55D291F1B79872B006759C4 /* RequestExecutor.swift in Sources */,
 				D55D290B1B78923B006759C4 /* Operation.swift in Sources */,
 				D55D29021B78923B006759C4 /* GroupOperation.swift in Sources */,
 				7417A3241B65DC1B00D116A5 /* Owner.swift in Sources */,
@@ -489,7 +492,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D108B191B736D3B006EA12B /* RequestExecutor.swift in Sources */,
 				D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */,
 				7417A3161B65CF8500D116A5 /* IoTCloudSDKTests.swift in Sources */,
 			);
