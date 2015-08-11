@@ -72,6 +72,7 @@ public class Command: NSObject, NSCoding {
         self.schemaName = schemaName
         self.schemaVersion = schemaVersion
         self.actions = actions
+
         if actionResults != nil {
             self.actionResults = actionResults!
         }else {
@@ -105,7 +106,7 @@ public enum CommandState {
     /** Command is published to the Target. */
     case DELIVERED
     /** Target returns execution result but not completed all actions successfully. */
-    case IMCOMPLETE
+    case INCOMPLETE
     /** Target returns execution result and all actions successfully done. */
     case DONE
 }

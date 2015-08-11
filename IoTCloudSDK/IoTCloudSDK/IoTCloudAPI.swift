@@ -245,17 +245,78 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     - Parameter target: Target of the Command.
     - Parameter commandID: ID of the Command to obtain.
-    - Returns: Instance of obtained Command.
-    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
-    Server returns error.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed to connect to internet or IoT Cloud Server returns error.
+
      */
     public func getCommand(
         target:Target,
-        commandID:String
-        ) throws -> Command
+        commandID:String,
+        completionHandler: (Command?, IoTCloudError?)-> Void
+        ) throws -> Void
     {
-        // TODO: implement it.
-        return Command()
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/commands/\(commandID)"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+
+        let requestExecutor = RequestExecutor()
+        requestExecutor.getRequest(requestURL, requestHeaderDict: requestHeaderDict) { (response, error) -> Void in
+            var command:Command?
+            if let responseDict = response, schemaName = responseDict["schema"] as? String{
+                let actions = responseDict["actions"] as! [NSDictionary]
+                var actionsArray = [Dictionary<String, Any>]()
+                for nsdict in actions {
+                    var actionsDict = Dictionary<String, Any>()
+                    for(key, value) in nsdict {
+                        actionsDict[key as! String] = value
+                    }
+                    actionsArray.append(actionsDict)
+                }
+
+                var actionsResultArray = [Dictionary<String, Any>]()
+
+                if let actionResults = responseDict["actionResults"] as? [NSDictionary] {
+
+                    for nsdict in actionResults {
+                        var actionResultsDict = Dictionary<String, Any>()
+                        for(key, value) in nsdict {
+                            actionResultsDict[key as! String] = value
+                        }
+                        actionsResultArray.append(actionResultsDict)
+                    }
+                }
+                let schemaVersion = responseDict["schemaVersion"] as! Int
+                let targetString = responseDict["target"] as! String
+                var targetInfoArray = targetString.componentsSeparatedByString(":")
+                var targetID: TypedID?
+                if targetInfoArray.count == 2 {
+                    targetID = TypedID(type: targetInfoArray[0], id: targetInfoArray[1])
+                }
+                var issuerID: TypedID?
+                let issureString = responseDict["issuer"] as! String
+                var issuerInfoArray = issureString.componentsSeparatedByString(":")
+                if issuerInfoArray.count == 2 {
+                    issuerID = TypedID(type: issuerInfoArray[0], id: issuerInfoArray[1])
+                }
+                var commandState: CommandState?
+                if let commandStateString = responseDict["commandState"] as? String {
+                    switch commandStateString {
+                    case "SENDING":
+                        commandState = CommandState.SENDING
+                    case "DELIVERED":
+                        commandState = CommandState.DELIVERED
+                    case "INCOMPLETE":
+                        commandState = CommandState.INCOMPLETE
+                    default:
+                        commandState = CommandState.DONE
+                    }
+                }
+                if ((targetID != nil) && (issuerID != nil)){
+                    command = Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName, schemaVersion: schemaVersion, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState!)
+                }
+            }
+            completionHandler(command, error)
+        }
     }
 
     /** List Commands in the specified Target.
