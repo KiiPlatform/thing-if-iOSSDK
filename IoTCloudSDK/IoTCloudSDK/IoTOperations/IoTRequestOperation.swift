@@ -32,6 +32,16 @@ class IoTRequestOperation: GroupOperation {
         
         super.init(operations: [])
         
+        //add operation that handle network unreachable, it will directly execute callback if network is unreachable.
+        let url = NSURL(string: request.urlString)
+        let notConnectedCondition = NegatedCondition<ReachabilityCondition>(condition: ReachabilityCondition(host: url!))
+        let errorNotConnectedOperation = BlockOperation { () -> Void in
+            let iotCloudError = IoTCloudError.CONNECTION
+            request.completionHandler(response: nil, error: iotCloudError)
+        }
+        errorNotConnectedOperation.addCondition(notConnectedCondition)
+        addOperation(errorNotConnectedOperation)
+        
         switch(request.method) {
         case .POST :
             addPostRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler)
@@ -43,7 +53,7 @@ class IoTRequestOperation: GroupOperation {
         }
         
     }
-    func addPostRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData, completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void)
+    private func addPostRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData, completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void)
     {
         let url = NSURL(string: urlString)
         let request = NSMutableURLRequest(URL: url!)
@@ -98,7 +108,7 @@ class IoTRequestOperation: GroupOperation {
         addOperation(taskOperation)
     }
     
-    func setHeader(headerDict: Dictionary<String, String>, request: NSMutableURLRequest) -> Void {
+    private func setHeader(headerDict: Dictionary<String, String>, request: NSMutableURLRequest) -> Void {
         for(key, value) in headerDict {
             request.addValue(value, forHTTPHeaderField: key)
         }
