@@ -97,6 +97,71 @@ public class Command: NSObject, NSCoding {
             self.schemaVersion == aCommand.schemaVersion
         
     }
+
+    public class func commandWithNSDictionary(nsDict: NSDictionary!) -> Command?{
+
+        let commandID = nsDict["commandID"] as? String
+        let schemaName = nsDict["schema"] as? String
+        // actions array
+        var actionsArray = [Dictionary<String, Any>]()
+        if let actions = nsDict["actions"] as? [NSDictionary] {
+            for nsdict in actions {
+                var actionsDict = Dictionary<String, Any>()
+                for(key, value) in nsdict {
+                    actionsDict[key as! String] = value
+                }
+                actionsArray.append(actionsDict)
+            }
+        }
+        // actionResult array
+        var actionsResultArray = [Dictionary<String, Any>]()
+        if let actionResults = nsDict["actionResults"] as? [NSDictionary] {
+            for nsdict in actionResults {
+                var actionResultsDict = Dictionary<String, Any>()
+                for(key, value) in nsdict {
+                    actionResultsDict[key as! String] = value
+                }
+                actionsResultArray.append(actionResultsDict)
+            }
+        }
+        let schemaVersion = nsDict["schemaVersion"] as? Int
+
+        var targetID: TypedID?
+        if let targetString = nsDict["target"] as? String {
+            var targetInfoArray = targetString.componentsSeparatedByString(":")
+            if targetInfoArray.count == 2 {
+                targetID = TypedID(type: targetInfoArray[0], id: targetInfoArray[1])
+            }
+        }
+
+        var issuerID: TypedID?
+        if let issureString = nsDict["issuer"] as? String {
+            var issuerInfoArray = issureString.componentsSeparatedByString(":")
+            if issuerInfoArray.count == 2 {
+                issuerID = TypedID(type: issuerInfoArray[0], id: issuerInfoArray[1])
+            }
+        }
+
+        var commandState: CommandState?
+        if let commandStateString = nsDict["commandState"] as? String {
+            switch commandStateString {
+            case "SENDING":
+                commandState = CommandState.SENDING
+            case "DELIVERED":
+                commandState = CommandState.DELIVERED
+            case "INCOMPLETE":
+                commandState = CommandState.INCOMPLETE
+            default:
+                commandState = CommandState.DONE
+            }
+        }
+        var command: Command?
+        if ((targetID != nil) || (issuerID != nil) || (schemaName != nil)) || (schemaVersion != nil)
+            || (commandID != nil) {
+                command = Command(commandID: commandID!, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState)
+        }
+        return command
+    }
 }
 
 /** Enum represents state of the Command. */
