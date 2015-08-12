@@ -5,7 +5,7 @@
 
 import XCTest
 import IoTCloudSDK
-import PromiseKit
+//import PromiseKit
 import Swift
 
 class IoTCloudSDKUsage: XCTestCase {
@@ -24,53 +24,53 @@ class IoTCloudSDKUsage: XCTestCase {
         super.tearDown()
     }
 
-    func onboardPromise(
-        thingID:String,
-        thingPassword:String
-        ) -> Promise<Target> {
-        let promise = Promise<Target>(resolvers: { fullfill, reject in
-            do {
-                let target = try api!.onBoard(thingID, thingPassword:thingPassword)
-                fullfill(target!)
-            } catch (let e) {
-                reject(e)
-            }
-        })
-        return promise
-    }
-
-    func postCommandPromise(target:Target) -> Promise<Command> {
-        let promise = Promise<Command>(resolvers:{ fulfill, reject in
-            do {
-                // There's bug.. can not handle literal well.. :\
-                // https://forums.developer.apple.com/thread/12254
-
-                let actions:[Dictionary<String,Any>] =
-                [
-                    ["turnPower" : ["power":true]],
-                    ["setBrightness" : ["bribhtness":90]],
-                    ["setColor" : ["color":[255,255, 0]]]
-                ]
-                let schemaName = "SmartLight-Demo"
-                let schemaVersion = 1
-                let command = try api!.postNewCommand(target,
-                    schemaName: schemaName, schemaVersion: schemaVersion,
-                    actions:actions, issuer: nil)
-                fulfill(command!)
-            } catch (let e) {
-                reject(e)
-            }
-        })
-        return promise
-    }
-
+//    func onboardPromise(
+//        thingID:String,
+//        thingPassword:String
+//        ) -> Promise<Target> {
+//        let promise = Promise<Target>(resolvers: { fullfill, reject in
+//            do {
+//                let target = try api!.onBoard(thingID, thingPassword:thingPassword)
+//                fullfill(target!)
+//            } catch (let e) {
+//                reject(e)
+//            }
+//        })
+//        return promise
+//    }
+//
+//    func postCommandPromise(target:Target) -> Promise<Command> {
+//        let promise = Promise<Command>(resolvers:{ fulfill, reject in
+//            do {
+//                // There's bug.. can not handle literal well.. :\
+//                // https://forums.developer.apple.com/thread/12254
+//
+//                let actions:[Dictionary<String,Any>] =
+//                [
+//                    ["turnPower" : ["power":true]],
+//                    ["setBrightness" : ["bribhtness":90]],
+//                    ["setColor" : ["color":[255,255, 0]]]
+//                ]
+//                let schemaName = "SmartLight-Demo"
+//                let schemaVersion = 1
+//                let command = try api!.postNewCommand(target,
+//                    schemaName: schemaName, schemaVersion: schemaVersion,
+//                    actions:actions, issuer: nil)
+//                fulfill(command!)
+//            } catch (let e) {
+//                reject(e)
+//            }
+//        })
+//        return promise
+//    }
+//
     func testExample() {
-        onboardPromise("th.abcd-efgh", thingPassword:"dummyPassword")
-            .then{(target:Target) throws -> Promise<Command> in
-                return self.postCommandPromise(target)
-            }.report { (error:(ErrorType)) -> Void in
-                // Handle error.
-            }
+//        onboardPromise("th.abcd-efgh", thingPassword:"dummyPassword")
+//            .then{(target:Target) throws -> Promise<Command> in
+//                return self.postCommandPromise(target)
+//            }.report { (error:(ErrorType)) -> Void in
+//                // Handle error.
+//            }
         }
-
+//
 }
