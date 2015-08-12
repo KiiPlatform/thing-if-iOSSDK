@@ -120,7 +120,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
                 // do request
                 let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                     // TODO: generate target from response
-                    let target = Target()
+                    var target:Target?
                     if let thingID = response?["thingID"] as? String{
                         target = Target(targetType: TypedID(type: "THING", id: thingID))
                     }

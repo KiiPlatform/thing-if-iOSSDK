@@ -22,6 +22,7 @@
 		7417A3371B66287700D116A5 /* IoTCloudError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417A3361B66287700D116A5 /* IoTCloudError.swift */; };
 		745088CB1B68C21100821F7D /* IoTCloudSDKUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745088CA1B68C21100821F7D /* IoTCloudSDKUsage.swift */; };
 		745088CD1B68C21100821F7D /* IoTCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7417A3031B65CF8400D116A5 /* IoTCloudSDK.framework */; };
+		7D8D36A21B7B2699003DFE76 /* OnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */; };
 		D55D28FA1B78923B006759C4 /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28DB1B78923B006759C4 /* BlockObserver.swift */; };
 		D55D28FB1B78923B006759C4 /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28DC1B78923B006759C4 /* BlockOperation.swift */; };
 		D55D28FF1B78923B006759C4 /* DelayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28E01B78923B006759C4 /* DelayOperation.swift */; };
@@ -50,7 +51,6 @@
 		D5B395B21B79A41F00E0F660 /* IoTRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B11B79A41F00E0F660 /* IoTRequestOperation.swift */; };
 		D5B395B41B79B2AE00E0F660 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B31B79B2AE00E0F660 /* NetworkObserver.swift */; };
 		D5B395B61B79B2E100E0F660 /* BackgroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B51B79B2E100E0F660 /* BackgroundObserver.swift */; };
-		D5B395BA1B79C56900E0F660 /* IoTCloudAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B91B79C56900E0F660 /* IoTCloudAPITests.swift */; };
 		D5B395BC1B79E24100E0F660 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395BB1B79E24100E0F660 /* TestHelpers.swift */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +92,7 @@
 		745088CA1B68C21100821F7D /* IoTCloudSDKUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoTCloudSDKUsage.swift; sourceTree = "<group>"; };
 		745088CC1B68C21100821F7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74DE33B91B6A01B000F3E923 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PromiseKit.framework; sourceTree = "<group>"; };
+		7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingTests.swift; sourceTree = "<group>"; };
 		D55D28DB1B78923B006759C4 /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockObserver.swift; sourceTree = "<group>"; };
 		D55D28DC1B78923B006759C4 /* BlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockOperation.swift; sourceTree = "<group>"; };
 		D55D28E01B78923B006759C4 /* DelayOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayOperation.swift; sourceTree = "<group>"; };
@@ -120,7 +121,6 @@
 		D5B395B11B79A41F00E0F660 /* IoTRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IoTRequestOperation.swift; path = IoTOperations/IoTRequestOperation.swift; sourceTree = "<group>"; };
 		D5B395B31B79B2AE00E0F660 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
 		D5B395B51B79B2E100E0F660 /* BackgroundObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundObserver.swift; sourceTree = "<group>"; };
-		D5B395B91B79C56900E0F660 /* IoTCloudAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTCloudAPITests.swift; sourceTree = "<group>"; };
 		D5B395BB1B79E24100E0F660 /* TestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -203,10 +203,10 @@
 		7417A3121B65CF8500D116A5 /* IoTCloudSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */,
 				7417A3151B65CF8500D116A5 /* IoTCloudSDKTests.swift */,
 				7417A3131B65CF8500D116A5 /* Supporting Files */,
 				D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */,
-				D5B395B91B79C56900E0F660 /* IoTCloudAPITests.swift */,
 				D5B395BB1B79E24100E0F660 /* TestHelpers.swift */,
 			);
 			path = IoTCloudSDKTests;
@@ -518,7 +518,7 @@
 			files = (
 				D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */,
 				7417A3161B65CF8500D116A5 /* IoTCloudSDKTests.swift in Sources */,
-				D5B395BA1B79C56900E0F660 /* IoTCloudAPITests.swift in Sources */,
+				7D8D36A21B7B2699003DFE76 /* OnboardingTests.swift in Sources */,
 				D5B395BC1B79E24100E0F660 /* TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
