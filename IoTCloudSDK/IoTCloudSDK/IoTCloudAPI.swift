@@ -154,7 +154,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
                 operationQueue.addOperation(onboardRequestOperation)
                 
             }catch(_){
-                //TODO: handle error
+                completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
             }
     }
     //TODO: fix documentation
@@ -336,7 +336,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
             operationQueue.addOperation(onboardRequestOperation)
 
         }catch(_){
-            //TODO: fix me
+            completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
         }
     }
     
@@ -363,7 +363,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
             if let responseDict = response{
                 command = Command.commandWithNSDictionary(responseDict)
             }
-            completionHandler(command, error)
+            dispatch_async(dispatch_get_main_queue()) {
+                completionHandler(command, error)
+            }
         })
 
         let onboardRequestOperation = IoTRequestOperation(request: request)
@@ -415,7 +417,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
                 }
                 nextPaginationKey = response!["nextPaginationKey"] as? String
             }
-            completionHandler(commands, nextPaginationKey, error)
+            dispatch_async(dispatch_get_main_queue()) {
+                completionHandler(commands, nextPaginationKey, error)
+            }
         })
 
         let onboardRequestOperation = IoTRequestOperation(request: request)
