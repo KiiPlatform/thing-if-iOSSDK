@@ -46,7 +46,6 @@
 		D55D29161B78923B006759C4 /* UIUserNotifications+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F71B78923B006759C4 /* UIUserNotifications+Operations.swift */; };
 		D55D29171B78923B006759C4 /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F81B78923B006759C4 /* URLSessionTaskOperation.swift */; };
 		D55D29181B78923B006759C4 /* UserNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F91B78923B006759C4 /* UserNotificationCondition.swift */; };
-		D55D291F1B79872B006759C4 /* RequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D291E1B79872B006759C4 /* RequestExecutor.swift */; };
 		D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */; };
 		D5B395B21B79A41F00E0F660 /* IoTRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B11B79A41F00E0F660 /* IoTRequestOperation.swift */; };
 		D5B395B41B79B2AE00E0F660 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B31B79B2AE00E0F660 /* NetworkObserver.swift */; };
@@ -116,7 +115,6 @@
 		D55D28F71B78923B006759C4 /* UIUserNotifications+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIUserNotifications+Operations.swift"; sourceTree = "<group>"; };
 		D55D28F81B78923B006759C4 /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionTaskOperation.swift; sourceTree = "<group>"; };
 		D55D28F91B78923B006759C4 /* UserNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNotificationCondition.swift; sourceTree = "<group>"; };
-		D55D291E1B79872B006759C4 /* RequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutor.swift; sourceTree = "<group>"; };
 		D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitySerializationTests.swift; sourceTree = "<group>"; };
 		D5B395B11B79A41F00E0F660 /* IoTRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IoTRequestOperation.swift; path = IoTOperations/IoTRequestOperation.swift; sourceTree = "<group>"; };
 		D5B395B31B79B2AE00E0F660 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
@@ -175,7 +173,6 @@
 			isa = PBXGroup;
 			children = (
 				D5B395B01B79A3C400E0F660 /* IoTOperations */,
-				D55D291E1B79872B006759C4 /* RequestExecutor.swift */,
 				D55D28DA1B78923B006759C4 /* Operations */,
 				7417A3311B6600BE00D116A5 /* Schema */,
 				7417A32B1B65F9F300D116A5 /* Trigger */,
@@ -486,7 +483,6 @@
 				D55D29131B78923B006759C4 /* RemoteNotificationCondition.swift in Sources */,
 				7417A3371B66287700D116A5 /* IoTCloudError.swift in Sources */,
 				7417A3221B65D2B300D116A5 /* Target.swift in Sources */,
-				D55D291F1B79872B006759C4 /* RequestExecutor.swift in Sources */,
 				D55D290B1B78923B006759C4 /* Operation.swift in Sources */,
 				D55D29021B78923B006759C4 /* GroupOperation.swift in Sources */,
 				7417A3241B65DC1B00D116A5 /* Owner.swift in Sources */,
