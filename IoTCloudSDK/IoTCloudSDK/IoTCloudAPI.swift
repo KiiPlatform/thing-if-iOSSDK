@@ -186,88 +186,30 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter development: flag indicate whether the cert is development or
     production.
     - Returns: installationID published by IoT Cloud.
+    - Parameter completionHandler: A closure to be executed once on board has finished.
     */
     public func installPush(
         development:Bool = false,
         completionHandler: (String?, IoTCloudError?)-> Void
         ) 
     {
-        func doInstallationRequest() -> Void {
-            let requestURL = "\(baseURL)/iot-api/apps/\(appID)/installations"
-            
-            // genrate body
-            let requestBodyDict = NSMutableDictionary()
-            let deviceToken = RemoteNotificationCondition.deviceToken
-            
-            requestBodyDict["installationRegistrationID"] = deviceToken
-            requestBodyDict["deviceType"] = "IOS"
-            requestBodyDict["development"] = NSNumber(bool: development)
-            
-            // generate header
-            var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
-            
-            requestHeaderDict["Content-type"] = "application/vnd.kii.InstallationCreationRequest+json"
-            
-            do{
-                let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
-                // do request
-                let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                    
-                    if let installationID = response?["installationID"] as? String{
-                        self._installationID = installationID
-                    }
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completionHandler(self._installationID, error)
-                    }
-                })
-                let onboardRequestOperation = IoTRequestOperation(request: request)
-                operationQueue.addOperation(onboardRequestOperation)
-                
-            }catch( _){
-                //TODO: do logging for exception
-                dispatch_async(dispatch_get_main_queue()) {
-                    completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
-                }
-            }
-        }
-        
-        let pushAvilabilityCondition = RemoteNotificationCondition(application: UIApplication.sharedApplication())
-        let pushNotAvailableCondition = NegatedCondition<RemoteNotificationCondition>(condition: pushAvilabilityCondition)
-        
-        let errorPushNotAvailableOperation = BlockOperation { () -> Void in
-            completionHandler(nil,IoTCloudError.PUSH_NOT_AVAILABLE)
-        }
-        
-        errorPushNotAvailableOperation.addCondition(pushNotAvailableCondition)
-        
-        self.operationQueue.addOperation(errorPushNotAvailableOperation)
-        
-        let installPushOperation = BlockOperation { () -> Void in
-            doInstallationRequest()
-            
-        }
-        
-        installPushOperation.addCondition(pushAvilabilityCondition)
-        
-        self.operationQueue.addOperation(installPushOperation)
-        
+        _installPush(development, completionHandler: completionHandler)
     }
     
     /** Uninstall push notification.
     After done, notification from IoT Cloud won't be notified.
     - Parameter installationID: installation ID returned from installPush().
     If null is specified, value of the installationID property is used.
-    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
-    Server returns error.
     */
     public func uninstallPush(
-        installationID:String?
+        installationID:String?,
+        completionHandler: (IoTCloudError?)-> Void
         )
     {
-        // TODO: implement it.
+        _uninstallPush(installationID, completionHandler: completionHandler)
     }
     
-    private var _installationID:String?
+    var _installationID:String?
     
     /** Get installationID if the push is already installed.
     null will be returned if the push installation has not been done.
