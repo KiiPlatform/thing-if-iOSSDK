@@ -235,8 +235,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
     {
-        // TODO: implement it.
-        
+        _postNewTrigger(target, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, issuer: issuer, predicate: predicate, completionHandler: completionHandler)
     }
     
     /** Apply patch to a registered Trigger
@@ -255,7 +254,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         completionHandler: (Trigger?, IoTCloudError?)
         )
     {
-        // TODO: implement it.
+        _patchTrigger(target, triggerID: triggerID, actions: actions, predicate: predicate, completionHandler: completionHandler)
     }
     
     /** Enable/Disable a registered Trigger
@@ -273,7 +272,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
     {
-        // TODO: implement it.
+        _enableTrigger(target, triggerID: triggerID, enable: enable, completionHandler: completionHandler)
     }
     
     /** Delete a registered Trigger.
@@ -287,7 +286,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         completionHandler: (Trigger!, IoTCloudError?)-> Void
         )
     {
-        // TODO: implement it.
+        _deleteTrigger(target, triggerID: triggerID, completionHandler: completionHandler)
     }
     
     /** List Triggers belongs to the specified Target
@@ -308,7 +307,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: IoTCloudError?)-> Void
         )
     {
-        // TODO: implement it.
+        _listTriggers(target, bestEffortLimit: bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
     }
     
     /** Get the state of specified target.
