@@ -84,7 +84,7 @@ class IoTRequestOperation: GroupOperation {
 
     func addExecRequestTask(request: NSURLRequest, completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void) -> Void {
 
-        let session = NSURLSession.sharedSession()
+        let session = iotSession.sharedSession()
         let task = session.dataTaskWithRequest(request, completionHandler: { (responseDataOptional: NSData?, responseOptional: NSURLResponse?, errorOptional: NSError?) -> Void in
             if responseOptional != nil {
                 let httpResponse = responseOptional as! NSHTTPURLResponse
