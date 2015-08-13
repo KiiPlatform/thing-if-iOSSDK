@@ -197,6 +197,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
             
             // genrate body
             let requestBodyDict = NSMutableDictionary()
+            let deviceToken = RemoteNotificationCondition.deviceToken
+            
+            requestBodyDict["installationRegistrationID"] = deviceToken
+            requestBodyDict["deviceType"] = "IOS"
+            requestBodyDict["development"] = NSNumber(bool: development)
             
             // generate header
             var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
@@ -207,9 +212,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
                 let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
                 // do request
                 let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                    // TODO: generate target from response
                     
-                    if let installationID = response?["thingID"] as? String{
+                    if let installationID = response?["installationID"] as? String{
                         self._installationID = installationID
                     }
                     dispatch_async(dispatch_get_main_queue()) {
@@ -219,8 +223,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
                 let onboardRequestOperation = IoTRequestOperation(request: request)
                 operationQueue.addOperation(onboardRequestOperation)
                 
-            }catch(let e){
-                print(e)
+            }catch( _){
+                //TODO: do logging for exception
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
+                }
             }
         }
         
@@ -243,7 +250,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         installPushOperation.addCondition(pushAvilabilityCondition)
         
         self.operationQueue.addOperation(installPushOperation)
-        //TODO: finish implementations
+        
     }
     
     /** Uninstall push notification.
