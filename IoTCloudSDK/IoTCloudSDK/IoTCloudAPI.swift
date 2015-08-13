@@ -51,11 +51,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
         vendorThingID:String,
         thingPassword:String,
         thingType:String?,
-        thingProperties:NSDictionary?,
+        thingProperties:Dictionary<String,Any>?,
         completionHandler: (Target?, IoTCloudError?)-> Void
-        ) throws ->Void
+        ) ->Void
     {
-        try _onBoard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
+        _onBoard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
             completionHandler(target, error)
         }
     }
@@ -75,9 +75,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
         thingID:String,
         thingPassword:String,
         completionHandler: (Target?, IoTCloudError?)-> Void
-        ) throws ->Void
+        ) ->Void
     {
-        try _onBoard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
+         _onBoard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
             completionHandler(target, error)
         }
     }
@@ -87,9 +87,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
         IDString: String,
         thingPassword:String,
         thingType:String?,
-        thingProperties:NSDictionary?,
+        thingProperties:Dictionary<String,Any>?,
         completionHandler: (Target?, IoTCloudError?)-> Void
-        ) throws ->Void {
+        ) ->Void {
             
             let requestURL = "\(baseURL)/iot-api/apps/\(appID)/onboardings"
             
@@ -112,7 +112,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
             }
             
             if thingProperties != nil {
-                requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
+                //TODO: fix me
+                //requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
             }
             
             do{
@@ -131,11 +132,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
                 let onboardRequestOperation = IoTRequestOperation(request: request)
                 operationQueue.addOperation(onboardRequestOperation)
                 
-            }catch(let e){
-                throw e
+            }catch(let _){
+                //TODO: handle error
             }
     }
-    
+    //TODO: fix documentation
     /** Install push notification to receive notification from IoT Cloud.
     IoT Cloud will send notification when the Target replies to the Command.
     Application can receive the notification and check the result of Command
@@ -144,17 +145,16 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter deviceToken: device token for APNS.
     - Parameter development: flag indicate whether the cert is development or
     production.
-    - Returns: installationID published by IoT Cloud.
-    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
-    Server returns error.
+    - Parameter completionHandler: A closure to be executed once on board has finished.
     */
     public func installPush(
         deviceToken:String,
-        development:Bool
-        ) throws -> String!
+        development:Bool,
+        completionHandler: (String?, IoTCloudError?)-> Void
+        )
     {
         // TODO: implement it.
-        return ""
+        
     }
     
     /** Install push notification to receive notification from IoT Cloud.
@@ -165,13 +165,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter development: flag indicate whether the cert is development or
     production.
     - Returns: installationID published by IoT Cloud.
-    - Throws: IoTCloudError when push notifications is not enabled, failed to connect to internet or IoT Cloud
-    Server returns error.
     */
     public func installPush(
         development:Bool = false,
         completionHandler: (String?, IoTCloudError?)-> Void
-        ) throws -> Void
+        ) 
     {
         func doInstallationRequest() -> Void {
             let requestURL = "\(baseURL)/iot-api/apps/\(appID)/installations"
@@ -236,7 +234,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     */
     public func uninstallPush(
         installationID:String?
-        ) throws
+        )
     {
         // TODO: implement it.
     }
@@ -271,10 +269,10 @@ public class IoTCloudAPI: NSObject, NSCoding {
         target:Target,
         schemaName:String,
         schemaVersion:Int,
-        actions:[NSDictionary],
+        actions:[Dictionary<String,Any>],
         issuer:TypedID?,
         completionHandler: (Command?, IoTCloudError?)-> Void
-        ) throws -> Void
+        ) -> Void
     {
         let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/commands"
 
@@ -283,7 +281,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
         // generate body
         let requestBodyDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion])
-        requestBodyDict.setObject(actions, forKey: "actions")
+        //TODO: fix me
+        //requestBodyDict.setObject(actions, forKey: "actions")
 
         var issuerID: TypedID!
         if issuer == nil {
@@ -303,7 +302,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
                     for nsdict in actions {
                         var actionsDict = Dictionary<String, Any>()
                         for(key, value) in nsdict {
-                            actionsDict[key as! String] = value
+                            //TODO: Fix me
+                            //actionsDict[key as! String] = value
                         }
                         actionsArray.append(actionsDict)
                     }
@@ -317,7 +317,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
             operationQueue.addOperation(onboardRequestOperation)
 
         }catch(let e){
-            throw e
+            //TODO: fix me
         }
     }
     
@@ -331,7 +331,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         target:Target,
         commandID:String,
         completionHandler: (Command?, IoTCloudError?)-> Void
-        ) throws -> Void
+        )
     {
         let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/commands/\(commandID)"
 
@@ -371,7 +371,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         bestEffortLimit:Int?,
         paginationKey:String?,
         completionHandler: ([Command]?, String?, IoTCloudError?)-> Void
-        ) throws -> Void
+        )
     {
         var requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/commands"
         if paginationKey != nil && bestEffortLimit != nil{
@@ -418,6 +418,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Returns: Created Trigger Instance.
     - Throws: IoTCloudError when failed to connect to internet or
     IoT Cloud Server returns error.
+    //TODO: add parameter description
     */
     public func postNewTrigger(
         target:Target,
@@ -425,11 +426,12 @@ public class IoTCloudAPI: NSObject, NSCoding {
         schemaVersion:Int,
         actions:[Dictionary<String, Any>],
         issuer:TypedID,
-        predicate:Predicate
-        ) throws -> Trigger
+        predicate:Predicate,
+        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        )
     {
         // TODO: implement it.
-        return Trigger()
+        
     }
     
     /** Apply patch to a registered Trigger
@@ -439,18 +441,17 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter actions: Modified Actions to be applied as patch.
     - Parameter predicate: Modified Predicate to be applied as patch.
     - Returns: Modified Trigger instance.
-    - Throws: IoTCloudError when failed to connect to internet or
-    IoT Cloud Server returns error.
+    //TODO: add parameter
     */
     public func patchTrigger(
         target:Target,
         triggerID:String,
         actions:[Dictionary<String, Any>]?,
-        predicate:Predicate?
-        ) throws -> Trigger
+        predicate:Predicate?,
+        completionHandler: (Trigger?, IoTCloudError?)
+        )
     {
         // TODO: implement it.
-        return Trigger()
     }
     
     /** Enable/Disable a registered Trigger
@@ -460,17 +461,16 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter triggerID: ID of the Trigger to be enabled/disabled.
     - Parameter enable: Flag indicate enable/disable Trigger.
     - Returns: Enabled/Disabled Trigger instance.
-    - Throws: IoTCloudError when failed to connect to internet or
-    IoT Cloud Server returns error.
+    
     */
     public func enableTrigger(
         target:Target,
         triggerID:String,
-        enable:Bool
-        ) throws -> Trigger
+        enable:Bool,
+        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        )
     {
         // TODO: implement it.
-        return Trigger()
     }
     
     /** Delete a registered Trigger.
@@ -501,17 +501,16 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Returns: Where 1st element is Array of the Triggers
     belongs to the Target. 2nd element is paginationKey if there is further page
     to be retrieved.
-    - Throws: IoTCloudError when failed to connect to internet or
-    IoT Cloud Server returns error.
+    
     */
     public func listTriggers(
         target:Target,
         bestEffortLimit:Int?,
-        paginationKey:String?
-        ) throws -> ([Trigger], String?)
+        paginationKey:String?,
+        completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: IoTCloudError?)-> Void
+        )
     {
         // TODO: implement it.
-        return ([],"")
     }
     
     /** Get the state of specified target.
@@ -521,11 +520,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
     IoT Cloud Server returns error.
     */
     public func getState(
-        target:Target
-        ) throws -> Dictionary<String, Any>
+        target:Target,
+        completionHandler: (Dictionary<String, Any>,  IoTCloudError?)-> Void
+        )
     {
         // TODO: implement it.
-        return ["power":false]
     }
     
 }
