@@ -51,11 +51,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
         vendorThingID:String,
         thingPassword:String,
         thingType:String?,
-        thingProperties:NSDictionary?,
+        thingProperties:Dictionary<String,Any>?,
         completionHandler: (Target?, IoTCloudError?)-> Void
-        ) throws ->Void
+        ) ->Void
     {
-        try _onBoard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
+        _onBoard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
             completionHandler(target, error)
         }
     }
@@ -75,67 +75,14 @@ public class IoTCloudAPI: NSObject, NSCoding {
         thingID:String,
         thingPassword:String,
         completionHandler: (Target?, IoTCloudError?)-> Void
-        ) throws ->Void
+        ) ->Void
     {
-        try _onBoard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
+         _onBoard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
             completionHandler(target, error)
         }
     }
     
-    private func _onBoard(
-        byVendorThingID: Bool,
-        IDString: String,
-        thingPassword:String,
-        thingType:String?,
-        thingProperties:NSDictionary?,
-        completionHandler: (Target?, IoTCloudError?)-> Void
-        ) throws ->Void {
-            
-            let requestURL = "\(baseURL)/iot-api/apps/\(appID)/onboardings"
-            
-            // genrate body
-            let requestBodyDict = NSMutableDictionary(dictionary: ["thingPassword": thingPassword, "owner": owner.ownerID.toString()])
-            
-            // generate header
-            var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
-            
-            if byVendorThingID {
-                requestBodyDict.setObject(IDString, forKey: "vendorThingID")
-                requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
-            }else {
-                requestBodyDict.setObject(IDString, forKey: "thingID")
-                requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithThingIDByOwner+json"
-            }
-            
-            if thingType != nil {
-                requestBodyDict.setObject(thingType!, forKey: "thingType")
-            }
-            
-            if thingProperties != nil {
-                requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
-            }
-            
-            do{
-                let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
-                // do request
-                let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-
-                    var target:Target?
-                    if let thingID = response?["thingID"] as? String{
-                        target = Target(targetType: TypedID(type: "THING", id: thingID))
-                    }
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completionHandler(target, error)
-                    }
-                })
-                let onboardRequestOperation = IoTRequestOperation(request: request)
-                operationQueue.addOperation(onboardRequestOperation)
-                
-            }catch(let e){
-                throw e
-            }
-    }
-    
+    //TODO: fix documentation
     /** Install push notification to receive notification from IoT Cloud.
     IoT Cloud will send notification when the Target replies to the Command.
     Application can receive the notification and check the result of Command
@@ -144,17 +91,16 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter deviceToken: device token for APNS.
     - Parameter development: flag indicate whether the cert is development or
     production.
-    - Returns: installationID published by IoT Cloud.
-    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
-    Server returns error.
+    - Parameter completionHandler: A closure to be executed once on board has finished.
     */
     public func installPush(
         deviceToken:String,
-        development:Bool
-        ) throws -> String!
+        development:Bool,
+        completionHandler: (String?, IoTCloudError?)-> Void
+        )
     {
         // TODO: implement it.
-        return ""
+        
     }
     
     /** Install push notification to receive notification from IoT Cloud.
@@ -165,83 +111,30 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter development: flag indicate whether the cert is development or
     production.
     - Returns: installationID published by IoT Cloud.
-    - Throws: IoTCloudError when push notifications is not enabled, failed to connect to internet or IoT Cloud
-    Server returns error.
+    - Parameter completionHandler: A closure to be executed once on board has finished.
     */
     public func installPush(
         development:Bool = false,
         completionHandler: (String?, IoTCloudError?)-> Void
-        ) throws -> Void
+        ) 
     {
-        func doInstallationRequest() -> Void {
-            let requestURL = "\(baseURL)/iot-api/apps/\(appID)/installations"
-            
-            // genrate body
-            let requestBodyDict = NSMutableDictionary()
-            
-            // generate header
-            var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
-            
-            requestHeaderDict["Content-type"] = "application/vnd.kii.InstallationCreationRequest+json"
-            
-            do{
-                let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
-                // do request
-                let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                    // TODO: generate target from response
-                    
-                    if let installationID = response?["thingID"] as? String{
-                        self._installationID = installationID
-                    }
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completionHandler(self._installationID, error)
-                    }
-                })
-                let onboardRequestOperation = IoTRequestOperation(request: request)
-                operationQueue.addOperation(onboardRequestOperation)
-                
-            }catch(let e){
-                print(e)
-            }
-        }
-        
-        let pushAvilabilityCondition = RemoteNotificationCondition(application: UIApplication.sharedApplication())
-        let pushNotAvailableCondition = NegatedCondition<RemoteNotificationCondition>(condition: pushAvilabilityCondition)
-        
-        let errorPushNotAvailableOperation = BlockOperation { () -> Void in
-            completionHandler(nil,IoTCloudError.PUSH_NOT_AVAILABLE)
-        }
-        
-        errorPushNotAvailableOperation.addCondition(pushNotAvailableCondition)
-        
-        self.operationQueue.addOperation(errorPushNotAvailableOperation)
-        
-        let installPushOperation = BlockOperation { () -> Void in
-            doInstallationRequest()
-            
-        }
-        
-        installPushOperation.addCondition(pushAvilabilityCondition)
-        
-        self.operationQueue.addOperation(installPushOperation)
-        //TODO: finish implementations
+        _installPush(development, completionHandler: completionHandler)
     }
     
     /** Uninstall push notification.
     After done, notification from IoT Cloud won't be notified.
     - Parameter installationID: installation ID returned from installPush().
     If null is specified, value of the installationID property is used.
-    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
-    Server returns error.
     */
     public func uninstallPush(
-        installationID:String?
-        ) throws
+        installationID:String?,
+        completionHandler: (IoTCloudError?)-> Void
+        )
     {
-        // TODO: implement it.
+        _uninstallPush(installationID, completionHandler: completionHandler)
     }
     
-    private var _installationID:String?
+    var _installationID:String?
     
     /** Get installationID if the push is already installed.
     null will be returned if the push installation has not been done.
@@ -271,54 +164,12 @@ public class IoTCloudAPI: NSObject, NSCoding {
         target:Target,
         schemaName:String,
         schemaVersion:Int,
-        actions:[NSDictionary],
+        actions:[Dictionary<String,Any>],
         issuer:TypedID?,
         completionHandler: (Command?, IoTCloudError?)-> Void
-        ) throws -> Void
+        ) -> Void
     {
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/commands"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion])
-        requestBodyDict.setObject(actions, forKey: "actions")
-
-        var issuerID: TypedID!
-        if issuer == nil {
-            issuerID = owner.ownerID
-        }else {
-            issuerID = issuer
-        }
-        requestBodyDict.setObject(issuerID.toString(), forKey: "issuer")
-
-        do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
-            // do request
-            let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                var command:Command?
-                if let commandID = response?["commandID"] as? String{
-                    var actionsArray = [Dictionary<String, Any>]()
-                    for nsdict in actions {
-                        var actionsDict = Dictionary<String, Any>()
-                        for(key, value) in nsdict {
-                            actionsDict[key as! String] = value
-                        }
-                        actionsArray.append(actionsDict)
-                    }
-                    command = Command(commandID: commandID, targetID: target.targetType, issuerID: issuerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actionsArray, actionResults: nil, commandState: nil)
-                }
-                dispatch_async(dispatch_get_main_queue()) {
-                    completionHandler(command, error)
-                }
-            })
-            let onboardRequestOperation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(onboardRequestOperation)
-
-        }catch(let e){
-            throw e
-        }
+        _postNewCommand(target, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, issuer: issuer, completionHandler: completionHandler)
     }
     
     /** Get specified command
@@ -331,24 +182,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
         target:Target,
         commandID:String,
         completionHandler: (Command?, IoTCloudError?)-> Void
-        ) throws -> Void
+        )
     {
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/commands/\(commandID)"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        let request = IotRequest(method:HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-
-            var command:Command?
-            if let responseDict = response{
-                command = Command.commandWithNSDictionary(responseDict)
-            }
-            completionHandler(command, error)
-        })
-
-        let onboardRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(onboardRequestOperation)
+        _getCommand(target, commandID: commandID, completionHandler: completionHandler)
     }
     
     /** List Commands in the specified Target.
@@ -371,36 +207,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
         bestEffortLimit:Int?,
         paginationKey:String?,
         completionHandler: ([Command]?, String?, IoTCloudError?)-> Void
-        ) throws -> Void
+        )
     {
-        var requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/commands"
-        if paginationKey != nil && bestEffortLimit != nil{
-            requestURL += "?paginationKey=\(paginationKey!)&&bestEffortLimit=\(bestEffortLimit!)"
-        }else if bestEffortLimit != nil {
-            requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
-        }
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        let request = IotRequest(method:HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            var commands = [Command]()
-            var nextPaginationKey: String?
-            if response != nil {
-                if let commandNSDicts = response!["commands"] as? [NSDictionary] {
-                    for commandNSDict in commandNSDicts {
-                        if let command = Command.commandWithNSDictionary(commandNSDict) {
-                            commands.append(command)
-                        }
-                    }
-                }
-                nextPaginationKey = response!["nextPaginationKey"] as? String
-            }
-            completionHandler(commands, nextPaginationKey, error)
-        })
-
-        let onboardRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(onboardRequestOperation)
+        _listCommands(target, bestEffortLimit: bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
     }
     
     /** Post new Trigger to IoT Cloud.
@@ -418,6 +227,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Returns: Created Trigger Instance.
     - Throws: IoTCloudError when failed to connect to internet or
     IoT Cloud Server returns error.
+    //TODO: add parameter description
     */
     public func postNewTrigger(
         target:Target,
@@ -425,11 +235,12 @@ public class IoTCloudAPI: NSObject, NSCoding {
         schemaVersion:Int,
         actions:[Dictionary<String, Any>],
         issuer:TypedID,
-        predicate:Predicate
-        ) throws -> Trigger
+        predicate:Predicate,
+        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        )
     {
         // TODO: implement it.
-        return Trigger()
+        
     }
     
     /** Apply patch to a registered Trigger
@@ -439,18 +250,17 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter actions: Modified Actions to be applied as patch.
     - Parameter predicate: Modified Predicate to be applied as patch.
     - Returns: Modified Trigger instance.
-    - Throws: IoTCloudError when failed to connect to internet or
-    IoT Cloud Server returns error.
+    //TODO: add parameter
     */
     public func patchTrigger(
         target:Target,
         triggerID:String,
         actions:[Dictionary<String, Any>]?,
-        predicate:Predicate?
-        ) throws -> Trigger
+        predicate:Predicate?,
+        completionHandler: (Trigger?, IoTCloudError?)
+        )
     {
         // TODO: implement it.
-        return Trigger()
     }
     
     /** Enable/Disable a registered Trigger
@@ -460,17 +270,16 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter triggerID: ID of the Trigger to be enabled/disabled.
     - Parameter enable: Flag indicate enable/disable Trigger.
     - Returns: Enabled/Disabled Trigger instance.
-    - Throws: IoTCloudError when failed to connect to internet or
-    IoT Cloud Server returns error.
+    
     */
     public func enableTrigger(
         target:Target,
         triggerID:String,
-        enable:Bool
-        ) throws -> Trigger
+        enable:Bool,
+        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        )
     {
         // TODO: implement it.
-        return Trigger()
     }
     
     /** Delete a registered Trigger.
@@ -501,17 +310,16 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Returns: Where 1st element is Array of the Triggers
     belongs to the Target. 2nd element is paginationKey if there is further page
     to be retrieved.
-    - Throws: IoTCloudError when failed to connect to internet or
-    IoT Cloud Server returns error.
+    
     */
     public func listTriggers(
         target:Target,
         bestEffortLimit:Int?,
-        paginationKey:String?
-        ) throws -> ([Trigger], String?)
+        paginationKey:String?,
+        completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: IoTCloudError?)-> Void
+        )
     {
         // TODO: implement it.
-        return ([],"")
     }
     
     /** Get the state of specified target.
@@ -521,11 +329,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
     IoT Cloud Server returns error.
     */
     public func getState(
-        target:Target
-        ) throws -> Dictionary<String, Any>
+        target:Target,
+        completionHandler: (Dictionary<String, Any>,  IoTCloudError?)-> Void
+        )
     {
         // TODO: implement it.
-        return ["power":false]
     }
     
 }

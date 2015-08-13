@@ -58,8 +58,7 @@ class OnboardingTests: XCTestCase {
             MockSession.requestVerifier = requestVerifier
             
             iotSession = MockSession.self
-            
-            try api.onBoard("th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", thingPassword: "dummyPassword") { ( target, error) -> Void in
+            api.onBoard("th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", thingPassword: "dummyPassword") { ( target, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -71,6 +70,8 @@ class OnboardingTests: XCTestCase {
                         XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
+                    default:
+                        break
                     }
                 }
                 expectation.fulfill()
@@ -98,7 +99,7 @@ class OnboardingTests: XCTestCase {
             baseURL: "https://api-development-jp.internal.kii.com", owner: owner).addSchema(schema).build()
         
         do{
-            let thingProperties = NSDictionary(dictionary: ["key1":"value1", "key2":"value2"])
+            let thingProperties:Dictionary<String, Any> = ["key1":"value1", "key2":"value2"]
             let thingType = "LED"
             let vendorThingID = "th.abcd-efgh"
             let thingPassword = "dummyPassword"
@@ -128,7 +129,7 @@ class OnboardingTests: XCTestCase {
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            try api.onBoard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
+            api.onBoard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {

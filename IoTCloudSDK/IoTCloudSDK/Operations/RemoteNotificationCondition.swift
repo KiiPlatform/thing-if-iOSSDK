@@ -19,8 +19,15 @@ private enum RemoteRegistrationResult {
     case Token(NSData)
     case Error(NSError)
 }
-
-
+// MARK: Public function to bridge RemoteNotification Condition
+    public func handleRegisteredDeviceToken(token :NSData){
+        RemoteNotificationCondition.didReceiveNotificationToken(token)
+    }
+    
+    public func handleFailedPushRegistration (error: NSError){
+        RemoteNotificationCondition.didFailToRegister(error)
+    }
+    
 /// A condition for verifying that the app has the ability to receive push notifications.
 struct RemoteNotificationCondition: OperationCondition {
     static let name = "RemoteNotification"
