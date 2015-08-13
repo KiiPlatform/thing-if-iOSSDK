@@ -119,10 +119,10 @@ public class IoTCloudAPI: NSObject, NSCoding {
                 let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
                 // do request
                 let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                    // TODO: generate target from response
-                    let target = Target()
+
+                    var target:Target?
                     if let thingID = response?["thingID"] as? String{
-                        target.thingID = thingID
+                        target = Target(targetType: TypedID(type: "THING", id: thingID))
                     }
                     dispatch_async(dispatch_get_main_queue()) {
                         completionHandler(target, error)
@@ -195,37 +195,90 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter issuer: Specify command issuer. If execute command as group,
     you can use group:{gropuID} as issuer.
     If nil is specified owner of the IoTCloudAPI is regarded as issuer.
-    - Returns: Instance of created command.
-    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
-    Server returns error.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed to connect to internet or IoT Cloud Server returns error.
     */
     public func postNewCommand(
         target:Target,
         schemaName:String,
         schemaVersion:Int,
-        actions:[Dictionary<String, Any>],
-        issuer:TypedID?
-        ) throws -> Command!
+        actions:[NSDictionary],
+        issuer:TypedID?,
+        completionHandler: (Command?, IoTCloudError?)-> Void
+        ) throws -> Void
     {
-        // TODO: implement it.
-        return Command()
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/commands"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+
+        // generate body
+        let requestBodyDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion])
+        requestBodyDict.setObject(actions, forKey: "actions")
+
+        var issuerID: TypedID!
+        if issuer == nil {
+            issuerID = owner.ownerID
+        }else {
+            issuerID = issuer
+        }
+        requestBodyDict.setObject(issuerID.toString(), forKey: "issuer")
+
+        do{
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // do request
+            let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
+                var command:Command?
+                if let commandID = response?["commandID"] as? String{
+                    var actionsArray = [Dictionary<String, Any>]()
+                    for nsdict in actions {
+                        var actionsDict = Dictionary<String, Any>()
+                        for(key, value) in nsdict {
+                            actionsDict[key as! String] = value
+                        }
+                        actionsArray.append(actionsDict)
+                    }
+                    command = Command(commandID: commandID, targetID: target.targetType, issuerID: issuerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actionsArray, actionResults: nil, commandState: nil)
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler(command, error)
+                }
+            })
+            let onboardRequestOperation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(onboardRequestOperation)
+
+        }catch(let e){
+            throw e
+        }
     }
 
     /** Get specified command
     
     - Parameter target: Target of the Command.
     - Parameter commandID: ID of the Command to obtain.
-    - Returns: Instance of obtained Command.
-    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
-    Server returns error.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed to connect to internet or IoT Cloud Server returns error.
      */
     public func getCommand(
         target:Target,
-        commandID:String
-        ) throws -> Command
+        commandID:String,
+        completionHandler: (Command?, IoTCloudError?)-> Void
+        ) throws -> Void
     {
-        // TODO: implement it.
-        return Command()
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/commands/\(commandID)"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+
+        let request = IotRequest(method:HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+
+            var command:Command?
+            if let responseDict = response{
+                command = Command.commandWithNSDictionary(responseDict)
+            }
+            completionHandler(command, error)
+        })
+
+        let onboardRequestOperation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(onboardRequestOperation)
     }
 
     /** List Commands in the specified Target.
@@ -241,17 +294,43 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Returns: Where 1st element is Array of the commands
     belongs to the Target. 2nd element is paginationKey if there is further page
     to be retrieved.
-    - Throws: IoTCloudError when failed to connect to internet or
-    IoT Cloud Server returns error.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 3 arguments: 1st one is an instance of created command, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of IoTCloudError when failed to connect to internet or IoT Cloud Server returns error.
      */
     public func listCommands(
         target:Target,
         bestEffortLimit:Int?,
-        paginationKey:String?
-        ) throws -> ([Command], String?)
+        paginationKey:String?,
+        completionHandler: ([Command]?, String?, IoTCloudError?)-> Void
+        ) throws -> Void
     {
-        // TODO: implement it.
-        return ([],"")
+        var requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/commands"
+        if paginationKey != nil && bestEffortLimit != nil{
+            requestURL += "?paginationKey=\(paginationKey!)&&bestEffortLimit=\(bestEffortLimit!)"
+        }else if bestEffortLimit != nil {
+            requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
+        }
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+
+        let request = IotRequest(method:HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+            var commands = [Command]()
+            var nextPaginationKey: String?
+            if response != nil {
+                if let commandNSDicts = response!["commands"] as? [NSDictionary] {
+                    for commandNSDict in commandNSDicts {
+                        if let command = Command.commandWithNSDictionary(commandNSDict) {
+                            commands.append(command)
+                        }
+                    }
+                }
+                nextPaginationKey = response!["nextPaginationKey"] as? String
+            }
+            completionHandler(commands, nextPaginationKey, error)
+        })
+
+        let onboardRequestOperation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(onboardRequestOperation)
     }
 
     /** Post new Trigger to IoT Cloud.
