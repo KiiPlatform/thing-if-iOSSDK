@@ -57,12 +57,23 @@ public class Trigger: NSObject, NSCoding {
 
 /** Class represents Predicate */
 public class Predicate {
+    public func toJsonObject() -> NSDictionary{
+        return NSDictionary()
+    }
 }
 
 /** Class represents Condition */
 public class Condition {
+    var statement: Statement!
     init(statement:Statement) {
-        // TODO: implement it.
+        self.statement = statement
+    }
+
+    /** Get Json object of Condition instance
+    - Returns: Json object as an instance of NSDictionary
+    */
+    public func toJsonObject() -> NSDictionary {
+        return self.statement.toJSONObject()
     }
 }
 
@@ -75,6 +86,18 @@ public enum TriggersWhen {
     /** Fires when the previous State and current State is evaluated as
     different value. i.e. false to true, true to false. */
     case CONDITION_CHANGED
+
+    /** Get String value of TriggerWhen */
+    func toString() -> String {
+        switch self {
+        case .CONDITION_FALSE_TO_TRUE:
+            return "CONDITION_FALSE_TO_TRUE"
+        case .CONDITION_TRUE:
+            return "CONDITION_TRUE"
+        case .CONDITION_CHANGED:
+            return "CONDITION_CHANGED"
+        }
+    }
 }
 
 /** Class represents SchedulePredicate */
@@ -87,15 +110,33 @@ public class SchedulePredicate: Predicate {
     public init(schedule: String) {
         self.schedule = schedule
     }
+
+    /** Get Json object of SchedulePredicate instance
+    - Returns: Json object as an instance of NSDictionary
+    */
+    public override func toJsonObject() -> NSDictionary {
+        return NSDictionary(dictionary: ["eventSource": "schedule", "schedule":self.schedule])
+    }
+
 }
 
 /** Class represents StatePredicate */
 public class StatePredicate: Predicate {
+    var triggersWhen: TriggersWhen!
+    var condition: Condition!
     /** Initialize StatePredicate with Condition and TriggersWhen
     - Parameter condition: Condition of the Trigger.
     - Parameter triggersWhen: Specify TriggersWhen.
      */
     public init(condition:Condition, triggersWhen:TriggersWhen) {
-        // TODO: implement it.
+        self.triggersWhen = triggersWhen
+        self.condition = condition
+    }
+
+    /** Get Json object of StatePredicate instance
+    - Returns: Json object as an instance of NSDictionary
+    */
+    public override func toJsonObject() -> NSDictionary {
+        return NSDictionary(dictionary: ["eventSource": "states", "triggersWhen": self.triggersWhen.toString(), "condition": self.condition.toJsonObject()])
     }
 }
