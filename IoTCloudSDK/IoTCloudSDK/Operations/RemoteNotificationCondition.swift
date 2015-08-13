@@ -6,9 +6,11 @@ Abstract:
 This file shows an example of implementing the OperationCondition protocol.
 */
 
+
 #if os(iOS)
 
 import UIKit
+
     
 private let RemoteNotificationQueue = OperationQueue()
 private let RemoteNotificationName = "RemoteNotificationPermissionNotification"
@@ -18,18 +20,24 @@ private enum RemoteRegistrationResult {
     case Error(NSError)
 }
 
+
 /// A condition for verifying that the app has the ability to receive push notifications.
 struct RemoteNotificationCondition: OperationCondition {
     static let name = "RemoteNotification"
     static let isMutuallyExclusive = false
+    static private(set) var deviceToken : String?
     
     static func didReceiveNotificationToken(token: NSData) {
+        RemoteNotificationCondition.deviceToken = token.hexString()
+        
         NSNotificationCenter.defaultCenter().postNotificationName(RemoteNotificationName, object: nil, userInfo: [
             "token": token
         ])
     }
     
     static func didFailToRegister(error: NSError) {
+        RemoteNotificationCondition.deviceToken = nil
+        
         NSNotificationCenter.defaultCenter().postNotificationName(RemoteNotificationName, object: nil, userInfo: [
             "error": error
         ])

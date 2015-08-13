@@ -21,4 +21,5 @@ public struct ErrorResponse {
 public enum IoTCloudError : ErrorType {
     case CONNECTION
     case ERROR_RESPONSE(required: ErrorResponse)
+    case PUSH_NOT_AVAILABLE
 }
