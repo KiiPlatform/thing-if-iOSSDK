@@ -23,6 +23,7 @@
 		745088CB1B68C21100821F7D /* IoTCloudSDKUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745088CA1B68C21100821F7D /* IoTCloudSDKUsage.swift */; };
 		745088CD1B68C21100821F7D /* IoTCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7417A3031B65CF8400D116A5 /* IoTCloudSDK.framework */; };
 		D554F5131B7B372D00CC9655 /* NSData+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554F5121B7B372D00CC9655 /* NSData+Operations.swift */; };
+		7D8D36A21B7B2699003DFE76 /* OnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */; };
 		D55D28FA1B78923B006759C4 /* BlockObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28DB1B78923B006759C4 /* BlockObserver.swift */; };
 		D55D28FB1B78923B006759C4 /* BlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28DC1B78923B006759C4 /* BlockOperation.swift */; };
 		D55D28FF1B78923B006759C4 /* DelayOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28E01B78923B006759C4 /* DelayOperation.swift */; };
@@ -92,6 +93,7 @@
 		745088CC1B68C21100821F7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		74DE33B91B6A01B000F3E923 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PromiseKit.framework; sourceTree = "<group>"; };
 		D554F5121B7B372D00CC9655 /* NSData+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+Operations.swift"; sourceTree = "<group>"; };
+		7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingTests.swift; sourceTree = "<group>"; };
 		D55D28DB1B78923B006759C4 /* BlockObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockObserver.swift; sourceTree = "<group>"; };
 		D55D28DC1B78923B006759C4 /* BlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockOperation.swift; sourceTree = "<group>"; };
 		D55D28E01B78923B006759C4 /* DelayOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayOperation.swift; sourceTree = "<group>"; };

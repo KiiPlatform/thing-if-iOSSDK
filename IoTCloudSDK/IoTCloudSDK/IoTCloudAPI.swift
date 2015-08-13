@@ -325,10 +325,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     - Parameter target: Target of the Command.
     - Parameter commandID: ID of the Command to obtain.
-    - Returns: Instance of obtained Command.
-    - Throws: IoTCloudError when failed to connect to internet or IoT Cloud
-    Server returns error.
-    */
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed to connect to internet or IoT Cloud Server returns error.
+     */
     public func getCommand(
         target:Target,
         commandID:String,
@@ -366,9 +364,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Returns: Where 1st element is Array of the commands
     belongs to the Target. 2nd element is paginationKey if there is further page
     to be retrieved.
-    - Throws: IoTCloudError when failed to connect to internet or
-    IoT Cloud Server returns error.
-    */
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 3 arguments: 1st one is an instance of created command, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of IoTCloudError when failed to connect to internet or IoT Cloud Server returns error.
+     */
     public func listCommands(
         target:Target,
         bestEffortLimit:Int?,
