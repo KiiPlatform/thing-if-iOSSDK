@@ -5,6 +5,28 @@
 
 import Foundation
 
+extension Dictionary {
+
+    public func toNSDictionary() -> NSDictionary {
+        let nsdict = NSMutableDictionary()
+        for(key, value) in self {
+            if value is Dictionary {
+                nsdict[key as! String] = (value as! Dictionary).toNSDictionary()
+            }else if value is Int{
+                nsdict[key as! String] = NSNumber(integer: (value as! Int))
+            }else if value is Bool {
+                nsdict[key as! String] = NSNumber(bool: (value as! Bool))
+            }else if value is Double {
+                nsdict[key as! String] = NSNumber(double: (value as! Double))
+            }else if value is Float {
+                nsdict[key as! String] = NSNumber(float: (value as! Float))
+            }else if value is String {
+                nsdict[key as! String] = value as! String
+            }
+        }
+        return nsdict
+    }
+}
 /** Class provides API of the IoTCloud. */
 public class IoTCloudAPI: NSObject, NSCoding {
     
@@ -112,15 +134,14 @@ public class IoTCloudAPI: NSObject, NSCoding {
             }
             
             if thingProperties != nil {
-                //TODO: fix me
-                //requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
+                requestBodyDict.setObject(thingProperties!.toNSDictionary(), forKey: "thingProperties")
             }
             
             do{
                 let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
                 // do request
                 let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-
+                    
                     var target:Target?
                     if let thingID = response?["thingID"] as? String{
                         target = Target(targetType: TypedID(type: "THING", id: thingID))
@@ -132,7 +153,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
                 let onboardRequestOperation = IoTRequestOperation(request: request)
                 operationQueue.addOperation(onboardRequestOperation)
                 
-            }catch(let _){
+            }catch(_){
                 //TODO: handle error
             }
     }
@@ -298,16 +319,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
             let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var command:Command?
                 if let commandID = response?["commandID"] as? String{
-                    var actionsArray = [Dictionary<String, Any>]()
-                    for nsdict in actions {
-                        var actionsDict = Dictionary<String, Any>()
-                        for(key, value) in nsdict {
-                            //TODO: Fix me
-                            //actionsDict[key as! String] = value
-                        }
-                        actionsArray.append(actionsDict)
-                    }
-                    command = Command(commandID: commandID, targetID: target.targetType, issuerID: issuerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actionsArray, actionResults: nil, commandState: nil)
+                    command = Command(commandID: commandID, targetID: target.targetType, issuerID: issuerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil)
                 }
                 dispatch_async(dispatch_get_main_queue()) {
                     completionHandler(command, error)
@@ -316,7 +328,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
             let onboardRequestOperation = IoTRequestOperation(request: request)
             operationQueue.addOperation(onboardRequestOperation)
 
-        }catch(let e){
+        }catch(_){
             //TODO: fix me
         }
     }
