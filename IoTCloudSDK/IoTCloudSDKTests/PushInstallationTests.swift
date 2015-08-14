@@ -20,10 +20,10 @@ class PushInstallationTests: XCTestCase {
         baseURL: "https://api-development-jp.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).addSchema(Schema(thingType: "SmartLight-Demo",
             name: "SmartLight-Demo", version: 1)).build()
     
+    let deviceToken = "dummyDeviceToken"
     
     override func setUp() {
         super.setUp()
-        failIfNotRunningOnDevice()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
@@ -34,8 +34,6 @@ class PushInstallationTests: XCTestCase {
 
     func onboard(){
         let expectation = self.expectationWithDescription("onboardWithVendorThingID")
-        
-        
         
         do{
             let thingProperties:Dictionary<String, Any> = ["key1":"value1", "key2":"value2"]
@@ -82,7 +80,7 @@ class PushInstallationTests: XCTestCase {
         }
 
     }
-    func testPush() {
+    func testPushInstallation_success() {
         
         self.onboard()
         let expectation = self.expectationWithDescription("onboardWithVendorThingID")
@@ -97,7 +95,7 @@ class PushInstallationTests: XCTestCase {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": RemoteNotificationCondition.deviceToken!, "deviceType": "IOS"]
+            let expectedBody = ["installationRegistrationID": self.deviceToken, "deviceType": "IOS","development":"false","userID": self.owner.ownerID.id]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
         }
         
@@ -115,7 +113,7 @@ class PushInstallationTests: XCTestCase {
             return;
         }
         
-        api.installPush { (installID, error) -> Void in
+        api.installPush(self.deviceToken,development: false) { (installID, error) -> Void in
             XCTAssertTrue(error==nil,"should not error")
             
             XCTAssertNotNil(installID,"Should not nil")
@@ -127,7 +125,14 @@ class PushInstallationTests: XCTestCase {
             }
         }
     }
-
-    
+    func testPushInstallation_http_404() {
+        //TODO: implementations
+    }
+    func testPushInstallation_http_400() {
+        //TODO: implementations
+    }
+    func testPushInstallation_http_401() {
+        //TODO: implementations
+    }
 
 }

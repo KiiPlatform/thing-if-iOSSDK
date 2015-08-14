@@ -267,7 +267,7 @@
 		7417A3121B65CF8500D116A5 /* IoTCloudSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				D554F5351B7C886300CC9655 /* onDeviceTests */,
+				D554F5361B7C88CF00CC9655 /* PushInstallationTests.swift */,
 				7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */,
 				7417A3151B65CF8500D116A5 /* IoTCloudSDKTests.swift */,
 				7417A3131B65CF8500D116A5 /* Supporting Files */,
@@ -343,14 +343,6 @@
 				D554F5291B7C80F300CC9655 /* Info.plist */,
 			);
 			path = HostApp;
-			sourceTree = "<group>";
-		};
-		D554F5351B7C886300CC9655 /* onDeviceTests */ = {
-			isa = PBXGroup;
-			children = (
-				D554F5361B7C88CF00CC9655 /* PushInstallationTests.swift */,
-			);
-			name = onDeviceTests;
 			sourceTree = "<group>";
 		};
 		D55D28DA1B78923B006759C4 /* Operations */ = {
@@ -1009,6 +1001,7 @@
 				D554F52B1B7C80F300CC9655 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
