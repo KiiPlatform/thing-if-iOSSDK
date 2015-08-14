@@ -39,93 +39,68 @@ class ViewController: UIViewController {
     }
 
     func onBoardWithVendorThingIDByOwner() {
-        do{
-            let thingProperties = NSDictionary(dictionary: ["key1":"value1", "key2":"value2"])
-            
-            try iotCloudAPI.onBoard("th.abcd-efgh", thingPassword: "dummyPassword", thingType: "LED", thingProperties: thingProperties) { ( target, error) -> Void in
-                if error == nil{
-                    print(target!.targetType.id)
-                }else {
-                    print(error)
-                }
-            }
-        }catch(let e){
-            print(e)
-        }
 
+        let thingProperties = ["key1":"value1", "key2":"value2"]
+
+        iotCloudAPI.onBoard("th.abcd-efgh", thingPassword: "dummyPassword", thingType: "LED", thingProperties: thingProperties) { ( target, error) -> Void in
+            if error == nil{
+                print(target!.targetType.id)
+            }else {
+                print(error)
+            }
+        }
     }
 
     func onBoardWithThingIDByOwner() {
-        do{
 
-            try iotCloudAPI.onBoard("th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", thingPassword: "dummyPassword") { ( target, error) -> Void in
-                if error == nil{
-                    print(target!.targetType.id)
-                }else {
-                    print(error)
-                }
+        iotCloudAPI.onBoard("th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", thingPassword: "dummyPassword") { ( target, error) -> Void in
+            if error == nil{
+                print(target!.targetType.id)
+            }else {
+                print(error)
             }
-        }catch(let e){
-            print(e)
         }
-
     }
     
     func postCommand() {
-        do{
-            let thingID = "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-            let thingPassword = "dummyPassword"
-            try iotCloudAPI.onBoard(thingID, thingPassword: thingPassword, completionHandler: { (target, error) -> Void in
-                self.callPostCommand(target!)
-            })
-
-        }catch(let e){
-            print(e)
-        }
+        let thingID = "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+        let thingPassword = "dummyPassword"
+        iotCloudAPI.onBoard(thingID, thingPassword: thingPassword, completionHandler: { (target, error) -> Void in
+            self.callPostCommand(target!)
+        })
     }
     
     func callPostCommand(target:Target) {
         
-        do{
-            try self.iotCloudAPI.postNewCommand(target, schemaName: self.schema.name, schemaVersion: 2, actions: [["turnPower":["power":"true"]]], issuer: nil, completionHandler: { (command, error) -> Void in
-                
-                if error == nil {
-                    print(command!.commandID)
-                    self.getCommand(target, commandID: command!.commandID)
-                }else {
-                    print(error)
-                }
-            })
-        }catch(let e){
-            print(e)
-        }
-        
+
+        self.iotCloudAPI.postNewCommand(target, schemaName: self.schema.name, schemaVersion: 2, actions: [["turnPower":["power":"true"]]], issuer: nil, completionHandler: { (command, error) -> Void in
+            
+            if error == nil {
+                print(command!.commandID)
+                self.getCommand(target, commandID: command!.commandID)
+            }else {
+                print(error)
+            }
+        })
     }
     
     func getCommand(target: Target, commandID: String){
-        do {
-            try self.iotCloudAPI.getCommand(target, commandID: commandID) { (command, error) -> Void in
-                if error == nil {
-                    print("commandID:\(command!.commandID), state:\(command!.commandState), taregetID:\(command!.targetID.toString()), issurerID:\(command!.issuerID.toString())")
-                    for actionResult in  command!.actionResults  {
-                        for (key, value) in actionResult {
-                            print("\(key):")
-                            let valueDict = value as! NSDictionary
-                            for (key1, value1) in valueDict {
-                                print("\(key1):\(value1)")
-                            }
+        self.iotCloudAPI.getCommand(target, commandID: commandID) { (command, error) -> Void in
+            if error == nil {
+                print("commandID:\(command!.commandID), state:\(command!.commandState), taregetID:\(command!.targetID.toString()), issurerID:\(command!.issuerID.toString())")
+                for actionResult in  command!.actionResults  {
+                    for (key, value) in actionResult {
+                        print("\(key):")
+                        let valueDict = value as! NSDictionary
+                        for (key1, value1) in valueDict {
+                            print("\(key1):\(value1)")
                         }
                     }
-                }else {
-                    print(error)
                 }
+            }else {
+                print(error)
             }
-        }catch(let e){
-            print(e)
         }
-
     }
-    
-    
 }
 
