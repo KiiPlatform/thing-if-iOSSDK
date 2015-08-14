@@ -18,7 +18,8 @@ public class Equals: Statement {
     - Parameter value: Left hand side value to be compared.
      */
     public init(field:String, value:String) {
-       nsdict.setObject(value, forKey: field)
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(value, forKey: "value")
     }
 
     /** Initialize with Int left hand side value.
@@ -26,7 +27,8 @@ public class Equals: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: value), forKey: "value")
     }
 
     /** Initialize with Bool left hand side value.
@@ -34,7 +36,8 @@ public class Equals: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Bool) {
-        nsdict.setObject(NSNumber(bool: value), forKey: field)
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(bool: value), forKey: "value")
     }
     /** Get Statement as NSDictionary instance
     - Returns: a NSDictionary instance.
@@ -53,7 +56,8 @@ public class NotEquals: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:String) {
-        nsdict.setObject(value, forKey: field)
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(value, forKey: "value")
     }
 
     /** Initialize with Int left hand side value.
@@ -61,7 +65,8 @@ public class NotEquals: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: value), forKey: "value")
     }
 
     /** Initialize with Bool left hand side value.
@@ -69,7 +74,8 @@ public class NotEquals: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Bool) {
-        nsdict.setObject(NSNumber(bool: value), forKey: field)
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(bool: value), forKey: "value")
     }
     /** Get Statement as NSDictionary instance
     - Returns: a NSDictionary instance.
@@ -88,7 +94,8 @@ public class GreaterThan: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: value), forKey: "value")
     }
 
     /** Get Statement as NSDictionary instance
@@ -108,7 +115,8 @@ public class LessThan: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: value), forKey: "value")
     }
 
     /** Get Statement as NSDictionary instance
@@ -128,7 +136,8 @@ public class NotGreaterThan: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: value), forKey: "value")
     }
 
     /** Get Statement as NSDictionary instance
@@ -148,7 +157,8 @@ public class NotLessThan: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: value), forKey: "value")
     }
 
     /** Get Statement as NSDictionary instance
