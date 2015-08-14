@@ -10,15 +10,15 @@ public class Trigger: NSObject, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.triggerID, forKey: "triggerID")
         aCoder.encodeObject(self.targetID, forKey: "targetID")
         aCoder.encodeObject(self.command, forKey: "command")
         aCoder.encodeBool(self.enabled, forKey: "enabled")
-        
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        
+        self.triggerID = aDecoder.decodeObjectForKey("triggerID") as! String
         self.targetID = aDecoder.decodeObjectForKey("targetID") as! TypedID
         self.enabled = aDecoder.decodeBoolForKey("enabled")
         self.predicate = Predicate()
@@ -26,6 +26,8 @@ public class Trigger: NSObject, NSCoding {
         // TODO: add aditional decoder
     }
 
+    /** ID of the Trigger */
+    public var triggerID: String
     /** ID of the Target */
     public var targetID: TypedID
     /** Flag indicate whether the Trigger is enabled */
@@ -37,27 +39,36 @@ public class Trigger: NSObject, NSCoding {
 
     public override init() {
         // TODO: implement it with proper initializer.
+        self.triggerID = ""
         self.targetID = TypedID(type:"",id:"")
         self.enabled = true
         self.predicate = Predicate()
         self.command = Command()
     }
-    
+
+    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command) {
+        self.triggerID = triggerID
+        self.targetID = targetID
+        self.enabled = enabled
+        self.predicate = predicate
+        self.command = command
+    }
+
     public override func isEqual(object: AnyObject?) -> Bool {
         guard let aTrigger = object as? Trigger else{
             return false
         }
-        
+
         return self.targetID == aTrigger.targetID &&
             self.enabled == aTrigger.enabled &&
             self.command == aTrigger.command
     }
-    
+
 }
 
 /** Class represents Predicate */
 public class Predicate {
-    public func toJsonObject() -> NSDictionary{
+    public func toNSDictionary() -> NSDictionary{
         return NSDictionary()
     }
 }
@@ -65,15 +76,16 @@ public class Predicate {
 /** Class represents Condition */
 public class Condition {
     var statement: Statement!
-    init(statement:Statement) {
+
+    public init(statement:Statement) {
         self.statement = statement
     }
 
-    /** Get Json object of Condition instance
-    - Returns: Json object as an instance of NSDictionary
+    /** Get Condition as NSDictionary instance
+    - Returns: a NSDictionary instance
     */
-    public func toJsonObject() -> NSDictionary {
-        return self.statement.toJSONObject()
+    public func toNSDictionary() -> NSDictionary {
+        return self.statement.toNSDictionary()
     }
 }
 
@@ -106,7 +118,7 @@ public class SchedulePredicate: Predicate {
     public let schedule: String
     /** Instantiate new SchedulePredicate.
     -Parameter schedule: Specify schedule. (cron tab format)
-     */
+    */
     public init(schedule: String) {
         self.schedule = schedule
     }
@@ -114,7 +126,7 @@ public class SchedulePredicate: Predicate {
     /** Get Json object of SchedulePredicate instance
     - Returns: Json object as an instance of NSDictionary
     */
-    public override func toJsonObject() -> NSDictionary {
+    public override func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["eventSource": "schedule", "schedule":self.schedule])
     }
 
@@ -127,16 +139,16 @@ public class StatePredicate: Predicate {
     /** Initialize StatePredicate with Condition and TriggersWhen
     - Parameter condition: Condition of the Trigger.
     - Parameter triggersWhen: Specify TriggersWhen.
-     */
+    */
     public init(condition:Condition, triggersWhen:TriggersWhen) {
         self.triggersWhen = triggersWhen
         self.condition = condition
     }
 
-    /** Get Json object of StatePredicate instance
-    - Returns: Json object as an instance of NSDictionary
+    /** Get StatePredicate as NSDictionary instance
+    - Returns: a NSDictionary instance
     */
-    public override func toJsonObject() -> NSDictionary {
-        return NSDictionary(dictionary: ["eventSource": "states", "triggersWhen": self.triggersWhen.toString(), "condition": self.condition.toJsonObject()])
+    public override func toNSDictionary() -> NSDictionary {
+        return NSDictionary(dictionary: ["eventSource": "states", "triggersWhen": self.triggersWhen.toString(), "condition": self.condition.toNSDictionary()])
     }
 }

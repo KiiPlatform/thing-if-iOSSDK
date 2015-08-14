@@ -221,7 +221,6 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter schemaVersion: Version of the Schema of which the Command
     specified in Trigger is defined.
     - Parameter actions: Actions to be executed by the Trigger.
-    - Parameter issuer: Issuer of the Command.
     - Parameter predicate: Predicate of the Command.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an IoTCloudError instance when failed.
     */
@@ -230,12 +229,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
         schemaName:String,
         schemaVersion:Int,
         actions:[Dictionary<String, Any>],
-        issuer:TypedID,
         predicate:Predicate,
         completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
     {
-        _postNewTrigger(target, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, issuer: issuer, predicate: predicate, completionHandler: completionHandler)
+        _postNewTrigger(target, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
     }
     
     /** Apply patch to a registered Trigger

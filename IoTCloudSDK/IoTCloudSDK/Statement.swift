@@ -6,7 +6,7 @@ import Foundation
 
 /** Protocole of the Statement must be conformed to. */
 public protocol Statement {
-    func toJSONObject() -> NSDictionary
+    func toNSDictionary() -> NSDictionary
 }
 
 /** Class represents Equals statement. */
@@ -36,10 +36,10 @@ public class Equals: Statement {
     public init(field:String, value:Bool) {
         nsdict.setObject(NSNumber(bool: value), forKey: field)
     }
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
+    public func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["=":nsdict])
     }
 }
@@ -71,10 +71,10 @@ public class NotEquals: Statement {
     public init(field:String, value:Bool) {
         nsdict.setObject(NSNumber(bool: value), forKey: field)
     }
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
+    public func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["!=":nsdict])
     }
 }
@@ -91,10 +91,10 @@ public class GreaterThan: Statement {
         nsdict.setObject(NSNumber(integer: value), forKey: field)
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
+    public func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: [">":nsdict])
     }
 }
@@ -111,10 +111,10 @@ public class LessThan: Statement {
         nsdict.setObject(NSNumber(integer: value), forKey: field)
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
+    public func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["<":nsdict])
     }
 }
@@ -131,10 +131,10 @@ public class NotGreaterThan: Statement {
         nsdict.setObject(NSNumber(integer: value), forKey: field)
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
+    public func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["<=":nsdict])
     }
 }
@@ -151,10 +151,10 @@ public class NotLessThan: Statement {
         nsdict.setObject(NSNumber(integer: value), forKey: field)
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
+    public func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: [">=":nsdict])
     }
 }
@@ -168,13 +168,13 @@ public class And: Statement {
     - Parameter statement2: an instance of Statement.
     */
     public init(statement1:Statement, statement2:Statement) {
-        self.statements = NSArray(array: [statement1.toJSONObject(), statement2.toJSONObject()])
+        self.statements = NSArray(array: [statement1.toNSDictionary(), statement2.toNSDictionary()])
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
+    public func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["and":self.statements])
     }
 }
@@ -187,13 +187,13 @@ public class Or: Statement {
     - Parameter statement2: an instance of Statement.
     */
     public init(statement1:Statement, statement2:Statement) {
-        self.statements = NSArray(array: [statement1.toJSONObject(), statement2.toJSONObject()])
+        self.statements = NSArray(array: [statement1.toNSDictionary(), statement2.toNSDictionary()])
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
+    public func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["or":self.statements])
     }
 }

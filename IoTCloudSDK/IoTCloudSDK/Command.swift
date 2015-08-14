@@ -65,8 +65,12 @@ public class Command: NSObject, NSCoding {
         self.actionResults = []
         self.commandState = CommandState.SENDING
     }
-    public init(commandID: String, targetID: TypedID, issuerID: TypedID, schemaName: String, schemaVersion: Int, actions:[Dictionary<String, Any>], actionResults:[Dictionary<String, Any>]?, commandState: CommandState?) {
-        self.commandID = commandID
+    public init(commandID: String?, targetID: TypedID, issuerID: TypedID, schemaName: String, schemaVersion: Int, actions:[Dictionary<String, Any>], actionResults:[Dictionary<String, Any>]?, commandState: CommandState?) {
+        if commandID != nil {
+            self.commandID = commandID!
+        }else {
+            self.commandID = ""
+        }
         self.targetID = targetID
         self.issuerID = issuerID
         self.schemaName = schemaName
