@@ -35,7 +35,7 @@ extension IoTCloudAPI {
                 // do request
                 let request = IotRequest(method:.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                     
-                    if let installationID = response?["installationID"] as? String{
+                    if let installationID = response?["InstallationID"] as? String{
                         self._installationID = installationID
                     }
                     dispatch_async(dispatch_get_main_queue()) {

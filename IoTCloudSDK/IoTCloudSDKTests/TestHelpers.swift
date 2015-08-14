@@ -7,6 +7,16 @@
 //
 
 import Foundation
+import XCTest
+
+func failIfNotRunningOnDevice(){
+    let environment = NSProcessInfo.processInfo().environment
+    
+    if environment["SIMULATOR_RUNTIME_VERSION"] != nil {
+        XCTFail("This test is prohibited to launch in simulator")
+    }
+    
+}
 
 class MockSession: NSURLSession {
     var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
