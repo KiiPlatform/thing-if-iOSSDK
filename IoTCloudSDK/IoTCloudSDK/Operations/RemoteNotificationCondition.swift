@@ -117,7 +117,20 @@ private class RemoteNotificationPermissionOperation: Operation {
             notificationCenter.addObserver(self, selector: "didReceiveResponse:", name: RemoteNotificationName, object: nil)
             
             self.application.registerForRemoteNotifications()
+            weak var weakSelf = self;
+            
+            let timeout = 1.0
+            let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+                Int64(timeout * Double(NSEC_PER_SEC)))
+            dispatch_after(delayTime, dispatch_get_main_queue()) {
+                
+                if weakSelf?.finished == false   {
+                    weakSelf!.handler(.Error(NSError(code: .ConditionFailed)))
+                    weakSelf!.finish()
+                }
+            }
         }
+        
     }
     
     @objc func didReceiveResponse(notification: NSNotification) {
