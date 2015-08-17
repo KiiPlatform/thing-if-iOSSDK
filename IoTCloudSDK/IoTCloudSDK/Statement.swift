@@ -13,11 +13,16 @@ public protocol Statement {
 public class Equals: Statement {
     var nsdict = NSMutableDictionary()
 
+    init() {
+        nsdict.setObject("eq", forKey: "type")
+    }
+
     /** Initialize with String left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
      */
-    public init(field:String, value:String) {
+    public convenience init(field:String, value:String) {
+        self.init()
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(value, forKey: "value")
     }
@@ -26,7 +31,8 @@ public class Equals: Statement {
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, value:Int) {
+    public convenience init(field:String, value:Int) {
+        self.init()
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(NSNumber(integer: value), forKey: "value")
     }
@@ -35,7 +41,8 @@ public class Equals: Statement {
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, value:Bool) {
+    public convenience init(field:String, value:Bool) {
+        self.init()
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(NSNumber(bool: value), forKey: "value")
     }
@@ -43,45 +50,52 @@ public class Equals: Statement {
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["=":nsdict])
+        return NSDictionary(dictionary: nsdict)
     }
 }
 
 /** Class represents NotEquals statement. */
 public class NotEquals: Statement {
-    var nsdict = NSMutableDictionary()
+    var clauseNSDict = NSMutableDictionary()
+    var stmtNSDict: NSDictionary!
 
+    init() {
+        stmtNSDict = NSDictionary(dictionary: ["type": "not", "clause": clauseNSDict])
+    }
     /** Initialize with String left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, value:String) {
-        nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(value, forKey: "value")
+    public convenience init(field:String, value:String) {
+        self.init()
+        clauseNSDict.setObject(field, forKey: "field")
+        clauseNSDict.setObject(value, forKey: "value")
     }
 
     /** Initialize with Int left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, value:Int) {
-        nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(integer: value), forKey: "value")
+    public convenience init(field:String, value:Int) {
+        self.init()
+        clauseNSDict.setObject(field, forKey: "field")
+        clauseNSDict.setObject(NSNumber(integer: value), forKey: "value")
     }
 
     /** Initialize with Bool left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, value:Bool) {
-        nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(bool: value), forKey: "value")
+    public convenience init(field:String, value:Bool) {
+        self.init()
+        clauseNSDict.setObject(field, forKey: "field")
+        clauseNSDict.setObject(NSNumber(bool: value), forKey: "value")
     }
     /** Get Statement as NSDictionary instance
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["!=":nsdict])
+        return stmtNSDict
     }
 }
 
@@ -89,11 +103,17 @@ public class NotEquals: Statement {
 public class GreaterThan: Statement {
     var nsdict = NSMutableDictionary()
 
+    init() {
+        nsdict.setObject("range", forKey: "type")
+        nsdict.setObject(false, forKey: "lowerLimitIncluded")
+    }
+
     /** Initialize with Int left hand side value.
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter lowerLimit: Lower limit value.
     */
-    public init(field:String, value:Int) {
+    public convenience init(field:String, value:Int) {
+        self.init()
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(NSNumber(integer: value), forKey: "value")
     }
@@ -102,7 +122,7 @@ public class GreaterThan: Statement {
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: [">":nsdict])
+        return nsdict
     }
 }
 
@@ -110,20 +130,26 @@ public class GreaterThan: Statement {
 public class LessThan: Statement {
     var nsdict = NSMutableDictionary()
 
+    init() {
+        nsdict.setObject("range", forKey: "type")
+        nsdict.setObject(false, forKey: "upperLimitIncluded")
+    }
+
     /** Initialize with Int left hand side value.
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter upperLimit: Upper limit value.
     */
-    public init(field:String, value:Int) {
+    public convenience init(field:String, upperLimit:Int) {
+        self.init()
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(integer: value), forKey: "value")
+        nsdict.setObject(NSNumber(integer: upperLimit), forKey: "upperLimit")
     }
 
     /** Get Statement as NSDictionary instance
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["<":nsdict])
+        return NSDictionary(dictionary: nsdict)
     }
 }
 
@@ -131,20 +157,26 @@ public class LessThan: Statement {
 public class NotGreaterThan: Statement {
     var nsdict = NSMutableDictionary()
 
+    init() {
+        nsdict.setObject("range", forKey: "type")
+        nsdict.setObject(true, forKey: "upperLimitIncluded")
+    }
+
     /** Initialize with Int left hand side value.
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter upperLimit: Upper limit value.
     */
-    public init(field:String, value:Int) {
+    public convenience init(field:String, upperLimit:Int) {
+        self.init()
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(integer: value), forKey: "value")
+        nsdict.setObject(NSNumber(integer: upperLimit), forKey: "upperLimit")
     }
 
     /** Get Statement as NSDictionary instance
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["<=":nsdict])
+        return NSDictionary(dictionary: nsdict)
     }
 }
 
@@ -152,13 +184,19 @@ public class NotGreaterThan: Statement {
 public class NotLessThan: Statement {
     var nsdict = NSMutableDictionary()
 
+    init() {
+        nsdict.setObject("range", forKey: "type")
+       nsdict.setObject(true, forKey: "lowerLimitIncluded")
+    }
+
     /** Initialize with Int left hand side value.
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter lowerLimit: Lower limit value.
     */
-    public init(field:String, value:Int) {
+    public convenience init(field:String, lowerLimit:Int) {
+        self.init()
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(integer: value), forKey: "value")
+        nsdict.setObject(NSNumber(integer: lowerLimit), forKey: "lowerLimit")
     }
 
     /** Get Statement as NSDictionary instance
