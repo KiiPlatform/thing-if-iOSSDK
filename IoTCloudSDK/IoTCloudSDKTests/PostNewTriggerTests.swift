@@ -19,6 +19,8 @@ class PostNewTriggerTests: XCTestCase {
         super.tearDown()
     }
 
+    //TODO: verify the possible predicate
+
     func testPostNewTriggerSuccess() {
 
         let expectation = self.expectationWithDescription("postNewTrigger")
@@ -39,7 +41,7 @@ class PostNewTriggerTests: XCTestCase {
             let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
 
             let expectedActions = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
-            let expectedStatement = ["=":["filed":"color", "value": 0]]
+            let expectedStatement = ["type":"eq","filed":"color", "value": 0]
             let expectedEventSource = "states"
             let expectedTriggerWhen = "CONDITION_FALSE_TO_TRUE"
             let expectedPredicateDict = ["eventSource":expectedEventSource, "triggersWhen":expectedTriggerWhen, "condition":expectedStatement]
@@ -92,5 +94,15 @@ class PostNewTriggerTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
+    }
+
+    func testPostNewTrigger_http_403() {
+        //TODO: implementations
+    }
+    func testPostNewTrigger_http_404() {
+        //TODO: implementations
+    }
+    func testPostNewTrigger_http_503() {
+        //TODO: implementations
     }
 }
