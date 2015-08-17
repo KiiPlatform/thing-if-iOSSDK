@@ -105,7 +105,7 @@ public class GreaterThan: Statement {
 
     init() {
         nsdict.setObject("range", forKey: "type")
-        nsdict.setObject(false, forKey: "lowerLimitIncluded")
+        nsdict.setObject(false, forKey: "lowerIncluded")
     }
 
     /** Initialize with Int left hand side value.
@@ -132,7 +132,7 @@ public class LessThan: Statement {
 
     init() {
         nsdict.setObject("range", forKey: "type")
-        nsdict.setObject(false, forKey: "upperLimitIncluded")
+        nsdict.setObject(false, forKey: "upperIncluded")
     }
 
     /** Initialize with Int left hand side value.
@@ -159,7 +159,7 @@ public class NotGreaterThan: Statement {
 
     init() {
         nsdict.setObject("range", forKey: "type")
-        nsdict.setObject(true, forKey: "upperLimitIncluded")
+        nsdict.setObject(true, forKey: "upperIncluded")
     }
 
     /** Initialize with Int left hand side value.
@@ -186,7 +186,7 @@ public class NotLessThan: Statement {
 
     init() {
         nsdict.setObject("range", forKey: "type")
-        nsdict.setObject(true, forKey: "lowerLimitIncluded")
+        nsdict.setObject(true, forKey: "lowerIncluded")
     }
 
     /** Initialize with Int left hand side value.
