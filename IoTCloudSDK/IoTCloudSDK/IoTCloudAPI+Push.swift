@@ -60,12 +60,12 @@ extension IoTCloudAPI {
         )
     {
         let idParam = installationID != nil ? installationID : self._installationID
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/installations/\(idParam)"
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/installations/\(idParam!)"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
         
-        let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+        let request = buildDefaultRequest(.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
             
             if error == nil{
                 self._installationID = nil
