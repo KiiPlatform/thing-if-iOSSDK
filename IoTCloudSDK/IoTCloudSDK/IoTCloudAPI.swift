@@ -222,6 +222,10 @@ public class IoTCloudAPI: NSObject, NSCoding {
     Modify a registered Trigger with the specified patch.
     - Parameter target: Target to which the Trigger belongs.
     - Parameter triggerID: ID of the Trigger to which the patch is applied.
+    - Parameter schemaName: Name of the Schema of which the Command specified in
+    Trigger is defined.
+    - Parameter schemaVersion: Version of the Schema of which the Command
+    specified in Trigger is defined.
     - Parameter actions: Modified Actions to be applied as patch.
     - Parameter predicate: Modified Predicate to be applied as patch.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an IoTCloudError instance when failed.
@@ -229,9 +233,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
     public func patchTrigger(
         target:Target,
         triggerID:String,
+        schemaName:String,
+        schemaVersion:Int,
         actions:[Dictionary<String, Any>]?,
         predicate:Predicate?,
-        completionHandler: (Trigger?, IoTCloudError?)
+        completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
     {
         _patchTrigger(target, triggerID: triggerID, actions: actions, predicate: predicate, completionHandler: completionHandler)
