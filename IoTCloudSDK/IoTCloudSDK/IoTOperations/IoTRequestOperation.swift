@@ -16,22 +16,41 @@ enum HTTPMethod: String {
     case DELETE = "DELETE"
 }
 
-struct IotRequest {
+struct IotRequest<T> {
     let method : HTTPMethod
     let urlString: String
     let requestHeaderDict: Dictionary<String, String>
     let requestBodyData: NSData?
-    let completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void
+    let responseBodySerializer : (responseBodyData:NSData?) -> T?
+    let completionHandler: (response: T?, error: IoTCloudError?) -> Void
     
 }
+typealias DefaultRequest = IotRequest<NSDictionary>
+
+func buildDefaultRequest(method : HTTPMethod,urlString: String,requestHeaderDict: Dictionary<String, String>,requestBodyData: NSData?,completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void) -> DefaultRequest {
+    let defaultRequest = DefaultRequest(method: method, urlString: urlString, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, responseBodySerializer: { (responseBodyData) -> NSDictionary? in
+        var responseBody : NSDictionary?
+        do{
+            responseBody = try NSJSONSerialization.JSONObjectWithData(responseBodyData!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+        }catch(_){
+            // do nothing
+            //TODO: change to debug log
+            print("")
+        }
+        return responseBody
+        }, completionHandler: completionHandler)
+    
+    return defaultRequest;
+}
+
 //use for dependency injection
 var iotSession = NSURLSession.self
 
-class IoTRequestOperation: GroupOperation {
-    init(request : IotRequest){
-
+class IoTRequestOperation<T>: GroupOperation {
+    init(request : IotRequest<T>){
+        
         super.init(operations: [])
-
+        
         //add operation that handle network unreachable, it will directly execute callback if network is unreachable.
         let url = NSURL(string: request.urlString)
         let notConnectedCondition = NegatedCondition<ReachabilityCondition>(condition: ReachabilityCondition(host: url!))
@@ -41,49 +60,49 @@ class IoTRequestOperation: GroupOperation {
         }
         errorNotConnectedOperation.addCondition(notConnectedCondition)
         addOperation(errorNotConnectedOperation)
-
+        
         switch(request.method) {
         case .POST :
-            addPostRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData!, completionHandler: request.completionHandler)
-
+            addPostRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData!, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
+            
         case .GET:
-            addGetRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler)
+            addGetRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
         default :
             break
         }
     }
-
-    func addPostRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData, completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void) -> Void
+    
+    func addPostRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData, completionHandler: (response: T?, error: IoTCloudError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T?) -> Void
     {
         let url = NSURL(string: urlString)
         let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "POST"
-
+        
         // Set header to request
         setHeader(requestHeaderDict, request: request)
-
+        
         request.HTTPBody = requestBodyData
-        addExecRequestTask(request) { (response, error) -> Void in
+        addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
             completionHandler(response: response, error: error)
         }
     }
-
-    func addGetRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void) -> Void
+    
+    func addGetRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, completionHandler: (response: T?, error: IoTCloudError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T?) -> Void
     {
         let url = NSURL(string: urlString)
         let request = NSMutableURLRequest(URL: url!)
         request.HTTPMethod = "GET"
-
+        
         // Set header to request
         setHeader(requestHeaderDict, request: request)
-
-        addExecRequestTask(request) { (response, error) -> Void in
+        
+        addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
             completionHandler(response: response, error: error)
         }
     }
-
-    func addExecRequestTask(request: NSURLRequest, completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void) -> Void {
-
+    
+    func addExecRequestTask(request: NSURLRequest,responseBodySerializer : (responseBodyData:NSData?) -> T?, completionHandler: (response: T?, error: IoTCloudError?) -> Void) -> Void {
+        
         let session = iotSession.sharedSession()
         let task = session.dataTaskWithRequest(request, completionHandler: { (responseDataOptional: NSData?, responseOptional: NSURLResponse?, errorOptional: NSError?) -> Void in
             if responseOptional != nil {
@@ -92,17 +111,18 @@ class IoTRequestOperation: GroupOperation {
                 var responseBody : NSDictionary?
                 var errorCode = ""
                 var errorMessage = ""
-                if responseDataOptional != nil {
-                    do{
-                        responseBody = try NSJSONSerialization.JSONObjectWithData(responseDataOptional!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
-                    }catch(_){
-                        // do nothing
-                        //TODO: change to debug log
-                        print("")
-                    }
-                }
+                
                 if statusCode < 200 || statusCode >= 300 {
-
+                    if responseDataOptional != nil {
+                        do{
+                            responseBody = try NSJSONSerialization.JSONObjectWithData(responseDataOptional!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+                        }catch(_){
+                            // do nothing
+                            //TODO: change to debug log
+                            print("")
+                        }
+                    }
+                    
                     if responseBody != nil{
                         errorCode = responseBody!["errorCode"] as! String
                         errorMessage = responseBody!["message"] as! String
@@ -111,20 +131,24 @@ class IoTRequestOperation: GroupOperation {
                     let iotCloudError = IoTCloudError.ERROR_RESPONSE(required: errorResponse)
                     completionHandler(response: nil, error: iotCloudError)
                 }else {
-                    completionHandler(response: responseBody, error: nil)
+                    guard let serialized : T? = responseBodySerializer(responseBodyData: responseDataOptional) else{
+                        completionHandler(response: nil,error: nil)
+                        return
+                    }
+                    completionHandler(response: serialized, error: nil)
                 }
             }
         })
         let taskOperation = URLSessionTaskOperation(task: task)
-
+        
         let reachabilityCondition = ReachabilityCondition(host: request.URL!)
         taskOperation.addCondition(reachabilityCondition)
-
+        
         let networkObserver = NetworkObserver()
         taskOperation.addObserver(networkObserver)
         addOperation(taskOperation)
     }
-
+    
     private func setHeader(headerDict: Dictionary<String, String>, request: NSMutableURLRequest) -> Void {
         for(key, value) in headerDict {
             request.addValue(value, forHTTPHeaderField: key)

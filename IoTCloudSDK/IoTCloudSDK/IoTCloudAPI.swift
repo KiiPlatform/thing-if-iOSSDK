@@ -98,26 +98,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
         completionHandler: (String?, IoTCloudError?)-> Void
         )
     {
-        // TODO: implement it.
+        _installPush(deviceToken, development: development, completionHandler: completionHandler)
         
-    }
-    
-    /** Install push notification to receive notification from IoT Cloud.
-    IoT Cloud will send notification when the Target replies to the Command.
-    Application can receive the notification and check the result of Command
-    fired by Application or registered Trigger.
-    After installation is done Installation ID is managed in this class.
-    - Parameter development: flag indicate whether the cert is development or
-    production.
-    - Returns: installationID published by IoT Cloud.
-    - Parameter completionHandler: A closure to be executed once on board has finished.
-    */
-    public func installPush(
-        development:Bool = false,
-        completionHandler: (String?, IoTCloudError?)-> Void
-        ) 
-    {
-        _installPush(development, completionHandler: completionHandler)
     }
     
     /** Uninstall push notification.
