@@ -186,7 +186,7 @@ public class NotLessThan: Statement {
 
     init() {
         nsdict.setObject("range", forKey: "type")
-       nsdict.setObject(true, forKey: "lowerLimitIncluded")
+        nsdict.setObject(true, forKey: "lowerLimitIncluded")
     }
 
     /** Initialize with Int left hand side value.
@@ -228,20 +228,22 @@ public class And: Statement {
 }
 /** Class represents Or statement. */
 public class Or: Statement {
-    var statements: NSArray
+    var clauseDictArray: NSMutableArray
 
-    /** Initialize with 2 Statements.
-    - Parameter statement1: an instance of Statement.
-    - Parameter statement2: an instance of Statement.
+    /** Initialize with clause statements.
+    - Parameter statements: Statement instances for OR clauses
     */
-    public init(statement1:Statement, statement2:Statement) {
-        self.statements = NSArray(array: [statement1.toNSDictionary(), statement2.toNSDictionary()])
+    public init(statements:Statement...) {
+        self.clauseDictArray = NSMutableArray()
+        for statement in statements {
+            clauseDictArray.addObject(statement.toNSDictionary())
+        }
     }
 
     /** Get Statement as NSDictionary instance
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["or":self.statements])
+        return NSDictionary(dictionary: ["type": "or", "clauses": self.clauseDictArray])
     }
 }

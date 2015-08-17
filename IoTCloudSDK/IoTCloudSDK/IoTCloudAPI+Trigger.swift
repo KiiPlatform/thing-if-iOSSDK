@@ -19,6 +19,10 @@ extension IoTCloudAPI {
         completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
     {
+        if predicate is SchedulePredicate {
+            completionHandler(nil, IoTCloudError.UNSUPPORTED_ERROR)
+        }
+
         let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/triggers"
 
         // generate header

@@ -112,7 +112,7 @@ public enum TriggersWhen {
     }
 }
 
-/** Class represents SchedulePredicate */
+/** Class represents SchedulePredicate. It is not supported now.*/
 public class SchedulePredicate: Predicate {
     /** Specified schedule. (cron tab format) */
     public let schedule: String
