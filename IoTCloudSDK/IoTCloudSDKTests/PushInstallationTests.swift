@@ -83,7 +83,7 @@ class PushInstallationTests: XCTestCase {
     func testPushInstallation_success() {
         
         self.onboard()
-        let expectation = self.expectationWithDescription("onboardWithVendorThingID")
+        let expectation = self.expectationWithDescription("testPushInstallation_success")
         //iotSession = NSURLSession.self
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
@@ -126,13 +126,175 @@ class PushInstallationTests: XCTestCase {
         }
     }
     func testPushInstallation_http_404() {
-        //TODO: implementations
+        self.onboard()
+        let expectation = self.expectationWithDescription("testPushInstallation_http_404")
+        //iotSession = NSURLSession.self
+        // verify request
+        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.HTTPMethod, "POST")
+            
+            //verify header
+            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "appID": "50a62843", "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
+            for (key, value) in expectedHeader {
+                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+            }
+            //verify request body
+            let expectedBody = ["installationRegistrationID": self.deviceToken, "deviceType": "IOS","development":"false","userID": self.owner.ownerID.id]
+            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+        }
+        
+        let dict = ["errorCode":"USER_NOT_FOUND","message":"error message"]
+        do {
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            MockSession.requestVerifier = requestVerifier
+            
+        }catch(_){
+            //should never reach this
+            XCTFail("exception happened")
+            return;
+        }
+        
+        api.installPush(self.deviceToken,development: false) { (installID, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                
+                switch error! {
+                case .CONNECTION:
+                    XCTFail("should not be connection error")
+                case .ERROR_RESPONSE(let actualErrorResponse):
+                    XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
+                    XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
+                    XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
+                default:
+                    break
+                }
+            }
+            expectation.fulfill()
+        }
+        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+
     }
     func testPushInstallation_http_400() {
-        //TODO: implementations
+        self.onboard()
+        let expectation = self.expectationWithDescription("testPushInstallation_http_400")
+        //iotSession = NSURLSession.self
+        // verify request
+        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.HTTPMethod, "POST")
+            
+            //verify header
+            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "appID": "50a62843", "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
+            for (key, value) in expectedHeader {
+                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+            }
+            //verify request body
+            let expectedBody = ["installationRegistrationID": self.deviceToken, "deviceType": "IOS","development":"false","userID": self.owner.ownerID.id]
+            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+        }
+        
+        let dict = ["errorCode":"INVALID_INPUT_DATA","message":"error message"]
+        do {
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 400, HTTPVersion: nil, headerFields: nil)
+            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            MockSession.requestVerifier = requestVerifier
+            
+        }catch(_){
+            //should never reach this
+            XCTFail("exception happened")
+            return;
+        }
+        
+        api.installPush(self.deviceToken,development: false) { (installID, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                
+                switch error! {
+                case .CONNECTION:
+                    XCTFail("should not be connection error")
+                case .ERROR_RESPONSE(let actualErrorResponse):
+                    XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
+                    XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
+                    XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
+                default:
+                    break
+                }
+            }
+            expectation.fulfill()
+        }
+        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+
     }
     func testPushInstallation_http_401() {
-        //TODO: implementations
+        self.onboard()
+        let expectation = self.expectationWithDescription("testPushInstallation_http_401")
+        //iotSession = NSURLSession.self
+        // verify request
+        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.HTTPMethod, "POST")
+            
+            //verify header
+            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "appID": "50a62843", "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
+            for (key, value) in expectedHeader {
+                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+            }
+            //verify request body
+            let expectedBody = ["installationRegistrationID": self.deviceToken, "deviceType": "IOS","development":"false","userID": self.owner.ownerID.id]
+            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+        }
+        
+        let dict = ["errorCode":"INVALID_INPUT_DATA","message":"error message"]
+        do {
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
+            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            MockSession.requestVerifier = requestVerifier
+            
+        }catch(_){
+            //should never reach this
+            XCTFail("exception happened")
+            return;
+        }
+        
+        api.installPush(self.deviceToken,development: false) { (installID, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                
+                switch error! {
+                case .CONNECTION:
+                    XCTFail("should not be connection error")
+                case .ERROR_RESPONSE(let actualErrorResponse):
+                    XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
+                    XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
+                    XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
+                default:
+                    break
+                }
+            }
+            expectation.fulfill()
+        }
+        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+
     }
 
 }
