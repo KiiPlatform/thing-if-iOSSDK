@@ -14,6 +14,7 @@ enum HTTPMethod: String {
     case PUT = "PUT"
     case HEAD = "HEAD"
     case DELETE = "DELETE"
+    case PATCH = "PATCH"
 }
 
 struct IotRequest<T> {
@@ -67,6 +68,10 @@ class IoTRequestOperation<T>: GroupOperation {
             
         case .GET:
             addGetRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
+
+        case .PATCH:
+            addPatchRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData!, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
+
         default :
             break
         }
@@ -86,7 +91,22 @@ class IoTRequestOperation<T>: GroupOperation {
             completionHandler(response: response, error: error)
         }
     }
-    
+
+    func addPatchRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData, completionHandler: (response: T?, error: IoTCloudError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T?) -> Void
+    {
+        let url = NSURL(string: urlString)
+        let request = NSMutableURLRequest(URL: url!)
+        request.HTTPMethod = "PATCH"
+
+        // Set header to request
+        setHeader(requestHeaderDict, request: request)
+
+        request.HTTPBody = requestBodyData
+        addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
+            completionHandler(response: response, error: error)
+        }
+    }
+
     func addGetRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, completionHandler: (response: T?, error: IoTCloudError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T?) -> Void
     {
         let url = NSURL(string: urlString)

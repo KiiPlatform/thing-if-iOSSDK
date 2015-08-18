@@ -139,7 +139,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter issuer: Specify command issuer. If execute command as group,
     you can use group:{gropuID} as issuer.
     If nil is specified owner of the IoTCloudAPI is regarded as issuer.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed.
     */
     public func postNewCommand(
         target:Target,
@@ -157,7 +157,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     - Parameter target: Target of the Command.
     - Parameter commandID: ID of the Command to obtain.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed.
      */
     public func getCommand(
         target:Target,
@@ -181,7 +181,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Returns: Where 1st element is Array of the commands
     belongs to the Target. 2nd element is paginationKey if there is further page
     to be retrieved.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 3 arguments: 1st one is Array of Commands if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of IoTCloudError when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Commands if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of IoTCloudError when failed.
      */
     public func listCommands(
         target:Target,
@@ -204,7 +204,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     specified in Trigger is defined.
     - Parameter actions: Actions to be executed by the Trigger.
     - Parameter predicate: Predicate of the Command.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an IoTCloudError instance when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an IoTCloudError instance when failed.
     */
     public func postNewTrigger(
         target:Target,
@@ -217,7 +217,23 @@ public class IoTCloudAPI: NSObject, NSCoding {
     {
         _postNewTrigger(target, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
     }
-    
+
+    /** Get specified trigger
+
+    - Parameter target: Target of the Trigger.
+    - Parameter triggerID: ID of the Trigger to obtain.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of Trigger, an instance of IoTCloudError when failed.
+    */
+    public func getTrigger(
+        target:Target,
+        triggerID:String,
+        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        )
+    {
+        _getTrigger(target, triggerID: triggerID, completionHandler: completionHandler)
+    }
+
+
     /** Apply patch to a registered Trigger
     Modify a registered Trigger with the specified patch.
     - Parameter target: Target to which the Trigger belongs.
@@ -228,7 +244,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     specified in Trigger is defined.
     - Parameter actions: Modified Actions to be applied as patch.
     - Parameter predicate: Modified Predicate to be applied as patch.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an IoTCloudError instance when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an IoTCloudError instance when failed.
     */
     public func patchTrigger(
         target:Target,
@@ -240,7 +256,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
     {
-        _patchTrigger(target, triggerID: triggerID, actions: actions, predicate: predicate, completionHandler: completionHandler)
+        _patchTrigger(target, triggerID: triggerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
     }
     
     /** Enable/Disable a registered Trigger
@@ -249,7 +265,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter target: Target to which the Trigger belongs.
     - Parameter triggerID: ID of the Trigger to be enabled/disabled.
     - Parameter enable: Flag indicate enable/disable Trigger.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: 1st one is the enabled/disabled Trigger instance, 2nd one is an IoTCloudError instance when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the enabled/disabled Trigger instance, 2nd one is an IoTCloudError instance when failed.
     */
     public func enableTrigger(
         target:Target,
@@ -264,7 +280,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     /** Delete a registered Trigger.
     - Parameter target: Target to which the Trigger belongs.
     - Parameter triggerID: ID of the Trigger to be deleted.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: 1st one is the deleted Trigger instance, 2nd one is an IoTCloudError instance when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the deleted Trigger instance, 2nd one is an IoTCloudError instance when failed.
     */
     public func deleteTrigger(
         target:Target,
@@ -284,7 +300,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter paginationKey: If there is further page to be retrieved, this
     API returns paginationKey in 2nd element. Specifying this value in next
     call in the argument results continue to get the results from the next page.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 3 arguments: 1st one is Array of Triggers instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of IoTCloudError when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Triggers instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of IoTCloudError when failed.
     */
     public func listTriggers(
         target:Target,
