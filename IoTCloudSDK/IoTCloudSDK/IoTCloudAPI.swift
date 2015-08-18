@@ -294,16 +294,15 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     /** Get the state of specified target.
     - Parameter target: Specify Target to which the State is bound.
-    - Returns: State object.
-    - Throws: IoTCloudError when failed to connect to internet or
-    IoT Cloud Server returns error.
+    - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of IoTCloudError when failed.
     */
     public func getState(
-        target:Target,
-        completionHandler: (Dictionary<String, Any>,  IoTCloudError?)-> Void
+        target:Target!,
+        completionHandler: (Dictionary<String, Any>?,  IoTCloudError?)-> Void
         )
     {
-        // TODO: implement it.
+        _getState(target, completionHandler: completionHandler)
+        
     }
     
 }
