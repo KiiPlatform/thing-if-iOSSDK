@@ -71,6 +71,8 @@ class IoTRequestOperation<T>: GroupOperation {
 
         case .PATCH:
             addPatchRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData!, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
+        case .PUT:
+            addPutRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler, responseBodySerializer: request.responseBodySerializer)
 
         default :
             break
@@ -102,6 +104,23 @@ class IoTRequestOperation<T>: GroupOperation {
         setHeader(requestHeaderDict, request: request)
 
         request.HTTPBody = requestBodyData
+        addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
+            completionHandler(response: response, error: error)
+        }
+    }
+
+    func addPutRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData?, completionHandler: (response: T?, error: IoTCloudError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T?) -> Void
+    {
+        let url = NSURL(string: urlString)
+        let request = NSMutableURLRequest(URL: url!)
+        request.HTTPMethod = "PUT"
+
+        // Set header to request
+        setHeader(requestHeaderDict, request: request)
+
+        if requestBodyData != nil {
+            request.HTTPBody = requestBodyData
+        }
         addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
             completionHandler(response: response, error: error)
         }

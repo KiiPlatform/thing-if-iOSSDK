@@ -129,7 +129,32 @@ extension IoTCloudAPI {
         completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
     {
-        // TODO: implement it.
+        var enableString = "enable"
+        if !enable {
+            enableString = "disable"
+        }
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/triggers/\(triggerID)/\(enableString)"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+
+        let request = buildDefaultRequest(HTTPMethod.PUT,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+            if error == nil {
+                self._getTrigger(target, triggerID: triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler(updatedTrigger, error2)
+                    }
+                })
+            }else{
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler(nil, error)
+                }
+            }
+        })
+
+        let onboardRequestOperation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(onboardRequestOperation)
+
     }
 
     func _deleteTrigger(
