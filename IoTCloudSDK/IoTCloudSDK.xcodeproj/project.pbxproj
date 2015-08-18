@@ -29,6 +29,8 @@
 		7D75939E1B7DF01400AAFC15 /* PostNewTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D75939D1B7DF01400AAFC15 /* PostNewTriggerTests.swift */; };
 		7D8D36A21B7B2699003DFE76 /* OnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */; };
 		7DBDAB811B82F2DD0023155F /* NSNumber+isBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBDAB801B82F2DD0023155F /* NSNumber+isBool.swift */; };
+		7DBDAB871B83306A0023155F /* GetTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBDAB861B83306A0023155F /* GetTriggerTests.swift */; };
+		7DBDAB891B834DE50023155F /* NSDictionary+toDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBDAB881B834DE50023155F /* NSDictionary+toDictionary.swift */; };
 		D552E8321B7D91F000205A11 /* XCTest+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D552E8311B7D91F000205A11 /* XCTest+Utils.swift */; };
 		D554F5131B7B372D00CC9655 /* NSData+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554F5121B7B372D00CC9655 /* NSData+Operations.swift */; };
 		D554F5161B7C702900CC9655 /* IoTCloudAPI+Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = D554F5151B7C702900CC9655 /* IoTCloudAPI+Push.swift */; };
@@ -146,6 +148,8 @@
 		7D75939D1B7DF01400AAFC15 /* PostNewTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerTests.swift; sourceTree = "<group>"; };
 		7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingTests.swift; sourceTree = "<group>"; };
 		7DBDAB801B82F2DD0023155F /* NSNumber+isBool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+isBool.swift"; sourceTree = "<group>"; };
+		7DBDAB861B83306A0023155F /* GetTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTriggerTests.swift; sourceTree = "<group>"; };
+		7DBDAB881B834DE50023155F /* NSDictionary+toDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDictionary+toDictionary.swift"; sourceTree = "<group>"; };
 		D552E8311B7D91F000205A11 /* XCTest+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTest+Utils.swift"; sourceTree = "<group>"; };
 		D554F5121B7B372D00CC9655 /* NSData+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+Operations.swift"; sourceTree = "<group>"; };
 		D554F5151B7C702900CC9655 /* IoTCloudAPI+Push.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+Push.swift"; sourceTree = "<group>"; };
@@ -265,6 +269,7 @@
 				7417A3361B66287700D116A5 /* IoTCloudError.swift */,
 				7D26FF0B1B7C746800E63E1B /* Dictionary+toNSDictionary.swift */,
 				7DBDAB801B82F2DD0023155F /* NSNumber+isBool.swift */,
+				7DBDAB881B834DE50023155F /* NSDictionary+toDictionary.swift */,
 			);
 			path = IoTCloudSDK;
 			sourceTree = "<group>";
@@ -290,6 +295,7 @@
 				7D75939D1B7DF01400AAFC15 /* PostNewTriggerTests.swift */,
 				D552E8311B7D91F000205A11 /* XCTest+Utils.swift */,
 				D5CB66891B82D6BF00FBAADB /* GetStateTests.swift */,
+				7DBDAB861B83306A0023155F /* GetTriggerTests.swift */,
 			);
 			path = IoTCloudSDKTests;
 			sourceTree = "<group>";
@@ -656,6 +662,7 @@
 				D5B395B41B79B2AE00E0F660 /* NetworkObserver.swift in Sources */,
 				D5B395B21B79A41F00E0F660 /* IoTRequestOperation.swift in Sources */,
 				D55D29171B78923B006759C4 /* URLSessionTaskOperation.swift in Sources */,
+				7DBDAB891B834DE50023155F /* NSDictionary+toDictionary.swift in Sources */,
 				D59F62DA1B82CB1F0013294B /* IoTCloudAPI+GetState.swift in Sources */,
 				7D26FF0E1B7C74B000E63E1B /* IoTCloudAPI+Command.swift in Sources */,
 				7417A3201B65D05200D116A5 /* IoTCloudAPI.swift in Sources */,
@@ -679,6 +686,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D554F5371B7C88CF00CC9655 /* PushInstallationTests.swift in Sources */,
+				7DBDAB871B83306A0023155F /* GetTriggerTests.swift in Sources */,
 				D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */,
 				D5CB668A1B82D6BF00FBAADB /* GetStateTests.swift in Sources */,
 				7417A3161B65CF8500D116A5 /* IoTCloudSDKTests.swift in Sources */,
