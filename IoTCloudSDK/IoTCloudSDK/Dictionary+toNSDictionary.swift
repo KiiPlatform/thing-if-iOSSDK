@@ -13,6 +13,7 @@ extension Dictionary {
     public func toNSDictionary() -> NSDictionary {
         let nsdict = NSMutableDictionary()
         for(key, value) in self {
+            print(value.dynamicType)
             if value is Int{
                 nsdict[key as! String] = NSNumber(integer: (value as! Int))
             }else if value is Bool {
@@ -33,6 +34,8 @@ extension Dictionary {
                 nsdict[key as! String] = (value as! Dictionary<String, Float>).toNSDictionary()
             }else if value is Dictionary<String, String> {
                 nsdict[key as! String] = (value as! Dictionary<String, String>).toNSDictionary()
+            }else if value is Dictionary<String, protocol<>> {
+                nsdict[key as! String] = (value as! Dictionary<String, protocol<>>).toNSDictionary()
             }
         }
         return nsdict

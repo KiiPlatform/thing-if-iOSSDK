@@ -109,23 +109,15 @@ public class Command: NSObject, NSCoding {
         // actions array
         var actionsArray = [Dictionary<String, Any>]()
         if let actions = nsDict["actions"] as? [NSDictionary] {
-            for nsdict in actions {
-                var actionsDict = Dictionary<String, Any>()
-                for(key, value) in nsdict {
-                    actionsDict[key as! String] = value
-                }
-                actionsArray.append(actionsDict)
+            for actionNSDict in actions {
+                actionsArray.append(actionNSDict.toDictionary())
             }
         }
         // actionResult array
         var actionsResultArray = [Dictionary<String, Any>]()
         if let actionResults = nsDict["actionResults"] as? [NSDictionary] {
-            for nsdict in actionResults {
-                var actionResultsDict = Dictionary<String, Any>()
-                for(key, value) in nsdict {
-                    actionResultsDict[key as! String] = value
-                }
-                actionsResultArray.append(actionResultsDict)
+            for actionResultNSDict in actionResults {
+                actionsResultArray.append(actionResultNSDict.toDictionary())
             }
         }
         let schemaVersion = nsDict["schemaVersion"] as? Int
