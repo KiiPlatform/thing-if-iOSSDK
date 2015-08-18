@@ -30,7 +30,8 @@ class ViewController: UIViewController {
         
         let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
         let commandID = "78d75000-3f48-11e5-8581-0a5eb423ea35"
-        getCommand(target, commandID: commandID)
+//        getCommand(target, commandID: commandID)
+        patchTrigger(target, triggerID: "a3f7c520-455c-11e5-bcf1-0a5eb423ea35")
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,5 +103,20 @@ class ViewController: UIViewController {
             }
         }
     }
+
+    func patchTrigger(target: Target, triggerID: String) {
+        let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+        let statement = Equals(field: "color", value: 0)
+        let condition = Condition(statement: statement)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_CHANGED)
+        self.iotCloudAPI.patchTrigger(target, triggerID: triggerID, schemaName: self.schema.name, schemaVersion: self.schema.version, actions: actions, predicate: predicate) { (trigger, error) -> Void in
+            if error == nil {
+                print("triggerID: \(trigger!.triggerID)")
+            }else {
+                print(error)
+            }
+        }
+    }
+
 }
 
