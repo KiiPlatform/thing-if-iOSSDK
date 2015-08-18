@@ -34,4 +34,7 @@ extension XCTestCase {
         }
     }
 
+    func XCTAssertEqualDictionaries<S, T: Equatable>(first: [S:T], _ second: [S:T]) {
+        XCTAssert(first == second)
+    }
 }

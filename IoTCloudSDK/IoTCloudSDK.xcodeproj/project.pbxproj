@@ -64,10 +64,13 @@
 		D55D29171B78923B006759C4 /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F81B78923B006759C4 /* URLSessionTaskOperation.swift */; };
 		D55D29181B78923B006759C4 /* UserNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F91B78923B006759C4 /* UserNotificationCondition.swift */; };
 		D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */; };
+		D59F62D81B81CBE40013294B /* PushUninstallationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59F62D71B81CBE40013294B /* PushUninstallationTests.swift */; };
+		D59F62DA1B82CB1F0013294B /* IoTCloudAPI+GetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59F62D91B82CB1F0013294B /* IoTCloudAPI+GetState.swift */; };
 		D5B395B21B79A41F00E0F660 /* IoTRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B11B79A41F00E0F660 /* IoTRequestOperation.swift */; };
 		D5B395B41B79B2AE00E0F660 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B31B79B2AE00E0F660 /* NetworkObserver.swift */; };
 		D5B395B61B79B2E100E0F660 /* BackgroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B51B79B2E100E0F660 /* BackgroundObserver.swift */; };
 		D5B395BC1B79E24100E0F660 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395BB1B79E24100E0F660 /* TestHelpers.swift */; };
+		D5CB668A1B82D6BF00FBAADB /* GetStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CB66891B82D6BF00FBAADB /* GetStateTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -178,10 +181,13 @@
 		D55D28F81B78923B006759C4 /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionTaskOperation.swift; sourceTree = "<group>"; };
 		D55D28F91B78923B006759C4 /* UserNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNotificationCondition.swift; sourceTree = "<group>"; };
 		D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitySerializationTests.swift; sourceTree = "<group>"; };
+		D59F62D71B81CBE40013294B /* PushUninstallationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushUninstallationTests.swift; sourceTree = "<group>"; };
+		D59F62D91B82CB1F0013294B /* IoTCloudAPI+GetState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+GetState.swift"; sourceTree = "<group>"; };
 		D5B395B11B79A41F00E0F660 /* IoTRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IoTRequestOperation.swift; path = IoTOperations/IoTRequestOperation.swift; sourceTree = "<group>"; };
 		D5B395B31B79B2AE00E0F660 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
 		D5B395B51B79B2E100E0F660 /* BackgroundObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundObserver.swift; sourceTree = "<group>"; };
 		D5B395BB1B79E24100E0F660 /* TestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
+		D5CB66891B82D6BF00FBAADB /* GetStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStateTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				D554F5361B7C88CF00CC9655 /* PushInstallationTests.swift */,
+				D59F62D71B81CBE40013294B /* PushUninstallationTests.swift */,
 				7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */,
 				7417A3151B65CF8500D116A5 /* IoTCloudSDKTests.swift */,
 				7417A3131B65CF8500D116A5 /* Supporting Files */,
@@ -282,6 +289,7 @@
 				D5B395BB1B79E24100E0F660 /* TestHelpers.swift */,
 				7D75939D1B7DF01400AAFC15 /* PostNewTriggerTests.swift */,
 				D552E8311B7D91F000205A11 /* XCTest+Utils.swift */,
+				D5CB66891B82D6BF00FBAADB /* GetStateTests.swift */,
 			);
 			path = IoTCloudSDKTests;
 			sourceTree = "<group>";
@@ -337,6 +345,7 @@
 				7D26FF0D1B7C74B000E63E1B /* IoTCloudAPI+Command.swift */,
 				7D26FF0F1B7C74F300E63E1B /* IoTCloudAPI+OnBoard.swift */,
 				7D26FF111B7C858800E63E1B /* IoTCloudAPI+Trigger.swift */,
+				D59F62D91B82CB1F0013294B /* IoTCloudAPI+GetState.swift */,
 			);
 			name = IoTCloudAPI;
 			sourceTree = "<group>";
@@ -647,6 +656,7 @@
 				D5B395B41B79B2AE00E0F660 /* NetworkObserver.swift in Sources */,
 				D5B395B21B79A41F00E0F660 /* IoTRequestOperation.swift in Sources */,
 				D55D29171B78923B006759C4 /* URLSessionTaskOperation.swift in Sources */,
+				D59F62DA1B82CB1F0013294B /* IoTCloudAPI+GetState.swift in Sources */,
 				7D26FF0E1B7C74B000E63E1B /* IoTCloudAPI+Command.swift in Sources */,
 				7417A3201B65D05200D116A5 /* IoTCloudAPI.swift in Sources */,
 				7D26FF121B7C858800E63E1B /* IoTCloudAPI+Trigger.swift in Sources */,
@@ -670,9 +680,11 @@
 			files = (
 				D554F5371B7C88CF00CC9655 /* PushInstallationTests.swift in Sources */,
 				D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */,
+				D5CB668A1B82D6BF00FBAADB /* GetStateTests.swift in Sources */,
 				7417A3161B65CF8500D116A5 /* IoTCloudSDKTests.swift in Sources */,
 				7D8D36A21B7B2699003DFE76 /* OnboardingTests.swift in Sources */,
 				D552E8321B7D91F000205A11 /* XCTest+Utils.swift in Sources */,
+				D59F62D81B81CBE40013294B /* PushUninstallationTests.swift in Sources */,
 				D5B395BC1B79E24100E0F660 /* TestHelpers.swift in Sources */,
 				7D75939E1B7DF01400AAFC15 /* PostNewTriggerTests.swift in Sources */,
 			);

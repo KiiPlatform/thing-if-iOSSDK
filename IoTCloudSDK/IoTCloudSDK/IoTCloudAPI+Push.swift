@@ -42,8 +42,8 @@ extension IoTCloudAPI {
                     completionHandler(self._installationID, error)
                 }
             })
-            let onboardRequestOperation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(onboardRequestOperation)
+            let installPushRequestOperation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(installPushRequestOperation)
             
         }catch( _){
             //TODO: do logging for exception
@@ -59,6 +59,24 @@ extension IoTCloudAPI {
         completionHandler: (IoTCloudError?)-> Void
         )
     {
-        // TODO: implement it.
+        let idParam = installationID != nil ? installationID : self._installationID
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/installations/\(idParam!)"
+        
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
+        
+        let request = buildDefaultRequest(.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+            
+            if error == nil{
+                self._installationID = nil
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                completionHandler( error)
+            }
+        })
+        let uninstallPushRequestOperation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(uninstallPushRequestOperation)
+
     }
 }
