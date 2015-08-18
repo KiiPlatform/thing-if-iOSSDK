@@ -102,8 +102,8 @@ extension IoTCloudAPI {
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
-            let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                if let triggerID = response?["triggerID"] as? String{
+            let request = buildDefaultRequest(.PATCH,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
+                if error == nil {
                     self._getTrigger(target, triggerID: triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
                         dispatch_async(dispatch_get_main_queue()) {
                             completionHandler(updatedTrigger, error2)
