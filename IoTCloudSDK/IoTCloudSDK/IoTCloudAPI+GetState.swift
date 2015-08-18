@@ -11,7 +11,7 @@ import Foundation
 extension IoTCloudAPI {
     func _getState(
         target:Target,
-        completionHandler: (Dictionary<String, Any>?,  IoTCloudError?)-> Void
+        completionHandler: (Dictionary<String, AnyObject>?,  IoTCloudError?)-> Void
         ){
             let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/states"
             
@@ -19,9 +19,9 @@ extension IoTCloudAPI {
             let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
             
             let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-                var states : Dictionary<String, Any>?
+                var states : Dictionary<String, AnyObject>?
                 if response != nil {
-                    states = Dictionary<String, Any>()
+                    states = Dictionary<String, AnyObject>()
                     response!.enumerateKeysAndObjectsUsingBlock{ (key, obj, stop) -> Void in
                         states![key as! String] = obj
                     }
@@ -31,8 +31,8 @@ extension IoTCloudAPI {
                 }
             })
             
-            let onboardRequestOperation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(onboardRequestOperation)
+            let getStateRequestOperation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(getStateRequestOperation)
     }
     
 }

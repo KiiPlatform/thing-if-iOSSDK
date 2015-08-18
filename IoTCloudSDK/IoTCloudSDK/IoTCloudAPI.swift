@@ -298,7 +298,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     */
     public func getState(
         target:Target!,
-        completionHandler: (Dictionary<String, Any>?,  IoTCloudError?)-> Void
+        completionHandler: (Dictionary<String, AnyObject>?,  IoTCloudError?)-> Void
         )
     {
         _getState(target, completionHandler: completionHandler)
