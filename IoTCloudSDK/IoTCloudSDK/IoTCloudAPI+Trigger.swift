@@ -173,7 +173,39 @@ extension IoTCloudAPI {
         completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: IoTCloudError?)-> Void
         )
     {
-        // TODO: implement it.
+        var requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/triggers"
+
+        if paginationKey != nil && bestEffortLimit != nil{
+            requestURL += "?paginationKey=\(paginationKey!)&&bestEffortLimit=\(bestEffortLimit!)"
+        }else if bestEffortLimit != nil {
+            requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
+        }else if paginationKey != nil {
+            requestURL += "?paginationKey=\(paginationKey!)"
+        }
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+
+        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+            var triggers: [Trigger]?
+            var nextPaginationKey: String?
+            if let responseDict = response {
+                nextPaginationKey = responseDict["nextPaginationKey"] as? String
+                if let triggerDicts = responseDict["triggers"] as? NSArray {
+                    triggers = [Trigger]()
+                    for triggerDict in triggerDicts {
+                        if let trigger = Trigger.triggerWithNSDict(triggerDict as! NSDictionary){
+                            triggers!.append(trigger)
+                        }
+                    }
+                }
+            }
+            dispatch_async(dispatch_get_main_queue()) {
+                completionHandler(triggers: triggers, paginationKey: nextPaginationKey, error: error)
+            }
+        })
+        let onboardRequestOperation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(onboardRequestOperation)
     }
 
     func _getTrigger(

@@ -95,6 +95,8 @@ extension IoTCloudAPI {
             requestURL += "?paginationKey=\(paginationKey!)&&bestEffortLimit=\(bestEffortLimit!)"
         }else if bestEffortLimit != nil {
             requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
+        }else if paginationKey != nil {
+            requestURL += "?paginationKey=\(paginationKey!)"
         }
         
         // generate header

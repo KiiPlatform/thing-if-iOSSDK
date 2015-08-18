@@ -32,9 +32,15 @@ class ViewController: UIViewController {
         let commandID = "78d75000-3f48-11e5-8581-0a5eb423ea35"
 //        getCommand(target, commandID: commandID)
 //        patchTrigger(target, t"a3f7c520-455c-11e5-bcf1-0a5eb423ea35"riggerID: "a3f7c520-455c-11e5-bcf1-0a5eb423ea35")
-        self.iotCloudAPI.getTrigger(target, triggerID: "a3f7c520-455c-11e5-bcf1-0a5eb423ea35", completionHandler: { (trigger, error) -> Void in
-            self.enaleDisableTrigger(target, trigger: trigger!)
-        })
+//        self.iotCloudAPI.getTrigger(target, triggerID: "a3f7c520-455c-11e5-bcf1", completionHandler: { (trigger, error) -> Void in
+//            if error == nil {
+//                self.enaleDisableTrigger(target, trigger: trigger!)
+//            }else {
+//                print(error)
+//            }
+//        })
+
+        listTrigger(target)
 
     }
 
@@ -130,6 +136,16 @@ class ViewController: UIViewController {
             }
         })
 
+    }
+
+    func listTrigger(target: Target) {
+        self.iotCloudAPI.listTriggers(target, bestEffortLimit: 10, paginationKey: nil) { (triggers, paginationKey, error) -> Void in
+            if error == nil {
+                print("count: \(triggers!.count), paginationKey: \(paginationKey!)")
+            }else {
+                print(error)
+            }
+        }
     }
 
 }
