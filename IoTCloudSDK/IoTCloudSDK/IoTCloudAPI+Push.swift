@@ -45,8 +45,8 @@ extension IoTCloudAPI {
             let installPushRequestOperation = IoTRequestOperation(request: request)
             operationQueue.addOperation(installPushRequestOperation)
             
-        }catch( _){
-            //TODO: do logging for exception
+        }catch(let e){
+            kiiSevereLog(e)
             dispatch_async(dispatch_get_main_queue()) {
                 completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
             }

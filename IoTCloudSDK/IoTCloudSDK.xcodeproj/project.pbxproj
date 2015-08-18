@@ -69,6 +69,7 @@
 		D5B395B61B79B2E100E0F660 /* BackgroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B51B79B2E100E0F660 /* BackgroundObserver.swift */; };
 		D5B395BC1B79E24100E0F660 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395BB1B79E24100E0F660 /* TestHelpers.swift */; };
 		D5CB668A1B82D6BF00FBAADB /* GetStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CB66891B82D6BF00FBAADB /* GetStateTests.swift */; };
+		D5FB69291B8309BE003D7C38 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB69281B8309BE003D7C38 /* Logger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -184,6 +185,7 @@
 		D5B395B51B79B2E100E0F660 /* BackgroundObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundObserver.swift; sourceTree = "<group>"; };
 		D5B395BB1B79E24100E0F660 /* TestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		D5CB66891B82D6BF00FBAADB /* GetStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStateTests.swift; sourceTree = "<group>"; };
+		D5FB69281B8309BE003D7C38 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = Utils/Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +248,7 @@
 		7417A3051B65CF8400D116A5 /* IoTCloudSDK */ = {
 			isa = PBXGroup;
 			children = (
+				D5FB69271B830996003D7C38 /* Utils */,
 				D5B395B01B79A3C400E0F660 /* IoTOperations */,
 				D55D28DA1B78923B006759C4 /* Operations */,
 				7417A3311B6600BE00D116A5 /* Schema */,
@@ -436,6 +439,14 @@
 				D5B395B11B79A41F00E0F660 /* IoTRequestOperation.swift */,
 			);
 			name = IoTOperations;
+			sourceTree = "<group>";
+		};
+		D5FB69271B830996003D7C38 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				D5FB69281B8309BE003D7C38 /* Logger.swift */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -644,6 +655,7 @@
 				7D26FF101B7C74F300E63E1B /* IoTCloudAPI+OnBoard.swift in Sources */,
 				7D26FF0C1B7C746800E63E1B /* Dictionary+toNSDictionary.swift in Sources */,
 				D55D29061B78923B006759C4 /* MutuallyExclusive.swift in Sources */,
+				D5FB69291B8309BE003D7C38 /* Logger.swift in Sources */,
 				D55D290E1B78923B006759C4 /* OperationObserver.swift in Sources */,
 				D55D290A1B78923B006759C4 /* NSOperation+Operations.swift in Sources */,
 				D5B395B41B79B2AE00E0F660 /* NetworkObserver.swift in Sources */,
