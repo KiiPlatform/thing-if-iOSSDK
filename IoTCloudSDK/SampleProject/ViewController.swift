@@ -39,9 +39,7 @@ class ViewController: UIViewController {
 //                print(error)
 //            }
 //        })
-
-        listTrigger(target)
-
+        listTrigger(target, bestEfforLimit: 2, nextPaginationKey: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -138,11 +136,18 @@ class ViewController: UIViewController {
 
     }
 
-    func listTrigger(target: Target) {
-        self.iotCloudAPI.listTriggers(target, bestEffortLimit: 10, paginationKey: nil) { (triggers, paginationKey, error) -> Void in
+    func listTrigger(target: Target, bestEfforLimit: Int?, nextPaginationKey: String?) {
+
+        self.iotCloudAPI.listTriggers(target, bestEffortLimit: bestEfforLimit!, paginationKey: nextPaginationKey) { (triggers, paginationKey, error) -> Void in
             if error == nil {
-                print("count: \(triggers!.count), paginationKey: \(paginationKey!)")
-            }else {
+                if let triggerArray = triggers {
+                    print("count: \(triggerArray.count)")
+                }
+                if let nextPaginationKey = paginationKey {
+                    print(nextPaginationKey)
+                    self.listTrigger(target, bestEfforLimit: bestEfforLimit!, nextPaginationKey: nextPaginationKey)
+                }
+             }else {
                 print(error)
             }
         }
