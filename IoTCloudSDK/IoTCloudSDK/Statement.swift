@@ -56,46 +56,39 @@ public class Equals: Statement {
 
 /** Class represents NotEquals statement. */
 public class NotEquals: Statement {
-    var clauseNSDict = NSMutableDictionary()
-    var stmtNSDict: NSDictionary!
+    var equalStatement: Equals!
 
-    init() {
-        stmtNSDict = NSDictionary(dictionary: ["type": "not", "clause": clauseNSDict])
+    public init(equalStmt: Equals) {
+        equalStatement = equalStmt
     }
     /** Initialize with String left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public convenience init(field:String, value:String) {
-        self.init()
-        clauseNSDict.setObject(field, forKey: "field")
-        clauseNSDict.setObject(value, forKey: "value")
+    public init(field:String, value:String) {
+        equalStatement = Equals(field: field, value: value)
     }
 
     /** Initialize with Int left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public convenience init(field:String, value:Int) {
-        self.init()
-        clauseNSDict.setObject(field, forKey: "field")
-        clauseNSDict.setObject(NSNumber(integer: value), forKey: "value")
+    public init(field:String, value:Int) {
+        equalStatement = Equals(field: field, value: value)
     }
 
     /** Initialize with Bool left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public convenience init(field:String, value:Bool) {
-        self.init()
-        clauseNSDict.setObject(field, forKey: "field")
-        clauseNSDict.setObject(NSNumber(bool: value), forKey: "value")
+    public init(field:String, value:Bool) {
+        equalStatement = Equals(field: field, value: value)
     }
     /** Get Statement as NSDictionary instance
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return stmtNSDict
+        return NSDictionary(dictionary: ["type": "not", "clause": equalStatement.toNSDictionary()])
     }
 }
 
@@ -112,10 +105,10 @@ public class GreaterThan: Statement {
     - Parameter field: Name of the field to be compared.
     - Parameter lowerLimit: Lower limit value.
     */
-    public convenience init(field:String, value:Int) {
+    public convenience init(field:String, lowerLimit:Int) {
         self.init()
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(integer: value), forKey: "value")
+        nsdict.setObject(NSNumber(integer: lowerLimit), forKey: "lowerLimit")
     }
 
     /** Get Statement as NSDictionary instance
@@ -209,41 +202,47 @@ public class NotLessThan: Statement {
 
 /** Class represents And statement. */
 public class And: Statement {
-    var statements: NSArray
+    var clauseStatementDicts = NSMutableArray()
 
-    /** Initialize with 2 Statements.
-    - Parameter statement1: an instance of Statement.
-    - Parameter statement2: an instance of Statement.
+    /** Initialize with clause statements.
+    - Parameter statements: Statement instances for AND clauses
     */
-    public init(statement1:Statement, statement2:Statement) {
-        self.statements = NSArray(array: [statement1.toNSDictionary(), statement2.toNSDictionary()])
+    public init(statements: Statement...) {
+        for statement in statements {
+            self.clauseStatementDicts.addObject(statement.toNSDictionary())
+        }
+    }
+
+    public func add(statement: Statement) {
+        self.clauseStatementDicts.addObject(statement.toNSDictionary())
     }
 
     /** Get Statement as NSDictionary instance
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["and":self.statements])
+        return NSDictionary(dictionary: ["type": "and", "clauses": self.clauseStatementDicts])
     }
 }
 /** Class represents Or statement. */
 public class Or: Statement {
-    var clauseDictArray: NSMutableArray
+    var clauseStatementDicts = NSMutableArray()
 
     /** Initialize with clause statements.
     - Parameter statements: Statement instances for OR clauses
     */
     public init(statements:Statement...) {
-        self.clauseDictArray = NSMutableArray()
         for statement in statements {
-            clauseDictArray.addObject(statement.toNSDictionary())
+            clauseStatementDicts.addObject(statement.toNSDictionary())
         }
     }
-
+    public func add(statement: Statement) {
+        self.clauseStatementDicts.addObject(statement.toNSDictionary())
+    }
     /** Get Statement as NSDictionary instance
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["type": "or", "clauses": self.clauseDictArray])
+        return NSDictionary(dictionary: ["type": "or", "clauses": self.clauseStatementDicts])
     }
 }

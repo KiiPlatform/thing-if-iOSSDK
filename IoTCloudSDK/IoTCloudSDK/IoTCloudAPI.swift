@@ -249,8 +249,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
     public func patchTrigger(
         target:Target,
         triggerID:String,
-        schemaName:String,
-        schemaVersion:Int,
+        schemaName:String?,
+        schemaVersion:Int?,
         actions:[Dictionary<String, Any>]?,
         predicate:Predicate?,
         completionHandler: (Trigger?, IoTCloudError?)-> Void

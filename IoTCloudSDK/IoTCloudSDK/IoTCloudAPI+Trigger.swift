@@ -157,6 +157,23 @@ extension IoTCloudAPI {
         completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
     {
-        //TODO: Need to confirm whether to implement
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/triggers/\(triggerID)"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+
+        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+
+            var trigger:Trigger?
+            if let responseDict = response{
+                trigger = Trigger.triggerWithNSDict(responseDict)
+            }
+            dispatch_async(dispatch_get_main_queue()) {
+                completionHandler(trigger, error)
+            }
+        })
+
+        let onboardRequestOperation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(onboardRequestOperation)
     }
 }
