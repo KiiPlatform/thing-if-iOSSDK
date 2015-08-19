@@ -136,9 +136,6 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter schemaVersion: Version of the Schema of which the Command is
     defined.
     - Parameter actions: List of Actions to be executed in the Target.
-    - Parameter issuer: Specify command issuer. If execute command as group,
-    you can use group:{gropuID} as issuer.
-    If nil is specified owner of the IoTCloudAPI is regarded as issuer.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed.
     */
     public func postNewCommand(
@@ -146,11 +143,10 @@ public class IoTCloudAPI: NSObject, NSCoding {
         schemaName:String,
         schemaVersion:Int,
         actions:[Dictionary<String,AnyObject>],
-        issuer:TypedID?,
         completionHandler: (Command?, IoTCloudError?)-> Void
         ) -> Void
     {
-        _postNewCommand(target, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, issuer: issuer, completionHandler: completionHandler)
+        _postNewCommand(target, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: completionHandler)
     }
     
     /** Get specified command
