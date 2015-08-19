@@ -14,6 +14,7 @@ enum HTTPMethod: String {
     case PUT = "PUT"
     case HEAD = "HEAD"
     case DELETE = "DELETE"
+    case PATCH = "PATCH"
 }
 
 struct IotRequest<T> {
@@ -73,8 +74,16 @@ class IoTRequestOperation<T>: GroupOperation {
             
         case .GET:
             addGetRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
+
         case .DELETE:
             addDeleteRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
+
+        case .PATCH:
+            addPatchRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData!, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
+
+        case .PUT:
+            addPutRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler, responseBodySerializer: request.responseBodySerializer)
+
         default :
             break
         }
@@ -95,7 +104,39 @@ class IoTRequestOperation<T>: GroupOperation {
         }
     }
     
-    func addGetRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, completionHandler: (response: T?, error: IoTCloudError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T? ) -> Void
+    func addPatchRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData, completionHandler: (response: T?, error: IoTCloudError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T?) -> Void
+    {
+        let url = NSURL(string: urlString)
+        let request = NSMutableURLRequest(URL: url!)
+        request.HTTPMethod = "PATCH"
+
+        // Set header to request
+        setHeader(requestHeaderDict, request: request)
+
+        request.HTTPBody = requestBodyData
+        addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
+            completionHandler(response: response, error: error)
+        }
+    }
+
+    func addPutRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData?, completionHandler: (response: T?, error: IoTCloudError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T?) -> Void
+    {
+        let url = NSURL(string: urlString)
+        let request = NSMutableURLRequest(URL: url!)
+        request.HTTPMethod = "PUT"
+
+        // Set header to request
+        setHeader(requestHeaderDict, request: request)
+
+        if requestBodyData != nil {
+            request.HTTPBody = requestBodyData
+        }
+        addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
+            completionHandler(response: response, error: error)
+        }
+    }
+
+    func addGetRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, completionHandler: (response: T?, error: IoTCloudError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T?) -> Void
     {
         let url = NSURL(string: urlString)
         let request = NSMutableURLRequest(URL: url!)

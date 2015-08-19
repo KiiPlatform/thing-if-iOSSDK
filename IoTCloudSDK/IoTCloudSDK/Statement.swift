@@ -6,54 +6,67 @@ import Foundation
 
 /** Protocole of the Statement must be conformed to. */
 public protocol Statement {
-    func toJSONObject() -> NSDictionary
+    func toNSDictionary() -> NSDictionary
 }
 
 /** Class represents Equals statement. */
 public class Equals: Statement {
     var nsdict = NSMutableDictionary()
 
+    init() {
+        nsdict.setObject("eq", forKey: "type")
+    }
+
     /** Initialize with String left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
      */
-    public init(field:String, value:String) {
-       nsdict.setObject(value, forKey: field)
+    public convenience init(field:String, value:String) {
+        self.init()
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(value, forKey: "value")
     }
 
     /** Initialize with Int left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+    public convenience init(field:String, value:Int) {
+        self.init()
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: value), forKey: "value")
     }
 
     /** Initialize with Bool left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, value:Bool) {
-        nsdict.setObject(NSNumber(bool: value), forKey: field)
+    public convenience init(field:String, value:Bool) {
+        self.init()
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(bool: value), forKey: "value")
     }
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
-        return NSDictionary(dictionary: ["=":nsdict])
+    public func toNSDictionary() -> NSDictionary {
+        return NSDictionary(dictionary: nsdict)
     }
 }
 
 /** Class represents NotEquals statement. */
 public class NotEquals: Statement {
-    var nsdict = NSMutableDictionary()
+    var equalStatement: Equals!
 
+    public init(equalStmt: Equals) {
+        equalStatement = equalStmt
+    }
     /** Initialize with String left hand side value.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:String) {
-        nsdict.setObject(value, forKey: field)
+        equalStatement = Equals(field: field, value: value)
     }
 
     /** Initialize with Int left hand side value.
@@ -61,7 +74,7 @@ public class NotEquals: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+        equalStatement = Equals(field: field, value: value)
     }
 
     /** Initialize with Bool left hand side value.
@@ -69,13 +82,13 @@ public class NotEquals: Statement {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Bool) {
-        nsdict.setObject(NSNumber(bool: value), forKey: field)
+        equalStatement = Equals(field: field, value: value)
     }
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
-        return NSDictionary(dictionary: ["!=":nsdict])
+    public func toNSDictionary() -> NSDictionary {
+        return NSDictionary(dictionary: ["type": "not", "clause": equalStatement.toNSDictionary()])
     }
 }
 
@@ -83,19 +96,26 @@ public class NotEquals: Statement {
 public class GreaterThan: Statement {
     var nsdict = NSMutableDictionary()
 
-    /** Initialize with Int left hand side value.
-    - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
-    */
-    public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+    init() {
+        nsdict.setObject("range", forKey: "type")
+        nsdict.setObject(false, forKey: "lowerIncluded")
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Initialize with Int left hand side value.
+    - Parameter field: Name of the field to be compared.
+    - Parameter lowerLimit: Lower limit value.
     */
-    public func toJSONObject() -> NSDictionary {
-        return NSDictionary(dictionary: [">":nsdict])
+    public convenience init(field:String, lowerLimit:Int) {
+        self.init()
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: lowerLimit), forKey: "lowerLimit")
+    }
+
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
+    */
+    public func toNSDictionary() -> NSDictionary {
+        return nsdict
     }
 }
 
@@ -103,19 +123,26 @@ public class GreaterThan: Statement {
 public class LessThan: Statement {
     var nsdict = NSMutableDictionary()
 
-    /** Initialize with Int left hand side value.
-    - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
-    */
-    public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+    init() {
+        nsdict.setObject("range", forKey: "type")
+        nsdict.setObject(false, forKey: "upperIncluded")
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Initialize with Int left hand side value.
+    - Parameter field: Name of the field to be compared.
+    - Parameter upperLimit: Upper limit value.
     */
-    public func toJSONObject() -> NSDictionary {
-        return NSDictionary(dictionary: ["<":nsdict])
+    public convenience init(field:String, upperLimit:Int) {
+        self.init()
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: upperLimit), forKey: "upperLimit")
+    }
+
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
+    */
+    public func toNSDictionary() -> NSDictionary {
+        return NSDictionary(dictionary: nsdict)
     }
 }
 
@@ -123,19 +150,26 @@ public class LessThan: Statement {
 public class NotGreaterThan: Statement {
     var nsdict = NSMutableDictionary()
 
-    /** Initialize with Int left hand side value.
-    - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
-    */
-    public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+    init() {
+        nsdict.setObject("range", forKey: "type")
+        nsdict.setObject(true, forKey: "upperIncluded")
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Initialize with Int left hand side value.
+    - Parameter field: Name of the field to be compared.
+    - Parameter upperLimit: Upper limit value.
     */
-    public func toJSONObject() -> NSDictionary {
-        return NSDictionary(dictionary: ["<=":nsdict])
+    public convenience init(field:String, upperLimit:Int) {
+        self.init()
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: upperLimit), forKey: "upperLimit")
+    }
+
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
+    */
+    public func toNSDictionary() -> NSDictionary {
+        return NSDictionary(dictionary: nsdict)
     }
 }
 
@@ -143,57 +177,72 @@ public class NotGreaterThan: Statement {
 public class NotLessThan: Statement {
     var nsdict = NSMutableDictionary()
 
-    /** Initialize with Int left hand side value.
-    - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
-    */
-    public init(field:String, value:Int) {
-        nsdict.setObject(NSNumber(integer: value), forKey: field)
+    init() {
+        nsdict.setObject("range", forKey: "type")
+        nsdict.setObject(true, forKey: "lowerIncluded")
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    /** Initialize with Int left hand side value.
+    - Parameter field: Name of the field to be compared.
+    - Parameter lowerLimit: Lower limit value.
     */
-    public func toJSONObject() -> NSDictionary {
+    public convenience init(field:String, lowerLimit:Int) {
+        self.init()
+        nsdict.setObject(field, forKey: "field")
+        nsdict.setObject(NSNumber(integer: lowerLimit), forKey: "lowerLimit")
+    }
+
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
+    */
+    public func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: [">=":nsdict])
     }
 }
 
 /** Class represents And statement. */
 public class And: Statement {
-    var statements: NSArray
+    var clauseStatementDicts = NSMutableArray()
 
-    /** Initialize with 2 Statements.
-    - Parameter statement1: an instance of Statement.
-    - Parameter statement2: an instance of Statement.
+    /** Initialize with clause statements.
+    - Parameter statements: Statement instances for AND clauses
     */
-    public init(statement1:Statement, statement2:Statement) {
-        self.statements = NSArray(array: [statement1.toJSONObject(), statement2.toJSONObject()])
+    public init(statements: Statement...) {
+        for statement in statements {
+            self.clauseStatementDicts.addObject(statement.toNSDictionary())
+        }
     }
 
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    public func add(statement: Statement) {
+        self.clauseStatementDicts.addObject(statement.toNSDictionary())
+    }
+
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
-        return NSDictionary(dictionary: ["and":self.statements])
+    public func toNSDictionary() -> NSDictionary {
+        return NSDictionary(dictionary: ["type": "and", "clauses": self.clauseStatementDicts])
     }
 }
 /** Class represents Or statement. */
 public class Or: Statement {
-    var statements: NSArray
+    var clauseStatementDicts = NSMutableArray()
 
-    /** Initialize with 2 Statements.
-    - Parameter statement1: an instance of Statement.
-    - Parameter statement2: an instance of Statement.
+    /** Initialize with clause statements.
+    - Parameter statements: Statement instances for OR clauses
     */
-    public init(statement1:Statement, statement2:Statement) {
-        self.statements = NSArray(array: [statement1.toJSONObject(), statement2.toJSONObject()])
+    public init(statements:Statement...) {
+        for statement in statements {
+            clauseStatementDicts.addObject(statement.toNSDictionary())
+        }
     }
-
-    /** Serialize Statement into JSON Object
-    - Returns: JSON Object NSDictionary.
+    public func add(statement: Statement) {
+        self.clauseStatementDicts.addObject(statement.toNSDictionary())
+    }
+    /** Get Statement as NSDictionary instance
+    - Returns: a NSDictionary instance.
     */
-    public func toJSONObject() -> NSDictionary {
-        return NSDictionary(dictionary: ["or":self.statements])
+    public func toNSDictionary() -> NSDictionary {
+        return NSDictionary(dictionary: ["type": "or", "clauses": self.clauseStatementDicts])
     }
 }

@@ -46,10 +46,10 @@ public class Command: NSObject, NSCoding {
     public let schemaVersion: Int
 
     /** Actions to be executed. */
-    public let actions: [Dictionary<String, Any>]
+    public let actions: [Dictionary<String, AnyObject>]
 
     /** Results of the action. */
-    public let actionResults: [Dictionary<String, Any>]
+    public let actionResults: [Dictionary<String, AnyObject>]
 
     /** State of the Command. */
     public let commandState: CommandState
@@ -65,8 +65,12 @@ public class Command: NSObject, NSCoding {
         self.actionResults = []
         self.commandState = CommandState.SENDING
     }
-    public init(commandID: String, targetID: TypedID, issuerID: TypedID, schemaName: String, schemaVersion: Int, actions:[Dictionary<String, Any>], actionResults:[Dictionary<String, Any>]?, commandState: CommandState?) {
-        self.commandID = commandID
+    public init(commandID: String?, targetID: TypedID, issuerID: TypedID, schemaName: String, schemaVersion: Int, actions:[Dictionary<String, AnyObject>], actionResults:[Dictionary<String, AnyObject>]?, commandState: CommandState?) {
+        if commandID != nil {
+            self.commandID = commandID!
+        }else {
+            self.commandID = ""
+        }
         self.targetID = targetID
         self.issuerID = issuerID
         self.schemaName = schemaName
@@ -103,26 +107,14 @@ public class Command: NSObject, NSCoding {
         let commandID = nsDict["commandID"] as? String
         let schemaName = nsDict["schema"] as? String
         // actions array
-        var actionsArray = [Dictionary<String, Any>]()
+        var actionsArray = [Dictionary<String, AnyObject>]()
         if let actions = nsDict["actions"] as? [NSDictionary] {
-            for nsdict in actions {
-                var actionsDict = Dictionary<String, Any>()
-                for(key, value) in nsdict {
-                    actionsDict[key as! String] = value
-                }
-                actionsArray.append(actionsDict)
-            }
+            actionsArray = actions as! [Dictionary<String, AnyObject>]
         }
         // actionResult array
-        var actionsResultArray = [Dictionary<String, Any>]()
+        var actionsResultArray = [Dictionary<String, AnyObject>]()
         if let actionResults = nsDict["actionResults"] as? [NSDictionary] {
-            for nsdict in actionResults {
-                var actionResultsDict = Dictionary<String, Any>()
-                for(key, value) in nsdict {
-                    actionResultsDict[key as! String] = value
-                }
-                actionsResultArray.append(actionResultsDict)
-            }
+            actionsResultArray = actionResults as! [Dictionary<String, AnyObject>]
         }
         let schemaVersion = nsDict["schemaVersion"] as? Int
 
@@ -156,9 +148,8 @@ public class Command: NSObject, NSCoding {
             }
         }
         var command: Command?
-        if ((targetID != nil) || (issuerID != nil) || (schemaName != nil)) || (schemaVersion != nil)
-            || (commandID != nil) {
-                command = Command(commandID: commandID!, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState)
+        if ((targetID != nil) || (issuerID != nil) || (schemaName != nil)) || (schemaVersion != nil) {
+                command = Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState)
         }
         return command
     }
