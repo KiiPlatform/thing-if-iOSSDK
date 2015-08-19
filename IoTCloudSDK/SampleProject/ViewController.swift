@@ -30,7 +30,16 @@ class ViewController: UIViewController {
         
         let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
         let commandID = "78d75000-3f48-11e5-8581-0a5eb423ea35"
-        getCommand(target, commandID: commandID)
+//        getCommand(target, commandID: commandID)
+//        patchTrigger(target, t"a3f7c520-455c-11e5-bcf1-0a5eb423ea35"riggerID: "a3f7c520-455c-11e5-bcf1-0a5eb423ea35")
+//        self.iotCloudAPI.getTrigger(target, triggerID: "a3f7c520-455c-11e5-bcf1", completionHandler: { (trigger, error) -> Void in
+//            if error == nil {
+//                self.enaleDisableTrigger(target, trigger: trigger!)
+//            }else {
+//                print(error)
+//            }
+//        })
+        listTrigger(target, bestEfforLimit: 2, nextPaginationKey: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,5 +111,47 @@ class ViewController: UIViewController {
             }
         }
     }
+
+    func patchTrigger(target: Target, triggerID: String) {
+        let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+        let statement = Equals(field: "color", value: 0)
+        let condition = Condition(statement: statement)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_CHANGED)
+        self.iotCloudAPI.patchTrigger(target, triggerID: triggerID, schemaName: self.schema.name, schemaVersion: self.schema.version, actions: actions, predicate: predicate) { (trigger, error) -> Void in
+            if error == nil {
+                print("triggerID: \(trigger!.triggerID), enable:\(trigger!.enabled)")
+            }else {
+                print(error)
+            }
+        }
+    }
+
+    func enaleDisableTrigger(target: Target, trigger: Trigger) {
+        let disable = !trigger.enabled
+        self.iotCloudAPI.enableTrigger(target, triggerID: trigger.triggerID, enable: disable, completionHandler: { (updatedTrigger, error) -> Void in
+            if error == nil {
+                print("from \(trigger.enabled) to \(updatedTrigger!.enabled)")
+            }
+        })
+
+    }
+
+    func listTrigger(target: Target, bestEfforLimit: Int?, nextPaginationKey: String?) {
+
+        self.iotCloudAPI.listTriggers(target, bestEffortLimit: bestEfforLimit!, paginationKey: nextPaginationKey) { (triggers, paginationKey, error) -> Void in
+            if error == nil {
+                if let triggerArray = triggers {
+                    print("count: \(triggerArray.count)")
+                }
+                if let nextPaginationKey = paginationKey {
+                    print(nextPaginationKey)
+                    self.listTrigger(target, bestEfforLimit: bestEfforLimit!, nextPaginationKey: nextPaginationKey)
+                }
+             }else {
+                print(error)
+            }
+        }
+    }
+
 }
 

@@ -1,11 +1,11 @@
 //: Playground - noun: a place where people can play
-import IoTCloudSDK
+import Foundation
 
-let owner = Owner(ownerID: TypedID(type:"user", id:"user-abcd-efgh"), accessToken: "dummy-token")
-let schema = Schema(thingType: "SmartLight-Demo",
-    name: "SmartLight-Demo", version: 1)
-let api = IoTCloudAPIBuilder(appID: "myApp", appKey: "myAppKey",
-    baseURL: "https://api.kii.com/", owner: owner).addSchema(schema).build()
+let nsdict = ["key1":true, "key2": 3, "key3": "string", "key4":["key5", true]] as NSDictionary
 
-let target = try api.onBoard("th.abcd-efgh", thingPassword: "dummyPassword")
-print(target.description)
+let dict = nsdict as! Dictionary<String, AnyObject>
+
+for (key, value) in dict {
+    print(value.dynamicType)
+}
+

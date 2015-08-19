@@ -23,4 +23,5 @@ public enum IoTCloudError : ErrorType {
     case ERROR_RESPONSE(required: ErrorResponse)
     case PUSH_NOT_AVAILABLE
     case JSON_PARSE_ERROR
+    case UNSUPPORTED_ERROR
 }
