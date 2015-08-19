@@ -11,18 +11,16 @@ import IoTCloudSDK
 
 class ViewController: UIViewController {
     var iotCloudAPI: IoTCloudAPI!
-    var schema: Schema!
+    let schema = (thingType: "SmartLight-Demo",
+    name: "SmartLight-Demo", version: 1)
     var owner: Owner!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
         
-        schema = Schema(thingType: "SmartLight-Demo",
-            name: "SmartLight-Demo", version: 1)
-        
         iotCloudAPI = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            baseURL: "https://api-development-jp.internal.kii.com", owner: owner).addSchema(schema).build()
+            baseURL: "https://api-development-jp.internal.kii.com", owner: owner).build()
 
 //        onBoardWithVendorThingIDByOwner()
 //        onBoardWithThingIDByOwner()
@@ -82,7 +80,7 @@ class ViewController: UIViewController {
     func callPostCommand(target:Target) {
         
 
-        self.iotCloudAPI.postNewCommand(target, schemaName: self.schema.name, schemaVersion: 2, actions: [["turnPower":["power":"true"]]], issuer: nil, completionHandler: { (command, error) -> Void in
+        self.iotCloudAPI.postNewCommand(target, schemaName: self.schema.name, schemaVersion: 2, actions: [["turnPower":["power":"true"]]], completionHandler: { (command, error) -> Void in
             
             if error == nil {
                 print(command!.commandID)
@@ -113,7 +111,7 @@ class ViewController: UIViewController {
     }
 
     func patchTrigger(target: Target, triggerID: String) {
-        let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+        let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
         let statement = Equals(field: "color", value: 0)
         let condition = Condition(statement: statement)
         let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_CHANGED)
