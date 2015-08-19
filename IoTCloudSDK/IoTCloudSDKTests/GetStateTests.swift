@@ -247,8 +247,84 @@ class GetStateTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        
+
     }
-    
+
+    func testGetStates_success_then_fail() {
+
+        self.onboard()
+        iotSession = MockMultipleSession.self
+        let expectation = self.expectationWithDescription("testGetStates_success")
+        // verify request
+        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.HTTPMethod, "GET")
+            let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.targetType.toString())/states"
+            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            //verify header
+            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "content-type": "application/json"]
+            for (key, value) in expectedHeader {
+                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+            }
+
+        }
+
+        let dict : Dictionary<String,AnyObject>? = [
+            "power" : true,
+            "brightness" : 70,
+            "color" : 0
+        ]
+        do {
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict!, options: .PrettyPrinted)
+            let errorJson = try NSJSONSerialization.dataWithJSONObject(["errorCode":"INVALID_INPUT_DATA","message":"error message"], options: .PrettyPrinted)
+            let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let mockResponse2 = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
+            MockMultipleSession.responsePairs = [
+                ((data: jsonData, urlResponse: mockResponse1, error: nil),requestVerifier),
+                ((data: errorJson, urlResponse: mockResponse2, error: nil),requestVerifier)
+            ]
+
+        }catch(_){
+            //should never reach this
+            XCTFail("exception happened")
+            return;
+        }
+
+        api.getState(self.target) { (result, error) -> Void in
+
+            XCTAssertNotNil(result,"should not nil")
+            XCTAssertEqual(result!.count, dict?.count, "Should be equal")
+            if error != nil {
+                XCTFail("should not error")
+            }
+            
+            for (k,v) in dict! {
+                let val : AnyObject = result![k]!
+                XCTAssertTrue(v === val)
+            }
+        }
+
+        api.getState(self.target) { (result, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+
+                switch error! {
+                case .CONNECTION:
+                    XCTFail("should not be connection error")
+                case .ERROR_RESPONSE(let actualErrorResponse):
+                    XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
+
+                default:
+                    break
+                }
+            }
+            expectation.fulfill()
+        }
+        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
 }
 
