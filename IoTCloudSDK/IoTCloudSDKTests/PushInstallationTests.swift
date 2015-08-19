@@ -24,7 +24,7 @@ class PushInstallationTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        //setLogLevel(.verbose)
+        setKiiLogLevel(.verbose)
     }
     
     override func tearDown() {

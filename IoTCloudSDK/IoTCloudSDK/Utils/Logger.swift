@@ -34,7 +34,7 @@ public protocol Logger {
 
 var logLevel : LogLevel = LogLevel.error
 
-public func setLogLevel(level : LogLevel){
+public func setKiiLogLevel(level : LogLevel){
     logLevel = level
 }
 
@@ -51,6 +51,7 @@ extension Logger {
 
 }
 
+//default logger is just default implementation for logger
 public class DefaultLogger : Logger {
 
     required  public init() {
@@ -59,7 +60,7 @@ public class DefaultLogger : Logger {
 
     
 }
-
+// use as dependency injection
 var currentLogger = DefaultLogger.self
 
 let sharedLog: Logger = {
