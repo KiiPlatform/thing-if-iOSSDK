@@ -29,14 +29,20 @@ struct IotRequest<T> {
 typealias DefaultRequest = IotRequest<NSDictionary>
 
 func buildDefaultRequest(method : HTTPMethod,urlString: String,requestHeaderDict: Dictionary<String, String>,requestBodyData: NSData?,completionHandler: (response: NSDictionary?, error: IoTCloudError?) -> Void) -> DefaultRequest {
+    kiiVerboseLog("Request URL: \(urlString)")
+    kiiVerboseLog("Request Method: \(method)")
+    kiiVerboseLog("Request Header: \(requestHeaderDict)")
+
     let defaultRequest = DefaultRequest(method: method, urlString: urlString, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, responseBodySerializer: { (responseBodyData) -> NSDictionary? in
+
+        if responseBodyData == nil {
+            return nil
+        }
         var responseBody : NSDictionary?
         do{
             responseBody = try NSJSONSerialization.JSONObjectWithData(responseBodyData!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
         }catch(_){
-            // do nothing
-            //TODO: change to debug log
-            print("")
+            kiiDebugLog("unable to parse JSON")
         }
         return responseBody
         }, completionHandler: completionHandler)
@@ -167,9 +173,7 @@ class IoTRequestOperation<T>: GroupOperation {
                         do{
                             responseBody = try NSJSONSerialization.JSONObjectWithData(responseDataOptional!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
                         }catch(_){
-                            // do nothing
-                            //TODO: change to debug log
-                            print("")
+                            kiiDebugLog("unable to parse JSON")
                         }
                     }
                     
@@ -211,9 +215,7 @@ class IoTRequestOperation<T>: GroupOperation {
                         do{
                             responseBody = try NSJSONSerialization.JSONObjectWithData(responseDataOptional!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
                         }catch(_){
-                            // do nothing
-                            //TODO: change to debug log
-                            print("")
+                            kiiDebugLog("unable to parse JSON")
                         }
                     }
                     
