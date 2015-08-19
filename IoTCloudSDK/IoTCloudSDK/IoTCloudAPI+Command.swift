@@ -46,6 +46,7 @@ extension IoTCloudAPI {
             operationQueue.addOperation(onboardRequestOperation)
             
         }catch(_){
+            kiiSevereLog("IoTCloudError.JSON_PARSE_ERROR")
             completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
         }
     }
