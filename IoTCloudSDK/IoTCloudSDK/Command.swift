@@ -46,10 +46,10 @@ public class Command: NSObject, NSCoding {
     public let schemaVersion: Int
 
     /** Actions to be executed. */
-    public let actions: [Dictionary<String, Any>]
+    public let actions: [Dictionary<String, AnyObject>]
 
     /** Results of the action. */
-    public let actionResults: [Dictionary<String, Any>]
+    public let actionResults: [Dictionary<String, AnyObject>]
 
     /** State of the Command. */
     public let commandState: CommandState
@@ -65,7 +65,7 @@ public class Command: NSObject, NSCoding {
         self.actionResults = []
         self.commandState = CommandState.SENDING
     }
-    public init(commandID: String?, targetID: TypedID, issuerID: TypedID, schemaName: String, schemaVersion: Int, actions:[Dictionary<String, Any>], actionResults:[Dictionary<String, Any>]?, commandState: CommandState?) {
+    public init(commandID: String?, targetID: TypedID, issuerID: TypedID, schemaName: String, schemaVersion: Int, actions:[Dictionary<String, AnyObject>], actionResults:[Dictionary<String, AnyObject>]?, commandState: CommandState?) {
         if commandID != nil {
             self.commandID = commandID!
         }else {
@@ -107,18 +107,14 @@ public class Command: NSObject, NSCoding {
         let commandID = nsDict["commandID"] as? String
         let schemaName = nsDict["schema"] as? String
         // actions array
-        var actionsArray = [Dictionary<String, Any>]()
+        var actionsArray = [Dictionary<String, AnyObject>]()
         if let actions = nsDict["actions"] as? [NSDictionary] {
-            for actionNSDict in actions {
-                actionsArray.append(actionNSDict.toDictionary())
-            }
+            actionsArray = actions as! [Dictionary<String, AnyObject>]
         }
         // actionResult array
-        var actionsResultArray = [Dictionary<String, Any>]()
+        var actionsResultArray = [Dictionary<String, AnyObject>]()
         if let actionResults = nsDict["actionResults"] as? [NSDictionary] {
-            for actionResultNSDict in actionResults {
-                actionsResultArray.append(actionResultNSDict.toDictionary())
-            }
+            actionsResultArray = actionResults as! [Dictionary<String, AnyObject>]
         }
         let schemaVersion = nsDict["schemaVersion"] as? Int
 

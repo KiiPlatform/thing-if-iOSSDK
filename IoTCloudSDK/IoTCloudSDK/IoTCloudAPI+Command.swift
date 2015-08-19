@@ -14,7 +14,7 @@ extension IoTCloudAPI {
         target:Target,
         schemaName:String,
         schemaVersion:Int,
-        actions:[Dictionary<String,Any>],
+        actions:[Dictionary<String,AnyObject>],
         issuer:TypedID?,
         completionHandler: (Command?, IoTCloudError?)-> Void
         ) -> Void
@@ -26,9 +26,8 @@ extension IoTCloudAPI {
         
         // generate body
         let requestBodyDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion])
-        //TODO: fix me
-        //requestBodyDict.setObject(actions, forKey: "actions")
-        
+        requestBodyDict.setObject(actions, forKey: "actions")
+
         var issuerID: TypedID!
         if issuer == nil {
             issuerID = owner.ownerID

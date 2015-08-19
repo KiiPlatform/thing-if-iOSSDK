@@ -39,7 +39,7 @@ class PostNewTriggerTests: XCTestCase {
         do{
             let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
             let target = Target(targetType: TypedID(type: "thing", id: expectedTriggerID))
-            let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+            let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let statement = Equals(field: "color", value: 0)
             let condition = Condition(statement: statement)
             let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
@@ -106,12 +106,11 @@ class PostNewTriggerTests: XCTestCase {
         do{
             let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
             let target = Target(targetType: TypedID(type: "thing", id: expectedTriggerID))
-            let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+            let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let statement = Equals(field: "color", value: 0)
             let condition = Condition(statement: statement)
             let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
 
-            let expectedActions = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let expectedStatement = ["type":"eq","filed":"color", "value": 0]
             let expectedEventSource = "states"
             let expectedTriggerWhen = "CONDITION_FALSE_TO_TRUE"
@@ -133,7 +132,7 @@ class PostNewTriggerTests: XCTestCase {
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.ownerID.toString(), "target": target.targetType.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":expectedActions]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.ownerID.toString(), "target": target.targetType.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":actions]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
@@ -178,7 +177,7 @@ class PostNewTriggerTests: XCTestCase {
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let target = Target(targetType: TypedID(type: "thing", id: expectedTriggerID))
-        let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+        let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
         let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
 
         api.postNewTrigger(target, schemaName: schema.name, schemaVersion: schema.version, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in

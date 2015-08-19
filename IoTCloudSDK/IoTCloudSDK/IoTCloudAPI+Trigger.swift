@@ -14,7 +14,7 @@ extension IoTCloudAPI {
         target:Target,
         schemaName:String,
         schemaVersion:Int,
-        actions:[Dictionary<String, Any>],
+        actions:[Dictionary<String, AnyObject>],
         predicate:Predicate,
         completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
@@ -31,12 +31,7 @@ extension IoTCloudAPI {
 
         // generate command
         let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.ownerID.toString(), "target":target.targetType.toString()])
-        // convert actions to NSArray instance
-        let actionsNSDict = NSMutableArray()
-        for action in actions {
-            actionsNSDict.addObject(action.toNSDictionary())
-        }
-        commandDict.setObject(actionsNSDict, forKey: "actions")
+        commandDict.setObject(actions, forKey: "actions")
 
         // generate body
         let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": commandDict])
@@ -65,7 +60,7 @@ extension IoTCloudAPI {
         triggerID:String,
         schemaName:String?,
         schemaVersion:Int?,
-        actions:[Dictionary<String, Any>]?,
+        actions:[Dictionary<String, AnyObject>]?,
         predicate:Predicate?,
         completionHandler: (Trigger?, IoTCloudError?) -> Void
         )
@@ -91,12 +86,7 @@ extension IoTCloudAPI {
         // generate command
         if schemaName != nil || schemaVersion != nil || actions != nil {
             let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName!, "schemaVersion": schemaVersion!, "issuer":owner.ownerID.toString()])
-            // convert actions to NSArray instance
-            let actionsNSDict = NSMutableArray()
-            for action in actions! {
-                actionsNSDict.addObject(action.toNSDictionary())
-            }
-            commandDict.setObject(actionsNSDict, forKey: "actions")
+            commandDict.setObject(actions!, forKey: "actions")
             requestBodyDict.setObject(commandDict, forKey: "command")
         }
         do{

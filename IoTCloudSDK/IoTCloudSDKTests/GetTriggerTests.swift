@@ -46,7 +46,8 @@ class GetTriggerTests: XCTestCase {
             let expectedPredicateDict = ["eventSource":expectedEventSource, "triggersWhen":expectedTriggerWhen, "condition":expectedStatement]
             let expectedCommandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.targetType.toString(), "issuer": self.owner.ownerID.toString(), "actions": expectedActions]
 
-            let expectedActionsDict: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+            let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+
             let expectedCommandObject = Command(commandID: nil, targetID: self.target.targetType, issuerID: self.owner.ownerID, schemaName: self.schema.name, schemaVersion: self.schema.version, actions: expectedActionsDict, actionResults: nil, commandState: nil)
 
             // mock response
@@ -77,19 +78,9 @@ class GetTriggerTests: XCTestCase {
                     XCTAssertTrue(trigger!.enabled == true)
                     XCTAssertTrue(trigger!.command == expectedCommandObject)
 
-                    let actualActionNSDictArray = NSMutableArray()
-                    for actionDict in trigger!.command.actions {
-                        actualActionNSDictArray.addObject(actionDict.toNSDictionary())
-                    }
-
-                    let expectedActionsNSDictArray = NSMutableArray()
-                    for actionDict in expectedActionsDict {
-                        expectedActionsNSDictArray.addObject(actionDict.toNSDictionary())
-                    }
-
                     do {
-                        let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(expectedActionsNSDictArray, options: NSJSONWritingOptions(rawValue: 0))
-                        let actualActionsData = try NSJSONSerialization.dataWithJSONObject(actualActionNSDictArray, options: NSJSONWritingOptions(rawValue: 0))
+                        let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(expectedActions, options: NSJSONWritingOptions(rawValue: 0))
+                        let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger!.command.actions, options: NSJSONWritingOptions(rawValue: 0))
                         XCTAssertTrue(expectedActionsData == actualActionsData)
 
                         let expectedPredicteData = try NSJSONSerialization.dataWithJSONObject(expectedPredicateDict, options: NSJSONWritingOptions(rawValue: 0))

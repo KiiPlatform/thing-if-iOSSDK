@@ -14,7 +14,7 @@ extension IoTCloudAPI {
         IDString: String,
         thingPassword:String,
         thingType:String?,
-        thingProperties:Dictionary<String,Any>?,
+        thingProperties:Dictionary<String,AnyObject>?,
         completionHandler: (Target?, IoTCloudError?)-> Void
         ) ->Void {
             
@@ -39,7 +39,7 @@ extension IoTCloudAPI {
             }
             
             if thingProperties != nil {
-                requestBodyDict.setObject(thingProperties!.toNSDictionary(), forKey: "thingProperties")
+                requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
             }
             
             do{

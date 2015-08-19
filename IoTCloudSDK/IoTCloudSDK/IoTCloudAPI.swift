@@ -50,7 +50,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         vendorThingID:String,
         thingPassword:String,
         thingType:String?,
-        thingProperties:Dictionary<String,Any>?,
+        thingProperties:Dictionary<String,AnyObject>?,
         completionHandler: (Target?, IoTCloudError?)-> Void
         ) ->Void
     {
@@ -145,7 +145,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         target:Target,
         schemaName:String,
         schemaVersion:Int,
-        actions:[Dictionary<String,Any>],
+        actions:[Dictionary<String,AnyObject>],
         issuer:TypedID?,
         completionHandler: (Command?, IoTCloudError?)-> Void
         ) -> Void
@@ -210,7 +210,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         target:Target,
         schemaName:String,
         schemaVersion:Int,
-        actions:[Dictionary<String, Any>],
+        actions:[Dictionary<String, AnyObject>],
         predicate:Predicate,
         completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
@@ -251,7 +251,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         triggerID:String,
         schemaName:String?,
         schemaVersion:Int?,
-        actions:[Dictionary<String, Any>]?,
+        actions:[Dictionary<String, AnyObject>]?,
         predicate:Predicate?,
         completionHandler: (Trigger?, IoTCloudError?)-> Void
         )
