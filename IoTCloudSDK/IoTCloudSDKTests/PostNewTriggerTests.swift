@@ -12,18 +12,18 @@ import XCTest
 class PostNewTriggerTests: XCTestCase {
 
     var owner: Owner!
-    var schema: Schema!
+    var schema = (thingType: "SmartLight-Demo",
+        name: "SmartLight-Demo", version: 1)
     let baseURLString = "https://small-tests.internal.kii.com"
     var api: IoTCloudAPI!
 
     override func setUp() {
         super.setUp()
-        schema = Schema(thingType: "SmartLight-Demo",
-            name: "SmartLight-Demo", version: 1)
+
         owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
         api = IoTCloudAPIBuilder(appID: "dummyID", appKey: "dummyKey",
-            baseURL: self.baseURLString, owner: owner).addSchema(schema).build()
+            baseURL: self.baseURLString, owner: owner).build()
 
     }
     override func tearDown() {
