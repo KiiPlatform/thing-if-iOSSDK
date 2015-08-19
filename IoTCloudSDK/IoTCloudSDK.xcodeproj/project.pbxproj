@@ -27,6 +27,7 @@
 		7D75939E1B7DF01400AAFC15 /* PostNewTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D75939D1B7DF01400AAFC15 /* PostNewTriggerTests.swift */; };
 		7D8D36A21B7B2699003DFE76 /* OnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */; };
 		7DA033D51B845C0B00868F73 /* ListTriggersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA033D41B845C0B00868F73 /* ListTriggersTests.swift */; };
+		7DA033D71B8469F600868F73 /* PatchTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA033D61B8469F600868F73 /* PatchTriggerTests.swift */; };
 		7DBDAB811B82F2DD0023155F /* NSNumber+isBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBDAB801B82F2DD0023155F /* NSNumber+isBool.swift */; };
 		7DBDAB871B83306A0023155F /* GetTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBDAB861B83306A0023155F /* GetTriggerTests.swift */; };
 		D552E8321B7D91F000205A11 /* XCTest+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D552E8311B7D91F000205A11 /* XCTest+Utils.swift */; };
@@ -145,6 +146,7 @@
 		7D75939D1B7DF01400AAFC15 /* PostNewTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerTests.swift; sourceTree = "<group>"; };
 		7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingTests.swift; sourceTree = "<group>"; };
 		7DA033D41B845C0B00868F73 /* ListTriggersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTriggersTests.swift; sourceTree = "<group>"; };
+		7DA033D61B8469F600868F73 /* PatchTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchTriggerTests.swift; sourceTree = "<group>"; };
 		7DBDAB801B82F2DD0023155F /* NSNumber+isBool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+isBool.swift"; sourceTree = "<group>"; };
 		7DBDAB861B83306A0023155F /* GetTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTriggerTests.swift; sourceTree = "<group>"; };
 		D552E8311B7D91F000205A11 /* XCTest+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTest+Utils.swift"; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 		7DA033D31B845BD000868F73 /* TriggerTests */ = {
 			isa = PBXGroup;
 			children = (
+				7DA033D61B8469F600868F73 /* PatchTriggerTests.swift */,
 				7D75939D1B7DF01400AAFC15 /* PostNewTriggerTests.swift */,
 				7DBDAB861B83306A0023155F /* GetTriggerTests.swift */,
 				7DA033D41B845C0B00868F73 /* ListTriggersTests.swift */,
@@ -693,6 +696,7 @@
 				D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */,
 				D5CB668A1B82D6BF00FBAADB /* GetStateTests.swift in Sources */,
 				7417A3161B65CF8500D116A5 /* IoTCloudSDKTests.swift in Sources */,
+				7DA033D71B8469F600868F73 /* PatchTriggerTests.swift in Sources */,
 				7DA033D51B845C0B00868F73 /* ListTriggersTests.swift in Sources */,
 				7D8D36A21B7B2699003DFE76 /* OnboardingTests.swift in Sources */,
 				D552E8321B7D91F000205A11 /* XCTest+Utils.swift in Sources */,
