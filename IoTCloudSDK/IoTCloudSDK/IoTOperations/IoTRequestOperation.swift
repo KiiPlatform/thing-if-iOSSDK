@@ -167,7 +167,7 @@ class IoTRequestOperation<T>: GroupOperation {
                 var responseBody : NSDictionary?
                 var errorCode = ""
                 var errorMessage = ""
-                
+                kiiDebugLog("Response Status Code : \(statusCode)")
                 if statusCode < 200 || statusCode >= 300 {
                     if responseDataOptional != nil {
                         do{
@@ -203,13 +203,15 @@ class IoTRequestOperation<T>: GroupOperation {
         
         let session = iotSession.sharedSession()
         let task = session.dataTaskWithRequest(request, completionHandler: { (responseDataOptional: NSData?, responseOptional: NSURLResponse?, errorOptional: NSError?) -> Void in
+            kiiVerboseLog(responseDataOptional)
             if responseOptional != nil {
                 let httpResponse = responseOptional as! NSHTTPURLResponse
                 let statusCode = httpResponse.statusCode
                 var responseBody : NSDictionary?
                 var errorCode = ""
                 var errorMessage = ""
-                
+                kiiDebugLog("Response Status Code : \(statusCode)")
+
                 if statusCode < 200 || statusCode >= 300 {
                     if responseDataOptional != nil {
                         do{
@@ -218,7 +220,7 @@ class IoTRequestOperation<T>: GroupOperation {
                             kiiDebugLog("unable to parse JSON")
                         }
                     }
-                    
+                    kiiDebugLog("Response Error : \(responseBody)")
                     if responseBody != nil{
                         errorCode = responseBody!["errorCode"] as! String
                         errorMessage = responseBody!["message"] as! String
@@ -231,6 +233,7 @@ class IoTRequestOperation<T>: GroupOperation {
                         completionHandler(response: nil,error: nil)
                         return
                     }
+                    kiiDebugLog("Response Body serialized: \(serialized)")
                     completionHandler(response: serialized, error: nil)
                 }
             }

@@ -17,6 +17,8 @@ func failIfNotRunningOnDevice(){
     }
     
 }
+typealias MockResponse = (data: NSData?, urlResponse: NSURLResponse?, error: NSError?)
+typealias MockResponsePair = (response: MockResponse,requestVerifier: ((NSURLRequest) -> Void))
 
 class MockSession: NSURLSession {
     var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
@@ -45,11 +47,11 @@ class MockSession: NSURLSession {
             return NSURLSessionTaskState.Suspended
         }
     
-        typealias Response = (data: NSData?, urlResponse: NSURLResponse?, error: NSError?)
-        var mockResponse: Response
+
+        var mockResponse: MockResponse
         let completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
         
-        init(response: Response, completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?) {
+        init(response: MockResponse, completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?) {
             self.mockResponse = response
             self.completionHandler = completionHandler
         }
@@ -60,3 +62,46 @@ class MockSession: NSURLSession {
         
     }
 }
+
+class MockMultipleSession: NSURLSession {
+    var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
+    static var responsePairs = [MockResponsePair?]()
+
+    override class func sharedSession() -> NSURLSession {
+        return MockMultipleSession()
+    }
+
+    override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
+
+        guard let pair = MockMultipleSession.responsePairs.removeAtIndex(0) else{
+            return MockTask(response: MockSession.mockResponse, completionHandler: completionHandler)
+        }
+
+        pair.requestVerifier(request)
+
+
+        self.completionHandler = completionHandler
+
+        return MockTask(response: pair.response, completionHandler: completionHandler)
+    }
+    class MockTask: NSURLSessionDataTask {
+        @objc override var state : NSURLSessionTaskState {
+            return NSURLSessionTaskState.Suspended
+        }
+
+
+        var mockResponse: MockResponse
+        let completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
+
+        init(response: MockResponse, completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?) {
+            self.mockResponse = response
+            self.completionHandler = completionHandler
+        }
+        override func resume() {
+
+            completionHandler!(mockResponse.data, mockResponse.urlResponse, mockResponse.error)
+        }
+
+    }
+}
+
