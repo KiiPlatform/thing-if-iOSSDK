@@ -44,6 +44,7 @@ class PatchTriggerTests: XCTestCase {
         let predicate: Predicate?
         let expectedStatementDict: Dictionary<String, AnyObject>?
         let expectedTriggersWhenString: String?
+        let success: Bool
 
         func getExpectedCommandDict() -> Dictionary<String, AnyObject>? {
 
@@ -51,7 +52,7 @@ class PatchTriggerTests: XCTestCase {
                 return nil
             }
 
-            var commandDict: Dictionary<String, AnyObject> = ["issuer":issuerID.toString(), "target":target.targetType.toString()]
+            var commandDict: Dictionary<String, AnyObject> = ["issuer":issuerID.toString()]
             if schemaName != nil {
                 commandDict["schema"] = schemaName!
             }
@@ -76,53 +77,39 @@ class PatchTriggerTests: XCTestCase {
         }
     }
 
-    func testPatchTrigger_success() {
+    func testPatchTrigger() {
 
         let expectedActions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
 
-//        let orClauseStatement = ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
-//        let andClauseStatement = ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
-//        let complexExpectedStatements:[Dictionary<String, AnyObject>] = [
-//            ["type": "and", "clauses": [["type":"eq","field":"brightness", "value": 50], orClauseStatement]],
-//            ["type": "or", "clauses": [["type":"eq","field":"brightness", "value": 50], andClauseStatement]]
-//        ]
-
         let testsCases: [TestCase] = [
-            // simple statement
-            TestCase(target: target, issuerID: owner.ownerID, schemaName: self.schema.name, schemaVersion: self.schema.version, actions: expectedActions, predicate: StatePredicate(condition: Condition(statement: Equals(field: "color", value: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE")
-//            TestCase(statement: Equals(field: "color", value: 0), expectedStatementDict: ["type":"eq","field":"color", "value": 0], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            TestCase(statement: Equals(field: "power", value: true), expectedStatementDict: ["type":"eq","field":"power", "value": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            TestCase(statement: NotEquals(field: "power", value: true), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            TestCase(statement: NotGreaterThan(field: "color", upperLimit: 255), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            TestCase(statement: LessThan(field: "color", upperLimit: 200), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 200, "upperIncluded": false], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            TestCase(statement: NotLessThan(field: "color", lowerLimit: 1), expectedStatementDict: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            TestCase(statement: GreaterThan(field: "color", lowerLimit: 1), expectedStatementDict: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": false], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            TestCase(statement: And(statements: Equals(field: "color", value: 0), NotEquals(field: "power", value: true)), expectedStatementDict: ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            TestCase(statement: Or(statements: Equals(field: "color", value: 0), NotEquals(field: "color", value: true)), expectedStatementDict: ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            // complex statements
-//            TestCase(statement: And(statements: Equals(field: "brightness", value: 50), Or(statements: Equals(field: "color", value: 0), NotEquals(field: "power", value: true))), expectedStatementDict: complexExpectedStatements[0], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            TestCase(statement: Or(statements: Equals(field: "brightness", value: 50),And(statements: Equals(field: "color", value: 0), NotEquals(field: "power", value: true))), expectedStatementDict: complexExpectedStatements[1], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-//            // test triggersWhen
-//            TestCase(statement: Equals(field: "color", value: 0), expectedStatementDict: ["type":"eq","field":"color", "value": 0], triggersWhen: TriggersWhen.CONDITION_CHANGED, expectedTriggersWhenString: "CONDITION_CHANGED"),
-//            TestCase(statement: Equals(field: "color", value: 0), expectedStatementDict: ["type":"eq","field":"color", "value": 0], triggersWhen: TriggersWhen.CONDITION_TRUE, expectedTriggersWhenString: "CONDITION_TRUE")
-
+            //
+            TestCase(target: target, issuerID: owner.ownerID, schemaName: schema.name, schemaVersion: schema.version, actions: expectedActions, predicate: StatePredicate(condition: Condition(statement: Equals(field: "color", value: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.ownerID, schemaName: schema.name, schemaVersion: schema.version, actions: expectedActions, predicate: StatePredicate(condition: Condition(statement: NotEquals(field: "power", value: true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.ownerID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: StatePredicate(condition: Condition(statement: NotGreaterThan(field: "color", upperLimit: 255)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.ownerID, schemaName: schema.name, schemaVersion: schema.version, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.ownerID, schemaName: nil, schemaVersion: schema.version, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.ownerID, schemaName: schema.name, schemaVersion: nil, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.ownerID, schemaName: schema.name, schemaVersion: schema.version, actions: nil, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false)
         ]
         for (index,testCase) in testsCases.enumerate() {
-            patchTriggerSuccess("testPatchTrigger_success_\(index)", testcase: testCase)
+            patchTrigger("testPatchTrigger_\(index)", testcase: testCase)
         }
     }
 
-    func patchTriggerSuccess(tag: String, testcase: TestCase) {
+    func patchTrigger(tag: String, testcase: TestCase) {
         let expectation = self.expectationWithDescription(tag)
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let target = Target(targetType: TypedID(type: "thing", id: expectedTriggerID))
 
-        // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
-
-        // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
+        // verify patch request
+        var expectedBodyDict = Dictionary<String, AnyObject>()
+        if let expectedCommandDict = testcase.getExpectedCommandDict(){
+            expectedBodyDict["command"] = expectedCommandDict
+        }
+        if let expectedPredicateDict = testcase.getExpectedPredictDict() {
+            expectedBodyDict["predicate"] = expectedPredicateDict
+        }
+        let patchRequestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "PATCH")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
@@ -130,13 +117,6 @@ class PatchTriggerTests: XCTestCase {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key), tag)
             }
             //verify body
-            var expectedBodyDict = Dictionary<String, AnyObject>()
-            if let expectedCommandDict = testcase.getExpectedCommandDict(){
-                expectedBodyDict["command"] = expectedCommandDict
-            }
-            if let expectedPredicateDict = testcase.getExpectedPredictDict() {
-                expectedBodyDict["predicate"] = expectedPredicateDict
-            }
             do {
                 let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBodyDict, options: NSJSONWritingOptions(rawValue: 0))
                 let actualBodyData = request.HTTPBody
@@ -145,19 +125,68 @@ class PatchTriggerTests: XCTestCase {
                 XCTFail(tag)
             }
         }
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
-        iotSession = MockSession.self
+
+        //verify get request
+        let getRequestVerifier: ((NSURLRequest) -> Void) = {(request) in}
+
+        // mock patch success response
+        let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
+        // mock get response
+        let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.targetType.toString(), "issuer": self.owner.ownerID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
+        let dict = ["triggerID": expectedTriggerID, "predicate": ["eventSource":"states", "triggersWhen":"CONDITION_FALSE_TO_TRUE", "condition": ["type":"eq","field":"color", "value": 0]], "command": commandDict, "disabled": false]
+        var jsonData: NSData?
+        do {
+            jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+        }catch(_){
+            XCTFail(tag)
+        }
+        let mockResponse2 = NSHTTPURLResponse(URL: NSURL(string: self.baseURLString)!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
+
+        // mock patch 400 error response
+        let mockResponse3 = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 400, HTTPVersion: nil, headerFields: nil)
+
+        if testcase.success {
+            iotSession = MockMultipleSession.self
+            MockMultipleSession.responsePairs = [
+                ((data: nil, urlResponse: mockResponse1, error: nil),patchRequestVerifier),
+                ((data: jsonData!, urlResponse: mockResponse2, error: nil),getRequestVerifier)
+            ]
+        }else {
+            do {
+                jsonData = try NSJSONSerialization.dataWithJSONObject(["errorCode" : "WRONG_COMMAND","message" : "Schema is required"], options: .PrettyPrinted)
+            }catch(_){
+                XCTFail(tag)
+            }
+            iotSession = MockSession.self
+            MockSession.mockResponse = (jsonData, urlResponse: mockResponse3, error: nil)
+            MockSession.requestVerifier = patchRequestVerifier
+        }
+
 
         api.patchTrigger(target, triggerID: expectedTriggerID, schemaName: testcase.schemaName, schemaVersion: testcase.schemaVersion, actions: testcase.actions, predicate: testcase.predicate, completionHandler: { (trigger, error) -> Void in
-            if error == nil{
-                XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
-                XCTAssertEqual(trigger!.targetID.toString(), target.targetType.toString(), tag)
-                XCTAssertEqual(trigger!.enabled, true, tag)
-                XCTAssertNotNil(trigger!.predicate, tag)
-                XCTAssertEqual(trigger!.command.commandID, "", tag)
+            if testcase.success {
+                if error == nil{
+                    XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
+                    XCTAssertEqual(trigger!.targetID.toString(), self.target.targetType.toString(), tag)
+                    XCTAssertEqual(trigger!.enabled, true, tag)
+                    XCTAssertNotNil(trigger!.predicate, tag)
+                    XCTAssertEqual(trigger!.command.commandID, "", tag)
+                }else {
+                    XCTFail("should success for \(tag)")
+                }
             }else {
-                XCTFail("should success for \(tag)")
+                if error == nil{
+                    XCTFail("should fail for \(tag)")
+                }else {
+                    switch error! {
+                    case .CONNECTION:
+                        XCTFail("should not be connection error for \(tag)")
+                    case .ERROR_RESPONSE(let actualErrorResponse):
+                        XCTAssertEqual(400, actualErrorResponse.httpStatusCode, tag)
+                    default:
+                        break
+                    }
+                }
             }
             expectation.fulfill()
         })
@@ -169,13 +198,30 @@ class PatchTriggerTests: XCTestCase {
         }
     }
 
-    func testPostNewTrigger_http_403() {
-        //TODO: implementations
+    func testPatchTrigger_UnsupportError() {
+        let expectation = self.expectationWithDescription("patchTriggerUnsupportError")
+
+        let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+        let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
+        api.patchTrigger(target, triggerID: expectedTriggerID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: predicate) { (trigger, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                switch error! {
+                case .UNSUPPORTED_ERROR:
+                    break
+                default:
+                    XCTFail("should be unsupport error")
+                }
+            }
+            expectation.fulfill()
+        }
+
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
     }
-    func testPostNewTrigger_http_404() {
-        //TODO: implementations
-    }
-    func testPostNewTrigger_http_503() {
-        //TODO: implementations
-    }
+
 }

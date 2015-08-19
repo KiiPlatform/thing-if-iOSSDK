@@ -86,8 +86,16 @@ extension IoTCloudAPI {
 
         // generate command
         if schemaName != nil || schemaVersion != nil || actions != nil {
-            let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName!, "schemaVersion": schemaVersion!, "issuer":owner.ownerID.toString()])
-            commandDict.setObject(actions!, forKey: "actions")
+            var commandDict: Dictionary<String, AnyObject> = ["issuer":owner.ownerID.toString()]
+            if schemaName != nil {
+                commandDict["schema"] = schemaName!
+            }
+            if schemaVersion != nil {
+                commandDict["schemaVersion"] = schemaVersion!
+            }
+            if actions != nil {
+                commandDict["actions"] = actions
+            }
             requestBodyDict.setObject(commandDict, forKey: "command")
         }
         do{
