@@ -56,18 +56,13 @@
 		D55D290E1B78923B006759C4 /* OperationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28EF1B78923B006759C4 /* OperationObserver.swift */; };
 		D55D290F1B78923B006759C4 /* OperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F01B78923B006759C4 /* OperationQueue.swift */; };
 		D55D29121B78923B006759C4 /* ReachabilityCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F31B78923B006759C4 /* ReachabilityCondition.swift */; };
-		D55D29131B78923B006759C4 /* RemoteNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F41B78923B006759C4 /* RemoteNotificationCondition.swift */; };
-		D55D29141B78923B006759C4 /* SilentCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F51B78923B006759C4 /* SilentCondition.swift */; };
 		D55D29151B78923B006759C4 /* TimeoutObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F61B78923B006759C4 /* TimeoutObserver.swift */; };
-		D55D29161B78923B006759C4 /* UIUserNotifications+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F71B78923B006759C4 /* UIUserNotifications+Operations.swift */; };
 		D55D29171B78923B006759C4 /* URLSessionTaskOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F81B78923B006759C4 /* URLSessionTaskOperation.swift */; };
-		D55D29181B78923B006759C4 /* UserNotificationCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55D28F91B78923B006759C4 /* UserNotificationCondition.swift */; };
 		D57D2A531B747B6A003E8BC7 /* EntitySerializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */; };
 		D59F62D81B81CBE40013294B /* PushUninstallationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59F62D71B81CBE40013294B /* PushUninstallationTests.swift */; };
 		D59F62DA1B82CB1F0013294B /* IoTCloudAPI+GetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59F62D91B82CB1F0013294B /* IoTCloudAPI+GetState.swift */; };
 		D5B395B21B79A41F00E0F660 /* IoTRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B11B79A41F00E0F660 /* IoTRequestOperation.swift */; };
 		D5B395B41B79B2AE00E0F660 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B31B79B2AE00E0F660 /* NetworkObserver.swift */; };
-		D5B395B61B79B2E100E0F660 /* BackgroundObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395B51B79B2E100E0F660 /* BackgroundObserver.swift */; };
 		D5B395BC1B79E24100E0F660 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B395BB1B79E24100E0F660 /* TestHelpers.swift */; };
 		D5CB668A1B82D6BF00FBAADB /* GetStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CB66891B82D6BF00FBAADB /* GetStateTests.swift */; };
 		D5FB69291B8309BE003D7C38 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB69281B8309BE003D7C38 /* Logger.swift */; };
@@ -173,18 +168,13 @@
 		D55D28EF1B78923B006759C4 /* OperationObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationObserver.swift; sourceTree = "<group>"; };
 		D55D28F01B78923B006759C4 /* OperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueue.swift; sourceTree = "<group>"; };
 		D55D28F31B78923B006759C4 /* ReachabilityCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityCondition.swift; sourceTree = "<group>"; };
-		D55D28F41B78923B006759C4 /* RemoteNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotificationCondition.swift; sourceTree = "<group>"; };
-		D55D28F51B78923B006759C4 /* SilentCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SilentCondition.swift; sourceTree = "<group>"; };
 		D55D28F61B78923B006759C4 /* TimeoutObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeoutObserver.swift; sourceTree = "<group>"; };
-		D55D28F71B78923B006759C4 /* UIUserNotifications+Operations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIUserNotifications+Operations.swift"; sourceTree = "<group>"; };
 		D55D28F81B78923B006759C4 /* URLSessionTaskOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSessionTaskOperation.swift; sourceTree = "<group>"; };
-		D55D28F91B78923B006759C4 /* UserNotificationCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNotificationCondition.swift; sourceTree = "<group>"; };
 		D57D2A521B747B6A003E8BC7 /* EntitySerializationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitySerializationTests.swift; sourceTree = "<group>"; };
 		D59F62D71B81CBE40013294B /* PushUninstallationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushUninstallationTests.swift; sourceTree = "<group>"; };
 		D59F62D91B82CB1F0013294B /* IoTCloudAPI+GetState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+GetState.swift"; sourceTree = "<group>"; };
 		D5B395B11B79A41F00E0F660 /* IoTRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IoTRequestOperation.swift; path = IoTOperations/IoTRequestOperation.swift; sourceTree = "<group>"; };
 		D5B395B31B79B2AE00E0F660 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
-		D5B395B51B79B2E100E0F660 /* BackgroundObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundObserver.swift; sourceTree = "<group>"; };
 		D5B395BB1B79E24100E0F660 /* TestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		D5CB66891B82D6BF00FBAADB /* GetStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStateTests.swift; sourceTree = "<group>"; };
 		D5FB69281B8309BE003D7C38 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = Utils/Logger.swift; sourceTree = "<group>"; };
@@ -407,9 +397,6 @@
 				D55D28ED1B78923B006759C4 /* OperationCondition.swift */,
 				D55D28EE1B78923B006759C4 /* OperationErrors.swift */,
 				D55D28F31B78923B006759C4 /* ReachabilityCondition.swift */,
-				D55D28F41B78923B006759C4 /* RemoteNotificationCondition.swift */,
-				D55D28F51B78923B006759C4 /* SilentCondition.swift */,
-				D55D28F91B78923B006759C4 /* UserNotificationCondition.swift */,
 			);
 			name = Conditions;
 			sourceTree = "<group>";
@@ -420,7 +407,6 @@
 				D55D28E11B78923B006759C4 /* Dictionary+Operations.swift */,
 				D55D28EA1B78923B006759C4 /* NSLock+Operations.swift */,
 				D55D28EB1B78923B006759C4 /* NSOperation+Operations.swift */,
-				D55D28F71B78923B006759C4 /* UIUserNotifications+Operations.swift */,
 				D554F5121B7B372D00CC9655 /* NSData+Operations.swift */,
 			);
 			name = "Convenience Extensions";
@@ -429,7 +415,6 @@
 		D5B395B01B79A3C400E0F660 /* IoTOperations */ = {
 			isa = PBXGroup;
 			children = (
-				D5B395B51B79B2E100E0F660 /* BackgroundObserver.swift */,
 				D5B395B31B79B2AE00E0F660 /* NetworkObserver.swift */,
 				D5B395B11B79A41F00E0F660 /* IoTRequestOperation.swift */,
 			);
@@ -636,17 +621,13 @@
 				D554F5161B7C702900CC9655 /* IoTCloudAPI+Push.swift in Sources */,
 				7417A3351B66038000D116A5 /* IoTCloudAPIBuilder.swift in Sources */,
 				7DBDAB811B82F2DD0023155F /* NSNumber+isBool.swift in Sources */,
-				D55D29181B78923B006759C4 /* UserNotificationCondition.swift in Sources */,
 				D55D28FB1B78923B006759C4 /* BlockOperation.swift in Sources */,
-				D55D29141B78923B006759C4 /* SilentCondition.swift in Sources */,
-				D55D29131B78923B006759C4 /* RemoteNotificationCondition.swift in Sources */,
 				7417A3371B66287700D116A5 /* IoTCloudError.swift in Sources */,
 				7417A3221B65D2B300D116A5 /* Target.swift in Sources */,
 				D55D290B1B78923B006759C4 /* Operation.swift in Sources */,
 				D55D29021B78923B006759C4 /* GroupOperation.swift in Sources */,
 				7417A3241B65DC1B00D116A5 /* Owner.swift in Sources */,
 				D55D29151B78923B006759C4 /* TimeoutObserver.swift in Sources */,
-				D5B395B61B79B2E100E0F660 /* BackgroundObserver.swift in Sources */,
 				7D26FF101B7C74F300E63E1B /* IoTCloudAPI+OnBoard.swift in Sources */,
 				D55D29061B78923B006759C4 /* MutuallyExclusive.swift in Sources */,
 				D5FB69291B8309BE003D7C38 /* Logger.swift in Sources */,
@@ -661,7 +642,6 @@
 				7D26FF121B7C858800E63E1B /* IoTCloudAPI+Trigger.swift in Sources */,
 				D55D29001B78923B006759C4 /* Dictionary+Operations.swift in Sources */,
 				7417A3291B65F55100D116A5 /* Command.swift in Sources */,
-				D55D29161B78923B006759C4 /* UIUserNotifications+Operations.swift in Sources */,
 				7417A32D1B65FA0D00D116A5 /* Trigger.swift in Sources */,
 				7417A3261B65DCA300D116A5 /* TypedID.swift in Sources */,
 				D554F5131B7B372D00CC9655 /* NSData+Operations.swift in Sources */,
