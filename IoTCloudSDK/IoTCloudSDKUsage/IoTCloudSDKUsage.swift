@@ -14,10 +14,10 @@ class IoTCloudSDKUsage: XCTestCase {
     override func setUp() {
         super.setUp()
         let owner = Owner(ownerID: TypedID(type:"user", id:"user-abcd-efgh"), accessToken: "dummy-token")
-        let schema = Schema(thingType: "SmartLight-Demo",
-            name: "SmartLight-Demo", version: 1)
+//        let schema = (thingType: "SmartLight-Demo",
+//            name: "SmartLight-Demo", version: 1)
         api = IoTCloudAPIBuilder(appID: "myApp", appKey: "myAppKey",
-            baseURL: "https://api.kii.com/", owner: owner).addSchema(schema).build()
+            baseURL: "https://api.kii.com/", owner: owner).build()
     }
 
     override func tearDown() {

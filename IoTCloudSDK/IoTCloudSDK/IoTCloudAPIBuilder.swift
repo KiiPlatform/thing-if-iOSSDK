@@ -25,15 +25,6 @@ public class IoTCloudAPIBuilder {
         iotCloudAPI.owner = owner
     }
 
-    /** Add schema to the builder. Multiple Schema can be added.
-    - Parameter schema: Schema to be added.
-    - Returns: IoTCloudAPIBuilder instance for chaining.
-    */
-    public func addSchema(schema:Schema) -> IoTCloudAPIBuilder {
-        // TODO: implement it.
-        return self
-    }
-
     /** Build IoTCloudAPI instance.
     - Returns: IoTCloudAPI instance.
      */
