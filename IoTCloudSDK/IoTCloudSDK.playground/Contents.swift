@@ -1,11 +1,6 @@
 //: Playground - noun: a place where people can play
 import Foundation
 
-let nsdict = ["key1":true, "key2": 3, "key3": "string", "key4":["key5", true]] as NSDictionary
-
-let dict = nsdict as! Dictionary<String, AnyObject>
-
-for (key, value) in dict {
-    print(value.dynamicType)
-}
-
+let path = "https://small-tests.internal.kii.com/iot-api/apps/50a62843/targets/thing:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5/commands?bestEffortLimit=2"
+let bestEffortLimit = 2
+let range = path.rangeOfString("bestEffortLimit=\(bestEffortLimit)")
