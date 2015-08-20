@@ -196,7 +196,7 @@ public class NotLessThan: Statement {
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: [">=":nsdict])
+        return NSDictionary(dictionary: nsdict)
     }
 }
 

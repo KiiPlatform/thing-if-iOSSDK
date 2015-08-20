@@ -1,15 +1,15 @@
 //
-//  GetTriggerTests.swift
+//  ListTriggersTests.swift
 //  IoTCloudSDK
 //
-//  Created by Yongping on 8/18/15.
+//  Created by Yongping on 8/19/15.
 //  Copyright © 2015 Kii. All rights reserved.
 //
 
 import XCTest
 @testable import IoTCloudSDK
 
-class GetTriggerTests: XCTestCase {
+class ListTriggersTests: XCTestCase {
 
     let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
@@ -34,57 +34,50 @@ class GetTriggerTests: XCTestCase {
         super.tearDown()
     }
 
-    func testGetTrigger_success_predicates() {
-        let simpleStatementsToTest = [
-            ["type":"eq","field":"color", "value": 0],
-            ["type":"eq","field":"power", "value": true],
-            ["type": "not", "clause": ["type":"eq","field":"power", "value": true]],
-            ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true],
-            ["type": "range", "field": "color", "upperLimit": 200, "upperIncluded": false],
-            ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": true],
-            ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": false],
-            ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]],
-            ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
-        ]
-        for simpleStatement in simpleStatementsToTest {
-            getTriggerSuccess("testGetTrigger_success_predicates", statementToTest: simpleStatement, triggersWhen: "CONDITION_FALSE_TO_TRUE")
-        }
+    struct ExpectedTriggerStruct {
+        let statement: Dictionary<String, AnyObject>
+        let triggerID: String
+        let triggersWhenString: String
+        let enabled: Bool
 
-        let orClauseStatement = ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
-        let andClauseStatement = ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
-        let complexStatementsToTest = [
-            ["type": "and", "clauses": [["type":"eq","field":"brightness", "value": 50], orClauseStatement]],
-            ["type": "or", "clauses": [["type":"eq","field":"brightness", "value": 50], andClauseStatement]]
-        ]
-        for complextStatement in complexStatementsToTest {
-            getTriggerSuccess("getTriggerSuccess", statementToTest: complextStatement as! Dictionary<String, AnyObject>, triggersWhen: "CONDITION_FALSE_TO_TRUE")
+        func getPredicateDict() -> Dictionary<String, AnyObject> {
+            return ["eventSource":"states", "triggersWhen":triggersWhenString, "condition":statement]
         }
 
     }
 
-    func testGetTrigger_success_triggersWhens() {
+    func testListTriggers_success_predicates() {
 
-        let triggersWhensToTest = ["CONDITION_TRUE", "CONDITION_FALSE_TO_TRUE", "CONDITION_CHANGED"]
-        for triggersWhen in triggersWhensToTest {
-            getTriggerSuccess("testGetTrigger_success_triggersWhens", statementToTest: ["type":"eq","field":"color", "value": 0], triggersWhen: triggersWhen)
-        }
+        let triggerIDPrifex = "0267251d9d60-1858-5e11-3dc3-00f3f0b"
 
-    }
+        var expectedTriggerStructs: [ExpectedTriggerStruct] = [
+            ExpectedTriggerStruct(statement: ["type":"eq","field":"color", "value": 0], triggerID: "\(triggerIDPrifex)1", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type":"eq","field":"power", "value": true], triggerID: "\(triggerIDPrifex)2", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], triggerID: "\(triggerIDPrifex)3", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], triggerID: "\(triggerIDPrifex)4", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "upperLimit": 200, "upperIncluded": false], triggerID: "\(triggerIDPrifex)5", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": true], triggerID: "\(triggerIDPrifex)6", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": false], triggerID: "\(triggerIDPrifex)7", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggerID: "\(triggerIDPrifex)8", triggersWhenString: "CONDITION_CHANGED", enabled: false),
+            ExpectedTriggerStruct(statement: ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggerID: "\(triggerIDPrifex)8", triggersWhenString: "CONDITION_FALSE_TO_TRUE", enabled: true)
+        ]
 
-    func getTriggerSuccess(tag: String, statementToTest: Dictionary<String, AnyObject>, triggersWhen: String) {
-        let expectation = self.expectationWithDescription(tag)
+
+        let expectation = self.expectationWithDescription("testListTriggers_success_predicates")
 
         do{
-            let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
             let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let expectedCommandObject = Command(commandID: nil, targetID: self.target.targetType, issuerID: self.owner.ownerID, schemaName: self.schema.name, schemaVersion: self.schema.version, actions: expectedActionsDict, actionResults: nil, commandState: nil)
             let eventSource = "states"
-            let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":triggersWhen, "condition":statementToTest]
 
             // mock response
             let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.targetType.toString(), "issuer": self.owner.ownerID.toString(), "actions": expectedActionsDict]
-            let dict = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "command": commandDict, "disabled": false]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+
+            var expectedTriggerDicts = [Dictionary<String, AnyObject>]()
+            for expectedTriggerStruct in expectedTriggerStructs {
+                expectedTriggerDicts.append(["triggerID": expectedTriggerStruct.triggerID, "predicate": ["eventSource":eventSource, "triggersWhen":expectedTriggerStruct.triggersWhenString, "condition":expectedTriggerStruct.statement], "command": commandDict, "disabled": !(expectedTriggerStruct.enabled)])
+            }
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(["triggers":expectedTriggerDicts], options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:self.baseURLString)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
             // verify request
@@ -95,31 +88,40 @@ class GetTriggerTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-
-             }
+            }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.getTrigger(self.target, triggerID: expectedTriggerID, completionHandler: { (trigger, error) -> Void in
+            api.listTriggers(self.target, bestEffortLimit: nil, paginationKey: nil, completionHandler: { (triggers, paginationKey, error) -> Void in
+
                 if(error != nil) {
                     XCTFail("should success")
                 }else {
-                    XCTAssertEqual(trigger!.triggerID, expectedTriggerID)
-                    XCTAssertTrue(trigger!.enabled == true)
-                    XCTAssertTrue(trigger!.command == expectedCommandObject)
+                    if triggers != nil {
+                        XCTAssertEqual(triggers!.count, expectedTriggerStructs.count)
+                        for (index,trigger) in triggers!.enumerate() {
+                            XCTAssertEqual(trigger.triggerID, expectedTriggerStructs[index].triggerID)
+                            XCTAssertTrue(trigger.enabled == expectedTriggerStructs[index].enabled)
+                            XCTAssertTrue(trigger.command == expectedCommandObject)
 
-                    do {
-                        let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(expectedActionsDict, options: NSJSONWritingOptions(rawValue: 0))
-                        let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger!.command.actions, options: NSJSONWritingOptions(rawValue: 0))
-                        XCTAssertTrue(expectedActionsData == actualActionsData)
+                            do {
+                                // verify actions dictionary
+                                let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(expectedActionsDict, options: NSJSONWritingOptions(rawValue: 0))
+                                let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger.command.actions, options: NSJSONWritingOptions(rawValue: 0))
+                                XCTAssertTrue(expectedActionsData == actualActionsData)
 
-                        let expectedPredicteData = try NSJSONSerialization.dataWithJSONObject(expectedPredicateDict, options: NSJSONWritingOptions(rawValue: 0))
-                        let actualPredicateDict = trigger!.predicate.toNSDictionary()
-                        let actualBodyData = try NSJSONSerialization.dataWithJSONObject(actualPredicateDict, options: NSJSONWritingOptions(rawValue: 0))
-                        XCTAssertTrue(expectedPredicteData.length == actualBodyData.length)
-                    }catch(_){
-                        XCTFail()
+                                // verify predicate
+                                let expectedPredicteData = try NSJSONSerialization.dataWithJSONObject(expectedTriggerStructs[index].getPredicateDict(), options: NSJSONWritingOptions(rawValue: 0))
+                                let actualPredicateDict = trigger.predicate.toNSDictionary()
+                                let actualBodyData = try NSJSONSerialization.dataWithJSONObject(actualPredicateDict, options: NSJSONWritingOptions(rawValue: 0))
+                                XCTAssertTrue(expectedPredicteData.length == actualBodyData.length)
+                            }catch(_){
+                                XCTFail()
+                            }
+                        }
+                    }else {
+                        XCTFail("triggers should not be empty")
                     }
                 }
                 expectation.fulfill()
@@ -134,7 +136,7 @@ class GetTriggerTests: XCTestCase {
         }
     }
 
-    func testGetTrigger_404_error() {
+    func testListTriggers_404_error() {
         let expectation = self.expectationWithDescription("getTrigger403Error")
 
         do{
@@ -183,6 +185,6 @@ class GetTriggerTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-
+        
     }
 }

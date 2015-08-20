@@ -71,7 +71,7 @@ public class Trigger: NSObject, NSCoding {
         // TODO: implement it with proper initializer.
         self.triggerID = ""
         self.targetID = TypedID(type:"",id:"")
-        self.enabled = true
+        self.enabled = false
         self.predicate = Predicate()
         self.command = Command()
     }
