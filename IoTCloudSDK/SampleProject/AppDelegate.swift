@@ -17,6 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        Kii.beginWithID("50a62843", andKey: "2bde7d4e3eed1ad62c306dd2144bb2b0", andCustomURL: "https://api-development-jp.internal.kii.com/api")
+        do{
+            let _ = try KiiUser.authenticateSynchronous("user2", withPassword: "pass")
+        }catch (let e) {
+            print(e)
+        }
+        
         return true
     }
 
