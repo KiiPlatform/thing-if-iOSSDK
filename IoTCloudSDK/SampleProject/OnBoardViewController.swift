@@ -35,6 +35,7 @@ class OnBoardViewController: UITableViewController {
                 if target != nil {
                     self.saveTarget(target!)
                     print("saved target")
+                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                 }else {
                     // output error
                     print(error)
@@ -48,6 +49,7 @@ class OnBoardViewController: UITableViewController {
                 if target != nil {
                     self.saveTarget(target!)
                     print("saved target")
+                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                 }else {
                     // output error
                     print(error)

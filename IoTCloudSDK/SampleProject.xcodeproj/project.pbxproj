@@ -17,6 +17,7 @@
 		7D96858C1B8AF3C90017CA7D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D96858B1B8AF3C90017CA7D /* LoginViewController.swift */; };
 		7DB3F6E61B8B133D00AE8254 /* OnBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6E51B8B133D00AE8254 /* OnBoardViewController.swift */; };
 		7DB3F6E81B8B243600AE8254 /* Properties.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DB3F6E71B8B243600AE8254 /* Properties.plist */; };
+		7DB3F6EC1B8B2DED00AE8254 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6EB1B8B2DED00AE8254 /* TabBarViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		7D96858B1B8AF3C90017CA7D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7DB3F6E51B8B133D00AE8254 /* OnBoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnBoardViewController.swift; sourceTree = "<group>"; };
 		7DB3F6E71B8B243600AE8254 /* Properties.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Properties.plist; sourceTree = "<group>"; };
+		7DB3F6EB1B8B2DED00AE8254 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				7D96858B1B8AF3C90017CA7D /* LoginViewController.swift */,
 				7DB3F6E51B8B133D00AE8254 /* OnBoardViewController.swift */,
 				7DB3F6E71B8B243600AE8254 /* Properties.plist */,
+				7DB3F6EB1B8B2DED00AE8254 /* TabBarViewController.swift */,
 			);
 			path = SampleProject;
 			sourceTree = "<group>";
@@ -158,6 +161,7 @@
 				7D96858C1B8AF3C90017CA7D /* LoginViewController.swift in Sources */,
 				7D108ADD1B7210C8006EA12B /* ViewController.swift in Sources */,
 				7DB3F6E61B8B133D00AE8254 /* OnBoardViewController.swift in Sources */,
+				7DB3F6EC1B8B2DED00AE8254 /* TabBarViewController.swift in Sources */,
 				7D108ADB1B7210C8006EA12B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
