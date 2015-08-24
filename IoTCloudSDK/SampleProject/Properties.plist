@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>appID</key>
+	<string>50a62843</string>
+	<key>appKey</key>
+	<string>2bde7d4e3eed1ad62c306dd2144bb2b0</string>
+	<key>kiiCloudCustomURL</key>
+	<string>https://api-development-jp.internal.kii.com/api</string>
+	<key>iotCloudAPIBaseURL</key>
+	<string>https://api-development-jp.internal.kii.com</string>
+</dict>
+</plist>

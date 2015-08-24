@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IoTCloudSDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,8 +17,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-        Kii.beginWithID("50a62843", andKey: "2bde7d4e3eed1ad62c306dd2144bb2b0", andCustomURL: "https://api-development-jp.internal.kii.com/api")
-
+        // init Kii with the values from Properties.plist, so please make sure to set the correct value
+        var propertiesDict: NSDictionary?
+        if let path = NSBundle.mainBundle().pathForResource("Properties", ofType: "plist") {
+            propertiesDict = NSDictionary(contentsOfFile: path)
+        }
+        if let dict = propertiesDict {
+            Kii.beginWithID((dict["appID"] as! String), andKey: (dict["appKey"] as! String), andCustomURL: (dict["kiiCloudCustomURL"] as! String))
+        }else {
+            print("please make sure the Properties.plist file exists")
+        }
         return true
     }
 

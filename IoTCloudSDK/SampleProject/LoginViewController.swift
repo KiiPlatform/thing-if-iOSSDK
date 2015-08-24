@@ -27,7 +27,6 @@ class LoginViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     @IBAction func tapLogin(sender: AnyObject) {
@@ -38,9 +37,8 @@ class LoginViewController: UIViewController {
             KiiUser.authenticate(userName, withPassword: password, andBlock: { (user, error) -> Void in
                 if error == nil {
                     if let userID = user.userID, accessToken = user.accessToken {
-                        let owner = Owner(ownerID: TypedID(type: "user", id: userID), accessToken: accessToken)
+                        self.initIoTCloudAPI(userID, accessToken: accessToken)
                         self.showActivityView(false)
-                        print(owner.ownerID.toString())
                         self.userLogined = true
                         self.performSegueWithIdentifier("userLogin", sender: nil)
                     }
@@ -65,8 +63,7 @@ class LoginViewController: UIViewController {
             newUser.performRegistrationWithBlock({ (user, error) -> Void in
                 if error == nil {
                     if let userID = user.userID, accessToken = user.accessToken {
-                        let owner = Owner(ownerID: TypedID(type: "user", id: userID), accessToken: accessToken)
-                        print(owner.ownerID.toString())
+                        self.initIoTCloudAPI(userID, accessToken: accessToken)
                         self.userLogined = true
                         self.performSegueWithIdentifier("userRegister", sender: nil)
                     }
@@ -91,6 +88,26 @@ class LoginViewController: UIViewController {
         }else {
             return false
         }
+    }
+
+    // init IoTCloudAPI after success to login/register as KiiUser
+    func initIoTCloudAPI(ownerID: String, accessToken: String) {
+        let owner = Owner(ownerID: TypedID(type: "user", id: ownerID), accessToken: accessToken)
+
+        // init iotAPI with values from Properties.plist, please make sure to put correct values
+        var propertiesDict: NSDictionary?
+        if let path = NSBundle.mainBundle().pathForResource("Properties", ofType: "plist") {
+            propertiesDict = NSDictionary(contentsOfFile: path)
+        }
+        if let dict = propertiesDict {
+            let iotAPI = IoTCloudAPIBuilder(appID: (dict["appID"] as! String), appKey: (dict["appKey"] as! String), baseURL: (dict["iotCloudAPIBaseURL"] as! String), owner: owner).build()
+
+                // save iotAPI
+                NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(iotAPI), forKey: "iotAPI")
+        }else {
+            print("please make sure the Properties.plist file exists")
+        }
+
     }
 
     func showActivityView(show: Bool) {
