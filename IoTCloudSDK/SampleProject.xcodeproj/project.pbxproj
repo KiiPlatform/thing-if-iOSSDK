@@ -14,6 +14,7 @@
 		7D108AE51B7210C8006EA12B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D108AE31B7210C8006EA12B /* LaunchScreen.storyboard */; };
 		7D783E4B1B87152600543A09 /* KiiSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D783E4A1B87152600543A09 /* KiiSDK.framework */; };
 		7D783E4D1B87157F00543A09 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D783E4C1B87157F00543A09 /* libsqlite3.tbd */; };
+		7D96858C1B8AF3C90017CA7D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D96858B1B8AF3C90017CA7D /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		7D783E4A1B87152600543A09 /* KiiSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KiiSDK.framework; path = SampleProject/KiiSDK.framework; sourceTree = "<group>"; };
 		7D783E4C1B87157F00543A09 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		7D783E4F1B8715E500543A09 /* SampleProject-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SampleProject-Bridging-Header.h"; sourceTree = "<group>"; };
+		7D96858B1B8AF3C90017CA7D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				7D108AE11B7210C8006EA12B /* Assets.xcassets */,
 				7D108AE31B7210C8006EA12B /* LaunchScreen.storyboard */,
 				7D108AE61B7210C8006EA12B /* Info.plist */,
+				7D96858B1B8AF3C90017CA7D /* LoginViewController.swift */,
 			);
 			path = SampleProject;
 			sourceTree = "<group>";
@@ -145,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D96858C1B8AF3C90017CA7D /* LoginViewController.swift in Sources */,
 				7D108ADD1B7210C8006EA12B /* ViewController.swift in Sources */,
 				7D108ADB1B7210C8006EA12B /* AppDelegate.swift in Sources */,
 			);
