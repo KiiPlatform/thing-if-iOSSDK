@@ -59,7 +59,9 @@ class ListTriggersTests: XCTestCase {
             ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": true], triggerID: "\(triggerIDPrifex)6", triggersWhenString: "CONDITION_TRUE", enabled: true),
             ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": false], triggerID: "\(triggerIDPrifex)7", triggersWhenString: "CONDITION_TRUE", enabled: true),
             ExpectedTriggerStruct(statement: ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggerID: "\(triggerIDPrifex)8", triggersWhenString: "CONDITION_CHANGED", enabled: false),
-            ExpectedTriggerStruct(statement: ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggerID: "\(triggerIDPrifex)8", triggersWhenString: "CONDITION_FALSE_TO_TRUE", enabled: true)
+            ExpectedTriggerStruct(statement: ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggerID: "\(triggerIDPrifex)9", triggersWhenString: "CONDITION_FALSE_TO_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "upperLimit": 3.1415927, "upperIncluded": false], triggerID: "\(triggerIDPrifex)10", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "lowerLimit": 1.345, "lowerIncluded": false], triggerID: "\(triggerIDPrifex)11", triggersWhenString: "CONDITION_TRUE", enabled: true)
         ]
 
 
