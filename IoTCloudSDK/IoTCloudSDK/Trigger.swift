@@ -130,6 +130,17 @@ public class Condition {
         if let type = clauseDict["type"] as? String {
             switch type {
             case "range":
+                if let upperLimitNumber = clauseDict["upperLimit"] as? NSNumber, lowerLimitNumber = clauseDict["lowerLimit"] as? NSNumber, field = clauseDict["field"] as? String {
+                    if let upperIncluded = clauseDict["upperIncluded"] as? Bool, lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
+                        if upperLimitNumber.isInt(){
+                            clause = Range(field: field, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                        }else if upperLimitNumber.isDouble() {
+                            clause = Range(field: field, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
+                        }
+                    }
+                    break
+                }
+
                 if let upperLimitNumber = clauseDict["upperLimit"] as? NSNumber,
                     filed = clauseDict["field"] as? String {
                     if let upperIncluded = clauseDict["upperIncluded"] as? Bool {
