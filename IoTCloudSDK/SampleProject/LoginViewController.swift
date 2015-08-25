@@ -119,10 +119,4 @@ class LoginViewController: UIViewController {
             self.activityIndicatorView.hidden = true
         }
     }
-
-    func showAlert(title: String, message: String, completion: (()-> Void)?) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-        alertController.addAction(UIAlertAction(title: "Dismiss", style: UIAlertActionStyle.Default, handler: nil))
-        self.presentViewController(alertController, animated: true, completion: completion)
-    }
 }

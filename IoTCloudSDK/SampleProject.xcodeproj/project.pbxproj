@@ -18,6 +18,9 @@
 		7DB3F6E61B8B133D00AE8254 /* OnBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6E51B8B133D00AE8254 /* OnBoardViewController.swift */; };
 		7DB3F6E81B8B243600AE8254 /* Properties.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DB3F6E71B8B243600AE8254 /* Properties.plist */; };
 		7DB3F6EC1B8B2DED00AE8254 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6EB1B8B2DED00AE8254 /* TabBarViewController.swift */; };
+		7DB3F6EE1B8BF90F00AE8254 /* StateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6ED1B8BF90F00AE8254 /* StateViewController.swift */; };
+		7DB3F6F01B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6EF1B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift */; };
+		7DB3F6F21B8BFDA900AE8254 /* KiiBaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +38,9 @@
 		7DB3F6E51B8B133D00AE8254 /* OnBoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnBoardViewController.swift; sourceTree = "<group>"; };
 		7DB3F6E71B8B243600AE8254 /* Properties.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Properties.plist; sourceTree = "<group>"; };
 		7DB3F6EB1B8B2DED00AE8254 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		7DB3F6ED1B8BF90F00AE8254 /* StateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateViewController.swift; sourceTree = "<group>"; };
+		7DB3F6EF1B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+showAlert.swift.swift"; sourceTree = "<group>"; };
+		7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiiBaseTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,9 @@
 				7DB3F6E51B8B133D00AE8254 /* OnBoardViewController.swift */,
 				7DB3F6E71B8B243600AE8254 /* Properties.plist */,
 				7DB3F6EB1B8B2DED00AE8254 /* TabBarViewController.swift */,
+				7DB3F6ED1B8BF90F00AE8254 /* StateViewController.swift */,
+				7DB3F6EF1B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift */,
+				7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */,
 			);
 			path = SampleProject;
 			sourceTree = "<group>";
@@ -158,8 +167,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DB3F6F01B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift in Sources */,
+				7DB3F6EE1B8BF90F00AE8254 /* StateViewController.swift in Sources */,
 				7D96858C1B8AF3C90017CA7D /* LoginViewController.swift in Sources */,
 				7D108ADD1B7210C8006EA12B /* ViewController.swift in Sources */,
+				7DB3F6F21B8BFDA900AE8254 /* KiiBaseTableViewController.swift in Sources */,
 				7DB3F6E61B8B133D00AE8254 /* OnBoardViewController.swift in Sources */,
 				7DB3F6EC1B8B2DED00AE8254 /* TabBarViewController.swift in Sources */,
 				7D108ADB1B7210C8006EA12B /* AppDelegate.swift in Sources */,

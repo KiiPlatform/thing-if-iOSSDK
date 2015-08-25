@@ -9,7 +9,7 @@
 import UIKit
 import IoTCloudSDK
 
-class OnBoardViewController: UITableViewController {
+class OnBoardViewController: KiiBaseTableViewController {
 
     @IBOutlet weak var thingTypeTextField: UITextField!
     @IBOutlet weak var vendorThingID: UITextField!
@@ -31,32 +31,37 @@ class OnBoardViewController: UITableViewController {
 
     @IBAction func tapOnboardWithVendorThingID(sender: AnyObject) {
         if let vendorThingID = vendorThingID.text, thingPassword = thingPassTextField.text {
+            showActivityView(true)
             iotAPI.onBoard(vendorThingID, thingPassword: thingPassword, thingType: thingTypeTextField.text, thingProperties: nil, completionHandler: { (target, error) -> Void in
                 if target != nil {
+                    // after successfully onboard, save target
                     self.saveTarget(target!)
-                    print("saved target")
                     self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    self.showActivityView(false)
                 }else {
-                    // output error
-                    print(error)
+                    self.showAlert("Onboard Failed", error: error, completion: { () -> Void in
+                        self.showActivityView(false)
+                    })
                 }
             })
         }
     }
     @IBAction func tapOnBoardWithThingID(sender: AnyObject) {
         if let thingID = thingIDTextField.text, thingPassword = thingPassTextField.text {
+            showActivityView(true)
             iotAPI.onBoard(thingID, thingPassword: thingPassword, completionHandler: { (target, error) -> Void in
                 if target != nil {
+                    // after successfully onboard, save target
                     self.saveTarget(target!)
-                    print("saved target")
                     self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    self.showActivityView(false)
                 }else {
-                    // output error
-                    print(error)
+                    self.showAlert("Onboard Failed", error: error, completion: { () -> Void in
+                        self.showActivityView(false)
+                    })
                 }
             })
         }
-
     }
 
     func saveTarget(target: Target) {

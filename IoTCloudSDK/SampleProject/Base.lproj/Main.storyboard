@@ -86,6 +86,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <activityIndicatorView key="tableFooterView" hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="b81-yQ-rHj">
+                            <rect key="frame" x="0.0" y="208" width="600" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </activityIndicatorView>
                         <sections>
                             <tableViewSection headerTitle="ThingID" id="My4-Pz-puO">
                                 <cells>
@@ -215,6 +219,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="b81-yQ-rHj" id="hEE-AU-JaV"/>
                         <outlet property="thingIDTextField" destination="g3K-kL-wtj" id="Gu0-Eq-sGY"/>
                         <outlet property="thingPassTextField" destination="dzz-FU-HgP" id="TLm-MO-ehS"/>
                     </connections>
@@ -556,9 +561,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
+                        <segue destination="bw5-je-x4n" kind="relationship" relationship="viewControllers" id="bOF-pq-ead"/>
                         <segue destination="vdG-ek-iwZ" kind="relationship" relationship="viewControllers" id="VXV-KU-Kms"/>
                         <segue destination="aMv-zW-u6h" kind="relationship" relationship="viewControllers" id="X9l-EL-T6c"/>
-                        <segue destination="bw5-je-x4n" kind="relationship" relationship="viewControllers" id="bOF-pq-ead"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mlK-TH-b9e" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -573,6 +578,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <activityIndicatorView key="tableFooterView" hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" id="yqG-4J-Gw9">
+                            <rect key="frame" x="0.0" y="280" width="600" height="20"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </activityIndicatorView>
                         <sections>
                             <tableViewSection headerTitle="Vendor Thing ID" id="RI8-LG-V1Z">
                                 <cells>
@@ -727,6 +736,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="yqG-4J-Gw9" id="Lux-Wv-OBw"/>
                         <outlet property="thingPassTextField" destination="7ak-Bu-MGI" id="SFG-SC-6MQ"/>
                         <outlet property="thingTypeTextField" destination="lsw-OH-6QI" id="pCf-z4-wVI"/>
                         <outlet property="vendorThingID" destination="kD3-eK-Zkx" id="Lro-Hi-ood"/>
@@ -1122,7 +1132,7 @@
         <!--ThingID-->
         <scene sceneID="p0x-Kt-Oq1">
             <objects>
-                <tableViewController id="q1D-nL-xHn" sceneMemberID="viewController">
+                <tableViewController id="q1D-nL-xHn" customClass="StateViewController" customModule="SampleProject" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="drl-KR-Zct">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1199,7 +1209,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="ThingID" id="EWp-jx-Jik">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="oU1-Zu-eTz"/>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="oU1-Zu-eTz">
+                            <connections>
+                                <action selector="tapLogout:" destination="q1D-nL-xHn" id="kRN-7l-fRT"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0dL-65-WpA" userLabel="First Responder" sceneMemberID="firstResponder"/>
