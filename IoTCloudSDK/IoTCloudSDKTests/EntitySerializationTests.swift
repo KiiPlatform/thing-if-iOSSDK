@@ -56,6 +56,13 @@ class EntitySerializationTests: XCTestCase {
         let aTrigger = Trigger()
         self.doSerializationTest(aTrigger)
     }
+    //Target
+    func testTarget_NSUserDefaultSerialization() {
+        let aTypedID = TypedID(type: "camera", id: "cameraID")
+        let aTarget = Target(targetType: aTypedID)
+
+        self.doSerializationTest(aTarget)
+    }
     
     
 }
