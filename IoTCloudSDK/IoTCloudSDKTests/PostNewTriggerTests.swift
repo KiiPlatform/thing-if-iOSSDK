@@ -32,38 +32,42 @@ class PostNewTriggerTests: XCTestCase {
     }
 
     struct TestCase {
-        let statement: Statement
-        let expectedStatementDict: Dictionary<String, AnyObject>
+        let clause: Clause
+        let expectedClauseDict: Dictionary<String, AnyObject>
         let triggersWhen: TriggersWhen
         let expectedTriggersWhenString: String
     }
 
     func testPostNewTrigger_success() {
 
-        let orClauseStatement = ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
-        let andClauseStatement = ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
-        let complexExpectedStatements:[Dictionary<String, AnyObject>] = [
-            ["type": "and", "clauses": [["type":"eq","field":"brightness", "value": 50], orClauseStatement]],
-            ["type": "or", "clauses": [["type":"eq","field":"brightness", "value": 50], andClauseStatement]]
+        let orClauseClause = ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
+        let andClauseClause = ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
+        let complexExpectedClauses:[Dictionary<String, AnyObject>] = [
+            ["type": "and", "clauses": [["type":"eq","field":"brightness", "value": 50], orClauseClause]],
+            ["type": "or", "clauses": [["type":"eq","field":"brightness", "value": 50], andClauseClause]]
         ]
 
         let testsCases: [TestCase] = [
-            // simple statement
-            TestCase(statement: Equals(field: "color", value: 0), expectedStatementDict: ["type":"eq","field":"color", "value": 0], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-            TestCase(statement: Equals(field: "power", value: true), expectedStatementDict: ["type":"eq","field":"power", "value": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-            TestCase(statement: NotEquals(field: "power", value: true), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-            TestCase(statement: NotGreaterThan(field: "color", upperLimit: 255), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-            TestCase(statement: LessThan(field: "color", upperLimit: 200), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 200, "upperIncluded": false], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-            TestCase(statement: NotLessThan(field: "color", lowerLimit: 1), expectedStatementDict: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-            TestCase(statement: GreaterThan(field: "color", lowerLimit: 1), expectedStatementDict: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": false], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-            TestCase(statement: And(statements: Equals(field: "color", value: 0), NotEquals(field: "power", value: true)), expectedStatementDict: ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-            TestCase(statement: Or(statements: Equals(field: "color", value: 0), NotEquals(field: "color", value: true)), expectedStatementDict: ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-            // complex statements
-            TestCase(statement: And(statements: Equals(field: "brightness", value: 50), Or(statements: Equals(field: "color", value: 0), NotEquals(field: "power", value: true))), expectedStatementDict: complexExpectedStatements[0], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
-            TestCase(statement: Or(statements: Equals(field: "brightness", value: 50),And(statements: Equals(field: "color", value: 0), NotEquals(field: "power", value: true))), expectedStatementDict: complexExpectedStatements[1], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            // simple clause
+            TestCase(clause: EqualsClause(field: "color", value: 0), expectedClauseDict: ["type":"eq","field":"color", "value": 0], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: EqualsClause(field: "power", value: true), expectedClauseDict: ["type":"eq","field":"power", "value": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: NotEqualsClause(field: "power", value: true), expectedClauseDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: RangeClause(field: "color", upperLimit: 255, upperIncluded:true), expectedClauseDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: RangeClause(field: "color", upperLimit: 200, upperIncluded: false), expectedClauseDict: ["type": "range", "field": "color", "upperLimit": 200, "upperIncluded": false], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: RangeClause(field: "color", upperLimit: 200.345, upperIncluded: false), expectedClauseDict: ["type": "range", "field": "color", "upperLimit": 200.345, "upperIncluded": false], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: RangeClause(field: "color", lowerLimit: 1, lowerIncluded: true), expectedClauseDict: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: RangeClause(field: "color", lowerLimit: 1, lowerIncluded: false), expectedClauseDict: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": false], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: RangeClause(field: "color", lowerLimit: 1.345, lowerIncluded: false), expectedClauseDict: ["type": "range", "field": "color", "lowerLimit": 1.345, "lowerIncluded": false], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: RangeClause(field: "color", lowerLimit: 1, lowerIncluded: true, upperLimit: 345, upperIncluded: true), expectedClauseDict: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": true, "upperLimit": 345, "upperIncluded": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: RangeClause(field: "color", lowerLimit: 1.1, lowerIncluded: true, upperLimit: 345.3, upperIncluded: true), expectedClauseDict: ["type": "range", "field": "color", "lowerLimit": 1.1, "lowerIncluded": true, "upperLimit": 345.3, "upperIncluded": true], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: AndClause(clauses: EqualsClause(field: "color", value: 0), NotEqualsClause(field: "power", value: true)), expectedClauseDict: ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: OrClause(clauses: EqualsClause(field: "color", value: 0), NotEqualsClause(field: "color", value: true)), expectedClauseDict: ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            // complex clauses
+            TestCase(clause: AndClause(clauses: EqualsClause(field: "brightness", value: 50), OrClause(clauses: EqualsClause(field: "color", value: 0), NotEqualsClause(field: "power", value: true))), expectedClauseDict: complexExpectedClauses[0], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
+            TestCase(clause: OrClause(clauses: EqualsClause(field: "brightness", value: 50),AndClause(clauses: EqualsClause(field: "color", value: 0), NotEqualsClause(field: "power", value: true))), expectedClauseDict: complexExpectedClauses[1], triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE, expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE"),
             // test triggersWhen
-            TestCase(statement: Equals(field: "color", value: 0), expectedStatementDict: ["type":"eq","field":"color", "value": 0], triggersWhen: TriggersWhen.CONDITION_CHANGED, expectedTriggersWhenString: "CONDITION_CHANGED"),
-            TestCase(statement: Equals(field: "color", value: 0), expectedStatementDict: ["type":"eq","field":"color", "value": 0], triggersWhen: TriggersWhen.CONDITION_TRUE, expectedTriggersWhenString: "CONDITION_TRUE")
+            TestCase(clause: EqualsClause(field: "color", value: 0), expectedClauseDict: ["type":"eq","field":"color", "value": 0], triggersWhen: TriggersWhen.CONDITION_CHANGED, expectedTriggersWhenString: "CONDITION_CHANGED"),
+            TestCase(clause: EqualsClause(field: "color", value: 0), expectedClauseDict: ["type":"eq","field":"color", "value": 0], triggersWhen: TriggersWhen.CONDITION_TRUE, expectedTriggersWhenString: "CONDITION_TRUE")
 
         ]
         for (index,testCase) in testsCases.enumerate() {
@@ -79,14 +83,14 @@ class PostNewTriggerTests: XCTestCase {
             let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
             let target = Target(targetType: TypedID(type: "thing", id: expectedTriggerID))
             let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
-            let condition = Condition(statement: testcase.statement)
+            let condition = Condition(clause: testcase.clause)
             let predicate = StatePredicate(condition: condition, triggersWhen: testcase.triggersWhen)
 
             let expectedActions = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
-            let expectedStatement = testcase.expectedStatementDict
+            let expectedClause = testcase.expectedClauseDict
             let expectedEventSource = "states"
             let expectedTriggerWhen = testcase.expectedTriggersWhenString
-            let expectedPredicateDict = ["eventSource":expectedEventSource, "triggersWhen":expectedTriggerWhen, "condition":expectedStatement]
+            let expectedPredicateDict = ["eventSource":expectedEventSource, "triggersWhen":expectedTriggerWhen, "condition":expectedClause]
 
             // mock response
             let dict = ["triggerID": expectedTriggerID]
@@ -145,14 +149,14 @@ class PostNewTriggerTests: XCTestCase {
             let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
             let target = Target(targetType: TypedID(type: "thing", id: expectedTriggerID))
             let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
-            let statement = Equals(field: "color", value: 0)
-            let condition = Condition(statement: statement)
+            let clause = EqualsClause(field: "color", value: 0)
+            let condition = Condition(clause: clause)
             let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
 
-            let expectedStatement = ["type":"eq","filed":"color", "value": 0]
+            let expectedClause = ["type":"eq","filed":"color", "value": 0]
             let expectedEventSource = "states"
             let expectedTriggerWhen = "CONDITION_FALSE_TO_TRUE"
-            let expectedPredicateDict = ["eventSource":expectedEventSource, "triggersWhen":expectedTriggerWhen, "condition":expectedStatement]
+            let expectedPredicateDict = ["eventSource":expectedEventSource, "triggersWhen":expectedTriggerWhen, "condition":expectedClause]
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
