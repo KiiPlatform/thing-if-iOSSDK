@@ -46,6 +46,9 @@ class CommandViewController: KiiBaseTableViewController {
     }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        if command != nil {
+            self.navigationItem.title = command!.commandID
+        }
         loadSections()
     }
 
