@@ -13,18 +13,40 @@ class KiiBaseTableViewController: UITableViewController {
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
 
+    var iotAPI: IoTCloudAPI?
+    var target: Target?
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+
+        if iotAPI == nil {
+            if let iotAPIData = NSUserDefaults.standardUserDefaults().objectForKey("iotAPI") as? NSData {
+                if let iotAPI = NSKeyedUnarchiver.unarchiveObjectWithData(iotAPIData) as? IoTCloudAPI {
+                    self.iotAPI = iotAPI
+                }
+            }
+        }
+
+        if target == nil {
+            if let targetData = NSUserDefaults.standardUserDefaults().objectForKey("target") as? NSData {
+                if let target = NSKeyedUnarchiver.unarchiveObjectWithData(targetData) as? Target {
+                    self.target = target
+                    self.navigationItem.title = target.targetType.id
+                }
+            }
+        }
         showActivityView(false)
     }
 
     func showActivityView(show: Bool) {
-        if show && self.activityIndicatorView.hidden{
-            self.activityIndicatorView.hidden = false
-            self.activityIndicatorView.startAnimating()
-        }else if !(show || self.activityIndicatorView.hidden) {
-            self.activityIndicatorView.stopAnimating()
-            self.activityIndicatorView.hidden = true
+        if activityIndicatorView != nil {
+            if show && self.activityIndicatorView.hidden{
+                self.activityIndicatorView.hidden = false
+                self.activityIndicatorView.startAnimating()
+            }else if !(show || self.activityIndicatorView.hidden) {
+                self.activityIndicatorView.stopAnimating()
+                self.activityIndicatorView.hidden = true
+            }
         }
     }
 

@@ -16,15 +16,7 @@ class OnBoardViewController: KiiBaseTableViewController {
     @IBOutlet weak var thingPassTextField: UITextField!
     @IBOutlet weak var thingIDTextField: UITextField!
 
-    var iotAPI: IoTCloudAPI!
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        if let ownerData = NSUserDefaults.standardUserDefaults().objectForKey("iotAPI") as? NSData {
-            if let iotAPI = NSKeyedUnarchiver.unarchiveObjectWithData(ownerData) as? IoTCloudAPI {
-                self.iotAPI = iotAPI
-            }
-        }
-    }
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -32,7 +24,7 @@ class OnBoardViewController: KiiBaseTableViewController {
     @IBAction func tapOnboardWithVendorThingID(sender: AnyObject) {
         if let vendorThingID = vendorThingID.text, thingPassword = thingPassTextField.text {
             showActivityView(true)
-            iotAPI.onBoard(vendorThingID, thingPassword: thingPassword, thingType: thingTypeTextField.text, thingProperties: nil, completionHandler: { (target, error) -> Void in
+            self.iotAPI?.onBoard(vendorThingID, thingPassword: thingPassword, thingType: thingTypeTextField.text, thingProperties: nil, completionHandler: { (target, error) -> Void in
                 if target != nil {
                     // after successfully onboard, save target
                     self.saveTarget(target!)
@@ -49,7 +41,7 @@ class OnBoardViewController: KiiBaseTableViewController {
     @IBAction func tapOnBoardWithThingID(sender: AnyObject) {
         if let thingID = thingIDTextField.text, thingPassword = thingPassTextField.text {
             showActivityView(true)
-            iotAPI.onBoard(thingID, thingPassword: thingPassword, completionHandler: { (target, error) -> Void in
+            self.iotAPI?.onBoard(thingID, thingPassword: thingPassword, completionHandler: { (target, error) -> Void in
                 if target != nil {
                     // after successfully onboard, save target
                     self.saveTarget(target!)
