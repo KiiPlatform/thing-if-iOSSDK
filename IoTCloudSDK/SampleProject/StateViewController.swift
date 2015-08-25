@@ -47,8 +47,8 @@ class StateViewController: KiiBaseTableViewController {
         getState()
     }
     @IBAction func tapLogout(sender: AnyObject) {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("iotAPI")
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("target")
-        self.tabBarController?.viewDidAppear(true)
+        logout { () -> Void in
+            self.tabBarController?.viewDidAppear(true)
+        }
     }
 }

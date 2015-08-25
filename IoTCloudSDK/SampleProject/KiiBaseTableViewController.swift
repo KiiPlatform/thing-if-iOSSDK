@@ -68,4 +68,10 @@ class KiiBaseTableViewController: UITableViewController {
         }
         showAlert(title, message: errorString, completion: completion)
     }
+
+    func logout(completion: ()-> Void) {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("iotAPI")
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("target")
+        completion()
+    }
 }
