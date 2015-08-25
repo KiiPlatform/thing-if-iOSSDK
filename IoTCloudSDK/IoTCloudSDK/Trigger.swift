@@ -105,7 +105,7 @@ public class Predicate {
 
 /** Class represents Condition */
 public class Condition {
-    var clause: Clause!
+    private var clause: Clause!
 
     public init(clause:Clause) {
         self.clause = clause
@@ -133,9 +133,9 @@ public class Condition {
                 if let upperLimitNumber = clauseDict["upperLimit"] as? NSNumber, lowerLimitNumber = clauseDict["lowerLimit"] as? NSNumber, field = clauseDict["field"] as? String {
                     if let upperIncluded = clauseDict["upperIncluded"] as? Bool, lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
                         if upperLimitNumber.isInt(){
-                            clause = Range(field: field, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: field, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
                         }else if upperLimitNumber.isDouble() {
-                            clause = Range(field: field, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: field, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
                         }
                     }
                     break
@@ -145,9 +145,9 @@ public class Condition {
                     filed = clauseDict["field"] as? String {
                     if let upperIncluded = clauseDict["upperIncluded"] as? Bool {
                         if upperLimitNumber.isInt(){
-                            clause = Range(field: filed, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: filed, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
                         }else if upperLimitNumber.isDouble() {
-                            clause = Range(field: filed, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: filed, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
                         }
                     }
                     break
@@ -157,9 +157,9 @@ public class Condition {
                     filed = clauseDict["field"] as? String {
                     if let lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
                         if lowerLimitNumber.isInt() {
-                            clause = Range(field: filed, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded)
+                            clause = RangeClause(field: filed, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded)
                         }else if lowerLimitNumber.isDouble() {
-                            clause = Range(field: filed, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded)
+                            clause = RangeClause(field: filed, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded)
                         }
                     }
                     break
@@ -285,7 +285,6 @@ public class SchedulePredicate: Predicate {
     public override func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["eventSource": EventSource.Schedule.rawValue, "schedule":self.schedule])
     }
-
 }
 
 /** Class represents StatePredicate */

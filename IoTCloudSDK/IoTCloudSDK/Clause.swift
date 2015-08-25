@@ -11,7 +11,7 @@ public protocol Clause {
 
 /** Class represents Equals clause. */
 public class Equals: Clause {
-    var nsdict = NSMutableDictionary()
+    private var nsdict = NSMutableDictionary()
 
     init() {
         nsdict.setObject("eq", forKey: "type")
@@ -56,7 +56,7 @@ public class Equals: Clause {
 
 /** Class represents NotEquals clause. */
 public class NotEquals: Clause {
-    var equalClause: Equals!
+    private var equalClause: Equals!
 
     public init(equalStmt: Equals) {
         equalClause = equalStmt
@@ -93,8 +93,8 @@ public class NotEquals: Clause {
 }
 
 /** Class represents Range clause. */
-public class Range: Clause {
-    var nsdict: NSMutableDictionary = ["type": "range"]
+public class RangeClause: Clause {
+    private var nsdict: NSMutableDictionary = ["type": "range"]
 
     /** Initialize with Int left hand side value.
     this works as >(greater than) if lower included is false and as >=(greater than or equals) if lower included is true.
@@ -102,7 +102,7 @@ public class Range: Clause {
     - Parameter lowerLimit: Int lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
-    init(field:String, lowerLimit:Int, lowerIncluded: Bool) {
+    public init(field:String, lowerLimit:Int, lowerIncluded: Bool) {
         nsdict.setObject(lowerIncluded, forKey: "lowerIncluded")
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(NSNumber(integer: lowerLimit), forKey: "lowerLimit")
@@ -114,7 +114,7 @@ public class Range: Clause {
     - Parameter lowerLimit: Double lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
-    init(field:String, lowerLimit:Double, lowerIncluded: Bool) {
+    public init(field:String, lowerLimit:Double, lowerIncluded: Bool) {
         nsdict.setObject(lowerIncluded, forKey: "lowerIncluded")
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(NSNumber(double: lowerLimit), forKey: "lowerLimit")
@@ -126,7 +126,7 @@ public class Range: Clause {
     - Parameter upperLimit: Int upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    init(field:String, upperLimit:Int, upperIncluded: Bool) {
+    public init(field:String, upperLimit:Int, upperIncluded: Bool) {
         nsdict.setObject(upperIncluded, forKey: "upperIncluded")
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(NSNumber(integer: upperLimit), forKey: "upperLimit")
@@ -138,7 +138,7 @@ public class Range: Clause {
     - Parameter upperLimit: Double upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    init(field:String, upperLimit:Double, upperIncluded: Bool) {
+    public init(field:String, upperLimit:Double, upperIncluded: Bool) {
         nsdict.setObject(upperIncluded, forKey: "upperIncluded")
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(NSNumber(double: upperLimit), forKey: "upperLimit")
@@ -156,7 +156,7 @@ public class Range: Clause {
     - Parameter upperLimit: Int upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    init(field:String, lowerLimit: Int, lowerIncluded: Bool, upperLimit: Int, upperIncluded: Bool) {
+    public init(field:String, lowerLimit: Int, lowerIncluded: Bool, upperLimit: Int, upperIncluded: Bool) {
         nsdict.setObject(lowerIncluded, forKey: "lowerIncluded")
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(NSNumber(integer: lowerLimit), forKey: "lowerLimit")
@@ -176,7 +176,7 @@ public class Range: Clause {
     - Parameter upperLimit: Double upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    init(field:String, lowerLimit: Double, lowerIncluded: Bool, upperLimit: Double, upperIncluded: Bool) {
+    public init(field:String, lowerLimit: Double, lowerIncluded: Bool, upperLimit: Double, upperIncluded: Bool) {
         nsdict.setObject(lowerIncluded, forKey: "lowerIncluded")
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(NSNumber(double: lowerLimit), forKey: "lowerLimit")
@@ -194,7 +194,7 @@ public class Range: Clause {
 
 /** Class represents And clause. */
 public class And: Clause {
-    var clauseClauseDicts = NSMutableArray()
+    private var clauseClauseDicts = NSMutableArray()
 
     /** Initialize with clause clauses.
     - Parameter clauses: Clause instances for AND clauses
@@ -218,7 +218,7 @@ public class And: Clause {
 }
 /** Class represents Or clause. */
 public class Or: Clause {
-    var clauseClauseDicts = NSMutableArray()
+    private var clauseClauseDicts = NSMutableArray()
 
     /** Initialize with clause clauses.
     - Parameter clauses: Clause instances for OR clauses
