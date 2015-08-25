@@ -9,7 +9,7 @@ public class Target : NSObject, NSCoding {
     public var targetType: TypedID
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
-        // TODO: implement it.
+        aCoder.encodeObject(self.targetType, forKey: "targetType")
     }
 
     // MARK: - Implements NSCoding protocol
@@ -22,4 +22,11 @@ public class Target : NSObject, NSCoding {
         self.targetType = targetType
     }
 
+    public override func isEqual(object: AnyObject?) -> Bool {
+        guard let aTarget = object as? Target else{
+            return false
+        }
+
+        return self.targetType == aTarget.targetType
+    }
 }
