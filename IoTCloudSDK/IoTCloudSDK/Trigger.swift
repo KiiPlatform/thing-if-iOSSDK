@@ -169,26 +169,26 @@ public class Condition {
             case "eq":
                 if let field = clauseDict["field"] as? String, value = clauseDict["value"] {
                     if value is String {
-                        clause = Equals(field: field, value: value as! String)
+                        clause = EqualsClause(field: field, value: value as! String)
                     }else if value is NSNumber {
                         let numberValue = value as! NSNumber
                         if numberValue.isBool() {
-                            clause = Equals(field: field, value: numberValue.boolValue)
+                            clause = EqualsClause(field: field, value: numberValue.boolValue)
                         }else {
-                            clause = Equals(field: field, value: numberValue.integerValue)
+                            clause = EqualsClause(field: field, value: numberValue.integerValue)
                         }
                     }
                 }
 
             case "not":
                 if let clauseDict = clauseDict["clause"] as? NSDictionary {
-                    if let equalClause = Condition.clauseWithNSDict(clauseDict) as? Equals{
-                        clause = NotEquals(equalStmt: equalClause)
+                    if let equalClause = Condition.clauseWithNSDict(clauseDict) as? EqualsClause{
+                        clause = NotEqualsClause(equalStmt: equalClause)
                     }
                 }
 
             case "and":
-                let andClause = And()
+                let andClause = AndClause()
                 if let clauseDicts = clauseDict["clauses"] as? NSArray {
                     for clauseDict in clauseDicts {
                         if let subClause = Condition.clauseWithNSDict(clauseDict as! NSDictionary) {
@@ -199,7 +199,7 @@ public class Condition {
                 clause = andClause
 
             case "or":
-                let orClause = Or()
+                let orClause = OrClause()
                 if let clauseDicts = clauseDict["clauses"] as? NSArray {
                     for clauseDict in clauseDicts {
                         if let subClause = Condition.clauseWithNSDict(clauseDict as! NSDictionary) {

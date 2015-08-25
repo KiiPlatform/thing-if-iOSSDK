@@ -10,7 +10,7 @@ public protocol Clause {
 }
 
 /** Class represents Equals clause. */
-public class Equals: Clause {
+public class EqualsClause: Clause {
     private var nsdict = NSMutableDictionary()
 
     init() {
@@ -55,10 +55,10 @@ public class Equals: Clause {
 }
 
 /** Class represents NotEquals clause. */
-public class NotEquals: Clause {
-    private var equalClause: Equals!
+public class NotEqualsClause: Clause {
+    private var equalClause: EqualsClause!
 
-    public init(equalStmt: Equals) {
+    public init(equalStmt: EqualsClause) {
         equalClause = equalStmt
     }
     /** Initialize with String left hand side value.
@@ -66,7 +66,7 @@ public class NotEquals: Clause {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:String) {
-        equalClause = Equals(field: field, value: value)
+        equalClause = EqualsClause(field: field, value: value)
     }
 
     /** Initialize with Int left hand side value.
@@ -74,7 +74,7 @@ public class NotEquals: Clause {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Int) {
-        equalClause = Equals(field: field, value: value)
+        equalClause = EqualsClause(field: field, value: value)
     }
 
     /** Initialize with Bool left hand side value.
@@ -82,7 +82,7 @@ public class NotEquals: Clause {
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Bool) {
-        equalClause = Equals(field: field, value: value)
+        equalClause = EqualsClause(field: field, value: value)
     }
     /** Get Clause as NSDictionary instance
     - Returns: a NSDictionary instance.
@@ -193,7 +193,7 @@ public class RangeClause: Clause {
 }
 
 /** Class represents And clause. */
-public class And: Clause {
+public class AndClause: Clause {
     private var clauseClauseDicts = NSMutableArray()
 
     /** Initialize with clause clauses.
@@ -217,7 +217,7 @@ public class And: Clause {
     }
 }
 /** Class represents Or clause. */
-public class Or: Clause {
+public class OrClause: Clause {
     private var clauseClauseDicts = NSMutableArray()
 
     /** Initialize with clause clauses.
