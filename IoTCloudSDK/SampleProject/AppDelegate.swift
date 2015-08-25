@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
         // init Kii with the values from Properties.plist, so please make sure to set the correct value
@@ -27,6 +26,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }else {
             print("please make sure the Properties.plist file exists")
         }
+
+        // define schema
+        let lightStatuSchema = [
+            "power":["type":"boolean"],
+            "brightness":["type": "integer", "min": 0, "max": 100],
+            "color": ["type": "integer", "min": 0, "max": 16777215]
+        ]
+        let turnPowerAction = ["required": "power"]
+        let setBrightnessAction = ["required": "brightness"]
+        let setColorAction = ["required": "color"]
+
+        let schemaDict = ["name": "SmartLight-Demo", "version": 1,
+            "statusSchema": lightStatuSchema,
+            "actions": [turnPowerAction, setBrightnessAction, setColorAction]
+        ]
+        // save schema
+        NSUserDefaults.standardUserDefaults().setObject(schemaDict, forKey: "schema")
+
         return true
     }
 

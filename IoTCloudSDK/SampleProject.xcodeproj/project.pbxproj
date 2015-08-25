@@ -22,6 +22,7 @@
 		7DB3F6F01B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6EF1B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift */; };
 		7DB3F6F21B8BFDA900AE8254 /* KiiBaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */; };
 		7DB3F6F41B8C1DD400AE8254 /* CommandsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F31B8C1DD400AE8254 /* CommandsListViewController.swift */; };
+		7DB3F6F71B8C5B0100AE8254 /* CommandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		7DB3F6EF1B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+showAlert.swift.swift"; sourceTree = "<group>"; };
 		7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiiBaseTableViewController.swift; sourceTree = "<group>"; };
 		7DB3F6F31B8C1DD400AE8254 /* CommandsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsListViewController.swift; sourceTree = "<group>"; };
+		7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				7DB3F6EF1B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift */,
 				7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */,
 				7DB3F6F31B8C1DD400AE8254 /* CommandsListViewController.swift */,
+				7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */,
 			);
 			path = SampleProject;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DB3F6F71B8C5B0100AE8254 /* CommandViewController.swift in Sources */,
 				7DB3F6F01B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift in Sources */,
 				7DB3F6EE1B8BF90F00AE8254 /* StateViewController.swift in Sources */,
 				7D96858C1B8AF3C90017CA7D /* LoginViewController.swift in Sources */,

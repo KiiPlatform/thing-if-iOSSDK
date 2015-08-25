@@ -15,6 +15,7 @@ class KiiBaseTableViewController: UITableViewController {
 
     var iotAPI: IoTCloudAPI?
     var target: Target?
+    var schemaDict: Dictionary<String, AnyObject>?
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -33,6 +34,12 @@ class KiiBaseTableViewController: UITableViewController {
                     self.target = target
                     self.navigationItem.title = target.targetType.id
                 }
+            }
+        }
+
+        if schemaDict == nil {
+            if let schemaDict = NSUserDefaults.standardUserDefaults().objectForKey("schema") as? Dictionary<String, AnyObject> {
+                self.schemaDict = schemaDict
             }
         }
         showActivityView(false)

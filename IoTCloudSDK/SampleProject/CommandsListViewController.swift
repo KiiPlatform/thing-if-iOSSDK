@@ -66,6 +66,19 @@ class CommandsListViewController: KiiBaseTableViewController {
 
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showCommandViewController" {
+            if let targetVC = segue.destinationViewController as? CommandViewController {
+                if let selectedTableViewCell = sender as? UITableViewCell {
+                    if let selectedIndexPath = self.tableView.indexPathForCell(selectedTableViewCell) {
+                        let selectedCommand = sections[selectedIndexPath.section].commands[selectedIndexPath.row]
+                            targetVC.command = selectedCommand
+                    }
+                }
+            }
+        }
+    }
+
     func getCommands(){
         if iotAPI != nil && target != nil {
             showActivityView(true)
