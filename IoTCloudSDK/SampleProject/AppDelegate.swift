@@ -44,6 +44,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // save schema
         NSUserDefaults.standardUserDefaults().setObject(schemaDict, forKey: "schema")
 
+        //register for remote notification
+        // this line does not ask for user permission
+        application.registerForRemoteNotifications()
+
         return true
     }
 
@@ -69,6 +73,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        //save device token in nsuserdefault
+
+        NSUserDefaults.standardUserDefaults().setObject(deviceToken, forKey: "deviceToken")
+        NSUserDefaults.standardUserDefaults().synchronize()
+
+    }
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        //TODO : implementations
+    }
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        //TODO : implementations
+    }
 
 }
 

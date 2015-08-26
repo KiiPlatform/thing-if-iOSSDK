@@ -24,7 +24,23 @@
 		7DB3F6F21B8BFDA900AE8254 /* KiiBaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */; };
 		7DB3F6F41B8C1DD400AE8254 /* CommandsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F31B8C1DD400AE8254 /* CommandsListViewController.swift */; };
 		7DB3F6F71B8C5B0100AE8254 /* CommandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */; };
+		D5846EDE1B8DB4AF00C95152 /* IoTCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5846EDD1B8DB4AF00C95152 /* IoTCloudSDK.framework */; };
+		D5846EDF1B8DB4AF00C95152 /* IoTCloudSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D5846EDD1B8DB4AF00C95152 /* IoTCloudSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D5846EE01B8DB4AF00C95152 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D5846EDF1B8DB4AF00C95152 /* IoTCloudSDK.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		7D108ADA1B7210C8006EA12B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +63,7 @@
 		7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiiBaseTableViewController.swift; sourceTree = "<group>"; };
 		7DB3F6F31B8C1DD400AE8254 /* CommandsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsListViewController.swift; sourceTree = "<group>"; };
 		7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandViewController.swift; sourceTree = "<group>"; };
+		D5846EDD1B8DB4AF00C95152 /* IoTCloudSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = IoTCloudSDK.framework; path = "/Users/syahriza/Library/Developer/Xcode/DerivedData/IoTCloudSDK-cnzkjciksqncudesatvvajczgfyx/Build/Products/Debug-iphoneos/IoTCloudSDK.framework"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D783E4D1B87157F00543A09 /* libsqlite3.tbd in Frameworks */,
+				D5846EDE1B8DB4AF00C95152 /* IoTCloudSDK.framework in Frameworks */,
 				7D783E4B1B87152600543A09 /* KiiSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,6 +83,7 @@
 		7D108ACE1B7210C8006EA12B = {
 			isa = PBXGroup;
 			children = (
+				D5846EDD1B8DB4AF00C95152 /* IoTCloudSDK.framework */,
 				7D783E4E1B87159400543A09 /* frameworks */,
 				7D108AD91B7210C8006EA12B /* SampleProject */,
 				7D783E491B85CD9100543A09 /* SampleProject.app */,
@@ -114,6 +133,7 @@
 				7D108AD31B7210C8006EA12B /* Sources */,
 				7D108AD41B7210C8006EA12B /* Frameworks */,
 				7D108AD51B7210C8006EA12B /* Resources */,
+				D5846EE01B8DB4AF00C95152 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -309,12 +329,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SampleProject",
 				);
 				INFOPLIST_FILE = SampleProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kii.SampleProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -332,12 +353,13 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/SampleProject",
 				);
 				INFOPLIST_FILE = SampleProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kii.SampleProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
