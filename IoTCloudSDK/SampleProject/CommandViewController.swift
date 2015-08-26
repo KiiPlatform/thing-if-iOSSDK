@@ -9,10 +9,6 @@
 import UIKit
 import IoTCloudSDK
 
-struct SectionStruct {
-    let headerTitle: String!
-    let items: [AnyObject]!
-}
 extension CommandState {
     public func toString() -> String {
         switch self {
@@ -28,6 +24,11 @@ extension CommandState {
     }
 }
 class CommandViewController: KiiBaseTableViewController {
+    struct SectionStruct {
+        let headerTitle: String!
+        var items: [AnyObject]!
+    }
+
     var command: Command?
     private var sections = [SectionStruct]()
 
