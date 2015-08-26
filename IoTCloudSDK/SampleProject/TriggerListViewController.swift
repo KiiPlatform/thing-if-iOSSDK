@@ -116,4 +116,18 @@ class TriggerListViewController: KiiBaseTableViewController {
             })
         }
     }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+
+        if segue.identifier == "showExistingTriggerDetail" {
+            if let triggerDetailVC = segue.destinationViewController as? TriggerDetailViewController {
+                if let selectedCell = sender as? UITableViewCell {
+                    if let indexPath = self.tableView.indexPathForCell(selectedCell){
+                        let selectedTrigger = self.triggers[indexPath.row]
+                        triggerDetailVC.trigger = selectedTrigger
+                    }
+                }
+            }
+        }
+    }
 }
