@@ -11,7 +11,6 @@ import IoTCloudSDK
 
 class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
-
     struct SectionStruct {
         let headerTitle: String!
         var items: [Any]!
@@ -19,12 +18,15 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
 
     struct ActionCellData {
         let actionSchemaDict: Dictionary<String, String>!
-        let value: Any!
+        var value: AnyObject!
     }
+
+    @IBOutlet weak var uploadButton: UIBarButtonItem!
 
     private var sections = [SectionStruct]()
     private var actionsToSelect = [Dictionary<String, String>]()
     private var selectedActionDict: Dictionary<String, String>?
+    private var cellDeleted: UITableViewCell?
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -32,7 +34,7 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
         sections.append(SectionStruct(headerTitle: "Version", items: [schemaDict!["version"]!]))
         sections.append(SectionStruct(headerTitle: "Actions", items: [AnyObject]()))
 
-        // init actionsToSelect
+        // init actionsToSelect from predefined schemaDict
         if schemaDict != nil {
             if let actionSchemaDict = schemaDict!["actions"] as? [Dictionary<String, String>]{
                 self.actionsToSelect = actionSchemaDict
@@ -40,6 +42,11 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+
+    //MARK: - TableView methods
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return sections.count
     }
@@ -47,7 +54,7 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section < sections.count {
             if sections[section].headerTitle == "Actions" {
-                return sections[section].items.count+1
+                return sections[section].items.count+1 // the additional one cell for create new action button
             }else {
                 return 1
             }
@@ -65,7 +72,7 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
     }
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 2 {
+        if sections[indexPath.section].headerTitle == "Actions" {
             return 75
         }else {
             return 44
@@ -76,13 +83,15 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
 
         if sections[indexPath.section].headerTitle == "Actions"{
 
+            // last row for button to create new action
             if indexPath.row == sections[indexPath.section].items.count {
                 return tableView.dequeueReusableCellWithIdentifier("NewActionItemButtonCell", forIndexPath: indexPath)
             }else{
                 let actionsCellData = sections[indexPath.section].items[indexPath.row] as! ActionCellData
                 let requiredStatus = actionsCellData.actionSchemaDict["required"]!
+
                 var cell: UITableViewCell!
-                if isBool(requiredStatus)! {
+                if isBool(requiredStatus)! { // if data type of required status is bool, then cell will contain switch
                     cell = tableView.dequeueReusableCellWithIdentifier("NewActionItemBoolCell", forIndexPath: indexPath)
                     let boolSwitch = cell.viewWithTag(102) as! UISwitch
                     if let boolValue = actionsCellData.value as? Bool {
@@ -93,14 +102,12 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
                     let textField = cell.viewWithTag(103) as! UITextField
                     textField.text = "\(actionsCellData.value)"
                 }
-                let actionNameLabel = cell.viewWithTag(100) as! UILabel
+                let actionNameLabel = cell.viewWithTag(100) as! UILabel // 100 is label to show action name
                 actionNameLabel.text = actionsCellData.actionSchemaDict["name"]!
-                let requiredStatusLabel = cell.viewWithTag(101) as! UILabel
+                let requiredStatusLabel = cell.viewWithTag(101) as! UILabel // 101 is label to show name of required status
                 requiredStatusLabel.text = actionsCellData.actionSchemaDict["required"]!
 
                 return cell
-
-
             }
         }else if sections[indexPath.section].headerTitle == "Schema"{
             let cell = tableView.dequeueReusableCellWithIdentifier("SchemaNameCell", forIndexPath: indexPath)
@@ -118,6 +125,113 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
             return cell
         }
     }
+
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        if sections[indexPath.section].headerTitle == "Actions" {
+            if indexPath.row < sections[indexPath.section].items.count { // cell for creating new action should not be editable
+                return true
+            }else{
+                return false
+            }
+        }else {
+            return false
+        }
+    }
+
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+
+        if editingStyle == UITableViewCellEditingStyle.Delete {
+            sections[indexPath.section].items.removeAtIndex(indexPath.row)
+            self.cellDeleted = self.tableView.cellForRowAtIndexPath(indexPath)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
+        }
+    }
+
+    //MARK: IBActions methods
+    @IBAction func tapUpload(sender: AnyObject) {
+
+        if iotAPI != nil && target != nil && schemaDict != nil{
+            // disable upload button while uploading
+            self.uploadButton.enabled = false
+
+            // generate actions array
+            var actions = [Dictionary<String, AnyObject>]()
+            if let actionsItems = sections[2].items {
+                for actionItem in actionsItems {
+                    if let actionCellData = actionItem as? ActionCellData {
+                        // action should be like: ["actionName": ["requiredStatus": value] ], where value can be Bool, Int or Double
+                        let action: Dictionary<String, AnyObject> = [actionCellData.actionSchemaDict["name"]!: [actionCellData.actionSchemaDict["required"]!: actionCellData.value]]
+                        actions.append(action)
+                    }
+                }
+            }
+            // the defaultd schema and schemaVersion from predefined schem dict
+            var schema = schemaDict!["name"]! as! String
+            var schemaVersion = schemaDict!["version"]! as! Int
+
+            if let schemaTextField = self.view.viewWithTag(200) as? UITextField {
+                schema = schemaTextField.text!
+            }
+            if let schemaVersionTextFiled = self.view.viewWithTag(201) as? UITextField {
+                schemaVersion = Int(schemaVersionTextFiled.text!)!
+            }
+
+            // call postNewCommand method
+            iotAPI!.postNewCommand(target!, schemaName: schema, schemaVersion: schemaVersion, actions: actions, completionHandler: { (command, error) -> Void in
+                if command != nil {
+                    self.navigationController?.popViewControllerAnimated(true)
+                }else {
+                    self.showAlert("Upload Command Failed", error: error, completion: { () -> Void in
+                        self.uploadButton.enabled = true
+                    })
+                }
+            })
+        }
+    }
+
+    // "Editing Did End" event handler of text field of NewActionNumberCell
+    @IBAction func finishEditing(sender: AnyObject) {
+        if let textField = sender as? UITextField {
+            if let cell = textField.superview?.superview as? UITableViewCell{
+                if cell !== cellDeleted {
+                    if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
+                        var selectedAction = sections[selectedIndexPath.section].items[selectedIndexPath.row] as? ActionCellData
+                        if  selectedAction != nil {
+                            if let isIntType = isInt(selectedAction!.actionSchemaDict["required"]!) {
+                                if isIntType {
+                                    selectedAction!.value = Int(textField.text!)!
+                                }else {
+                                    selectedAction!.value = Double(textField.text!)!
+                                }
+                                // update items array
+                                sections[selectedIndexPath.section].items[selectedIndexPath.row] = selectedAction!
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // "Value Changed" event handler of switch of NewActionBoolCell
+    @IBAction func changeSwitch(sender: AnyObject) {
+
+        if let boolSwitch = sender as? UISwitch {
+            if let cell = boolSwitch.superview?.superview as? UITableViewCell{
+                if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
+                    var selectedAction = sections[selectedIndexPath.section].items[selectedIndexPath.row] as? ActionCellData
+                    if  selectedAction != nil {
+                         selectedAction!.value = boolSwitch.on
+
+                        // update items array
+                        sections[selectedIndexPath.section].items[selectedIndexPath.row] = selectedAction!
+                    }
+                }
+            }
+        }
+    }
+
+    // event handler of button "Create New Action"
     @IBAction func tapNewAction(sender: AnyObject) {
 
         let alertController = UIAlertController(title: "", message: "\n\n\n\n\n\n\n\n\n\n", preferredStyle: UIAlertControllerStyle.ActionSheet)
@@ -164,6 +278,7 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
     }
 
 
+    //MARK: Custom methods
     func getRequireStatusSchema(status: String) -> Dictionary<String, AnyObject>? {
         if let specifySchema = schemaDict?["statusSchema"]?[status] as? Dictionary<String, AnyObject>{
             return specifySchema
@@ -187,7 +302,21 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
             return nil
         }
     }
-
+    func isInt(status: String) -> Bool? {
+        if let statusSchemaDict = getRequireStatusSchema(status) {
+            if let statusType = statusSchemaDict["type"] {
+                if statusType as! String == "integer" {
+                    return true
+                }else {
+                    return false
+                }
+            }else {
+                return nil
+            }
+        }else {
+            return nil
+        }
+    }
 
     func selectAction(sender: UIButton){
         if let selectedActionDict = self.selectedActionDict {
@@ -202,7 +331,6 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
                     sections[2].items.append(newActionCellData)
                     self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: sections[2].items.count-1, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Automatic)
                 }
-
             }
         }
         self.dismissViewControllerAnimated(true, completion: nil);
@@ -212,13 +340,15 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
         self.dismissViewControllerAnimated(true, completion: nil);
     }
 
-    // returns number of rows in each component..
+    //MARK: Picker delegation methods
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
     }
+
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return actionsToSelect.count+1
     }
+
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if row == 0 {
             return ""
