@@ -17,6 +17,7 @@
 		7D3DFB5E1B8EF1B80055BE18 /* Triggers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3DFB5D1B8EF1B80055BE18 /* Triggers.storyboard */; settings = {ASSET_TAGS = (); }; };
 		7D3DFB601B8EF2420055BE18 /* State.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3DFB5F1B8EF2420055BE18 /* State.storyboard */; settings = {ASSET_TAGS = (); }; };
 		7D3DFB671B8EFA460055BE18 /* CommandNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DFB661B8EFA460055BE18 /* CommandNewViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		7D3DFB691B8EFF650055BE18 /* StatesPredicateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DFB681B8EFF650055BE18 /* StatesPredicateViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		7D44C18D1B8EEC3100F19FA3 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D44C18C1B8EEC3100F19FA3 /* Onboarding.storyboard */; settings = {ASSET_TAGS = (); }; };
 		7D44C18F1B8EEC9A00F19FA3 /* Commands.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D44C18E1B8EEC9A00F19FA3 /* Commands.storyboard */; settings = {ASSET_TAGS = (); }; };
 		7D783E4B1B87152600543A09 /* KiiSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D783E4A1B87152600543A09 /* KiiSDK.framework */; };
@@ -48,6 +49,7 @@
 		7D3DFB5D1B8EF1B80055BE18 /* Triggers.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Triggers.storyboard; sourceTree = "<group>"; };
 		7D3DFB5F1B8EF2420055BE18 /* State.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = State.storyboard; sourceTree = "<group>"; };
 		7D3DFB661B8EFA460055BE18 /* CommandNewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandNewViewController.swift; sourceTree = "<group>"; };
+		7D3DFB681B8EFF650055BE18 /* StatesPredicateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatesPredicateViewController.swift; sourceTree = "<group>"; };
 		7D44C18C1B8EEC3100F19FA3 /* Onboarding.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
 		7D44C18E1B8EEC9A00F19FA3 /* Commands.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Commands.storyboard; sourceTree = "<group>"; };
 		7D783E491B85CD9100543A09 /* SampleProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -145,6 +147,7 @@
 				7D19188D1B8DB4A6007F2885 /* TriggerListViewController.swift */,
 				7D19188F1B8DC84C007F2885 /* TriggerDetailViewController.swift */,
 				7D8FAB501B8EC26900D57F8E /* TriggerCommandEditViewController.swift */,
+				7D3DFB681B8EFF650055BE18 /* StatesPredicateViewController.swift */,
 			);
 			name = TriggerVC;
 			sourceTree = "<group>";
@@ -244,6 +247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D3DFB691B8EFF650055BE18 /* StatesPredicateViewController.swift in Sources */,
 				7DB3F6F71B8C5B0100AE8254 /* CommandViewController.swift in Sources */,
 				D5351AAB1B8EDA8900E55807 /* NotificationViewController.swift in Sources */,
 				7DB3F6F01B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift in Sources */,

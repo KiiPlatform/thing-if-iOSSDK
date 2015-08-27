@@ -81,4 +81,45 @@ class KiiBaseTableViewController: UITableViewController {
         NSUserDefaults.standardUserDefaults().removeObjectForKey("target")
         completion()
     }
+
+    //MARK: methods for schema 
+    func getRequireStatusSchema(status: String) -> Dictionary<String, AnyObject>? {
+        if let specifySchema = schemaDict?["statusSchema"]?[status] as? Dictionary<String, AnyObject>{
+            return specifySchema
+        }else {
+            return nil
+        }
+    }
+
+    func isBool(status: String) -> Bool? {
+        if let statusSchemaDict = getRequireStatusSchema(status) {
+            if let statusType = statusSchemaDict["type"] {
+                if statusType as! String == "boolean" {
+                    return true
+                }else {
+                    return false
+                }
+            }else {
+                return nil
+            }
+        }else {
+            return nil
+        }
+    }
+    func isInt(status: String) -> Bool? {
+        if let statusSchemaDict = getRequireStatusSchema(status) {
+            if let statusType = statusSchemaDict["type"] {
+                if statusType as! String == "integer" {
+                    return true
+                }else {
+                    return false
+                }
+            }else {
+                return nil
+            }
+        }else {
+            return nil
+        }
+    }
+
 }

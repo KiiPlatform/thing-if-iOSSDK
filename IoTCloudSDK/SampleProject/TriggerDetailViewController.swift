@@ -19,8 +19,9 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
 
     @IBOutlet weak var commandDetailLabel: UILabel!
 
+    @IBOutlet weak var statePredicateDetailLabel: UILabel!
     public var trigger: Trigger?
-    var predicate: Predicate?
+    var statePredicateToSave: StatePredicate?
     
     var commandStructToSave: CommandStruct?
 
@@ -41,6 +42,14 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
                 commandDetailLabel.text = " "
             }
         }
+
+        if statePredicateToSave != nil {
+            statePredicateDetailLabel.text = statePredicateToSave!.triggersWhen.toString()
+        }else {
+            if let statePredicate = trigger?.predicate as? StatePredicate {
+                statePredicateDetailLabel.text = statePredicate.triggersWhen.toString()
+            }
+        }
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -57,7 +66,13 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
             }
 
         }else if segue.identifier == "editTriggerPredicate" {
-
+            if let destVC = segue.destinationViewController as? StatesPredicateViewController {
+                if self.statePredicateToSave == nil {
+                    destVC.statePredicate = self.trigger?.predicate as? StatePredicate
+                }else {
+                    destVC.statePredicate = statePredicateToSave
+                }
+            }
         }
     }
 
@@ -68,7 +83,7 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
     func saveTrigger() {
         if iotAPI != nil && target != nil {
             if trigger != nil && commandStructToSave != nil {
-                iotAPI!.patchTrigger(target!, triggerID: trigger!.triggerID, schemaName: commandStructToSave!.schemaName, schemaVersion: commandStructToSave!.schemaVersion, actions: commandStructToSave!.actions, predicate: predicate, completionHandler: { (updatedTrigger, error) -> Void in
+                iotAPI!.patchTrigger(target!, triggerID: trigger!.triggerID, schemaName: commandStructToSave!.schemaName, schemaVersion: commandStructToSave!.schemaVersion, actions: commandStructToSave!.actions, predicate: statePredicateToSave, completionHandler: { (updatedTrigger, error) -> Void in
                     if updatedTrigger != nil {
                         self.trigger = updatedTrigger
                     }else {

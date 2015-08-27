@@ -110,10 +110,6 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
 
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
     //MARK: - TableView methods
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return sections.count
@@ -308,44 +304,6 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
 
 
     //MARK: Custom methods
-    func getRequireStatusSchema(status: String) -> Dictionary<String, AnyObject>? {
-        if let specifySchema = schemaDict?["statusSchema"]?[status] as? Dictionary<String, AnyObject>{
-            return specifySchema
-        }else {
-            return nil
-        }
-    }
-
-    func isBool(status: String) -> Bool? {
-        if let statusSchemaDict = getRequireStatusSchema(status) {
-            if let statusType = statusSchemaDict["type"] {
-                if statusType as! String == "boolean" {
-                    return true
-                }else {
-                    return false
-                }
-            }else {
-                return nil
-            }
-        }else {
-            return nil
-        }
-    }
-    func isInt(status: String) -> Bool? {
-        if let statusSchemaDict = getRequireStatusSchema(status) {
-            if let statusType = statusSchemaDict["type"] {
-                if statusType as! String == "integer" {
-                    return true
-                }else {
-                    return false
-                }
-            }else {
-                return nil
-            }
-        }else {
-            return nil
-        }
-    }
 
     func selectAction(sender: UIButton){
         if let selectedActionDict = self.selectedActionDict {
