@@ -105,50 +105,61 @@ public class Predicate {
 
 /** Class represents Condition */
 public class Condition {
-    var statement: Statement!
+    private var clause: Clause!
 
-    public init(statement:Statement) {
-        self.statement = statement
+    public init(clause:Clause) {
+        self.clause = clause
     }
 
     /** Get Condition as NSDictionary instance
     - Returns: a NSDictionary instance
     */
     public func toNSDictionary() -> NSDictionary {
-        return self.statement.toNSDictionary()
+        return self.clause.toNSDictionary()
     }
 
     public class func conditionWithNSDict(conditionDict: NSDictionary) -> Condition?{
-        if let statement = Condition.statementWithNSDict(conditionDict) {
-            return Condition(statement: statement)
+        if let clause = Condition.clauseWithNSDict(conditionDict) {
+            return Condition(clause: clause)
         }else {
             return nil
         }
     }
-    public class func statementWithNSDict(statementDict: NSDictionary) -> Statement?{
-        var statement: Statement?
-        if let type = statementDict["type"] as? String {
+    public class func clauseWithNSDict(clauseDict: NSDictionary) -> Clause?{
+        var clause: Clause?
+        if let type = clauseDict["type"] as? String {
             switch type {
             case "range":
-                if let upperLimit = statementDict["upperLimit"] as? Int,
-                    filed = statementDict["field"] as? String {
-                    if let upperIncluded = statementDict["upperIncluded"] as? Bool {
-                        if upperIncluded {
-                            statement = NotGreaterThan(field: filed, upperLimit: upperLimit)
-                        }else {
-                            statement = LessThan(field: filed, upperLimit: upperLimit)
+                if let upperLimitNumber = clauseDict["upperLimit"] as? NSNumber, lowerLimitNumber = clauseDict["lowerLimit"] as? NSNumber, field = clauseDict["field"] as? String {
+                    if let upperIncluded = clauseDict["upperIncluded"] as? Bool, lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
+                        if upperLimitNumber.isInt(){
+                            clause = RangeClause(field: field, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                        }else if upperLimitNumber.isDouble() {
+                            clause = RangeClause(field: field, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
                         }
                     }
                     break
                 }
 
-                if let lowerLimit = statementDict["lowerLimit"] as? Int,
-                    filed = statementDict["field"] as? String {
-                    if let upperIncluded = statementDict["lowerIncluded"] as? Bool {
-                        if upperIncluded {
-                            statement = NotLessThan(field: filed, lowerLimit: lowerLimit)
-                        }else {
-                            statement = GreaterThan(field: filed, lowerLimit: lowerLimit)
+                if let upperLimitNumber = clauseDict["upperLimit"] as? NSNumber,
+                    filed = clauseDict["field"] as? String {
+                    if let upperIncluded = clauseDict["upperIncluded"] as? Bool {
+                        if upperLimitNumber.isInt(){
+                            clause = RangeClause(field: filed, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                        }else if upperLimitNumber.isDouble() {
+                            clause = RangeClause(field: filed, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
+                        }
+                    }
+                    break
+                }
+
+                if let lowerLimitNumber = clauseDict["lowerLimit"] as? NSNumber,
+                    filed = clauseDict["field"] as? String {
+                    if let lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
+                        if lowerLimitNumber.isInt() {
+                            clause = RangeClause(field: filed, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded)
+                        }else if lowerLimitNumber.isDouble() {
+                            clause = RangeClause(field: filed, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded)
                         }
                     }
                     break
@@ -156,53 +167,53 @@ public class Condition {
                 break
 
             case "eq":
-                if let field = statementDict["field"] as? String, value = statementDict["value"] {
+                if let field = clauseDict["field"] as? String, value = clauseDict["value"] {
                     if value is String {
-                        statement = Equals(field: field, value: value as! String)
+                        clause = EqualsClause(field: field, value: value as! String)
                     }else if value is NSNumber {
                         let numberValue = value as! NSNumber
                         if numberValue.isBool() {
-                            statement = Equals(field: field, value: numberValue.boolValue)
+                            clause = EqualsClause(field: field, value: numberValue.boolValue)
                         }else {
-                            statement = Equals(field: field, value: numberValue.integerValue)
+                            clause = EqualsClause(field: field, value: numberValue.integerValue)
                         }
                     }
                 }
 
             case "not":
-                if let clauseStatementDict = statementDict["clause"] as? NSDictionary {
-                    if let clauseStatement = Condition.statementWithNSDict(clauseStatementDict) as? Equals{
-                        statement = NotEquals(equalStmt: clauseStatement)
+                if let clauseDict = clauseDict["clause"] as? NSDictionary {
+                    if let equalClause = Condition.clauseWithNSDict(clauseDict) as? EqualsClause{
+                        clause = NotEqualsClause(equalStmt: equalClause)
                     }
                 }
 
             case "and":
-                let andStatement = And()
-                if let clauseStatementDicts = statementDict["clauses"] as? NSArray {
-                    for clauseStatementDict in clauseStatementDicts {
-                        if let clauseStatement = Condition.statementWithNSDict(clauseStatementDict as! NSDictionary) {
-                            andStatement.add(clauseStatement)
+                let andClause = AndClause()
+                if let clauseDicts = clauseDict["clauses"] as? NSArray {
+                    for clauseDict in clauseDicts {
+                        if let subClause = Condition.clauseWithNSDict(clauseDict as! NSDictionary) {
+                            andClause.add(subClause)
                         }
                     }
                 }
-                statement = andStatement
+                clause = andClause
 
             case "or":
-                let orStatement = Or()
-                if let clauseStatementDicts = statementDict["clauses"] as? NSArray {
-                    for clauseStatementDict in clauseStatementDicts {
-                        if let clauseStatement = Condition.statementWithNSDict(clauseStatementDict as! NSDictionary) {
-                            orStatement.add(clauseStatement)
+                let orClause = OrClause()
+                if let clauseDicts = clauseDict["clauses"] as? NSArray {
+                    for clauseDict in clauseDicts {
+                        if let subClause = Condition.clauseWithNSDict(clauseDict as! NSDictionary) {
+                            orClause.add(subClause)
                         }
                     }
                 }
-                statement = orStatement
+                clause = orClause
 
             default:
                 break
             }
         }
-        return statement
+        return clause
     }
 }
 
@@ -274,7 +285,6 @@ public class SchedulePredicate: Predicate {
     public override func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["eventSource": EventSource.Schedule.rawValue, "schedule":self.schedule])
     }
-
 }
 
 /** Class represents StatePredicate */

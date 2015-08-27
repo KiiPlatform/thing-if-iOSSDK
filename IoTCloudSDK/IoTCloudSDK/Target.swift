@@ -22,4 +22,11 @@ public class Target : NSObject, NSCoding {
         self.targetType = targetType
     }
 
+    public override func isEqual(object: AnyObject?) -> Bool {
+        guard let aTarget = object as? Target else{
+            return false
+        }
+
+        return self.targetType == aTarget.targetType
+    }
 }

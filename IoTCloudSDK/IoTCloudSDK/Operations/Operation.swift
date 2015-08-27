@@ -182,7 +182,7 @@ class Operation: NSOperation {
         state = .EvaluatingConditions
         
         OperationConditionEvaluator.evaluate(conditions, operation: self) { failures in
-            self._internalErrors.extend(failures)
+            self._internalErrors.appendContentsOf(failures)
             self.state = .Ready
         }
     }
