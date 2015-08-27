@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8151.3"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Notification View Controller-->
         <scene sceneID="mSz-Ui-gIG">
             <objects>
-                <viewController id="l2A-nP-LfP" sceneMemberID="viewController">
+                <viewController id="l2A-nP-LfP" customClass="NotificationViewController" customModule="SampleProject" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="QnF-EW-Jvu"/>
                         <viewControllerLayoutGuide type="bottom" id="kbZ-5j-Fy4"/>
@@ -17,7 +17,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="z9f-bf-iLb"/>
+                    <navigationItem key="navigationItem" id="z9f-bf-iLb">
+                        <barButtonItem key="leftBarButtonItem" title="Setting" id="ILU-p1-ypm"/>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
