@@ -15,6 +15,7 @@ extension NSData {
         // Array of hex strings, one for each byte:
         let hexBytes = bytes.map{ String(format: "%02hhx", $0) }
         // Concatenate all hex strings:
-        return "".join(hexBytes)
+
+        return hexBytes.joinWithSeparator("")
     }
 }
