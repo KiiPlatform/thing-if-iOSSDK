@@ -28,17 +28,18 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
         super.viewWillAppear(animated)
         if trigger != nil {
             self.navigationItem.title = trigger!.triggerID
-
-            if commandStructToSave != nil {
-                commandDetailLabel.text = "\(commandStructToSave!.schemaName):\(commandStructToSave!.schemaVersion), actions(\(commandStructToSave!.actions.count))"
-            }else {
-                if let command = trigger?.command {
-                    commandDetailLabel.text = "\(command.schemaName):\(command.schemaVersion), actions(\(command.actions.count))"
-                }
-            }
         }else {
             self.navigationItem.title = "Create New Trigger"
-            commandDetailLabel.text = ""
+        }
+
+        if commandStructToSave != nil {
+            commandDetailLabel.text = "\(commandStructToSave!.schemaName):\(commandStructToSave!.schemaVersion), actions(\(commandStructToSave!.actions.count))"
+        }else {
+            if let command = trigger?.command {
+                commandDetailLabel.text = "\(command.schemaName):\(command.schemaVersion), actions(\(command.actions.count))"
+            }else{
+                commandDetailLabel.text = " "
+            }
         }
     }
 
