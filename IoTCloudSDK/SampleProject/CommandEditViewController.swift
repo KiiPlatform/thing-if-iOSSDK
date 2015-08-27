@@ -11,6 +11,11 @@ import IoTCloudSDK
 
 class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
+    @IBOutlet weak var schemaNameTextField: UITextField!
+
+    @IBOutlet weak var schemaVersionTextField: UITextField!
+
+
     public var commandStruct: CommandStruct?
 
     struct SectionStruct {

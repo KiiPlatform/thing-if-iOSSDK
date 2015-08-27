@@ -160,7 +160,7 @@
         <!--Create New Command-->
         <scene sceneID="hnO-jR-LIb">
             <objects>
-                <tableViewController id="860-4Y-Jk3" customClass="CommandCreateViewController" customModule="SampleProject" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="860-4Y-Jk3" customClass="CommandNewViewController" customModule="SampleProject" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="MCN-9n-NQ3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
