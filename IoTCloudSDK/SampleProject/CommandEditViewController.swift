@@ -1,15 +1,17 @@
 //
-//  CommandCreatViewController.swift
+//  CommandEditViewController.swift
 //  SampleProject
 //
-//  Created by Yongping on 8/25/15.
+//  Created by Yongping on 8/27/15.
 //  Copyright © 2015 Kii Corporation. All rights reserved.
 //
 
 import UIKit
 import IoTCloudSDK
 
-class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+
+    public var commandStruct: CommandStruct?
 
     struct SectionStruct {
         let headerTitle: String!
@@ -17,29 +19,90 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
     }
 
     struct ActionCellData {
+        // should be like : ["name":"TurnPower", "required": "power"]
         let actionSchemaDict: Dictionary<String, String>!
         var value: AnyObject!
+
+        func getActionDict() -> Dictionary<String, AnyObject> {
+            // action should be like: ["actionName": ["requiredStatus": value] ], where value can be Bool, Int or Double. ie. ["TurnPower": ["power": true]]
+            let actionDict: Dictionary<String, AnyObject> = [actionSchemaDict["name"]!: [actionSchemaDict["required"]!: value]]
+            return actionDict
+        }
+
+        init(actionSchemaDict: Dictionary<String, String>, value: AnyObject) {
+            self.actionSchemaDict = actionSchemaDict
+            self.value = value
+        }
+
+        init?(actionSchemaDict: Dictionary<String, String>, actionDict: Dictionary<String, AnyObject>) {
+            self.actionSchemaDict = actionSchemaDict
+
+            if actionDict.keys.count == 0 {
+                return nil
+            }
+
+            let actionNameKey = Array(actionDict.keys)[0]
+
+            if actionSchemaDict["name"] == actionNameKey {
+                if let statusDict = actionDict[actionNameKey] as? Dictionary<String, AnyObject> {
+                    let statusNameKey = Array(statusDict.keys)[0]
+                    if actionSchemaDict["required"] == statusNameKey {
+                        self.value = statusDict[statusNameKey]
+                    }else{
+                        return nil
+                    }
+                }else {
+                    return nil
+                }
+            }else {
+                return nil
+            }
+        }
     }
 
-    @IBOutlet weak var uploadButton: UIBarButtonItem!
-
-    private var sections = [SectionStruct]()
-    private var actionsToSelect = [Dictionary<String, String>]()
+    var sections = [SectionStruct]()
+    private var actionSchemasToSelect = [Dictionary<String, String>]()
     private var selectedActionDict: Dictionary<String, String>?
     private var cellDeleted: UITableViewCell?
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        sections.append(SectionStruct(headerTitle: "Schema", items: [schemaDict!["name"]!]))
-        sections.append(SectionStruct(headerTitle: "Version", items: [schemaDict!["version"]!]))
-        sections.append(SectionStruct(headerTitle: "Actions", items: [AnyObject]()))
 
-        // init actionsToSelect from predefined schemaDict
+        // init actionSchemasToSelect from predefined schemaDict
         if schemaDict != nil {
             if let actionSchemaDict = schemaDict!["actions"] as? [Dictionary<String, String>]{
-                self.actionsToSelect = actionSchemaDict
+                self.actionSchemasToSelect = actionSchemaDict
             }
         }
+
+        if self.commandStruct == nil {
+            sections.append(SectionStruct(headerTitle: "Schema", items: [schemaDict!["name"]!]))
+            sections.append(SectionStruct(headerTitle: "Version", items: [schemaDict!["version"]!]))
+            sections.append(SectionStruct(headerTitle: "Actions", items: [Any]()))
+        }else {
+            sections.append(SectionStruct(headerTitle: "Schema", items: [commandStruct!.schemaName]))
+            sections.append(SectionStruct(headerTitle: "Version", items: [commandStruct!.schemaVersion]))
+            var actionItems = [Any]()
+            for actionDict in commandStruct!.actions {
+                if actionDict.keys.count > 0 {
+                    let actionNameKey = Array(actionDict.keys)[0]
+                    var actionSchema: Dictionary<String, String>?
+                    // find the specify action schema
+                    for candidateSchema in self.actionSchemasToSelect {
+                        if candidateSchema["name"] == actionNameKey {
+                            actionSchema = candidateSchema
+                        }
+                    }
+                    if actionSchema != nil {
+                        if let actionCellData = ActionCellData(actionSchemaDict: actionSchema!, actionDict: actionDict) {
+                            actionItems.append(actionCellData)
+                        }
+                    }
+                }
+            }
+            sections.append(SectionStruct(headerTitle: "Actions", items: actionItems))
+        }
+
     }
 
     override func viewDidLoad() {
@@ -87,6 +150,7 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
             if indexPath.row == sections[indexPath.section].items.count {
                 return tableView.dequeueReusableCellWithIdentifier("NewActionItemButtonCell", forIndexPath: indexPath)
             }else{
+
                 let actionsCellData = sections[indexPath.section].items[indexPath.row] as! ActionCellData
                 let requiredStatus = actionsCellData.actionSchemaDict["required"]!
 
@@ -148,46 +212,6 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
     }
 
     //MARK: IBActions methods
-    @IBAction func tapUpload(sender: AnyObject) {
-
-        if iotAPI != nil && target != nil && schemaDict != nil{
-            // disable upload button while uploading
-            self.uploadButton.enabled = false
-
-            // generate actions array
-            var actions = [Dictionary<String, AnyObject>]()
-            if let actionsItems = sections[2].items {
-                for actionItem in actionsItems {
-                    if let actionCellData = actionItem as? ActionCellData {
-                        // action should be like: ["actionName": ["requiredStatus": value] ], where value can be Bool, Int or Double
-                        let action: Dictionary<String, AnyObject> = [actionCellData.actionSchemaDict["name"]!: [actionCellData.actionSchemaDict["required"]!: actionCellData.value]]
-                        actions.append(action)
-                    }
-                }
-            }
-            // the defaultd schema and schemaVersion from predefined schem dict
-            var schema = schemaDict!["name"]! as! String
-            var schemaVersion = schemaDict!["version"]! as! Int
-
-            if let schemaTextField = self.view.viewWithTag(200) as? UITextField {
-                schema = schemaTextField.text!
-            }
-            if let schemaVersionTextFiled = self.view.viewWithTag(201) as? UITextField {
-                schemaVersion = Int(schemaVersionTextFiled.text!)!
-            }
-
-            // call postNewCommand method
-            iotAPI!.postNewCommand(target!, schemaName: schema, schemaVersion: schemaVersion, actions: actions, completionHandler: { (command, error) -> Void in
-                if command != nil {
-                    self.navigationController?.popViewControllerAnimated(true)
-                }else {
-                    self.showAlert("Upload Command Failed", error: error, completion: { () -> Void in
-                        self.uploadButton.enabled = true
-                    })
-                }
-            })
-        }
-    }
 
     // "Editing Did End" event handler of text field of NewActionNumberCell
     @IBAction func finishEditing(sender: AnyObject) {
@@ -221,7 +245,7 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
                 if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
                     var selectedAction = sections[selectedIndexPath.section].items[selectedIndexPath.row] as? ActionCellData
                     if  selectedAction != nil {
-                         selectedAction!.value = boolSwitch.on
+                        selectedAction!.value = boolSwitch.on
 
                         // update items array
                         sections[selectedIndexPath.section].items[selectedIndexPath.row] = selectedAction!
@@ -270,7 +294,7 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
 
         buttonOk.addTarget(self, action: "selectAction:", forControlEvents: UIControlEvents.TouchDown)
 
-        
+
         //add the toolbar to the alert controller
         alertController.view.addSubview(toolView)
 
@@ -346,22 +370,22 @@ class CommandCreateViewController: KiiBaseTableViewController, UIPickerViewDataS
     }
 
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return actionsToSelect.count+1
+        return actionSchemasToSelect.count+1
     }
 
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if row == 0 {
             return ""
         }
-        return actionsToSelect[row-1]["name"]
+        return actionSchemasToSelect[row-1]["name"]
     }
-
+    
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if row == 0 {
             return
         }
-        self.selectedActionDict = actionsToSelect[row-1]
+        self.selectedActionDict = actionSchemasToSelect[row-1]
     }
-
-
+    
+    
 }
