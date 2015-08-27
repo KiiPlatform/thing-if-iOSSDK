@@ -33,9 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "brightness":["type": "integer", "min": 0, "max": 100],
             "color": ["type": "integer", "min": 0, "max": 16777215]
         ]
-        let turnPowerAction = ["name":"TurnPower", "required": "power"]
-        let setBrightnessAction = ["name": "SetBrightness", "required": "brightness"]
-        let setColorAction = ["name": "SetColor", "required": "color"]
+        let turnPowerAction = ["name":"turnPower", "required": "power"]
+        let setBrightnessAction = ["name": "setBrightness", "required": "brightness"]
+        let setColorAction = ["name": "setColor", "required": "color"]
 
         let schemaDict = ["name": "SmartLight-Demo", "version": 1,
             "statusSchema": lightStatuSchema,

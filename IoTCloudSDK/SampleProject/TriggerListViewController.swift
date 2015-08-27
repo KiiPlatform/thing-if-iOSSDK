@@ -16,6 +16,7 @@ class TriggerListViewController: KiiBaseTableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         triggers.removeAll()
+        self.tableView.reloadData()
         self.showActivityView(true)
         getTriggers(nil)
 
