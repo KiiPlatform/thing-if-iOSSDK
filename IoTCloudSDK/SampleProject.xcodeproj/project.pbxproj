@@ -124,6 +124,10 @@
 				7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */,
 				7D8060A91B8C75CF00C901DD /* CommandCreatViewController.swift */,
 				D5351AAA1B8EDA8900E55807 /* NotificationViewController.swift */,
+				7D19188D1B8DB4A6007F2885 /* TriggerListViewController.swift */,
+				7D19188F1B8DC84C007F2885 /* TriggerDetailViewController.swift */,
+				7D8FAB4C1B8EB00100D57F8E /* CommandEditViewController.swift */,
+				7D8FAB501B8EC26900D57F8E /* TriggerCommandEditViewController.swift */,
 			);
 			path = SampleProject;
 			sourceTree = "<group>";
