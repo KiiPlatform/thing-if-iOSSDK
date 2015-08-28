@@ -84,7 +84,12 @@ enum ClauseType: String {
     }
 }
 
-class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+protocol StatesPredicateViewControllerDelegate {
+
+    func saveStatePredicate(newPredicate: StatePredicate)
+}
+
+class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
 
     struct SectionStruct {
         let headerTitle: String!
@@ -92,6 +97,7 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
     }
 
     public var statePredicate: StatePredicate?
+    public var delegate: StatesPredicateViewControllerDelegate?
 
     private var sections = [SectionStruct]()
 
@@ -203,7 +209,7 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
                 let clause = section.items[0] as! Clause
                 let clauseDict = clause.toNSDictionary()
                 let clauseType = ClauseType.getClauseType(clause)!
-                let clauseField = clauseDict["field"] as! String
+                let clauseField = getStatusFromClause(clause)
 
                 var cell: UITableViewCell!
 
@@ -215,12 +221,17 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
                     let selectedClauseType = ClauseType.getClauseType(clause)!
                     switch selectedClauseType {
                     case .Equals, .NotEquals:
-                        let value = clauseDict["value"]
+                        var value:AnyObject!
+                        if clauseType == ClauseType.Equals{
+                            value = clauseDict["value"]
+                        }else {
+                            value = (clauseDict["clause"] as! Dictionary<String, AnyObject>)["value"]
+                        }
                         switch statusType {
                         case StatusType.BoolType:
                             cell = tableView.dequeueReusableCellWithIdentifier("NewClauseBoolCell", forIndexPath: indexPath)
-                            let textField = cell.viewWithTag(103) as! UITextField
-                            textField.text = "\(value!)"
+                            let boolSwitch = cell.viewWithTag(102) as! UISwitch
+                            boolSwitch.on = value as! Bool
 
                         case StatusType.IntType, StatusType.DoubleType:
                             cell = tableView.dequeueReusableCellWithIdentifier("NewClauseNumberCell", forIndexPath: indexPath)
@@ -387,7 +398,6 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
         self.dismissViewControllerAnimated(true, completion: nil);
     }
 
-
     func selectClauseAndStatus(sender: UIButton) {
         if let clauseTypeSelected = clauseTypeTempSelected {
             if clauseTypeSelected == ClauseType.And {
@@ -486,6 +496,7 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
                     }
                 }
             }
+            self.tableView.reloadData()
         }
         self.dismissViewControllerAnimated(true, completion: nil);
     }
@@ -545,9 +556,175 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
         }
     }
 
+    //MARK: IBActions methods
+    @IBAction func tapSave(sender: AnyObject) {
+        if self.delegate != nil {
+            if triggersWhenSelected != nil && clauseSelected != nil {
+                delegate!.saveStatePredicate(StatePredicate(condition: Condition(clause: clauseSelected!), triggersWhen: triggersWhenSelected!))
+            }
+        }
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+
     @IBAction func tapAddClause(sender: AnyObject) {
         self.showPickerView("AddClause")
     }
+
+    // "Editing Did End" event handler of text field of NewClauseNumberCell
+    @IBAction func finishEditing(sender: AnyObject) {
+        if let textField = sender as? UITextField {
+            if let cell = textField.superview?.superview as? UITableViewCell{
+                if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
+                    var section = sections[selectedIndexPath.section]
+                    if let clause = section.items[selectedIndexPath.row] as? Clause{
+                        let status = getStatusFromClause(clause)
+                        if let clauseType = ClauseType.getClauseType(clause), statusType = getStatusType(status) {
+                            switch clauseType {
+                            case .Equals:
+                                switch statusType {
+                                case StatusType.IntType:
+                                    section.items[selectedIndexPath.row] = EqualsClause(field: status, value: Int(textField.text!)!)
+                                    sections[selectedIndexPath.section] = section
+                                default:
+                                    break
+                                }
+                            case .NotEquals:
+                                switch statusType {
+                                case StatusType.IntType:
+                                    section.items[selectedIndexPath.row] = NotEqualsClause(field: status, value: Int(textField.text!)!)
+                                    sections[selectedIndexPath.section] = section
+
+                                default:
+                                    break
+                                }
+                            case .LessThan, .LessThanOrEquals:
+                                let upperIncluded: Bool!
+                                if clauseType == ClauseType.LessThan {
+                                    upperIncluded = false
+                                }else {
+                                    upperIncluded = true
+                                }
+
+                                switch statusType {
+                                case StatusType.IntType:
+                                    section.items[selectedIndexPath.row] = RangeClause(field: status, upperLimit: Int(textField.text!)!, upperIncluded: upperIncluded)
+                                    sections[selectedIndexPath.section] = section
+
+                                case StatusType.DoubleType:
+                                    section.items[selectedIndexPath.row] = RangeClause(field: status, upperLimit: Double(textField.text!)!, upperIncluded: upperIncluded)
+                                    sections[selectedIndexPath.section] = section
+
+                                default:
+                                    break
+                                }
+
+                            case .GreaterThan, .GreaterThanOrEquals:
+                                let lowerIncluded: Bool!
+                                if clauseType == ClauseType.LessThan {
+                                    lowerIncluded = false
+                                }else {
+                                    lowerIncluded = true
+                                }
+
+                                switch statusType {
+                                case StatusType.IntType:
+                                    section.items[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Int(textField.text!)!, lowerIncluded: lowerIncluded)
+                                    sections[selectedIndexPath.section] = section
+
+                                case StatusType.DoubleType:
+                                    section.items[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Double(textField.text!)!, lowerIncluded: lowerIncluded)
+                                    sections[selectedIndexPath.section] = section
+
+                                default:
+                                    break
+                                }
+
+                            case .LeftOpen, .RightOpen, .BothClose, .BothOpen:
+                                // get lowerLimit value
+                                let lowerLimitTextField = cell.viewWithTag(102) as! UITextField
+                                let upperLimitTextField = cell.viewWithTag(103) as! UITextField
+
+                                let upperIncluded: Bool!
+                                if clauseType == ClauseType.LessThan {
+                                    upperIncluded = false
+                                }else {
+                                    upperIncluded = true
+                                }
+
+                                let lowerIncluded: Bool!
+                                if clauseType == ClauseType.LessThan {
+                                    lowerIncluded = false
+                                }else {
+                                    lowerIncluded = true
+                                }
+                                switch statusType {
+                                case StatusType.IntType:
+                                    section.items[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Int(lowerLimitTextField.text!)!, lowerIncluded: lowerIncluded, upperLimit: Int(upperLimitTextField.text!)!, upperIncluded: upperIncluded)
+                                    sections[selectedIndexPath.section] = section
+
+                                case StatusType.DoubleType:
+                                    section.items[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Double(lowerLimitTextField.text!)!, lowerIncluded: lowerIncluded, upperLimit: Double(upperLimitTextField.text!)!, upperIncluded: upperIncluded)
+                                    sections[selectedIndexPath.section] = section
+
+                                default:
+                                    break
+                                }
+                            default:
+                                break
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    // "Value Changed" event handler of switch of NewActionBoolCell
+    @IBAction func changeSwitch(sender: AnyObject) {
+
+        if let boolSwitch = sender as? UISwitch {
+            if let cell = boolSwitch.superview?.superview as? UITableViewCell{
+                if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
+                    var section = sections[selectedIndexPath.section]
+                    if let clause = section.items[selectedIndexPath.row] as? Clause{
+                        let status = getStatusFromClause(clause)
+                        if let clauseType = ClauseType.getClauseType(clause), statusType = getStatusType(status) {
+                            switch clauseType {
+                            case .Equals:
+                                switch statusType {
+                                case StatusType.BoolType:
+                                    section.items[selectedIndexPath.row] = EqualsClause(field: status, value: boolSwitch.on)
+                                    sections[selectedIndexPath.section] = section
+                                default:
+                                    break
+                                }
+                            case .NotEquals:
+                                switch statusType {
+                                case StatusType.BoolType:
+                                    section.items[selectedIndexPath.row] = NotEqualsClause(field: status, value: boolSwitch.on)
+                                    sections[selectedIndexPath.section] = section
+
+                                default:
+                                    break
+                                }
+                             default:
+                                break
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        self.finishEditing(textField)
+        return true;
+    }
+
 
 
 }

@@ -15,7 +15,7 @@ struct CommandStruct {
     let actions: [Dictionary<String, AnyObject>]!
 }
 
-class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEditViewControllerDelegate {
+class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEditViewControllerDelegate, StatesPredicateViewControllerDelegate {
 
     @IBOutlet weak var commandDetailLabel: UILabel!
 
@@ -54,6 +54,13 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
         }
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        if trigger != nil {
+            commandStructToSave = CommandStruct(schemaName: self.trigger!.command.schemaName, schemaVersion: self.trigger!.command.schemaVersion, actions: self.trigger!.command.actions)
+        }
+    }
+
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "editTriggerCommand" {
             if let destVC = segue.destinationViewController as? TriggerCommandEditViewController {
@@ -74,6 +81,7 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
                 }else {
                     destVC.statePredicate = statePredicateToSave
                 }
+                destVC.delegate = self
             }
         }
     }
@@ -100,6 +108,10 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
     //MARK: delegate function of TriggerCommandEditViewControllerDelegate, called when save command
     func saveCommands(schemaName: String, schemaVersion: Int, actions: [Dictionary<String, AnyObject>]) {
         self.commandStructToSave = CommandStruct(schemaName: schemaName, schemaVersion: schemaVersion, actions: actions)
+    }
+
+    func saveStatePredicate(newPredicate: StatePredicate) {
+        self.statePredicateToSave = newPredicate
     }
 
 }

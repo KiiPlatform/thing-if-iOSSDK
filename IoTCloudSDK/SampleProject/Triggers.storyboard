@@ -258,6 +258,7 @@
                                         <switch opaque="NO" tag="102" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pSl-3U-w9G">
                                             <rect key="frame" x="124" y="35" width="51" height="31"/>
                                             <connections>
+                                                <action selector="changeSwitch:" destination="D4l-RG-nJo" eventType="valueChanged" id="K1G-fh-DcQ"/>
                                                 <action selector="changeSwitch:" destination="vTx-1i-CYJ" eventType="valueChanged" id="coZ-Dr-whi"/>
                                             </connections>
                                         </switch>
@@ -286,9 +287,9 @@
                                         <textField opaque="NO" clipsSubviews="YES" tag="103" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XQh-dH-Wjf">
                                             <rect key="frame" x="131" y="36" width="193" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             <connections>
-                                                <action selector="finishEditing:" destination="vTx-1i-CYJ" eventType="editingDidEnd" id="EPH-gI-2fL"/>
+                                                <outlet property="delegate" destination="D4l-RG-nJo" id="XqV-ml-5zQ"/>
                                             </connections>
                                         </textField>
                                     </subviews>
@@ -312,7 +313,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
-                                                <action selector="finishEditing:" destination="vTx-1i-CYJ" eventType="editingDidEnd" id="YtK-UT-ZBY"/>
+                                                <outlet property="delegate" destination="D4l-RG-nJo" id="9dT-Fa-LS3"/>
                                             </connections>
                                         </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Upper limit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NiM-JZ-Z7z">
@@ -326,7 +327,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
-                                                <action selector="finishEditing:" destination="vTx-1i-CYJ" eventType="editingDidEnd" id="aNU-hz-Uhm"/>
+                                                <outlet property="delegate" destination="D4l-RG-nJo" id="JAp-AR-mJu"/>
                                             </connections>
                                         </textField>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Lower limit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IaR-OD-4vg">
@@ -376,7 +377,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="States Predicate" id="Muy-QH-BHh">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="2q6-ED-xTr"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="2q6-ED-xTr">
+                            <connections>
+                                <action selector="tapSave:" destination="D4l-RG-nJo" id="FzV-cX-k2i"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DJ7-hC-4e0" userLabel="First Responder" sceneMemberID="firstResponder"/>

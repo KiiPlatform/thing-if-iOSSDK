@@ -138,6 +138,18 @@ class KiiBaseTableViewController: UITableViewController {
         return statusType
     }
 
+    func getStatusFromClause(clause: Clause) -> String {
+        let clauseDict = clause.toNSDictionary()
+        let clauseType = ClauseType.getClauseType(clause)!
+
+        if clauseType != ClauseType.NotEquals {
+            return clauseDict["field"] as! String
+        }else {
+            return (clauseDict["clause"] as! Dictionary<String, AnyObject>)["field"] as! String
+        }
+
+    }
+
     func isBool(status: String) -> Bool? {
         if let statusSchemaDict = getRequireStatusSchema(status) {
             if let statusType = statusSchemaDict["type"] {
