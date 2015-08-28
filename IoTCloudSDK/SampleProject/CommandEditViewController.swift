@@ -16,7 +16,7 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
     @IBOutlet weak var schemaVersionTextField: UITextField!
 
 
-    public var commandStruct: CommandStruct?
+    var commandStruct: CommandStruct?
 
     struct SectionStruct {
         let headerTitle: String!

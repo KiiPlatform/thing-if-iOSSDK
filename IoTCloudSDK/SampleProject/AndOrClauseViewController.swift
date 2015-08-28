@@ -16,35 +16,35 @@ protocol AndOrClauseViewControllerDelegate {
 
 class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate, AndOrClauseViewControllerDelegate {
 
-    public var andOrClause: Clause!
-    public var delegate: AndOrClauseViewControllerDelegate?
+    var andOrClause: Clause!
+    var delegate: AndOrClauseViewControllerDelegate?
 
     private var subClauses = [Clause]()
 
+    // 2 columns of picker view
     private var statusToSelect = [String]()
     private var clauseTypeToSelect = [ClauseType]()
 
+    // will be setted each time selecting items from picker
     private var clauseTypeTempSelected: ClauseType?
     private var statusTempSelected: String?
 
+    // the And/OrClause in the list, which is clicked to next AndOrViewController
     private var subAndOrClauseSelected: NSIndexPath?
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // init actionSchemasToSelect from predefined schemaDict
+        // init status list from predefined schemaDict to select in picker view
         if schemaDict != nil {
             if let statusArray = self.getStatusArray() {
                 self.statusToSelect = statusArray
             }
-
         }
+
+        // init clause type list from predefined schemaDict to select in picker view
         self.clauseTypeToSelect = ClauseType.getTypesArray()
 
+        // init subClauses, the datas in table view
         if self.andOrClause != nil {
             if andOrClause is AndClause {
                 let andClause = andOrClause as! AndClause
@@ -68,7 +68,7 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 
-        if indexPath.row == subClauses.count {
+        if indexPath.row == subClauses.count { // Cell for Add Clause
             return tableView.dequeueReusableCellWithIdentifier("NewClauseButtonCell", forIndexPath: indexPath)
         }else {
             let clause = subClauses[indexPath.row]
@@ -92,6 +92,7 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                     }else {
                         value = (clauseDict["clause"] as! Dictionary<String, AnyObject>)["value"]
                     }
+
                     switch statusType {
                     case StatusType.BoolType:
                         cell = tableView.dequeueReusableCellWithIdentifier("NewClauseBoolCell", forIndexPath: indexPath)
@@ -172,7 +173,6 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
         }
     }
 
-
     func showPickerView() {
 
         let alertController = UIAlertController(title: "", message: "\n\n\n\n\n\n\n\n\n\n", preferredStyle: UIAlertControllerStyle.ActionSheet)
@@ -194,7 +194,6 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                 picker.selectRow(selectedIndex+1, inComponent: 0, animated: false)
             }
         }
-
 
         //Create the toolbar view - the view witch will hold our 2 buttons
         let toolFrame = CGRectMake(17, 5, 270, 45)
@@ -425,7 +424,6 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                                 switch statusType {
                                 case StatusType.IntType:
                                     subClauses[selectedIndexPath.row] = NotEqualsClause(field: status, value: Int(textField.text!)!)
-                                    
 
                                 default:
                                     break
@@ -441,11 +439,9 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                                 switch statusType {
                                 case StatusType.IntType:
                                     subClauses[selectedIndexPath.row] = RangeClause(field: status, upperLimit: Int(textField.text!)!, upperIncluded: upperIncluded)
-                                    
 
                                 case StatusType.DoubleType:
                                     subClauses[selectedIndexPath.row] = RangeClause(field: status, upperLimit: Double(textField.text!)!, upperIncluded: upperIncluded)
-                                    
 
                                 default:
                                     break
@@ -462,11 +458,9 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                                 switch statusType {
                                 case StatusType.IntType:
                                     subClauses[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Int(textField.text!)!, lowerIncluded: lowerIncluded)
-                                    
 
                                 case StatusType.DoubleType:
                                     subClauses[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Double(textField.text!)!, lowerIncluded: lowerIncluded)
-                                    
 
                                 default:
                                     break
@@ -493,11 +487,9 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                                 switch statusType {
                                 case StatusType.IntType:
                                     subClauses[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Int(lowerLimitTextField.text!)!, lowerIncluded: lowerIncluded, upperLimit: Int(upperLimitTextField.text!)!, upperIncluded: upperIncluded)
-                                    
 
                                 case StatusType.DoubleType:
                                     subClauses[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Double(lowerLimitTextField.text!)!, lowerIncluded: lowerIncluded, upperLimit: Double(upperLimitTextField.text!)!, upperIncluded: upperIncluded)
-                                    
 
                                 default:
                                     break
@@ -527,7 +519,7 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                                 switch statusType {
                                 case StatusType.BoolType:
                                     subClauses[selectedIndexPath.row] = EqualsClause(field: status, value: boolSwitch.on)
-                                    
+
                                 default:
                                     break
                                 }
@@ -535,8 +527,7 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                                 switch statusType {
                                 case StatusType.BoolType:
                                     subClauses[selectedIndexPath.row] = NotEqualsClause(field: status, value: boolSwitch.on)
-                                    
-                                    
+
                                 default:
                                     break
                                 }
@@ -546,7 +537,6 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                         }
                     }
                 }
-                
             }
         }
     }

@@ -9,27 +9,6 @@
 import UIKit
 import IoTCloudSDK
 
-enum StatusType: String{
-    case BoolType = "boolean"
-    case IntType = "integer"
-    case DoubleType = "double"
-    case StringType = "string"
-
-    init?(string: String) {
-        switch string {
-        case StatusType.BoolType.rawValue:
-            self = .BoolType
-        case StatusType.IntType.rawValue:
-            self = .IntType
-        case StatusType.DoubleType.rawValue:
-            self = .DoubleType
-        case StatusType.StringType.rawValue:
-            self = .StringType
-        default:
-            return nil
-        }
-    }
-}
 
 class KiiBaseTableViewController: UITableViewController {
 

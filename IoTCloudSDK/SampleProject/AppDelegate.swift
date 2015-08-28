@@ -41,6 +41,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             "statusSchema": lightStatuSchema,
             "actions": [turnPowerAction, setBrightnessAction, setColorAction]
         ]
+
+        let smartLightDemoSchema = IoTSchema(name: "SmartLight-Demo", version: 1)
+        smartLightDemoSchema.addStatus("power", statusType: StatusType.BoolType)
+        smartLightDemoSchema.addStatus("brightness", statusType: StatusType.IntType, minValue: 0, maxvalue: 100)
+        smartLightDemoSchema.addStatus("color", statusType: StatusType.IntType, minValue: 0, maxvalue: 16777215)
+        smartLightDemoSchema.addAction("turnPower", statusName: "power")
+        smartLightDemoSchema.addAction("setBrightness", statusName: "brightness")
+        smartLightDemoSchema.addAction("setColor", statusName: "color")
         // save schema
         NSUserDefaults.standardUserDefaults().setObject(schemaDict, forKey: "schema")
 

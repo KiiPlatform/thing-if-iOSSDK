@@ -34,6 +34,7 @@
 		7DB3F6F41B8C1DD400AE8254 /* CommandsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F31B8C1DD400AE8254 /* CommandsListViewController.swift */; };
 		7DB3F6F71B8C5B0100AE8254 /* CommandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */; };
 		7DCDBD831B90703C00AB006B /* AndOrClauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCDBD821B90703C00AB006B /* AndOrClauseViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		7DCDBD861B90986700AB006B /* IoTSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCDBD851B90986700AB006B /* IoTSchema.swift */; settings = {ASSET_TAGS = (); }; };
 		D5351AA91B8ED6D900E55807 /* Notifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5351AA71B8ED6D900E55807 /* Notifications.storyboard */; settings = {ASSET_TAGS = (); }; };
 		D5351AAB1B8EDA8900E55807 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5351AAA1B8EDA8900E55807 /* NotificationViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
@@ -69,6 +70,7 @@
 		7DB3F6F31B8C1DD400AE8254 /* CommandsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsListViewController.swift; sourceTree = "<group>"; };
 		7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandViewController.swift; sourceTree = "<group>"; };
 		7DCDBD821B90703C00AB006B /* AndOrClauseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AndOrClauseViewController.swift; sourceTree = "<group>"; };
+		7DCDBD851B90986700AB006B /* IoTSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTSchema.swift; sourceTree = "<group>"; };
 		D5351AA81B8ED6D900E55807 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Notifications.storyboard; sourceTree = "<group>"; };
 		D5351AAA1B8EDA8900E55807 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,6 +101,7 @@
 		7D108AD91B7210C8006EA12B /* SampleProject */ = {
 			isa = PBXGroup;
 			children = (
+				7DCDBD841B9097FD00AB006B /* SmartLightDemo */,
 				7D3DFB631B8EF9090055BE18 /* TriggerVC */,
 				7D3DFB621B8EF8ED0055BE18 /* CommandVC */,
 				7D3DFB611B8EF33A0055BE18 /* Storyboards */,
@@ -114,6 +117,7 @@
 				7DB3F6EF1B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift */,
 				7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */,
 				D5351AAA1B8EDA8900E55807 /* NotificationViewController.swift */,
+				7DCDBD851B90986700AB006B /* IoTSchema.swift */,
 			);
 			path = SampleProject;
 			sourceTree = "<group>";
@@ -162,6 +166,13 @@
 				7D783E4A1B87152600543A09 /* KiiSDK.framework */,
 			);
 			name = frameworks;
+			sourceTree = "<group>";
+		};
+		7DCDBD841B9097FD00AB006B /* SmartLightDemo */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SmartLightDemo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,6 +267,7 @@
 				7DB3F6F01B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift in Sources */,
 				7DCDBD831B90703C00AB006B /* AndOrClauseViewController.swift in Sources */,
 				7DB3F6EE1B8BF90F00AE8254 /* StateViewController.swift in Sources */,
+				7DCDBD861B90986700AB006B /* IoTSchema.swift in Sources */,
 				7D96858C1B8AF3C90017CA7D /* LoginViewController.swift in Sources */,
 				7D8FAB511B8EC26900D57F8E /* TriggerCommandEditViewController.swift in Sources */,
 				7D19188E1B8DB4A6007F2885 /* TriggerListViewController.swift in Sources */,
