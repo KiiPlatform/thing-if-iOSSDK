@@ -48,6 +48,8 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
         }else {
             if let statePredicate = trigger?.predicate as? StatePredicate {
                 statePredicateDetailLabel.text = statePredicate.triggersWhen.toString()
+            }else {
+                statePredicateDetailLabel.text = " "
             }
         }
     }

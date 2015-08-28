@@ -9,6 +9,28 @@
 import UIKit
 import IoTCloudSDK
 
+enum StatusType: String{
+    case BoolType = "boolean"
+    case IntType = "integer"
+    case DoubleType = "double"
+    case StringType = "string"
+
+    init?(string: String) {
+        switch string {
+        case StatusType.BoolType.rawValue:
+            self = .BoolType
+        case StatusType.IntType.rawValue:
+            self = .IntType
+        case StatusType.DoubleType.rawValue:
+            self = .DoubleType
+        case StatusType.StringType.rawValue:
+            self = .StringType
+        default:
+            return nil
+        }
+    }
+}
+
 class KiiBaseTableViewController: UITableViewController {
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
@@ -20,6 +42,11 @@ class KiiBaseTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
+        showActivityView(false)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         if iotAPI == nil {
             if let iotAPIData = NSUserDefaults.standardUserDefaults().objectForKey("iotAPI") as? NSData {
                 if let iotAPI = NSKeyedUnarchiver.unarchiveObjectWithData(iotAPIData) as? IoTCloudAPI {
@@ -42,7 +69,6 @@ class KiiBaseTableViewController: UITableViewController {
                 self.schemaDict = schemaDict
             }
         }
-        showActivityView(false)
     }
 
     func showActivityView(show: Bool) {
@@ -91,6 +117,27 @@ class KiiBaseTableViewController: UITableViewController {
         }
     }
 
+    func getStatusArray() -> [String]? {
+        var statusArray: [String]?
+        if let statusSchemaDict = schemaDict?["statusSchema"] as? Dictionary<String, AnyObject>{
+            if statusSchemaDict.keys.count > 0 {
+                statusArray = Array(statusSchemaDict.keys)
+            }
+        }
+        return statusArray
+    }
+
+    func getStatusType(status: String) -> StatusType? {
+        var statusType: StatusType?
+
+        if let statusSchemaDict = getRequireStatusSchema(status) {
+            if let statusTypeString = statusSchemaDict["type"] as? String {
+                statusType = StatusType(string: statusTypeString)
+            }
+        }
+        return statusType
+    }
+
     func isBool(status: String) -> Bool? {
         if let statusSchemaDict = getRequireStatusSchema(status) {
             if let statusType = statusSchemaDict["type"] {
@@ -121,5 +168,7 @@ class KiiBaseTableViewController: UITableViewController {
             return nil
         }
     }
+
+
 
 }
