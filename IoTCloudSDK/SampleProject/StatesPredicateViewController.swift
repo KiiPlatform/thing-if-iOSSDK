@@ -89,7 +89,7 @@ protocol StatesPredicateViewControllerDelegate {
     func saveStatePredicate(newPredicate: StatePredicate)
 }
 
-class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate {
+class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate, AndOrClauseViewControllerDelegate {
 
     struct SectionStruct {
         let headerTitle: String!
@@ -723,6 +723,24 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
         textField.resignFirstResponder()
         self.finishEditing(textField)
         return true;
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "editAndOrClause" {
+            if let destVC = segue.destinationViewController as? AndOrClauseViewController {
+                let cell = sender as! UITableViewCell
+                let selectedIndexPath = self.tableView.indexPathForCell(cell)!
+                let andOrClause = sections[1].items[selectedIndexPath.row] as? Clause
+                destVC.andOrClause = andOrClause
+                destVC.delegate = self
+            }
+        }
+    }
+
+    func saveClause(newClause: Clause) {
+        var section = sections[1]
+        section.items = [newClause]
+        sections[1] = section
     }
 
 

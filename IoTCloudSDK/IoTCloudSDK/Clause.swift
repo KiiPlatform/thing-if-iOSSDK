@@ -194,47 +194,56 @@ public class RangeClause: Clause {
 
 /** Class represents And clause. */
 public class AndClause: Clause {
-    private var clauseClauseDicts = NSMutableArray()
+    public private(set) var clauses = [Clause]()
 
     /** Initialize with clause clauses.
     - Parameter clauses: Clause instances for AND clauses
     */
     public init(clauses: Clause...) {
         for clause in clauses {
-            self.clauseClauseDicts.addObject(clause.toNSDictionary())
+            self.clauses.append(clause)
         }
     }
 
     public func add(clause: Clause) {
-        self.clauseClauseDicts.addObject(clause.toNSDictionary())
+        self.clauses.append(clause)
     }
 
     /** Get Clause as NSDictionary instance
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["type": "and", "clauses": self.clauseClauseDicts])
+        var clauseDictArray = [NSDictionary]()
+        for clause in self.clauses {
+            clauseDictArray.append(clause.toNSDictionary())
+        }
+
+        return NSDictionary(dictionary: ["type": "and", "clauses": clauseDictArray])
     }
 }
 /** Class represents Or clause. */
 public class OrClause: Clause {
-    private var clauseClauseDicts = NSMutableArray()
+    public private(set) var clauses = [Clause]()
 
     /** Initialize with clause clauses.
     - Parameter clauses: Clause instances for OR clauses
     */
     public init(clauses:Clause...) {
         for clause in clauses {
-            clauseClauseDicts.addObject(clause.toNSDictionary())
+            self.clauses.append(clause)
         }
     }
     public func add(clause: Clause) {
-        self.clauseClauseDicts.addObject(clause.toNSDictionary())
+        self.clauses.append(clause)
     }
     /** Get Clause as NSDictionary instance
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["type": "or", "clauses": self.clauseClauseDicts])
+        var clauseDictArray = [NSDictionary]()
+        for clause in self.clauses {
+            clauseDictArray.append(clause.toNSDictionary())
+        }
+        return NSDictionary(dictionary: ["type": "or", "clauses": clauseDictArray])
     }
 }

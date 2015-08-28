@@ -33,6 +33,7 @@
 		7DB3F6F21B8BFDA900AE8254 /* KiiBaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */; };
 		7DB3F6F41B8C1DD400AE8254 /* CommandsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F31B8C1DD400AE8254 /* CommandsListViewController.swift */; };
 		7DB3F6F71B8C5B0100AE8254 /* CommandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */; };
+		7DCDBD831B90703C00AB006B /* AndOrClauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCDBD821B90703C00AB006B /* AndOrClauseViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		D5351AA91B8ED6D900E55807 /* Notifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5351AA71B8ED6D900E55807 /* Notifications.storyboard */; settings = {ASSET_TAGS = (); }; };
 		D5351AAB1B8EDA8900E55807 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5351AAA1B8EDA8900E55807 /* NotificationViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
@@ -67,6 +68,7 @@
 		7DB3F6F11B8BFDA900AE8254 /* KiiBaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiiBaseTableViewController.swift; sourceTree = "<group>"; };
 		7DB3F6F31B8C1DD400AE8254 /* CommandsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsListViewController.swift; sourceTree = "<group>"; };
 		7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandViewController.swift; sourceTree = "<group>"; };
+		7DCDBD821B90703C00AB006B /* AndOrClauseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AndOrClauseViewController.swift; sourceTree = "<group>"; };
 		D5351AA81B8ED6D900E55807 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Notifications.storyboard; sourceTree = "<group>"; };
 		D5351AAA1B8EDA8900E55807 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -148,6 +150,7 @@
 				7D19188F1B8DC84C007F2885 /* TriggerDetailViewController.swift */,
 				7D8FAB501B8EC26900D57F8E /* TriggerCommandEditViewController.swift */,
 				7D3DFB681B8EFF650055BE18 /* StatesPredicateViewController.swift */,
+				7DCDBD821B90703C00AB006B /* AndOrClauseViewController.swift */,
 			);
 			name = TriggerVC;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				7DB3F6F71B8C5B0100AE8254 /* CommandViewController.swift in Sources */,
 				D5351AAB1B8EDA8900E55807 /* NotificationViewController.swift in Sources */,
 				7DB3F6F01B8BFB0200AE8254 /* UIViewController+showAlert.swift.swift in Sources */,
+				7DCDBD831B90703C00AB006B /* AndOrClauseViewController.swift in Sources */,
 				7DB3F6EE1B8BF90F00AE8254 /* StateViewController.swift in Sources */,
 				7D96858C1B8AF3C90017CA7D /* LoginViewController.swift in Sources */,
 				7D8FAB511B8EC26900D57F8E /* TriggerCommandEditViewController.swift in Sources */,
