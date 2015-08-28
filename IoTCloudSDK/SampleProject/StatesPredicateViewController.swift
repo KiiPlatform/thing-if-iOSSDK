@@ -12,8 +12,8 @@ import IoTCloudSDK
 enum ClauseType: String {
     case And = "And"
     case Or = "Or"
-    case Equals = "Equals"
-    case NotEquals = "NotEquals"
+    case Equals = "="
+    case NotEquals = "!="
     case LessThan = "<"
     case GreaterThan = ">"
     case LessThanOrEquals = "<="
@@ -209,7 +209,6 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
                 let clause = section.items[0] as! Clause
                 let clauseDict = clause.toNSDictionary()
                 let clauseType = ClauseType.getClauseType(clause)!
-                let clauseField = getStatusFromClause(clause)
 
                 var cell: UITableViewCell!
 
@@ -217,6 +216,7 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
                     cell = tableView.dequeueReusableCellWithIdentifier("AndOrClauseCell", forIndexPath: indexPath)
                     cell.textLabel?.text = "\(clauseType.rawValue) Clause"
                 }else {
+                    let clauseField = getStatusFromClause(clause)
                     let statusType = getStatusType(clauseField)!
                     let selectedClauseType = ClauseType.getClauseType(clause)!
                     switch selectedClauseType {

@@ -91,8 +91,8 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
         self.navigationController?.popViewControllerAnimated(true)
     }
     func saveTrigger() {
-        if iotAPI != nil && target != nil {
-            if trigger != nil && commandStructToSave != nil {
+        if iotAPI != nil && target != nil && commandStructToSave != nil {
+            if trigger != nil {
                 iotAPI!.patchTrigger(target!, triggerID: trigger!.triggerID, schemaName: commandStructToSave!.schemaName, schemaVersion: commandStructToSave!.schemaVersion, actions: commandStructToSave!.actions, predicate: statePredicateToSave, completionHandler: { (updatedTrigger, error) -> Void in
                     if updatedTrigger != nil {
                         self.trigger = updatedTrigger
@@ -100,6 +100,16 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
                         self.showAlert("Update Trigger Failed", error: error, completion: nil)
                     }
                 })
+            }else {
+                if statePredicateToSave != nil {
+                    iotAPI!.postNewTrigger(target!, schemaName: commandStructToSave!.schemaName, schemaVersion: commandStructToSave!.schemaVersion, actions: commandStructToSave!.actions, predicate: statePredicateToSave!, completionHandler: { (newTrigger, error) -> Void in
+                        if newTrigger != nil {
+                            self.trigger = newTrigger
+                        }else {
+                            self.showAlert("Create Trigger Failed", error: error, completion: nil)
+                        }
+                    })
+                }
             }
         }
 

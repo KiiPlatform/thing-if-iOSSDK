@@ -219,7 +219,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AndOrClause" textLabel="ZN6-ae-Cpe" rowHeight="75" style="IBUITableViewCellStyleDefault" id="aLc-r3-xRc">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AndOrClauseCell" textLabel="ZN6-ae-Cpe" rowHeight="75" style="IBUITableViewCellStyleDefault" id="aLc-r3-xRc">
                                 <rect key="frame" x="0.0" y="240.5" width="600" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aLc-r3-xRc" id="hdJ-KE-Ocq">
@@ -289,6 +289,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             <connections>
+                                                <action selector="finishEditing:" destination="D4l-RG-nJo" eventType="editingDidEnd" id="ABs-GY-R6T"/>
                                                 <outlet property="delegate" destination="D4l-RG-nJo" id="XqV-ml-5zQ"/>
                                             </connections>
                                         </textField>
@@ -313,6 +314,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
+                                                <action selector="finishEditing:" destination="D4l-RG-nJo" eventType="editingDidEnd" id="YB4-Ce-6Ze"/>
                                                 <outlet property="delegate" destination="D4l-RG-nJo" id="9dT-Fa-LS3"/>
                                             </connections>
                                         </textField>
@@ -327,6 +329,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits"/>
                                             <connections>
+                                                <action selector="finishEditing:" destination="D4l-RG-nJo" eventType="editingDidEnd" id="ufv-y6-Ffd"/>
                                                 <outlet property="delegate" destination="D4l-RG-nJo" id="JAp-AR-mJu"/>
                                             </connections>
                                         </textField>
