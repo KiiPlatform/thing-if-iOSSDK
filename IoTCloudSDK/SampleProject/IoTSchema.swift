@@ -31,88 +31,12 @@ enum StatusType: String{
     }
 }
 
-enum ClauseType: String {
-    case And = "And"
-    case Or = "Or"
-    case Equals = "="
-    case NotEquals = "!="
-    case LessThan = "<"
-    case GreaterThan = ">"
-    case LessThanOrEquals = "<="
-    case GreaterThanOrEquals = ">="
-    case LeftOpen = "( ]"
-    case RightOpen = "[ )"
-    case BothOpen = "( )"
-    case BothClose = "[ ]"
-
-    static func getTypesArray() -> [ClauseType] {
-        return [ClauseType.And,
-            ClauseType.Or,
-            ClauseType.Equals,
-            ClauseType.NotEquals,
-            ClauseType.LessThan,
-            ClauseType.LessThanOrEquals,
-            ClauseType.GreaterThan,
-            ClauseType.GreaterThanOrEquals,
-            ClauseType.BothOpen,
-            ClauseType.BothClose,
-            ClauseType.LeftOpen,
-            ClauseType.RightOpen
-        ]
-    }
-
-    static func getClauseType(clause: Clause) -> ClauseType? {
-        if clause is AndClause {
-            return ClauseType.And
-        }else if clause is OrClause {
-            return ClauseType.Or
-        }else if clause is EqualsClause {
-            return ClauseType.Equals
-        }else if clause is NotEqualsClause {
-            return ClauseType.NotEquals
-        } else if clause is RangeClause {
-            let nsdict = clause.toNSDictionary()
-            if let _ = nsdict["lowerLimit"], _ = nsdict["upperLimit"], lowerIncluded = nsdict["lowerIncluded"] as? Bool, upperIncluded = nsdict["upperIncluded"] as? Bool{
-                if lowerIncluded && upperIncluded {
-                    return ClauseType.BothClose
-                }else if !lowerIncluded && upperIncluded {
-                    return ClauseType.LeftOpen
-                }else if lowerIncluded && !upperIncluded {
-                    return ClauseType.RightOpen
-                }else {
-                    return ClauseType.BothOpen
-                }
-            }
-
-            if let _ = nsdict["lowerLimit"], lowerIncluded = nsdict["lowerIncluded"] as? Bool {
-                if lowerIncluded {
-                    return ClauseType.GreaterThanOrEquals
-                }else {
-                    return ClauseType.GreaterThan
-                }
-            }
-
-            if let _ = nsdict["upperLimit"], upperIncluded = nsdict["upperIncluded"] as? Bool{
-                if upperIncluded {
-                    return ClauseType.LessThanOrEquals
-                }else {
-                    return ClauseType.LessThan
-                }
-            }
-            return nil
-        }else{
-            return nil
-        }
-    }
-}
-
 struct ActionStruct {
-    // should be like : ["name":"TurnPower", "required": "power"]
     let actionSchema: ActionSchema!
     var value: AnyObject!
 
+    // the return Ditionary will be like: ["actionName": ["requiredStatus": value] ], where value can be Bool, Int or Double. ie. ["TurnPower": ["power": true]]
     func getActionDict() -> Dictionary<String, AnyObject> {
-        // action should be like: ["actionName": ["requiredStatus": value] ], where value can be Bool, Int or Double. ie. ["TurnPower": ["power": true]]
         let actionDict: Dictionary<String, AnyObject> = [actionSchema.name: [actionSchema.status.name: value]]
         return actionDict
     }
@@ -165,7 +89,7 @@ class StatusSchema: NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     required init(coder aDecoder: NSCoder) {
         self.name = aDecoder.decodeObjectForKey("name") as! String
-        self.type = StatusType(string: aDecoder.decodeObjectForKey("type") as! String)
+        self.type = StatusType(string: aDecoder.decodeObjectForKey("type") as! String)!
         self.minValue = aDecoder.decodeObjectForKey("minValue")
         self.maxValue = aDecoder.decodeObjectForKey("maxValue")
     }

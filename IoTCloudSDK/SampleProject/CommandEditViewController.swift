@@ -21,7 +21,8 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
         var items: [Any]!
     }
 
-    private var sections = [SectionStruct]()
+    var sections = [SectionStruct]()
+    
     private var actionSchemasToSelect = [String]()
     private var selectedActionName: String?
     private var cellDeleted: UITableViewCell?

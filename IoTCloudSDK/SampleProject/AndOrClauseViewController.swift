@@ -136,21 +136,21 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                 let requiredStatusLabel = cell.viewWithTag(101) as! UILabel // 101 is label to show name of field
                 requiredStatusLabel.text = clauseField
             }
-
             return cell
         }
-
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let clauseSelected = subClauses[indexPath.row]
-        if clauseSelected is AndClause || clauseSelected is OrClause{
-            let storyBoard = UIStoryboard(name: "Triggers", bundle: nil)
-            if let andOrVC = storyBoard.instantiateViewControllerWithIdentifier("AndOrClauseViewController") as? AndOrClauseViewController {
-                andOrVC.andOrClause = clauseSelected
-                andOrVC.delegate = self
-                self.subAndOrClauseSelected = indexPath
-                self.navigationController?.pushViewController(andOrVC, animated: true)
+        if indexPath.row < subClauses.count {
+            let clauseSelected = subClauses[indexPath.row]
+            if clauseSelected is AndClause || clauseSelected is OrClause{
+                let storyBoard = UIStoryboard(name: "Triggers", bundle: nil)
+                if let andOrVC = storyBoard.instantiateViewControllerWithIdentifier("AndOrClauseViewController") as? AndOrClauseViewController {
+                    andOrVC.andOrClause = clauseSelected
+                    andOrVC.delegate = self
+                    self.subAndOrClauseSelected = indexPath
+                    self.navigationController?.pushViewController(andOrVC, animated: true)
+                }
             }
         }
     }
@@ -238,97 +238,12 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
             }else if clauseTypeSelected == ClauseType.Or {
                 clauseSelected = OrClause()
             }
-
             if let statusSelected = statusTempSelected {
-                if let statusType = schema?.getStatusType(statusSelected) {
-                    switch clauseTypeSelected {
-                    case .Equals:
-                        switch statusType {
-                        case StatusType.BoolType:
-                            clauseSelected = EqualsClause(field: statusSelected, value: false)
-                        case StatusType.IntType:
-                            clauseSelected = EqualsClause(field: statusSelected, value: 0)
-                        case StatusType.StringType:
-                            clauseSelected = EqualsClause(field: statusSelected, value: "")
-                        default:
-                            break
-                        }
-
-                    case .NotEquals:
-                        switch statusType {
-                        case StatusType.BoolType:
-                            clauseSelected = NotEqualsClause(field: statusSelected, value: false)
-                        case StatusType.IntType:
-                            clauseSelected = NotEqualsClause(field: statusSelected, value: 0)
-                        case StatusType.StringType:
-                            clauseSelected = NotEqualsClause(field: statusSelected, value: "")
-                        default:
-                            break
-                        }
-
-                    case .LessThan, .LessThanOrEquals:
-
-                        let upperIncluded: Bool!
-                        if clauseTypeSelected == ClauseType.LessThanOrEquals {
-                            upperIncluded = true
-                        }else {
-                            upperIncluded = false
-                        }
-
-                        switch statusType {
-                        case StatusType.IntType:
-                            clauseSelected = RangeClause(field: statusSelected, upperLimit: 0, upperIncluded: upperIncluded)
-                        case StatusType.DoubleType:
-                            clauseSelected = RangeClause(field: statusSelected, upperLimit: 0.0, upperIncluded: upperIncluded)
-                        default:
-                            break
-                        }
-
-                    case .GreaterThan:
-                        let lowerIncluded: Bool!
-                        if clauseTypeSelected == ClauseType.GreaterThanOrEquals {
-                            lowerIncluded = true
-                        }else {
-                            lowerIncluded = false
-                        }
-                        switch statusType {
-                        case StatusType.IntType:
-                            clauseSelected = RangeClause(field: statusSelected, lowerLimit: 0, lowerIncluded: lowerIncluded)
-                        case StatusType.DoubleType:
-                            clauseSelected = RangeClause(field: statusSelected, lowerLimit: 0.0, lowerIncluded: lowerIncluded)
-                        default:
-                            break
-                        }
-
-                    case .LeftOpen, .RightOpen, .BothClose, .BothOpen:
-                        let upperIncluded: Bool!
-                        if clauseTypeSelected == ClauseType.LeftOpen || clauseTypeSelected == ClauseType.BothClose {
-                            upperIncluded = true
-                        }else {
-                            upperIncluded = false
-                        }
-
-                        let lowerIncluded: Bool!
-                        if clauseTypeSelected == ClauseType.RightOpen || clauseTypeSelected == ClauseType.BothClose {
-                            lowerIncluded = true
-                        }else {
-                            lowerIncluded = false
-                        }
-
-                        switch statusType {
-                        case StatusType.IntType:
-                            clauseSelected = RangeClause(field: statusSelected, lowerLimit: 0, lowerIncluded: lowerIncluded, upperLimit: 0, upperIncluded: upperIncluded)
-                        case StatusType.DoubleType:
-                            clauseSelected = RangeClause(field: statusSelected, lowerLimit: 0.0, lowerIncluded: lowerIncluded, upperLimit: 0.0, upperIncluded: upperIncluded)
-                        default:
-                            break
-                        }
-
-                    default:
-                        break
-                    }
+                if let initializedClaue = ClauseType.getInitializedClause(clauseTypeSelected, statusSchema: schema?.getStatusSchema(statusSelected)) {
+                    clauseSelected = initializedClaue
                 }
             }
+
             if clauseSelected != nil {
                 self.subClauses.append(clauseSelected!)
                 self.tableView.reloadData()

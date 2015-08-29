@@ -9,7 +9,6 @@
 import UIKit
 import IoTCloudSDK
 
-
 class KiiBaseTableViewController: UITableViewController {
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
@@ -100,7 +99,5 @@ class KiiBaseTableViewController: UITableViewController {
         }else {
             return (clauseDict["clause"] as! Dictionary<String, AnyObject>)["field"] as! String
         }
-
     }
-
 }
