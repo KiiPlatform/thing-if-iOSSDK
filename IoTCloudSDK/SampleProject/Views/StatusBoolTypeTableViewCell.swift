@@ -8,20 +8,27 @@
 
 import UIKit
 
-protocol StatusBoolTypeTableViewCellDelegate {
-    func changeStatusBoolType(value: Bool)
-}
 class StatusBoolTypeTableViewCell: UITableViewCell {
 
-    var delegate: StatusBoolTypeTableViewCellDelegate?
+    var delegate: StatusTableViewCellDelegate?
+
+    var value: Bool? {
+        didSet {
+            if value != nil {
+                if value != boolSwitch.on {
+                    boolSwitch.on = value!
+                }
+            }
+        }
+    }
 
     @IBOutlet weak var boolSwitch: UISwitch!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var statusNameLabel: UILabel!
 
     @IBAction func changeSwitch(sender: AnyObject) {
-        if delegate != nil {
-            delegate!.changeStatusBoolType(self.boolSwitch.on)
-        }
+        let boolSwitch = sender as! UISwitch
+        value = boolSwitch.on
+        delegate?.setStatus(self, value: boolSwitch.on)
     }
 }

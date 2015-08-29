@@ -434,8 +434,48 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewActionItemBoolCell" rowHeight="75" id="FFg-Tn-jUa">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewActionItemNumberCell" rowHeight="75" id="eSH-mO-8in" customClass="StatusIntTypeTableViewCell" customModule="SampleProject" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="201.5" width="600" height="75"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eSH-mO-8in" id="E8O-nO-b2g">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="74.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Set Brightness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x7K-AB-lLF">
+                                            <rect key="frame" x="17" y="8" width="112" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Brightness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pAR-G0-JcU">
+                                            <rect key="frame" x="137" y="11" width="82" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="50" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fa7-ez-ydV">
+                                            <rect key="frame" x="17" y="45" width="80" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="de4-8j-sak">
+                                            <rect key="frame" x="122" y="37" width="200" height="31"/>
+                                            <connections>
+                                                <action selector="changeValue:" destination="eSH-mO-8in" eventType="valueChanged" id="yiV-tM-p8A"/>
+                                            </connections>
+                                        </slider>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="statusNameLabel" destination="pAR-G0-JcU" id="b7Q-2r-a9d"/>
+                                    <outlet property="titleLabel" destination="x7K-AB-lLF" id="kY0-xd-rQ0"/>
+                                    <outlet property="valueLabel" destination="fa7-ez-ydV" id="t54-R3-3fY"/>
+                                    <outlet property="valueSlider" destination="de4-8j-sak" id="LmK-Mb-WE7"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewActionItemBoolCell" rowHeight="75" id="FFg-Tn-jUa" customClass="StatusBoolTypeTableViewCell" customModule="SampleProject" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="276.5" width="600" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FFg-Tn-jUa" id="XQT-vd-Nqw">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="74.5"/>
@@ -457,40 +497,16 @@
                                             <rect key="frame" x="124" y="35" width="51" height="31"/>
                                             <connections>
                                                 <action selector="changeSwitch:" destination="vTx-1i-CYJ" eventType="valueChanged" id="BSc-ax-KqS"/>
+                                                <action selector="changeSwitch:" destination="FFg-Tn-jUa" eventType="valueChanged" id="rdB-uK-VCA"/>
                                             </connections>
                                         </switch>
                                     </subviews>
                                 </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewActionItemNumberCell" rowHeight="75" id="o3d-vL-KZ8">
-                                <rect key="frame" x="0.0" y="276.5" width="600" height="75"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="o3d-vL-KZ8" id="HX2-RK-z9u">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="74.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Set Brightness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IJD-Mx-VnZ">
-                                            <rect key="frame" x="17" y="8" width="112" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Brightness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7PG-T1-3Mz">
-                                            <rect key="frame" x="22" y="45" width="82" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <textField opaque="NO" clipsSubviews="YES" tag="103" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4ja-CN-fe7">
-                                            <rect key="frame" x="131" y="36" width="193" height="30"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
-                                            <connections>
-                                                <action selector="finishEditing:" destination="vTx-1i-CYJ" eventType="editingDidEnd" id="3AO-5O-qqk"/>
-                                            </connections>
-                                        </textField>
-                                    </subviews>
-                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="boolSwitch" destination="axW-N9-KtK" id="Zht-vB-iyX"/>
+                                    <outlet property="statusNameLabel" destination="LxX-n2-3qG" id="hNc-Vl-TSM"/>
+                                    <outlet property="titleLabel" destination="SmD-A6-Meg" id="4s8-Wy-g5h"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewActionItemButtonCell" rowHeight="75" id="Myg-lw-ksG">
                                 <rect key="frame" x="0.0" y="351.5" width="600" height="75"/>

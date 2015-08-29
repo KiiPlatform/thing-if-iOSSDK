@@ -210,7 +210,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewActionItemBoolCell" rowHeight="75" id="Yqt-Ev-clX">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewActionItemBoolCell" rowHeight="75" id="Yqt-Ev-clX" customClass="StatusBoolTypeTableViewCell" customModule="SampleProject" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="201.5" width="600" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yqt-Ev-clX" id="qI4-l6-Xv4">
@@ -232,41 +232,56 @@
                                         <switch opaque="NO" tag="102" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wKP-LU-NWf">
                                             <rect key="frame" x="124" y="35" width="51" height="31"/>
                                             <connections>
-                                                <action selector="changeSwitch:" destination="860-4Y-Jk3" eventType="valueChanged" id="xV3-ce-m4f"/>
+                                                <action selector="changeSwitch:" destination="Yqt-Ev-clX" eventType="valueChanged" id="vxi-7X-94V"/>
                                             </connections>
                                         </switch>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="boolSwitch" destination="wKP-LU-NWf" id="hvG-It-xUl"/>
+                                    <outlet property="statusNameLabel" destination="NSJ-Pk-5Vp" id="2NK-Bz-UVx"/>
+                                    <outlet property="titleLabel" destination="NBW-rx-1tG" id="SHn-VO-x6j"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewActionItemNumberCell" rowHeight="75" id="rc7-iQ-HPe">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewActionItemNumberCell" rowHeight="75" id="RXI-Ta-DLm" customClass="StatusIntTypeTableViewCell" customModule="SampleProject" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="276.5" width="600" height="75"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rc7-iQ-HPe" id="P70-ab-9bu">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RXI-Ta-DLm" id="wBW-ab-qe6">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="74.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Set Brightness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SxI-pt-WOX">
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Set Brightness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQA-hI-jGl">
                                             <rect key="frame" x="17" y="8" width="112" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Brightness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="85G-M5-xey">
-                                            <rect key="frame" x="22" y="45" width="82" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Brightness" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FTH-ce-A0E">
+                                            <rect key="frame" x="137" y="11" width="82" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" tag="103" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eRU-f9-8KS">
-                                            <rect key="frame" x="131" y="36" width="193" height="30"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="101" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="50" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zdt-4X-7TA">
+                                            <rect key="frame" x="17" y="45" width="80" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="jGK-Er-boP">
+                                            <rect key="frame" x="122" y="37" width="200" height="31"/>
                                             <connections>
-                                                <action selector="finishEditing:" destination="860-4Y-Jk3" eventType="editingDidEnd" id="DQC-Ag-kRi"/>
+                                                <action selector="changeValue:" destination="RXI-Ta-DLm" eventType="valueChanged" id="WYn-wk-ldf"/>
                                             </connections>
-                                        </textField>
+                                        </slider>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="statusNameLabel" destination="FTH-ce-A0E" id="6Pg-Nd-3YI"/>
+                                    <outlet property="titleLabel" destination="UQA-hI-jGl" id="ag9-US-ybD"/>
+                                    <outlet property="valueLabel" destination="Zdt-4X-7TA" id="lMR-e2-kOb"/>
+                                    <outlet property="valueSlider" destination="jGK-Er-boP" id="JLm-0V-co7"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewActionItemButtonCell" rowHeight="75" id="Baf-1G-yED">
                                 <rect key="frame" x="0.0" y="351.5" width="600" height="75"/>

@@ -9,7 +9,7 @@
 import UIKit
 import IoTCloudSDK
 
-class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate, StatusTableViewCellDelegate {
 
     @IBOutlet weak var schemaNameTextField: UITextField!
     @IBOutlet weak var schemaVersionTextField: UITextField!
@@ -105,20 +105,22 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
 
                 var cell: UITableViewCell!
                 if requiredStatus.type == StatusType.BoolType { // if data type of required status is bool, then cell will contain switch
-                    cell = tableView.dequeueReusableCellWithIdentifier("NewActionItemBoolCell", forIndexPath: indexPath)
-                    let boolSwitch = cell.viewWithTag(102) as! UISwitch
-                    if let boolValue = actionsCellData.value as? Bool {
-                        boolSwitch.setOn(boolValue, animated: false)
-                    }
+                    let boolTypecell = tableView.dequeueReusableCellWithIdentifier("NewActionItemBoolCell", forIndexPath: indexPath) as! StatusBoolTypeTableViewCell
+                    boolTypecell.delegate = self
+                    boolTypecell.titleLabel.text = actionsCellData.actionSchema.name
+                    boolTypecell.statusNameLabel.text = actionsCellData.actionSchema.status.name
+                    boolTypecell.value = actionsCellData.value as? Bool
+                    cell = boolTypecell
                 }else {
-                    cell = tableView.dequeueReusableCellWithIdentifier("NewActionItemNumberCell", forIndexPath: indexPath)
-                    let textField = cell.viewWithTag(103) as! UITextField
-                    textField.text = "\(actionsCellData.value)"
+                    let intCell = tableView.dequeueReusableCellWithIdentifier("NewActionItemNumberCell", forIndexPath: indexPath) as! StatusIntTypeTableViewCell
+                    intCell.titleLabel.text = actionsCellData.actionSchema.name
+                    intCell.statusNameLabel.text = actionsCellData.actionSchema.status.name
+                    intCell.value = actionsCellData.value as? Int
+                    intCell.minValue = actionsCellData.actionSchema.status.minValue as? Int
+                    intCell.maxValue = actionsCellData.actionSchema.status.maxValue as? Int
+                    intCell.delegate = self
+                    cell = intCell
                 }
-                let actionNameLabel = cell.viewWithTag(100) as! UILabel // 100 is label to show action name
-                actionNameLabel.text = actionsCellData.actionSchema.name
-                let requiredStatusLabel = cell.viewWithTag(101) as! UILabel // 101 is label to show name of required status
-                requiredStatusLabel.text = requiredStatus.name
 
                 return cell
             }
@@ -301,6 +303,17 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
             return
         }
         self.selectedActionName = actionSchemasToSelect[row-1]
+    }
+
+    func setStatus(sender: UITableViewCell, value: AnyObject) {
+        if let selectedIndexPath = self.tableView.indexPathForCell(sender) {
+            var selectedAction = sections[selectedIndexPath.section].items[selectedIndexPath.row] as? ActionStruct
+            if  selectedAction != nil {
+                selectedAction!.value = value
+                // update items array
+                sections[selectedIndexPath.section].items[selectedIndexPath.row] = selectedAction!
+            }
+        }
     }
 
 }
