@@ -106,6 +106,49 @@ enum ClauseType: String {
     }
 }
 
+struct ActionStruct {
+    // should be like : ["name":"TurnPower", "required": "power"]
+    let actionSchema: ActionSchema!
+    var value: AnyObject!
+
+    func getActionDict() -> Dictionary<String, AnyObject> {
+        // action should be like: ["actionName": ["requiredStatus": value] ], where value can be Bool, Int or Double. ie. ["TurnPower": ["power": true]]
+        let actionDict: Dictionary<String, AnyObject> = [actionSchema.name: [actionSchema.status.name: value]]
+        return actionDict
+    }
+
+    init(actionSchema: ActionSchema, value: AnyObject) {
+        self.actionSchema = actionSchema
+        self.value = value
+    }
+
+    init?(actionSchema: ActionSchema, actionDict: Dictionary<String, AnyObject>) {
+        self.actionSchema = actionSchema
+
+        if actionDict.keys.count == 0 {
+            return nil
+        }
+
+        let actionNameKey = Array(actionDict.keys)[0]
+
+        if actionSchema.name == actionNameKey {
+            if let statusDict = actionDict[actionNameKey] as? Dictionary<String, AnyObject> {
+                let statusNameKey = Array(statusDict.keys)[0]
+                if actionSchema.status.name == statusNameKey {
+                    self.value = statusDict[statusNameKey]
+                }else{
+                    return nil
+                }
+            }else {
+                return nil
+            }
+        }else {
+            return nil
+        }
+    }
+}
+
+
 class StatusSchema: NSObject, NSCoding {
     let name: String!
     let type: StatusType!
@@ -167,12 +210,16 @@ class IoTSchema: NSObject,NSCoding {
     
 
     func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.name, forKey: "name")
+        aCoder.encodeObject(self.version, forKey: "version")
         aCoder.encodeObject(self.statusSchemaDict, forKey: "statusSchemaDict")
         aCoder.encodeObject(self.actionSchemaDict, forKey: "actionSchemaDict")
     }
 
     // MARK: - Implements NSCoding protocol
     required init(coder aDecoder: NSCoder) {
+        self.name = aDecoder.decodeObjectForKey("name") as! String
+        self.version = aDecoder.decodeObjectForKey("version") as! Int
         self.statusSchemaDict = aDecoder.decodeObjectForKey("statusSchemaDict") as! Dictionary<String, StatusSchema>
         self.actionSchemaDict = aDecoder.decodeObjectForKey("actionSchemaDict") as! Dictionary<String, ActionSchema>
     }

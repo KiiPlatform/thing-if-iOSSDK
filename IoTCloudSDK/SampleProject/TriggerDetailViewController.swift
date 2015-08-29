@@ -20,10 +20,11 @@ class TriggerDetailViewController: KiiBaseTableViewController, TriggerCommandEdi
     @IBOutlet weak var commandDetailLabel: UILabel!
 
     @IBOutlet weak var statePredicateDetailLabel: UILabel!
-    public var trigger: Trigger?
-    var statePredicateToSave: StatePredicate?
-    
-    var commandStructToSave: CommandStruct?
+
+    var trigger: Trigger?
+
+    private var statePredicateToSave: StatePredicate?
+    private var commandStructToSave: CommandStruct?
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)

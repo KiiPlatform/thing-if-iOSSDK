@@ -68,11 +68,8 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
     override func viewDidLoad() {
          super.viewDidLoad()
         // init actionSchemasToSelect from predefined schemaDict
-        if schemaDict != nil {
-            if let statusArray = self.getStatusArray() {
-                self.statusToSelect = statusArray
-            }
-
+        if schema != nil {
+            self.statusToSelect = schema!.getStatusNames()
         }
         self.clauseTypeToSelect = ClauseType.getTypesArray()
 
@@ -142,7 +139,7 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
                     cell.textLabel?.text = "\(clauseType.rawValue) Clause"
                 }else {
                     let clauseField = getStatusFromClause(clause)
-                    let statusType = getStatusType(clauseField)!
+                    let statusType = schema!.getStatusType(clauseField)!
                     let selectedClauseType = ClauseType.getClauseType(clause)!
                     switch selectedClauseType {
                     case .Equals, .NotEquals:
@@ -332,7 +329,7 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
             }
 
             if let statusSelected = statusTempSelected {
-                if let statusType = getStatusType(statusSelected) {
+                if let statusType = schema?.getStatusType(statusSelected) {
                     switch clauseTypeSelected {
                     case .Equals:
                         switch statusType {
@@ -503,7 +500,7 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
                     var section = sections[selectedIndexPath.section]
                     if let clause = section.items[selectedIndexPath.row] as? Clause{
                         let status = getStatusFromClause(clause)
-                        if let clauseType = ClauseType.getClauseType(clause), statusType = getStatusType(status) {
+                        if let clauseType = ClauseType.getClauseType(clause), statusType = schema?.getStatusType(status) {
                             switch clauseType {
                             case .Equals:
                                 switch statusType {
@@ -614,7 +611,7 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
                     var section = sections[selectedIndexPath.section]
                     if let clause = section.items[selectedIndexPath.row] as? Clause{
                         let status = getStatusFromClause(clause)
-                        if let clauseType = ClauseType.getClauseType(clause), statusType = getStatusType(status) {
+                        if let clauseType = ClauseType.getClauseType(clause), statusType = schema?.getStatusType(status) {
                             switch clauseType {
                             case .Equals:
                                 switch statusType {

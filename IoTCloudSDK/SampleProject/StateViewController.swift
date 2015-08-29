@@ -10,8 +10,8 @@ import UIKit
 class StateViewController: KiiBaseTableViewController {
     var stateStringsArray = [String]()
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         getState()
     }
 

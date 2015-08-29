@@ -15,17 +15,16 @@ protocol TriggerCommandEditViewControllerDelegate {
 }
 class TriggerCommandEditViewController: CommandEditViewController {
 
-    public var delegate: TriggerCommandEditViewControllerDelegate?
+    var delegate: TriggerCommandEditViewControllerDelegate?
 
     @IBAction func tapSaveCommand(sender: AnyObject) {
         // generate actions array
         var actions = [Dictionary<String, AnyObject>]()
         if let actionsItems = sections[2].items {
             for actionItem in actionsItems {
-                if let actionCellData = actionItem as? ActionCellData {
+                if let actionCellData = actionItem as? ActionStruct {
                     // action should be like: ["actionName": ["requiredStatus": value] ], where value can be Bool, Int or Double
-                    let action: Dictionary<String, AnyObject> = [actionCellData.actionSchemaDict["name"]!: [actionCellData.actionSchemaDict["required"]!: actionCellData.value]]
-                    actions.append(action)
+                    actions.append(actionCellData.getActionDict())
                 }
             }
         }

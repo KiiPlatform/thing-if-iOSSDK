@@ -12,9 +12,7 @@ import IoTCloudSDK
 class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     @IBOutlet weak var schemaNameTextField: UITextField!
-
     @IBOutlet weak var schemaVersionTextField: UITextField!
-
 
     var commandStruct: CommandStruct?
 
@@ -23,83 +21,33 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
         var items: [Any]!
     }
 
-    struct ActionCellData {
-        // should be like : ["name":"TurnPower", "required": "power"]
-        let actionSchemaDict: Dictionary<String, String>!
-        var value: AnyObject!
-
-        func getActionDict() -> Dictionary<String, AnyObject> {
-            // action should be like: ["actionName": ["requiredStatus": value] ], where value can be Bool, Int or Double. ie. ["TurnPower": ["power": true]]
-            let actionDict: Dictionary<String, AnyObject> = [actionSchemaDict["name"]!: [actionSchemaDict["required"]!: value]]
-            return actionDict
-        }
-
-        init(actionSchemaDict: Dictionary<String, String>, value: AnyObject) {
-            self.actionSchemaDict = actionSchemaDict
-            self.value = value
-        }
-
-        init?(actionSchemaDict: Dictionary<String, String>, actionDict: Dictionary<String, AnyObject>) {
-            self.actionSchemaDict = actionSchemaDict
-
-            if actionDict.keys.count == 0 {
-                return nil
-            }
-
-            let actionNameKey = Array(actionDict.keys)[0]
-
-            if actionSchemaDict["name"] == actionNameKey {
-                if let statusDict = actionDict[actionNameKey] as? Dictionary<String, AnyObject> {
-                    let statusNameKey = Array(statusDict.keys)[0]
-                    if actionSchemaDict["required"] == statusNameKey {
-                        self.value = statusDict[statusNameKey]
-                    }else{
-                        return nil
-                    }
-                }else {
-                    return nil
-                }
-            }else {
-                return nil
-            }
-        }
-    }
-
-    var sections = [SectionStruct]()
-    private var actionSchemasToSelect = [Dictionary<String, String>]()
-    private var selectedActionDict: Dictionary<String, String>?
+    private var sections = [SectionStruct]()
+    private var actionSchemasToSelect = [String]()
+    private var selectedActionName: String?
     private var cellDeleted: UITableViewCell?
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         // init actionSchemasToSelect from predefined schemaDict
-        if schemaDict != nil {
-            if let actionSchemaDict = schemaDict!["actions"] as? [Dictionary<String, String>]{
-                self.actionSchemasToSelect = actionSchemaDict
-            }
+        if schema != nil {
+            self.actionSchemasToSelect = schema!.getActionNames()
         }
 
         if self.commandStruct == nil {
-            sections.append(SectionStruct(headerTitle: "Schema", items: [schemaDict!["name"]!]))
-            sections.append(SectionStruct(headerTitle: "Version", items: [schemaDict!["version"]!]))
+            sections.append(SectionStruct(headerTitle: "Schema", items: [schema!.name]))
+            sections.append(SectionStruct(headerTitle: "Version", items: [schema!.version]))
             sections.append(SectionStruct(headerTitle: "Actions", items: [Any]()))
         }else {
             sections.append(SectionStruct(headerTitle: "Schema", items: [commandStruct!.schemaName]))
             sections.append(SectionStruct(headerTitle: "Version", items: [commandStruct!.schemaVersion]))
             var actionItems = [Any]()
+            // construct actionsItems
             for actionDict in commandStruct!.actions {
                 if actionDict.keys.count > 0 {
                     let actionNameKey = Array(actionDict.keys)[0]
-                    var actionSchema: Dictionary<String, String>?
-                    // find the specify action schema
-                    for candidateSchema in self.actionSchemasToSelect {
-                        if candidateSchema["name"] == actionNameKey {
-                            actionSchema = candidateSchema
-                        }
-                    }
-                    if actionSchema != nil {
-                        if let actionCellData = ActionCellData(actionSchemaDict: actionSchema!, actionDict: actionDict) {
+                    if let actionSchema = schema?.getActionSchema(actionNameKey) {
+                        if let actionCellData = ActionStruct(actionSchema: actionSchema, actionDict: actionDict) {
                             actionItems.append(actionCellData)
                         }
                     }
@@ -107,7 +55,6 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
             }
             sections.append(SectionStruct(headerTitle: "Actions", items: actionItems))
         }
-
     }
 
     //MARK: - TableView methods
@@ -152,11 +99,11 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
                 return tableView.dequeueReusableCellWithIdentifier("NewActionItemButtonCell", forIndexPath: indexPath)
             }else{
 
-                let actionsCellData = sections[indexPath.section].items[indexPath.row] as! ActionCellData
-                let requiredStatus = actionsCellData.actionSchemaDict["required"]!
+                let actionsCellData = sections[indexPath.section].items[indexPath.row] as! ActionStruct
+                let requiredStatus = actionsCellData.actionSchema.status
 
                 var cell: UITableViewCell!
-                if isBool(requiredStatus)! { // if data type of required status is bool, then cell will contain switch
+                if requiredStatus.type == StatusType.BoolType { // if data type of required status is bool, then cell will contain switch
                     cell = tableView.dequeueReusableCellWithIdentifier("NewActionItemBoolCell", forIndexPath: indexPath)
                     let boolSwitch = cell.viewWithTag(102) as! UISwitch
                     if let boolValue = actionsCellData.value as? Bool {
@@ -168,9 +115,9 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
                     textField.text = "\(actionsCellData.value)"
                 }
                 let actionNameLabel = cell.viewWithTag(100) as! UILabel // 100 is label to show action name
-                actionNameLabel.text = actionsCellData.actionSchemaDict["name"]!
+                actionNameLabel.text = actionsCellData.actionSchema.name
                 let requiredStatusLabel = cell.viewWithTag(101) as! UILabel // 101 is label to show name of required status
-                requiredStatusLabel.text = actionsCellData.actionSchemaDict["required"]!
+                requiredStatusLabel.text = requiredStatus.name
 
                 return cell
             }
@@ -220,10 +167,10 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
             if let cell = textField.superview?.superview as? UITableViewCell{
                 if cell !== cellDeleted {
                     if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
-                        var selectedAction = sections[selectedIndexPath.section].items[selectedIndexPath.row] as? ActionCellData
+                        var selectedAction = sections[selectedIndexPath.section].items[selectedIndexPath.row] as? ActionStruct
                         if  selectedAction != nil {
-                            if let isIntType = isInt(selectedAction!.actionSchemaDict["required"]!) {
-                                if isIntType {
+                            if let statusType = selectedAction?.actionSchema.status.type{
+                                if statusType == StatusType.IntType {
                                     selectedAction!.value = Int(textField.text!)!
                                 }else {
                                     selectedAction!.value = Double(textField.text!)!
@@ -240,11 +187,10 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
 
     // "Value Changed" event handler of switch of NewActionBoolCell
     @IBAction func changeSwitch(sender: AnyObject) {
-
         if let boolSwitch = sender as? UISwitch {
             if let cell = boolSwitch.superview?.superview as? UITableViewCell{
                 if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
-                    var selectedAction = sections[selectedIndexPath.section].items[selectedIndexPath.row] as? ActionCellData
+                    var selectedAction = sections[selectedIndexPath.section].items[selectedIndexPath.row] as? ActionStruct
                     if  selectedAction != nil {
                         selectedAction!.value = boolSwitch.on
 
@@ -283,7 +229,6 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
         //Add the target - target, function to call, the event witch will trigger the function call
         buttonCancel.addTarget(self, action: "cancelSelection:", forControlEvents: UIControlEvents.TouchDown)
 
-
         //add buttons to the view
         let buttonOkFrame: CGRect = CGRectMake(170, 7, 100, 30) //size & position of the button as placed on the toolView
 
@@ -295,28 +240,35 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
 
         buttonOk.addTarget(self, action: "selectAction:", forControlEvents: UIControlEvents.TouchDown)
 
-
         //add the toolbar to the alert controller
         alertController.view.addSubview(toolView)
 
         self.presentViewController(alertController, animated: true, completion: nil)
     }
 
-
-    //MARK: Custom methods
+    //MARK: Methods to handle picker button
 
     func selectAction(sender: UIButton){
-        if let selectedActionDict = self.selectedActionDict {
-            if let requiredState = selectedActionDict["required"] {
-                var newActionCellData: ActionCellData!
-                if let isBoolType = isBool(requiredState) {
-                    if isBoolType {
-                        newActionCellData = ActionCellData(actionSchemaDict: selectedActionDict, value: false)
-                    }else{
-                        newActionCellData = ActionCellData(actionSchemaDict: selectedActionDict, value: 0)
+        if let selectedActionName = self.selectedActionName {
+            if let actionSchema = schema?.getActionSchema(selectedActionName) {
+                if let statusType = schema!.getStatusType(actionSchema.status.name) {
+
+                    var defaultedValue: AnyObject?
+                    switch statusType {
+                    case .BoolType:
+                        defaultedValue = false
+                    case .IntType:
+                        defaultedValue = 0
+                    case .DoubleType:
+                        defaultedValue = 0.0
+                    default:
+                        break
                     }
-                    sections[2].items.append(newActionCellData)
-                    self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: sections[2].items.count-1, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Automatic)
+
+                    if defaultedValue != nil {
+                        sections[2].items.append(ActionStruct(actionSchema: actionSchema, value: defaultedValue!))
+                        self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: sections[2].items.count-1, inSection: 2)], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    }
                 }
             }
         }
@@ -340,15 +292,14 @@ class CommandEditViewController: KiiBaseTableViewController, UIPickerViewDataSou
         if row == 0 {
             return ""
         }
-        return actionSchemasToSelect[row-1]["name"]
+        return actionSchemasToSelect[row-1]
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if row == 0 {
             return
         }
-        self.selectedActionDict = actionSchemasToSelect[row-1]
+        self.selectedActionName = actionSchemasToSelect[row-1]
     }
-    
-    
+
 }

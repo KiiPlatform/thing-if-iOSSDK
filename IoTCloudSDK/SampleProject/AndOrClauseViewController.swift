@@ -34,11 +34,9 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // init status list from predefined schemaDict to select in picker view
-        if schemaDict != nil {
-            if let statusArray = self.getStatusArray() {
-                self.statusToSelect = statusArray
-            }
+        // init status list from predefined schema to select in picker view
+        if schema != nil {
+            self.statusToSelect = schema!.getStatusNames()
         }
 
         // init clause type list from predefined schemaDict to select in picker view
@@ -82,7 +80,7 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                 cell.textLabel?.text = "\(clauseType.rawValue) Clause"
             }else {
                 let clauseField = getStatusFromClause(clause)
-                let statusType = getStatusType(clauseField)!
+                let statusType = schema!.getStatusType(clauseField)!
                 let selectedClauseType = ClauseType.getClauseType(clause)!
                 switch selectedClauseType {
                 case .Equals, .NotEquals:
@@ -242,7 +240,7 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
             }
 
             if let statusSelected = statusTempSelected {
-                if let statusType = getStatusType(statusSelected) {
+                if let statusType = schema?.getStatusType(statusSelected) {
                     switch clauseTypeSelected {
                     case .Equals:
                         switch statusType {
@@ -411,7 +409,7 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                 if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
                     if let clause = subClauses[selectedIndexPath.row] as? Clause{
                         let status = getStatusFromClause(clause)
-                        if let clauseType = ClauseType.getClauseType(clause), statusType = getStatusType(status) {
+                        if let clauseType = ClauseType.getClauseType(clause), statusType = schema?.getStatusType(status) {
                             switch clauseType {
                             case .Equals:
                                 switch statusType {
@@ -513,7 +511,7 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
                 if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
                     if let clause = subClauses[selectedIndexPath.row] as? Clause{
                         let status = getStatusFromClause(clause)
-                        if let clauseType = ClauseType.getClauseType(clause), statusType = getStatusType(status) {
+                        if let clauseType = ClauseType.getClauseType(clause), statusType = schema?.getStatusType(status) {
                             switch clauseType {
                             case .Equals:
                                 switch statusType {

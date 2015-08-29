@@ -16,7 +16,7 @@ class CommandNewViewController: CommandEditViewController {
     //MARK: IBActions methods
     @IBAction func tapUpload(sender: AnyObject) {
 
-        if iotAPI != nil && target != nil && schemaDict != nil{
+        if iotAPI != nil && target != nil && schema != nil{
             // disable upload button while uploading
             self.uploadButton.enabled = false
 
@@ -24,24 +24,24 @@ class CommandNewViewController: CommandEditViewController {
             var actions = [Dictionary<String, AnyObject>]()
             if let actionsItems = sections[2].items {
                 for actionItem in actionsItems {
-                    if let actionCellData = actionItem as? ActionCellData {
+                    if let actionCellData = actionItem as? ActionStruct {
                         actions.append(actionCellData.getActionDict())
                     }
                 }
             }
             // the defaultd schema and schemaVersion from predefined schem dict
-            var schema = schemaDict!["name"]! as! String
-            var schemaVersion = schemaDict!["version"]! as! Int
+            var schemaName = schema!.name
+            var schemaVersion = schema!.version
 
             if let schemaTextField = self.view.viewWithTag(200) as? UITextField {
-                schema = schemaTextField.text!
+                schemaName = schemaTextField.text!
             }
             if let schemaVersionTextFiled = self.view.viewWithTag(201) as? UITextField {
                 schemaVersion = Int(schemaVersionTextFiled.text!)!
             }
 
             // call postNewCommand method
-            iotAPI!.postNewCommand(target!, schemaName: schema, schemaVersion: schemaVersion, actions: actions, completionHandler: { (command, error) -> Void in
+            iotAPI!.postNewCommand(target!, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: { (command, error) -> Void in
                 if command != nil {
                     self.navigationController?.popViewControllerAnimated(true)
                 }else {
