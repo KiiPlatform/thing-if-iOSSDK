@@ -17,6 +17,10 @@
 		7D3314881B91B0B500A6DDFB /* ClauseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3314871B91B0B500A6DDFB /* ClauseHelper.swift */; settings = {ASSET_TAGS = (); }; };
 		7D33148A1B91B21F00A6DDFB /* IoTCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3314891B91B21F00A6DDFB /* IoTCloudSDK.framework */; };
 		7D33148B1B91B21F00A6DDFB /* IoTCloudSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3314891B91B21F00A6DDFB /* IoTCloudSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7D3314911B91C06600A6DDFB /* StatusBoolTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D3314901B91C06600A6DDFB /* StatusBoolTypeTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
+		7D3314931B91C08B00A6DDFB /* StatusBoolTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3314921B91C08B00A6DDFB /* StatusBoolTypeTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		7D3314951B91C22D00A6DDFB /* StatusNumberTypeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D3314941B91C22D00A6DDFB /* StatusNumberTypeTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
+		7D3314971B91C30B00A6DDFB /* StatusNumberTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3314961B91C30B00A6DDFB /* StatusNumberTypeTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		7D3DFB5E1B8EF1B80055BE18 /* Triggers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3DFB5D1B8EF1B80055BE18 /* Triggers.storyboard */; settings = {ASSET_TAGS = (); }; };
 		7D3DFB601B8EF2420055BE18 /* State.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3DFB5F1B8EF2420055BE18 /* State.storyboard */; settings = {ASSET_TAGS = (); }; };
 		7D3DFB671B8EFA460055BE18 /* CommandNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3DFB661B8EFA460055BE18 /* CommandNewViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -67,6 +71,10 @@
 		7D19188F1B8DC84C007F2885 /* TriggerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerDetailViewController.swift; sourceTree = "<group>"; };
 		7D3314871B91B0B500A6DDFB /* ClauseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClauseHelper.swift; sourceTree = "<group>"; };
 		7D3314891B91B21F00A6DDFB /* IoTCloudSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = IoTCloudSDK.framework; path = "/Users/yongping/Library/Developer/Xcode/DerivedData/IoTCloudSDK-aqjgnbnbjnsaiscreasrbpuvwqat/Build/Products/Debug-iphoneos/IoTCloudSDK.framework"; sourceTree = "<absolute>"; };
+		7D3314901B91C06600A6DDFB /* StatusBoolTypeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusBoolTypeTableViewCell.xib; sourceTree = "<group>"; };
+		7D3314921B91C08B00A6DDFB /* StatusBoolTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBoolTypeTableViewCell.swift; sourceTree = "<group>"; };
+		7D3314941B91C22D00A6DDFB /* StatusNumberTypeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusNumberTypeTableViewCell.xib; sourceTree = "<group>"; };
+		7D3314961B91C30B00A6DDFB /* StatusNumberTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusNumberTypeTableViewCell.swift; sourceTree = "<group>"; };
 		7D3DFB5D1B8EF1B80055BE18 /* Triggers.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Triggers.storyboard; sourceTree = "<group>"; };
 		7D3DFB5F1B8EF2420055BE18 /* State.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = State.storyboard; sourceTree = "<group>"; };
 		7D3DFB661B8EFA460055BE18 /* CommandNewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandNewViewController.swift; sourceTree = "<group>"; };
@@ -122,6 +130,7 @@
 		7D108AD91B7210C8006EA12B /* SampleProject */ = {
 			isa = PBXGroup;
 			children = (
+				7D33148F1B91C06600A6DDFB /* Views */,
 				7DCDBD841B9097FD00AB006B /* SmartLightDemo */,
 				7D3DFB631B8EF9090055BE18 /* TriggerVC */,
 				7D3DFB621B8EF8ED0055BE18 /* CommandVC */,
@@ -142,6 +151,17 @@
 				7D3314871B91B0B500A6DDFB /* ClauseHelper.swift */,
 			);
 			path = SampleProject;
+			sourceTree = "<group>";
+		};
+		7D33148F1B91C06600A6DDFB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7D3314901B91C06600A6DDFB /* StatusBoolTypeTableViewCell.xib */,
+				7D3314921B91C08B00A6DDFB /* StatusBoolTypeTableViewCell.swift */,
+				7D3314941B91C22D00A6DDFB /* StatusNumberTypeTableViewCell.xib */,
+				7D3314961B91C30B00A6DDFB /* StatusNumberTypeTableViewCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7D3DFB611B8EF33A0055BE18 /* Storyboards */ = {
@@ -267,6 +287,7 @@
 			files = (
 				7D108AE51B7210C8006EA12B /* LaunchScreen.storyboard in Resources */,
 				7D3DFB5E1B8EF1B80055BE18 /* Triggers.storyboard in Resources */,
+				7D3314911B91C06600A6DDFB /* StatusBoolTypeTableViewCell.xib in Resources */,
 				D5351AA91B8ED6D900E55807 /* Notifications.storyboard in Resources */,
 				7D108AE21B7210C8006EA12B /* Assets.xcassets in Resources */,
 				7D44C18D1B8EEC3100F19FA3 /* Onboarding.storyboard in Resources */,
@@ -274,6 +295,7 @@
 				7D44C18F1B8EEC9A00F19FA3 /* Commands.storyboard in Resources */,
 				7DB3F6E81B8B243600AE8254 /* Properties.plist in Resources */,
 				7D3DFB601B8EF2420055BE18 /* State.storyboard in Resources */,
+				7D3314951B91C22D00A6DDFB /* StatusNumberTypeTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,9 +320,11 @@
 				7D8FAB4D1B8EB00100D57F8E /* CommandEditViewController.swift in Sources */,
 				7D3DFB671B8EFA460055BE18 /* CommandNewViewController.swift in Sources */,
 				7D108ADD1B7210C8006EA12B /* ViewController.swift in Sources */,
+				7D3314931B91C08B00A6DDFB /* StatusBoolTypeTableViewCell.swift in Sources */,
 				7DB3F6F41B8C1DD400AE8254 /* CommandsListViewController.swift in Sources */,
 				7DB3F6F21B8BFDA900AE8254 /* KiiBaseTableViewController.swift in Sources */,
 				7D1918901B8DC84C007F2885 /* TriggerDetailViewController.swift in Sources */,
+				7D3314971B91C30B00A6DDFB /* StatusNumberTypeTableViewCell.swift in Sources */,
 				7DB3F6E61B8B133D00AE8254 /* OnBoardViewController.swift in Sources */,
 				7DB3F6EC1B8B2DED00AE8254 /* TabBarViewController.swift in Sources */,
 				7D108ADB1B7210C8006EA12B /* AppDelegate.swift in Sources */,
