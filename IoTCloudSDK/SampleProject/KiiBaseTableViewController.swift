@@ -88,16 +88,4 @@ class KiiBaseTableViewController: UITableViewController {
         completion()
     }
 
-    //MARK: methods for schema 
-
-    func getStatusFromClause(clause: Clause) -> String {
-        let clauseDict = clause.toNSDictionary()
-        let clauseType = ClauseType.getClauseType(clause)!
-
-        if clauseType != ClauseType.NotEquals {
-            return clauseDict["field"] as! String
-        }else {
-            return (clauseDict["clause"] as! Dictionary<String, AnyObject>)["field"] as! String
-        }
-    }
 }

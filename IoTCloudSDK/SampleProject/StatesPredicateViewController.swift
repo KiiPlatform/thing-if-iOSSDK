@@ -14,7 +14,7 @@ protocol StatesPredicateViewControllerDelegate {
     func saveStatePredicate(newPredicate: StatePredicate)
 }
 
-class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate, AndOrClauseViewControllerDelegate {
+class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDataSource, UIPickerViewDelegate, StatusTableViewCellDelegate, IntervalStatusCellDelegate, AndOrClauseViewControllerDelegate {
 
     struct SectionStruct {
         let headerTitle: String!
@@ -113,6 +113,15 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
 
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if sections[indexPath.section].headerTitle == "Condition" {
+            if sections[indexPath.section].items.count > 0 {
+                if let clause = sections[indexPath.section].items[indexPath.row] as? RangeClause {
+                    if let clauseType = ClauseType.getClauseType(clause) {
+                        if clauseType == ClauseType.LeftOpen || clauseType == ClauseType.RightOpen || clauseType == ClauseType.BothClose || clauseType == ClauseType.BothOpen {
+                            return 100
+                        }
+                    }
+                }
+            }
             return 75
         }else {
             return 44
@@ -138,61 +147,72 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
                     cell = tableView.dequeueReusableCellWithIdentifier("AndOrClauseCell", forIndexPath: indexPath)
                     cell.textLabel?.text = "\(clauseType.rawValue) Clause"
                 }else {
-                    let clauseField = getStatusFromClause(clause)
-                    let statusType = schema!.getStatusType(clauseField)!
-                    let selectedClauseType = ClauseType.getClauseType(clause)!
-                    switch selectedClauseType {
-                    case .Equals, .NotEquals:
-                        var value:AnyObject!
-                        if clauseType == ClauseType.Equals{
-                            value = clauseDict["value"]
-                        }else {
-                            value = (clauseDict["clause"] as! Dictionary<String, AnyObject>)["value"]
-                        }
-                        switch statusType {
-                        case StatusType.BoolType:
-                            cell = tableView.dequeueReusableCellWithIdentifier("NewClauseBoolCell", forIndexPath: indexPath)
-                            let boolSwitch = cell.viewWithTag(102) as! UISwitch
-                            boolSwitch.on = value as! Bool
+                    // only for int and bool value
+                    var singleValue: AnyObject?
+                    var lowerLimitValue: Int?
+                    var upperLimitValue: Int?
+                    let status = ClauseHelper.getStatusFromClause(clause)
+                    let statusType = schema!.getStatusType(status)!
 
-                        case StatusType.IntType, StatusType.DoubleType:
-                            cell = tableView.dequeueReusableCellWithIdentifier("NewClauseNumberCell", forIndexPath: indexPath)
-                            let textField = cell.viewWithTag(103) as! UITextField
-                            textField.text = "\(value!)"
-                        default:
-                            break
+                    switch clauseType {
+                    case .Equals, .NotEquals:
+                        if clauseType == ClauseType.Equals{
+                            singleValue = clauseDict["value"]
+                        }else {
+                            singleValue = (clauseDict["clause"] as! Dictionary<String, AnyObject>)["value"]
                         }
 
                     case .LessThanOrEquals, .LessThan:
-                        let upperLimit = clauseDict["upperLimit"]
-                        cell = tableView.dequeueReusableCellWithIdentifier("NewClauseNumberCell", forIndexPath: indexPath)
-                        let textField = cell.viewWithTag(103) as! UITextField
-                        textField.text = "\(upperLimit!)"
+                        singleValue = clauseDict["upperLimit"]
 
                     case .GreaterThan, .GreaterThanOrEquals:
-                        let lowerLimit = clauseDict["lowerLimit"]
-                        cell = tableView.dequeueReusableCellWithIdentifier("NewClauseNumberCell", forIndexPath: indexPath)
-                        let textField = cell.viewWithTag(103) as! UITextField
-                        textField.text = "\(lowerLimit!)"
+                        singleValue = clauseDict["lowerLimit"]
 
                     case .LeftOpen, .RightOpen, .BothOpen, .BothClose:
-                        let upperLimit = clauseDict["upperLimit"]
-                        let lowerLimit = clauseDict["lowerLimit"]
-                        cell = tableView.dequeueReusableCellWithIdentifier("NewIntervalClauseCell", forIndexPath: indexPath)
-                        let upperLimitTextField = cell.viewWithTag(103) as! UITextField
-                        upperLimitTextField.text = "\(upperLimit!)"
+                        upperLimitValue = clauseDict["upperLimit"] as? Int
+                        lowerLimitValue = clauseDict["lowerLimit"] as? Int
 
-                        let lowerLimitTextField = cell.viewWithTag(102) as! UITextField
-                        lowerLimitTextField.text = "\(lowerLimit!)"
-                        
                     default:
                         break
                     }
 
-                    let clauseLabel = cell.viewWithTag(100) as! UILabel // 100 is label to show clause type
-                    clauseLabel.text = clauseType.rawValue
-                    let requiredStatusLabel = cell.viewWithTag(101) as! UILabel // 101 is label to show name of field
-                    requiredStatusLabel.text = clauseField
+                    switch statusType {
+                    case StatusType.BoolType:
+                        let boolCell = tableView.dequeueReusableCellWithIdentifier("BoolCell", forIndexPath: indexPath) as! StatusBoolTypeTableViewCell
+                        boolCell.value = singleValue as? Bool
+                        boolCell.titleLabel.text = clauseType.rawValue
+                        boolCell.statusNameLabel.text = status
+                        boolCell.delegate = self
+                        cell = boolCell
+
+                    case StatusType.IntType:
+
+                        if singleValue != nil {
+                            let intCell = tableView.dequeueReusableCellWithIdentifier("IntCell", forIndexPath: indexPath) as! StatusIntTypeTableViewCell
+                            intCell.statusNameLabel.text = status
+                            intCell.titleLabel.text = clauseType.rawValue
+                            intCell.value = singleValue as? Int
+                            intCell.minValue = schema?.getStatusSchema(status)?.minValue as? Int
+                            intCell.maxValue = schema?.getStatusSchema(status)?.maxValue as? Int
+                            intCell.delegate = self
+                            cell = intCell
+
+                        }
+                        if lowerLimitValue != nil && upperLimitValue != nil {
+                            let intervalCell = tableView.dequeueReusableCellWithIdentifier("IntervalCell", forIndexPath: indexPath) as! IntervalStatusIntTypeCell
+                            intervalCell.titleLabel.text = clauseType.rawValue
+                            intervalCell.upperLimitValue = upperLimitValue!
+                            intervalCell.lowerLimitValue = lowerLimitValue!
+                            intervalCell.minValue = schema?.getStatusSchema(status)?.minValue as? Int
+                            intervalCell.maxValue = schema?.getStatusSchema(status)?.maxValue as? Int
+                            intervalCell.delegate = self
+                            cell = intervalCell
+                        }
+
+                    default:
+                        break
+                    }
+
                 }
 
                 return cell
@@ -235,7 +255,6 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
         if editingStyle == UITableViewCellEditingStyle.Delete {
             sections[indexPath.section].items.removeAtIndex(indexPath.row)
             self.tableView.reloadData()
-//            self.cellDeleted = self.tableView.cellForRowAtIndexPath(indexPath)
         }
     }
 
@@ -329,7 +348,7 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
             }
 
             if let statusSelected = statusTempSelected {
-                if let initializedClaue = ClauseType.getInitializedClause(clauseTypeSelected, statusSchema: schema?.getStatusSchema(statusSelected)) {
+                if let initializedClaue = ClauseHelper.getInitializedClause(clauseTypeSelected, statusSchema: schema?.getStatusSchema(statusSelected)) {
                     clauseSelected = initializedClaue
                 }
             }
@@ -407,158 +426,32 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
         self.showPickerView("AddClause")
     }
 
-    // "Editing Did End" event handler of text field of NewClauseNumberCell
-    @IBAction func finishEditing(sender: AnyObject) {
-        if let textField = sender as? UITextField {
-            if let cell = textField.superview?.superview as? UITableViewCell{
-                if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
-                    var section = sections[selectedIndexPath.section]
-                    if let clause = section.items[selectedIndexPath.row] as? Clause{
-                        let status = getStatusFromClause(clause)
-                        if let clauseType = ClauseType.getClauseType(clause), statusType = schema?.getStatusType(status) {
-                            switch clauseType {
-                            case .Equals:
-                                switch statusType {
-                                case StatusType.IntType:
-                                    section.items[selectedIndexPath.row] = EqualsClause(field: status, value: Int(textField.text!)!)
-                                    sections[selectedIndexPath.section] = section
-                                default:
-                                    break
-                                }
-                            case .NotEquals:
-                                switch statusType {
-                                case StatusType.IntType:
-                                    section.items[selectedIndexPath.row] = NotEqualsClause(field: status, value: Int(textField.text!)!)
-                                    sections[selectedIndexPath.section] = section
 
-                                default:
-                                    break
-                                }
-                            case .LessThan, .LessThanOrEquals:
-                                let upperIncluded: Bool!
-                                if clauseType == ClauseType.LessThan {
-                                    upperIncluded = false
-                                }else {
-                                    upperIncluded = true
-                                }
-
-                                switch statusType {
-                                case StatusType.IntType:
-                                    section.items[selectedIndexPath.row] = RangeClause(field: status, upperLimit: Int(textField.text!)!, upperIncluded: upperIncluded)
-                                    sections[selectedIndexPath.section] = section
-
-                                case StatusType.DoubleType:
-                                    section.items[selectedIndexPath.row] = RangeClause(field: status, upperLimit: Double(textField.text!)!, upperIncluded: upperIncluded)
-                                    sections[selectedIndexPath.section] = section
-
-                                default:
-                                    break
-                                }
-
-                            case .GreaterThan, .GreaterThanOrEquals:
-                                let lowerIncluded: Bool!
-                                if clauseType == ClauseType.LessThan {
-                                    lowerIncluded = false
-                                }else {
-                                    lowerIncluded = true
-                                }
-
-                                switch statusType {
-                                case StatusType.IntType:
-                                    section.items[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Int(textField.text!)!, lowerIncluded: lowerIncluded)
-                                    sections[selectedIndexPath.section] = section
-
-                                case StatusType.DoubleType:
-                                    section.items[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Double(textField.text!)!, lowerIncluded: lowerIncluded)
-                                    sections[selectedIndexPath.section] = section
-
-                                default:
-                                    break
-                                }
-
-                            case .LeftOpen, .RightOpen, .BothClose, .BothOpen:
-                                // get lowerLimit value
-                                let lowerLimitTextField = cell.viewWithTag(102) as! UITextField
-                                let upperLimitTextField = cell.viewWithTag(103) as! UITextField
-
-                                let upperIncluded: Bool!
-                                if clauseType == ClauseType.LessThan {
-                                    upperIncluded = false
-                                }else {
-                                    upperIncluded = true
-                                }
-
-                                let lowerIncluded: Bool!
-                                if clauseType == ClauseType.LessThan {
-                                    lowerIncluded = false
-                                }else {
-                                    lowerIncluded = true
-                                }
-                                switch statusType {
-                                case StatusType.IntType:
-                                    section.items[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Int(lowerLimitTextField.text!)!, lowerIncluded: lowerIncluded, upperLimit: Int(upperLimitTextField.text!)!, upperIncluded: upperIncluded)
-                                    sections[selectedIndexPath.section] = section
-
-                                case StatusType.DoubleType:
-                                    section.items[selectedIndexPath.row] = RangeClause(field: status, lowerLimit: Double(lowerLimitTextField.text!)!, lowerIncluded: lowerIncluded, upperLimit: Double(upperLimitTextField.text!)!, upperIncluded: upperIncluded)
-                                    sections[selectedIndexPath.section] = section
-
-                                default:
-                                    break
-                                }
-                            default:
-                                break
-                            }
-                        }
-                    }
-                }
-
+    func setStatus(sender: UITableViewCell, value: AnyObject) {
+        let indexPath = self.tableView.indexPathForCell(sender)!
+        var section = sections[indexPath.section]
+        let clause = section.items[indexPath.row] as! Clause
+        let status = ClauseHelper.getStatusFromClause(clause)
+        if let statusSchema = schema?.getStatusSchema(status) {
+            if let newClause = ClauseHelper.getNewClause(clause, singleValue: value, statusSchema: statusSchema) {
+                section.items[indexPath.row] = newClause
+                sections[indexPath.section] = section
             }
         }
     }
 
-    // "Value Changed" event handler of switch of NewActionBoolCell
-    @IBAction func changeSwitch(sender: AnyObject) {
-
-        if let boolSwitch = sender as? UISwitch {
-            if let cell = boolSwitch.superview?.superview as? UITableViewCell{
-                if let selectedIndexPath = self.tableView.indexPathForCell(cell) {
-                    var section = sections[selectedIndexPath.section]
-                    if let clause = section.items[selectedIndexPath.row] as? Clause{
-                        let status = getStatusFromClause(clause)
-                        if let clauseType = ClauseType.getClauseType(clause), statusType = schema?.getStatusType(status) {
-                            switch clauseType {
-                            case .Equals:
-                                switch statusType {
-                                case StatusType.BoolType:
-                                    section.items[selectedIndexPath.row] = EqualsClause(field: status, value: boolSwitch.on)
-                                    sections[selectedIndexPath.section] = section
-                                default:
-                                    break
-                                }
-                            case .NotEquals:
-                                switch statusType {
-                                case StatusType.BoolType:
-                                    section.items[selectedIndexPath.row] = NotEqualsClause(field: status, value: boolSwitch.on)
-                                    sections[selectedIndexPath.section] = section
-
-                                default:
-                                    break
-                                }
-                             default:
-                                break
-                            }
-                        }
-                    }
-                }
+    func setIntervalStatus(sender: UITableViewCell, lowerLimitValue: AnyObject, upperLimitValue: AnyObject) {
+        let indexPath = self.tableView.indexPathForCell(sender)!
+        var section = sections[indexPath.section]
+        let clause = section.items[indexPath.row] as! RangeClause
+        let status = ClauseHelper.getStatusFromClause(clause)
+        if let statusSchema = schema?.getStatusSchema(status) {
+            if let newClause = ClauseHelper.getNewClause(clause, lowerLimitValue: lowerLimitValue, upperLimitValue: upperLimitValue, statusSchema: statusSchema) {
+                section.items[indexPath.row] = newClause
+                sections[indexPath.section] = section
             }
         }
-    }
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        self.finishEditing(textField)
-        return true;
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -83,6 +83,10 @@ enum ClauseType: String {
         }
     }
 
+}
+
+class ClauseHelper {
+
     static func getInitializedClause(clauseType: ClauseType, statusSchema: StatusSchema?) -> Clause? {
         var initializedClause: Clause?
 
@@ -177,13 +181,119 @@ enum ClauseType: String {
                 default:
                     break
                 }
+                
+            default:
+                break
+            }
+            
+        }
+        return initializedClause
+    }
+
+    static func getStatusFromClause(clause: Clause) -> String {
+        let clauseDict = clause.toNSDictionary()
+        let clauseType = ClauseType.getClauseType(clause)!
+
+        if clauseType != ClauseType.NotEquals {
+            return clauseDict["field"] as! String
+        }else {
+            return (clauseDict["clause"] as! Dictionary<String, AnyObject>)["field"] as! String
+        }
+    }
+
+    static func getNewClause(clause: RangeClause, lowerLimitValue: AnyObject, upperLimitValue: AnyObject, statusSchema: StatusSchema) -> RangeClause? {
+        var newClause: RangeClause?
+        let status = statusSchema.name
+        if let clauseType = ClauseType.getClauseType(clause), statusType = statusSchema.type {
+            switch clauseType {
+            case .LeftOpen, .RightOpen, .BothClose, .BothOpen:
+
+                let upperIncluded: Bool!
+                if clauseType == ClauseType.LessThan {
+                    upperIncluded = false
+                }else {
+                    upperIncluded = true
+                }
+
+                let lowerIncluded: Bool!
+                if clauseType == ClauseType.LessThan {
+                    lowerIncluded = false
+                }else {
+                    lowerIncluded = true
+                }
+
+                switch statusType {
+                case StatusType.IntType:
+                    newClause = RangeClause(field: status, lowerLimit: lowerLimitValue as! Int, lowerIncluded: lowerIncluded, upperLimit: upperLimitValue as! Int, upperIncluded: upperIncluded)
+                default:
+                    break
+                }
 
             default:
                 break
             }
-
         }
-        return initializedClause
-
+        return newClause
     }
+
+    static func getNewClause(clause: Clause, singleValue: AnyObject, statusSchema: StatusSchema) -> Clause?{
+        var newClause: Clause?
+        let status = statusSchema.name
+        if let clauseType = ClauseType.getClauseType(clause), statusType = statusSchema.type {
+            switch clauseType {
+            case .Equals:
+                switch statusType {
+                case StatusType.IntType:
+                    newClause = EqualsClause(field: status, value: singleValue as! Int)
+                case StatusType.BoolType:
+                    newClause = EqualsClause(field: status, value: singleValue as! Bool)
+                default:
+                    break
+                }
+            case .NotEquals:
+                switch statusType {
+                case StatusType.IntType:
+                    newClause = NotEqualsClause(field: status, value: singleValue as! Int)
+                case StatusType.BoolType:
+                    newClause = NotEqualsClause(field: status, value: singleValue as! Bool)
+                default:
+                    break
+                }
+            case .LessThan, .LessThanOrEquals:
+                let upperIncluded: Bool!
+                if clauseType == ClauseType.LessThan {
+                    upperIncluded = false
+                }else {
+                    upperIncluded = true
+                }
+
+                switch statusType {
+                case StatusType.IntType:
+                    newClause = RangeClause(field: status, upperLimit: singleValue as! Int, upperIncluded: upperIncluded)
+                default:
+                    break
+                }
+
+            case .GreaterThan, .GreaterThanOrEquals:
+                let lowerIncluded: Bool!
+                if clauseType == ClauseType.LessThan {
+                    lowerIncluded = false
+                }else {
+                    lowerIncluded = true
+                }
+
+                switch statusType {
+                case StatusType.IntType:
+                    newClause = RangeClause(field: status, lowerLimit: singleValue as! Int, lowerIncluded: lowerIncluded)
+
+                default:
+                    break
+                }
+            default:
+                break
+            }
+        }
+        return newClause
+    }
+
 }
