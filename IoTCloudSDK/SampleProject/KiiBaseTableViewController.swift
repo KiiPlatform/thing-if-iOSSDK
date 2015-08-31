@@ -19,12 +19,6 @@ class KiiBaseTableViewController: UITableViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-
-        showActivityView(false)
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
         if iotAPI == nil {
             if let iotAPIData = NSUserDefaults.standardUserDefaults().objectForKey("iotAPI") as? NSData {
                 if let iotAPI = NSKeyedUnarchiver.unarchiveObjectWithData(iotAPIData) as? IoTCloudAPI {
@@ -49,6 +43,12 @@ class KiiBaseTableViewController: UITableViewController {
                 }
             }
         }
+
+        showActivityView(false)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
 
     func showActivityView(show: Bool) {

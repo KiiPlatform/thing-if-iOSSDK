@@ -62,15 +62,16 @@ class StatesPredicateViewController: KiiBaseTableViewController, UIPickerViewDat
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        // init actionSchemasToSelect from predefined schemaDict
+        if schema != nil && statusToSelect.count == 0 {
+            self.statusToSelect = schema!.getStatusNames()
+        }
 
     }
 
     override func viewDidLoad() {
          super.viewDidLoad()
-        // init actionSchemasToSelect from predefined schemaDict
-        if schema != nil {
-            self.statusToSelect = schema!.getStatusNames()
-        }
+
         self.clauseTypeToSelect = ClauseType.getTypesArray()
 
         if self.statePredicate == nil {

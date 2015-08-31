@@ -32,12 +32,16 @@ class AndOrClauseViewController: KiiBaseTableViewController, UIPickerViewDataSou
     // the And/OrClause in the list, which is clicked to next AndOrViewController
     private var subAndOrClauseSelected: NSIndexPath?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         // init status list from predefined schema to select in picker view
-        if schema != nil {
+        if schema != nil && statusToSelect.count == 0 {
             self.statusToSelect = schema!.getStatusNames()
         }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
         // init clause type list from predefined schemaDict to select in picker view
         self.clauseTypeToSelect = ClauseType.getTypesArray()
