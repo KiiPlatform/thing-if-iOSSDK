@@ -16,13 +16,18 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
-        // TODO: implement it.
+        aCoder.encodeObject(self.baseURL, forKey: "baseURL")
+        aCoder.encodeObject(self.appID, forKey: "appID")
+        aCoder.encodeObject(self.appKey, forKey: "appKey")
+        aCoder.encodeObject(self.owner, forKey: "owner")
     }
     
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        super.init()
-        // TODO: implement it.
+        self.baseURL = aDecoder.decodeObjectForKey("baseURL") as! String
+        self.appID = aDecoder.decodeObjectForKey("appID") as! String
+        self.appKey = aDecoder.decodeObjectForKey("appKey") as! String
+        self.owner = aDecoder.decodeObjectForKey("owner") as! Owner
     }
     
     public override init() {

@@ -14,9 +14,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+
+        // init Kii with the values from Properties.plist, so please make sure to set the correct value
+        var propertiesDict: NSDictionary?
+        if let path = NSBundle.mainBundle().pathForResource("Properties", ofType: "plist") {
+            propertiesDict = NSDictionary(contentsOfFile: path)
+        }
+        if let dict = propertiesDict {
+            Kii.beginWithID((dict["appID"] as! String), andKey: (dict["appKey"] as! String), andCustomURL: (dict["kiiCloudCustomURL"] as! String))
+        }else {
+            print("please make sure the Properties.plist file exists")
+        }
+
+        // define schema
+        let smartLightDemoSchema = IoTSchema(name: "SmartLight-Demo", version: 1)
+        smartLightDemoSchema.addStatus("power", statusType: StatusType.BoolType)
+        smartLightDemoSchema.addStatus("brightness", statusType: StatusType.IntType, minValue: 0, maxvalue: 100)
+        smartLightDemoSchema.addStatus("color", statusType: StatusType.IntType, minValue: 0, maxvalue: 16777215)
+        smartLightDemoSchema.addAction("turnPower", statusName: "power")
+        smartLightDemoSchema.addAction("setBrightness", statusName: "brightness")
+        smartLightDemoSchema.addAction("setColor", statusName: "color")
+        // save schema
+        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(smartLightDemoSchema), forKey: "schema")
+
+        //register for remote notification
+        // this line does not ask for user permission
+        application.registerForRemoteNotifications()
+
         return true
     }
 
@@ -42,6 +67,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        //save device token in nsuserdefault
+
+        NSUserDefaults.standardUserDefaults().setObject(deviceToken, forKey: "deviceToken")
+        NSUserDefaults.standardUserDefaults().synchronize()
+
+    }
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        //TODO : implementations
+    }
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        //TODO : implementations
+    }
 
 }
 
