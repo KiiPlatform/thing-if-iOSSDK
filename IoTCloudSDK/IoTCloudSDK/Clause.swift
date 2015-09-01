@@ -6,6 +6,10 @@ import Foundation
 
 /** Protocole of the Clause must be conformed to. */
 public protocol Clause {
+
+    /** Get Clause as NSDictionary instance
+    - Returns: a NSDictionary instance.
+    */
     func toNSDictionary() -> NSDictionary
 }
 
@@ -194,6 +198,7 @@ public class RangeClause: Clause {
 
 /** Class represents And clause. */
 public class AndClause: Clause {
+    /** clauses array of AndClause */
     public private(set) var clauses = [Clause]()
 
     /** Initialize with clause clauses.
@@ -205,6 +210,9 @@ public class AndClause: Clause {
         }
     }
 
+    /** Add clause to AndClause
+    - Parameter clause: Clause instances to add
+    */
     public func add(clause: Clause) {
         self.clauses.append(clause)
     }
@@ -223,6 +231,7 @@ public class AndClause: Clause {
 }
 /** Class represents Or clause. */
 public class OrClause: Clause {
+    /** clauses array of OrClause */
     public private(set) var clauses = [Clause]()
 
     /** Initialize with clause clauses.
@@ -233,6 +242,10 @@ public class OrClause: Clause {
             self.clauses.append(clause)
         }
     }
+
+    /** Add clause to OrClause
+    - Parameter clause: Clause instances to add
+    */
     public func add(clause: Clause) {
         self.clauses.append(clause)
     }

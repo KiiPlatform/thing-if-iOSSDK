@@ -9,9 +9,13 @@ import Foundation
 public class IoTCloudAPI: NSObject, NSCoding {
     
     let operationQueue = OperationQueue()
+    /** URL of KiiApps Server */
     public var baseURL: String!
+    /** The application ID found in your Kii developer console */
     public var appID: String!
+    /** The application key found in your Kii developer console */
     public var appKey: String!
+    /** owner of target */
     public var owner: Owner!
     
     // MARK: - Implements NSCoding protocol
@@ -21,8 +25,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         aCoder.encodeObject(self.appKey, forKey: "appKey")
         aCoder.encodeObject(self.owner, forKey: "owner")
     }
-    
-    // MARK: - Implements NSCoding protocol
+
     public required init(coder aDecoder: NSCoder) {
         self.baseURL = aDecoder.decodeObjectForKey("baseURL") as! String
         self.appID = aDecoder.decodeObjectForKey("appID") as! String
@@ -33,7 +36,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
     public override init() {
         // TODO: define proper initializer.
     }
-    
+
+    // MARK: - On board methods
+
     /** On board IoT Cloud with the specified vendor thing ID.
     Specified thing will be owned by owner who consumes this API.
     (Specified on creation of IoTCloudAPI instance.)
@@ -85,8 +90,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
             completionHandler(target, error)
         }
     }
-    
-    //TODO: fix documentation
+
+    // MARK: - Push notification methods
+
     /** Install push notification to receive notification from IoT Cloud.
     IoT Cloud will send notification when the Target replies to the Command.
     Application can receive the notification and check the result of Command
@@ -131,7 +137,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
             return _installationID
         }
     }
-    
+
+    // MARK: - Command methods
+
     /** Post new command to IoT Cloud.
     Command will be delivered to specified target and result will be notified
     through push notification.
@@ -193,9 +201,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
     {
         _listCommands(target, bestEffortLimit: bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
     }
-    
+
+    // MARK: - Trigger methods
+
     /** Post new Trigger to IoT Cloud.
-    
+
     - Parameter target: Target of which the trigger stored.
     It the trigger is based on state of target, Trigger is evaluated when the
     state of the target has been updated.
@@ -312,7 +322,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
     {
         _listTriggers(target, bestEffortLimit: bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
     }
-    
+
+    // MARK: - Get the state of specified target
+
     /** Get the state of specified target.
     - Parameter target: Specify Target to which the State is bound.
     - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of IoTCloudError when failed.

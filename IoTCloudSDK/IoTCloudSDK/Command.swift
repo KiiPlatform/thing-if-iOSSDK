@@ -16,7 +16,6 @@ public class Command: NSObject, NSCoding {
         aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
     }
 
-    // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         // TODO: implement it.
         self.commandID = aDecoder.decodeObjectForKey("commandID") as! String

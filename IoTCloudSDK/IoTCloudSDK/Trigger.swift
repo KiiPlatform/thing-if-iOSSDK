@@ -16,7 +16,6 @@ public class Trigger: NSObject, NSCoding {
         aCoder.encodeBool(self.enabled, forKey: "enabled")
     }
 
-    // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         self.triggerID = aDecoder.decodeObjectForKey("triggerID") as! String
         self.targetID = aDecoder.decodeObjectForKey("targetID") as! TypedID
