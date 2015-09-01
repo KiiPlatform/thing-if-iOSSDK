@@ -23,7 +23,7 @@ class TabBarViewController: UITabBarController {
 
         // if there is not saved iotAPI, present login UIs
         if savedIoTAPI == nil {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let storyBoard = UIStoryboard(name: "Onboarding", bundle: nil)
             let loginRootNaviVC = storyBoard.instantiateViewControllerWithIdentifier("LoginRootViewController") as! UINavigationController
             self.presentViewController(loginRootNaviVC, animated: true, completion: nil)
         }

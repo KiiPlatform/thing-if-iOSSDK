@@ -15,11 +15,10 @@ class KiiBaseTableViewController: UITableViewController {
 
     var iotAPI: IoTCloudAPI?
     var target: Target?
-    var schemaDict: Dictionary<String, AnyObject>?
+    var schema: IoTSchema?
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-
         if iotAPI == nil {
             if let iotAPIData = NSUserDefaults.standardUserDefaults().objectForKey("iotAPI") as? NSData {
                 if let iotAPI = NSKeyedUnarchiver.unarchiveObjectWithData(iotAPIData) as? IoTCloudAPI {
@@ -37,12 +36,19 @@ class KiiBaseTableViewController: UITableViewController {
             }
         }
 
-        if schemaDict == nil {
-            if let schemaDict = NSUserDefaults.standardUserDefaults().objectForKey("schema") as? Dictionary<String, AnyObject> {
-                self.schemaDict = schemaDict
+        if schema == nil {
+            if let schemaData = NSUserDefaults.standardUserDefaults().objectForKey("schema") as? NSData {
+                if let schema = NSKeyedUnarchiver.unarchiveObjectWithData(schemaData) as? IoTSchema {
+                    self.schema = schema
+                }
             }
         }
+
         showActivityView(false)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
 
     func showActivityView(show: Bool) {
@@ -81,4 +87,5 @@ class KiiBaseTableViewController: UITableViewController {
         NSUserDefaults.standardUserDefaults().removeObjectForKey("target")
         completion()
     }
+
 }

@@ -28,21 +28,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // define schema
-        let lightStatuSchema = [
-            "power":["type":"boolean"],
-            "brightness":["type": "integer", "min": 0, "max": 100],
-            "color": ["type": "integer", "min": 0, "max": 16777215]
-        ]
-        let turnPowerAction = ["name":"turnPower", "required": "power"]
-        let setBrightnessAction = ["name": "setBrightness", "required": "brightness"]
-        let setColorAction = ["name": "setColor", "required": "color"]
-
-        let schemaDict = ["name": "SmartLight-Demo", "version": 1,
-            "statusSchema": lightStatuSchema,
-            "actions": [turnPowerAction, setBrightnessAction, setColorAction]
-        ]
+        let smartLightDemoSchema = IoTSchema(name: "SmartLight-Demo", version: 1)
+        smartLightDemoSchema.addStatus("power", statusType: StatusType.BoolType)
+        smartLightDemoSchema.addStatus("brightness", statusType: StatusType.IntType, minValue: 0, maxvalue: 100)
+        smartLightDemoSchema.addStatus("color", statusType: StatusType.IntType, minValue: 0, maxvalue: 16777215)
+        smartLightDemoSchema.addAction("turnPower", statusName: "power")
+        smartLightDemoSchema.addAction("setBrightness", statusName: "brightness")
+        smartLightDemoSchema.addAction("setColor", statusName: "color")
         // save schema
-        NSUserDefaults.standardUserDefaults().setObject(schemaDict, forKey: "schema")
+        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(smartLightDemoSchema), forKey: "schema")
 
         //register for remote notification
         // this line does not ask for user permission

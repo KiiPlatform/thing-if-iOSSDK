@@ -104,4 +104,9 @@ class CommandsListViewController: KiiBaseTableViewController {
             })
         }
     }
+    @IBAction func tapLogout(sender: AnyObject) {
+        self.logout { () -> Void in
+            self.tabBarController?.viewDidAppear(true)
+        }
+    }
 }

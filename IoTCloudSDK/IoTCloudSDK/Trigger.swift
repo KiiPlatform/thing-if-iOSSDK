@@ -105,7 +105,7 @@ public class Predicate {
 
 /** Class represents Condition */
 public class Condition {
-    private var clause: Clause!
+    public let clause: Clause!
 
     public init(clause:Clause) {
         self.clause = clause
@@ -228,7 +228,7 @@ public enum TriggersWhen {
     case CONDITION_CHANGED
 
     /** Get String value of TriggerWhen */
-    func toString() -> String {
+    public func toString() -> String {
         switch self {
         case .CONDITION_FALSE_TO_TRUE:
             return "CONDITION_FALSE_TO_TRUE"
@@ -239,7 +239,7 @@ public enum TriggersWhen {
         }
     }
 
-    init?(string: String) {
+    public init?(string: String) {
         switch string {
         case "CONDITION_FALSE_TO_TRUE":
             self = .CONDITION_FALSE_TO_TRUE
@@ -289,8 +289,8 @@ public class SchedulePredicate: Predicate {
 
 /** Class represents StatePredicate */
 public class StatePredicate: Predicate {
-    var triggersWhen: TriggersWhen!
-    var condition: Condition!
+    public let triggersWhen: TriggersWhen!
+    public let condition: Condition!
     /** Initialize StatePredicate with Condition and TriggersWhen
     - Parameter condition: Condition of the Trigger.
     - Parameter triggersWhen: Specify TriggersWhen.
@@ -323,6 +323,5 @@ public class StatePredicate: Predicate {
         }else {
             return nil
         }
-
     }
 }

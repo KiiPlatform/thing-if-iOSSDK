@@ -107,8 +107,8 @@ class CommandViewController: KiiBaseTableViewController {
             sections.append(SectionStruct(headerTitle: "ActionResults", items: command!.actionResults))
             sections.append(SectionStruct(headerTitle: "State", items: [command!.commandState.toString()]))
         }else {
-            sections.append(SectionStruct(headerTitle: "Schema", items: [schemaDict!["name"]!]))
-            sections.append(SectionStruct(headerTitle: "Version", items: [schemaDict!["version"]!]))
+            sections.append(SectionStruct(headerTitle: "Schema", items: [schema!.name]))
+            sections.append(SectionStruct(headerTitle: "Version", items: [schema!.version]))
             sections.append(SectionStruct(headerTitle: "Actions", items: [AnyObject]()))
             sections.append(SectionStruct(headerTitle: "ActionResults", items: [AnyObject]()))
             sections.append(SectionStruct(headerTitle: "State", items: [AnyObject]()))
