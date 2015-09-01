@@ -16,6 +16,7 @@ public class Trigger: NSObject, NSCoding {
         aCoder.encodeBool(self.enabled, forKey: "enabled")
     }
 
+    // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         self.triggerID = aDecoder.decodeObjectForKey("triggerID") as! String
         self.targetID = aDecoder.decodeObjectForKey("targetID") as! TypedID
@@ -25,7 +26,7 @@ public class Trigger: NSObject, NSCoding {
         // TODO: add aditional decoder
     }
 
-    public class func triggerWithNSDict(triggerDict: NSDictionary) -> Trigger?{
+    class func triggerWithNSDict(triggerDict: NSDictionary) -> Trigger?{
         let triggerID = triggerDict["triggerID"] as? String
         let disabled = triggerDict["disabled"] as? Bool
         var predicate: Predicate?
@@ -75,6 +76,14 @@ public class Trigger: NSObject, NSCoding {
         self.command = Command()
     }
 
+    /** Init Trigger with necessary attributes
+
+    - Parameter triggerID: ID of trigger
+    - Parameter targetID: ID of target
+    - Parameter enabled: True to enable trigger
+    - Parameter predicate: Predicate instance
+    - Parameter command: Command instance
+    */
     public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command) {
         self.triggerID = triggerID
         self.targetID = targetID
@@ -97,6 +106,11 @@ public class Trigger: NSObject, NSCoding {
 
 /** Class represents Predicate */
 public class Predicate {
+
+    /** Get Predicate as NSDictionary instance
+
+    - Returns: a NSDictionary instance
+    */
     public func toNSDictionary() -> NSDictionary{
         return NSDictionary()
     }
@@ -106,25 +120,31 @@ public class Predicate {
 public class Condition {
     public let clause: Clause!
 
+    /** Init Condition with Clause
+
+    - Parameter clause: Clause instance
+    */
     public init(clause:Clause) {
         self.clause = clause
     }
 
     /** Get Condition as NSDictionary instance
+
     - Returns: a NSDictionary instance
     */
     public func toNSDictionary() -> NSDictionary {
         return self.clause.toNSDictionary()
     }
 
-    public class func conditionWithNSDict(conditionDict: NSDictionary) -> Condition?{
+    class func conditionWithNSDict(conditionDict: NSDictionary) -> Condition?{
         if let clause = Condition.clauseWithNSDict(conditionDict) {
             return Condition(clause: clause)
         }else {
             return nil
         }
     }
-    public class func clauseWithNSDict(clauseDict: NSDictionary) -> Clause?{
+
+    class func clauseWithNSDict(clauseDict: NSDictionary) -> Clause?{
         var clause: Clause?
         if let type = clauseDict["type"] as? String {
             switch type {
@@ -238,6 +258,10 @@ public enum TriggersWhen {
         }
     }
 
+    /** Init from string
+
+    - Prameter string: String value of triggerswhen to init
+    */
     public init?(string: String) {
         switch string {
         case "CONDITION_FALSE_TO_TRUE":
@@ -271,7 +295,9 @@ enum EventSource: String {
 public class SchedulePredicate: Predicate {
     /** Specified schedule. (cron tab format) */
     public let schedule: String
+
     /** Instantiate new SchedulePredicate.
+
     -Parameter schedule: Specify schedule. (cron tab format)
     */
     public init(schedule: String) {
@@ -279,6 +305,7 @@ public class SchedulePredicate: Predicate {
     }
 
     /** Get Json object of SchedulePredicate instance
+
     - Returns: Json object as an instance of NSDictionary
     */
     public override func toNSDictionary() -> NSDictionary {
@@ -290,7 +317,9 @@ public class SchedulePredicate: Predicate {
 public class StatePredicate: Predicate {
     public let triggersWhen: TriggersWhen!
     public let condition: Condition!
+
     /** Initialize StatePredicate with Condition and TriggersWhen
+
     - Parameter condition: Condition of the Trigger.
     - Parameter triggersWhen: Specify TriggersWhen.
     */
@@ -300,13 +329,14 @@ public class StatePredicate: Predicate {
     }
 
     /** Get StatePredicate as NSDictionary instance
+
     - Returns: a NSDictionary instance
     */
     public override func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["eventSource": EventSource.States.rawValue, "triggersWhen": self.triggersWhen.toString(), "condition": self.condition.toNSDictionary()])
     }
 
-    public class func statePredicateWithNSDict(predicateDict: NSDictionary) -> StatePredicate?{
+    class func statePredicateWithNSDict(predicateDict: NSDictionary) -> StatePredicate?{
         var triggersWhen: TriggersWhen?
         var condition: Condition?
         if let triggersWhenString = predicateDict["triggersWhen"] as? String {

@@ -98,6 +98,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     Application can receive the notification and check the result of Command
     fired by Application or registered Trigger.
     After installation is done Installation ID is managed in this class.
+
     - Parameter deviceToken: device token for APNS.
     - Parameter development: flag indicate whether the cert is development or
     production.
@@ -115,6 +116,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     /** Uninstall push notification.
     After done, notification from IoT Cloud won't be notified.
+
     - Parameter installationID: installation ID returned from installPush().
     If null is specified, value of the installationID property is used.
     */
@@ -130,6 +132,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     /** Get installationID if the push is already installed.
     null will be returned if the push installation has not been done.
+ 
     - Returns: Installation ID used in IoT Cloud.
     */
     public var installationID: String? {
@@ -247,6 +250,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
     /** Apply patch to a registered Trigger
     Modify a registered Trigger with the specified patch.
+
     - Parameter target: Target to which the Trigger belongs.
     - Parameter triggerID: ID of the Trigger to which the patch is applied.
     - Parameter schemaName: Name of the Schema of which the Command specified in
@@ -273,6 +277,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     /** Enable/Disable a registered Trigger
     If its already enabled(/disabled), this method won't throw error and behave
     as succeeded.
+
     - Parameter target: Target to which the Trigger belongs.
     - Parameter triggerID: ID of the Trigger to be enabled/disabled.
     - Parameter enable: Flag indicate enable/disable Trigger.
@@ -289,6 +294,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     }
     
     /** Delete a registered Trigger.
+
     - Parameter target: Target to which the Trigger belongs.
     - Parameter triggerID: ID of the Trigger to be deleted.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the deleted Trigger instance, 2nd one is an IoTCloudError instance when failed.
@@ -303,6 +309,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     }
     
     /** List Triggers belongs to the specified Target
+
     - Parameter target: Target to which the Triggers belongs.
     - Parameter bestEffortLimit: Limit the maximum number of the Triggers in the
     Response. If omitted default limit internally defined is applied.
@@ -326,6 +333,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     // MARK: - Get the state of specified target
 
     /** Get the state of specified target.
+
     - Parameter target: Specify Target to which the State is bound.
     - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of IoTCloudError when failed.
     */

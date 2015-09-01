@@ -26,6 +26,7 @@ public class Owner: NSObject, NSCoding {
     public let accessToken: String
 
     /** instantiate Owner.
+
     - Parameter ownerID: ID of the Owner.
     - Parameter accessToken: Access Token of the Owner.
      */

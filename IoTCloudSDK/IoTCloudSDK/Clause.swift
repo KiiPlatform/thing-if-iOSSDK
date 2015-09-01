@@ -8,6 +8,7 @@ import Foundation
 public protocol Clause {
 
     /** Get Clause as NSDictionary instance
+
     - Returns: a NSDictionary instance.
     */
     func toNSDictionary() -> NSDictionary
@@ -22,6 +23,7 @@ public class EqualsClause: Clause {
     }
 
     /** Initialize with String left hand side value.
+
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
      */
@@ -32,6 +34,7 @@ public class EqualsClause: Clause {
     }
 
     /** Initialize with Int left hand side value.
+
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
@@ -42,6 +45,7 @@ public class EqualsClause: Clause {
     }
 
     /** Initialize with Bool left hand side value.
+
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
@@ -50,7 +54,9 @@ public class EqualsClause: Clause {
         nsdict.setObject(field, forKey: "field")
         nsdict.setObject(NSNumber(bool: value), forKey: "value")
     }
+
     /** Get Clause as NSDictionary instance
+
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
@@ -65,7 +71,9 @@ public class NotEqualsClause: Clause {
     public init(equalStmt: EqualsClause) {
         equalClause = equalStmt
     }
+
     /** Initialize with String left hand side value.
+    
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
@@ -74,6 +82,7 @@ public class NotEqualsClause: Clause {
     }
 
     /** Initialize with Int left hand side value.
+    
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
@@ -82,13 +91,16 @@ public class NotEqualsClause: Clause {
     }
 
     /** Initialize with Bool left hand side value.
+    
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
     public init(field:String, value:Bool) {
         equalClause = EqualsClause(field: field, value: value)
     }
+
     /** Get Clause as NSDictionary instance
+    
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
@@ -102,6 +114,7 @@ public class RangeClause: Clause {
 
     /** Initialize with Int left hand side value.
     this works as >(greater than) if lower included is false and as >=(greater than or equals) if lower included is true.
+    
     - Parameter field: Name of the field to be compared.
     - Parameter lowerLimit: Int lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
@@ -114,6 +127,7 @@ public class RangeClause: Clause {
 
     /** Initialize with Double left hand side value.
     this works as >(greater than) if lower included is false and as >=(greater than or equals) if lower included is true.
+    
     - Parameter field: Name of the field to be compared.
     - Parameter lowerLimit: Double lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
@@ -126,6 +140,7 @@ public class RangeClause: Clause {
 
     /** Initialize with Int left hand side value.
     this works as <(less than) if upper included is false and as <=(less than or equals) if upper included is true.    
+    
     - Parameter field: Name of the field to be compared.
     - Parameter upperLimit: Int upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
@@ -138,6 +153,7 @@ public class RangeClause: Clause {
 
     /** Initialize with Double left hand side value.
     this works as <(less than) if upper included is false and as <=(less than or equals) if upper included is true.
+    
     - Parameter field: Name of the field to be compared.
     - Parameter upperLimit: Double upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
@@ -154,6 +170,7 @@ public class RangeClause: Clause {
     - ">=(greater than or equals) and <(less than)" if lower included is true and upper included is false.
     - ">(greater than) and <=(less than and equals)" if lower included is false and upper included is true.
     - ">=(greater than and equals) and <=(less than and equals)" if lower included is true and upper included is true.
+    
     - Parameter field: Name of the field to be compared.
     - Parameter lowerLimit: Int lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
@@ -174,6 +191,7 @@ public class RangeClause: Clause {
     - ">=(greater than or equals) and <(less than)" if lower included is true and upper included is false.
     - ">(greater than) and <=(less than and equals)" if lower included is false and upper included is true. 
     - ">=(greater than and equals) and <=(less than and equals)" if lower included is true and upper included is true.
+    
     - Parameter field: Name of the field to be compared.
     - Parameter lowerLimit: Double lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
@@ -189,6 +207,7 @@ public class RangeClause: Clause {
     }
 
     /** Get Clause as NSDictionary instance
+    
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
@@ -202,6 +221,7 @@ public class AndClause: Clause {
     public private(set) var clauses = [Clause]()
 
     /** Initialize with clause clauses.
+    
     - Parameter clauses: Clause instances for AND clauses
     */
     public init(clauses: Clause...) {
@@ -211,6 +231,7 @@ public class AndClause: Clause {
     }
 
     /** Add clause to AndClause
+    
     - Parameter clause: Clause instances to add
     */
     public func add(clause: Clause) {
@@ -218,6 +239,7 @@ public class AndClause: Clause {
     }
 
     /** Get Clause as NSDictionary instance
+    
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {
@@ -235,6 +257,7 @@ public class OrClause: Clause {
     public private(set) var clauses = [Clause]()
 
     /** Initialize with clause clauses.
+    
     - Parameter clauses: Clause instances for OR clauses
     */
     public init(clauses:Clause...) {
@@ -244,12 +267,15 @@ public class OrClause: Clause {
     }
 
     /** Add clause to OrClause
+    
     - Parameter clause: Clause instances to add
     */
     public func add(clause: Clause) {
         self.clauses.append(clause)
     }
+
     /** Get Clause as NSDictionary instance
+    
     - Returns: a NSDictionary instance.
     */
     public func toNSDictionary() -> NSDictionary {

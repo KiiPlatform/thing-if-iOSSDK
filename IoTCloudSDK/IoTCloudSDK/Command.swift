@@ -16,6 +16,7 @@ public class Command: NSObject, NSCoding {
         aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
     }
 
+    // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         // TODO: implement it.
         self.commandID = aDecoder.decodeObjectForKey("commandID") as! String
@@ -64,7 +65,8 @@ public class Command: NSObject, NSCoding {
         self.actionResults = []
         self.commandState = CommandState.SENDING
     }
-    public init(commandID: String?, targetID: TypedID, issuerID: TypedID, schemaName: String, schemaVersion: Int, actions:[Dictionary<String, AnyObject>], actionResults:[Dictionary<String, AnyObject>]?, commandState: CommandState?) {
+
+    init(commandID: String?, targetID: TypedID, issuerID: TypedID, schemaName: String, schemaVersion: Int, actions:[Dictionary<String, AnyObject>], actionResults:[Dictionary<String, AnyObject>]?, commandState: CommandState?) {
         if commandID != nil {
             self.commandID = commandID!
         }else {
@@ -101,7 +103,7 @@ public class Command: NSObject, NSCoding {
         
     }
 
-    public class func commandWithNSDictionary(nsDict: NSDictionary!) -> Command?{
+    class func commandWithNSDictionary(nsDict: NSDictionary!) -> Command?{
 
         let commandID = nsDict["commandID"] as? String
         let schemaName = nsDict["schema"] as? String
