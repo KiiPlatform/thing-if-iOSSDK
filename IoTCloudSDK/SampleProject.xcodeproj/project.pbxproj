@@ -30,6 +30,7 @@
 		7DB3F6F71B8C5B0100AE8254 /* CommandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */; };
 		D5351AA91B8ED6D900E55807 /* Notifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5351AA71B8ED6D900E55807 /* Notifications.storyboard */; settings = {ASSET_TAGS = (); }; };
 		D5351AAB1B8EDA8900E55807 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5351AAA1B8EDA8900E55807 /* NotificationViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		D5A799A41B8EFC2B00F029F5 /* NotificationSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A799A31B8EFC2B00F029F5 /* NotificationSettingVC.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		7DB3F6F61B8C5B0100AE8254 /* CommandViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandViewController.swift; sourceTree = "<group>"; };
 		D5351AA81B8ED6D900E55807 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Notifications.storyboard; sourceTree = "<group>"; };
 		D5351AAA1B8EDA8900E55807 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		D5A799A31B8EFC2B00F029F5 /* NotificationSettingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 				7D19188F1B8DC84C007F2885 /* TriggerDetailViewController.swift */,
 				7D8FAB4C1B8EB00100D57F8E /* CommandEditViewController.swift */,
 				7D8FAB501B8EC26900D57F8E /* TriggerCommandEditViewController.swift */,
+				D5A799A31B8EFC2B00F029F5 /* NotificationSettingVC.swift */,
 			);
 			path = SampleProject;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				7DB3F6F41B8C1DD400AE8254 /* CommandsListViewController.swift in Sources */,
 				7DB3F6F21B8BFDA900AE8254 /* KiiBaseTableViewController.swift in Sources */,
 				7D1918901B8DC84C007F2885 /* TriggerDetailViewController.swift in Sources */,
+				D5A799A41B8EFC2B00F029F5 /* NotificationSettingVC.swift in Sources */,
 				7DB3F6E61B8B133D00AE8254 /* OnBoardViewController.swift in Sources */,
 				7DB3F6EC1B8B2DED00AE8254 /* TabBarViewController.swift in Sources */,
 				7D108ADB1B7210C8006EA12B /* AppDelegate.swift in Sources */,
