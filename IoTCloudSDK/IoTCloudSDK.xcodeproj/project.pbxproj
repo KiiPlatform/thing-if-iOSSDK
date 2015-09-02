@@ -6,6 +6,20 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		7D894B0F1B96B1510044F19C /* IoTCloudSDKAggregate */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 7D894B121B96B1510044F19C /* Build configuration list for PBXAggregateTarget "IoTCloudSDKAggregate" */;
+			buildPhases = (
+				7D894B141B96B9E20044F19C /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = IoTCloudSDKAggregate;
+			productName = IoTCloudSDKAggregate;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		7417A3091B65CF8500D116A5 /* IoTCloudSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 7417A3081B65CF8500D116A5 /* IoTCloudSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7417A30F1B65CF8500D116A5 /* IoTCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7417A3031B65CF8400D116A5 /* IoTCloudSDK.framework */; };
@@ -489,6 +503,9 @@
 					745088C71B68C21100821F7D = {
 						CreatedOnToolsVersion = 7.0;
 					};
+					7D894B0F1B96B1510044F19C = {
+						CreatedOnToolsVersion = 7.0;
+					};
 				};
 			};
 			buildConfigurationList = 7417A2FD1B65CF8400D116A5 /* Build configuration list for PBXProject "IoTCloudSDK" */;
@@ -507,6 +524,7 @@
 				7417A3021B65CF8400D116A5 /* IoTCloudSDK */,
 				7417A30D1B65CF8500D116A5 /* IoTCloudSDKTests */,
 				745088C71B68C21100821F7D /* IoTCloudSDKUsage */,
+				7D894B0F1B96B1510044F19C /* IoTCloudSDKAggregate */,
 			);
 		};
 /* End PBXProject section */
@@ -534,6 +552,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7D894B141B96B9E20044F19C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7417A2FE1B65CF8400D116A5 /* Sources */ = {
@@ -821,6 +855,20 @@
 			};
 			name = Release;
 		};
+		7D894B101B96B1510044F19C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		7D894B111B96B1510044F19C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -859,6 +907,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		7D894B121B96B1510044F19C /* Build configuration list for PBXAggregateTarget "IoTCloudSDKAggregate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D894B101B96B1510044F19C /* Debug */,
+				7D894B111B96B1510044F19C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
