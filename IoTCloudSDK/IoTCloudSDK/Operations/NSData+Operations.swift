@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NSData {
+public extension NSData {
     func hexString() -> String {
         // "Array" of all bytes:
         let bytes = UnsafeBufferPointer<UInt8>(start: UnsafePointer(self.bytes), count:self.length)

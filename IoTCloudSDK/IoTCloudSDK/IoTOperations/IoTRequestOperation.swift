@@ -221,7 +221,9 @@ class IoTRequestOperation<T>: GroupOperation {
                         }
                     }
                     kiiDebugLog("Response Error : \(responseBody)")
-                    if responseBody != nil{
+                    if responseBody != nil
+                        && responseBody!["errorCode"] != nil
+                        && responseBody!["message"] != nil {
                         errorCode = responseBody!["errorCode"] as! String
                         errorMessage = responseBody!["message"] as! String
                     }
