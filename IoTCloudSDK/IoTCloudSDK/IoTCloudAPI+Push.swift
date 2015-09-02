@@ -15,7 +15,7 @@ extension IoTCloudAPI {
         completionHandler: (String?, IoTCloudError?)-> Void
         )
     {
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/installations"
+        let requestURL = "\(baseURL)/api/apps/\(appID)/installations"
         
         // genrate body
         let requestBodyDict = NSMutableDictionary()
@@ -23,8 +23,7 @@ extension IoTCloudAPI {
         requestBodyDict["installationRegistrationID"] = deviceToken
         requestBodyDict["deviceType"] = "IOS"
         requestBodyDict["development"] = NSNumber(bool: development)
-        requestBodyDict["userID"] = self.owner.ownerID.id
-        
+        kiiVerboseLog("Request body",requestBodyDict)
         // generate header
         var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
         
@@ -35,7 +34,7 @@ extension IoTCloudAPI {
             // do request
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 
-                if let installationID = response?["InstallationID"] as? String{
+                if let installationID = response?["installationID"] as? String{
                     self._installationID = installationID
                 }
                 dispatch_async(dispatch_get_main_queue()) {
@@ -60,7 +59,7 @@ extension IoTCloudAPI {
         )
     {
         let idParam = installationID != nil ? installationID : self._installationID
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/installations/\(idParam!)"
+        let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(idParam!)"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
