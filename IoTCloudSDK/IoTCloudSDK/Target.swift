@@ -18,6 +18,10 @@ public class Target : NSObject, NSCoding {
 
     }
 
+    /** Init with TypedID
+
+    - Parameter targetType: ID of target
+    */
     public init(targetType: TypedID) {
         self.targetType = targetType
     }
