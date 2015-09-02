@@ -23,9 +23,9 @@ class NotificationSettingVC: UITableViewController {
     }
     override func viewWillAppear(animated: Bool) {
         let userNotificationSettings = UIApplication.sharedApplication().currentUserNotificationSettings()
-        let alertsEnabled  = userNotificationSettings!.types.rawValue & UIUserNotificationType.Alert.rawValue;
 
-        alertSwitch.on = alertsEnabled > 0
+
+        alertSwitch.on = userNotificationSettings!.types.contains(.Alert)
 
         guard let installationID : String! = self.savedIoTAPI?.installationID else{
             installationSwitch.on = false
@@ -37,19 +37,28 @@ class NotificationSettingVC: UITableViewController {
 
     }
     @IBAction func alertDidChange(sender: UISwitch) {
+
         if sender.on {
-            UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: UIUserNotificationType.None, categories: nil))
-        }else{
             UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: UIUserNotificationType.Alert, categories: nil))
+        }else{
+
+            let settings = UIUserNotificationSettings(forTypes:.None, categories: nil)
+            UIApplication.sharedApplication().registerUserNotificationSettings(settings)
         }
+
+    }
+    func saveIoTAPI() {
+        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(savedIoTAPI!), forKey: "iotAPI")
     }
     @IBAction func didChangeInstallation(sender: UISwitch) {
+
         if sender.on {
             if let data = NSUserDefaults.standardUserDefaults().objectForKey("deviceToken") as? NSData {
                 savedIoTAPI?.installPush(data.hexString(), development: true, completionHandler: { (_, error) -> Void in
                     if error != nil {
                         self.installationSwitch.on = false
                     }
+                    self.saveIoTAPI()
                 })
             }
         }else{
@@ -57,6 +66,7 @@ class NotificationSettingVC: UITableViewController {
                 if error != nil {
                     self.installationSwitch.on = true
                 }
+                self.saveIoTAPI()
             })
         }
     }
