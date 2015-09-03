@@ -71,7 +71,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     Specified thing will be owned by owner who consumes this API.
     (Specified on creation of IoTCloudAPI instance.)
     
-    **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, IoTCloudError.TARGET_ASSIGNED_TWICE will be returned in completionHandler callback.
+    **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, IoTCloudError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
     - Parameter vendorThingID: Thing ID given by vendor. Must be specified.
     - Parameter thingPassword: Thing Password given by vendor.
@@ -105,7 +105,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     When you're sure that the on board process has been done,
     this method is convenient.
 
-    **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, IoTCloudError.TARGET_ASSIGNED_TWICE will be returned in completionHandler callback.
+    **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, IoTCloudError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
     - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
     - Parameter thingPassword: Thing Password given by vendor.

@@ -24,8 +24,8 @@ public enum IoTCloudError : ErrorType {
     case PUSH_NOT_AVAILABLE
     case JSON_PARSE_ERROR
     case UNSUPPORTED_ERROR
-    /** when target assigned twice */
-    case TARGET_ASSIGNED_TWICE
+    /** when already onboarded */
+    case ALREADY_ONBOARDED
     /** where target not found */
     case TARGET_NOT_AVAILABLE
 
