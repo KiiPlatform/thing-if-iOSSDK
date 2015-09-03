@@ -18,11 +18,7 @@ public class IoTCloudAPIBuilder {
      */
     public init(appID: String, appKey: String, baseURL: String, owner: Owner) {
 
-        iotCloudAPI = IoTCloudAPI()
-        iotCloudAPI.appID = appID
-        iotCloudAPI.appKey = appKey
-        iotCloudAPI.baseURL = baseURL
-        iotCloudAPI.owner = owner
+        iotCloudAPI = IoTCloudAPI(baseURL: baseURL, appID: appID, appKey: appKey, owner: owner)
     }
 
     /** Build IoTCloudAPI instance.

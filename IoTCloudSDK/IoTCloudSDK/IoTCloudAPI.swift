@@ -10,13 +10,27 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     let operationQueue = OperationQueue()
     /** URL of KiiApps Server */
-    public var baseURL: String!
+    let baseURL: String!
     /** The application ID found in your Kii developer console */
-    public var appID: String!
+    let appID: String!
     /** The application key found in your Kii developer console */
-    public var appKey: String!
+    let appKey: String!
     /** owner of target */
-    public var owner: Owner!
+    let owner: Owner!
+
+    var _installationID:String?
+
+    /** Get installationID if the push is already installed.
+    null will be returned if the push installation has not been done.
+
+    - Returns: Installation ID used in IoT Cloud.
+    */
+    public var installationID: String? {
+        get {
+            return _installationID
+        }
+    }
+
     
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
@@ -35,8 +49,11 @@ public class IoTCloudAPI: NSObject, NSCoding {
         self._installationID = aDecoder.decodeObjectForKey("_installationID") as? String
     }
     
-    public override init() {
-        // TODO: define proper initializer.
+    init(baseURL: String, appID: String, appKey: String, owner: Owner) {
+        self.baseURL = baseURL
+        self.appID = appID
+        self.appKey = appKey
+        self.owner = owner
     }
 
     // MARK: - On board methods
@@ -130,18 +147,6 @@ public class IoTCloudAPI: NSObject, NSCoding {
         _uninstallPush(installationID, completionHandler: completionHandler)
     }
     
-    var _installationID:String?
-    
-    /** Get installationID if the push is already installed.
-    null will be returned if the push installation has not been done.
- 
-    - Returns: Installation ID used in IoT Cloud.
-    */
-    public var installationID: String? {
-        get {
-            return _installationID
-        }
-    }
 
     // MARK: - Command methods
 
