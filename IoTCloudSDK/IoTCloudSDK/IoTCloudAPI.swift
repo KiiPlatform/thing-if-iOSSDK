@@ -10,13 +10,13 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     let operationQueue = OperationQueue()
     /** URL of KiiApps Server */
-    let baseURL: String!
+    public let baseURL: String!
     /** The application ID found in your Kii developer console */
-    let appID: String!
+    public let appID: String!
     /** The application key found in your Kii developer console */
-    let appKey: String!
+    public let appKey: String!
     /** owner of target */
-    let owner: Owner!
+    public let owner: Owner!
 
     var _installationID:String?
     var _target: Target?
