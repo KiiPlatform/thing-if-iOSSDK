@@ -167,6 +167,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
     Command will be delivered to specified target and result will be notified
     through push notification.
     
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+    
     - Parameter schemaName: Name of the Schema of which the Command is defined.
     - Parameter schemaVersion: Version of the Schema of which the Command is
     defined.
@@ -184,7 +186,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
     }
     
     /** Get specified command
-    
+
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+
     - Parameter commandID: ID of the Command to obtain.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed.
      */
@@ -197,7 +201,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
     }
     
     /** List Commands in the specified Target.
-    
+
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+
     - Parameter bestEffortLimit: Limit the maximum number of the Commands in the
     Response. If omitted default limit internally defined is applied.
     Meaning of 'bestEffort' is if specified value is greater than default limit,
@@ -223,6 +229,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
     /** Post new Trigger to IoT Cloud.
 
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+
     - Parameter schemaName: Name of the Schema of which the Command specified in
     Trigger is defined.
     - Parameter schemaVersion: Version of the Schema of which the Command
@@ -244,6 +252,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
     /** Get specified trigger
 
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+
     - Parameter triggerID: ID of the Trigger to obtain.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of Trigger, an instance of IoTCloudError when failed.
     */
@@ -258,6 +268,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
     /** Apply patch to a registered Trigger
     Modify a registered Trigger with the specified patch.
+
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
 
     - Parameter triggerID: ID of the Trigger to which the patch is applied.
     - Parameter schemaName: Name of the Schema of which the Command specified in
@@ -284,6 +296,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
     If its already enabled(/disabled), this method won't throw error and behave
     as succeeded.
 
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+
     - Parameter triggerID: ID of the Trigger to be enabled/disabled.
     - Parameter enable: Flag indicate enable/disable Trigger.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the enabled/disabled Trigger instance, 2nd one is an IoTCloudError instance when failed.
@@ -299,6 +313,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     /** Delete a registered Trigger.
 
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+
     - Parameter triggerID: ID of the Trigger to be deleted.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the deleted Trigger instance, 2nd one is an IoTCloudError instance when failed.
     */
@@ -311,6 +327,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
     }
     
     /** List Triggers belongs to the specified Target
+
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
 
     - Parameter bestEffortLimit: Limit the maximum number of the Triggers in the
     Response. If omitted default limit internally defined is applied.
@@ -334,6 +352,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
     /** Get the state of specified target.
 
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+
     - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of IoTCloudError when failed.
     */
     public func getState(
@@ -343,6 +363,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
         _getState(completionHandler)
         
     }
+
+    // MARK: - Copy with new target instance 
 
     /** Get new instance with new target
 
