@@ -54,6 +54,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
         self.appID = appID
         self.appKey = appKey
         self.owner = owner
+        super.init()
+        self.saveToUserDefault()
     }
 
     // MARK: - On board methods
@@ -352,5 +354,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
         _getState(target, completionHandler: completionHandler)
         
     }
-    
+    func saveToUserDefault(){
+        NSUserDefaults.standardUserDefaults().setObject(self, forKey: "IoTCloudAPI")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
 }

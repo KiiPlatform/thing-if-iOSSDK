@@ -51,6 +51,7 @@ extension IoTCloudAPI {
                     if let thingID = response?["thingID"] as? String{
                         target = Target(targetType: TypedID(type: "THING", id: thingID))
                     }
+                    self.saveToUserDefault()
                     dispatch_async(dispatch_get_main_queue()) {
                         completionHandler(target, error)
                     }
