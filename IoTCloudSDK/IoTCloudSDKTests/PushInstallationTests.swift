@@ -98,7 +98,7 @@ class PushInstallationTests: XCTestCase {
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
         }
         
-        let dict = ["InstallationID":"dummy_installation_ID"]
+        let dict = ["installationID":"dummy_installation_ID"]
         do {
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
             
