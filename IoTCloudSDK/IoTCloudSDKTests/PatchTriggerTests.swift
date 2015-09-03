@@ -18,14 +18,15 @@ class PatchTriggerTests: XCTestCase {
 
     let baseURLString = "https://small-tests.internal.kii.com"
 
-    let api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-        baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+    var api: IoTCloudAPI!
 
     let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
+            baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+        api._target = target
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -163,7 +164,7 @@ class PatchTriggerTests: XCTestCase {
         }
 
 
-        api.patchTrigger(target, triggerID: expectedTriggerID, schemaName: testcase.schemaName, schemaVersion: testcase.schemaVersion, actions: testcase.actions, predicate: testcase.predicate, completionHandler: { (trigger, error) -> Void in
+        api.patchTrigger(expectedTriggerID, schemaName: testcase.schemaName, schemaVersion: testcase.schemaVersion, actions: testcase.actions, predicate: testcase.predicate, completionHandler: { (trigger, error) -> Void in
             if testcase.success {
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
@@ -203,7 +204,7 @@ class PatchTriggerTests: XCTestCase {
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
-        api.patchTrigger(target, triggerID: expectedTriggerID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: predicate) { (trigger, error) -> Void in
+        api.patchTrigger(expectedTriggerID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: predicate) { (trigger, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {

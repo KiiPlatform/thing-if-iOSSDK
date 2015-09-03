@@ -16,16 +16,16 @@ class GetStateTests: XCTestCase {
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
 
-    let api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-        baseURL: "https://api-development-jp.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+    var api: IoTCloudAPI!
 
-    let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+    let target = Target(targetType: TypedID(type: "THING", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     let deviceToken = "dummyDeviceToken"
 
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
+            baseURL: "https://api-development-jp.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -117,7 +117,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
-        api.getState(self.target) { (result, error) -> Void in
+        api.getState() { (result, error) -> Void in
 
             XCTAssertNotNil(result,"should not nil")
             XCTAssertEqual(result!.count, dict?.count, "Should be equal")
@@ -168,7 +168,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
-        api.getState(self.target) { (result, error) -> Void in
+        api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -224,7 +224,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
-        api.getState(self.target) { (result, error) -> Void in
+        api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -289,7 +289,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
-        api.getState(self.target) { (result, error) -> Void in
+        api.getState() { (result, error) -> Void in
 
             XCTAssertNotNil(result,"should not nil")
             XCTAssertEqual(result!.count, dict?.count, "Should be equal")
@@ -303,7 +303,7 @@ class GetStateTests: XCTestCase {
             }
         }
 
-        api.getState(self.target) { (result, error) -> Void in
+        api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {

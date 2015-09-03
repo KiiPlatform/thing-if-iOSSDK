@@ -16,14 +16,15 @@ class DeleteTriggerTests: XCTestCase {
 
     let baseURLString = "https://small-tests.internal.kii.com"
 
-    let api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-        baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+    var api: IoTCloudAPI!
 
     let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
+            baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+        api._target = target
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -49,7 +50,7 @@ class DeleteTriggerTests: XCTestCase {
         MockSession.requestVerifier = deleteRequestVerifier
         iotSession = MockSession.self
 
-        api.deleteTrigger(target, triggerID: expectedTriggerID) { (trigger, error) -> Void in
+        api.deleteTrigger(expectedTriggerID) { (trigger, error) -> Void in
             if error == nil{
                 XCTAssertEqual(trigger!.triggerID, expectedTriggerID)
                 XCTAssertEqual(trigger!.enabled, false)
@@ -90,7 +91,7 @@ class DeleteTriggerTests: XCTestCase {
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.deleteTrigger(target, triggerID: triggerID, completionHandler: { (trigger, error) -> Void in
+            api.deleteTrigger(triggerID, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
