@@ -326,5 +326,33 @@ class GetStateTests: XCTestCase {
             }
         }
     }
+
+    func testGetStates_target_not_available_error() {
+
+        let expectation = self.expectationWithDescription("testGetStates_target_not_available_error")
+
+        api.getState() { (result, error) -> Void in
+
+            XCTAssertNil(self.api.target)
+
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+
+                switch error! {
+                case .TARGET_NOT_AVAILABLE:
+                    break
+                default:
+                    XCTFail("error should be TARGET_NOT_AVAILABLE")
+                }
+            }
+            expectation.fulfill()
+        }
+        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
 }
 

@@ -26,7 +26,6 @@ class PatchTriggerTests: XCTestCase {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
             baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
-        api._target = target
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -81,6 +80,9 @@ class PatchTriggerTests: XCTestCase {
     func testPatchTrigger() {
 
         let expectedActions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+
+        // perform onboarding
+        api._target = target
 
         let testsCases: [TestCase] = [
             //
@@ -202,6 +204,9 @@ class PatchTriggerTests: XCTestCase {
     func testPatchTrigger_UnsupportError() {
         let expectation = self.expectationWithDescription("patchTriggerUnsupportError")
 
+        // perform onboarding
+        api._target = target
+
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
         api.patchTrigger(expectedTriggerID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: predicate) { (trigger, error) -> Void in
@@ -224,5 +229,30 @@ class PatchTriggerTests: XCTestCase {
             }
         }
     }
+    func testPatchTrigger_target_not_available_error() {
+        let expectation = self.expectationWithDescription("testPatchTrigger_target_not_available_error")
 
+        let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", value: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+
+        api.patchTrigger(expectedTriggerID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: predicate) { (trigger, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                switch error! {
+                case .TARGET_NOT_AVAILABLE:
+                    break
+                default:
+                    XCTFail("should be TARGET_NOT_AVAILABLE")
+                }
+            }
+            expectation.fulfill()
+        }
+
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
 }

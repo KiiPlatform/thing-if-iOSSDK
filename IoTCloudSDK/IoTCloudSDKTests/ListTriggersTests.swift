@@ -26,7 +26,6 @@ class ListTriggersTests: XCTestCase {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
             baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
-        api._target = target
     }
 
     override func tearDown() {
@@ -49,6 +48,9 @@ class ListTriggersTests: XCTestCase {
     func testListTriggers_success_predicates() {
 
         let triggerIDPrifex = "0267251d9d60-1858-5e11-3dc3-00f3f0b"
+
+        // perform onboarding
+        api._target = target
 
         var expectedTriggerStructs: [ExpectedTriggerStruct] = [
             ExpectedTriggerStruct(statement: ["type":"eq","field":"color", "value": 0], triggerID: "\(triggerIDPrifex)1", triggersWhenString: "CONDITION_TRUE", enabled: true),
@@ -143,6 +145,9 @@ class ListTriggersTests: XCTestCase {
     func testListTriggers_404_error() {
         let expectation = self.expectationWithDescription("getTrigger403Error")
 
+        // perform onboarding
+        api._target = target
+
         do{
             let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
@@ -189,6 +194,31 @@ class ListTriggersTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        
+    }
+
+    func testListTriggers_target_not_available_error() {
+        let expectation = self.expectationWithDescription("testListTriggers_target_not_available_error")
+
+        api.listTriggers(nil, paginationKey: nil, completionHandler: { (commands, paginationKey, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                XCTAssertNil(commands)
+                XCTAssertNil(paginationKey)
+                switch error! {
+                case .TARGET_NOT_AVAILABLE:
+                    break
+                default:
+                    XCTFail("error should be TARGET_NOT_AVAILABLE")
+                }
+            }
+            expectation.fulfill()
+        })
+
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
     }
 }

@@ -25,7 +25,6 @@ class PostNewCommandTests: XCTestCase {
 
         api = IoTCloudAPIBuilder(appID: "dummyID", appKey: "dummyKey",
             baseURL: self.baseURLString, owner: owner).build()
-        api._target = target
 
     }
     override func tearDown() {
@@ -42,6 +41,9 @@ class PostNewCommandTests: XCTestCase {
     }
 
     func testPostCommandSuccess() {
+        // perform onboarding
+        api._target = target
+
         let testCases = [
             TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["turnPower":["power": true]]], issuerID: owner.ownerID),
             TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["setBrightness":["brightness": 100]]], issuerID: owner.ownerID),
@@ -121,6 +123,9 @@ class PostNewCommandTests: XCTestCase {
 
         let expectation = self.expectationWithDescription("testPostNewCommand_400_error")
 
+        // perform onboarding
+        api._target = target
+
         do{
             // mock response
             let responsedDict = ["errorCode" : "WRONG_COMMAND",
@@ -176,6 +181,31 @@ class PostNewCommandTests: XCTestCase {
         }catch(let e){
             print(e)
         }
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    func testPostNewCommand_target_not_available_error() {
+
+        let expectation = self.expectationWithDescription("testPostNewCommand_target_not_available_error")
+
+        api.postNewCommand("", schemaVersion: self.schema.version, actions: [], completionHandler: { (command, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                switch error! {
+                case .TARGET_NOT_AVAILABLE:
+                    break
+                default:
+                    XCTFail("should be TARGET_NOT_AVAILABLE")
+                }
+            }
+            expectation.fulfill()
+        })
+
         self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")

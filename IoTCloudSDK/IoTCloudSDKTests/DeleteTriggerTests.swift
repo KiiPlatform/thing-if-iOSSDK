@@ -24,7 +24,6 @@ class DeleteTriggerTests: XCTestCase {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
             baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
-        api._target = target
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -33,6 +32,9 @@ class DeleteTriggerTests: XCTestCase {
 
     func testDeleteTrigger_success() {
         let expectation = self.expectationWithDescription("enableTriggerTests")
+
+        // perform onboarding
+        api._target = target
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
@@ -69,6 +71,9 @@ class DeleteTriggerTests: XCTestCase {
 
     func testDeleteTrigger_404_error() {
         let expectation = self.expectationWithDescription("enableTrigger404Error")
+
+        // perform onboarding
+        api._target = target
 
         do{
             let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
@@ -111,6 +116,32 @@ class DeleteTriggerTests: XCTestCase {
         }catch(let e){
             print(e)
         }
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    func testDeleteTrigger_trigger_not_available_error() {
+        let expectation = self.expectationWithDescription("testDeleteTrigger_trigger_not_available_error")
+
+        let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+
+        api.deleteTrigger(triggerID, completionHandler: { (trigger, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                switch error! {
+                case .TARGET_NOT_AVAILABLE:
+                    break
+                default:
+                    XCTFail("should be TARGET_NOT_AVAILABLE error")
+                }
+            }
+            expectation.fulfill()
+        })
+
         self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
