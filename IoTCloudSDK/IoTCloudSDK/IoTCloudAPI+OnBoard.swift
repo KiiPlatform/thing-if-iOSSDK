@@ -50,6 +50,7 @@ extension IoTCloudAPI {
                     var target:Target?
                     if let thingID = response?["thingID"] as? String{
                         target = Target(targetType: TypedID(type: "THING", id: thingID))
+                        self._target = target
                     }
                     dispatch_async(dispatch_get_main_queue()) {
                         completionHandler(target, error)
