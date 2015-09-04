@@ -31,6 +31,18 @@ class PushInstallationTests: XCTestCase {
         super.tearDown()
     }
 
+    func checkSavedIoTAPI(){
+        var savedIoTAPI: IoTCloudAPI?
+
+        // try to get iotAPI from NSUserDefaults
+        if let data = NSUserDefaults.standardUserDefaults().objectForKey("IoTCloudAPI") as? NSData {
+            savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI
+        }
+
+        XCTAssertNotNil(savedIoTAPI)
+        XCTAssertTrue(api == savedIoTAPI)
+
+    }
     func onboard(){
         let expectation = self.expectationWithDescription("onboardWithVendorThingID")
         
@@ -123,7 +135,9 @@ class PushInstallationTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
+        checkSavedIoTAPI()
     }
+
     func testPushInstallation_http_404() {
         self.onboard()
         let expectation = self.expectationWithDescription("testPushInstallation_http_404")
@@ -180,7 +194,9 @@ class PushInstallationTests: XCTestCase {
             }
         }
 
+        checkSavedIoTAPI()
     }
+
     func testPushInstallation_http_400() {
         self.onboard()
         let expectation = self.expectationWithDescription("testPushInstallation_http_400")
@@ -237,6 +253,7 @@ class PushInstallationTests: XCTestCase {
             }
         }
 
+        checkSavedIoTAPI()
     }
     func testPushInstallation_http_401() {
         self.onboard()
@@ -293,6 +310,7 @@ class PushInstallationTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
+        checkSavedIoTAPI()
 
     }
 

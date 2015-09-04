@@ -57,6 +57,7 @@ extension IoTCloudAPI {
                         target = Target(targetType: TypedID(type: "THING", id: thingID))
                         self._target = target
                     }
+                    self.saveToUserDefault()
                     dispatch_async(dispatch_get_main_queue()) {
                         completionHandler(target, error)
                     }
