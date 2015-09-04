@@ -25,6 +25,7 @@ public class TypedID : NSObject, NSCoding {
     public let id:String
 
     /** Ininitialize TypedID with type and id.
+
     - Parameter type: Type of the entity.
     - Parameter id: ID of the entity.
      */
@@ -33,9 +34,10 @@ public class TypedID : NSObject, NSCoding {
         self.id = id
     }
 
-    public func toString() -> String {
+    func toString() -> String {
         return "\(type):\(id)"
     }
+
     public override func isEqual(object: AnyObject?) -> Bool {
         guard let aType = object as? TypedID else{
             return false

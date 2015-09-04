@@ -15,8 +15,6 @@
 		7D19188E1B8DB4A6007F2885 /* TriggerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D19188D1B8DB4A6007F2885 /* TriggerListViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		7D1918901B8DC84C007F2885 /* TriggerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D19188F1B8DC84C007F2885 /* TriggerDetailViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		7D3314881B91B0B500A6DDFB /* ClauseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3314871B91B0B500A6DDFB /* ClauseHelper.swift */; settings = {ASSET_TAGS = (); }; };
-		7D33148A1B91B21F00A6DDFB /* IoTCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3314891B91B21F00A6DDFB /* IoTCloudSDK.framework */; };
-		7D33148B1B91B21F00A6DDFB /* IoTCloudSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D3314891B91B21F00A6DDFB /* IoTCloudSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7D3314931B91C08B00A6DDFB /* StatusBoolTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3314921B91C08B00A6DDFB /* StatusBoolTypeTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		7D3314971B91C30B00A6DDFB /* StatusNumberTypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3314961B91C30B00A6DDFB /* StatusNumberTypeTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		7D3DFB5E1B8EF1B80055BE18 /* Triggers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D3DFB5D1B8EF1B80055BE18 /* Triggers.storyboard */; settings = {ASSET_TAGS = (); }; };
@@ -43,16 +41,19 @@
 		7DCDBD861B90986700AB006B /* IoTSchema.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCDBD851B90986700AB006B /* IoTSchema.swift */; settings = {ASSET_TAGS = (); }; };
 		D5351AA91B8ED6D900E55807 /* Notifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5351AA71B8ED6D900E55807 /* Notifications.storyboard */; settings = {ASSET_TAGS = (); }; };
 		D5351AAB1B8EDA8900E55807 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5351AAA1B8EDA8900E55807 /* NotificationViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		D540FD691B95AAD500D581F9 /* IoTCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D540FD681B95AAD500D581F9 /* IoTCloudSDK.framework */; };
+		D540FD6A1B95AAD500D581F9 /* IoTCloudSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D540FD681B95AAD500D581F9 /* IoTCloudSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D5A799A41B8EFC2B00F029F5 /* NotificationSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A799A31B8EFC2B00F029F5 /* NotificationSettingVC.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		7D33148C1B91B22000A6DDFB /* Embed Frameworks */ = {
+		D540FD6B1B95AAD500D581F9 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7D33148B1B91B21F00A6DDFB /* IoTCloudSDK.framework in Embed Frameworks */,
+				D540FD6A1B95AAD500D581F9 /* IoTCloudSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,7 +70,6 @@
 		7D19188D1B8DB4A6007F2885 /* TriggerListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerListViewController.swift; sourceTree = "<group>"; };
 		7D19188F1B8DC84C007F2885 /* TriggerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerDetailViewController.swift; sourceTree = "<group>"; };
 		7D3314871B91B0B500A6DDFB /* ClauseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClauseHelper.swift; sourceTree = "<group>"; };
-		7D3314891B91B21F00A6DDFB /* IoTCloudSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = IoTCloudSDK.framework; path = "/Users/yongping/Library/Developer/Xcode/DerivedData/IoTCloudSDK-aqjgnbnbjnsaiscreasrbpuvwqat/Build/Products/Debug-iphoneos/IoTCloudSDK.framework"; sourceTree = "<absolute>"; };
 		7D3314921B91C08B00A6DDFB /* StatusBoolTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBoolTypeTableViewCell.swift; sourceTree = "<group>"; };
 		7D3314961B91C30B00A6DDFB /* StatusNumberTypeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusNumberTypeTableViewCell.swift; sourceTree = "<group>"; };
 		7D3DFB5D1B8EF1B80055BE18 /* Triggers.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Triggers.storyboard; sourceTree = "<group>"; };
@@ -98,6 +98,8 @@
 		7DCDBD851B90986700AB006B /* IoTSchema.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTSchema.swift; sourceTree = "<group>"; };
 		D5351AA81B8ED6D900E55807 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Notifications.storyboard; sourceTree = "<group>"; };
 		D5351AAA1B8EDA8900E55807 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		D540FD681B95AAD500D581F9 /* IoTCloudSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = IoTCloudSDK.framework; path = "/Users/syahriza/Library/Developer/Xcode/DerivedData/IoTCloudSDK-cnzkjciksqncudesatvvajczgfyx/Build/Products/Debug-iphoneos/IoTCloudSDK.framework"; sourceTree = "<absolute>"; };
+		D5A799A31B8EFC2B00F029F5 /* NotificationSettingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,7 +108,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D783E4D1B87157F00543A09 /* libsqlite3.tbd in Frameworks */,
-				7D33148A1B91B21F00A6DDFB /* IoTCloudSDK.framework in Frameworks */,
+				D540FD691B95AAD500D581F9 /* IoTCloudSDK.framework in Frameworks */,
 				7D783E4B1B87152600543A09 /* KiiSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -117,7 +119,7 @@
 		7D108ACE1B7210C8006EA12B = {
 			isa = PBXGroup;
 			children = (
-				7D3314891B91B21F00A6DDFB /* IoTCloudSDK.framework */,
+				D540FD681B95AAD500D581F9 /* IoTCloudSDK.framework */,
 				7D783E4E1B87159400543A09 /* frameworks */,
 				7D108AD91B7210C8006EA12B /* SampleProject */,
 				7D783E491B85CD9100543A09 /* SampleProject.app */,
@@ -192,6 +194,7 @@
 				7D19188D1B8DB4A6007F2885 /* TriggerListViewController.swift */,
 				7D19188F1B8DC84C007F2885 /* TriggerDetailViewController.swift */,
 				7D8FAB501B8EC26900D57F8E /* TriggerCommandEditViewController.swift */,
+				D5A799A31B8EFC2B00F029F5 /* NotificationSettingVC.swift */,
 				7D3DFB681B8EFF650055BE18 /* StatesPredicateViewController.swift */,
 				7DCDBD821B90703C00AB006B /* AndOrClauseViewController.swift */,
 			);
@@ -224,7 +227,7 @@
 				7D108AD31B7210C8006EA12B /* Sources */,
 				7D108AD41B7210C8006EA12B /* Frameworks */,
 				7D108AD51B7210C8006EA12B /* Resources */,
-				7D33148C1B91B22000A6DDFB /* Embed Frameworks */,
+				D540FD6B1B95AAD500D581F9 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -320,6 +323,7 @@
 				7D45C07A1B91E84500378D6D /* IntervalStatusTableViewCell.swift in Sources */,
 				7DB3F6F21B8BFDA900AE8254 /* KiiBaseTableViewController.swift in Sources */,
 				7D1918901B8DC84C007F2885 /* TriggerDetailViewController.swift in Sources */,
+				D5A799A41B8EFC2B00F029F5 /* NotificationSettingVC.swift in Sources */,
 				7D3314971B91C30B00A6DDFB /* StatusNumberTypeTableViewCell.swift in Sources */,
 				7DB3F6E61B8B133D00AE8254 /* OnBoardViewController.swift in Sources */,
 				7DB3F6EC1B8B2DED00AE8254 /* TabBarViewController.swift in Sources */,
