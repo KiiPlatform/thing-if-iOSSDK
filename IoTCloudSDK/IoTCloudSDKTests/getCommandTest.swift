@@ -17,15 +17,14 @@ class GetCommandTests: XCTestCase {
 
     let baseURLString = "https://small-tests.internal.kii.com"
 
-    let api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-        baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+    var api: IoTCloudAPI!
 
     let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
-
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
+            baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -46,6 +45,10 @@ class GetCommandTests: XCTestCase {
     }
 
     func testGetCommandSuccess() {
+
+        // perform onboarding
+        api._target = target
+
         let testcases = [
             TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE"),
             TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
@@ -94,7 +97,7 @@ class GetCommandTests: XCTestCase {
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.getCommand(testcase.target, commandID: commandID, completionHandler: { (command, error) -> Void in
+            api.getCommand(commandID, completionHandler: { (command, error) -> Void in
                 if(error != nil) {
                     XCTFail("should success")
                 }else {
@@ -135,6 +138,9 @@ class GetCommandTests: XCTestCase {
         do{
             let commandID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
+            // perform onboarding
+            api._target = target
+
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
                 "message" : "Target \(target.targetType.toString()) not found"]
@@ -157,7 +163,7 @@ class GetCommandTests: XCTestCase {
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.getCommand(target, commandID: commandID, completionHandler: { (command, error) -> Void in
+            api.getCommand(commandID, completionHandler: { (command, error) -> Void in
                  if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -178,6 +184,32 @@ class GetCommandTests: XCTestCase {
         }catch(let e){
             print(e)
         }
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    func testGetCommand_trigger_not_available_error() {
+        let expectation = self.expectationWithDescription("testGetCommand_trigger_not_available_error")
+
+        let commandID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+
+        api.getCommand(commandID, completionHandler: { (trigger, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                switch error! {
+                case .TARGET_NOT_AVAILABLE:
+                    break
+                default:
+                    XCTFail("should be TARGET_NOT_AVAILABLE error")
+                }
+            }
+            expectation.fulfill()
+        })
+
         self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")

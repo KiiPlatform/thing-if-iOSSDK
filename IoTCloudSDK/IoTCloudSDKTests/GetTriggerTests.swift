@@ -18,15 +18,14 @@ class GetTriggerTests: XCTestCase {
 
     let baseURLString = "https://small-tests.internal.kii.com"
 
-    let api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-        baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+    var api:IoTCloudAPI!
 
     let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
-
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
+            baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -35,6 +34,10 @@ class GetTriggerTests: XCTestCase {
     }
 
     func testGetTrigger_success_predicates() {
+
+        // perform onboarding
+        api._target = target
+
         let simpleStatementsToTest = [
             ["type":"eq","field":"color", "value": 0],
             ["type":"eq","field":"power", "value": true],
@@ -63,6 +66,9 @@ class GetTriggerTests: XCTestCase {
     }
 
     func testGetTrigger_success_triggersWhens() {
+
+        // perform onboarding
+        api._target = target
 
         let triggersWhensToTest = ["CONDITION_TRUE", "CONDITION_FALSE_TO_TRUE", "CONDITION_CHANGED"]
         for triggersWhen in triggersWhensToTest {
@@ -101,7 +107,7 @@ class GetTriggerTests: XCTestCase {
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.getTrigger(self.target, triggerID: expectedTriggerID, completionHandler: { (trigger, error) -> Void in
+            api.getTrigger(expectedTriggerID, completionHandler: { (trigger, error) -> Void in
                 if(error != nil) {
                     XCTFail("should success")
                 }else {
@@ -137,6 +143,9 @@ class GetTriggerTests: XCTestCase {
     func testGetTrigger_404_error() {
         let expectation = self.expectationWithDescription("getTrigger403Error")
 
+        // perform onboarding
+        api._target = target
+
         do{
             let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
@@ -158,7 +167,7 @@ class GetTriggerTests: XCTestCase {
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.getTrigger(target, triggerID: triggerID, completionHandler: { (trigger, error) -> Void in
+            api.getTrigger(triggerID, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -183,6 +192,57 @@ class GetTriggerTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
+    }
 
+    func testGetTrigger_Target_not_available_error() {
+        let expectation = self.expectationWithDescription("testGetTrigger_Target_not_available_error")
+
+        do{
+            let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+
+            // mock response
+            let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
+                "message" : "Target \(target.targetType.toString()) not found"]
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+
+            // verify request
+            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.HTTPMethod, "GET")
+                //verify header
+                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                for (key, value) in expectedHeader {
+                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                }
+            }
+            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
+            api.getTrigger(triggerID, completionHandler: { (trigger, error) -> Void in
+                if error == nil{
+                    XCTFail("should fail")
+                }else {
+                    switch error! {
+                    case .CONNECTION:
+                        XCTFail("should not be connection error")
+                    case .ERROR_RESPONSE(let actualErrorResponse):
+                        XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
+                        XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
+                        XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
+                    default:
+                        break
+                    }
+                }
+                expectation.fulfill()
+            })
+        }catch(let e){
+            print(e)
+        }
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+        
     }
 }

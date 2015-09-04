@@ -126,6 +126,7 @@ class OnboardingTests: XCTestCase {
             api.onBoard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(self.api.target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
                     XCTFail("should success")
                 }
@@ -134,6 +135,31 @@ class OnboardingTests: XCTestCase {
         }catch(let e){
             print(e)
         }
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    func testOnboardWithThingID_already_onboarded_error() {
+        let expectation = self.expectationWithDescription("testOnboardWithThingID_already_onboarded_error")
+
+        api._target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+        api.onBoard("dummyThingID", thingPassword: "dummyPassword") { (target, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                switch error! {
+                case .ALREADY_ONBOARDED:
+                    break
+                default:
+                    XCTFail("should be ALREADY_ONBOARDED error")
+                }
+            }
+            expectation.fulfill()
+        }
+
         self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")

@@ -10,10 +10,14 @@ import Foundation
 
 extension IoTCloudAPI {
     func _getState(
-        target:Target,
         completionHandler: (Dictionary<String, AnyObject>?,  IoTCloudError?)-> Void
         ){
-            let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target.targetType.toString())/states"
+            if self.target == nil {
+                completionHandler(nil, IoTCloudError.TARGET_NOT_AVAILABLE)
+                return
+            }
+
+            let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.targetType.toString())/states"
             
             // generate header
             let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
