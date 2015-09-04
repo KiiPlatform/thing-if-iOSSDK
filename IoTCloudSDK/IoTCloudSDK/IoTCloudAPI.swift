@@ -365,8 +365,28 @@ public class IoTCloudAPI: NSObject, NSCoding {
         _getState(completionHandler)
         
     }
+
+    // MARK: - Copy with new target instance 
+
+    /** Get new instance with new target
+
+    - Parameter newTarget: target instance will be setted to new IoTCloudAPI instance
+    - Returns: New IoTCloudAPI instance with newTarget
+    */
+    public func copyWithTarget(newTarget: Target) -> IoTCloudAPI {
+
+        let newIotapi = IoTCloudAPI(baseURL: self.baseURL, appID: self.appID, appKey: self.appKey, owner: self.owner)
+
+        newIotapi._target = newTarget
+        newIotapi._installationID = self._installationID
+
+        return newIotapi
+    }
+    
     func saveToUserDefault(){
         NSUserDefaults.standardUserDefaults().setObject(self, forKey: "IoTCloudAPI")
         NSUserDefaults.standardUserDefaults().synchronize()
     }
+
+    
 }
