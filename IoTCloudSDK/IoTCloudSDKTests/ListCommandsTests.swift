@@ -17,15 +17,14 @@ class ListCommandsTests: XCTestCase {
 
     let baseURLString = "https://small-tests.internal.kii.com"
 
-    let api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-        baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+    var api: IoTCloudAPI!
 
     let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
-
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
+            baseURL: "https://small-tests.internal.kii.com", owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -70,6 +69,9 @@ class ListCommandsTests: XCTestCase {
 
     func testListCommandsSuccess() {
         let commandIDPrifex = "0267251d9d60-1858-5e11-3dc3-00f3f0b"
+
+        // perform onboarding
+        api._target = target
 
         let testcases = [
             // test cases request without best effort and paginationKey
@@ -136,7 +138,7 @@ class ListCommandsTests: XCTestCase {
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.listCommands(target, bestEffortLimit: testcase.bestEffortLimit, paginationKey: testcase.paginationKey, completionHandler: { (commands, nextPaginationKey, error) -> Void in
+            api.listCommands(testcase.bestEffortLimit, paginationKey: testcase.paginationKey, completionHandler: { (commands, nextPaginationKey, error) -> Void in
                 if(error != nil) {
                     XCTFail("should success")
                 }else {
@@ -183,6 +185,9 @@ class ListCommandsTests: XCTestCase {
     func testListCommand_404_error() {
         let expectation = self.expectationWithDescription("getCommand404Error")
 
+        // perform onboarding
+        api._target = target
+
         do{
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
@@ -206,7 +211,7 @@ class ListCommandsTests: XCTestCase {
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.listCommands(target, bestEffortLimit: nil, paginationKey: nil, completionHandler: { (commands, paginationKey, error) -> Void in
+            api.listCommands(nil, paginationKey: nil, completionHandler: { (commands, paginationKey, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -234,6 +239,32 @@ class ListCommandsTests: XCTestCase {
             }
         }
         
+    }
+    
+    func testListCommand_target_not_available_error() {
+        let expectation = self.expectationWithDescription("testListCommand_target_not_available_error")
+
+        api.listCommands(nil, paginationKey: nil, completionHandler: { (commands, paginationKey, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                XCTAssertNil(commands)
+                XCTAssertNil(paginationKey)
+                switch error! {
+                case .TARGET_NOT_AVAILABLE:
+                    break
+                default:
+                    XCTFail("error should be TARGET_NOT_AVAILABLE")
+                }
+            }
+            expectation.fulfill()
+        })
+
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
     }
     
 }

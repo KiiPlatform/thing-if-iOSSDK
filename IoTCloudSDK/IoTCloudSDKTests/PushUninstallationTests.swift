@@ -30,7 +30,18 @@ class PushUninstallationTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+    func checkSavedIoTAPI(){
+        var savedIoTAPI: IoTCloudAPI?
+
+        // try to get iotAPI from NSUserDefaults
+        if let data = NSUserDefaults.standardUserDefaults().objectForKey("IoTCloudAPI") as? NSData {
+            savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI
+        }
+
+        XCTAssertNotNil(savedIoTAPI)
+        XCTAssertTrue(api == savedIoTAPI)
+        
+    }
     func onboard(){
         let expectation = self.expectationWithDescription("onboardWithVendorThingID")
         
@@ -112,6 +123,7 @@ class PushUninstallationTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
+        checkSavedIoTAPI()
     }
     func testPushUninstallation_http_404() {
         self.onboard()
@@ -167,7 +179,7 @@ class PushUninstallationTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        
+        checkSavedIoTAPI()
     }
     func testPushUninstallation_http_401() {
         self.onboard()
@@ -223,7 +235,7 @@ class PushUninstallationTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        
+        checkSavedIoTAPI()
     }
     
 }

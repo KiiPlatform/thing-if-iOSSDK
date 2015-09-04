@@ -17,6 +17,11 @@ extension IoTCloudAPI {
         thingProperties:Dictionary<String,AnyObject>?,
         completionHandler: (Target?, IoTCloudError?)-> Void
         ) ->Void {
+
+            if self.target != nil {
+                completionHandler(nil, IoTCloudError.ALREADY_ONBOARDED)
+                return
+            }
             
             let requestURL = "\(baseURL)/iot-api/apps/\(appID)/onboardings"
             
@@ -50,7 +55,9 @@ extension IoTCloudAPI {
                     var target:Target?
                     if let thingID = response?["thingID"] as? String{
                         target = Target(targetType: TypedID(type: "THING", id: thingID))
+                        self._target = target
                     }
+                    self.saveToUserDefault()
                     dispatch_async(dispatch_get_main_queue()) {
                         completionHandler(target, error)
                     }
