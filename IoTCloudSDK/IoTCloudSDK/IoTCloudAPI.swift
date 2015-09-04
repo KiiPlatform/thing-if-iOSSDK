@@ -384,8 +384,20 @@ public class IoTCloudAPI: NSObject, NSCoding {
     }
     
     func saveToUserDefault(){
-        NSUserDefaults.standardUserDefaults().setObject(self, forKey: "IoTCloudAPI")
+        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: "IoTCloudAPI")
         NSUserDefaults.standardUserDefaults().synchronize()
+    }
+
+    public override func isEqual(object: AnyObject?) -> Bool {
+        guard let anAPI = object as? IoTCloudAPI else{
+            return false
+        }
+
+        return self.appID == anAPI.appID &&
+            self.appKey == anAPI.appKey &&
+            self.baseURL == anAPI.baseURL &&
+            self.target == anAPI.target &&
+            self.installationID == anAPI.installationID 
     }
 
     
