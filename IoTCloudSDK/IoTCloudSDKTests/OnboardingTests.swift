@@ -30,6 +30,18 @@ class OnboardingTests: XCTestCase {
         super.tearDown()
     }
 
+    func checkSavedIoTAPI(){
+        var savedIoTAPI: IoTCloudAPI?
+
+        // try to get iotAPI from NSUserDefaults
+        if let data = NSUserDefaults.standardUserDefaults().objectForKey("IoTCloudAPI") as? NSData {
+            savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI
+        }
+
+        XCTAssertNotNil(savedIoTAPI)
+        XCTAssertTrue(api == savedIoTAPI)
+
+    }
     func testOnboardWithThingIDFail() {
         
         let expectation = self.expectationWithDescription("onboardWithThingID")
@@ -86,6 +98,7 @@ class OnboardingTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
+        checkSavedIoTAPI()
     }
     
     func testOnboardWithVendorThingIDSuccess() {
@@ -140,6 +153,8 @@ class OnboardingTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
+        checkSavedIoTAPI()
+
     }
 
     func testOnboardWithThingID_already_onboarded_error() {
