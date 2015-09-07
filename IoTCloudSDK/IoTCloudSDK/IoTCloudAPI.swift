@@ -8,10 +8,10 @@ import Foundation
 /** Class provides API of the IoTCloud. */
 public class IoTCloudAPI: NSObject, NSCoding {
 
-    private static let SHARED_PREFERENCES_KEY_INSTANCE = "IoTCloudAPI_INSTANCE"
+    private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "IoTCloudAPI_INSTANCE"
 
-    private static func getSharedPreferencesKey(tag : String?) -> String{
-        return SHARED_PREFERENCES_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
+    private static func getSharedNSDefaultKey(tag : String?) -> String{
+        return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
 
     let tag : String?
@@ -400,23 +400,23 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Returns: IoTCloudAPI instance.
     */
     public static func loadWithStoredInstance(tag : String? = nil) throws -> IoTCloudAPI?{
-
-        var savedIoTAPI: IoTCloudAPI?
-        let key = IoTCloudAPI.getSharedPreferencesKey(tag)
+        let key = IoTCloudAPI.getSharedNSDefaultKey(tag)
 
         // try to get iotAPI from NSUserDefaults
         if let data = NSUserDefaults.standardUserDefaults().objectForKey(key) as? NSData {
-            savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI
+            if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI {
+                return savedIoTAPI
+            }else{
+                throw IoTCloudError.INVALID_STORED_API
+            }
         }else{
             throw IoTCloudError.API_NOT_STORED
         }
-
-        return savedIoTAPI
     }
     
     func saveToUserDefault(){
 
-        let key = IoTCloudAPI.getSharedPreferencesKey(self.tag)
+        let key = IoTCloudAPI.getSharedNSDefaultKey(self.tag)
         NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: key)
         NSUserDefaults.standardUserDefaults().synchronize()
     }

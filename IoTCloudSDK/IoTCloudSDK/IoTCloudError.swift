@@ -30,5 +30,7 @@ public enum IoTCloudError : ErrorType {
     case TARGET_NOT_AVAILABLE
     /** when trying to load API from persistance but not avaialble*/
     case API_NOT_STORED
+    /** when trying to load API from persistance but it does not have correct instance*/
+    case INVALID_STORED_API
 
 }
