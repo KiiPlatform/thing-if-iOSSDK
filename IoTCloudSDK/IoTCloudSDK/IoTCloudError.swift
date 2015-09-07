@@ -28,5 +28,7 @@ public enum IoTCloudError : ErrorType {
     case ALREADY_ONBOARDED
     /** where target not found */
     case TARGET_NOT_AVAILABLE
+    /** when trying to load API from persistance but not avaialble*/
+    case API_NOT_STORED
 
 }

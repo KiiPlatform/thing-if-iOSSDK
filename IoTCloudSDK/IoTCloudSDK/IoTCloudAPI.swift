@@ -7,7 +7,15 @@ import Foundation
 
 /** Class provides API of the IoTCloud. */
 public class IoTCloudAPI: NSObject, NSCoding {
-    
+
+    private static let SHARED_PREFERENCES_KEY_INSTANCE = "IoTCloudAPI_INSTANCE"
+
+    private static func getSharedPreferencesKey(tag : String?) -> String{
+        return SHARED_PREFERENCES_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
+    }
+
+    let tag : String?
+
     let operationQueue = OperationQueue()
     /** URL of KiiApps Server */
     public let baseURL: String!
@@ -47,6 +55,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         aCoder.encodeObject(self.owner, forKey: "owner")
         aCoder.encodeObject(self._installationID, forKey: "_installationID")
         aCoder.encodeObject(self._target, forKey: "_target")
+        aCoder.encodeObject(self.tag, forKey: "tag")
     }
 
     public required init(coder aDecoder: NSCoder) {
@@ -56,13 +65,15 @@ public class IoTCloudAPI: NSObject, NSCoding {
         self.owner = aDecoder.decodeObjectForKey("owner") as! Owner
         self._installationID = aDecoder.decodeObjectForKey("_installationID") as? String
         self._target = aDecoder.decodeObjectForKey("_target") as? Target
+        self.tag = aDecoder.decodeObjectForKey("tag") as? String
     }
 
-    init(baseURL: String, appID: String, appKey: String, owner: Owner) {
+    init(baseURL: String, appID: String, appKey: String, owner: Owner, tag : String?=nil) {
         self.baseURL = baseURL
         self.appID = appID
         self.appKey = appKey
         self.owner = owner
+        self.tag = tag
         super.init()
         self.saveToUserDefault()
     }
@@ -382,9 +393,31 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
         return newIotapi
     }
+
+    /** Try to load the instance of IoTCloudAPI using stored serialized instance.
+
+    - Parameter tag: tag of the IoTCloudAPI instance
+    - Returns: IoTCloudAPI instance.
+    */
+    public static func loadWithStoredInstance(tag : String? = nil) throws -> IoTCloudAPI?{
+
+        var savedIoTAPI: IoTCloudAPI?
+        let key = IoTCloudAPI.getSharedPreferencesKey(tag)
+
+        // try to get iotAPI from NSUserDefaults
+        if let data = NSUserDefaults.standardUserDefaults().objectForKey(key) as? NSData {
+            savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI
+        }else{
+            throw IoTCloudError.API_NOT_STORED
+        }
+
+        return savedIoTAPI
+    }
     
     func saveToUserDefault(){
-        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: "IoTCloudAPI")
+
+        let key = IoTCloudAPI.getSharedPreferencesKey(self.tag)
+        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: key)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
 
