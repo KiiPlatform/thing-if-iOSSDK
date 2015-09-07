@@ -32,16 +32,14 @@ class PushInstallationTests: XCTestCase {
     }
 
     func checkSavedIoTAPI(){
-        var savedIoTAPI: IoTCloudAPI?
-
-        // try to get iotAPI from NSUserDefaults
-        if let data = NSUserDefaults.standardUserDefaults().objectForKey("IoTCloudAPI") as? NSData {
-            savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI
-        }
-
+        do{
+        let savedIoTAPI = try IoTCloudAPI.loadWithStoredInstance(api.tag)
         XCTAssertNotNil(savedIoTAPI)
         XCTAssertTrue(api == savedIoTAPI)
-
+        }catch(let e){
+            print(e)
+            XCTFail("Should not throw")
+        }
     }
     func onboard(){
         let expectation = self.expectationWithDescription("onboardWithVendorThingID")
