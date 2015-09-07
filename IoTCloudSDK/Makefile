@@ -12,6 +12,6 @@ build:
 archive: build
 	sh SDK-archive.sh
 
-doc: build
+doc:
 	(cd Documentation; \
-	python generateDocs.py -jazzy jazzy)
+	python generateDocs.py)

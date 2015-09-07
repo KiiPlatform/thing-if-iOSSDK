@@ -5,8 +5,10 @@
     "author": "Kii Corp",
     "author_url": "http://kii.com",
     "github_url": "https://github.com/KiiPlatform/IoTCloud-iOSSDK",
-    "output": "./Documentation/docs/",
+    "output": "docs",
     "swift-version": "2",
+
+    "doc-archive-prefix": "IoTCloudSDK-Documentation",
 
     "ignore": [
       "BlockObserver.swift",
