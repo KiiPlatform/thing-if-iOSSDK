@@ -5,6 +5,7 @@ clean:
 	rm -rf Documentation/IoTCloudSDK-Documentation*.zip
 	rm -rf build
 	rm -rf dist
+	rm -rf test-reports
 
 build:
 	sh SDK-build.sh
