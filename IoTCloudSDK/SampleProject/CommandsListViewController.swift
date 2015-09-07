@@ -82,7 +82,7 @@ class CommandsListViewController: KiiBaseTableViewController {
     func getCommands(){
         if iotAPI != nil && target != nil {
             showActivityView(true)
-            iotAPI!.listCommands(target!, bestEffortLimit: nil, paginationKey: nil, completionHandler: { (commands, nextPaginationKey, error) -> Void in
+            iotAPI!.listCommands(nil, paginationKey: nil, completionHandler: { (commands, nextPaginationKey, error) -> Void in
                 self.showActivityView(false)
                 if commands != nil {
                     var commandStateDict = Dictionary<CommandState, [Command]>()

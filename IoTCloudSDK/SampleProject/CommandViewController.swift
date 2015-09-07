@@ -34,7 +34,7 @@ class CommandViewController: KiiBaseTableViewController {
 
     @IBAction func refreshCommand(sender: AnyObject) {
         if command != nil && iotAPI != nil && target != nil {
-            iotAPI!.getCommand(target!, commandID: command!.commandID, completionHandler: { (newCommand, error) -> Void in
+            iotAPI!.getCommand(command!.commandID, completionHandler: { (newCommand, error) -> Void in
                 if newCommand != nil {
                     self.command = newCommand
                     self.loadSections()

@@ -27,14 +27,6 @@ class KiiBaseTableViewController: UITableViewController {
             }
         }
 
-        if target == nil {
-            if let targetData = NSUserDefaults.standardUserDefaults().objectForKey("target") as? NSData {
-                if let target = NSKeyedUnarchiver.unarchiveObjectWithData(targetData) as? Target {
-                    self.target = target
-                    self.navigationItem.title = target.targetType.id
-                }
-            }
-        }
 
         if schema == nil {
             if let schemaData = NSUserDefaults.standardUserDefaults().objectForKey("schema") as? NSData {
@@ -77,6 +69,8 @@ class KiiBaseTableViewController: UITableViewController {
                 errorString = "PUSH_NOT_AVAILABLE"
             case .UNSUPPORTED_ERROR:
                 errorString = "UNSUPPORTED_ERROR"
+            default:
+                break
             }
         }
         showAlert(title, message: errorString, completion: completion)

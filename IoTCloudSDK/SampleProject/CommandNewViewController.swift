@@ -41,7 +41,7 @@ class CommandNewViewController: CommandEditViewController {
             }
 
             // call postNewCommand method
-            iotAPI!.postNewCommand(target!, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: { (command, error) -> Void in
+            iotAPI!.postNewCommand(schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: { (command, error) -> Void in
                 if command != nil {
                     self.navigationController?.popViewControllerAnimated(true)
                 }else {
