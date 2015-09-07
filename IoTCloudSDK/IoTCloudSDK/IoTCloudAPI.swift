@@ -430,7 +430,8 @@ public class IoTCloudAPI: NSObject, NSCoding {
             self.appKey == anAPI.appKey &&
             self.baseURL == anAPI.baseURL &&
             self.target == anAPI.target &&
-            self.installationID == anAPI.installationID 
+            self.installationID == anAPI.installationID &&
+            self.tag == anAPI.tag
     }
 
     
