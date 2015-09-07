@@ -9,7 +9,6 @@ import Foundation
 public class IoTCloudAPI: NSObject, NSCoding {
 
     private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "IoTCloudAPI_INSTANCE"
-
     private static func getSharedNSDefaultKey(tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
@@ -400,24 +399,64 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Returns: IoTCloudAPI instance.
     */
     public static func loadWithStoredInstance(tag : String? = nil) throws -> IoTCloudAPI?{
+        let baseKey = IoTCloudAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let key = IoTCloudAPI.getSharedNSDefaultKey(tag)
 
         // try to get iotAPI from NSUserDefaults
-        if let data = NSUserDefaults.standardUserDefaults().objectForKey(key) as? NSData {
-            if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI {
-                return savedIoTAPI
+
+        if let dict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary
+        {
+            if let data = dict[key] as? NSData {
+                if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI {
+                    return savedIoTAPI
+                }else{
+                    throw IoTCloudError.INVALID_STORED_API
+                }
             }else{
                 throw IoTCloudError.INVALID_STORED_API
             }
+
         }else{
             throw IoTCloudError.API_NOT_STORED
         }
     }
-    
+
+    /** Clear all saved instances in the NSUserDefaults.
+    */
+    public static func removeAllStoredInstances(){
+        let baseKey = IoTCloudAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(baseKey)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+
+    /** Remove saved specified instance in the NSUserDefaults.
+    - Parameter tag: tag of the IoTCloudAPI instance
+    */
+    public static func removeStoredInstances(tag : String?){
+        let baseKey = IoTCloudAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        let key = IoTCloudAPI.getSharedNSDefaultKey(tag)
+        if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
+            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+            dict.removeObjectForKey(key)
+            NSUserDefaults.standardUserDefaults().setObject(dict, forKey: baseKey)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
+    }
+
     func saveToUserDefault(){
 
+        let baseKey = IoTCloudAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+
         let key = IoTCloudAPI.getSharedNSDefaultKey(self.tag)
-        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(self), forKey: key)
+        let data = NSKeyedArchiver.archivedDataWithRootObject(self)
+
+        if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
+            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+            dict[key] = data
+            NSUserDefaults.standardUserDefaults().setObject(dict, forKey: baseKey)
+        }else{
+            NSUserDefaults.standardUserDefaults().setObject(NSDictionary(dictionary: [key:data]), forKey: baseKey)
+        }
         NSUserDefaults.standardUserDefaults().synchronize()
     }
 
