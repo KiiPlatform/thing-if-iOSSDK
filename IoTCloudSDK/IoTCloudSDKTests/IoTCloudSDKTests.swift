@@ -14,11 +14,11 @@ class IoTCloudSDKTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        IoTCloudAPI.removeAllStoredInstances()
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        IoTCloudAPI.removeAllStoredInstances()
         super.tearDown()
     }
     
@@ -64,6 +64,92 @@ class IoTCloudSDKTests: XCTestCase {
             XCTFail("Should raise exception")
         }catch(_){
 
+        }
+
+    }
+
+    func testInvalidSavedInstance(){
+
+        let persistance = NSUserDefaults.standardUserDefaults()
+        let baseKey = "IoTCloudAPI_INSTANCE"
+        //clear
+        persistance.removeObjectForKey(baseKey)
+        persistance.synchronize()
+
+        do{
+            try IoTCloudAPI.loadWithStoredInstance()
+            XCTFail("Should raise exception")
+        }catch(let e as IoTCloudError){
+            switch e {
+            case .API_NOT_STORED:
+                break
+            default:
+                XCTFail("Exception should be API_NOT_STORED")
+                break
+            }
+
+        }catch(_){
+            XCTFail("Exception should be API_NOT_STORED")
+        }
+
+        //set invalid object to base key
+        persistance.setInteger(1, forKey: baseKey)
+        persistance.synchronize()
+
+        do{
+            try IoTCloudAPI.loadWithStoredInstance()
+            XCTFail("Should raise exception")
+        }catch(let e as IoTCloudError){
+            switch e {
+            case .API_NOT_STORED:
+                break
+            default:
+                XCTFail("Exception should be API_NOT_STORED")
+                break
+            }
+
+        }catch(_){
+            XCTFail("Exception should be API_NOT_STORED")
+        }
+
+        //set empty dict to base key
+        persistance.setObject(NSDictionary(), forKey: baseKey)
+        persistance.synchronize()
+
+        do{
+            try IoTCloudAPI.loadWithStoredInstance()
+            XCTFail("Should raise exception")
+        }catch(let e as IoTCloudError){
+            switch e {
+            case .INVALID_STORED_API:
+                break
+            default:
+                XCTFail("Exception should be INVALID_STORED_API")
+                break
+            }
+
+        }catch(_){
+            XCTFail("Exception should be INVALID_STORED_API")
+        }
+
+        //set invalid object to the persistance
+        persistance.setObject(NSDictionary(dictionary: [baseKey:""]), forKey: baseKey)
+        persistance.synchronize()
+
+        do{
+            try IoTCloudAPI.loadWithStoredInstance()
+            XCTFail("Should raise exception")
+        }catch(let e as IoTCloudError){
+            switch e {
+            case .INVALID_STORED_API:
+                break
+            default:
+                XCTFail("Exception should be INVALID_STORED_API")
+                break
+            }
+
+        }catch(_){
+            XCTFail("Exception should be INVALID_STORED_API")
         }
 
     }
