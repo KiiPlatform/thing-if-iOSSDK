@@ -26,6 +26,8 @@
 		7D45C07A1B91E84500378D6D /* IntervalStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D45C0791B91E84500378D6D /* IntervalStatusTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		7D783E4B1B87152600543A09 /* KiiSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D783E4A1B87152600543A09 /* KiiSDK.framework */; };
 		7D783E4D1B87157F00543A09 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D783E4C1B87157F00543A09 /* libsqlite3.tbd */; };
+		7D8B485F1B994A3900E9A317 /* IoTCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8B485E1B994A3900E9A317 /* IoTCloudSDK.framework */; };
+		7D8B48601B994A3900E9A317 /* IoTCloudSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D8B485E1B994A3900E9A317 /* IoTCloudSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7D8FAB4D1B8EB00100D57F8E /* CommandEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8FAB4C1B8EB00100D57F8E /* CommandEditViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		7D8FAB511B8EC26900D57F8E /* TriggerCommandEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8FAB501B8EC26900D57F8E /* TriggerCommandEditViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		7D96858C1B8AF3C90017CA7D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D96858B1B8AF3C90017CA7D /* LoginViewController.swift */; };
@@ -44,37 +46,6 @@
 		D5A799A41B8EFC2B00F029F5 /* NotificationSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A799A31B8EFC2B00F029F5 /* NotificationSettingVC.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		7D5BAF401B9EBB4800DBC69B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7D5BAF391B9EBB4800DBC69B /* IoTCloudSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7417A3031B65CF8400D116A5;
-			remoteInfo = IoTCloudSDK;
-		};
-		7D5BAF421B9EBB4800DBC69B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7D5BAF391B9EBB4800DBC69B /* IoTCloudSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 7417A30E1B65CF8500D116A5;
-			remoteInfo = IoTCloudSDKTests;
-		};
-		7D5BAF441B9EBB4800DBC69B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7D5BAF391B9EBB4800DBC69B /* IoTCloudSDK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 745088C81B68C21100821F7D;
-			remoteInfo = IoTCloudSDKUsage;
-		};
-		7D5BAF461B9EBB5300DBC69B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7D5BAF391B9EBB4800DBC69B /* IoTCloudSDK.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 7417A3021B65CF8400D116A5;
-			remoteInfo = IoTCloudSDK;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		7D8B48611B994A3A00E9A317 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -82,6 +53,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				7D8B48601B994A3900E9A317 /* IoTCloudSDK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,11 +79,11 @@
 		7D44C18C1B8EEC3100F19FA3 /* Onboarding.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
 		7D44C18E1B8EEC9A00F19FA3 /* Commands.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Commands.storyboard; sourceTree = "<group>"; };
 		7D45C0791B91E84500378D6D /* IntervalStatusTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntervalStatusTableViewCell.swift; sourceTree = "<group>"; };
-		7D5BAF391B9EBB4800DBC69B /* IoTCloudSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = IoTCloudSDK.xcodeproj; sourceTree = "<group>"; };
 		7D783E491B85CD9100543A09 /* SampleProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D783E4A1B87152600543A09 /* KiiSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = KiiSDK.framework; path = SampleProject/KiiSDK.framework; sourceTree = "<group>"; };
 		7D783E4C1B87157F00543A09 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		7D783E4F1B8715E500543A09 /* SampleProject-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SampleProject-Bridging-Header.h"; sourceTree = "<group>"; };
+		7D8B485E1B994A3900E9A317 /* IoTCloudSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IoTCloudSDK.framework; path = "Output/IoTCloudSDK-Debug-iphoneuniversal/IoTCloudSDK.framework"; sourceTree = "<group>"; };
 		7D8FAB4C1B8EB00100D57F8E /* CommandEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandEditViewController.swift; sourceTree = "<group>"; };
 		7D8FAB501B8EC26900D57F8E /* TriggerCommandEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerCommandEditViewController.swift; sourceTree = "<group>"; };
 		7D96858B1B8AF3C90017CA7D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -136,6 +108,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7D783E4D1B87157F00543A09 /* libsqlite3.tbd in Frameworks */,
+				7D8B485F1B994A3900E9A317 /* IoTCloudSDK.framework in Frameworks */,
 				7D783E4B1B87152600543A09 /* KiiSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,7 +119,7 @@
 		7D108ACE1B7210C8006EA12B = {
 			isa = PBXGroup;
 			children = (
-				7D5BAF391B9EBB4800DBC69B /* IoTCloudSDK.xcodeproj */,
+				7D8B485E1B994A3900E9A317 /* IoTCloudSDK.framework */,
 				7D783E4E1B87159400543A09 /* frameworks */,
 				7D108AD91B7210C8006EA12B /* SampleProject */,
 				7D783E491B85CD9100543A09 /* SampleProject.app */,
@@ -228,16 +201,6 @@
 			name = TriggerVC;
 			sourceTree = "<group>";
 		};
-		7D5BAF3A1B9EBB4800DBC69B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				7D5BAF411B9EBB4800DBC69B /* IoTCloudSDK.framework */,
-				7D5BAF431B9EBB4800DBC69B /* IoTCloudSDKTests.xctest */,
-				7D5BAF451B9EBB4800DBC69B /* IoTCloudSDKUsage.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		7D783E4E1B87159400543A09 /* frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -269,7 +232,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				7D5BAF471B9EBB5300DBC69B /* PBXTargetDependency */,
 			);
 			name = SampleProject;
 			productName = SampleProject;
@@ -311,42 +273,12 @@
 			mainGroup = 7D108ACE1B7210C8006EA12B;
 			productRefGroup = 7D108ACE1B7210C8006EA12B;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 7D5BAF3A1B9EBB4800DBC69B /* Products */;
-					ProjectRef = 7D5BAF391B9EBB4800DBC69B /* IoTCloudSDK.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				7D108AD61B7210C8006EA12B /* SampleProject */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		7D5BAF411B9EBB4800DBC69B /* IoTCloudSDK.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = IoTCloudSDK.framework;
-			remoteRef = 7D5BAF401B9EBB4800DBC69B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7D5BAF431B9EBB4800DBC69B /* IoTCloudSDKTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = IoTCloudSDKTests.xctest;
-			remoteRef = 7D5BAF421B9EBB4800DBC69B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		7D5BAF451B9EBB4800DBC69B /* IoTCloudSDKUsage.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = IoTCloudSDKUsage.xctest;
-			remoteRef = 7D5BAF441B9EBB4800DBC69B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		7D108AD51B7210C8006EA12B /* Resources */ = {
@@ -400,14 +332,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		7D5BAF471B9EBB5300DBC69B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IoTCloudSDK;
-			targetProxy = 7D5BAF461B9EBB5300DBC69B /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7D108ADE1B7210C8006EA12B /* Main.storyboard */ = {
