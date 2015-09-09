@@ -15,10 +15,11 @@ public class IoTCloudAPIBuilder {
     - Parameter appKey: Key of the application published by Kii Cloud.
     - Parameter baseURL: URL of the Site.
     - Parameter owner: Owner who consumes IoTCloudAPI.
+    - Parameter tag: tag of the IoTCloudAPI instance.
      */
-    public init(appID: String, appKey: String, baseURL: String, owner: Owner) {
+    public init(appID: String, appKey: String, baseURL: String, owner: Owner,tag: String? = nil) {
 
-        iotCloudAPI = IoTCloudAPI(baseURL: baseURL, appID: appID, appKey: appKey, owner: owner)
+        iotCloudAPI = IoTCloudAPI(baseURL: baseURL, appID: appID, appKey: appKey, owner: owner, tag: tag)
     }
 
     /** Build IoTCloudAPI instance.
