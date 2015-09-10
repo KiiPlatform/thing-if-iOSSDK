@@ -19,12 +19,10 @@ class KiiBaseTableViewController: UITableViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if iotAPI == nil {
-            if let iotAPIData = NSUserDefaults.standardUserDefaults().objectForKey("iotAPI") as? NSData {
-                if let iotAPI = NSKeyedUnarchiver.unarchiveObjectWithData(iotAPIData) as? IoTCloudAPI {
-                    self.iotAPI = iotAPI
-                }
-            }
+        do{
+            try iotAPI = IoTCloudAPI.loadWithStoredInstance()
+        }catch(_){
+            // do nothing
         }
 
 
@@ -77,9 +75,7 @@ class KiiBaseTableViewController: UITableViewController {
     }
 
     func logout(completion: ()-> Void) {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("iotAPI")
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("target")
-        completion()
+        IoTCloudAPI.removeStoredInstances()
     }
 
 }
