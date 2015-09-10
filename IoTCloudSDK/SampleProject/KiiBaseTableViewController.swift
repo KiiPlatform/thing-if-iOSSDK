@@ -21,10 +21,12 @@ class KiiBaseTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         do{
             try iotAPI = IoTCloudAPI.loadWithStoredInstance()
+            self.navigationItem.title = iotAPI?.target?.targetType.id
         }catch(_){
             // do nothing
         }
-
+        target = iotAPI?.target
+        self.navigationController?.navigationItem.title = target?.targetType.id
 
         if schema == nil {
             if let schemaData = NSUserDefaults.standardUserDefaults().objectForKey("schema") as? NSData {
