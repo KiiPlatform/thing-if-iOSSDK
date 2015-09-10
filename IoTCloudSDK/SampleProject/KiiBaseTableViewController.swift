@@ -78,6 +78,7 @@ class KiiBaseTableViewController: UITableViewController {
 
     func logout(completion: ()-> Void) {
         IoTCloudAPI.removeStoredInstances()
+        completion()
     }
 
 }
