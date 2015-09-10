@@ -17,8 +17,10 @@ class TabBarViewController: UITabBarController {
         var savedIoTAPI: IoTCloudAPI?
 
         // try to get iotAPI from NSUserDefaults
-        if let data = NSUserDefaults.standardUserDefaults().objectForKey("iotAPI") as? NSData {
-            savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI
+        do{
+            try savedIoTAPI = IoTCloudAPI.loadWithStoredInstance()
+        }catch(_){
+            // do nothing
         }
 
         // if there is not saved iotAPI, present login UIs

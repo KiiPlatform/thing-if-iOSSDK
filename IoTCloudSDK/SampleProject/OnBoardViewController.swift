@@ -26,8 +26,6 @@ class OnBoardViewController: KiiBaseTableViewController {
             showActivityView(true)
             self.iotAPI?.onBoard(vendorThingID, thingPassword: thingPassword, thingType: thingTypeTextField.text, thingProperties: nil, completionHandler: { (target, error) -> Void in
                 if target != nil {
-                    // after successfully onboard, save target
-                    self.saveTarget(target!)
                     self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                     self.showActivityView(false)
                 }else {
@@ -43,8 +41,6 @@ class OnBoardViewController: KiiBaseTableViewController {
             showActivityView(true)
             self.iotAPI?.onBoard(thingID, thingPassword: thingPassword, completionHandler: { (target, error) -> Void in
                 if target != nil {
-                    // after successfully onboard, save target
-                    self.saveTarget(target!)
                     self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                     self.showActivityView(false)
                 }else {
@@ -54,9 +50,5 @@ class OnBoardViewController: KiiBaseTableViewController {
                 }
             })
         }
-    }
-
-    func saveTarget(target: Target) {
-        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(target), forKey: "target")
     }
 }

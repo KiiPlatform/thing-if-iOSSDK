@@ -430,9 +430,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
     }
 
     /** Remove saved specified instance in the NSUserDefaults.
-    - Parameter tag: tag of the IoTCloudAPI instance
+    - Parameter tag: tag of the IoTCloudAPI instance or nil for default tag
     */
-    public static func removeStoredInstances(tag : String?){
+    public static func removeStoredInstances(tag : String?=nil){
         let baseKey = IoTCloudAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let key = IoTCloudAPI.getSharedNSDefaultKey(tag)
         if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
