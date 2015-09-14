@@ -34,7 +34,7 @@ class StateViewController: KiiBaseTableViewController {
     func getState() {
         if target != nil && iotAPI != nil {
             showActivityView(true)
-            iotAPI!.getState(target!, completionHandler: { (statesDict, error) -> Void in
+            iotAPI!.getState({ (statesDict, error) -> Void in
                 self.showActivityView(false)
                 if statesDict != nil {
                     self.stateStringsArray.removeAll()

@@ -19,22 +19,14 @@ class KiiBaseTableViewController: UITableViewController {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if iotAPI == nil {
-            if let iotAPIData = NSUserDefaults.standardUserDefaults().objectForKey("iotAPI") as? NSData {
-                if let iotAPI = NSKeyedUnarchiver.unarchiveObjectWithData(iotAPIData) as? IoTCloudAPI {
-                    self.iotAPI = iotAPI
-                }
-            }
+        do{
+            try iotAPI = IoTCloudAPI.loadWithStoredInstance()
+            self.navigationItem.title = iotAPI?.target?.targetType.id
+        }catch(_){
+            // do nothing
         }
-
-        if target == nil {
-            if let targetData = NSUserDefaults.standardUserDefaults().objectForKey("target") as? NSData {
-                if let target = NSKeyedUnarchiver.unarchiveObjectWithData(targetData) as? Target {
-                    self.target = target
-                    self.navigationItem.title = target.targetType.id
-                }
-            }
-        }
+        target = iotAPI?.target
+        self.navigationController?.navigationItem.title = target?.targetType.id
 
         if schema == nil {
             if let schemaData = NSUserDefaults.standardUserDefaults().objectForKey("schema") as? NSData {
@@ -77,14 +69,15 @@ class KiiBaseTableViewController: UITableViewController {
                 errorString = "PUSH_NOT_AVAILABLE"
             case .UNSUPPORTED_ERROR:
                 errorString = "UNSUPPORTED_ERROR"
+            default:
+                break
             }
         }
         showAlert(title, message: errorString, completion: completion)
     }
 
     func logout(completion: ()-> Void) {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("iotAPI")
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("target")
+        IoTCloudAPI.removeStoredInstances()
         completion()
     }
 

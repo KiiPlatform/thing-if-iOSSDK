@@ -37,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         smartLightDemoSchema.addAction("setColor", statusName: "color")
         // save schema
         NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(smartLightDemoSchema), forKey: "schema")
+        NSUserDefaults.standardUserDefaults().synchronize()
 
         //register for remote notification
         // this line does not ask for user permission
