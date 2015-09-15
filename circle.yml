@@ -7,7 +7,7 @@ machine:
 dependencies:
   pre:
     - sudo gem install jazzy
-    - gem install ocunit2junit
+    - sudo gem install ocunit2junit
 test:
   pre:
     # Build sdk
