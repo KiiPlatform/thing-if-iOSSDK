@@ -19,7 +19,10 @@ test:
     - if [ ! -n "$DESTINATION" ]; then DESTINATION=$default_destination; fi
   override:
     # run small tests
-    - cd IoTCloudSDK; python testScripts/xcodebuildtest.py  --destination "${DESTINATION}"
+    - if [ ! -n "$DESTINATION" ]; then DESTINATION=$default_destination; fi;
+      cd IoTCloudSDK;
+      python testScripts/xcodebuildtest.py  --destination "${DESTINATION}"
+  
     - cp IoTCloudSDK/test-reports/*.xml $CIRCLE_TEST_REPORTS/smalltests-junit-reports.xml
 
   post:
