@@ -6,7 +6,7 @@ machine:
 
 dependencies:
   pre:
-    - brew install hub
+    - brew install jazzy
 test:
   pre:
     # Build sdk
