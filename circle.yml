@@ -4,9 +4,9 @@ machine:
   environment:
     default_destination: OS=8.1,name=iPhone 6
 
-#dependencies:
-#  pre:
-#    - brew install jazzy
+dependencies:
+  pre:
+    - brew install jazzy
 test:
   pre:
     # Build sdk
