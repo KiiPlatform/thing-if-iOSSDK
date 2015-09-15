@@ -1,0 +1,33 @@
+machine:
+  xcode:
+    version: "7.0"
+  environment:
+    default_destination: OS=8.1,name=iPhone 6
+
+dependencies:
+  pre:
+    - brew install hub
+test:
+  pre:
+    # Build sdk
+    - cd IoTCloudSDK; make all
+    # Copy sdk and docs to artifacts
+    - cp IoTCloudSDK/dist/*.zip $CIRCLE_ARTIFACTS
+    - cp IoTCloudSDK/Documentation/*.zip $CIRCLE_ARTIFACTS
+    # if no build parameter, then use the default value
+    - if [ ! -n "$DESTINATION" ]; then DESTINATION=$default_destination; fi
+  override:
+    # run small tests
+    - cd IoTCloudSDK; rm -rf test-reports; python runtest.py --file ./smalltests.js --testsdk iphonesimulator --destination "${DESTINATION}"
+    - cp IoTCloudSDK/test-reports/*.xml $CIRCLE_TEST_REPORTS/smalltests-junit-reports.xml
+
+  post:
+    - >
+      if [ "$UPLOAD_DOC" == "true" ]; then
+        bash circleci_scripts/doc_upload.sh
+      fi
+
+    - >
+      if [ "$UPLOAD_SDK" == "true" ]; then
+        bash circleci_scripts/sdk_upload.sh
+      fi
