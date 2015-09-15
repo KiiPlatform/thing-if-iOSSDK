@@ -6,7 +6,7 @@ machine:
 
 dependencies:
   pre:
-    - brew install jazzy
+    - sudo gem install jazzy
 test:
   pre:
     # Build sdk
