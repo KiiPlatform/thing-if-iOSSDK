@@ -15,8 +15,7 @@ test:
     # Copy sdk and docs to artifacts
     - cp IoTCloudSDK/dist/*.zip $CIRCLE_ARTIFACTS
     - cp IoTCloudSDK/Documentation/*.zip $CIRCLE_ARTIFACTS
-    # if no build parameter, then use the default value
-    - if [ ! -n "$DESTINATION" ]; then DESTINATION=$default_destination; fi
+    - cp -fr IoTCloudSDK/Documentation/docs $CIRCLE_ARTIFACTS/
   override:
     # run small tests
     - if [ ! -n "$DESTINATION" ]; then DESTINATION=$default_destination; fi;
