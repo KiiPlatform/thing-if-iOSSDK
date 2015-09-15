@@ -23,7 +23,7 @@ test:
       cd IoTCloudSDK;
       python testScripts/xcodebuildtest.py  --destination "${DESTINATION}"
 
-    - cp IoTCloudSDK/test-reports/*.xml $CIRCLE_TEST_REPORTS/smalltests-junit-reports.xml
+    - cp IoTCloudSDK/test-reports/*.xml $CIRCLE_TEST_REPORTS/
 
   post:
     - >
