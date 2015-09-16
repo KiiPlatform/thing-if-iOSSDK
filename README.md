@@ -31,7 +31,7 @@ github "KiiPlatform/IoTCloud-iOSSDK" >= 0.8
 
 ### Build Locally
 
-If you would like to build framework from other branch other than master, can try to build framework locally.
+If you would like to build framework from the branch other than master, you can build the framework locally.
 
 - Get the source code of IoTCloud-iOSSDK from Github.
 
@@ -57,5 +57,11 @@ make build
 # Usage
 
 Please check the [Documentation](http://documentation.kii.com/en/starts/iotsdk/) from Kii Cloud website.
+
+# Sample Project
+
+There is a sample project `IoTCloudSDK/SampleProject.xcodeproj` in this repository using `IoTCloudSDK.framework`.
+
+Since the sample project uses `IoTCloudSDK`, you need to provide the framework for it. The path for the framework should be 'IoTCloudSDK/dist/IoTCloudSDK.framework'. Please confirm whether the framework existing in that path. For the first time you need to generate one for it ([Build locally](#build-locally)).  
 
 # License
