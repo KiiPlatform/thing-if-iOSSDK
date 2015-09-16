@@ -24,7 +24,7 @@ class OnBoardViewController: KiiBaseTableViewController {
     @IBAction func tapOnboardWithVendorThingID(sender: AnyObject) {
         if let vendorThingID = vendorThingID.text, thingPassword = thingPassTextField.text {
             showActivityView(true)
-            self.iotAPI?.onBoard(vendorThingID, thingPassword: thingPassword, thingType: thingTypeTextField.text, thingProperties: nil, completionHandler: { (target, error) -> Void in
+            self.iotAPI?.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingTypeTextField.text, thingProperties: nil, completionHandler: { (target, error) -> Void in
                 if target != nil {
                     self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                     self.showActivityView(false)
@@ -39,7 +39,7 @@ class OnBoardViewController: KiiBaseTableViewController {
     @IBAction func tapOnBoardWithThingID(sender: AnyObject) {
         if let thingID = thingIDTextField.text, thingPassword = thingPassTextField.text {
             showActivityView(true)
-            self.iotAPI?.onBoard(thingID, thingPassword: thingPassword, completionHandler: { (target, error) -> Void in
+            self.iotAPI?.onboard(thingID, thingPassword: thingPassword, completionHandler: { (target, error) -> Void in
                 if target != nil {
                     self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                     self.showActivityView(false)

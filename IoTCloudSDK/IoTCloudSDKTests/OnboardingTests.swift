@@ -71,7 +71,7 @@ class OnboardingTests: XCTestCase {
             MockSession.requestVerifier = requestVerifier
             
             iotSession = MockSession.self
-            api.onBoard("th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", thingPassword: "dummyPassword") { ( target, error) -> Void in
+            api.onboard("th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", thingPassword: "dummyPassword") { ( target, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -135,7 +135,7 @@ class OnboardingTests: XCTestCase {
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.onBoard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
+            api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                     XCTAssertEqual(self.api.target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
@@ -160,7 +160,7 @@ class OnboardingTests: XCTestCase {
         let expectation = self.expectationWithDescription("testOnboardWithThingID_already_onboarded_error")
 
         api._target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
-        api.onBoard("dummyThingID", thingPassword: "dummyPassword") { (target, error) -> Void in
+        api.onboard("dummyThingID", thingPassword: "dummyPassword") { (target, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -218,7 +218,7 @@ class OnboardingTests: XCTestCase {
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.onBoard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
+            api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                     XCTAssertEqual(self.api.target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")

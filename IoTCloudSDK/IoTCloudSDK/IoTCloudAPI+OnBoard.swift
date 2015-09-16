@@ -9,7 +9,7 @@
 import Foundation
 extension IoTCloudAPI {
 
-    func _onBoard(
+    func _onboard(
         byVendorThingID: Bool,
         IDString: String,
         thingPassword:String,

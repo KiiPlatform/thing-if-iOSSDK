@@ -22,8 +22,8 @@
 //        iotCloudAPI = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
 //            baseURL: "https://api-development-jp.internal.kii.com", owner: owner).build()
 //
-////        onBoardWithVendorThingIDByOwner()
-////        onBoardWithThingIDByOwner()
+////        onboardWithVendorThingIDByOwner()
+////        onboardWithThingIDByOwner()
 ////        postCommand()
 //        
 //        let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
@@ -45,11 +45,11 @@
 //        // Dispose of any resources that can be recreated.
 //    }
 //
-//    func onBoardWithVendorThingIDByOwner() {
+//    func onboardWithVendorThingIDByOwner() {
 //
 //        let thingProperties = ["key1":"value1", "key2":"value2"]
 //
-//        iotCloudAPI.onBoard("th.abcd-efgh", thingPassword: "dummyPassword", thingType: "LED", thingProperties: thingProperties) { ( target, error) -> Void in
+//        iotCloudAPI.onboard("th.abcd-efgh", thingPassword: "dummyPassword", thingType: "LED", thingProperties: thingProperties) { ( target, error) -> Void in
 //            if error == nil{
 //                print(target!.targetType.id)
 //            }else {
@@ -58,9 +58,9 @@
 //        }
 //    }
 //
-//    func onBoardWithThingIDByOwner() {
+//    func onboardWithThingIDByOwner() {
 //
-//        iotCloudAPI.onBoard("th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", thingPassword: "dummyPassword") { ( target, error) -> Void in
+//        iotCloudAPI.onboard("th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", thingPassword: "dummyPassword") { ( target, error) -> Void in
 //            if error == nil{
 //                print(target!.targetType.id)
 //            }else {
@@ -72,7 +72,7 @@
 //    func postCommand() {
 //        let thingID = "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 //        let thingPassword = "dummyPassword"
-//        iotCloudAPI.onBoard(thingID, thingPassword: thingPassword, completionHandler: { (target, error) -> Void in
+//        iotCloudAPI.onboard(thingID, thingPassword: thingPassword, completionHandler: { (target, error) -> Void in
 //            self.callPostCommand(target!)
 //        })
 //    }

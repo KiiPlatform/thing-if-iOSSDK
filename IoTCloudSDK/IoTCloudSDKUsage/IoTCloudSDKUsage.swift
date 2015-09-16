@@ -30,7 +30,7 @@ class IoTCloudSDKUsage: XCTestCase {
 //        ) -> Promise<Target> {
 //        let promise = Promise<Target>(resolvers: { fullfill, reject in
 //            do {
-//                let target = try api!.onBoard(thingID, thingPassword:thingPassword)
+//                let target = try api!.onboard(thingID, thingPassword:thingPassword)
 //                fullfill(target!)
 //            } catch (let e) {
 //                reject(e)
