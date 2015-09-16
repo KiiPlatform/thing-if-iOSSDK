@@ -36,14 +36,14 @@ If you would like to build framework from the branch other than master, you can 
 - Get the source code of IoTCloud-iOSSDK from Github.
 
 ```bash
-git clone https://github.com/KiiPlatform/IoTCloud-iOSSDK.git
+$ git clone https://github.com/KiiPlatform/IoTCloud-iOSSDK.git
 ```
 
 - Build IoTCloud-iOSSDK. If built successfully, a framework named `IoTCloudSDK.framework` can be found under folder `IoTCloud-iOSSDK/dist/`
 
 ```bash
-cd IoTCloudSDK
-make build
+$ cd IoTCloudSDK
+$ make build
 ```
 
 - Import the generated framework to your project.
