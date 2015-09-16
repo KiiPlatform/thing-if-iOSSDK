@@ -22,7 +22,7 @@ class SwiftDocGenerator(object):
         self.logger = getLogger()
 
         parser = argparse.ArgumentParser(description="Generate Doc from swift project")
-        parser.add_argument('-options', '--options-file', dest='options_file', default='jazzy-options.js', help='file with options settings')
+        parser.add_argument('-o', '--options-file', dest='options_file', default='jazzy-options.js', help='file with options settings')
         args = parser.parse_args()
 
         settings = json.load(open(args.options_file))

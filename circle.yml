@@ -23,14 +23,3 @@ test:
       python testScripts/xcodebuildtest.py  --destination "${DESTINATION}"
 
     - cp IoTCloudSDK/test-reports/*.xml $CIRCLE_TEST_REPORTS/
-
-  post:
-    - >
-      if [ "$UPLOAD_DOC" == "true" ]; then
-        bash circleci_scripts/doc_upload.sh
-      fi
-
-    - >
-      if [ "$UPLOAD_SDK" == "true" ]; then
-        bash circleci_scripts/sdk_upload.sh
-      fi
