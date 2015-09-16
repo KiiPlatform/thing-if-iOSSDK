@@ -98,7 +98,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     About the format of this Document.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an IoTCloudError
     */
-    public func onBoard(
+    public func onboard(
         vendorThingID:String,
         thingPassword:String,
         thingType:String?,
@@ -106,7 +106,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
         completionHandler: (Target?, IoTCloudError?)-> Void
         ) ->Void
     {
-        _onBoard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
+        _onboard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
             completionHandler(target, error)
         }
     }
@@ -124,13 +124,13 @@ public class IoTCloudAPI: NSObject, NSCoding {
     Must be specified.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an IoTCloudError
     */
-    public func onBoard(
+    public func onboard(
         thingID:String,
         thingPassword:String,
         completionHandler: (Target?, IoTCloudError?)-> Void
         ) ->Void
     {
-         _onBoard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
+         _onboard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
             completionHandler(target, error)
         }
     }
