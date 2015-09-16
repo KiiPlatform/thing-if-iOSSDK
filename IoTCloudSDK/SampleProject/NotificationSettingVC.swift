@@ -17,8 +17,10 @@ class NotificationSettingVC: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // try to get iotAPI from NSUserDefaults
-        if let data = NSUserDefaults.standardUserDefaults().objectForKey("iotAPI") as? NSData {
-            savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI
+        do{
+            try savedIoTAPI = IoTCloudAPI.loadWithStoredInstance()
+        }catch(_){
+            // do nothing
         }
     }
     override func viewWillAppear(animated: Bool) {
@@ -47,10 +49,7 @@ class NotificationSettingVC: UITableViewController {
         }
 
     }
-    func saveIoTAPI() {
-        NSUserDefaults.standardUserDefaults().setObject(NSKeyedArchiver.archivedDataWithRootObject(savedIoTAPI!), forKey: "iotAPI")
-    }
-    @IBAction func didChangeInstallation(sender: UISwitch) {
+        @IBAction func didChangeInstallation(sender: UISwitch) {
 
         if sender.on {
             if let data = NSUserDefaults.standardUserDefaults().objectForKey("deviceToken") as? NSData {
@@ -58,7 +57,6 @@ class NotificationSettingVC: UITableViewController {
                     if error != nil {
                         self.installationSwitch.on = false
                     }
-                    self.saveIoTAPI()
                 })
             }
         }else{
@@ -66,7 +64,6 @@ class NotificationSettingVC: UITableViewController {
                 if error != nil {
                     self.installationSwitch.on = true
                 }
-                self.saveIoTAPI()
             })
         }
     }

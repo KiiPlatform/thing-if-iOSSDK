@@ -55,7 +55,7 @@ class TriggerListViewController: KiiBaseTableViewController {
 
         let enableAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: enableActionTitle, handler:{action, indexpath in
             if self.iotAPI != nil && self.target != nil {
-                self.iotAPI!.enableTrigger(self.target!, triggerID: trigger.triggerID, enable: !trigger.enabled, completionHandler: { (trigger, error) -> Void in
+                self.iotAPI!.enableTrigger(trigger.triggerID, enable: !trigger.enabled, completionHandler: { (trigger, error) -> Void in
                     if error == nil {
                         // update triggers array
                         self.triggers[indexPath.row] = trigger!
@@ -73,7 +73,7 @@ class TriggerListViewController: KiiBaseTableViewController {
 
             if self.iotAPI != nil && self.target != nil {
                 // request to delete trigger
-                self.iotAPI!.deleteTrigger(self.target!, triggerID: trigger.triggerID, completionHandler: { (trigger, error) -> Void in
+                self.iotAPI!.deleteTrigger( trigger.triggerID, completionHandler: { (trigger, error) -> Void in
                     if error == nil { // if delete trigger successfully in server, then delete it from table view
                         self.triggers.removeAtIndex(indexPath.row)
                         self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
@@ -98,7 +98,7 @@ class TriggerListViewController: KiiBaseTableViewController {
         if iotAPI != nil && target != nil {
             showActivityView(true)
             // use default bestEffortLimit
-            iotAPI!.listTriggers(target!, bestEffortLimit: nil, paginationKey: nextPaginationKey, completionHandler: { (triggers, paginationKey, error) -> Void in
+            iotAPI!.listTriggers(nil, paginationKey: nextPaginationKey, completionHandler: { (triggers, paginationKey, error) -> Void in
                 self.showActivityView(false)
                 if triggers != nil {
 
