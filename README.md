@@ -59,7 +59,7 @@ Please check the [Documentation](http://documentation.kii.com/en/starts/iotsdk/)
 
 # Sample Project
 
-There is a sample project `IoTCloudSDK/SampleProject.xcodeproj` in this repository using `IoTCloudSDK.framework`.
+There is a sample project `IoTCloudSDK/SampleProject.xcodeproj` in this repository. It uses KiiSDK and IoTCloudSDK.
 
 ## Configure IoTCloudSDK.framework
 
@@ -69,11 +69,20 @@ For the first time you need to generate one for it ( Please confirm [Build local
 
 ## Download the Latest KiiSDK.framework
 
-Sample project uses KiiSDK to get the access token of KiiUser from Kii Cloud, so you should download it from [Kii Developer Portal](https://developer.kii.com/v2/downloads).
+Sample project uses KiiSDK to get the access token of KiiUser from Kii Cloud, so you should download the latest one from [Kii Developer Portal](https://developer.kii.com/v2/downloads).
 
 Then import it to Sample Project.
 
-## Change Properties
+## Initialize SDKs
 
-KiiSDK and IoTCloudSDK need the appID and appKey. Please set the appropriate values in the file `IoTCloudSDK/Properties.plist`
+Both of KiiSDK and IoTCloudSDK need the same appID and appKey. Please set the appropriate values in the file `IoTCloudSDK/Properties.plist`.
+
+- Initialize KiiSDK in `IoTCloudSDK/AppDelegate.swift`
+  - If using one of US, JP, CN and SG, please call `Kii.beginWithID((dict["appID"] as! String), andKey: (dict["appKey"] as! String), andSite: KiiSite)` using appropriate value for the site.
+  - If using a custom base URL, please provide a value of `kiiCloudCustomURL` for KiiSDK in `IoTCloudSDK/Properties.plist`. Then call `Kii.beginWithID((dict["appID"] as! String), andKey: (dict["appKey"] as! String), andCustomURL: (dict["kiiCloudCustomURL"] as! String))`
+
+- Initialize IotCloudSDK in  `IoTCloudSDK/LoginViewController.swift` when calling `IoTCloudAPIBuilder(appID: (dict["appID"] as! String), appKey: (dict["appKey"] as! String), site: Site, owner: Owner, tag: String? )`
+  - If using one of US, JP, CN and SG, please use `Site.US`, `Site.JP`, `Site.CN`, or `Site.SG` for the value of site.
+  - If using custom site base URL, please provide a value of `iotCloudAPIBaseURL` for IoTCloudSDK in `IoTCloudSDK/Properties.plist`, then set the value of site with `Site.CUSTOM((dict["iotCloudAPIBaseURL"] as! String))`.
+
 # License
