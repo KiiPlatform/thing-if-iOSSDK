@@ -17,7 +17,7 @@ class IoTCloudSDKUsage: XCTestCase {
 //        let schema = (thingType: "SmartLight-Demo",
 //            name: "SmartLight-Demo", version: 1)
         api = IoTCloudAPIBuilder(appID: "myApp", appKey: "myAppKey",
-            baseURL: "https://api.kii.com/", owner: owner).build()
+            site: Site.BaseURL("https://api-development-jp.internal.kii.com"), owner: owner).build()
     }
 
     override func tearDown() {
