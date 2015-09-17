@@ -43,6 +43,7 @@
 		7D783E481B859B6600543A09 /* ListCommandsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D783E471B859B6600543A09 /* ListCommandsTests.swift */; };
 		7D8D36A21B7B2699003DFE76 /* OnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */; };
 		7D9097331B984601001DB580 /* copyWithTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9097321B984601001DB580 /* copyWithTarget.swift */; settings = {ASSET_TAGS = (); }; };
+		7D9941081BAA5A8B008E2D2A /* Site.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D9941071BAA5A8B008E2D2A /* Site.swift */; settings = {ASSET_TAGS = (); }; };
 		7DA033D51B845C0B00868F73 /* ListTriggersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA033D41B845C0B00868F73 /* ListTriggersTests.swift */; };
 		7DA033D71B8469F600868F73 /* PatchTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA033D61B8469F600868F73 /* PatchTriggerTests.swift */; };
 		7DA033D91B848FBE00868F73 /* EnableTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DA033D81B848FBE00868F73 /* EnableTriggerTests.swift */; };
@@ -128,6 +129,7 @@
 		7D783E471B859B6600543A09 /* ListCommandsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCommandsTests.swift; sourceTree = "<group>"; };
 		7D8D36A11B7B2699003DFE76 /* OnboardingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingTests.swift; sourceTree = "<group>"; };
 		7D9097321B984601001DB580 /* copyWithTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = copyWithTarget.swift; sourceTree = "<group>"; };
+		7D9941071BAA5A8B008E2D2A /* Site.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Site.swift; sourceTree = "<group>"; };
 		7DA033D41B845C0B00868F73 /* ListTriggersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTriggersTests.swift; sourceTree = "<group>"; };
 		7DA033D61B8469F600868F73 /* PatchTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchTriggerTests.swift; sourceTree = "<group>"; };
 		7DA033D81B848FBE00868F73 /* EnableTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnableTriggerTests.swift; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 				7417A3231B65DC1B00D116A5 /* Owner.swift */,
 				7417A3251B65DCA300D116A5 /* TypedID.swift */,
 				7417A3361B66287700D116A5 /* IoTCloudError.swift */,
+				7D9941071BAA5A8B008E2D2A /* Site.swift */,
 			);
 			path = IoTCloudSDK;
 			sourceTree = "<group>";
@@ -596,6 +599,7 @@
 				D5FB69291B8309BE003D7C38 /* Logger.swift in Sources */,
 				7D6DB0DB1B8AC8D30032D05E /* NSNumber+checkTypes.swift in Sources */,
 				D55D290E1B78923B006759C4 /* OperationObserver.swift in Sources */,
+				7D9941081BAA5A8B008E2D2A /* Site.swift in Sources */,
 				D55D290A1B78923B006759C4 /* NSOperation+Operations.swift in Sources */,
 				D5B395B41B79B2AE00E0F660 /* NetworkObserver.swift in Sources */,
 				D5B395B21B79A41F00E0F660 /* IoTRequestOperation.swift in Sources */,
