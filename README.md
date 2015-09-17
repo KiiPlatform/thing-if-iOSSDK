@@ -50,18 +50,30 @@ $ make build
 
 ### Download from Kii Developer Portal
 
-- Login on [Kii Developer Portal](http://en.kii.com/login-developers/)
-- Download IoTCloudSDK from the [page](https://developer.kii.com/v2/downloads)
+- Download IoTCloudSDK from  [Kii Developer Portal](https://developer.kii.com/v2/downloads)
 - Import the Downloaded IoTCloudSDK.framework to your project.
 
 # Usage
 
-Please check the [Documentation](http://documentation.kii.com/en/starts/iotsdk/) from Kii Cloud website.
+Please check the [Documentation](http://documentation.kii.com/en/starts/iotsdk/) from Kii Cloud.
 
 # Sample Project
 
 There is a sample project `IoTCloudSDK/SampleProject.xcodeproj` in this repository using `IoTCloudSDK.framework`.
 
-Since the sample project uses `IoTCloudSDK`, you need to provide the framework for it. The path for the framework should be 'IoTCloudSDK/dist/IoTCloudSDK.framework'. Please confirm whether the framework existing in that path. For the first time you need to generate one for it ([Build locally](#build-locally)).  
+## Configure IoTCloudSDK.framework
 
+Since the sample project uses `IoTCloudSDK`, you need to provide the framework for it. The path for the framework should be 'IoTCloudSDK/dist/IoTCloudSDK.framework'. Please confirm whether the framework existing in that path.
+
+For the first time you need to generate one for it ( Please confirm [Build locally](#build-locally)).  
+
+## Download the Latest KiiSDK.framework
+
+Sample project uses KiiSDK to get the access token of KiiUser from Kii Cloud, so you should download it from [Kii Developer Portal](https://developer.kii.com/v2/downloads).
+
+Then import it to Sample Project.
+
+## Change Properties
+
+KiiSDK and IoTCloudSDK need the appID and appKey. Please set the appropriate values in the file `IoTCloudSDK/Properties.plist`
 # License
