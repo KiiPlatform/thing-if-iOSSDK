@@ -100,7 +100,7 @@ class LoginViewController: UIViewController {
             propertiesDict = NSDictionary(contentsOfFile: path)
         }
         if let dict = propertiesDict {
-            IoTCloudAPIBuilder(appID: (dict["appID"] as! String), appKey: (dict["appKey"] as! String), baseURL: (dict["iotCloudAPIBaseURL"] as! String), owner: owner).build()
+            IoTCloudAPIBuilder(appID: (dict["appID"] as! String), appKey: (dict["appKey"] as! String), site: Site.CUSTOM((dict["iotCloudAPIBaseURL"] as! String)), owner: owner).build()
 
         }else {
             print("please make sure the Properties.plist file exists")
