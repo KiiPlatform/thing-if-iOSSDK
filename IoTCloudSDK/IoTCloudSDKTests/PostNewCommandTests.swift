@@ -24,7 +24,7 @@ class PostNewCommandTests: XCTestCase {
         owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
         api = IoTCloudAPIBuilder(appID: "dummyID", appKey: "dummyKey",
-            site: Site.BaseURL(self.baseURLString), owner: owner).build()
+            site: Site.CUSTOM(self.baseURLString), owner: owner).build()
 
     }
     override func tearDown() {

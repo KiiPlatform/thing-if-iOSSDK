@@ -20,7 +20,7 @@
 //        owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 //        
 //        iotCloudAPI = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-//            site: Site.BaseURL("https://api-development-jp.internal.kii.com"), owner: owner).build()
+//            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: owner).build()
 //
 ////        onboardWithVendorThingIDByOwner()
 ////        onboardWithThingIDByOwner()
