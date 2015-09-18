@@ -32,8 +32,6 @@
 		7417A32D1B65FA0D00D116A5 /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417A32C1B65FA0D00D116A5 /* Trigger.swift */; };
 		7417A3351B66038000D116A5 /* IoTCloudAPIBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417A3341B66038000D116A5 /* IoTCloudAPIBuilder.swift */; };
 		7417A3371B66287700D116A5 /* IoTCloudError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7417A3361B66287700D116A5 /* IoTCloudError.swift */; };
-		745088CB1B68C21100821F7D /* IoTCloudSDKUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745088CA1B68C21100821F7D /* IoTCloudSDKUsage.swift */; };
-		745088CD1B68C21100821F7D /* IoTCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7417A3031B65CF8400D116A5 /* IoTCloudSDK.framework */; };
 		7D26FF0E1B7C74B000E63E1B /* IoTCloudAPI+Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D26FF0D1B7C74B000E63E1B /* IoTCloudAPI+Command.swift */; };
 		7D26FF101B7C74F300E63E1B /* IoTCloudAPI+OnBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D26FF0F1B7C74F300E63E1B /* IoTCloudAPI+OnBoard.swift */; };
 		7D26FF121B7C858800E63E1B /* IoTCloudAPI+Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D26FF111B7C858800E63E1B /* IoTCloudAPI+Trigger.swift */; };
@@ -92,13 +90,6 @@
 			remoteGlobalIDString = 7417A3021B65CF8400D116A5;
 			remoteInfo = IoTCloudSDK;
 		};
-		745088CE1B68C21100821F7D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7417A2FA1B65CF8400D116A5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7417A3021B65CF8400D116A5;
-			remoteInfo = IoTCloudSDK;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -116,10 +107,6 @@
 		7417A32C1B65FA0D00D116A5 /* Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
 		7417A3341B66038000D116A5 /* IoTCloudAPIBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTCloudAPIBuilder.swift; sourceTree = "<group>"; };
 		7417A3361B66287700D116A5 /* IoTCloudError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTCloudError.swift; sourceTree = "<group>"; };
-		745088C81B68C21100821F7D /* IoTCloudSDKUsage.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IoTCloudSDKUsage.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		745088CA1B68C21100821F7D /* IoTCloudSDKUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IoTCloudSDKUsage.swift; sourceTree = "<group>"; };
-		745088CC1B68C21100821F7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		74DE33B91B6A01B000F3E923 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PromiseKit.framework; sourceTree = "<group>"; };
 		7D26FF0D1B7C74B000E63E1B /* IoTCloudAPI+Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+Command.swift"; sourceTree = "<group>"; };
 		7D26FF0F1B7C74F300E63E1B /* IoTCloudAPI+OnBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+OnBoard.swift"; sourceTree = "<group>"; };
 		7D26FF111B7C858800E63E1B /* IoTCloudAPI+Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+Trigger.swift"; sourceTree = "<group>"; };
@@ -186,14 +173,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		745088C51B68C21100821F7D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				745088CD1B68C21100821F7D /* IoTCloudSDK.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -202,7 +181,6 @@
 			children = (
 				7417A3051B65CF8400D116A5 /* IoTCloudSDK */,
 				7417A3121B65CF8500D116A5 /* IoTCloudSDKTests */,
-				745088C91B68C21100821F7D /* IoTCloudSDKUsage */,
 				7417A3041B65CF8400D116A5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -212,7 +190,6 @@
 			children = (
 				7417A3031B65CF8400D116A5 /* IoTCloudSDK.framework */,
 				7417A30E1B65CF8500D116A5 /* IoTCloudSDKTests.xctest */,
-				745088C81B68C21100821F7D /* IoTCloudSDKUsage.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -289,16 +266,6 @@
 				7417A32C1B65FA0D00D116A5 /* Trigger.swift */,
 			);
 			name = Trigger;
-			sourceTree = "<group>";
-		};
-		745088C91B68C21100821F7D /* IoTCloudSDKUsage */ = {
-			isa = PBXGroup;
-			children = (
-				74DE33B91B6A01B000F3E923 /* PromiseKit.framework */,
-				745088CA1B68C21100821F7D /* IoTCloudSDKUsage.swift */,
-				745088CC1B68C21100821F7D /* Info.plist */,
-			);
-			path = IoTCloudSDKUsage;
 			sourceTree = "<group>";
 		};
 		7DA033D31B845BD000868F73 /* TriggerTests */ = {
@@ -471,24 +438,6 @@
 			productReference = 7417A30E1B65CF8500D116A5 /* IoTCloudSDKTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		745088C71B68C21100821F7D /* IoTCloudSDKUsage */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 745088D21B68C21100821F7D /* Build configuration list for PBXNativeTarget "IoTCloudSDKUsage" */;
-			buildPhases = (
-				745088C41B68C21100821F7D /* Sources */,
-				745088C51B68C21100821F7D /* Frameworks */,
-				745088C61B68C21100821F7D /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				745088CF1B68C21100821F7D /* PBXTargetDependency */,
-			);
-			name = IoTCloudSDKUsage;
-			productName = IoTCloudSDKUsage;
-			productReference = 745088C81B68C21100821F7D /* IoTCloudSDKUsage.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -505,9 +454,6 @@
 					};
 					7417A30D1B65CF8500D116A5 = {
 						CreatedOnToolsVersion = 6.4;
-					};
-					745088C71B68C21100821F7D = {
-						CreatedOnToolsVersion = 7.0;
 					};
 					7D894B0F1B96B1510044F19C = {
 						CreatedOnToolsVersion = 7.0;
@@ -529,7 +475,6 @@
 			targets = (
 				7417A3021B65CF8400D116A5 /* IoTCloudSDK */,
 				7417A30D1B65CF8500D116A5 /* IoTCloudSDKTests */,
-				745088C71B68C21100821F7D /* IoTCloudSDKUsage */,
 				7D894B0F1B96B1510044F19C /* IoTCloudSDKAggregate */,
 			);
 		};
@@ -544,13 +489,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		7417A30C1B65CF8500D116A5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		745088C61B68C21100821F7D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -647,14 +585,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		745088C41B68C21100821F7D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				745088CB1B68C21100821F7D /* IoTCloudSDKUsage.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -662,11 +592,6 @@
 			isa = PBXTargetDependency;
 			target = 7417A3021B65CF8400D116A5 /* IoTCloudSDK */;
 			targetProxy = 7417A3101B65CF8500D116A5 /* PBXContainerItemProxy */;
-		};
-		745088CF1B68C21100821F7D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7417A3021B65CF8400D116A5 /* IoTCloudSDK */;
-			targetProxy = 745088CE1B68C21100821F7D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -828,37 +753,6 @@
 			};
 			name = Release;
 		};
-		745088D01B68C21100821F7D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/IoTCloudSDKUsage",
-				);
-				INFOPLIST_FILE = IoTCloudSDKUsage/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Kii-Corporation.IoTCloudSDKUsage";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		745088D11B68C21100821F7D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/IoTCloudSDKUsage",
-				);
-				INFOPLIST_FILE = IoTCloudSDKUsage/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "Kii-Corporation.IoTCloudSDKUsage";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		7D894B101B96B1510044F19C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -899,15 +793,6 @@
 			buildConfigurations = (
 				7417A31D1B65CF8500D116A5 /* Debug */,
 				7417A31E1B65CF8500D116A5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		745088D21B68C21100821F7D /* Build configuration list for PBXNativeTarget "IoTCloudSDKUsage" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				745088D01B68C21100821F7D /* Debug */,
-				745088D11B68C21100821F7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

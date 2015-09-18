@@ -7,7 +7,4 @@
    <FileRef
       location = "group:IoTCloudSDK.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:SampleProject.xcodeproj">
-   </FileRef>
 </Workspace>
