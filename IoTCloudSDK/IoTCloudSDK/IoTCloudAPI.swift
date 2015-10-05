@@ -149,7 +149,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     - Parameter completionHandler: A closure to be executed once on board has finished.
     */
     public func installPush(
-        deviceToken:String,
+        deviceToken:NSData,
         development:Bool,
         completionHandler: (String?, IoTCloudError?)-> Void
         )
