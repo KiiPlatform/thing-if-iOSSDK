@@ -143,7 +143,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     fired by Application or registered Trigger.
     After installation is done Installation ID is managed in this class.
 
-    - Parameter deviceToken: device token for APNS.
+    - Parameter deviceToken: NSData instance of device token for APNS.
     - Parameter development: flag indicate whether the cert is development or
     production.
     - Parameter completionHandler: A closure to be executed once on board has finished.
