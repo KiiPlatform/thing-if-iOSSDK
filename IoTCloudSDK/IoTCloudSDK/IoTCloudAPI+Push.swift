@@ -10,7 +10,7 @@ import Foundation
 
 extension IoTCloudAPI {
     func _installPush(
-        deviceToken:String,
+        deviceToken:NSData,
         development:Bool = false,
         completionHandler: (String?, IoTCloudError?)-> Void
         )
@@ -20,7 +20,7 @@ extension IoTCloudAPI {
         // genrate body
         let requestBodyDict = NSMutableDictionary()
         
-        requestBodyDict["installationRegistrationID"] = deviceToken
+        requestBodyDict["installationRegistrationID"] = deviceToken.hexString()
         requestBodyDict["deviceType"] = "IOS"
         requestBodyDict["development"] = NSNumber(bool: development)
         kiiVerboseLog("Request body",requestBodyDict)
