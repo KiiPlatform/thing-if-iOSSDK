@@ -61,7 +61,18 @@ class EntitySerializationTests: XCTestCase {
         let aTypedID = TypedID(type: "camera", id: "cameraID")
         let aTarget = Target(targetType: aTypedID)
 
+        XCTAssertNil(aTarget.accessToken)
+
         self.doSerializationTest(aTarget)
+
+        let aTargetWithAccessToken = Target(targetType: aTypedID, accessToken: "dummyAccessToken")
+
+        XCTAssertNotNil(aTargetWithAccessToken.accessToken)
+
+        self.doSerializationTest(aTarget)
+
+        XCTAssertNotEqual(aTarget, aTargetWithAccessToken)
+
     }
     
     
