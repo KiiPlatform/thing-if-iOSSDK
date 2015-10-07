@@ -16,8 +16,8 @@ public enum Site {
     case US
     /** Use cloud in Japan. */
     case JP
-    /** Use cloud in China. */
-    case CN
+    /** Use cloud in cn3 site of China. */
+    case CN3
     /** Use cloud in Singapore. */
     case SG
     /** Use cloud with custom baseURL. */
@@ -32,7 +32,7 @@ public enum Site {
             return "https://api.kii.com"
         case .JP:
             return "https://api-jp.kii.com"
-        case .CN:
+        case .CN3:
             return "https://api-cn3.kii.com"
         case .SG:
             return "https://api-sg.kii.com"
