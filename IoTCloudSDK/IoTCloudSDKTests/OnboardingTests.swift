@@ -137,8 +137,8 @@ class OnboardingTests: XCTestCase {
             iotSession = MockSession.self
             api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    XCTAssertEqual(target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
-                    XCTAssertEqual(self.api.target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(self.api.target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
                     XCTFail("should success")
                 }
@@ -159,7 +159,7 @@ class OnboardingTests: XCTestCase {
     func testOnboardWithThingID_already_onboarded_error() {
         let expectation = self.expectationWithDescription("testOnboardWithThingID_already_onboarded_error")
 
-        api._target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+        api._target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
         api.onboard("dummyThingID", thingPassword: "dummyPassword") { (target, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
@@ -220,8 +220,8 @@ class OnboardingTests: XCTestCase {
             iotSession = MockSession.self
             api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    XCTAssertEqual(target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
-                    XCTAssertEqual(self.api.target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(self.api.target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
                     XCTFail("should success")
                 }

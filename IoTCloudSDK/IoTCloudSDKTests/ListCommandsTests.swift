@@ -19,7 +19,7 @@ class ListCommandsTests: XCTestCase {
 
     var api: IoTCloudAPI!
 
-    let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
@@ -44,7 +44,7 @@ class ListCommandsTests: XCTestCase {
         let issuerID: TypedID
 
         func getCommandDict() -> [String: AnyObject] {
-            var dict: [String: AnyObject] = ["commandID": commandID, "schema": schema, "schemaVersion": schemaVersion, "target": "\(target.targetType.type):\(target.targetType.id)", "commandState": commandStateString, "issuer": "\(issuerID.type):\(issuerID.id)", "actions": actions]
+            var dict: [String: AnyObject] = ["commandID": commandID, "schema": schema, "schemaVersion": schemaVersion, "target": "\(target.typedID.type):\(target.typedID.id)", "commandState": commandStateString, "issuer": "\(issuerID.type):\(issuerID.id)", "actions": actions]
             if actionResults != nil {
                 dict["actionResults"] = actionResults!
             }
@@ -118,7 +118,7 @@ class ListCommandsTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "GET")
 
                 // verify path
-                let expectedBasePath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.targetType.toString())/commands"
+                let expectedBasePath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/commands"
                 let actualRequestPathString = request.URL!.absoluteString
                 XCTAssertTrue(actualRequestPathString.rangeOfString(expectedBasePath) != nil, tag)
                 if testcase.paginationKey != nil || testcase.bestEffortLimit != nil {
@@ -149,7 +149,7 @@ class ListCommandsTests: XCTestCase {
                     if let actualCommands = commands {
                         for (i, actualCommand) in actualCommands.enumerate() {
                             let expectedCommandStruct = testcase.commands[i]
-                            XCTAssertEqual(actualCommand.targetID.toString(), testcase.target.targetType.toString(), "\(tag)_\(i)")
+                            XCTAssertEqual(actualCommand.targetID.toString(), testcase.target.typedID.toString(), "\(tag)_\(i)")
                             XCTAssertEqual(actualCommand.commandID, expectedCommandStruct.commandID,"\(tag)_\(i)")
                             XCTAssertEqual(actualCommand.commandState, expectedCommandStruct.commandState, "\(tag)_\(i)")
                             do {
@@ -191,7 +191,7 @@ class ListCommandsTests: XCTestCase {
         do{
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.targetType.toString()) not found"]
+                "message" : "Target \(target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
@@ -199,7 +199,7 @@ class ListCommandsTests: XCTestCase {
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.targetType.type):\(self.target.targetType.id)/commands"
+                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.type):\(self.target.typedID.id)/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header

@@ -16,7 +16,7 @@ class PostNewCommandTests: XCTestCase {
         name: "SmartLight-Demo", version: 1)
     let baseURLString = "https://small-tests.internal.kii.com"
     var api: IoTCloudAPI!
-    let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
@@ -74,7 +74,7 @@ class PostNewCommandTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(testcase.target.targetType.toString())/commands"
+                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(testcase.target.typedID.toString())/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal for \(tag)")
 
                 //verify header
@@ -101,7 +101,7 @@ class PostNewCommandTests: XCTestCase {
                 if error == nil{
                     XCTAssertNotNil(command, tag)
                     XCTAssertEqual(command!.commandID, expectedCommandID, tag)
-                    XCTAssertEqual(command!.targetID.toString(), testcase.target.targetType.toString(), tag)
+                    XCTAssertEqual(command!.targetID.toString(), testcase.target.typedID.toString(), tag)
                     XCTAssertEqual(command!.actions, testcase.actions, tag)
                 }else {
                     XCTFail("should success for \(tag)")
@@ -138,7 +138,7 @@ class PostNewCommandTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.targetType.toString())/commands"
+                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header

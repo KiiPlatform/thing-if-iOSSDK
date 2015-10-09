@@ -54,7 +54,7 @@ extension IoTCloudAPI {
                     
                     var target:Target?
                     if let thingID = response?["thingID"] as? String{
-                        target = Target(targetType: TypedID(type: "THING", id: thingID))
+                        target = Target(typedID: TypedID(type: "THING", id: thingID))
                         self._target = target
                     }
                     self.saveToUserDefault()

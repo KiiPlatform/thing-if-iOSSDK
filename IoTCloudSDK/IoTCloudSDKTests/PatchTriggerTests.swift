@@ -20,7 +20,7 @@ class PatchTriggerTests: XCTestCase {
 
     var api: IoTCloudAPI!
 
-    let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
@@ -135,7 +135,7 @@ class PatchTriggerTests: XCTestCase {
         // mock patch success response
         let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
         // mock get response
-        let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.targetType.toString(), "issuer": self.owner.typedID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
+        let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.typedID.toString(), "issuer": self.owner.typedID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
         let dict = ["triggerID": expectedTriggerID, "predicate": ["eventSource":"states", "triggersWhen":"CONDITION_FALSE_TO_TRUE", "condition": ["type":"eq","field":"color", "value": 0]], "command": commandDict, "disabled": false]
         var jsonData: NSData?
         do {
@@ -170,7 +170,7 @@ class PatchTriggerTests: XCTestCase {
             if testcase.success {
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
-                    XCTAssertEqual(trigger!.targetID.toString(), self.target.targetType.toString(), tag)
+                    XCTAssertEqual(trigger!.targetID.toString(), self.target.typedID.toString(), tag)
                     XCTAssertEqual(trigger!.enabled, true, tag)
                     XCTAssertNotNil(trigger!.predicate, tag)
                     XCTAssertEqual(trigger!.command.commandID, "", tag)

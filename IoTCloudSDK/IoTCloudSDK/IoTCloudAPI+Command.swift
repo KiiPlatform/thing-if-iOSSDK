@@ -22,7 +22,7 @@ extension IoTCloudAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.targetType.toString())/commands"
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/commands"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -40,7 +40,7 @@ extension IoTCloudAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var command:Command?
                 if let commandID = response?["commandID"] as? String{
-                    command = Command(commandID: commandID, targetID: self.target!.targetType, issuerID: issuerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil)
+                    command = Command(commandID: commandID, targetID: self.target!.typedID, issuerID: issuerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil)
                 }
                 dispatch_async(dispatch_get_main_queue()) {
                     completionHandler(command, error)
@@ -65,7 +65,7 @@ extension IoTCloudAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.targetType.toString())/commands/\(commandID)"
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/commands/\(commandID)"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -96,7 +96,7 @@ extension IoTCloudAPI {
             return
         }
 
-        var requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.targetType.toString())/commands"
+        var requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/commands"
         if paginationKey != nil && bestEffortLimit != nil{
             requestURL += "?paginationKey=\(paginationKey!)&&bestEffortLimit=\(bestEffortLimit!)"
         }else if bestEffortLimit != nil {

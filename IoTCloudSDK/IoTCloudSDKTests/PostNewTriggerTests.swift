@@ -16,7 +16,7 @@ class PostNewTriggerTests: XCTestCase {
         name: "SmartLight-Demo", version: 1)
     let baseURLString = "https://small-tests.internal.kii.com"
     var api: IoTCloudAPI!
-    let target = Target(targetType: TypedID(type: "thing", id: "0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+    let target = Target(typedID: TypedID(type: "thing", id: "0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
@@ -110,7 +110,7 @@ class PostNewTriggerTests: XCTestCase {
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.targetType.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":expectedActions]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.typedID.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":expectedActions]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
@@ -126,7 +126,7 @@ class PostNewTriggerTests: XCTestCase {
             api.postNewTrigger(schema.name, schemaVersion: schema.version, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
-                    XCTAssertEqual(trigger!.targetID.toString(), self.target.targetType.toString(), tag)
+                    XCTAssertEqual(trigger!.targetID.toString(), self.target.typedID.toString(), tag)
                     XCTAssertEqual(trigger!.enabled, true, tag)
                     XCTAssertNotNil(trigger!.predicate, tag)
                     XCTAssertEqual(trigger!.command.commandID, "", tag)
@@ -164,7 +164,7 @@ class PostNewTriggerTests: XCTestCase {
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.targetType.toString()) not found"]
+                "message" : "Target \(target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
@@ -178,7 +178,7 @@ class PostNewTriggerTests: XCTestCase {
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.targetType.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":actions]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.typedID.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":actions]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
