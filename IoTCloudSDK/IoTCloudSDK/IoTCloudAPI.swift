@@ -145,12 +145,12 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
     - Parameter deviceToken: NSData instance of device token for APNS.
     - Parameter development: flag indicate whether the cert is development or
-    production.
+    production. This is optional, the default is false (production).
     - Parameter completionHandler: A closure to be executed once on board has finished.
     */
     public func installPush(
         deviceToken:NSData,
-        development:Bool,
+        development:Bool?=false,
         completionHandler: (String?, IoTCloudError?)-> Void
         )
     {

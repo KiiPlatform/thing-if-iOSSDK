@@ -11,7 +11,7 @@ import Foundation
 extension IoTCloudAPI {
     func _installPush(
         deviceToken:NSData,
-        development:Bool = false,
+        development:Bool?=false,
         completionHandler: (String?, IoTCloudError?)-> Void
         )
     {
@@ -22,7 +22,7 @@ extension IoTCloudAPI {
         
         requestBodyDict["installationRegistrationID"] = deviceToken.hexString()
         requestBodyDict["deviceType"] = "IOS"
-        requestBodyDict["development"] = NSNumber(bool: development)
+        requestBodyDict["development"] = NSNumber(bool: development!)
         kiiVerboseLog("Request body",requestBodyDict)
         // generate header
         var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
