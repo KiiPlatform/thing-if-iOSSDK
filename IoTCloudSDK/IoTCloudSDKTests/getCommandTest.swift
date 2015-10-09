@@ -10,7 +10,7 @@ import XCTest
 
 class GetCommandTests: XCTestCase {
 
-    let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
@@ -24,7 +24,7 @@ class GetCommandTests: XCTestCase {
     override func setUp() {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -50,11 +50,11 @@ class GetCommandTests: XCTestCase {
         api._target = target
 
         let testcases = [
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE")
+            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE"),
+            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
+            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
+            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED"),
+            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE")
 
         ]
 

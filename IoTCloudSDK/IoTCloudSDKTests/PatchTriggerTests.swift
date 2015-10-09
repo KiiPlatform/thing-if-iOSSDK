@@ -11,7 +11,7 @@ import XCTest
 
 class PatchTriggerTests: XCTestCase {
 
-    let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
@@ -25,7 +25,7 @@ class PatchTriggerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -86,13 +86,13 @@ class PatchTriggerTests: XCTestCase {
 
         let testsCases: [TestCase] = [
             //
-            TestCase(target: target, issuerID: owner.ownerID, schemaName: schema.name, schemaVersion: schema.version, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: EqualsClause(field: "color", value: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
-            TestCase(target: target, issuerID: owner.ownerID, schemaName: schema.name, schemaVersion: schema.version, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: NotEqualsClause(field: "power", value: true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
-            TestCase(target: target, issuerID: owner.ownerID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: StatePredicate(condition: Condition(clause: RangeClause(field: "color", upperLimit: 255, upperIncluded:true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
-            TestCase(target: target, issuerID: owner.ownerID, schemaName: schema.name, schemaVersion: schema.version, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
-            TestCase(target: target, issuerID: owner.ownerID, schemaName: nil, schemaVersion: schema.version, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
-            TestCase(target: target, issuerID: owner.ownerID, schemaName: schema.name, schemaVersion: nil, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
-            TestCase(target: target, issuerID: owner.ownerID, schemaName: schema.name, schemaVersion: schema.version, actions: nil, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false)
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema.name, schemaVersion: schema.version, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: EqualsClause(field: "color", value: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema.name, schemaVersion: schema.version, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: NotEqualsClause(field: "power", value: true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: StatePredicate(condition: Condition(clause: RangeClause(field: "color", upperLimit: 255, upperIncluded:true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema.name, schemaVersion: schema.version, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: schema.version, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema.name, schemaVersion: nil, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema.name, schemaVersion: schema.version, actions: nil, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false)
         ]
         for (index,testCase) in testsCases.enumerate() {
             patchTrigger("testPatchTrigger_\(index)", testcase: testCase)
@@ -135,7 +135,7 @@ class PatchTriggerTests: XCTestCase {
         // mock patch success response
         let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
         // mock get response
-        let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.targetType.toString(), "issuer": self.owner.ownerID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
+        let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.targetType.toString(), "issuer": self.owner.typedID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
         let dict = ["triggerID": expectedTriggerID, "predicate": ["eventSource":"states", "triggersWhen":"CONDITION_FALSE_TO_TRUE", "condition": ["type":"eq","field":"color", "value": 0]], "command": commandDict, "disabled": false]
         var jsonData: NSData?
         do {

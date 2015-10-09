@@ -34,7 +34,7 @@ extension IoTCloudAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
 
         // generate command
-        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.ownerID.toString(), "target":target!.targetType.toString()])
+        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.typedID.toString(), "target":target!.targetType.toString()])
         commandDict.setObject(actions, forKey: "actions")
 
         // generate body
@@ -45,7 +45,7 @@ extension IoTCloudAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(triggerID: triggerID, targetID: self.target!.targetType, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: self.target!.targetType, issuerID: self.owner.ownerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
+                    trigger = Trigger(triggerID: triggerID, targetID: self.target!.targetType, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: self.target!.targetType, issuerID: self.owner.typedID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
                 }
 
                 dispatch_async(dispatch_get_main_queue()) {
@@ -93,7 +93,7 @@ extension IoTCloudAPI {
 
         // generate command
         if schemaName != nil || schemaVersion != nil || actions != nil {
-            var commandDict: Dictionary<String, AnyObject> = ["issuer":owner.ownerID.toString()]
+            var commandDict: Dictionary<String, AnyObject> = ["issuer":owner.typedID.toString()]
             if schemaName != nil {
                 commandDict["schema"] = schemaName!
             }

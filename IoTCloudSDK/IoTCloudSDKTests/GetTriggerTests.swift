@@ -11,7 +11,7 @@ import XCTest
 
 class GetTriggerTests: XCTestCase {
 
-    let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
@@ -25,7 +25,7 @@ class GetTriggerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -83,12 +83,12 @@ class GetTriggerTests: XCTestCase {
         do{
             let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
             let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
-            let expectedCommandObject = Command(commandID: nil, targetID: self.target.targetType, issuerID: self.owner.ownerID, schemaName: self.schema.name, schemaVersion: self.schema.version, actions: expectedActionsDict, actionResults: nil, commandState: nil)
+            let expectedCommandObject = Command(commandID: nil, targetID: self.target.targetType, issuerID: self.owner.typedID, schemaName: self.schema.name, schemaVersion: self.schema.version, actions: expectedActionsDict, actionResults: nil, commandState: nil)
             let eventSource = "states"
             let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":triggersWhen, "condition":statementToTest]
 
             // mock response
-            let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.targetType.toString(), "issuer": self.owner.ownerID.toString(), "actions": expectedActionsDict]
+            let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.targetType.toString(), "issuer": self.owner.typedID.toString(), "actions": expectedActionsDict]
             let dict = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "command": commandDict, "disabled": false]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:self.baseURLString)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)

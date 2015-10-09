@@ -31,7 +31,7 @@ extension IoTCloudAPI {
         let requestBodyDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion])
         requestBodyDict.setObject(actions, forKey: "actions")
 
-        let issuerID = owner.ownerID
+        let issuerID = owner.typedID
         requestBodyDict.setObject(issuerID.toString(), forKey: "issuer")
         
         do{

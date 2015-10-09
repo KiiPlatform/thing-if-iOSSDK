@@ -21,7 +21,7 @@ class PostNewTriggerTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+        owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
         api = IoTCloudAPIBuilder(appID: "dummyID", appKey: "dummyKey",
             site: Site.CUSTOM(self.baseURLString), owner: owner).build()
@@ -110,7 +110,7 @@ class PostNewTriggerTests: XCTestCase {
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.ownerID.toString(), "target": self.target.targetType.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":expectedActions]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.targetType.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":expectedActions]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
@@ -178,7 +178,7 @@ class PostNewTriggerTests: XCTestCase {
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.ownerID.toString(), "target": self.target.targetType.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":actions]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.targetType.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":actions]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody

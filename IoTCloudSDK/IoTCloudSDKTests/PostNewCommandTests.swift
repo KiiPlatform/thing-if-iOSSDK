@@ -21,7 +21,7 @@ class PostNewCommandTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+        owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
         api = IoTCloudAPIBuilder(appID: "dummyID", appKey: "dummyKey",
             site: Site.CUSTOM(self.baseURLString), owner: owner).build()
@@ -45,9 +45,9 @@ class PostNewCommandTests: XCTestCase {
         api._target = target
 
         let testCases = [
-            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["turnPower":["power": true]]], issuerID: owner.ownerID),
-            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["setBrightness":["brightness": 100]]], issuerID: owner.ownerID),
-            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], issuerID: owner.ownerID)
+            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["turnPower":["power": true]]], issuerID: owner.typedID),
+            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["setBrightness":["brightness": 100]]], issuerID: owner.typedID),
+            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], issuerID: owner.typedID)
         ]
 
         for (index, testcase) in testCases.enumerate() {
@@ -148,7 +148,7 @@ class PostNewCommandTests: XCTestCase {
                 }
 
                 //verify body
-                let expectedBody = ["schema": "", "schemaVersion": self.schema.version, "issuer": self.owner.ownerID.toString(), "actions": []]
+                let expectedBody = ["schema": "", "schemaVersion": self.schema.version, "issuer": self.owner.typedID.toString(), "actions": []]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody

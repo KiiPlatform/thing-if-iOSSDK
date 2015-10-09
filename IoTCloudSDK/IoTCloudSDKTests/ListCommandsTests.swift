@@ -10,7 +10,7 @@ import XCTest
 
 class ListCommandsTests: XCTestCase {
 
-    let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
@@ -24,7 +24,7 @@ class ListCommandsTests: XCTestCase {
     override func setUp() {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -76,15 +76,15 @@ class ListCommandsTests: XCTestCase {
         let testcases = [
             // test cases request without best effort and paginationKey
             TestCase(commands: [], target: target, nextPaginationKey: nil, paginationKey: nil, bestEffortLimit: nil),
-            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.ownerID)],target: target, nextPaginationKey: nil, paginationKey: nil, bestEffortLimit: nil),
+            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.typedID)],target: target, nextPaginationKey: nil, paginationKey: nil, bestEffortLimit: nil),
             TestCase(commands:
-                    [CommandStruct(target: target, commandID: "\(commandIDPrifex)2", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.ownerID),
-                    CommandStruct(target: target, commandID: "\(commandIDPrifex)3", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], actionResults: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE", issuerID: self.owner.ownerID)
+                    [CommandStruct(target: target, commandID: "\(commandIDPrifex)2", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.typedID),
+                    CommandStruct(target: target, commandID: "\(commandIDPrifex)3", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], actionResults: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE", issuerID: self.owner.typedID)
                 ],target: target, nextPaginationKey: "200/2", paginationKey: nil, bestEffortLimit: nil),
             // test cases request with besteffor and paginationKey
-            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.ownerID)],target: target, nextPaginationKey: nil, paginationKey: "200/2", bestEffortLimit: nil),
-            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.ownerID)],target: target, nextPaginationKey: nil, paginationKey: nil, bestEffortLimit: 2),
-            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.ownerID)],target: target, nextPaginationKey: nil, paginationKey: "200/2", bestEffortLimit: 2),
+            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.typedID)],target: target, nextPaginationKey: nil, paginationKey: "200/2", bestEffortLimit: nil),
+            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.typedID)],target: target, nextPaginationKey: nil, paginationKey: nil, bestEffortLimit: 2),
+            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.typedID)],target: target, nextPaginationKey: nil, paginationKey: "200/2", bestEffortLimit: 2),
 
 
         ]

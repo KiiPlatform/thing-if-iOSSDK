@@ -43,7 +43,7 @@ class EntitySerializationTests: XCTestCase {
     //Owner
     func testOwner_NSUserDefaultSerialization() {
         let aTypedID = TypedID(type: "camera", id: "cameraID")
-        let anOwner = Owner(ownerID: aTypedID, accessToken: "accessToken")
+        let anOwner = Owner(typedID: aTypedID, accessToken: "accessToken")
         self.doSerializationTest(anOwner)
     }
     //Command
