@@ -26,7 +26,7 @@ extension IoTCloudAPI {
             let requestURL = "\(baseURL)/iot-api/apps/\(appID)/onboardings"
             
             // genrate body
-            let requestBodyDict = NSMutableDictionary(dictionary: ["thingPassword": thingPassword, "owner": owner.ownerID.toString()])
+            let requestBodyDict = NSMutableDictionary(dictionary: ["thingPassword": thingPassword, "owner": owner.typedID.toString()])
             
             // generate header
             var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
@@ -54,7 +54,7 @@ extension IoTCloudAPI {
                     
                     var target:Target?
                     if let thingID = response?["thingID"] as? String{
-                        target = Target(targetType: TypedID(type: "THING", id: thingID))
+                        target = Target(typedID: TypedID(type: "THING", id: thingID))
                         self._target = target
                     }
                     self.saveToUserDefault()

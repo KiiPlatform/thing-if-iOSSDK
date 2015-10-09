@@ -9,7 +9,7 @@ import XCTest
 @testable import IoTCloudSDK
 
 class DeleteTriggerTests: XCTestCase {
-    let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
@@ -18,12 +18,12 @@ class DeleteTriggerTests: XCTestCase {
 
     var api: IoTCloudAPI!
 
-    let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -80,7 +80,7 @@ class DeleteTriggerTests: XCTestCase {
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.targetType.toString()) not found"]
+                "message" : "Target \(target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 

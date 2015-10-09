@@ -28,13 +28,13 @@ extension IoTCloudAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.targetType.toString())/triggers"
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/triggers"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
 
         // generate command
-        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.ownerID.toString(), "target":target!.targetType.toString()])
+        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.typedID.toString(), "target":target!.typedID.toString()])
         commandDict.setObject(actions, forKey: "actions")
 
         // generate body
@@ -45,7 +45,7 @@ extension IoTCloudAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(triggerID: triggerID, targetID: self.target!.targetType, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: self.target!.targetType, issuerID: self.owner.ownerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
+                    trigger = Trigger(triggerID: triggerID, targetID: self.target!.typedID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: self.target!.typedID, issuerID: self.owner.typedID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
                 }
 
                 dispatch_async(dispatch_get_main_queue()) {
@@ -74,7 +74,7 @@ extension IoTCloudAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.targetType.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -93,7 +93,7 @@ extension IoTCloudAPI {
 
         // generate command
         if schemaName != nil || schemaVersion != nil || actions != nil {
-            var commandDict: Dictionary<String, AnyObject> = ["issuer":owner.ownerID.toString()]
+            var commandDict: Dictionary<String, AnyObject> = ["issuer":owner.typedID.toString()]
             if schemaName != nil {
                 commandDict["schema"] = schemaName!
             }
@@ -144,7 +144,7 @@ extension IoTCloudAPI {
         if !enable {
             enableString = "disable"
         }
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.targetType.toString())/triggers/\(triggerID)/\(enableString)"
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)/\(enableString)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -178,7 +178,7 @@ extension IoTCloudAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.targetType.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -209,7 +209,7 @@ extension IoTCloudAPI {
             return
         }
 
-        var requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.targetType.toString())/triggers"
+        var requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/triggers"
 
         if paginationKey != nil && bestEffortLimit != nil{
             requestURL += "?paginattriggersionKey=\(paginationKey!)&&bestEffortLimit=\(bestEffortLimit!)"
@@ -254,7 +254,7 @@ extension IoTCloudAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.targetType.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]

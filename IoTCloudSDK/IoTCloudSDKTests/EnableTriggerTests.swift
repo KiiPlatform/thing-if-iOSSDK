@@ -10,7 +10,7 @@ import XCTest
 @testable import IoTCloudSDK
 
 class EnableTriggerTests: XCTestCase {
-    let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
@@ -19,12 +19,12 @@ class EnableTriggerTests: XCTestCase {
 
     var api: IoTCloudAPI!
 
-    let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -56,7 +56,7 @@ class EnableTriggerTests: XCTestCase {
         // mock patch success response
         let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
         // mock get response
-        let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.targetType.toString(), "issuer": self.owner.ownerID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
+        let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.typedID.toString(), "issuer": self.owner.typedID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
         let dict = ["triggerID": expectedTriggerID, "predicate": ["eventSource":"states", "triggersWhen":"CONDITION_FALSE_TO_TRUE", "condition": ["type":"eq","field":"color", "value": 0]], "command": commandDict, "disabled": false]
         var jsonData: NSData?
         do {
@@ -75,7 +75,7 @@ class EnableTriggerTests: XCTestCase {
         api.enableTrigger(expectedTriggerID, enable: true) { (trigger, error) -> Void in
             if error == nil{
                 XCTAssertEqual(trigger!.triggerID, expectedTriggerID)
-                XCTAssertEqual(trigger!.targetID.toString(), self.target.targetType.toString())
+                XCTAssertEqual(trigger!.targetID.toString(), self.target.typedID.toString())
                 XCTAssertEqual(trigger!.enabled, true)
                 XCTAssertNotNil(trigger!.predicate)
                 XCTAssertEqual(trigger!.command.commandID, "")
@@ -103,7 +103,7 @@ class EnableTriggerTests: XCTestCase {
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.targetType.toString()) not found"]
+                "message" : "Target \(target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 

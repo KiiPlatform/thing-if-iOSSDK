@@ -10,28 +10,28 @@ public class Owner: NSObject, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.ownerID, forKey: "ownerID")
+        aCoder.encodeObject(self.typedID, forKey: "typedID")
         aCoder.encodeObject(self.accessToken, forKey: "accessToken")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        self.ownerID = aDecoder.decodeObjectForKey("ownerID") as! TypedID
+        self.typedID = aDecoder.decodeObjectForKey("typedID") as! TypedID
         self.accessToken = aDecoder.decodeObjectForKey("accessToken") as! String
     }
 
     /** ID of the owner. */
-    public let ownerID: TypedID
+    public let typedID: TypedID
     /** Access token of the owner. */
     public let accessToken: String
 
     /** instantiate Owner.
 
-    - Parameter ownerID: ID of the Owner.
+    - Parameter typedID: ID of the Owner.
     - Parameter accessToken: Access Token of the Owner.
      */
-    public init(ownerID: TypedID, accessToken: String) {
-        self.ownerID = ownerID
+    public init(typedID: TypedID, accessToken: String) {
+        self.typedID = typedID
         self.accessToken = accessToken
     }
     
@@ -40,7 +40,7 @@ public class Owner: NSObject, NSCoding {
             return false
         }
         
-        return self.ownerID == anOwner.ownerID && self.accessToken == anOwner.accessToken
+        return self.typedID == anOwner.typedID && self.accessToken == anOwner.accessToken
         
     }
 }

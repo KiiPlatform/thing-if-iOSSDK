@@ -16,12 +16,12 @@ class PostNewCommandTests: XCTestCase {
         name: "SmartLight-Demo", version: 1)
     let baseURLString = "https://small-tests.internal.kii.com"
     var api: IoTCloudAPI!
-    let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
 
-        owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+        owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
         api = IoTCloudAPIBuilder(appID: "dummyID", appKey: "dummyKey",
             site: Site.CUSTOM(self.baseURLString), owner: owner).build()
@@ -45,9 +45,9 @@ class PostNewCommandTests: XCTestCase {
         api._target = target
 
         let testCases = [
-            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["turnPower":["power": true]]], issuerID: owner.ownerID),
-            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["setBrightness":["brightness": 100]]], issuerID: owner.ownerID),
-            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], issuerID: owner.ownerID)
+            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["turnPower":["power": true]]], issuerID: owner.typedID),
+            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["setBrightness":["brightness": 100]]], issuerID: owner.typedID),
+            TestCase(target: target, schema: schema.name, schemaVersion: schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], issuerID: owner.typedID)
         ]
 
         for (index, testcase) in testCases.enumerate() {
@@ -74,7 +74,7 @@ class PostNewCommandTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(testcase.target.targetType.toString())/commands"
+                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(testcase.target.typedID.toString())/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal for \(tag)")
 
                 //verify header
@@ -101,7 +101,7 @@ class PostNewCommandTests: XCTestCase {
                 if error == nil{
                     XCTAssertNotNil(command, tag)
                     XCTAssertEqual(command!.commandID, expectedCommandID, tag)
-                    XCTAssertEqual(command!.targetID.toString(), testcase.target.targetType.toString(), tag)
+                    XCTAssertEqual(command!.targetID.toString(), testcase.target.typedID.toString(), tag)
                     XCTAssertEqual(command!.actions, testcase.actions, tag)
                 }else {
                     XCTFail("should success for \(tag)")
@@ -138,7 +138,7 @@ class PostNewCommandTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.targetType.toString())/commands"
+                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header
@@ -148,7 +148,7 @@ class PostNewCommandTests: XCTestCase {
                 }
 
                 //verify body
-                let expectedBody = ["schema": "", "schemaVersion": self.schema.version, "issuer": self.owner.ownerID.toString(), "actions": []]
+                let expectedBody = ["schema": "", "schemaVersion": self.schema.version, "issuer": self.owner.typedID.toString(), "actions": []]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody

@@ -10,7 +10,7 @@ import XCTest
 
 class GetCommandTests: XCTestCase {
 
-    let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
@@ -19,12 +19,12 @@ class GetCommandTests: XCTestCase {
 
     var api: IoTCloudAPI!
 
-    let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -50,11 +50,11 @@ class GetCommandTests: XCTestCase {
         api._target = target
 
         let testcases = [
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.ownerID.type):\(self.owner.ownerID.id)", targetIDString: "\(self.target.targetType.type):\(self.target.targetType.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE")
+            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.typedID.type):\(self.target.typedID.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE"),
+            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.typedID.type):\(self.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
+            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.typedID.type):\(self.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
+            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.typedID.type):\(self.target.typedID.id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED"),
+            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.typedID.type):\(self.target.typedID.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE")
 
         ]
 
@@ -143,7 +143,7 @@ class GetCommandTests: XCTestCase {
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.targetType.toString()) not found"]
+                "message" : "Target \(target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
@@ -151,7 +151,7 @@ class GetCommandTests: XCTestCase {
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.targetType.type):\(self.target.targetType.id)/commands/\(commandID)"
+                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.type):\(self.target.typedID.id)/commands/\(commandID)"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header

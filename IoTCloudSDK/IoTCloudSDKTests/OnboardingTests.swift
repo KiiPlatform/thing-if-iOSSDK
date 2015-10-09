@@ -11,7 +11,7 @@ import XCTest
 
 class OnboardingTests: XCTestCase {
 
-    let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
@@ -23,7 +23,7 @@ class OnboardingTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
     
     override func tearDown() {
@@ -62,7 +62,7 @@ class OnboardingTests: XCTestCase {
                 }
 
                 //verify request body
-                let expectedBody = ["thingID": "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", "thingPassword": "dummyPassword", "owner": self.owner.ownerID.toString()]
+                let expectedBody = ["thingID": "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", "thingPassword": "dummyPassword", "owner": self.owner.typedID.toString()]
                 self.verifyDict(expectedBody, actualData: request.HTTPBody!)
                 
             }
@@ -128,7 +128,7 @@ class OnboardingTests: XCTestCase {
                 }
                 
                 //verify body
-                let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": self.owner.ownerID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
+                let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": self.owner.typedID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
                 self.verifyDict(expectedBody as! Dictionary<String, AnyObject>, actualData: request.HTTPBody!)
                 
             }
@@ -137,8 +137,8 @@ class OnboardingTests: XCTestCase {
             iotSession = MockSession.self
             api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    XCTAssertEqual(target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
-                    XCTAssertEqual(self.api.target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(self.api.target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
                     XCTFail("should success")
                 }
@@ -159,7 +159,7 @@ class OnboardingTests: XCTestCase {
     func testOnboardWithThingID_already_onboarded_error() {
         let expectation = self.expectationWithDescription("testOnboardWithThingID_already_onboarded_error")
 
-        api._target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+        api._target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
         api.onboard("dummyThingID", thingPassword: "dummyPassword") { (target, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
@@ -186,7 +186,7 @@ class OnboardingTests: XCTestCase {
         let expectation = self.expectationWithDescription("onboardWithVendorThingID")
 
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc"),tag:"target1").build()
+            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc"),tag:"target1").build()
         do{
             let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1", "key2":"value2"]
             let thingType = "LED"
@@ -211,7 +211,7 @@ class OnboardingTests: XCTestCase {
                 }
 
                 //verify body
-                let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": self.owner.ownerID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
+                let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": self.owner.typedID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
                 self.verifyDict(expectedBody as! Dictionary<String, AnyObject>, actualData: request.HTTPBody!)
 
             }
@@ -220,8 +220,8 @@ class OnboardingTests: XCTestCase {
             iotSession = MockSession.self
             api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    XCTAssertEqual(target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
-                    XCTAssertEqual(self.api.target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(self.api.target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
                     XCTFail("should success")
                 }

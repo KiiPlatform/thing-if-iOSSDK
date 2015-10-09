@@ -11,13 +11,13 @@ import XCTest
 
 class PushInstallationTests: XCTestCase {
 
-    let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
     
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
     
     let api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-        site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+        site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     
     let deviceToken = "dummyDeviceToken".dataUsingEncoding(NSUTF8StringEncoding)!
     let deviceTokenString = "dummyDeviceToken".dataUsingEncoding(NSUTF8StringEncoding)!.hexString()
@@ -74,7 +74,7 @@ class PushInstallationTests: XCTestCase {
             iotSession = MockSession.self
             api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    XCTAssertEqual(target!.targetType.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
                     XCTFail("should success")
                 }
@@ -105,7 +105,7 @@ class PushInstallationTests: XCTestCase {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": self.owner.ownerID.id]
+            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": self.owner.typedID.id]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
         }
         
@@ -151,7 +151,7 @@ class PushInstallationTests: XCTestCase {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": self.owner.ownerID.id]
+            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": self.owner.typedID.id]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
         }
         
@@ -210,7 +210,7 @@ class PushInstallationTests: XCTestCase {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": self.owner.ownerID.id]
+            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": self.owner.typedID.id]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
         }
         
@@ -268,7 +268,7 @@ class PushInstallationTests: XCTestCase {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": self.owner.ownerID.id]
+            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": self.owner.typedID.id]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
         }
         

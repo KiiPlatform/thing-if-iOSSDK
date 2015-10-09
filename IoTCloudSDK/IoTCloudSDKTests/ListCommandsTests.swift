@@ -10,7 +10,7 @@ import XCTest
 
 class ListCommandsTests: XCTestCase {
 
-    let owner = Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
+    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
@@ -19,12 +19,12 @@ class ListCommandsTests: XCTestCase {
 
     var api: IoTCloudAPI!
 
-    let target = Target(targetType: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
         api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(ownerID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -44,7 +44,7 @@ class ListCommandsTests: XCTestCase {
         let issuerID: TypedID
 
         func getCommandDict() -> [String: AnyObject] {
-            var dict: [String: AnyObject] = ["commandID": commandID, "schema": schema, "schemaVersion": schemaVersion, "target": "\(target.targetType.type):\(target.targetType.id)", "commandState": commandStateString, "issuer": "\(issuerID.type):\(issuerID.id)", "actions": actions]
+            var dict: [String: AnyObject] = ["commandID": commandID, "schema": schema, "schemaVersion": schemaVersion, "target": "\(target.typedID.type):\(target.typedID.id)", "commandState": commandStateString, "issuer": "\(issuerID.type):\(issuerID.id)", "actions": actions]
             if actionResults != nil {
                 dict["actionResults"] = actionResults!
             }
@@ -76,15 +76,15 @@ class ListCommandsTests: XCTestCase {
         let testcases = [
             // test cases request without best effort and paginationKey
             TestCase(commands: [], target: target, nextPaginationKey: nil, paginationKey: nil, bestEffortLimit: nil),
-            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.ownerID)],target: target, nextPaginationKey: nil, paginationKey: nil, bestEffortLimit: nil),
+            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.typedID)],target: target, nextPaginationKey: nil, paginationKey: nil, bestEffortLimit: nil),
             TestCase(commands:
-                    [CommandStruct(target: target, commandID: "\(commandIDPrifex)2", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.ownerID),
-                    CommandStruct(target: target, commandID: "\(commandIDPrifex)3", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], actionResults: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE", issuerID: self.owner.ownerID)
+                    [CommandStruct(target: target, commandID: "\(commandIDPrifex)2", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.typedID),
+                    CommandStruct(target: target, commandID: "\(commandIDPrifex)3", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], actionResults: [["turnPower":["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE", issuerID: self.owner.typedID)
                 ],target: target, nextPaginationKey: "200/2", paginationKey: nil, bestEffortLimit: nil),
             // test cases request with besteffor and paginationKey
-            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.ownerID)],target: target, nextPaginationKey: nil, paginationKey: "200/2", bestEffortLimit: nil),
-            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.ownerID)],target: target, nextPaginationKey: nil, paginationKey: nil, bestEffortLimit: 2),
-            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.ownerID)],target: target, nextPaginationKey: nil, paginationKey: "200/2", bestEffortLimit: 2),
+            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.typedID)],target: target, nextPaginationKey: nil, paginationKey: "200/2", bestEffortLimit: nil),
+            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.typedID)],target: target, nextPaginationKey: nil, paginationKey: nil, bestEffortLimit: 2),
+            TestCase(commands: [CommandStruct(target: target, commandID: "\(commandIDPrifex)1", schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], actionResults: nil, commandState: CommandState.SENDING, commandStateString: "SENDING", issuerID: self.owner.typedID)],target: target, nextPaginationKey: nil, paginationKey: "200/2", bestEffortLimit: 2),
 
 
         ]
@@ -118,7 +118,7 @@ class ListCommandsTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "GET")
 
                 // verify path
-                let expectedBasePath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.targetType.toString())/commands"
+                let expectedBasePath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/commands"
                 let actualRequestPathString = request.URL!.absoluteString
                 XCTAssertTrue(actualRequestPathString.rangeOfString(expectedBasePath) != nil, tag)
                 if testcase.paginationKey != nil || testcase.bestEffortLimit != nil {
@@ -149,7 +149,7 @@ class ListCommandsTests: XCTestCase {
                     if let actualCommands = commands {
                         for (i, actualCommand) in actualCommands.enumerate() {
                             let expectedCommandStruct = testcase.commands[i]
-                            XCTAssertEqual(actualCommand.targetID.toString(), testcase.target.targetType.toString(), "\(tag)_\(i)")
+                            XCTAssertEqual(actualCommand.targetID.toString(), testcase.target.typedID.toString(), "\(tag)_\(i)")
                             XCTAssertEqual(actualCommand.commandID, expectedCommandStruct.commandID,"\(tag)_\(i)")
                             XCTAssertEqual(actualCommand.commandState, expectedCommandStruct.commandState, "\(tag)_\(i)")
                             do {
@@ -191,7 +191,7 @@ class ListCommandsTests: XCTestCase {
         do{
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.targetType.toString()) not found"]
+                "message" : "Target \(target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
@@ -199,7 +199,7 @@ class ListCommandsTests: XCTestCase {
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.targetType.type):\(self.target.targetType.id)/commands"
+                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.type):\(self.target.typedID.id)/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header

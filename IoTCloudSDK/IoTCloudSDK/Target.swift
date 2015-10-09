@@ -6,16 +6,16 @@ import Foundation
 
 /** Represents Target */
 public class Target : NSObject, NSCoding {
-    public var targetType: TypedID
+    public var typedID: TypedID
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.targetType, forKey: "targetType")
+        aCoder.encodeObject(self.typedID, forKey: "typedID")
         aCoder.encodeObject(self.accessToken, forKey: "accessToken")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        self.targetType = aDecoder.decodeObjectForKey("targetType") as! TypedID
+        self.typedID = aDecoder.decodeObjectForKey("typedID") as! TypedID
         self.accessToken = aDecoder.decodeObjectForKey("accessToken") as! String?
     }
 
@@ -24,11 +24,11 @@ public class Target : NSObject, NSCoding {
 
     /** Init with TypedID
 
-    - Parameter targetType: ID of target
+    - Parameter typedID: ID of target
     - Parameter accessToken: Access token of the target, can nil.
     */
-    public init(targetType: TypedID, accessToken : String? = nil) {
-        self.targetType = targetType
+    public init(typedID: TypedID, accessToken : String? = nil) {
+        self.typedID = typedID
         self.accessToken = accessToken
     }
 
@@ -37,6 +37,6 @@ public class Target : NSObject, NSCoding {
             return false
         }
 
-        return self.targetType == aTarget.targetType && self.accessToken == aTarget.accessToken
+        return self.typedID == aTarget.typedID && self.accessToken == aTarget.accessToken
     }
 }
