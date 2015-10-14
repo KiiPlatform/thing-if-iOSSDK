@@ -23,7 +23,7 @@ extension IoTCloudAPI {
                 return
             }
             
-            let requestURL = "\(baseURL)/iot-api/apps/\(appID)/onboardings"
+            let requestURL = "\(baseURL)/thing-if/apps/\(appID)/onboardings"
             
             // genrate body
             let requestBodyDict = NSMutableDictionary(dictionary: ["thingPassword": thingPassword, "owner": owner.typedID.toString()])
