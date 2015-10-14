@@ -22,7 +22,7 @@ extension IoTCloudAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/commands"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/commands"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -65,7 +65,7 @@ extension IoTCloudAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/commands/\(commandID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/commands/\(commandID)"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -96,7 +96,7 @@ extension IoTCloudAPI {
             return
         }
 
-        var requestURL = "\(baseURL)/iot-api/apps/\(appID)/targets/\(target!.typedID.toString())/commands"
+        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/commands"
         if paginationKey != nil && bestEffortLimit != nil{
             requestURL += "?paginationKey=\(paginationKey!)&&bestEffortLimit=\(bestEffortLimit!)"
         }else if bestEffortLimit != nil {

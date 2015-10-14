@@ -74,7 +74,7 @@ class PostNewCommandTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(testcase.target.typedID.toString())/commands"
+                let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(testcase.target.typedID.toString())/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal for \(tag)")
 
                 //verify header
@@ -138,7 +138,7 @@ class PostNewCommandTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/commands"
+                let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header

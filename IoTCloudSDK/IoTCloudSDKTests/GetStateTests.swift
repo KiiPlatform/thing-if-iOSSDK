@@ -89,7 +89,7 @@ class GetStateTests: XCTestCase {
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
+            let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "content-type": "application/json"]
@@ -144,7 +144,7 @@ class GetStateTests: XCTestCase {
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
+            let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "content-type": "application/json"]
@@ -200,7 +200,7 @@ class GetStateTests: XCTestCase {
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
+            let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "content-type": "application/json"]
@@ -258,7 +258,7 @@ class GetStateTests: XCTestCase {
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(self.api.baseURL!)/iot-api/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
+            let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "content-type": "application/json"]
