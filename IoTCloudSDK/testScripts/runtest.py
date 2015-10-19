@@ -48,9 +48,9 @@ for t in tests:
         print("report file: " + report_file)
         xctool = args.xctoolpath
         if args.destination:
-            processArg = [xctool,"-project", "./IoTCloudSDK.xcodeproj", "-scheme", scheme,"-destination",args.destination, "-configuration", "Debug", "-sdk", "iphonesimulator", "-reporter", "pretty", "-reporter", report_file, args.option, args.clean, "test", "-test-sdk", testsdk, args.freshSimulator, args.freshInstall, onlyArg, name,"-parallelize","-logicTestBucketSize","20"]
+            processArg = [xctool,"-project", "./ThingIFSDK.xcodeproj", "-scheme", scheme,"-destination",args.destination, "-configuration", "Debug", "-sdk", "iphonesimulator", "-reporter", "pretty", "-reporter", report_file, args.option, args.clean, "test", "-test-sdk", testsdk, args.freshSimulator, args.freshInstall, onlyArg, name,"-parallelize","-logicTestBucketSize","20"]
         else :
-            processArg = [xctool,"-project", "./IoTCloudSDK.xcodeproj", "-scheme", scheme, "-configuration", "Debug", "-sdk", "iphonesimulator", "-reporter", "pretty", "-reporter", report_file, args.option, args.clean, "test", "-test-sdk", testsdk, args.freshSimulator, args.freshInstall, onlyArg, name,"-parallelize","-logicTestBucketSize","20"]
+            processArg = [xctool,"-project", "./ThingIFSDK.xcodeproj", "-scheme", scheme, "-configuration", "Debug", "-sdk", "iphonesimulator", "-reporter", "pretty", "-reporter", report_file, args.option, args.clean, "test", "-test-sdk", testsdk, args.freshSimulator, args.freshInstall, onlyArg, name,"-parallelize","-logicTestBucketSize","20"]
         processArg = filter(bool, processArg)
         print("Command: " + " ".join(processArg))
         subprocess.call(processArg)

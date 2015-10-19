@@ -1,3 +1,3 @@
 [
-{"scheme":"IoTCloudSDK", "count":1}
+{"scheme":"ThingIFSDK", "count":1}
 ]

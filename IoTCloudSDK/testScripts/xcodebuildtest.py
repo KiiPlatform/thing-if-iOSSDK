@@ -38,7 +38,7 @@ for t in tests:
     print("scheme: " + scheme)
 
     for i in range(count):
-        command = "xcodebuild -project IoTCloudSDK.xcodeproj -scheme {scheme} -sdk {sdk} -configuration Debug clean build test -destination '{destination}' | tee console.log".\
+        command = "xcodebuild -project ThingIFSDK.xcodeproj -scheme {scheme} -sdk {sdk} -configuration Debug clean build test -destination '{destination}' | tee console.log".\
         format(scheme=scheme, sdk=args.sdk, destination=args.destination)
         subprocess.call(command, shell=True)
         subprocess.call("ocunit2junit console.log > /dev/null", shell=True)
