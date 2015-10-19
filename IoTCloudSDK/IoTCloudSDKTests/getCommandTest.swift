@@ -6,7 +6,7 @@
 //  Copyright © 2015 Kii. All rights reserved.
 //
 import XCTest
-@testable import IoTCloudSDK
+@testable import ThingIFSDK
 
 class GetCommandTests: XCTestCase {
 

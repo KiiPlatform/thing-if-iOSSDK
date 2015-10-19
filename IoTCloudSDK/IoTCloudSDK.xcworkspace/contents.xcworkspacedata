@@ -5,6 +5,6 @@
       location = "group:IoTCloudSDK.playground">
    </FileRef>
    <FileRef
-      location = "group:IoTCloudSDK.xcodeproj">
+      location = "group:/Users/yongping/Documents/CompanyProjects/thing-if-iOSSDK/IoTCloudSDK/ThingIFSDK.xcodeproj">
    </FileRef>
 </Workspace>

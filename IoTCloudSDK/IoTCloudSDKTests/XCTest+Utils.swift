@@ -8,7 +8,7 @@
 
 import Foundation
 import XCTest
-@testable import IoTCloudSDK
+@testable import ThingIFSDK
 
 extension XCTestCase {
     

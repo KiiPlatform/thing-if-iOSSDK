@@ -8,7 +8,7 @@
 
 import UIKit
 import XCTest
-@testable import IoTCloudSDK
+@testable import ThingIFSDK
 
 class IoTCloudSDKTests: XCTestCase {
     

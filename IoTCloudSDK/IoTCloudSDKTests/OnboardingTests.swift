@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import IoTCloudSDK
+@testable import ThingIFSDK
 
 class OnboardingTests: XCTestCase {
 

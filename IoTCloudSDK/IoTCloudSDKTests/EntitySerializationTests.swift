@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import IoTCloudSDK
+import ThingIFSDK
 
 class EntitySerializationTests: XCTestCase {
     

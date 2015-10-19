@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import IoTCloudSDK
+@testable import ThingIFSDK
 
 class EnableTriggerTests: XCTestCase {
     let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
