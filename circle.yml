@@ -11,15 +11,15 @@ dependencies:
 test:
   pre:
     # Build sdk
-    - cd IoTCloudSDK; make all
+    - cd ThingIFSDK; make all
     # Copy sdk and docs to artifacts
-    - cp IoTCloudSDK/dist/*.zip $CIRCLE_ARTIFACTS
-    - cp IoTCloudSDK/Documentation/*.zip $CIRCLE_ARTIFACTS
-    - cp -fr IoTCloudSDK/Documentation/docs $CIRCLE_ARTIFACTS/
+    - cp ThingIFSDK/dist/*.zip $CIRCLE_ARTIFACTS
+    - cp ThingIFSDK/Documentation/*.zip $CIRCLE_ARTIFACTS
+    - cp -fr ThingIFSDK/Documentation/docs $CIRCLE_ARTIFACTS/
   override:
     # run small tests
     - if [ ! -n "$DESTINATION" ]; then DESTINATION=$default_destination; fi;
-      cd IoTCloudSDK;
+      cd ThingIFSDK;
       python testScripts/xcodebuildtest.py  --destination "${DESTINATION}"
 
-    - cp IoTCloudSDK/test-reports/*.xml $CIRCLE_TEST_REPORTS/
+    - cp ThingIFSDK/test-reports/*.xml $CIRCLE_TEST_REPORTS/

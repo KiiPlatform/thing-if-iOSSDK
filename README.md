@@ -41,10 +41,10 @@ If you would like to build framework from the branch other than master, you can 
 $ git clone https://github.com/KiiPlatform/IoTCloud-iOSSDK.git
 ```
 
-- Build IoTCloud-iOSSDK locally. If built successfully, a framework named `IoTCloudSDK.framework` can be found under folder `IoTCloud-iOSSDK/dist/`
+- Build IoTCloud-iOSSDK locally. If built successfully, a framework named `ThingIFSDK.framework` can be found under folder `IoTCloud-iOSSDK/dist/`
 
 ```bash
-$ cd IoTCloudSDK
+$ cd ThingIFSDK
 $ make build
 ```
 
@@ -52,8 +52,8 @@ $ make build
 
 ### Download from Kii Developer Portal
 
-- Download IoTCloudSDK from  [Kii Developer Portal](https://developer.kii.com/v2/downloads)
-- Import the Downloaded IoTCloudSDK.framework to your project.
+- Download ThingIFSDK from  [Kii Developer Portal](https://developer.kii.com/v2/downloads)
+- Import the Downloaded ThingIFSDK.framework to your project.
 
 # Usage
 
@@ -61,6 +61,6 @@ Please check the [Documentation](http://documentation.kii.com/en/starts/iotsdk/)
 
 # Sample Project
 
-A sample project using IoTCloudSDK can be found [here](https://github.com/KiiPlatform/IoTCloud-iOSSample).
+A sample project using ThingIFSDK can be found [here](https://github.com/KiiPlatform/IoTCloud-iOSSample).
 
 # License
