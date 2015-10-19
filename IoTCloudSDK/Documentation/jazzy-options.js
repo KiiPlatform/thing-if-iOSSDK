@@ -1,14 +1,14 @@
 {
-    "project": "IoTCloudSDK.xcodeproj",
-    "scheme": "IoTCloudSDK",
+    "project": "ThingIFSDK.xcodeproj",
+    "scheme": "ThingIFSDK",
 
     "author": "Kii Corp",
     "author_url": "http://kii.com",
-    "github_url": "https://github.com/KiiPlatform/IoTCloud-iOSSDK",
+    "github_url": "https://github.com/KiiPlatform/thing-if-iOSSDK",
     "output": "docs",
     "swift-version": "2",
 
-    "doc-archive-prefix": "IoTCloudSDK-Documentation",
+    "doc-archive-prefix": "ThingIFSDK-Documentation",
 
     "ignore": [
       "BlockObserver.swift",

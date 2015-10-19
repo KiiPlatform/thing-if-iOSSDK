@@ -7,17 +7,17 @@ GIT_COMMIT_ID := $(shell git rev-list -n 1 --abbrev-commit HEAD)
 .PHONY: clean carthage-build archive doc
 clean:
 		rm -rf Documentation/docs
-		rm -rf Documentation/IoTCloudSDK-Documentation*.zip
+		rm -rf Documentation/ThingIFSDK-Documentation*.zip
 		rm -rf build
 		rm -rf dist
 		rm -rf test-reports
 
 build:
-		xcodebuild -project IoTCloudSDK.xcodeproj -target IoTCloudSDKAggregate clean build
+		xcodebuild -project ThingIFSDK.xcodeproj -target ThingIFSDKAggregate clean build
 
 archive: build
 		(cd ${DIST_DIR}; \
-			zip -r "IoTCloudSDK.framework.${GIT_BRANCH_NAME}-${GIT_COMMIT_ID}.zip" . -i "IoTCloudSDK.framework*")
+			zip -r "ThingIFSDK.framework.${GIT_BRANCH_NAME}-${GIT_COMMIT_ID}.zip" . -i "ThingIFSDK.framework*")
 
 doc: build
 		(cd Documentation; \
