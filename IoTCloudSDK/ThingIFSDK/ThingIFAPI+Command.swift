@@ -1,5 +1,5 @@
 //
-//  IoTCloudAPI+Command.swift
+//  ThingIFAPI+Command.swift
 //  IoTCloudSDK
 //
 //  Created by Yongping on 8/13/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension IoTCloudAPI {
+extension ThingIFAPI {
 
     func _postNewCommand(
         schemaName:String,

@@ -1,6 +1,6 @@
 //
 //  Clause.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 import Foundation
 

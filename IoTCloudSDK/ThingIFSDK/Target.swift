@@ -1,6 +1,6 @@
 //
 //  Target.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 import Foundation
 

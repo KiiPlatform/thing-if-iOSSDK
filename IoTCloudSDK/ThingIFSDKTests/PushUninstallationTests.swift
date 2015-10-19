@@ -1,6 +1,6 @@
 //
 //  PushUninstallationTests.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Syah Riza on 8/17/15.
 //  Copyright © 2015 Kii. All rights reserved.
@@ -16,7 +16,7 @@ class PushUninstallationTests: XCTestCase {
     let schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
     
-    let api = IoTCloudAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
+    let api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
         site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     
     let deviceToken = "dummyDeviceToken"
@@ -32,7 +32,7 @@ class PushUninstallationTests: XCTestCase {
     }
     func checkSavedIoTAPI(){
         do{
-            let savedIoTAPI = try IoTCloudAPI.loadWithStoredInstance(api.tag)
+            let savedIoTAPI = try ThingIFAPI.loadWithStoredInstance(api.tag)
             XCTAssertNotNil(savedIoTAPI)
             XCTAssertTrue(api == savedIoTAPI)
         }catch(let e){

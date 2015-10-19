@@ -1,6 +1,6 @@
 //
 //  XCTest+Utils.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Syah Riza on 8/14/15.
 //  Copyright © 2015 Kii. All rights reserved.
@@ -39,7 +39,7 @@ extension XCTestCase {
         XCTAssert(first == second)
     }
 
-    func XCTAssertEqualIoTAPIWithoutTarget(first: IoTCloudAPI, _ second: IoTCloudAPI) {
+    func XCTAssertEqualIoTAPIWithoutTarget(first: ThingIFAPI, _ second: ThingIFAPI) {
         XCTAssertEqual(first.appID, second.appID)
         XCTAssertEqual(first.appKey, second.appKey)
         XCTAssertEqual(first.baseURL, second.baseURL)

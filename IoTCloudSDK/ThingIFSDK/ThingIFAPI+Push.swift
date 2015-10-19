@@ -1,5 +1,5 @@
 //
-//  IoTCloudAPI+Push.swift
+//  ThingIFAPI+Push.swift
 //  IoTCloudSDK
 //
 //  Created by Syah Riza on 8/13/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension IoTCloudAPI {
+extension ThingIFAPI {
     func _installPush(
         deviceToken:NSData,
         development:Bool?=false,

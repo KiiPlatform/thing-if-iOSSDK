@@ -1,5 +1,5 @@
 //
-//  IoTCloudAPI+GetState.swift
+//  ThingIFAPI+GetState.swift
 //  IoTCloudSDK
 //
 //  Created by Syah Riza on 8/18/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension IoTCloudAPI {
+extension ThingIFAPI {
     func _getState(
         completionHandler: (Dictionary<String, AnyObject>?,  IoTCloudError?)-> Void
         ){

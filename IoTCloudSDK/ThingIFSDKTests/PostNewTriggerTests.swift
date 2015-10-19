@@ -1,6 +1,6 @@
 //
 //  PostNewTriggerTests.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Yongping on 8/14/15.
 //  Copyright © 2015 Kii. All rights reserved.
@@ -15,7 +15,7 @@ class PostNewTriggerTests: XCTestCase {
     var schema = (thingType: "SmartLight-Demo",
         name: "SmartLight-Demo", version: 1)
     let baseURLString = "https://small-tests.internal.kii.com"
-    var api: IoTCloudAPI!
+    var api: ThingIFAPI!
     let target = Target(typedID: TypedID(type: "thing", id: "0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
@@ -23,7 +23,7 @@ class PostNewTriggerTests: XCTestCase {
 
         owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
 
-        api = IoTCloudAPIBuilder(appID: "dummyID", appKey: "dummyKey",
+        api = ThingIFAPIBuilder(appID: "dummyID", appKey: "dummyKey",
             site: Site.CUSTOM(self.baseURLString), owner: owner).build()
 
     }

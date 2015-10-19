@@ -1,6 +1,6 @@
 //
 //  Trigger.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 
 import Foundation

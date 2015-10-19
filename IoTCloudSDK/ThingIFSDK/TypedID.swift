@@ -1,6 +1,6 @@
 //
 //  TypedID.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 import Foundation
 

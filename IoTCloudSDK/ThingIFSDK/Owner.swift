@@ -1,6 +1,6 @@
 //
 //  Owner.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 
 import Foundation

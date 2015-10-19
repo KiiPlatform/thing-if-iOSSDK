@@ -1,6 +1,6 @@
 //
 //  Site.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Yongping on 9/17/15.
 //  Copyright © 2015 Kii. All rights reserved.

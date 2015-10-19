@@ -1,14 +1,14 @@
 //
-//  IoTCloudAPI.swift
+//  ThingIFAPI.swift
 //  IoTCloudSDK
 //
 
 import Foundation
 
 /** Class provides API of the IoTCloud. */
-public class IoTCloudAPI: NSObject, NSCoding {
+public class ThingIFAPI: NSObject, NSCoding {
 
-    private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "IoTCloudAPI_INSTANCE"
+    private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "ThingIFAPI_INSTANCE"
     private static func getSharedNSDefaultKey(tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
@@ -81,7 +81,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
     /** On board IoT Cloud with the specified vendor thing ID.
     Specified thing will be owned by owner who consumes this API.
-    (Specified on creation of IoTCloudAPI instance.)
+    (Specified on creation of ThingIFAPI instance.)
     
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, IoTCloudError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -113,7 +113,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     
     /** On board IoT Cloud with the specified thing ID.
     Specified thing will be owned by owner who consumes this API.
-    (Specified on creation of IoTCloudAPI instance.)
+    (Specified on creation of ThingIFAPI instance.)
     When you're sure that the on board process has been done,
     this method is convenient.
 
@@ -380,12 +380,12 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
     /** Get new instance with new target
 
-    - Parameter newTarget: target instance will be setted to new IoTCloudAPI instance
-    - Returns: New IoTCloudAPI instance with newTarget
+    - Parameter newTarget: target instance will be setted to new ThingIFAPI instance
+    - Returns: New ThingIFAPI instance with newTarget
     */
-    public func copyWithTarget(newTarget: Target) -> IoTCloudAPI {
+    public func copyWithTarget(newTarget: Target) -> ThingIFAPI {
 
-        let newIotapi = IoTCloudAPI(baseURL: self.baseURL, appID: self.appID, appKey: self.appKey, owner: self.owner)
+        let newIotapi = ThingIFAPI(baseURL: self.baseURL, appID: self.appID, appKey: self.appKey, owner: self.owner)
 
         newIotapi._target = newTarget
         newIotapi._installationID = self._installationID
@@ -393,21 +393,21 @@ public class IoTCloudAPI: NSObject, NSCoding {
         return newIotapi
     }
 
-    /** Try to load the instance of IoTCloudAPI using stored serialized instance.
+    /** Try to load the instance of ThingIFAPI using stored serialized instance.
 
-    - Parameter tag: tag of the IoTCloudAPI instance
-    - Returns: IoTCloudAPI instance.
+    - Parameter tag: tag of the ThingIFAPI instance
+    - Returns: ThingIFAPI instance.
     */
-    public static func loadWithStoredInstance(tag : String? = nil) throws -> IoTCloudAPI?{
-        let baseKey = IoTCloudAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        let key = IoTCloudAPI.getSharedNSDefaultKey(tag)
+    public static func loadWithStoredInstance(tag : String? = nil) throws -> ThingIFAPI?{
+        let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        let key = ThingIFAPI.getSharedNSDefaultKey(tag)
 
         // try to get iotAPI from NSUserDefaults
 
         if let dict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary
         {
             if let data = dict[key] as? NSData {
-                if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? IoTCloudAPI {
+                if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ThingIFAPI {
                     return savedIoTAPI
                 }else{
                     throw IoTCloudError.INVALID_STORED_API
@@ -424,17 +424,17 @@ public class IoTCloudAPI: NSObject, NSCoding {
     /** Clear all saved instances in the NSUserDefaults.
     */
     public static func removeAllStoredInstances(){
-        let baseKey = IoTCloudAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         NSUserDefaults.standardUserDefaults().removeObjectForKey(baseKey)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
 
     /** Remove saved specified instance in the NSUserDefaults.
-    - Parameter tag: tag of the IoTCloudAPI instance or nil for default tag
+    - Parameter tag: tag of the ThingIFAPI instance or nil for default tag
     */
     public static func removeStoredInstances(tag : String?=nil){
-        let baseKey = IoTCloudAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        let key = IoTCloudAPI.getSharedNSDefaultKey(tag)
+        let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        let key = ThingIFAPI.getSharedNSDefaultKey(tag)
         if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
             dict.removeObjectForKey(key)
@@ -445,9 +445,9 @@ public class IoTCloudAPI: NSObject, NSCoding {
 
     func saveToUserDefault(){
 
-        let baseKey = IoTCloudAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
 
-        let key = IoTCloudAPI.getSharedNSDefaultKey(self.tag)
+        let key = ThingIFAPI.getSharedNSDefaultKey(self.tag)
         let data = NSKeyedArchiver.archivedDataWithRootObject(self)
 
         if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
@@ -461,7 +461,7 @@ public class IoTCloudAPI: NSObject, NSCoding {
     }
 
     public override func isEqual(object: AnyObject?) -> Bool {
-        guard let anAPI = object as? IoTCloudAPI else{
+        guard let anAPI = object as? ThingIFAPI else{
             return false
         }
 

@@ -1,6 +1,6 @@
 //
 //  IoTCloudError.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 import Foundation
 import Swift

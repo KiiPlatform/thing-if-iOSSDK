@@ -1,6 +1,6 @@
 //
 //  EntitySerializationTests.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Syah Riza on 8/7/15.
 //  Copyright © 2015 Kii. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  NSNumber+isBool.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Yongping on 8/18/15.
 //  Copyright © 2015 Kii. All rights reserved.

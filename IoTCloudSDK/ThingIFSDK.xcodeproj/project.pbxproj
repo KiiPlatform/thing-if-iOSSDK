@@ -24,15 +24,7 @@
 		7D36B6631BD4D03100D9B821 /* Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6371BD4D03100D9B821 /* Clause.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6641BD4D03100D9B821 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6381BD4D03100D9B821 /* Command.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6651BD4D03100D9B821 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D36B6391BD4D03100D9B821 /* Info.plist */; settings = {ASSET_TAGS = (); }; };
-		7D36B6661BD4D03100D9B821 /* IoTCloudAPI+Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B63A1BD4D03100D9B821 /* IoTCloudAPI+Command.swift */; settings = {ASSET_TAGS = (); }; };
-		7D36B6671BD4D03100D9B821 /* IoTCloudAPI+GetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B63B1BD4D03100D9B821 /* IoTCloudAPI+GetState.swift */; settings = {ASSET_TAGS = (); }; };
-		7D36B6681BD4D03100D9B821 /* IoTCloudAPI+OnBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B63C1BD4D03100D9B821 /* IoTCloudAPI+OnBoard.swift */; settings = {ASSET_TAGS = (); }; };
-		7D36B6691BD4D03100D9B821 /* IoTCloudAPI+Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B63D1BD4D03100D9B821 /* IoTCloudAPI+Push.swift */; settings = {ASSET_TAGS = (); }; };
-		7D36B66A1BD4D03100D9B821 /* IoTCloudAPI+Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B63E1BD4D03100D9B821 /* IoTCloudAPI+Trigger.swift */; settings = {ASSET_TAGS = (); }; };
-		7D36B66B1BD4D03100D9B821 /* IoTCloudAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B63F1BD4D03100D9B821 /* IoTCloudAPI.swift */; settings = {ASSET_TAGS = (); }; };
-		7D36B66C1BD4D03100D9B821 /* IoTCloudAPIBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6401BD4D03100D9B821 /* IoTCloudAPIBuilder.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B66D1BD4D03100D9B821 /* IoTCloudError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6411BD4D03100D9B821 /* IoTCloudError.swift */; settings = {ASSET_TAGS = (); }; };
-		7D36B66E1BD4D03100D9B821 /* IoTCloudSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D36B6421BD4D03100D9B821 /* IoTCloudSDK.h */; settings = {ASSET_TAGS = (); }; };
 		7D36B66F1BD4D03100D9B821 /* IoTRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6441BD4D03100D9B821 /* IoTRequestOperation.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6701BD4D03100D9B821 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6451BD4D03100D9B821 /* NetworkObserver.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6711BD4D03100D9B821 /* NSNumber+checkTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6461BD4D03100D9B821 /* NSNumber+checkTypes.swift */; settings = {ASSET_TAGS = (); }; };
@@ -81,6 +73,14 @@
 		7D36B6B01BD4D0CC00D9B821 /* PushUninstallationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B69D1BD4D0CC00D9B821 /* PushUninstallationTests.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6B11BD4D0CC00D9B821 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B69E1BD4D0CC00D9B821 /* TestHelpers.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6B21BD4D0CC00D9B821 /* XCTest+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B69F1BD4D0CC00D9B821 /* XCTest+Utils.swift */; settings = {ASSET_TAGS = (); }; };
+		7D36B6BA1BD4D43700D9B821 /* ThingIFAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B31BD4D43700D9B821 /* ThingIFAPI.swift */; settings = {ASSET_TAGS = (); }; };
+		7D36B6BB1BD4D43700D9B821 /* ThingIFAPI+Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B41BD4D43700D9B821 /* ThingIFAPI+Command.swift */; settings = {ASSET_TAGS = (); }; };
+		7D36B6BC1BD4D43700D9B821 /* ThingIFAPI+GetState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B51BD4D43700D9B821 /* ThingIFAPI+GetState.swift */; settings = {ASSET_TAGS = (); }; };
+		7D36B6BD1BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B61BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift */; settings = {ASSET_TAGS = (); }; };
+		7D36B6BE1BD4D43700D9B821 /* ThingIFAPI+Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B71BD4D43700D9B821 /* ThingIFAPI+Push.swift */; settings = {ASSET_TAGS = (); }; };
+		7D36B6BF1BD4D43700D9B821 /* ThingIFAPI+Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B81BD4D43700D9B821 /* ThingIFAPI+Trigger.swift */; settings = {ASSET_TAGS = (); }; };
+		7D36B6C01BD4D43700D9B821 /* ThingIFAPIBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */; settings = {ASSET_TAGS = (); }; };
+		7D36B6C21BD4D51D00D9B821 /* ThingIFSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,15 +97,7 @@
 		7D36B6371BD4D03100D9B821 /* Clause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Clause.swift; sourceTree = "<group>"; };
 		7D36B6381BD4D03100D9B821 /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		7D36B6391BD4D03100D9B821 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7D36B63A1BD4D03100D9B821 /* IoTCloudAPI+Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+Command.swift"; sourceTree = "<group>"; };
-		7D36B63B1BD4D03100D9B821 /* IoTCloudAPI+GetState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+GetState.swift"; sourceTree = "<group>"; };
-		7D36B63C1BD4D03100D9B821 /* IoTCloudAPI+OnBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+OnBoard.swift"; sourceTree = "<group>"; };
-		7D36B63D1BD4D03100D9B821 /* IoTCloudAPI+Push.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+Push.swift"; sourceTree = "<group>"; };
-		7D36B63E1BD4D03100D9B821 /* IoTCloudAPI+Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IoTCloudAPI+Trigger.swift"; sourceTree = "<group>"; };
-		7D36B63F1BD4D03100D9B821 /* IoTCloudAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTCloudAPI.swift; sourceTree = "<group>"; };
-		7D36B6401BD4D03100D9B821 /* IoTCloudAPIBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTCloudAPIBuilder.swift; sourceTree = "<group>"; };
 		7D36B6411BD4D03100D9B821 /* IoTCloudError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTCloudError.swift; sourceTree = "<group>"; };
-		7D36B6421BD4D03100D9B821 /* IoTCloudSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IoTCloudSDK.h; sourceTree = "<group>"; };
 		7D36B6441BD4D03100D9B821 /* IoTRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTRequestOperation.swift; sourceTree = "<group>"; };
 		7D36B6451BD4D03100D9B821 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
 		7D36B6461BD4D03100D9B821 /* NSNumber+checkTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+checkTypes.swift"; sourceTree = "<group>"; };
@@ -154,6 +146,14 @@
 		7D36B69D1BD4D0CC00D9B821 /* PushUninstallationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushUninstallationTests.swift; sourceTree = "<group>"; };
 		7D36B69E1BD4D0CC00D9B821 /* TestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		7D36B69F1BD4D0CC00D9B821 /* XCTest+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTest+Utils.swift"; sourceTree = "<group>"; };
+		7D36B6B31BD4D43700D9B821 /* ThingIFAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPI.swift; sourceTree = "<group>"; };
+		7D36B6B41BD4D43700D9B821 /* ThingIFAPI+Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+Command.swift"; sourceTree = "<group>"; };
+		7D36B6B51BD4D43700D9B821 /* ThingIFAPI+GetState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+GetState.swift"; sourceTree = "<group>"; };
+		7D36B6B61BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+OnBoard.swift"; sourceTree = "<group>"; };
+		7D36B6B71BD4D43700D9B821 /* ThingIFAPI+Push.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+Push.swift"; sourceTree = "<group>"; };
+		7D36B6B81BD4D43700D9B821 /* ThingIFAPI+Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+Trigger.swift"; sourceTree = "<group>"; };
+		7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIBuilder.swift; sourceTree = "<group>"; };
+		7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThingIFSDK.h; sourceTree = "<group>"; };
 		7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThingIFSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DD44DEA1BD4B7CD00AE0249 /* ThingIFSDK-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ThingIFSDK-Info.plist"; path = "/Users/yongping/Documents/CompanyProjects/thing-if-iOSSDK/IoTCloudSDK/ThingIFSDK-Info.plist"; sourceTree = "<absolute>"; };
 		7DD44E041BD4B88A00AE0249 /* ThingIFSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThingIFSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,18 +201,18 @@
 		7D36B6361BD4D03100D9B821 /* ThingIFSDK */ = {
 			isa = PBXGroup;
 			children = (
+				7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */,
+				7D36B6B31BD4D43700D9B821 /* ThingIFAPI.swift */,
+				7D36B6B41BD4D43700D9B821 /* ThingIFAPI+Command.swift */,
+				7D36B6B51BD4D43700D9B821 /* ThingIFAPI+GetState.swift */,
+				7D36B6B61BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift */,
+				7D36B6B71BD4D43700D9B821 /* ThingIFAPI+Push.swift */,
+				7D36B6B81BD4D43700D9B821 /* ThingIFAPI+Trigger.swift */,
+				7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */,
 				7D36B6371BD4D03100D9B821 /* Clause.swift */,
 				7D36B6381BD4D03100D9B821 /* Command.swift */,
 				7D36B6391BD4D03100D9B821 /* Info.plist */,
-				7D36B63A1BD4D03100D9B821 /* IoTCloudAPI+Command.swift */,
-				7D36B63B1BD4D03100D9B821 /* IoTCloudAPI+GetState.swift */,
-				7D36B63C1BD4D03100D9B821 /* IoTCloudAPI+OnBoard.swift */,
-				7D36B63D1BD4D03100D9B821 /* IoTCloudAPI+Push.swift */,
-				7D36B63E1BD4D03100D9B821 /* IoTCloudAPI+Trigger.swift */,
-				7D36B63F1BD4D03100D9B821 /* IoTCloudAPI.swift */,
-				7D36B6401BD4D03100D9B821 /* IoTCloudAPIBuilder.swift */,
 				7D36B6411BD4D03100D9B821 /* IoTCloudError.swift */,
-				7D36B6421BD4D03100D9B821 /* IoTCloudSDK.h */,
 				7D36B6431BD4D03100D9B821 /* IoTOperations */,
 				7D36B6451BD4D03100D9B821 /* NetworkObserver.swift */,
 				7D36B6461BD4D03100D9B821 /* NSNumber+checkTypes.swift */,
@@ -303,7 +303,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D36B66E1BD4D03100D9B821 /* IoTCloudSDK.h in Headers */,
+				7D36B6C21BD4D51D00D9B821 /* ThingIFSDK.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,18 +420,12 @@
 				7D36B6761BD4D03100D9B821 /* ExclusivityController.swift in Sources */,
 				7D36B6721BD4D03100D9B821 /* BlockObserver.swift in Sources */,
 				7D36B67C1BD4D03100D9B821 /* NSLock+Operations.swift in Sources */,
-				7D36B66B1BD4D03100D9B821 /* IoTCloudAPI.swift in Sources */,
 				7D36B6731BD4D03100D9B821 /* BlockOperation.swift in Sources */,
-				7D36B66C1BD4D03100D9B821 /* IoTCloudAPIBuilder.swift in Sources */,
 				7D36B66D1BD4D03100D9B821 /* IoTCloudError.swift in Sources */,
-				7D36B6691BD4D03100D9B821 /* IoTCloudAPI+Push.swift in Sources */,
 				7D36B6811BD4D03100D9B821 /* OperationObserver.swift in Sources */,
 				7D36B66F1BD4D03100D9B821 /* IoTRequestOperation.swift in Sources */,
 				7D36B6891BD4D03100D9B821 /* Trigger.swift in Sources */,
-				7D36B66A1BD4D03100D9B821 /* IoTCloudAPI+Trigger.swift in Sources */,
 				7D36B6771BD4D03100D9B821 /* GroupOperation.swift in Sources */,
-				7D36B6661BD4D03100D9B821 /* IoTCloudAPI+Command.swift in Sources */,
-				7D36B6671BD4D03100D9B821 /* IoTCloudAPI+GetState.swift in Sources */,
 				7D36B6751BD4D03100D9B821 /* Dictionary+Operations.swift in Sources */,
 				7D36B6641BD4D03100D9B821 /* Command.swift in Sources */,
 				7D36B67A1BD4D03100D9B821 /* NoCancelledDependencies.swift in Sources */,
@@ -439,16 +433,22 @@
 				7D36B6821BD4D03100D9B821 /* OperationQueue.swift in Sources */,
 				7D36B6801BD4D03100D9B821 /* OperationErrors.swift in Sources */,
 				7D36B68B1BD4D03100D9B821 /* Logger.swift in Sources */,
+				7D36B6C01BD4D43700D9B821 /* ThingIFAPIBuilder.swift in Sources */,
+				7D36B6BC1BD4D43700D9B821 /* ThingIFAPI+GetState.swift in Sources */,
+				7D36B6BD1BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift in Sources */,
 				7D36B6871BD4D03100D9B821 /* Site.swift in Sources */,
 				7D36B6781BD4D03100D9B821 /* MutuallyExclusive.swift in Sources */,
+				7D36B6BA1BD4D43700D9B821 /* ThingIFAPI.swift in Sources */,
 				7D36B6711BD4D03100D9B821 /* NSNumber+checkTypes.swift in Sources */,
 				7D36B67B1BD4D03100D9B821 /* NSData+Operations.swift in Sources */,
 				7D36B6701BD4D03100D9B821 /* NetworkObserver.swift in Sources */,
+				7D36B6BF1BD4D43700D9B821 /* ThingIFAPI+Trigger.swift in Sources */,
+				7D36B6BE1BD4D43700D9B821 /* ThingIFAPI+Push.swift in Sources */,
 				7D36B6851BD4D03100D9B821 /* URLSessionTaskOperation.swift in Sources */,
 				7D36B6791BD4D03100D9B821 /* NegatedCondition.swift in Sources */,
 				7D36B68A1BD4D03100D9B821 /* TypedID.swift in Sources */,
+				7D36B6BB1BD4D43700D9B821 /* ThingIFAPI+Command.swift in Sources */,
 				7D36B67E1BD4D03100D9B821 /* Operation.swift in Sources */,
-				7D36B6681BD4D03100D9B821 /* IoTCloudAPI+OnBoard.swift in Sources */,
 				7D36B6881BD4D03100D9B821 /* Target.swift in Sources */,
 				7D36B6831BD4D03100D9B821 /* ReachabilityCondition.swift in Sources */,
 				7D36B6741BD4D03100D9B821 /* DelayOperation.swift in Sources */,
