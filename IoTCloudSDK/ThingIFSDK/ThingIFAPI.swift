@@ -1,11 +1,11 @@
 //
 //  ThingIFAPI.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 
 import Foundation
 
-/** Class provides API of the IoTCloud. */
+/** Class provides API of the ThingIF. */
 public class ThingIFAPI: NSObject, NSCoding {
 
     private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "ThingIFAPI_INSTANCE"
@@ -83,7 +83,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     Specified thing will be owned by owner who consumes this API.
     (Specified on creation of ThingIFAPI instance.)
     
-    **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, IoTCloudError.ALREADY_ONBOARDED will be returned in completionHandler callback.
+    **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
     - Parameter vendorThingID: Thing ID given by vendor. Must be specified.
     - Parameter thingPassword: Thing Password given by vendor.
@@ -96,14 +96,14 @@ public class ThingIFAPI: NSObject, NSCoding {
     IoT Cloud.
     Refer to the [REST API DOC](http://docs.kii.com/rest/#thing_management-register_a_thing)
     About the format of this Document.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an IoTCloudError
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
     */
     public func onboard(
         vendorThingID:String,
         thingPassword:String,
         thingType:String?,
         thingProperties:Dictionary<String,AnyObject>?,
-        completionHandler: (Target?, IoTCloudError?)-> Void
+        completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void
     {
         _onboard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
@@ -117,17 +117,17 @@ public class ThingIFAPI: NSObject, NSCoding {
     When you're sure that the on board process has been done,
     this method is convenient.
 
-    **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, IoTCloudError.ALREADY_ONBOARDED will be returned in completionHandler callback.
+    **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
     - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
     - Parameter thingPassword: Thing Password given by vendor.
     Must be specified.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an IoTCloudError
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
     */
     public func onboard(
         thingID:String,
         thingPassword:String,
-        completionHandler: (Target?, IoTCloudError?)-> Void
+        completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void
     {
          _onboard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
@@ -151,7 +151,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     public func installPush(
         deviceToken:NSData,
         development:Bool?=false,
-        completionHandler: (String?, IoTCloudError?)-> Void
+        completionHandler: (String?, ThingIFError?)-> Void
         )
     {
         _installPush(deviceToken, development: development, completionHandler: completionHandler)
@@ -166,7 +166,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     */
     public func uninstallPush(
         installationID:String?,
-        completionHandler: (IoTCloudError?)-> Void
+        completionHandler: (ThingIFError?)-> Void
         )
     {
         _uninstallPush(installationID, completionHandler: completionHandler)
@@ -185,13 +185,13 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter schemaVersion: Version of the Schema of which the Command is
     defined.
     - Parameter actions: List of Actions to be executed in the Target.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
     */
     public func postNewCommand(
         schemaName:String,
         schemaVersion:Int,
         actions:[Dictionary<String,AnyObject>],
-        completionHandler: (Command?, IoTCloudError?)-> Void
+        completionHandler: (Command?, ThingIFError?)-> Void
         ) -> Void
     {
         _postNewCommand(schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: completionHandler)
@@ -202,11 +202,11 @@ public class ThingIFAPI: NSObject, NSCoding {
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
 
     - Parameter commandID: ID of the Command to obtain.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of IoTCloudError when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
      */
     public func getCommand(
         commandID:String,
-        completionHandler: (Command?, IoTCloudError?)-> Void
+        completionHandler: (Command?, ThingIFError?)-> Void
         )
     {
         _getCommand(commandID, completionHandler: completionHandler)
@@ -226,12 +226,12 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Returns: Where 1st element is Array of the commands
     belongs to the Target. 2nd element is paginationKey if there is further page
     to be retrieved.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Commands if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of IoTCloudError when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Commands if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
      */
     public func listCommands(
         bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: ([Command]?, String?, IoTCloudError?)-> Void
+        completionHandler: ([Command]?, String?, ThingIFError?)-> Void
         )
     {
         _listCommands(bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
@@ -249,14 +249,14 @@ public class ThingIFAPI: NSObject, NSCoding {
     specified in Trigger is defined.
     - Parameter actions: Actions to be executed by the Trigger.
     - Parameter predicate: Predicate of the Command.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an IoTCloudError instance when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an ThingIFError instance when failed.
     */
     public func postNewTrigger(
         schemaName:String,
         schemaVersion:Int,
         actions:[Dictionary<String, AnyObject>],
         predicate:Predicate,
-        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
         _postNewTrigger(schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
@@ -267,11 +267,11 @@ public class ThingIFAPI: NSObject, NSCoding {
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
 
     - Parameter triggerID: ID of the Trigger to obtain.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of Trigger, an instance of IoTCloudError when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of Trigger, an instance of ThingIFError when failed.
     */
     public func getTrigger(
         triggerID:String,
-        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
         _getTrigger(triggerID, completionHandler: completionHandler)
@@ -290,7 +290,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     specified in Trigger is defined.
     - Parameter actions: Modified Actions to be applied as patch.
     - Parameter predicate: Modified Predicate to be applied as patch.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an IoTCloudError instance when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an ThingIFError instance when failed.
     */
     public func patchTrigger(
         triggerID:String,
@@ -298,7 +298,7 @@ public class ThingIFAPI: NSObject, NSCoding {
         schemaVersion:Int?,
         actions:[Dictionary<String, AnyObject>]?,
         predicate:Predicate?,
-        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
         _patchTrigger(triggerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
@@ -312,12 +312,12 @@ public class ThingIFAPI: NSObject, NSCoding {
 
     - Parameter triggerID: ID of the Trigger to be enabled/disabled.
     - Parameter enable: Flag indicate enable/disable Trigger.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the enabled/disabled Trigger instance, 2nd one is an IoTCloudError instance when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the enabled/disabled Trigger instance, 2nd one is an ThingIFError instance when failed.
     */
     public func enableTrigger(
         triggerID:String,
         enable:Bool,
-        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
         _enableTrigger(triggerID, enable: enable, completionHandler: completionHandler)
@@ -328,11 +328,11 @@ public class ThingIFAPI: NSObject, NSCoding {
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
 
     - Parameter triggerID: ID of the Trigger to be deleted.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the deleted Trigger instance, 2nd one is an IoTCloudError instance when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the deleted Trigger instance, 2nd one is an ThingIFError instance when failed.
     */
     public func deleteTrigger(
         triggerID:String,
-        completionHandler: (Trigger!, IoTCloudError?)-> Void
+        completionHandler: (Trigger!, ThingIFError?)-> Void
         )
     {
         _deleteTrigger(triggerID, completionHandler: completionHandler)
@@ -349,12 +349,12 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter paginationKey: If there is further page to be retrieved, this
     API returns paginationKey in 2nd element. Specifying this value in next
     call in the argument results continue to get the results from the next page.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Triggers instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of IoTCloudError when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Triggers instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
     */
     public func listTriggers(
         bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: IoTCloudError?)-> Void
+        completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: ThingIFError?)-> Void
         )
     {
         _listTriggers(bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
@@ -366,10 +366,10 @@ public class ThingIFAPI: NSObject, NSCoding {
 
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
 
-    - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of IoTCloudError when failed.
+    - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of ThingIFError when failed.
     */
     public func getState(
-        completionHandler: (Dictionary<String, AnyObject>?,  IoTCloudError?)-> Void
+        completionHandler: (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
         )
     {
         _getState(completionHandler)
@@ -410,14 +410,14 @@ public class ThingIFAPI: NSObject, NSCoding {
                 if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ThingIFAPI {
                     return savedIoTAPI
                 }else{
-                    throw IoTCloudError.INVALID_STORED_API
+                    throw ThingIFError.INVALID_STORED_API
                 }
             }else{
-                throw IoTCloudError.INVALID_STORED_API
+                throw ThingIFError.INVALID_STORED_API
             }
 
         }else{
-            throw IoTCloudError.API_NOT_STORED
+            throw ThingIFError.API_NOT_STORED
         }
     }
 

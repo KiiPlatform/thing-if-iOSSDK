@@ -79,7 +79,7 @@ class ThingIFSDKTests: XCTestCase {
         do{
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(let e as IoTCloudError){
+        }catch(let e as ThingIFError){
             switch e {
             case .API_NOT_STORED:
                 break
@@ -99,7 +99,7 @@ class ThingIFSDKTests: XCTestCase {
         do{
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(let e as IoTCloudError){
+        }catch(let e as ThingIFError){
             switch e {
             case .API_NOT_STORED:
                 break
@@ -119,7 +119,7 @@ class ThingIFSDKTests: XCTestCase {
         do{
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(let e as IoTCloudError){
+        }catch(let e as ThingIFError){
             switch e {
             case .INVALID_STORED_API:
                 break
@@ -139,7 +139,7 @@ class ThingIFSDKTests: XCTestCase {
         do{
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(let e as IoTCloudError){
+        }catch(let e as ThingIFError){
             switch e {
             case .INVALID_STORED_API:
                 break

@@ -1,5 +1,5 @@
 //
-//  IoTCloudError.swift
+//  ThingIFError.swift
 //  ThingIFSDK
 //
 import Foundation
@@ -18,7 +18,7 @@ public struct ErrorResponse {
     }
 }
 
-public enum IoTCloudError : ErrorType {
+public enum ThingIFError : ErrorType {
     case CONNECTION
     case ERROR_RESPONSE(required: ErrorResponse)
     case PUSH_NOT_AVAILABLE

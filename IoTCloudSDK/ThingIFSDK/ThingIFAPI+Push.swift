@@ -1,6 +1,6 @@
 //
 //  ThingIFAPI+Push.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Syah Riza on 8/13/15.
 //  Copyright © 2015 Kii. All rights reserved.
@@ -12,7 +12,7 @@ extension ThingIFAPI {
     func _installPush(
         deviceToken:NSData,
         development:Bool?=false,
-        completionHandler: (String?, IoTCloudError?)-> Void
+        completionHandler: (String?, ThingIFError?)-> Void
         )
     {
         let requestURL = "\(baseURL)/api/apps/\(appID)/installations"
@@ -48,7 +48,7 @@ extension ThingIFAPI {
         }catch(let e){
             kiiSevereLog(e)
             dispatch_async(dispatch_get_main_queue()) {
-                completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
+                completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
             }
         }
 
@@ -56,7 +56,7 @@ extension ThingIFAPI {
 
     func _uninstallPush(
         installationID:String?,
-        completionHandler: (IoTCloudError?)-> Void
+        completionHandler: (ThingIFError?)-> Void
         )
     {
         let idParam = installationID != nil ? installationID : self._installationID

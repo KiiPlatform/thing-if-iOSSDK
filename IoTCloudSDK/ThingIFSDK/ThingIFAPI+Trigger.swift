@@ -1,6 +1,6 @@
 //
 //  ThingIFAPI+Trigger.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Yongping on 8/13/15.
 //  Copyright © 2015 Kii. All rights reserved.
@@ -15,16 +15,16 @@ extension ThingIFAPI {
         schemaVersion:Int,
         actions:[Dictionary<String, AnyObject>],
         predicate:Predicate,
-        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
         if predicate is SchedulePredicate {
-            completionHandler(nil, IoTCloudError.UNSUPPORTED_ERROR)
+            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
             return
         }
 
         if self.target == nil {
-            completionHandler(nil, IoTCloudError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
@@ -55,8 +55,8 @@ extension ThingIFAPI {
             let onboardRequestOperation = IoTRequestOperation(request: request)
             operationQueue.addOperation(onboardRequestOperation)
         }catch(_){
-            kiiSevereLog("IoTCloudError.JSON_PARSE_ERROR")
-            completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
         }
     }
 
@@ -66,11 +66,11 @@ extension ThingIFAPI {
         schemaVersion:Int?,
         actions:[Dictionary<String, AnyObject>]?,
         predicate:Predicate?,
-        completionHandler: (Trigger?, IoTCloudError?) -> Void
+        completionHandler: (Trigger?, ThingIFError?) -> Void
         )
     {
         if self.target == nil {
-            completionHandler(nil, IoTCloudError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
@@ -85,7 +85,7 @@ extension ThingIFAPI {
         // generate predicate
             if predicate != nil {
                 if predicate is SchedulePredicate {
-                    completionHandler(nil, IoTCloudError.UNSUPPORTED_ERROR)
+                    completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
                     return
                 }
                 requestBodyDict.setObject(predicate!.toNSDictionary(), forKey: "predicate")
@@ -124,19 +124,19 @@ extension ThingIFAPI {
             let onboardRequestOperation = IoTRequestOperation(request: request)
             operationQueue.addOperation(onboardRequestOperation)
         }catch(_){
-            kiiSevereLog("IoTCloudError.JSON_PARSE_ERROR")
-            completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
         }
     }
 
     func _enableTrigger(
         triggerID:String,
         enable:Bool,
-        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
         if self.target == nil {
-            completionHandler(nil, IoTCloudError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
@@ -170,11 +170,11 @@ extension ThingIFAPI {
 
     func _deleteTrigger(
         triggerID:String,
-        completionHandler: (Trigger!, IoTCloudError?)-> Void
+        completionHandler: (Trigger!, ThingIFError?)-> Void
         )
     {
         if self.target == nil {
-            completionHandler(nil, IoTCloudError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
@@ -201,11 +201,11 @@ extension ThingIFAPI {
     func _listTriggers(
         bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: IoTCloudError?)-> Void
+        completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: ThingIFError?)-> Void
         )
     {
         if self.target == nil {
-            completionHandler(triggers: nil, paginationKey: nil, error: IoTCloudError.TARGET_NOT_AVAILABLE)
+            completionHandler(triggers: nil, paginationKey: nil, error: ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
@@ -246,11 +246,11 @@ extension ThingIFAPI {
 
     func _getTrigger(
         triggerID:String,
-        completionHandler: (Trigger?, IoTCloudError?)-> Void
+        completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
         if self.target == nil {
-            completionHandler(nil, IoTCloudError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 

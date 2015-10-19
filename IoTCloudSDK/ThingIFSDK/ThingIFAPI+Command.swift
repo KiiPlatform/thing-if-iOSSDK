@@ -1,6 +1,6 @@
 //
 //  ThingIFAPI+Command.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Yongping on 8/13/15.
 //  Copyright © 2015 Kii. All rights reserved.
@@ -14,11 +14,11 @@ extension ThingIFAPI {
         schemaName:String,
         schemaVersion:Int,
         actions:[Dictionary<String,AnyObject>],
-        completionHandler: (Command?, IoTCloudError?)-> Void
+        completionHandler: (Command?, ThingIFError?)-> Void
         ) -> Void
     {
         if self.target == nil {
-            completionHandler(nil, IoTCloudError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
@@ -50,18 +50,18 @@ extension ThingIFAPI {
             operationQueue.addOperation(onboardRequestOperation)
             
         }catch(_){
-            kiiSevereLog("IoTCloudError.JSON_PARSE_ERROR")
-            completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
         }
     }
 
     func _getCommand(
         commandID:String,
-        completionHandler: (Command?, IoTCloudError?)-> Void
+        completionHandler: (Command?, ThingIFError?)-> Void
         )
     {
         if self.target == nil {
-            completionHandler(nil, IoTCloudError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
@@ -88,11 +88,11 @@ extension ThingIFAPI {
     func _listCommands(
         bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: ([Command]?, String?, IoTCloudError?)-> Void
+        completionHandler: ([Command]?, String?, ThingIFError?)-> Void
         )
     {
         if self.target == nil {
-            completionHandler(nil, nil, IoTCloudError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 

@@ -1,6 +1,6 @@
 //
 //  ThingIFAPI+GetState.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Syah Riza on 8/18/15.
 //  Copyright © 2015 Kii. All rights reserved.
@@ -10,10 +10,10 @@ import Foundation
 
 extension ThingIFAPI {
     func _getState(
-        completionHandler: (Dictionary<String, AnyObject>?,  IoTCloudError?)-> Void
+        completionHandler: (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
         ){
             if self.target == nil {
-                completionHandler(nil, IoTCloudError.TARGET_NOT_AVAILABLE)
+                completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
                 return
             }
 

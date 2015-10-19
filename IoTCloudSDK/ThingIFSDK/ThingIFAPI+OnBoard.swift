@@ -1,6 +1,6 @@
 //
 //  ThingIFAPI+OnBoard.swift
-//  IoTCloudSDK
+//  ThingIFSDK
 //
 //  Created by Yongping on 8/13/15.
 //  Copyright © 2015 Kii. All rights reserved.
@@ -15,11 +15,11 @@ extension ThingIFAPI {
         thingPassword:String,
         thingType:String?,
         thingProperties:Dictionary<String,AnyObject>?,
-        completionHandler: (Target?, IoTCloudError?)-> Void
+        completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void {
 
             if self.target != nil {
-                completionHandler(nil, IoTCloudError.ALREADY_ONBOARDED)
+                completionHandler(nil, ThingIFError.ALREADY_ONBOARDED)
                 return
             }
             
@@ -66,8 +66,8 @@ extension ThingIFAPI {
                 operationQueue.addOperation(onboardRequestOperation)
                 
             }catch(_){
-                kiiSevereLog("IoTCloudError.JSON_PARSE_ERROR")
-                completionHandler(nil, IoTCloudError.JSON_PARSE_ERROR)
+                kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+                completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
             }
     }
 
