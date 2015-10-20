@@ -1,0 +1,25 @@
+machine:
+  xcode:
+    version: "7.0"
+  environment:
+    default_destination: platform=iOS Simulator,name=iPhone 6,OS=9.0
+
+dependencies:
+  pre:
+    - sudo gem install jazzy
+    - sudo gem install ocunit2junit
+test:
+  pre:
+    # Build sdk
+    - cd ThingIFSDK; make all
+    # Copy sdk and docs to artifacts
+    - cp ThingIFSDK/dist/*.zip $CIRCLE_ARTIFACTS
+    - cp ThingIFSDK/Documentation/*.zip $CIRCLE_ARTIFACTS
+    - cp -fr ThingIFSDK/Documentation/docs $CIRCLE_ARTIFACTS/
+  override:
+    # run small tests
+    - if [ ! -n "$DESTINATION" ]; then DESTINATION=$default_destination; fi;
+      cd ThingIFSDK;
+      python testScripts/xcodebuildtest.py  --destination "${DESTINATION}"
+
+    - cp ThingIFSDK/test-reports/*.xml $CIRCLE_TEST_REPORTS/
