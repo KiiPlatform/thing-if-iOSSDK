@@ -1,6 +1,6 @@
-[![Circle CI](https://circleci.com/gh/KiiPlatform/IoTCloud-iOSSDK/tree/master.svg?style=svg)](https://circleci.com/gh/KiiPlatform/IoTCloud-iOSSDK/tree/master)
+[![Circle CI](https://circleci.com/gh/KiiPlatform/thing-if-iOSSDK/tree/master.svg?style=svg)](https://circleci.com/gh/KiiPlatform/thing-if-iOSSDK/tree/master)
 
-iOS SDK for Kii IoT Cloud.
+iOS SDK for Kii Thing Interaction Framework.
 
 # Requirements
 
@@ -9,7 +9,7 @@ iOS SDK for Kii IoT Cloud.
 - swift 2.0+
 
 # Installation
-IoTCloud-iOSSDK only provides dynamic framework, which are only available on iOS 8+
+thing-if iOSSDK only provides dynamic framework, which are only available on iOS 8+
 
 ## Carthage
 
@@ -24,10 +24,10 @@ $ brew update
 $ brew install carthage
 ```
 
-To integrate IoTCloud-iOSSDK into your Xcode project using Carthage, specify it in your `Cartfile`:
+To integrate thing-if iOSSDK into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "KiiPlatform/IoTCloud-iOSSDK" >= 0.8
+github "KiiPlatform/thing-if-iOSSDK" >= 0.8
 ```
 ## Manually
 
@@ -35,13 +35,13 @@ github "KiiPlatform/IoTCloud-iOSSDK" >= 0.8
 
 If you would like to build framework from the branch other than master, you can build the framework locally.
 
-- Clone the source code of IoTCloud-iOSSDK from Github.
+- Clone the source code of thing-if iOSSDK from Github.
 
 ```bash
-$ git clone https://github.com/KiiPlatform/IoTCloud-iOSSDK.git
+$ git clone https://github.com/KiiPlatform/thing-if-iOSSDK.git
 ```
 
-- Build IoTCloud-iOSSDK locally. If built successfully, a framework named `ThingIFSDK.framework` can be found under folder `IoTCloud-iOSSDK/dist/`
+- Build thinf-if iOSSDK locally. If built successfully, a framework named `ThingIFSDK.framework` can be found under folder `ThingIFSDK/dist/`
 
 ```bash
 $ cd ThingIFSDK
@@ -50,17 +50,10 @@ $ make build
 
 - Import the generated framework to your project.
 
-### Download from Kii Developer Portal
-
-- Download ThingIFSDK from  [Kii Developer Portal](https://developer.kii.com/v2/downloads)
-- Import the Downloaded ThingIFSDK.framework to your project.
-
-# Usage
-
-Please check the [Documentation](http://documentation.kii.com/en/starts/iotsdk/) from Kii Cloud.
-
 # Sample Project
 
-A sample project using ThingIFSDK can be found [here](https://github.com/KiiPlatform/IoTCloud-iOSSample).
+A sample project using thing-if iOSSDK can be found [here](https://github.com/KiiPlatform/thing-if-iOSSample).
 
 # License
+
+thing-if iOSSDK is released under the MIT license. See LICENSE for details.
