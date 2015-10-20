@@ -55,3 +55,5 @@ $ make build
 A sample project using thing-if iOSSDK can be found [here](https://github.com/KiiPlatform/thing-if-iOSSample).
 
 # License
+
+thing-if iOSSDK is released under the MIT license. See LICENSE for details.
