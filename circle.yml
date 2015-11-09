@@ -1,6 +1,8 @@
 machine:
   xcode:
     version: "7.0"
+  ruby:
+    version: 2.1.3p242
   environment:
     default_destination: platform=iOS Simulator,name=iPhone 6,OS=9.0
 
