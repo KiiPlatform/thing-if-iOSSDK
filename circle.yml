@@ -10,6 +10,8 @@ dependencies:
   pre:
     - sudo gem install jazzy
     - sudo gem install ocunit2junit
+    - sudo gem install rubygems-update
+    - sudo update_rubygems
 test:
   pre:
     # Build sdk
