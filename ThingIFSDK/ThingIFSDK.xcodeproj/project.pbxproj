@@ -23,7 +23,6 @@
 /* Begin PBXBuildFile section */
 		7D36B6631BD4D03100D9B821 /* Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6371BD4D03100D9B821 /* Clause.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6641BD4D03100D9B821 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6381BD4D03100D9B821 /* Command.swift */; settings = {ASSET_TAGS = (); }; };
-		7D36B6651BD4D03100D9B821 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D36B6391BD4D03100D9B821 /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 		7D36B66F1BD4D03100D9B821 /* IoTRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6441BD4D03100D9B821 /* IoTRequestOperation.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6701BD4D03100D9B821 /* NetworkObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6451BD4D03100D9B821 /* NetworkObserver.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6711BD4D03100D9B821 /* NSNumber+checkTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6461BD4D03100D9B821 /* NSNumber+checkTypes.swift */; settings = {ASSET_TAGS = (); }; };
@@ -60,7 +59,6 @@
 		7D36B6A41BD4D0CC00D9B821 /* getCommandTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6911BD4D0CC00D9B821 /* getCommandTest.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6A51BD4D0CC00D9B821 /* GetStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6921BD4D0CC00D9B821 /* GetStateTests.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6A61BD4D0CC00D9B821 /* GetTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6931BD4D0CC00D9B821 /* GetTriggerTests.swift */; settings = {ASSET_TAGS = (); }; };
-		7D36B6A71BD4D0CC00D9B821 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7D36B6941BD4D0CC00D9B821 /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 		7D36B6A81BD4D0CC00D9B821 /* IoTCloudSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6951BD4D0CC00D9B821 /* IoTCloudSDKTests.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6A91BD4D0CC00D9B821 /* ListCommandsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6961BD4D0CC00D9B821 /* ListCommandsTests.swift */; settings = {ASSET_TAGS = (); }; };
 		7D36B6AA1BD4D0CC00D9B821 /* ListTriggersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6971BD4D0CC00D9B821 /* ListTriggersTests.swift */; settings = {ASSET_TAGS = (); }; };
@@ -96,7 +94,6 @@
 /* Begin PBXFileReference section */
 		7D36B6371BD4D03100D9B821 /* Clause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Clause.swift; sourceTree = "<group>"; };
 		7D36B6381BD4D03100D9B821 /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
-		7D36B6391BD4D03100D9B821 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7D36B6441BD4D03100D9B821 /* IoTRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTRequestOperation.swift; sourceTree = "<group>"; };
 		7D36B6451BD4D03100D9B821 /* NetworkObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkObserver.swift; sourceTree = "<group>"; };
 		7D36B6461BD4D03100D9B821 /* NSNumber+checkTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNumber+checkTypes.swift"; sourceTree = "<group>"; };
@@ -133,7 +130,6 @@
 		7D36B6911BD4D0CC00D9B821 /* getCommandTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = getCommandTest.swift; sourceTree = "<group>"; };
 		7D36B6921BD4D0CC00D9B821 /* GetStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStateTests.swift; sourceTree = "<group>"; };
 		7D36B6931BD4D0CC00D9B821 /* GetTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTriggerTests.swift; sourceTree = "<group>"; };
-		7D36B6941BD4D0CC00D9B821 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7D36B6951BD4D0CC00D9B821 /* IoTCloudSDKTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTCloudSDKTests.swift; sourceTree = "<group>"; };
 		7D36B6961BD4D0CC00D9B821 /* ListCommandsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCommandsTests.swift; sourceTree = "<group>"; };
 		7D36B6971BD4D0CC00D9B821 /* ListTriggersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTriggersTests.swift; sourceTree = "<group>"; };
@@ -155,9 +151,7 @@
 		7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThingIFSDK.h; sourceTree = "<group>"; };
 		7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFError.swift; sourceTree = "<group>"; };
 		7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThingIFSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7DD44DEA1BD4B7CD00AE0249 /* ThingIFSDK-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ThingIFSDK-Info.plist"; path = "/Users/yongping/Documents/CompanyProjects/thing-if-iOSSDK/IoTCloudSDK/ThingIFSDK-Info.plist"; sourceTree = "<absolute>"; };
 		7DD44E041BD4B88A00AE0249 /* ThingIFSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThingIFSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7DD44E051BD4B88A00AE0249 /* ThingIFSDKTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ThingIFSDKTests-Info.plist"; path = "/Users/yongping/Documents/CompanyProjects/thing-if-iOSSDK/IoTCloudSDK/ThingIFSDKTests-Info.plist"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,8 +178,6 @@
 				7D36B68C1BD4D0CC00D9B821 /* ThingIFSDKTests */,
 				7D36B6361BD4D03100D9B821 /* ThingIFSDK */,
 				7417A3041B65CF8400D116A5 /* Products */,
-				7DD44DEA1BD4B7CD00AE0249 /* ThingIFSDK-Info.plist */,
-				7DD44E051BD4B88A00AE0249 /* ThingIFSDKTests-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -212,7 +204,6 @@
 				7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */,
 				7D36B6371BD4D03100D9B821 /* Clause.swift */,
 				7D36B6381BD4D03100D9B821 /* Command.swift */,
-				7D36B6391BD4D03100D9B821 /* Info.plist */,
 				7D36B6431BD4D03100D9B821 /* IoTOperations */,
 				7D36B6451BD4D03100D9B821 /* NetworkObserver.swift */,
 				7D36B6461BD4D03100D9B821 /* NSNumber+checkTypes.swift */,
@@ -280,7 +271,6 @@
 				7D36B6911BD4D0CC00D9B821 /* getCommandTest.swift */,
 				7D36B6921BD4D0CC00D9B821 /* GetStateTests.swift */,
 				7D36B6931BD4D0CC00D9B821 /* GetTriggerTests.swift */,
-				7D36B6941BD4D0CC00D9B821 /* Info.plist */,
 				7D36B6951BD4D0CC00D9B821 /* IoTCloudSDKTests.swift */,
 				7D36B6961BD4D0CC00D9B821 /* ListCommandsTests.swift */,
 				7D36B6971BD4D0CC00D9B821 /* ListTriggersTests.swift */,
@@ -381,7 +371,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D36B6651BD4D03100D9B821 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,7 +378,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D36B6A71BD4D0CC00D9B821 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
