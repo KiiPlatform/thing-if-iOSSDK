@@ -139,6 +139,7 @@ class OnboardingTests: XCTestCase {
                 if error == nil{
                     XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                     XCTAssertEqual(self.api.target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(target!.accessToken, "BrZ3M9fIqghhqhyiqnxncY6KXEFEZWJaP0894qtzu2E", "access token should equal to expected one")
                 }else {
                     XCTFail("should success")
                 }
@@ -222,6 +223,7 @@ class OnboardingTests: XCTestCase {
                 if error == nil{
                     XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                     XCTAssertEqual(self.api.target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(target!.accessToken, "BrZ3M9fIqghhqhyiqnxncY6KXEFEZWJaP0894qtzu2E", "accessToken should equal to expected one")
                 }else {
                     XCTFail("should success")
                 }
