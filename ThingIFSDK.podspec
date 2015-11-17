@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
 
   s.homepage         = "http://www.kii.com"
   s.license          = 'MIT'
-  s.author           = { "KiiCorp" => "npm-admin@kii.com" }
+  s.author           = { "Kii Cocoapod Admin" => "cocoapod-kii-admin-public@kii.com" }
   s.source           = { :git => "https://github.com/KiiPlatform/thing-if-iOSSDK.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '8.0'
