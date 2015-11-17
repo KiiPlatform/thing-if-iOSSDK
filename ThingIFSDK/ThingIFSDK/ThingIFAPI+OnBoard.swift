@@ -54,7 +54,9 @@ extension ThingIFAPI {
                     
                     var target:Target?
                     if let thingID = response?["thingID"] as? String{
-                        target = Target(typedID: TypedID(type: "THING", id: thingID))
+                        let accessToken = response?["accessToken"] as? String
+                        target = Target(typedID: TypedID(type: "THING", id: thingID), accessToken: accessToken)
+
                         self._target = target
                     }
                     self.saveToUserDefault()
