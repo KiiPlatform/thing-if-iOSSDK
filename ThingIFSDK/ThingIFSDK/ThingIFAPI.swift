@@ -22,6 +22,8 @@ public class ThingIFAPI: NSObject, NSCoding {
     public let appID: String!
     /** The application key found in your Kii developer console */
     public let appKey: String!
+    /** Kii Cloud Application */
+    public let app: App!
     /** owner of target */
     public let owner: Owner!
 
@@ -48,6 +50,7 @@ public class ThingIFAPI: NSObject, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.app, forKey: "app")
         aCoder.encodeObject(self.baseURL, forKey: "baseURL")
         aCoder.encodeObject(self.appID, forKey: "appID")
         aCoder.encodeObject(self.appKey, forKey: "appKey")
@@ -57,7 +60,8 @@ public class ThingIFAPI: NSObject, NSCoding {
         aCoder.encodeObject(self.tag, forKey: "tag")
     }
 
-    public required init(coder aDecoder: NSCoder) {
+    public required init(coder aDecoder: NSCoder){
+        self.app = aDecoder.decodeObjectForKey("app") as! App
         self.baseURL = aDecoder.decodeObjectForKey("baseURL") as! String
         self.appID = aDecoder.decodeObjectForKey("appID") as! String
         self.appKey = aDecoder.decodeObjectForKey("appKey") as! String
@@ -67,10 +71,11 @@ public class ThingIFAPI: NSObject, NSCoding {
         self.tag = aDecoder.decodeObjectForKey("tag") as? String
     }
 
-    init(baseURL: String, appID: String, appKey: String, owner: Owner, tag : String?=nil) {
-        self.baseURL = baseURL
-        self.appID = appID
-        self.appKey = appKey
+    init(app:App, owner: Owner, tag : String?=nil) {
+        self.app = app
+        self.baseURL = app.baseURL
+        self.appID = app.appID
+        self.appKey = app.appKey
         self.owner = owner
         self.tag = tag
         super.init()
@@ -385,7 +390,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     */
     public func copyWithTarget(newTarget: Target) -> ThingIFAPI {
 
-        let newIotapi = ThingIFAPI(baseURL: self.baseURL, appID: self.appID, appKey: self.appKey, owner: self.owner)
+        let newIotapi = ThingIFAPI(app: self.app, owner: self.owner)
 
         newIotapi._target = newTarget
         newIotapi._installationID = self._installationID

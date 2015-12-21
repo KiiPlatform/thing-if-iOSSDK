@@ -36,8 +36,39 @@ public enum Site {
             return "https://api-cn3.kii.com"
         case .SG:
             return "https://api-sg.kii.com"
-        case .CUSTOM(let baseURL):
-            return baseURL
+        case .CUSTOM(let hostName):
+            return "https://" + hostName
+        }
+    }
+
+    /** */
+    public func getHostName() -> String {
+        switch self {
+        case .US:
+            return "api.kii.com"
+        case .JP:
+            return "api-jp.kii.com"
+        case .CN3:
+            return "api-cn3.kii.com"
+        case .SG:
+            return "api-sg.kii.com"
+        case .CUSTOM(let hostName):
+            return hostName
+        }
+    }
+
+    public func getName() -> String {
+        switch self {
+        case .US:
+            return "US"
+        case .JP:
+            return "JP"
+        case .CN3:
+            return "CN3"
+        case .SG:
+            return "SG"
+        case .CUSTOM(_):
+            return "CUSTOM"
         }
     }
 
