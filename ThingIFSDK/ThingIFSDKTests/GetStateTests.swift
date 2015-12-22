@@ -11,21 +11,10 @@ import XCTest
 
 class GetStateTests: XCTestCase {
 
-    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
-
-    let schema = (thingType: "SmartLight-Demo",
-        name: "SmartLight-Demo", version: 1)
-
-    var api: ThingIFAPI!
-
-    let target = Target(typedID: TypedID(type: "THING", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
-
     let deviceToken = "dummyDeviceToken"
 
     override func setUp() {
         super.setUp()
-        api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -33,7 +22,7 @@ class GetStateTests: XCTestCase {
         super.tearDown()
     }
 
-    func onboard(){
+    func onboard(setting:TestSetting){
         let expectation = self.expectationWithDescription("onboardWithVendorThingID")
 
         do{
@@ -54,7 +43,7 @@ class GetStateTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
 
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "appID": "50a62843", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "appID": setting.appID, "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
@@ -63,7 +52,7 @@ class GetStateTests: XCTestCase {
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
+            setting.api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
@@ -79,20 +68,21 @@ class GetStateTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        self.api._installationID = "dummyInstallationID"
+        setting.api._installationID = "dummyInstallationID"
     }
     func testGetStates_success() {
+        let setting = TestSetting()
 
-        self.onboard()
+        self.onboard(setting)
         let expectation = self.expectationWithDescription("testGetStates_success")
 
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
+            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "content-type": "application/json"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -117,7 +107,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
-        api.getState() { (result, error) -> Void in
+        setting.api.getState() { (result, error) -> Void in
 
             XCTAssertNotNil(result,"should not nil")
             XCTAssertEqual(result!.count, dict?.count, "Should be equal")
@@ -139,15 +129,16 @@ class GetStateTests: XCTestCase {
         }
     }
     func testGetStates_http_404() {
-        self.onboard()
+        let setting = TestSetting()
+        self.onboard(setting)
         let expectation = self.expectationWithDescription("testGetStates_http_404")
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
+            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "content-type": "application/json"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -168,7 +159,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
-        api.getState() { (result, error) -> Void in
+        setting.api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -194,16 +185,17 @@ class GetStateTests: XCTestCase {
 
     }
     func testGetStates_http_401() {
-        self.onboard()
+        let setting = TestSetting()
+        self.onboard(setting)
         let expectation = self.expectationWithDescription("testGetStates_http_401")
 
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
+            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "content-type": "application/json"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -224,7 +216,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
-        api.getState() { (result, error) -> Void in
+        setting.api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -251,17 +243,17 @@ class GetStateTests: XCTestCase {
     }
 
     func testGetStates_success_then_fail() {
-
-        self.onboard()
+        let setting = TestSetting()
+        self.onboard(setting)
         iotSession = MockMultipleSession.self
         let expectation = self.expectationWithDescription("testGetStates_success")
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(self.target.typedID.toString())/states"
+            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "content-type": "application/json"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -289,7 +281,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
-        api.getState() { (result, error) -> Void in
+        setting.api.getState() { (result, error) -> Void in
 
             XCTAssertNotNil(result,"should not nil")
             XCTAssertEqual(result!.count, dict?.count, "Should be equal")
@@ -303,7 +295,7 @@ class GetStateTests: XCTestCase {
             }
         }
 
-        api.getState() { (result, error) -> Void in
+        setting.api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -328,12 +320,12 @@ class GetStateTests: XCTestCase {
     }
 
     func testGetStates_target_not_available_error() {
-
+        let setting = TestSetting()
         let expectation = self.expectationWithDescription("testGetStates_target_not_available_error")
 
-        api.getState() { (result, error) -> Void in
+        setting.api.getState() { (result, error) -> Void in
 
-            XCTAssertNil(self.api.target)
+            XCTAssertNil(setting.api.target)
 
             if error == nil{
                 XCTFail("should fail")

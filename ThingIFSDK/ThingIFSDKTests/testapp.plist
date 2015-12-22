@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>thingType</key>
+	<string>SmartLight</string>
+	<key>schemaVersion</key>
+	<integer>1</integer>
+	<key>schema</key>
+	<string>SmartLight-Demo</string>
+	<key>thingID</key>
+	<string>th.0267251d9d60-1858-5e11-3dc3-00f3f0b5</string>
+	<key>ownerToken</key>
+	<string>BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc</string>
+	<key>ownerID</key>
+	<string>53ae324be5a0-2b09-5e11-6cc3-0862359e</string>
+	<key>hostName</key>
+	<string>api-development-jp.internal.kii.com</string>
+	<key>appKey</key>
+	<string>2bde7d4e3eed1ad62c306dd2144bb2b0</string>
+	<key>appID</key>
+	<string>50a62843</string>
+</dict>
+</plist>

@@ -9,21 +9,9 @@ import XCTest
 @testable import ThingIFSDK
 
 class DeleteTriggerTests: XCTestCase {
-    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
-
-    let schema = (thingType: "SmartLight-Demo",
-        name: "SmartLight-Demo", version: 1)
-
-    let baseURLString = "https://small-tests.internal.kii.com"
-
-    var api: ThingIFAPI!
-
-    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
 
     override func setUp() {
         super.setUp()
-        api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -31,10 +19,12 @@ class DeleteTriggerTests: XCTestCase {
     }
 
     func testDeleteTrigger_success() {
+        let setting:TestSetting = TestSetting()
+        let api = setting.api
         let expectation = self.expectationWithDescription("enableTriggerTests")
 
         // perform onboarding
-        api._target = target
+        api._target = setting.target
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
@@ -42,12 +32,12 @@ class DeleteTriggerTests: XCTestCase {
         let deleteRequestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "DELETE")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+            let expectedHeader = ["authorization": "Bearer \(setting.ownerToken)", "Content-type":"application/json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
         }
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:self.baseURLString)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
         MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         MockSession.requestVerifier = deleteRequestVerifier
         iotSession = MockSession.self
@@ -70,25 +60,29 @@ class DeleteTriggerTests: XCTestCase {
     }
 
     func testDeleteTrigger_404_error() {
+        let setting:TestSetting = TestSetting()
+        let api = setting.api
+        let owner = setting.owner
+        let target = setting.target
         let expectation = self.expectationWithDescription("enableTrigger404Error")
 
         // perform onboarding
-        api._target = target
+        api._target = setting.target
 
         do{
-            let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+            let triggerID = "triggerID"
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
                 "message" : "Target \(target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "DELETE")
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                let expectedHeader = ["authorization": "Bearer \(owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
@@ -124,6 +118,8 @@ class DeleteTriggerTests: XCTestCase {
     }
 
     func testDeleteTrigger_trigger_not_available_error() {
+        let setting:TestSetting = TestSetting()
+        let api = setting.api
         let expectation = self.expectationWithDescription("testDeleteTrigger_trigger_not_available_error")
 
         let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
