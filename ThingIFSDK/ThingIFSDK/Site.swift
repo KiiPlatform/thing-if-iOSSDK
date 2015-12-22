@@ -20,8 +20,6 @@ public enum Site {
     case CN3
     /** Use cloud in Singapore. */
     case SG
-    /** Use cloud with custom baseURL. */
-    case CUSTOM(String)
 
     /** Get base url of Site
     - Returns: Base URL string of Site.
@@ -36,8 +34,6 @@ public enum Site {
             return "https://api-cn3.kii.com"
         case .SG:
             return "https://api-sg.kii.com"
-        case .CUSTOM(let hostName):
-            return "https://" + hostName
         }
     }
 
@@ -52,8 +48,6 @@ public enum Site {
             return "api-cn3.kii.com"
         case .SG:
             return "api-sg.kii.com"
-        case .CUSTOM(let hostName):
-            return hostName
         }
     }
 
@@ -67,8 +61,6 @@ public enum Site {
             return "CN3"
         case .SG:
             return "SG"
-        case .CUSTOM(_):
-            return "CUSTOM"
         }
     }
 
