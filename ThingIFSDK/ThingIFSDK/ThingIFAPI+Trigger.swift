@@ -82,6 +82,7 @@ extension ThingIFAPI {
 
         // generate body
         let requestBodyDict = NSMutableDictionary()
+        requestBodyDict["triggersWhat"] = "COMMAND"
 
         // generate predicate
             if predicate != nil {
