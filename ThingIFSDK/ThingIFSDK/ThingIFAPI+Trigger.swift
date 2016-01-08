@@ -39,6 +39,7 @@ extension ThingIFAPI {
 
         // generate body
         let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": commandDict])
+        requestBodyDict["triggersWhat"] = "COMMAND"
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
@@ -81,6 +82,7 @@ extension ThingIFAPI {
 
         // generate body
         let requestBodyDict = NSMutableDictionary()
+        requestBodyDict["triggersWhat"] = "COMMAND"
 
         // generate predicate
             if predicate != nil {
