@@ -101,6 +101,7 @@ class PatchTriggerTests: XCTestCase {
 
         // verify patch request
         var expectedBodyDict = Dictionary<String, AnyObject>()
+        expectedBodyDict["triggersWhat"] = "COMMAND"
         if let expectedCommandDict = testcase.getExpectedCommandDict(){
             expectedBodyDict["command"] = expectedCommandDict
         }

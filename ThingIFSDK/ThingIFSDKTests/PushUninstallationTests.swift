@@ -55,7 +55,7 @@ class PushUninstallationTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
                 
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "appID": "50a62843", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
@@ -94,7 +94,7 @@ class PushUninstallationTests: XCTestCase {
             let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "appID": "50a62843"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -128,7 +128,7 @@ class PushUninstallationTests: XCTestCase {
             let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "appID": setting.appID]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -185,7 +185,7 @@ class PushUninstallationTests: XCTestCase {
             let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "appID": setting.appID]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }

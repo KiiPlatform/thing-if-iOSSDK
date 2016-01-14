@@ -25,7 +25,7 @@ extension ThingIFAPI {
         requestBodyDict["development"] = NSNumber(bool: development!)
         kiiVerboseLog("Request body",requestBodyDict)
         // generate header
-        var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
+        var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
         
         requestHeaderDict["Content-type"] = "application/vnd.kii.InstallationCreationRequest+json"
         
@@ -63,7 +63,7 @@ extension ThingIFAPI {
         let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(idParam!)"
         
         // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
         
         let request = buildDefaultRequest(.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
             

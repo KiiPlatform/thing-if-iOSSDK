@@ -55,7 +55,7 @@ class PushInstallationTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
                 
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "appID": setting.appID, "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
@@ -92,7 +92,7 @@ class PushInstallationTests: XCTestCase {
             XCTAssertEqual(request.HTTPMethod, "POST")
             
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "appID": setting.appID, "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -139,7 +139,7 @@ class PushInstallationTests: XCTestCase {
             XCTAssertEqual(request.HTTPMethod, "POST")
             
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "appID": setting.appID, "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -199,7 +199,7 @@ class PushInstallationTests: XCTestCase {
             XCTAssertEqual(request.HTTPMethod, "POST")
             
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "appID": setting.appID, "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -259,7 +259,7 @@ class PushInstallationTests: XCTestCase {
             XCTAssertEqual(request.HTTPMethod, "POST")
             
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "appID": setting.appID, "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/vnd.kii.InstallationCreationRequest+json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
