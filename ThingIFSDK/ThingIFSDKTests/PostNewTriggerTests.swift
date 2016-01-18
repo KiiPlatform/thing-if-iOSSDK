@@ -110,7 +110,7 @@ class PostNewTriggerTests: XCTestCase {
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.typedID.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":expectedActions]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.typedID.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":expectedActions, "triggersWhat":"COMMAND"]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
@@ -178,7 +178,7 @@ class PostNewTriggerTests: XCTestCase {
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.typedID.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":actions]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.typedID.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":actions, "triggersWhat":"COMMAND"]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
