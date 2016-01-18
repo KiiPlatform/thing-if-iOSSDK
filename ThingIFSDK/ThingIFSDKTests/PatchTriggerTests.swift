@@ -73,7 +73,7 @@ class PatchTriggerTests: XCTestCase {
             if predicate == nil {
                 return nil
             }
-            return ["eventSource":"states", "triggersWhen":expectedTriggersWhenString!, "condition":expectedStatementDict!]
+            return ["eventSource":"STATES", "triggersWhen":expectedTriggersWhenString!, "condition":expectedStatementDict!]
         }
     }
 
@@ -136,7 +136,7 @@ class PatchTriggerTests: XCTestCase {
         let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
         // mock get response
         let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.typedID.toString(), "issuer": self.owner.typedID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
-        let dict = ["triggerID": expectedTriggerID, "predicate": ["eventSource":"states", "triggersWhen":"CONDITION_FALSE_TO_TRUE", "condition": ["type":"eq","field":"color", "value": 0]], "command": commandDict, "disabled": false]
+        let dict = ["triggerID": expectedTriggerID, "predicate": ["eventSource":"STATES", "triggersWhen":"CONDITION_FALSE_TO_TRUE", "condition": ["type":"eq","field":"color", "value": 0]], "command": commandDict, "disabled": false]
         var jsonData: NSData?
         do {
             jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)

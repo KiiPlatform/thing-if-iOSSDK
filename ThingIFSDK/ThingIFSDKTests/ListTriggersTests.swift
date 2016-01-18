@@ -40,7 +40,7 @@ class ListTriggersTests: XCTestCase {
         let enabled: Bool
 
         func getPredicateDict() -> Dictionary<String, AnyObject> {
-            return ["eventSource":"states", "triggersWhen":triggersWhenString, "condition":statement]
+            return ["eventSource":"STATES", "triggersWhen":triggersWhenString, "condition":statement]
         }
 
     }
@@ -74,7 +74,7 @@ class ListTriggersTests: XCTestCase {
         do{
             let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let expectedCommandObject = Command(commandID: nil, targetID: self.target.typedID, issuerID: self.owner.typedID, schemaName: self.schema.name, schemaVersion: self.schema.version, actions: expectedActionsDict, actionResults: nil, commandState: nil)
-            let eventSource = "states"
+            let eventSource = "STATES"
 
             // mock response
             let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.typedID.toString(), "issuer": self.owner.typedID.toString(), "actions": expectedActionsDict]
