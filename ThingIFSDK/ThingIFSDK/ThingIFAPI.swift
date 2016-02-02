@@ -261,6 +261,28 @@ public class ThingIFAPI: NSObject, NSCoding {
     {
         _postNewTrigger(schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
     }
+    
+    /** Post new Trigger to IoT Cloud.
+     
+     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+     
+     - Parameter schemaName: Name of the Schema of which the Command specified in
+     Trigger is defined.
+     - Parameter schemaVersion: Version of the Schema of which the Command
+     specified in Trigger is defined.
+     - Parameter serverCode: Server code to be executed by the Trigger.
+     - Parameter predicate: Predicate of the Command.
+     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an ThingIFError instance when failed.
+     */
+    public func postNewTrigger(
+        serverCode:ServerCode,
+        predicate:Predicate,
+        completionHandler: (Trigger?, ThingIFError?)-> Void
+        )
+    {
+        // TODO
+    }
+
 
     /** Get specified trigger
 
