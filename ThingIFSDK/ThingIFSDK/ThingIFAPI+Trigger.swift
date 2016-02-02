@@ -295,6 +295,53 @@ extension ThingIFAPI {
         let operation = IoTRequestOperation(request: request)
         operationQueue.addOperation(operation)
     }
+    
+    func _listTriggeredServerCodeResults(
+        triggerID:String,
+        bestEffortLimit:Int?,
+        paginationKey:String?,
+        completionHandler: (results:[TriggeredServerCodeResult]?, paginationKey:String?, error: ThingIFError?)-> Void
+    )
+    {
+        if self.target == nil {
+            completionHandler(results: nil, paginationKey: nil, error: ThingIFError.TARGET_NOT_AVAILABLE)
+            return
+        }
+        
+        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)/results/server-code"
+
+        if paginationKey != nil && bestEffortLimit != nil{
+            requestURL += "?paginattriggersionKey=\(paginationKey!)&&bestEffortLimit=\(bestEffortLimit!)"
+        }else if bestEffortLimit != nil {
+            requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
+        }else if paginationKey != nil {
+            requestURL += "?paginationKey=\(paginationKey!)"
+        }
+        
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+        
+        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+            var results: [TriggeredServerCodeResult]?
+            var nextPaginationKey: String?
+            if let responseDict = response {
+                nextPaginationKey = responseDict["nextPaginationKey"] as? String
+                if let resultDicts = responseDict["triggerServerCodeResults"] as? NSArray {
+                    results = [TriggeredServerCodeResult]()
+                    for resultDict in resultDicts {
+                        if let result = TriggeredServerCodeResult.resultWithNSDict(resultDict as! NSDictionary){
+                            results!.append(result)
+                        }
+                    }
+                }
+            }
+            dispatch_async(dispatch_get_main_queue()) {
+                completionHandler(results: results, paginationKey: nextPaginationKey, error: error)
+            }
+        })
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
+    }
 
     func _listTriggers(
         bestEffortLimit:Int?,

@@ -44,4 +44,18 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
         self.errorMessage = errorMessage
     }
 
+    
+    class func resultWithNSDict(resultDict: NSDictionary) -> TriggeredServerCodeResult?{
+        let succeeded = resultDict["succeeded"] as? Bool
+        let returnedValue = resultDict["returnedValue"] as? String
+        let executedAt = resultDict["executedAt"] as? Int64
+        let errorMessage = resultDict["errorMessage"] as? String
+        
+        var result: TriggeredServerCodeResult?
+        if succeeded != nil {
+            result = TriggeredServerCodeResult(succeeded:succeeded!, returnedValue:returnedValue, executedAt:executedAt!, errorMessage:errorMessage)
+        }
+        return result
+    }
+
 }

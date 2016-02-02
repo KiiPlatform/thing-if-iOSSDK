@@ -411,18 +411,20 @@ public class ThingIFAPI: NSObject, NSCoding {
      Response. If omitted default limit internally defined is applied.
      Meaning of 'bestEffort' is if specified value is greater than default limit,
      default limit is applied.
+     - Parameter triggerID: ID of the Trigger
      - Parameter paginationKey: If there is further page to be retrieved, this
      API returns paginationKey in 2nd element. Specifying this value in next
      call in the argument results continue to get the results from the next page.
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Results instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
      */
     public func listTriggeredServerCodeResults(
+        triggerID:String,
         bestEffortLimit:Int?,
         paginationKey:String?,
         completionHandler: (results:[TriggeredServerCodeResult]?, paginationKey:String?, error: ThingIFError?)-> Void
         )
     {
-        // TODO
+        _listTriggeredServerCodeResults(triggerID, bestEffortLimit:bestEffortLimit, paginationKey:paginationKey, completionHandler: completionHandler)
     }
 
 
