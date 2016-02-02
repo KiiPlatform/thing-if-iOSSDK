@@ -27,6 +27,18 @@ public class Trigger: NSObject, NSCoding {
         self.serverCode = aDecoder.decodeObjectForKey("serverCode") as? ServerCode
         // TODO: add aditional decoder
     }
+    
+    var triggersWhat: TriggersWhat? {
+        get {
+            if self.command != nil {
+                return TriggersWhat.COMMAND
+            } else if self.serverCode != nil {
+                return TriggersWhat.SERVER_CODE
+            } else {
+                return nil
+            }
+        }
+    }
 
     class func triggerWithNSDict(triggerDict: NSDictionary) -> Trigger?{
         let triggerID = triggerDict["triggerID"] as? String
