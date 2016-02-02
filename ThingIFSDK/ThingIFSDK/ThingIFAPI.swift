@@ -280,7 +280,7 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        // TODO
+        _postNewTrigger(serverCode, predicate: predicate, completionHandler: completionHandler)
     }
 
 
@@ -343,7 +343,7 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        // TODO
+        _patchTrigger(triggerID, serverCode: serverCode, predicate: predicate, completionHandler: completionHandler)
     }
 
     /** Enable/Disable a registered Trigger

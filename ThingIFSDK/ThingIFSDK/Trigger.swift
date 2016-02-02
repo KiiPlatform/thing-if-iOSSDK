@@ -458,6 +458,17 @@ public class ServerCode : NSObject, NSCoding {
         self.parameters = parameters
     }
 
+    public func toNSDictionary() -> NSDictionary {
+        let dict = NSMutableDictionary(dictionary: ["endpoint": self.endpoint, "executorAccessToken": self.executorAccessToken])
+        if self.targetAppID != nil {
+            dict["targetAppID"] = self.targetAppID
+        }
+        if self.parameters != nil {
+            dict["parameters"] = self.parameters
+        }
+        return dict
+    }
+
     public override func isEqual(object: AnyObject?) -> Bool {
         guard let aServerCode = object as? ServerCode else{
             return false

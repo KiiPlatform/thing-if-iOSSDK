@@ -35,8 +35,8 @@ extension ThingIFAPI {
                 }
             })
             
-            let getStateRequestOperation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(getStateRequestOperation)
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
     }
     
 }

@@ -42,8 +42,8 @@ extension ThingIFAPI {
                     completionHandler(self._installationID, error)
                 }
             })
-            let installPushRequestOperation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(installPushRequestOperation)
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
             
         }catch(let e){
             kiiSevereLog(e)
@@ -75,8 +75,8 @@ extension ThingIFAPI {
                 completionHandler( error)
             }
         })
-        let uninstallPushRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(uninstallPushRequestOperation)
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
 
     }
 }

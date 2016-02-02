@@ -46,8 +46,8 @@ extension ThingIFAPI {
                     completionHandler(command, error)
                 }
             })
-            let onboardRequestOperation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(onboardRequestOperation)
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
             
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
@@ -81,8 +81,8 @@ extension ThingIFAPI {
             }
         })
         
-        let onboardRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(onboardRequestOperation)
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
     
     func _listCommands(
@@ -126,7 +126,7 @@ extension ThingIFAPI {
             }
         })
         
-        let onboardRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(onboardRequestOperation)
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 }

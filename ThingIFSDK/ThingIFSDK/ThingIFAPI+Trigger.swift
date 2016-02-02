@@ -38,8 +38,7 @@ extension ThingIFAPI {
         commandDict.setObject(actions, forKey: "actions")
 
         // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": commandDict])
-        requestBodyDict["triggersWhat"] = "COMMAND"
+        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": commandDict, "triggersWhat": TriggersWhat.COMMAND.toString()])
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
@@ -53,8 +52,51 @@ extension ThingIFAPI {
                     completionHandler(trigger, error)
                 }
             })
-            let onboardRequestOperation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(onboardRequestOperation)
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
+        }catch(_){
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+        }
+    }
+    func _postNewTrigger(
+        serverCode:ServerCode,
+        predicate:Predicate,
+        completionHandler: (Trigger?, ThingIFError?)-> Void
+        )
+    {
+        if predicate is SchedulePredicate {
+            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            return
+        }
+        
+        if self.target == nil {
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            return
+        }
+        
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers"
+        
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+        
+        // generate body
+        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "serverCode": serverCode.toNSDictionary(), "triggersWhat": TriggersWhat.SERVER_CODE.toString()])
+        do{
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // do request
+            let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
+                var trigger: Trigger?
+                if let triggerID = response?["triggerID"] as? String{
+                    trigger = Trigger(triggerID: triggerID, targetID: self.target!.typedID, enabled: true, predicate: predicate, serverCode: serverCode)
+                }
+                
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler(trigger, error)
+                }
+            })
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
             completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
@@ -123,14 +165,23 @@ extension ThingIFAPI {
                     }
                 }
             })
-            let onboardRequestOperation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(onboardRequestOperation)
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
             completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
         }
     }
 
+    func _patchTrigger(
+        triggerID:String,
+        serverCode:ServerCode,
+        predicate:Predicate?,
+        completionHandler: (Trigger?, ThingIFError?) -> Void
+        )
+    {
+    }
+    
     func _enableTrigger(
         triggerID:String,
         enable:Bool,
@@ -165,8 +216,8 @@ extension ThingIFAPI {
             }
         })
 
-        let onboardRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(onboardRequestOperation)
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
 
     }
 
@@ -196,8 +247,8 @@ extension ThingIFAPI {
             }
         })
 
-        let onboardRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(onboardRequestOperation)
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 
     func _listTriggers(
@@ -242,8 +293,8 @@ extension ThingIFAPI {
                 completionHandler(triggers: triggers, paginationKey: nextPaginationKey, error: error)
             }
         })
-        let onboardRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(onboardRequestOperation)
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 
     func _getTrigger(
@@ -272,7 +323,7 @@ extension ThingIFAPI {
             }
         })
 
-        let onboardRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(onboardRequestOperation)
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 }
