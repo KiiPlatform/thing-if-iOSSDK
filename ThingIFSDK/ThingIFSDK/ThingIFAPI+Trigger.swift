@@ -124,7 +124,7 @@ extension ThingIFAPI {
 
         // generate body
         let requestBodyDict = NSMutableDictionary()
-        requestBodyDict["triggersWhat"] = "COMMAND"
+        requestBodyDict["triggersWhat"] = TriggersWhat.COMMAND.toString()
 
         // generate predicate
             if predicate != nil {
@@ -132,7 +132,7 @@ extension ThingIFAPI {
                     completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
                     return
                 }
-                requestBodyDict.setObject(predicate!.toNSDictionary(), forKey: "predicate")
+                requestBodyDict["predicate"] = predicate!.toNSDictionary()
             }
 
         // generate command
@@ -147,7 +147,7 @@ extension ThingIFAPI {
             if actions != nil {
                 commandDict["actions"] = actions
             }
-            requestBodyDict.setObject(commandDict, forKey: "command")
+            requestBodyDict["command"] = commandDict
         }
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
@@ -180,6 +180,51 @@ extension ThingIFAPI {
         completionHandler: (Trigger?, ThingIFError?) -> Void
         )
     {
+        if self.target == nil {
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            return
+        }
+        
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)"
+        
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+        
+        // generate body
+        let requestBodyDict = NSMutableDictionary()
+        requestBodyDict["triggersWhat"] = TriggersWhat.SERVER_CODE.toString()
+        
+        // generate predicate
+        if predicate != nil {
+            if predicate is SchedulePredicate {
+                completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+                return
+            }
+            requestBodyDict["predicate"] = predicate!.toNSDictionary()
+        }
+        requestBodyDict["serverCode"] = serverCode.toNSDictionary()
+        do{
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // do request
+            let request = buildDefaultRequest(.PATCH,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
+                if error == nil {
+                    self._getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
+                        dispatch_async(dispatch_get_main_queue()) {
+                            completionHandler(updatedTrigger, error2)
+                        }
+                    })
+                }else{
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler(nil, error)
+                    }
+                }
+            })
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
+        }catch(_){
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+        }
     }
     
     func _enableTrigger(
