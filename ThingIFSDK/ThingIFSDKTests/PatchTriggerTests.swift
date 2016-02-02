@@ -171,10 +171,9 @@ class PatchTriggerTests: XCTestCase {
             if testcase.success {
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
-                    XCTAssertEqual(trigger!.targetID.toString(), self.target.typedID.toString(), tag)
                     XCTAssertEqual(trigger!.enabled, true, tag)
                     XCTAssertNotNil(trigger!.predicate, tag)
-                    XCTAssertEqual(trigger!.command.commandID, "", tag)
+                    XCTAssertEqual(trigger!.command!.commandID, "", tag)
                 }else {
                     XCTFail("should success for \(tag)")
                 }

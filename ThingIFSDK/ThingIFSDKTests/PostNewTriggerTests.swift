@@ -126,10 +126,9 @@ class PostNewTriggerTests: XCTestCase {
             api.postNewTrigger(schema.name, schemaVersion: schema.version, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
-                    XCTAssertEqual(trigger!.targetID.toString(), self.target.typedID.toString(), tag)
                     XCTAssertEqual(trigger!.enabled, true, tag)
                     XCTAssertNotNil(trigger!.predicate, tag)
-                    XCTAssertEqual(trigger!.command.commandID, "", tag)
+                    XCTAssertEqual(trigger!.command!.commandID, "", tag)
                 }else {
                     XCTFail("should success for \(tag)")
                 }

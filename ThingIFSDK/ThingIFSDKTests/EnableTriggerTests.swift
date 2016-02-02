@@ -75,10 +75,9 @@ class EnableTriggerTests: XCTestCase {
         api.enableTrigger(expectedTriggerID, enable: true) { (trigger, error) -> Void in
             if error == nil{
                 XCTAssertEqual(trigger!.triggerID, expectedTriggerID)
-                XCTAssertEqual(trigger!.targetID.toString(), self.target.typedID.toString())
                 XCTAssertEqual(trigger!.enabled, true)
                 XCTAssertNotNil(trigger!.predicate)
-                XCTAssertEqual(trigger!.command.commandID, "")
+                XCTAssertEqual(trigger!.command!.commandID, "")
             }else {
                 XCTFail("should success")
             }

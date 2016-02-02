@@ -114,7 +114,7 @@ class ListTriggersTests: XCTestCase {
                             do {
                                 // verify actions dictionary
                                 let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(expectedActionsDict, options: NSJSONWritingOptions(rawValue: 0))
-                                let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger.command.actions, options: NSJSONWritingOptions(rawValue: 0))
+                                let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger.command!.actions, options: NSJSONWritingOptions(rawValue: 0))
                                 XCTAssertTrue(expectedActionsData == actualActionsData)
 
                                 // verify predicate

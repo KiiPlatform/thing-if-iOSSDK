@@ -11,7 +11,6 @@ public class Trigger: NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.triggerID, forKey: "triggerID")
-        aCoder.encodeObject(self.targetID, forKey: "targetID")
         aCoder.encodeObject(self.command, forKey: "command")
         aCoder.encodeObject(self.serverCode, forKey: "serverCode")
         aCoder.encodeBool(self.enabled, forKey: "enabled")
@@ -20,7 +19,6 @@ public class Trigger: NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         self.triggerID = aDecoder.decodeObjectForKey("triggerID") as! String
-        self.targetID = aDecoder.decodeObjectForKey("targetID") as! TypedID
         self.enabled = aDecoder.decodeBoolForKey("enabled")
         self.predicate = Predicate()
         self.command = aDecoder.decodeObjectForKey("command") as? Command
@@ -45,10 +43,14 @@ public class Trigger: NSObject, NSCoding {
         let disabled = triggerDict["disabled"] as? Bool
         var predicate: Predicate?
         var command: Command?
+        var serverCode: ServerCode?
         var trigger: Trigger?
 
         if let commandDict = triggerDict["command"] as? NSDictionary {
             command = Command.commandWithNSDictionary(commandDict)
+        }
+        if let serverCodeDict = triggerDict["serverCode"] as? NSDictionary {
+            serverCode = ServerCode.serverCodeWithNSDictionary(serverCodeDict)
         }
 
         if let predicateDict = triggerDict["predicate"] as? NSDictionary{
@@ -65,15 +67,17 @@ public class Trigger: NSObject, NSCoding {
             }
         }
         if triggerID != nil && predicate != nil && command != nil && disabled != nil{
-            trigger = Trigger(triggerID: triggerID!, targetID: command!.targetID, enabled: !(disabled!), predicate: predicate!, command: command!)
+            trigger = Trigger(triggerID: triggerID!, enabled: !(disabled!), predicate: predicate!, command: command!)
         }
+        if triggerID != nil && predicate != nil && serverCode != nil && disabled != nil{
+            trigger = Trigger(triggerID: triggerID!, enabled: !(disabled!), predicate: predicate!, serverCode: serverCode!)
+        }
+        
         return trigger
     }
 
     /** ID of the Trigger */
     public var triggerID: String
-    /** ID of the Target */
-    public var targetID: TypedID
     /** Flag indicate whether the Trigger is enabled */
     public var enabled: Bool
     /** Predicate of the Trigger */
@@ -86,7 +90,6 @@ public class Trigger: NSObject, NSCoding {
     public override init() {
         // TODO: implement it with proper initializer.
         self.triggerID = ""
-        self.targetID = TypedID(type:"",id:"")
         self.enabled = false
         self.predicate = Predicate()
         self.command = nil
@@ -96,14 +99,12 @@ public class Trigger: NSObject, NSCoding {
     /** Init Trigger with Command
 
     - Parameter triggerID: ID of trigger
-    - Parameter targetID: ID of target
     - Parameter enabled: True to enable trigger
     - Parameter predicate: Predicate instance
     - Parameter command: Command instance
     */
-    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command) {
+    public init(triggerID: String, enabled: Bool, predicate: Predicate, command: Command) {
         self.triggerID = triggerID
-        self.targetID = targetID
         self.enabled = enabled
         self.predicate = predicate
         self.command = command
@@ -112,14 +113,12 @@ public class Trigger: NSObject, NSCoding {
     /** Init Trigger with Server code
      
      - Parameter triggerID: ID of trigger
-     - Parameter targetID: ID of target
      - Parameter enabled: True to enable trigger
      - Parameter predicate: Predicate instance
      - Parameter serverCode: ServerCode instance
      */
-    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, serverCode: ServerCode) {
+    public init(triggerID: String, enabled: Bool, predicate: Predicate, serverCode: ServerCode) {
         self.triggerID = triggerID
-        self.targetID = targetID
         self.enabled = enabled
         self.predicate = predicate
         self.command = nil
@@ -131,8 +130,7 @@ public class Trigger: NSObject, NSCoding {
             return false
         }
 
-        return self.targetID == aTrigger.targetID &&
-            self.enabled == aTrigger.enabled &&
+        return self.enabled == aTrigger.enabled &&
             self.command == aTrigger.command &&
             self.serverCode == aTrigger.serverCode
     }
@@ -479,5 +477,18 @@ public class ServerCode : NSObject, NSCoding {
             NSDictionary(dictionary: self.parameters!).isEqualToDictionary(aServerCode.parameters!)
         
     }
+    
+    class func serverCodeWithNSDictionary(nsDict: NSDictionary!) -> ServerCode?{
+        let endpoint = nsDict["endpoint"] as? String
+        let executorAccessToken = nsDict["executorAccessToken"] as? String
+        let targetAppID = nsDict["targetAppID"] as? String
+        let parameters = nsDict["parameters"] as? Dictionary<String, AnyObject>
+        var serverCode: ServerCode?
+        if (endpoint != nil && executorAccessToken != nil) {
+            serverCode = ServerCode(endpoint:endpoint!, executorAccessToken:executorAccessToken!, targetAppID:targetAppID, parameters:parameters)
+        }
+        return serverCode
+    }
+
 }
 

@@ -117,7 +117,7 @@ class GetTriggerTests: XCTestCase {
 
                     do {
                         let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(expectedActionsDict, options: NSJSONWritingOptions(rawValue: 0))
-                        let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger!.command.actions, options: NSJSONWritingOptions(rawValue: 0))
+                        let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger!.command!.actions, options: NSJSONWritingOptions(rawValue: 0))
                         XCTAssertTrue(expectedActionsData == actualActionsData)
 
                         let expectedPredicteData = try NSJSONSerialization.dataWithJSONObject(expectedPredicateDict, options: NSJSONWritingOptions(rawValue: 0))
