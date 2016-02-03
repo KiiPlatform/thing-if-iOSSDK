@@ -12,6 +12,15 @@ import XCTest
 
 extension XCTestCase {
     
+    func verifyDict(expectedDict:Dictionary<String, AnyObject>, actualDict: Dictionary<String, AnyObject>){
+        let s = "expected=" + expectedDict.description + "actual" + actualDict.description
+        XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqualToDictionary(actualDict), s)
+    }
+    func verifyNsDict(expectedDict:NSDictionary, actualDict:NSDictionary){
+        let s = "expected=" + expectedDict.description + "actual" + actualDict.description
+        XCTAssertTrue(expectedDict.isEqualToDictionary(actualDict as [NSObject : AnyObject]), s)
+    }
+    
     func verifyDict(expectedDict:Dictionary<String, AnyObject>, actualData: NSData){
         
         do{
