@@ -56,6 +56,17 @@ class EntitySerializationTests: XCTestCase {
         let aTrigger = Trigger()
         self.doSerializationTest(aTrigger)
     }
+    // ServerCode
+    func testServerCode_NSUserDefaultSerialization() {
+        let parameters : Dictionary = ["arg1":"abc", "arg2":1234, "arg3":true]
+        let aServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "123456789abcde", targetAppID: "abcdefghi", parameters: parameters)
+        self.doSerializationTest(aServerCode)
+    }
+    // TriggeredServerCodeResult
+    func testTriggeredServerCodeResult_NSUserDefaultSerialization() {
+        let aTriggeredServerCodeResult = TriggeredServerCodeResult(succeeded: true, returnedValue: "{\"value\":50}", executedAt: 1454474985511, errorMessage: nil)
+        self.doSerializationTest(aTriggeredServerCodeResult)
+    }
     //Target
     func testTarget_NSUserDefaultSerialization() {
         let aTypedID = TypedID(type: "camera", id: "cameraID")

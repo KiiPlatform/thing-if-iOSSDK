@@ -13,9 +13,9 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
     
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        self.succeeded = aDecoder.decodeObjectForKey("succeeded") as! Bool
+        self.succeeded = aDecoder.decodeBoolForKey("succeeded")
         self.returnedValue = aDecoder.decodeObjectForKey("returnedValue") as? String
-        self.executedAt = aDecoder.decodeObjectForKey("executedAt") as! Int64
+        self.executedAt = aDecoder.decodeInt64ForKey("executedAt")
         self.errorMessage = aDecoder.decodeObjectForKey("errorMessage") as? String
         // TODO: add aditional decoder
     }
@@ -42,6 +42,16 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
         self.returnedValue = returnedValue
         self.executedAt = executedAt
         self.errorMessage = errorMessage
+    }
+
+    public override func isEqual(object: AnyObject?) -> Bool {
+        guard let aResult = object as? TriggeredServerCodeResult else{
+            return false
+        }
+        return self.succeeded == aResult.succeeded &&
+            self.returnedValue == aResult.returnedValue &&
+            self.executedAt == aResult.executedAt &&
+            self.errorMessage == aResult.errorMessage
     }
 
     
