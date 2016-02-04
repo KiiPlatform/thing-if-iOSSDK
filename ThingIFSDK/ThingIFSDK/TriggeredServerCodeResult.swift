@@ -7,7 +7,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
     public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeBool(self.succeeded, forKey: "succeeded")
         aCoder.encodeObject(self.returnedValue, forKey: "returnedValue")
-        aCoder.encodeInt64(self.executedAt, forKey: "executedAt")
+        aCoder.encodeInt64(self.executedAt.longLongValue, forKey: "executedAt")
         aCoder.encodeObject(self.errorMessage, forKey: "errorMessage")
     }
     
@@ -15,7 +15,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
     public required init(coder aDecoder: NSCoder) {
         self.succeeded = aDecoder.decodeBoolForKey("succeeded")
         self.returnedValue = aDecoder.decodeObjectForKey("returnedValue") as? String
-        self.executedAt = aDecoder.decodeInt64ForKey("executedAt")
+        self.executedAt = NSNumber(longLong: aDecoder.decodeInt64ForKey("executedAt"))
         self.errorMessage = aDecoder.decodeObjectForKey("errorMessage") as? String
         // TODO: add aditional decoder
     }
@@ -25,7 +25,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
     /** Returned value from server code */
     public var returnedValue: String?
     /** Timestamp of the execution */
-    public var executedAt: Int64
+    public var executedAt: NSNumber
     /** Error message of the invocation if any */
     public var errorMessage: String?
     
@@ -37,7 +37,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
      - Parameter executedAt: Timestamp of the execution
      - Parameter errorMessage: Error message of the invocation if any
      */
-    public init(succeeded: Bool, returnedValue: String?, executedAt: Int64, errorMessage: String?) {
+    public init(succeeded: Bool, returnedValue: String?, executedAt: NSNumber, errorMessage: String?) {
         self.succeeded = succeeded
         self.returnedValue = returnedValue
         self.executedAt = executedAt
@@ -58,7 +58,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
     class func resultWithNSDict(resultDict: NSDictionary) -> TriggeredServerCodeResult?{
         let succeeded = resultDict["succeeded"] as? Bool
         let returnedValue = resultDict["returnedValue"] as? String
-        let executedAt = resultDict["executedAt"] as? Int64
+        let executedAt = resultDict["executedAt"] as? NSNumber
         let errorMessage = resultDict["errorMessage"] as? String
         
         var result: TriggeredServerCodeResult?

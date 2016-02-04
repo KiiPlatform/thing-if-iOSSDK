@@ -141,7 +141,7 @@ class ListTriggersTests: XCTestCase {
             }
         }
     }
-
+    
     func testListTriggers_404_error() {
         let expectation = self.expectationWithDescription("getTrigger403Error")
 

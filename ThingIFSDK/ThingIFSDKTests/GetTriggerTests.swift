@@ -140,8 +140,8 @@ class GetTriggerTests: XCTestCase {
         }
     }
 
-    func getServerCodeTriggerSuccess(tag: String, statementToTest: Dictionary<String, AnyObject>, triggersWhen: String) {
-        let expectation = self.expectationWithDescription(tag)
+    func testGetServerCodeTrigger_success() {
+        let expectation = self.expectationWithDescription("testGetServerCodeTrigger_success")
         
         do{
             let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
@@ -156,7 +156,8 @@ class GetTriggerTests: XCTestCase {
             let expectedServerCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
             let serverCodeDict = expectedServerCode.toNSDictionary()
             let eventSource = "states"
-            let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":triggersWhen, "condition":statementToTest]
+            let condition: Dictionary<String, AnyObject> = ["type":"eq","field":"color", "value": 0]
+            let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":TriggersWhen.CONDITION_FALSE_TO_TRUE.toString(), "condition": condition]
             
             // mock response
             let dict = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": serverCodeDict, "disabled": false]
@@ -177,6 +178,7 @@ class GetTriggerTests: XCTestCase {
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
+            api._target = target
             api.getTrigger(expectedTriggerID, completionHandler: { (trigger, error) -> Void in
                 if(error != nil) {
                     XCTFail("should success")
