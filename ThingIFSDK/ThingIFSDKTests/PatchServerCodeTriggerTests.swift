@@ -1,13 +1,13 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PostNewServerCodeTriggerTests: XCTestCase {
-
+class PatchServerCodeTriggerTests: XCTestCase {
+    
     var owner: Owner!
     let baseURLString = "https://small-tests.internal.kii.com"
     var api: ThingIFAPI!
     let target = Target(typedID: TypedID(type: "thing", id: "0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
-
+    
     override func setUp() {
         super.setUp()
         
@@ -21,9 +21,9 @@ class PostNewServerCodeTriggerTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-
-    func testPostNewServerCodeTrigger_success() {
-        let tag = "PostNewServerCodeTriggerTests.testPostNewTrigger_success"
+    
+    func testPatchServerCodeTrigger_success() {
+        let tag = "PatchServerCodeTriggerTests.testPatchServerCodeTrigger_success"
         let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_success")
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let expectedEndpoint = "my_function"
@@ -38,18 +38,22 @@ class PostNewServerCodeTriggerTests: XCTestCase {
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
         let condition = Condition(clause: EqualsClause(field: "color", value: 0))
         let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
-
+        
         let expectedPredicateDict = predicate.toNSDictionary()
         let expectedServerCodeDict = serverCode.toNSDictionary()
         do {
-            // mock response
-            let dict = ["triggerID": expectedTriggerID]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
+            // mock response for patch
+            let dict4Patch = ["triggerID": expectedTriggerID]
+            let jsonData4Patch = try NSJSONSerialization.dataWithJSONObject(dict4Patch, options: .PrettyPrinted)
+            let urlResponse4Patch = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            // mock response for get
+            let dict4Get = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": expectedServerCodeDict, "triggersWhat":"SERVER_CODE", "disabled":false]
+            let jsonData4Get = try NSJSONSerialization.dataWithJSONObject(dict4Get, options: .PrettyPrinted)
+            let urlResponse4Get = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
             
-            // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+            // verify request for patch
+            let patchRequestVerifier: ((NSURLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.HTTPMethod, "PATCH")
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
@@ -66,12 +70,23 @@ class PostNewServerCodeTriggerTests: XCTestCase {
                     XCTFail(tag)
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
-            iotSession = MockSession.self
+            // verify request for get
+            let getRequestVerifier: ((NSURLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.HTTPMethod, "GET")
+                //verify header
+                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                for (key, value) in expectedHeader {
+                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key), tag)
+                }
+            }
+            iotSession = MockMultipleSession.self
+            MockMultipleSession.responsePairs = [
+                ((data: jsonData4Patch, urlResponse: urlResponse4Patch, error: nil), patchRequestVerifier),
+                ((data: jsonData4Get, urlResponse: urlResponse4Get, error: nil),getRequestVerifier)
+            ]
             
             api._target = target
-            api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+            api.patchTrigger(expectedTriggerID, serverCode: serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
                     XCTAssertEqual(trigger!.enabled, true, tag)
@@ -95,9 +110,10 @@ class PostNewServerCodeTriggerTests: XCTestCase {
             }
         }
     }
-
-    func testPostNewServerCodeTrigger_http_404() {
-        let tag = "PostNewServerCodeTriggerTests.testPostNewServerCodeTrigger_http_404"
+    
+    func testPatchServerCodeTrigger_http_404() {
+        let tag = "PatchServerCodeTriggerTests.testPatchServerCodeTrigger_http_404"
+        let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404")
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
@@ -123,7 +139,7 @@ class PostNewServerCodeTriggerTests: XCTestCase {
             
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+                XCTAssertEqual(request.HTTPMethod, "PATCH")
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
@@ -145,7 +161,7 @@ class PostNewServerCodeTriggerTests: XCTestCase {
             iotSession = MockSession.self
             
             api._target = target
-            api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+            api.patchTrigger(triggerID, serverCode:serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -171,16 +187,16 @@ class PostNewServerCodeTriggerTests: XCTestCase {
             }
         }
     }
-
-    func testPostNewServerCodeTrigger_UnsupportError() {
-        let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_UnsupportError")
-
+    
+    func testPatchServerCodeTrigger_UnsupportError() {
+        let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+        let expectation = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_UnsupportError")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
         let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
         
         api._target = target
-        api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+        api.patchTrigger(triggerID, serverCode:serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -201,13 +217,14 @@ class PostNewServerCodeTriggerTests: XCTestCase {
         }
     }
     
-    func testPostNewServerCodeTrigger_target_not_available_error() {
-        let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_target_not_available_error")
+    func testPatchServerCodeTrigger_target_not_available_error() {
+        let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+        let expectation = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_target_not_available_error")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
         let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", value: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
         
-        api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+        api.patchTrigger(triggerID, serverCode:serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -227,5 +244,6 @@ class PostNewServerCodeTriggerTests: XCTestCase {
             }
         }
     }
-
+    
 }
+

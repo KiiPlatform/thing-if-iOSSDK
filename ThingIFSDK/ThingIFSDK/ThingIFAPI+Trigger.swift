@@ -127,13 +127,13 @@ extension ThingIFAPI {
         requestBodyDict["triggersWhat"] = TriggersWhat.COMMAND.toString()
 
         // generate predicate
-            if predicate != nil {
-                if predicate is SchedulePredicate {
-                    completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
-                    return
-                }
-                requestBodyDict["predicate"] = predicate!.toNSDictionary()
+        if predicate != nil {
+            if predicate is SchedulePredicate {
+                completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+                return
             }
+            requestBodyDict["predicate"] = predicate!.toNSDictionary()
+        }
 
         // generate command
         if schemaName != nil || schemaVersion != nil || actions != nil {
