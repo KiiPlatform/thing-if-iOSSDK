@@ -140,6 +140,74 @@ class GetTriggerTests: XCTestCase {
         }
     }
 
+    func getServerCodeTriggerSuccess(tag: String, statementToTest: Dictionary<String, AnyObject>, triggersWhen: String) {
+        let expectation = self.expectationWithDescription(tag)
+        
+        do{
+            let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+            let expectedEndpoint = "my_function"
+            let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
+            let expectedTargetAppID = "app000001"
+            var expectedParameters = Dictionary<String, AnyObject>()
+            expectedParameters["arg1"] = "abcd"
+            expectedParameters["arg2"] = 1234
+            expectedParameters["arg3"] = 0.12345
+            expectedParameters["arg4"] = false
+            let expectedServerCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
+            let serverCodeDict = expectedServerCode.toNSDictionary()
+            let eventSource = "states"
+            let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":triggersWhen, "condition":statementToTest]
+            
+            // mock response
+            let dict = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": serverCodeDict, "disabled": false]
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:self.baseURLString)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            
+            // verify request
+            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.HTTPMethod, "GET")
+                //verify header
+                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                for (key, value) in expectedHeader {
+                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                }
+                
+            }
+            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
+            
+            api.getTrigger(expectedTriggerID, completionHandler: { (trigger, error) -> Void in
+                if(error != nil) {
+                    XCTFail("should success")
+                }else {
+                    XCTAssertEqual(trigger!.triggerID, expectedTriggerID)
+                    XCTAssertTrue(trigger!.enabled == true)
+                    XCTAssertTrue(trigger!.serverCode == expectedServerCode)
+                    XCTAssertNil(trigger!.command)
+                    
+                    do {
+                        let expectedPredicteData = try NSJSONSerialization.dataWithJSONObject(expectedPredicateDict, options: NSJSONWritingOptions(rawValue: 0))
+                        let actualPredicateDict = trigger!.predicate.toNSDictionary()
+                        let actualBodyData = try NSJSONSerialization.dataWithJSONObject(actualPredicateDict, options: NSJSONWritingOptions(rawValue: 0))
+                        XCTAssertTrue(expectedPredicteData.length == actualBodyData.length)
+                    }catch(_){
+                        XCTFail()
+                    }
+                }
+                expectation.fulfill()
+            })
+        }catch(let e){
+            print(e)
+        }
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    
     func testGetTrigger_404_error() {
         let expectation = self.expectationWithDescription("getTrigger403Error")
 
