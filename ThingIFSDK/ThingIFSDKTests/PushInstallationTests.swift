@@ -12,18 +12,17 @@ import XCTest
 class PushInstallationTests: XCTestCase {
 
     let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
-    
-    let schema = (thingType: "SmartLight-Demo",
-        name: "SmartLight-Demo", version: 1)
-    
-    let api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-        site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+    let baseURLString = "https://api-development-jp.internal.kii.com"
+    let schema = (thingType: "SmartLight-Demo", name: "SmartLight-Demo", version: 1)
+    var api: ThingIFAPI!
     
     let deviceToken = "dummyDeviceToken".dataUsingEncoding(NSUTF8StringEncoding)!
     let deviceTokenString = "dummyDeviceToken".dataUsingEncoding(NSUTF8StringEncoding)!.hexString()
     
     override func setUp() {
         super.setUp()
+        api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
+            site: Site.CUSTOM(self.baseURLString), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
         setKiiLogLevel(.verbose)
     }
     
@@ -67,7 +66,7 @@ class PushInstallationTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                
+                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/50a62843/onboardings")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -107,6 +106,7 @@ class PushInstallationTests: XCTestCase {
             //verify request body
             let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": self.owner.typedID.id]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/api/apps/50a62843/installations")
         }
         
         let dict = ["installationID":"dummy_installation_ID"]

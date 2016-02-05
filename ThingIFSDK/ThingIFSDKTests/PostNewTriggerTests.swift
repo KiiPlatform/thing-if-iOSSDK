@@ -118,6 +118,8 @@ class PostNewTriggerTests: XCTestCase {
                 }catch(_){
                     XCTFail(tag)
                 }
+                
+                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/dummyID/targets/\(self.target.typedID.toString())/triggers")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier

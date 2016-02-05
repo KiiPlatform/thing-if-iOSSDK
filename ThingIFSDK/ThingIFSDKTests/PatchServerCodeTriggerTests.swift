@@ -69,6 +69,8 @@ class PatchServerCodeTriggerTests: XCTestCase {
                 }catch(_){
                     XCTFail(tag)
                 }
+                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/dummyID/targets/\(self.target.typedID.toString())/triggers/\(expectedTriggerID)")
+
             }
             // verify request for get
             let getRequestVerifier: ((NSURLRequest) -> Void) = {(request) in
