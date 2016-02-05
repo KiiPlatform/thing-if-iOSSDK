@@ -24,7 +24,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
     public var succeeded: Bool
     /** Returned value from server code */
     public var returnedValue: String?
-    /** Timestamp of the execution */
+    /** Timestamp of the execution. It's number of milliseconds since Unix epoch January 1 1970 */
     public var executedAt: NSNumber
     /** Error message of the invocation if any */
     public var errorMessage: String?

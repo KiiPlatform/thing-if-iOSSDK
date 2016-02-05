@@ -471,9 +471,15 @@ public class ServerCode : NSObject, NSCoding {
         guard let aServerCode = object as? ServerCode else{
             return false
         }
+        if self.parameters == nil || aServerCode.parameters == nil {
+            if self.parameters == nil && aServerCode.parameters == nil {
+                return true
+            }
+            return false
+        }
         return self.endpoint == aServerCode.endpoint &&
             self.executorAccessToken == aServerCode.executorAccessToken &&
-            self.targetAppID! == aServerCode.targetAppID! &&
+            self.targetAppID == aServerCode.targetAppID &&
             NSDictionary(dictionary: self.parameters!).isEqualToDictionary(aServerCode.parameters!)
         
     }
