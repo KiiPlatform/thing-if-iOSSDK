@@ -79,7 +79,6 @@
 		7D36B6C01BD4D43700D9B821 /* ThingIFAPIBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */; };
 		7D36B6C21BD4D51D00D9B821 /* ThingIFSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7D36B6C41BD4D9DD00D9B821 /* ThingIFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */; };
-		8DE9CBA8308CAD92E164CF53 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D543664AB8FAA7CF11A3CEDD /* Pods.framework */; };
 		A54C7C1D1C631B7300A38940 /* ListTriggeredServerCodeResultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54C7C1C1C631B7300A38940 /* ListTriggeredServerCodeResultsTests.swift */; };
 		A56B0A431C5B43B100E653EF /* TriggeredServerCodeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */; };
 		A56B0A471C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A461C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift */; };
@@ -157,13 +156,10 @@
 		7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFError.swift; sourceTree = "<group>"; };
 		7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThingIFSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DD44E041BD4B88A00AE0249 /* ThingIFSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThingIFSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8C212E9CF56B499448C1B9DD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A54C7C1C1C631B7300A38940 /* ListTriggeredServerCodeResultsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTriggeredServerCodeResultsTests.swift; sourceTree = "<group>"; };
 		A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredServerCodeResult.swift; sourceTree = "<group>"; };
 		A56B0A461C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewServerCodeTriggerTests.swift; sourceTree = "<group>"; };
 		A56B0A481C62143000E653EF /* PatchServerCodeTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchServerCodeTriggerTests.swift; sourceTree = "<group>"; };
-		D543664AB8FAA7CF11A3CEDD /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FDEB34320AE247D707534F2F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,7 +167,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DE9CBA8308CAD92E164CF53 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,22 +180,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3D536BA0EF78CFF475492D80 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D543664AB8FAA7CF11A3CEDD /* Pods.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
+
 		7417A2F91B65CF8400D116A5 = {
 			isa = PBXGroup;
 			children = (
 				7D36B68C1BD4D0CC00D9B821 /* ThingIFSDKTests */,
 				7D36B6361BD4D03100D9B821 /* ThingIFSDK */,
 				7417A3041B65CF8400D116A5 /* Products */,
-				F923700F0A77DBD55E7A5E81 /* Pods */,
-				3D536BA0EF78CFF475492D80 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -313,15 +299,7 @@
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
 		};
-		F923700F0A77DBD55E7A5E81 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				FDEB34320AE247D707534F2F /* Pods.debug.xcconfig */,
-				8C212E9CF56B499448C1B9DD /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
+
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -340,12 +318,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7DD44DE61BD4B7CD00AE0249 /* Build configuration list for PBXNativeTarget "ThingIFSDK" */;
 			buildPhases = (
-				9484920C78102CBF8BB90A89 /* Check Pods Manifest.lock */,
 				7DD44DBA1BD4B7CD00AE0249 /* Sources */,
 				7DD44DE21BD4B7CD00AE0249 /* Frameworks */,
 				7DD44DE31BD4B7CD00AE0249 /* Headers */,
 				7DD44DE51BD4B7CD00AE0249 /* Resources */,
-				D6D1896FDF642A86916D655C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -435,36 +411,7 @@
 			shellPath = /bin/sh;
 			shellScript = "######################\n# Options\n######################\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\n\n######################\n# Build Frameworks\n######################\n\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -target ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\n\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -target ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n\n######################\n# Make an universal binary\n######################\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n# For Swift framework, Swiftmodule needs to be copied in the universal framework\nif [ -d \"${SIMULATOR_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" ]; then\ncp -f ${SIMULATOR_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/* ${FRAMEWORK}/Modules/${FRAMEWORK_NAME}.swiftmodule/ | echo\nfi\n\n######################\n# On Release, copy the result to release directory\n######################\nOUTPUT_DIR=\"${PROJECT_DIR}/dist\"\n\nrm -rf \"$OUTPUT_DIR\"\nmkdir -p \"$OUTPUT_DIR\"\n\ncp -r \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\n\n# remove the build folder\nrm -r \"build\"\n\n";
 		};
-		9484920C78102CBF8BB90A89 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		D6D1896FDF642A86916D655C /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
+
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -646,7 +593,6 @@
 		};
 		7DD44DE71BD4B7CD00AE0249 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FDEB34320AE247D707534F2F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -668,7 +614,6 @@
 		};
 		7DD44DE81BD4B7CD00AE0249 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8C212E9CF56B499448C1B9DD /* Pods.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
