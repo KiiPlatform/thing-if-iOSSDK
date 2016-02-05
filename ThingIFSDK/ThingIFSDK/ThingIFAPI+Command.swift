@@ -98,7 +98,7 @@ extension ThingIFAPI {
 
         var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/commands"
         if paginationKey != nil && bestEffortLimit != nil{
-            requestURL += "?paginationKey=\(paginationKey!)&&bestEffortLimit=\(bestEffortLimit!)"
+            requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
         }else if bestEffortLimit != nil {
             requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
         }else if paginationKey != nil {

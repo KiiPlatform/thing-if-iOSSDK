@@ -25,7 +25,7 @@ class GetTriggerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM(baseURLString), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -101,7 +101,7 @@ class GetTriggerTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-
+                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/50a62843/targets/\(self.target.typedID.toString())/triggers/\(expectedTriggerID)")
              }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -172,7 +172,7 @@ class GetTriggerTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                
+                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/50a62843/targets/\(self.target.typedID.toString())/triggers/\(expectedTriggerID)")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -232,6 +232,7 @@ class GetTriggerTests: XCTestCase {
                 let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/50a62843/targets/\(self.target.typedID.toString())/triggers/\(triggerID)")
                 }
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)

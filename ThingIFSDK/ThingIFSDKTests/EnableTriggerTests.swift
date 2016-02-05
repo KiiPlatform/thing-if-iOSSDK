@@ -24,7 +24,7 @@ class EnableTriggerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM(baseURLString), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -48,6 +48,7 @@ class EnableTriggerTests: XCTestCase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
+            XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/50a62843/targets/\(self.target.typedID.toString())/triggers/\(expectedTriggerID)/enable")
         }
 
         //verify get request
@@ -90,6 +91,66 @@ class EnableTriggerTests: XCTestCase {
             }
         }
     }
+    
+    func testDisableTrigger_success() {
+        let expectation = self.expectationWithDescription("enableTriggerTests")
+        
+        // perform onboarding
+        api._target = target
+        
+        let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+        
+        // verify put request
+        let putRequestVerifier: ((NSURLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.HTTPMethod, "PUT")
+            //verify header
+            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+            for (key, value) in expectedHeader {
+                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+            }
+            XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/50a62843/targets/\(self.target.typedID.toString())/triggers/\(expectedTriggerID)/disable")
+        }
+        
+        //verify get request
+        let getRequestVerifier: ((NSURLRequest) -> Void) = {(request) in}
+        
+        // mock patch success response
+        let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
+        // mock get response
+        let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.typedID.toString(), "issuer": self.owner.typedID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
+        let dict = ["triggerID": expectedTriggerID, "predicate": ["eventSource":"states", "triggersWhen":"CONDITION_FALSE_TO_TRUE", "condition": ["type":"eq","field":"color", "value": 0]], "command": commandDict, "disabled": false]
+        var jsonData: NSData?
+        do {
+            jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+        }catch(_){
+            XCTFail()
+        }
+        let mockResponse2 = NSHTTPURLResponse(URL: NSURL(string: self.baseURLString)!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
+        
+        iotSession = MockMultipleSession.self
+        MockMultipleSession.responsePairs = [
+            ((data: nil, urlResponse: mockResponse1, error: nil),putRequestVerifier),
+            ((data: jsonData!, urlResponse: mockResponse2, error: nil),getRequestVerifier)
+        ]
+        
+        api.enableTrigger(expectedTriggerID, enable: false) { (trigger, error) -> Void in
+            if error == nil{
+                XCTAssertEqual(trigger!.triggerID, expectedTriggerID)
+                XCTAssertEqual(trigger!.enabled, true)
+                XCTAssertNotNil(trigger!.predicate)
+                XCTAssertEqual(trigger!.command!.commandID, "")
+            }else {
+                XCTFail("should success")
+            }
+            expectation.fulfill()
+        }
+        
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
 
     func testEnableTrigger_404_error() {
         let expectation = self.expectationWithDescription("enableTrigger404Error")
@@ -114,6 +175,7 @@ class EnableTriggerTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
+                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/50a62843/targets/\(self.target.typedID.toString())/triggers/\(triggerID)/disable")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier

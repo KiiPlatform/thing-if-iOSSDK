@@ -24,7 +24,7 @@ class ListCommandsTests: XCTestCase {
     override func setUp() {
         super.setUp()
         api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
+            site: Site.CUSTOM(baseURLString), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -122,11 +122,20 @@ class ListCommandsTests: XCTestCase {
                 let actualRequestPathString = request.URL!.absoluteString
                 XCTAssertTrue(actualRequestPathString.rangeOfString(expectedBasePath) != nil, tag)
                 if testcase.paginationKey != nil || testcase.bestEffortLimit != nil {
-                     if testcase.paginationKey != nil {
-                        XCTAssertTrue(actualRequestPathString.rangeOfString("paginationKey=\(testcase.paginationKey!)") != nil, tag)
-                        }
-                    if testcase.bestEffortLimit != nil {                        XCTAssertTrue(actualRequestPathString.rangeOfString("bestEffortLimit=\(testcase.bestEffortLimit!)") != nil, tag)
+                    let expectedURL = self.baseURLString + "/thing-if/apps/50a62843/targets/\(self.target.typedID.toString())/commands"
+                    var queryParams = ""
+                    if testcase.paginationKey != nil {
+                        queryParams = "?paginationKey=" + testcase.paginationKey!
                     }
+                    if testcase.bestEffortLimit != nil {
+                        if queryParams.isEmpty {
+                            queryParams = "?"
+                        } else {
+                            queryParams += "&"
+                        }
+                        queryParams += "bestEffortLimit=" + String(testcase.bestEffortLimit!)
+                    }
+                    XCTAssertEqual(request.URL?.absoluteString, expectedURL + queryParams)
                 }
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
