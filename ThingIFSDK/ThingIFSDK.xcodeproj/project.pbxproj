@@ -56,7 +56,7 @@
 		7D36B6A11BD4D0CC00D9B821 /* DeleteTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B68E1BD4D0CC00D9B821 /* DeleteTriggerTests.swift */; };
 		7D36B6A21BD4D0CC00D9B821 /* EnableTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B68F1BD4D0CC00D9B821 /* EnableTriggerTests.swift */; };
 		7D36B6A31BD4D0CC00D9B821 /* EntitySerializationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6901BD4D0CC00D9B821 /* EntitySerializationTests.swift */; };
-		7D36B6A41BD4D0CC00D9B821 /* getCommandTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6911BD4D0CC00D9B821 /* getCommandTest.swift */; };
+		7D36B6A41BD4D0CC00D9B821 /* GetCommandTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6911BD4D0CC00D9B821 /* GetCommandTest.swift */; };
 		7D36B6A51BD4D0CC00D9B821 /* GetStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6921BD4D0CC00D9B821 /* GetStateTests.swift */; };
 		7D36B6A61BD4D0CC00D9B821 /* GetTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6931BD4D0CC00D9B821 /* GetTriggerTests.swift */; };
 		7D36B6A81BD4D0CC00D9B821 /* IoTCloudSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6951BD4D0CC00D9B821 /* IoTCloudSDKTests.swift */; };
@@ -132,7 +132,7 @@
 		7D36B68E1BD4D0CC00D9B821 /* DeleteTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteTriggerTests.swift; sourceTree = "<group>"; };
 		7D36B68F1BD4D0CC00D9B821 /* EnableTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnableTriggerTests.swift; sourceTree = "<group>"; };
 		7D36B6901BD4D0CC00D9B821 /* EntitySerializationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntitySerializationTests.swift; sourceTree = "<group>"; };
-		7D36B6911BD4D0CC00D9B821 /* getCommandTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = getCommandTest.swift; sourceTree = "<group>"; };
+		7D36B6911BD4D0CC00D9B821 /* GetCommandTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCommandTest.swift; sourceTree = "<group>"; };
 		7D36B6921BD4D0CC00D9B821 /* GetStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetStateTests.swift; sourceTree = "<group>"; };
 		7D36B6931BD4D0CC00D9B821 /* GetTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTriggerTests.swift; sourceTree = "<group>"; };
 		7D36B6951BD4D0CC00D9B821 /* IoTCloudSDKTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTCloudSDKTests.swift; sourceTree = "<group>"; };
@@ -292,7 +292,7 @@
 				7D36B68E1BD4D0CC00D9B821 /* DeleteTriggerTests.swift */,
 				7D36B68F1BD4D0CC00D9B821 /* EnableTriggerTests.swift */,
 				7D36B6901BD4D0CC00D9B821 /* EntitySerializationTests.swift */,
-				7D36B6911BD4D0CC00D9B821 /* getCommandTest.swift */,
+				7D36B6911BD4D0CC00D9B821 /* GetCommandTest.swift */,
 				7D36B6921BD4D0CC00D9B821 /* GetStateTests.swift */,
 				7D36B6931BD4D0CC00D9B821 /* GetTriggerTests.swift */,
 				7D36B6951BD4D0CC00D9B821 /* IoTCloudSDKTests.swift */,
@@ -524,7 +524,7 @@
 				7D36B6B21BD4D0CC00D9B821 /* XCTest+Utils.swift in Sources */,
 				A54C7C1D1C631B7300A38940 /* ListTriggeredServerCodeResultsTests.swift in Sources */,
 				7D36B6AA1BD4D0CC00D9B821 /* ListTriggersTests.swift in Sources */,
-				7D36B6A41BD4D0CC00D9B821 /* getCommandTest.swift in Sources */,
+				7D36B6A41BD4D0CC00D9B821 /* GetCommandTest.swift in Sources */,
 				A56B0A471C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift in Sources */,
 				7D36B6A81BD4D0CC00D9B821 /* IoTCloudSDKTests.swift in Sources */,
 				7D36B6A61BD4D0CC00D9B821 /* GetTriggerTests.swift in Sources */,
