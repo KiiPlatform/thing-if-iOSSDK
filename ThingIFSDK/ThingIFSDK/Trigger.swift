@@ -14,6 +14,10 @@ public class Trigger: NSObject, NSCoding {
         aCoder.encodeObject(self.command, forKey: "command")
         aCoder.encodeObject(self.serverCode, forKey: "serverCode")
         aCoder.encodeBool(self.enabled, forKey: "enabled")
+        aCoder.encodeObject(self.title, forKey: "title")
+        aCoder.encodeObject(self.triggerDescription, forKey: "triggerDescription")
+        aCoder.encodeObject(self.metadata, forKey: "metadata")
+        
     }
 
     // MARK: - Implements NSCoding protocol
@@ -23,6 +27,9 @@ public class Trigger: NSObject, NSCoding {
         self.predicate = Predicate()
         self.command = aDecoder.decodeObjectForKey("command") as? Command
         self.serverCode = aDecoder.decodeObjectForKey("serverCode") as? ServerCode
+        self.title = aDecoder.decodeObjectForKey("title") as? String
+        self.triggerDescription = aDecoder.decodeObjectForKey("triggerDescription") as? String
+        self.metadata = aDecoder.decodeObjectForKey("metadata") as? Dictionary<String, AnyObject>
         // TODO: add aditional decoder
     }
     
@@ -72,6 +79,20 @@ public class Trigger: NSObject, NSCoding {
         if triggerID != nil && predicate != nil && serverCode != nil && disabled != nil{
             trigger = Trigger(triggerID: triggerID!, enabled: !(disabled!), predicate: predicate!, serverCode: serverCode!)
         }
+        if trigger != nil {
+            let title = triggerDict["title"] as? String
+            if title != nil {
+                trigger?.title = title
+            }
+            let triggerDescription = triggerDict["description"] as? String
+            if triggerDescription != nil {
+                trigger?.triggerDescription = triggerDescription
+            }
+            let metadata = triggerDict["metadata"] as? Dictionary<String, AnyObject>
+            if metadata != nil {
+                trigger?.metadata = metadata
+            }
+        }
         
         return trigger
     }
@@ -86,6 +107,12 @@ public class Trigger: NSObject, NSCoding {
     public var command: Command?
     /** ServerCode to be fired */
     public var serverCode: ServerCode?
+    /** Title of the Trigger */
+    public var title: String?
+    /** Description of the Trigger */
+    public var triggerDescription: String?
+    /** Metadata of the Trigger */
+    public var metadata: Dictionary<String, AnyObject>?
 
     public override init() {
         // TODO: implement it with proper initializer.
@@ -94,6 +121,9 @@ public class Trigger: NSObject, NSCoding {
         self.predicate = Predicate()
         self.command = nil
         self.serverCode = nil
+        self.title = nil
+        self.triggerDescription = nil
+        self.metadata = nil
     }
 
     /** Init Trigger with Command
@@ -109,6 +139,9 @@ public class Trigger: NSObject, NSCoding {
         self.predicate = predicate
         self.command = command
         self.serverCode = nil
+        self.title = nil
+        self.triggerDescription = nil
+        self.metadata = nil
     }
     /** Init Trigger with Server code
      
@@ -123,6 +156,9 @@ public class Trigger: NSObject, NSCoding {
         self.predicate = predicate
         self.command = nil
         self.serverCode = serverCode
+        self.title = nil
+        self.triggerDescription = nil
+        self.metadata = nil
     }
 
     public override func isEqual(object: AnyObject?) -> Bool {
