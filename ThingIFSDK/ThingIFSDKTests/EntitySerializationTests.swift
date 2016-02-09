@@ -64,7 +64,7 @@ class EntitySerializationTests: XCTestCase {
     }
     // TriggeredServerCodeResult
     func testTriggeredServerCodeResult_NSUserDefaultSerialization() {
-        let aTriggeredServerCodeResult = TriggeredServerCodeResult(succeeded: true, returnedValue: "{\"value\":50}", executedAt: 1454474985511, errorMessage: nil)
+        let aTriggeredServerCodeResult = TriggeredServerCodeResult(succeeded: true, returnedValue: "{\"value\":50}", executedAt: NSDate(timeIntervalSince1970: 1454474985), errorMessage: nil)
         self.doSerializationTest(aTriggeredServerCodeResult)
     }
     //Target
