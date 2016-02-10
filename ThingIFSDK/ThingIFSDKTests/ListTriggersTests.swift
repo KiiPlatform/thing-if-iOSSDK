@@ -10,22 +10,8 @@ import XCTest
 @testable import ThingIFSDK
 
 class ListTriggersTests: XCTestCase {
-
-    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
-
-    let schema = (thingType: "SmartLight-Demo",
-        name: "SmartLight-Demo", version: 1)
-
-    let baseURLString = "https://small-tests.internal.kii.com"
-
-    var api: ThingIFAPI!
-
-    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
-
     override func setUp() {
         super.setUp()
-        api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM(baseURLString), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
@@ -46,11 +32,12 @@ class ListTriggersTests: XCTestCase {
     }
 
     func testListTriggers_success_predicates() {
-
+        let setting = TestSetting()
+        let api = setting.api
         let triggerIDPrifex = "0267251d9d60-1858-5e11-3dc3-00f3f0b"
 
         // perform onboarding
-        api._target = target
+        api._target = setting.target
 
         var expectedTriggerStructs: [ExpectedTriggerStruct] = [
             ExpectedTriggerStruct(statement: ["type":"eq","field":"color", "value": 0], triggerID: "\(triggerIDPrifex)1", triggersWhenString: "CONDITION_TRUE", enabled: true),
@@ -73,28 +60,28 @@ class ListTriggersTests: XCTestCase {
 
         do{
             let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
-            let expectedCommandObject = Command(commandID: nil, targetID: self.target.typedID, issuerID: self.owner.typedID, schemaName: self.schema.name, schemaVersion: self.schema.version, actions: expectedActionsDict, actionResults: nil, commandState: nil)
+            let expectedCommandObject = Command(commandID: nil, targetID: setting.target.typedID, issuerID: setting.owner.typedID, schemaName: setting.schema, schemaVersion: setting.schemaVersion, actions: expectedActionsDict, actionResults: nil, commandState: nil)
             let eventSource = "states"
 
             // mock response
-            let commandDict = ["schema": self.schema.name, "schemaVersion": self.schema.version, "target": self.target.typedID.toString(), "issuer": self.owner.typedID.toString(), "actions": expectedActionsDict]
+            let commandDict = ["schema": setting.schema, "schemaVersion": setting.schemaVersion, "target": setting.target.typedID.toString(), "issuer": setting.owner.typedID.toString(), "actions": expectedActionsDict]
 
             var expectedTriggerDicts = [Dictionary<String, AnyObject>]()
             for expectedTriggerStruct in expectedTriggerStructs {
                 expectedTriggerDicts.append(["triggerID": expectedTriggerStruct.triggerID, "predicate": ["eventSource":eventSource, "triggersWhen":expectedTriggerStruct.triggersWhenString, "condition":expectedTriggerStruct.statement], "command": commandDict, "disabled": !(expectedTriggerStruct.enabled)])
             }
             let jsonData = try NSJSONSerialization.dataWithJSONObject(["triggers":expectedTriggerDicts], options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:self.baseURLString)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/50a62843/targets/\(self.target.typedID.toString())/triggers")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -145,24 +132,26 @@ class ListTriggersTests: XCTestCase {
     
     func testListTriggers_404_error() {
         let expectation = self.expectationWithDescription("getTrigger403Error")
+        let setting = TestSetting()
+        let api = setting.api
 
         // perform onboarding
-        api._target = target
+        api._target = setting.target
 
         do{
             let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.typedID.toString()) not found"]
+                "message" : "Target \(setting.target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
@@ -199,6 +188,8 @@ class ListTriggersTests: XCTestCase {
 
     func testListTriggers_target_not_available_error() {
         let expectation = self.expectationWithDescription("testListTriggers_target_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
 
         api.listTriggers(nil, paginationKey: nil, completionHandler: { (commands, paginationKey, error) -> Void in
             if error == nil{

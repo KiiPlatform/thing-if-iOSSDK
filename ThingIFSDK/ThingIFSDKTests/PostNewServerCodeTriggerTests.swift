@@ -3,19 +3,8 @@ import XCTest
 
 class PostNewServerCodeTriggerTests: XCTestCase {
 
-    var owner: Owner!
-    let baseURLString = "https://small-tests.internal.kii.com"
-    var api: ThingIFAPI!
-    let target = Target(typedID: TypedID(type: "thing", id: "0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
-
     override func setUp() {
         super.setUp()
-        
-        owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
-        
-        api = ThingIFAPIBuilder(appID: "dummyID", appKey: "dummyKey",
-            site: Site.CUSTOM(self.baseURLString), owner: owner).build()
-        
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -23,6 +12,8 @@ class PostNewServerCodeTriggerTests: XCTestCase {
     }
 
     func testPostNewServerCodeTrigger_success() {
+        let setting:TestSetting = TestSetting()
+        let api = setting.api
         let tag = "PostNewServerCodeTriggerTests.testPostNewTrigger_success"
         let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_success")
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
@@ -45,13 +36,13 @@ class PostNewServerCodeTriggerTests: XCTestCase {
             // mock response
             let dict = ["triggerID": expectedTriggerID]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
             
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "POST")
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.ownerToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key), tag)
                 }
@@ -65,13 +56,13 @@ class PostNewServerCodeTriggerTests: XCTestCase {
                 }catch(_){
                     XCTFail(tag)
                 }
-                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/dummyID/targets/\(self.target.typedID.toString())/triggers")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
-            api._target = target
+            api._target = setting.target
             api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
@@ -98,6 +89,8 @@ class PostNewServerCodeTriggerTests: XCTestCase {
     }
 
     func testPostNewServerCodeTrigger_http_404() {
+        let setting:TestSetting = TestSetting()
+        let api = setting.api
         let tag = "PostNewServerCodeTriggerTests.testPostNewServerCodeTrigger_http_404"
         let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404")
         let expectedEndpoint = "my_function"
@@ -118,15 +111,15 @@ class PostNewServerCodeTriggerTests: XCTestCase {
         do {
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.typedID.toString()) not found"]
+                "message" : "Target \(setting.target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
             
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "POST")
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.ownerToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key), tag)
                 }
@@ -145,7 +138,7 @@ class PostNewServerCodeTriggerTests: XCTestCase {
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
-            api._target = target
+            api._target = setting.target
             api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
@@ -174,13 +167,14 @@ class PostNewServerCodeTriggerTests: XCTestCase {
     }
 
     func testPostNewServerCodeTrigger_UnsupportError() {
+        let setting:TestSetting = TestSetting()
+        let api = setting.api
         let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_UnsupportError")
-
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
         let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
         
-        api._target = target
+        api._target = setting.target
         api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
@@ -203,6 +197,8 @@ class PostNewServerCodeTriggerTests: XCTestCase {
     }
     
     func testPostNewServerCodeTrigger_target_not_available_error() {
+        let setting:TestSetting = TestSetting()
+        let api = setting.api
         let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_target_not_available_error")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)

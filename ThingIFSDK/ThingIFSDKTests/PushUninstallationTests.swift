@@ -10,36 +10,29 @@ import XCTest
 @testable import ThingIFSDK
 
 class PushUninstallationTests: XCTestCase {
-    
-    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
-    let baseURLString = "https://api-development-jp.internal.kii.com"
-    let schema = (thingType: "SmartLight-Demo",
-        name: "SmartLight-Demo", version: 1)
-    var api: ThingIFAPI!
-    
     let deviceToken = "dummyDeviceToken"
     
     override func setUp() {
         super.setUp()
-        api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM(baseURLString), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    func checkSavedIoTAPI(){
+
+    func checkSavedIoTAPI(setting:TestSetting){
         do{
-            let savedIoTAPI = try ThingIFAPI.loadWithStoredInstance(api.tag)
+            let savedIoTAPI = try ThingIFAPI.loadWithStoredInstance(setting.api.tag)
             XCTAssertNotNil(savedIoTAPI)
-            XCTAssertTrue(api == savedIoTAPI)
+            XCTAssertTrue(setting.api == savedIoTAPI)
         }catch(let e){
             print(e)
             XCTFail("Should not throw")
         }
     }
-    func onboard(){
+
+    func onboard(setting:TestSetting){
         let expectation = self.expectationWithDescription("onboardWithVendorThingID")
         
         do{
@@ -60,7 +53,7 @@ class PushUninstallationTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
                 
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)",  "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
@@ -69,7 +62,7 @@ class PushUninstallationTests: XCTestCase {
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
+            setting.api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
@@ -85,34 +78,34 @@ class PushUninstallationTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        self.api._installationID = "dummyInstallationID"
+        setting.api._installationID = "dummyInstallationID"
     }
     func testPushUninstallation_success() {
-        
-        self.onboard()
+        let setting = TestSetting()
+        self.onboard(setting)
         let expectation = self.expectationWithDescription("testPushUninstallation_success")
         let installID = "dummyInstallId"
         
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "DELETE")
-            let expectedPath = "\(self.api.baseURL!)/api/apps/\(self.api.appID!)/installations/\(installID)"
+            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-            XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/api/apps/50a62843/installations/\(installID)")
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/api/apps/50a62843/installations/\(installID)")
         }
         
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
         MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         MockSession.requestVerifier = requestVerifier
         
-        api.uninstallPush(installID) { (error) -> Void in
+        setting.api.uninstallPush(installID) { (error) -> Void in
             XCTAssertTrue(error==nil,"should not error")
-            XCTAssertNil(self.api._installationID,"Should be nil")
+            XCTAssertNil(setting.api._installationID,"Should be nil")
             expectation.fulfill()
         }
         self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
@@ -120,19 +113,20 @@ class PushUninstallationTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        checkSavedIoTAPI()
+        checkSavedIoTAPI(setting)
     }
     func testPushUninstallation_http_404() {
-        self.onboard()
+        let setting = TestSetting()
+        self.onboard(setting)
         let expectation = self.expectationWithDescription("testPushUninstallation_http_404")
         let installID = "dummyInstallId"
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "DELETE")
-            let expectedPath = "\(self.api.baseURL!)/api/apps/\(self.api.appID!)/installations/\(installID)"
+            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -153,7 +147,7 @@ class PushUninstallationTests: XCTestCase {
             return;
         }
         
-        api.uninstallPush(installID) { (error) -> Void in
+        setting.api.uninstallPush(installID) { (error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -176,19 +170,20 @@ class PushUninstallationTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        checkSavedIoTAPI()
+        checkSavedIoTAPI(setting)
     }
     func testPushUninstallation_http_401() {
-        self.onboard()
+        let setting = TestSetting()
+        self.onboard(setting)
         let expectation = self.expectationWithDescription("testPushUninstallation_http_401")
         let installID = "dummyInstallId"
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "DELETE")
-            let expectedPath = "\(self.api.baseURL!)/api/apps/\(self.api.appID!)/installations/\(installID)"
+            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
-            let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)"]
+            let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -209,7 +204,7 @@ class PushUninstallationTests: XCTestCase {
             return;
         }
         
-        api.uninstallPush(installID) { (error) -> Void in
+        setting.api.uninstallPush(installID) { (error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -232,7 +227,7 @@ class PushUninstallationTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        checkSavedIoTAPI()
+        checkSavedIoTAPI(setting)
     }
     
 }

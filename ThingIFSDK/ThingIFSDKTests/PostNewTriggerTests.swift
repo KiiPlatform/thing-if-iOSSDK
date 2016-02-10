@@ -11,21 +11,8 @@ import XCTest
 
 class PostNewTriggerTests: XCTestCase {
 
-    var owner: Owner!
-    var schema = (thingType: "SmartLight-Demo",
-        name: "SmartLight-Demo", version: 1)
-    let baseURLString = "https://small-tests.internal.kii.com"
-    var api: ThingIFAPI!
-    let target = Target(typedID: TypedID(type: "thing", id: "0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
-
     override func setUp() {
         super.setUp()
-
-        owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
-
-        api = ThingIFAPIBuilder(appID: "dummyID", appKey: "dummyKey",
-            site: Site.CUSTOM(self.baseURLString), owner: owner).build()
-
     }
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -40,7 +27,9 @@ class PostNewTriggerTests: XCTestCase {
     }
 
     func testPostNewTrigger_success() {
-
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
         // perform onboarding
         api._target = target
 
@@ -75,12 +64,12 @@ class PostNewTriggerTests: XCTestCase {
 
         ]
         for (index,testCase) in testsCases.enumerate() {
-            postNewTriggerSuccess("testPostNewTrigger_success_\(index)", testcase: testCase)
+            postNewTriggerSuccess("testPostNewTrigger_success_\(index)", testcase: testCase, setting: setting)
         }
 
     }
 
-    func postNewTriggerSuccess(tag: String, testcase: TestCase) {
+    func postNewTriggerSuccess(tag: String, testcase: TestCase, setting:TestSetting) {
         let expectation = self.expectationWithDescription(tag)
 
         do{
@@ -98,19 +87,19 @@ class PostNewTriggerTests: XCTestCase {
             // mock response
             let dict = ["triggerID": expectedTriggerID]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
 
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "POST")
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key), tag)
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.typedID.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":expectedActions, "triggersWhat":"COMMAND"]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":setting.owner.typedID.toString(), "target": setting.target.typedID.toString(), "schema": setting.schema, "schemaVersion": setting.schemaVersion,"actions":expectedActions, "triggersWhat":"COMMAND"]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
@@ -119,13 +108,13 @@ class PostNewTriggerTests: XCTestCase {
                     XCTFail(tag)
                 }
                 
-                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/dummyID/targets/\(self.target.typedID.toString())/triggers")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.postNewTrigger(schema.name, schemaVersion: schema.version, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+            setting.api.postNewTrigger(setting.schema, schemaVersion: setting.schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
                     XCTAssertEqual(trigger!.enabled, true, tag)
@@ -148,6 +137,12 @@ class PostNewTriggerTests: XCTestCase {
 
     func testPostNewTrigger_http_404() {
         let expectation = self.expectationWithDescription("postNewTrigger404Error")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+        let owner = setting.owner
+        let schema = setting.schema
+        let schemaVersion = setting.schemaVersion
 
         // perform onboarding
         api._target = target
@@ -167,19 +162,19 @@ class PostNewTriggerTests: XCTestCase {
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
                 "message" : "Target \(target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "POST")
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                let expectedHeader = ["authorization": "Bearer \(owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":self.owner.typedID.toString(), "target": self.target.typedID.toString(), "schema": self.schema.name, "schemaVersion": self.schema.version,"actions":actions, "triggersWhat":"COMMAND"]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":owner.typedID.toString(), "target": target.typedID.toString(), "schema": schema, "schemaVersion": schemaVersion,"actions":actions, "triggersWhat":"COMMAND"]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
@@ -192,7 +187,7 @@ class PostNewTriggerTests: XCTestCase {
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.postNewTrigger(schema.name, schemaVersion: schema.version, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+            api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -221,11 +216,15 @@ class PostNewTriggerTests: XCTestCase {
 
     func testPostNewTrigger_UnsupportError() {
         let expectation = self.expectationWithDescription("postNewTriggerUnsupportError")
+        let setting = TestSetting()
+        let api = setting.api
+        let schema = setting.schema
+        let schemaVersion = setting.schemaVersion
 
         let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
         let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
 
-        api.postNewTrigger(schema.name, schemaVersion: schema.version, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+        api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -248,11 +247,15 @@ class PostNewTriggerTests: XCTestCase {
     
     func testPostTrigger_target_not_available_error() {
         let expectation = self.expectationWithDescription("testPostTrigger_target_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
+        let schema = setting.schema
+        let schemaVersion = setting.schemaVersion
 
         let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
         let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", value: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
 
-        api.postNewTrigger(schema.name, schemaVersion: schema.version, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+        api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {

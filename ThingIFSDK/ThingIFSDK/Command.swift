@@ -159,7 +159,7 @@ public class Command: NSObject, NSCoding {
             }
         }
         var command: Command?
-        if ((targetID != nil) || (issuerID != nil) || (schemaName != nil)) || (schemaVersion != nil) {
+        if ((targetID != nil) && (issuerID != nil) && (schemaName != nil)) && (schemaVersion != nil) {
                 command = Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState)
         }
         if command != nil {

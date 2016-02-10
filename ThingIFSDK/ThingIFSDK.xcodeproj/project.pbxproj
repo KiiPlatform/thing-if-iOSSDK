@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		7419C2B81C27D10100F964FB /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7419C2B71C27D10100F964FB /* App.swift */; };
+		743800F81C29303A005D8458 /* TestSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743800F71C29303A005D8458 /* TestSetting.swift */; };
 		7D36B6631BD4D03100D9B821 /* Clause.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6371BD4D03100D9B821 /* Clause.swift */; };
 		7D36B6641BD4D03100D9B821 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6381BD4D03100D9B821 /* Command.swift */; };
 		7D36B66F1BD4D03100D9B821 /* IoTRequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6441BD4D03100D9B821 /* IoTRequestOperation.swift */; };
@@ -79,6 +81,7 @@
 		7D36B6C01BD4D43700D9B821 /* ThingIFAPIBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */; };
 		7D36B6C21BD4D51D00D9B821 /* ThingIFSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7D36B6C41BD4D9DD00D9B821 /* ThingIFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */; };
+		A50A1C091C6B1C35001EB310 /* testapp.plist in Resources */ = {isa = PBXBuildFile; fileRef = 743800F91C2930C9005D8458 /* testapp.plist */; };
 		A54C7C1D1C631B7300A38940 /* ListTriggeredServerCodeResultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54C7C1C1C631B7300A38940 /* ListTriggeredServerCodeResultsTests.swift */; };
 		A56B0A431C5B43B100E653EF /* TriggeredServerCodeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */; };
 		A56B0A471C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A461C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift */; };
@@ -96,6 +99,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7419C2B71C27D10100F964FB /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		743800F71C29303A005D8458 /* TestSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSetting.swift; sourceTree = "<group>"; };
+		743800F91C2930C9005D8458 /* testapp.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testapp.plist; sourceTree = "<group>"; };
 		7D36B6371BD4D03100D9B821 /* Clause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Clause.swift; sourceTree = "<group>"; };
 		7D36B6381BD4D03100D9B821 /* Command.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		7D36B6441BD4D03100D9B821 /* IoTRequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTRequestOperation.swift; sourceTree = "<group>"; };
@@ -180,7 +186,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-
 		7417A2F91B65CF8400D116A5 = {
 			isa = PBXGroup;
 			children = (
@@ -219,6 +224,7 @@
 				7D36B6471BD4D03100D9B821 /* Operations */,
 				7D36B65C1BD4D03100D9B821 /* Owner.swift */,
 				7D36B65D1BD4D03100D9B821 /* Site.swift */,
+				7419C2B71C27D10100F964FB /* App.swift */,
 				7D36B65E1BD4D03100D9B821 /* Target.swift */,
 				7D36B65F1BD4D03100D9B821 /* Trigger.swift */,
 				7D36B6601BD4D03100D9B821 /* TypedID.swift */,
@@ -295,11 +301,12 @@
 				A56B0A461C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift */,
 				A56B0A481C62143000E653EF /* PatchServerCodeTriggerTests.swift */,
 				A54C7C1C1C631B7300A38940 /* ListTriggeredServerCodeResultsTests.swift */,
+				743800F71C29303A005D8458 /* TestSetting.swift */,
+				743800F91C2930C9005D8458 /* testapp.plist */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
 		};
-
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -392,6 +399,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A50A1C091C6B1C35001EB310 /* testapp.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,7 +419,6 @@
 			shellPath = /bin/sh;
 			shellScript = "######################\n# Options\n######################\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\n\n######################\n# Build Frameworks\n######################\n\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -target ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\n\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -target ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n\n######################\n# Make an universal binary\n######################\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n# For Swift framework, Swiftmodule needs to be copied in the universal framework\nif [ -d \"${SIMULATOR_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/\" ]; then\ncp -f ${SIMULATOR_LIBRARY_PATH}/Modules/${FRAMEWORK_NAME}.swiftmodule/* ${FRAMEWORK}/Modules/${FRAMEWORK_NAME}.swiftmodule/ | echo\nfi\n\n######################\n# On Release, copy the result to release directory\n######################\nOUTPUT_DIR=\"${PROJECT_DIR}/dist\"\n\nrm -rf \"$OUTPUT_DIR\"\nmkdir -p \"$OUTPUT_DIR\"\n\ncp -r \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\n\n# remove the build folder\nrm -r \"build\"\n\n";
 		};
-
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -433,6 +440,7 @@
 				7D36B6751BD4D03100D9B821 /* Dictionary+Operations.swift in Sources */,
 				7D36B6641BD4D03100D9B821 /* Command.swift in Sources */,
 				7D36B67A1BD4D03100D9B821 /* NoCancelledDependencies.swift in Sources */,
+				7419C2B81C27D10100F964FB /* App.swift in Sources */,
 				7D36B67D1BD4D03100D9B821 /* NSOperation+Operations.swift in Sources */,
 				7D36B6821BD4D03100D9B821 /* OperationQueue.swift in Sources */,
 				7D36B6801BD4D03100D9B821 /* OperationErrors.swift in Sources */,
@@ -475,6 +483,7 @@
 				A56B0A471C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift in Sources */,
 				7D36B6A81BD4D0CC00D9B821 /* IoTCloudSDKTests.swift in Sources */,
 				7D36B6A61BD4D0CC00D9B821 /* GetTriggerTests.swift in Sources */,
+				743800F81C29303A005D8458 /* TestSetting.swift in Sources */,
 				7D36B6A01BD4D0CC00D9B821 /* copyWithTarget.swift in Sources */,
 				7D36B6AC1BD4D0CC00D9B821 /* PatchTriggerTests.swift in Sources */,
 				7D36B6A51BD4D0CC00D9B821 /* GetStateTests.swift in Sources */,

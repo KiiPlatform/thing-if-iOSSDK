@@ -9,26 +9,11 @@ import XCTest
 @testable import ThingIFSDK
 
 class GetCommandTests: XCTestCase {
-
-    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
-
-    let schema = (thingType: "SmartLight-Demo",
-        name: "SmartLight-Demo", version: 1)
-
-    let baseURLString = "https://small-tests.internal.kii.com"
-
-    var api: ThingIFAPI!
-
-    let target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
-
     override func setUp() {
         super.setUp()
-        api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM(baseURLString), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
 
@@ -45,25 +30,26 @@ class GetCommandTests: XCTestCase {
     }
 
     func testGetCommandSuccess() {
-
+        let setting:TestSetting = TestSetting()
+        let api = setting.api
         // perform onboarding
-        api._target = target
+        api._target = setting.target
 
         let testcases = [
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower":["power": true]]], issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.typedID.type):\(self.target.typedID.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.typedID.type):\(self.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.typedID.type):\(self.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.typedID.type):\(self.target.typedID.id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED"),
-            TestCase(target: self.target, schema: self.schema.name, schemaVersion: self.schema.version, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(self.owner.typedID.type):\(self.owner.typedID.id)", targetIDString: "\(self.target.typedID.type):\(self.target.typedID.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE")
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower":["power": true]]], issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE"),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED"),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE")
 
         ]
 
         for (index, testcase) in testcases.enumerate() {
-            getCommandSuccess("testGetCommandSuccess_\(index)", testcase: testcase)
+            getCommandSuccess("testGetCommandSuccess_\(index)", testcase: testcase, setting: setting)
         }
     }
 
-    func getCommandSuccess(tag: String, testcase: TestCase) {
+    func getCommandSuccess(tag: String, testcase: TestCase, setting: TestSetting) {
 
         let expectation = self.expectationWithDescription(tag)
 
@@ -77,29 +63,29 @@ class GetCommandTests: XCTestCase {
             }
 
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:self.baseURLString)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
 
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(testcase.targetIDString)/commands/\(commandID)"
+                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(testcase.targetIDString)/commands/\(commandID)"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal for \(tag)")
 
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/50a62843/targets/\(self.target.typedID.toString())/commands/\(commandID)")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands/\(commandID)")
 
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.getCommand(commandID, completionHandler: { (command, error) -> Void in
+            setting.api.getCommand(commandID, completionHandler: { (command, error) -> Void in
                 if(error != nil) {
                     XCTFail("should success")
                 }else {
@@ -137,31 +123,33 @@ class GetCommandTests: XCTestCase {
 
     func testGetCommand_404_error() {
         let expectation = self.expectationWithDescription("getCommand404Error")
+        let setting = TestSetting()
+        let api = setting.api
         do{
             let commandID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
             // perform onboarding
-            api._target = target
+            api._target = setting.target
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.typedID.toString()) not found"]
+                "message" : "Target \(setting.target.typedID.toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:baseURLString)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
                 // verify path
-                let expectedPath = "\(self.api.baseURL!)/thing-if/apps/\(self.api.appID!)/targets/\(self.target.typedID.type):\(self.target.typedID.id)/commands/\(commandID)"
+                let expectedPath = "\(api.baseURL!)/thing-if/apps/\(api.appID!)/targets/\(setting.target.typedID.type):\(setting.target.typedID.id)/commands/\(commandID)"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "Content-type":"application/json"]
+                let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, self.baseURLString + "/thing-if/apps/50a62843/targets/\(self.target.typedID.toString())/commands/\(commandID)")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands/\(commandID)")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -196,6 +184,8 @@ class GetCommandTests: XCTestCase {
 
     func testGetCommand_trigger_not_available_error() {
         let expectation = self.expectationWithDescription("testGetCommand_trigger_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
 
         let commandID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
