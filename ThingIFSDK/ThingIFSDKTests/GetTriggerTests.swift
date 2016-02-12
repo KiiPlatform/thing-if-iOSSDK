@@ -84,7 +84,7 @@ class GetTriggerTests: XCTestCase {
             let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
             let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let expectedCommandObject = Command(commandID: nil, targetID: self.target.typedID, issuerID: self.owner.typedID, schemaName: self.schema.name, schemaVersion: self.schema.version, actions: expectedActionsDict, actionResults: nil, commandState: nil)
-            let eventSource = "states"
+            let eventSource = "STATES"
             let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":triggersWhen, "condition":statementToTest]
 
             // mock response
