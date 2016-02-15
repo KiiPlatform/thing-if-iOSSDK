@@ -23,18 +23,18 @@ extension ThingIFAPI {
             return
         }
 
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
 
         // generate command
-        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.typedID.toString(), "target":target!.typedID.toString()])
+        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.typedID.toString(), "target":target.typedID.toString()])
         commandDict.setObject(actions, forKey: "actions")
 
         // generate body
@@ -69,13 +69,12 @@ extension ThingIFAPI {
             completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
             return
         }
-        
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
         
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -112,12 +111,12 @@ extension ThingIFAPI {
         completionHandler: (Trigger?, ThingIFError?) -> Void
         )
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -180,12 +179,12 @@ extension ThingIFAPI {
         completionHandler: (Trigger?, ThingIFError?) -> Void
         )
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
         
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -233,7 +232,7 @@ extension ThingIFAPI {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
@@ -242,7 +241,7 @@ extension ThingIFAPI {
         if !enable {
             enableString = "disable"
         }
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)/\(enableString)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/\(enableString)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -271,12 +270,12 @@ extension ThingIFAPI {
         completionHandler: (Trigger!, ThingIFError?)-> Void
         )
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -303,12 +302,12 @@ extension ThingIFAPI {
         completionHandler: (results:[TriggeredServerCodeResult]?, paginationKey:String?, error: ThingIFError?)-> Void
     )
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(results: nil, paginationKey: nil, error: ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
         
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)/results/server-code"
+        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/results/server-code"
 
         if paginationKey != nil && bestEffortLimit != nil{
             requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
@@ -349,12 +348,12 @@ extension ThingIFAPI {
         completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: ThingIFError?)-> Void
         )
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(triggers: nil, paginationKey: nil, error: ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers"
+        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
 
         if paginationKey != nil && bestEffortLimit != nil{
             requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
@@ -394,12 +393,12 @@ extension ThingIFAPI {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
