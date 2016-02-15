@@ -492,7 +492,7 @@ public class ServerCode : NSObject, NSCoding {
         self.parameters = parameters
     }
 
-    public func toNSDictionary() -> NSDictionary {
+    func toNSDictionary() -> NSDictionary {
         let dict = NSMutableDictionary(dictionary: ["endpoint": self.endpoint, "executorAccessToken": self.executorAccessToken])
         if self.targetAppID != nil {
             dict["targetAppID"] = self.targetAppID
