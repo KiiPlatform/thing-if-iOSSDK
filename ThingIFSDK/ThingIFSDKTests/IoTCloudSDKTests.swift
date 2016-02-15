@@ -23,14 +23,14 @@ class ThingIFSDKTests: XCTestCase {
     }
     
     func testSavedInstance(){
-        let tags = ["tag1","tag2","tag3"]
+        let tags = ["tag1","tag2"]
+        let setting = TestSetting()
+        let app = setting.app
+        let owner = setting.owner
 
-        let api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
-        let api1 = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc"),tag:tags[0]).build()
-        let api2 = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc"),tag:tags[1]).build()
+        let api = ThingIFAPIBuilder(app:app, owner:owner).build()
+        let api1 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).build()
+        let api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[1]).build()
         do{
             var temp = try ThingIFAPI.loadWithStoredInstance()
              XCTAssertEqual(api,temp , "should be equal")

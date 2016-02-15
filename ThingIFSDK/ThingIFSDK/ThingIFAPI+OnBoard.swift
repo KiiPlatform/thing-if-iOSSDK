@@ -29,7 +29,7 @@ extension ThingIFAPI {
             let requestBodyDict = NSMutableDictionary(dictionary: ["thingPassword": thingPassword, "owner": owner.typedID.toString()])
             
             // generate header
-            var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "appID": appID]
+            var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
             
             if byVendorThingID {
                 requestBodyDict.setObject(IDString, forKey: "vendorThingID")

@@ -10,40 +10,31 @@ import XCTest
 @testable import ThingIFSDK
 
 class OnboardingTests: XCTestCase {
-
-    let owner = Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")
-
-    let schema = (thingType: "SmartLight-Demo",
-        name: "SmartLight-Demo", version: 1)
-
-    var api : ThingIFAPI!
-
-
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-        api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc")).build()
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
 
-    func checkSavedIoTAPI(){
+    func checkSavedIoTAPI(setting:TestSetting){
         do{
-            let savedIoTAPI = try ThingIFAPI.loadWithStoredInstance(api.tag)
+            let savedIoTAPI = try ThingIFAPI.loadWithStoredInstance(setting.api.tag)
             XCTAssertNotNil(savedIoTAPI)
-            XCTAssertTrue(api == savedIoTAPI)
+            XCTAssertTrue(setting.api == savedIoTAPI)
         }catch(let e){
             print(e)
             XCTFail("Should not throw")
         }
     }
+
     func testOnboardWithThingIDFail() {
         
         let expectation = self.expectationWithDescription("onboardWithThingID")
+        let setting = TestSetting()
+        let api = setting.api
+        let owner = setting.owner
         
 
         do{
@@ -56,13 +47,13 @@ class OnboardingTests: XCTestCase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
                 
                 //verify request header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "appID": "50a62843", "Content-type":"application/vnd.kii.OnboardingWithThingIDByOwner+json"]
+                let expectedHeader = ["authorization": "Bearer \(owner.accessToken)",  "Content-type":"application/vnd.kii.OnboardingWithThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
 
                 //verify request body
-                let expectedBody = ["thingID": "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", "thingPassword": "dummyPassword", "owner": self.owner.typedID.toString()]
+                let expectedBody = ["thingID": "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", "thingPassword": "dummyPassword", "owner": owner.typedID.toString()]
                 self.verifyDict(expectedBody, actualData: request.HTTPBody!)
                 
             }
@@ -97,12 +88,15 @@ class OnboardingTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        checkSavedIoTAPI()
+        checkSavedIoTAPI(setting)
     }
     
     func testOnboardWithVendorThingIDSuccess() {
         
         let expectation = self.expectationWithDescription("onboardWithVendorThingID")
+        let setting = TestSetting()
+        let api = setting.api
+        let owner = setting.owner
 
         do{
             let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1", "key2":"value2"]
@@ -111,24 +105,24 @@ class OnboardingTests: XCTestCase {
             let thingPassword = "dummyPassword"
             
             // mock response
-            let dict = ["accessToken":"BrZ3M9fIqghhqhyiqnxncY6KXEFEZWJaP0894qtzu2E","thingID":"th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"]
+            let dict = ["accessToken":setting.ownerToken,"thingID":setting.thingID]
             
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
             
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://\(setting.hostName)")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
             
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "POST")
                 
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "appID": "50a62843", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
+                let expectedHeader = ["authorization": "Bearer \(owner.accessToken)", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
                 
                 //verify body
-                let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": self.owner.typedID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
+                let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": owner.typedID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
                 self.verifyDict(expectedBody as! Dictionary<String, AnyObject>, actualData: request.HTTPBody!)
                 
             }
@@ -137,9 +131,9 @@ class OnboardingTests: XCTestCase {
             iotSession = MockSession.self
             api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
-                    XCTAssertEqual(self.api.target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
-                    XCTAssertEqual(target!.accessToken, "BrZ3M9fIqghhqhyiqnxncY6KXEFEZWJaP0894qtzu2E", "access token should equal to expected one")
+                    XCTAssertEqual(target!.typedID.toString(), "THING:\(setting.thingID)")
+                    XCTAssertEqual(target!.typedID.toString(), "THING:\(setting.thingID)")
+                    XCTAssertEqual(target!.accessToken, setting.ownerToken, "accessToken should equal to expected one")
                 }else {
                     XCTFail("should success")
                 }
@@ -153,14 +147,16 @@ class OnboardingTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        checkSavedIoTAPI()
+        checkSavedIoTAPI(setting)
 
     }
 
     func testOnboardWithThingID_already_onboarded_error() {
         let expectation = self.expectationWithDescription("testOnboardWithThingID_already_onboarded_error")
+        let setting = TestSetting()
+        let api = setting.api
 
-        api._target = Target(typedID: TypedID(type: "thing", id: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"))
+        api._target = setting.target
         api.onboard("dummyThingID", thingPassword: "dummyPassword") { (target, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
@@ -185,9 +181,11 @@ class OnboardingTests: XCTestCase {
     func testOnboardWithVendorThingIDAndImplementTag() {
 
         let expectation = self.expectationWithDescription("onboardWithVendorThingID")
+        let setting = TestSetting()
+        let owner = setting.owner
+        let app = setting.app
 
-        api = ThingIFAPIBuilder(appID: "50a62843", appKey: "2bde7d4e3eed1ad62c306dd2144bb2b0",
-            site: Site.CUSTOM("https://api-development-jp.internal.kii.com"), owner: Owner(typedID: TypedID(type:"user", id:"53ae324be5a0-2b09-5e11-6cc3-0862359e"), accessToken: "BbBFQMkOlEI9G1RZrb2Elmsu5ux1h-TIm5CGgh9UBMc"),tag:"target1").build()
+        let api = ThingIFAPIBuilder(app:app, owner:owner, tag:"target1").build()
         do{
             let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1", "key2":"value2"]
             let thingType = "LED"
@@ -195,24 +193,24 @@ class OnboardingTests: XCTestCase {
             let thingPassword = "dummyPassword"
 
             // mock response
-            let dict = ["accessToken":"BrZ3M9fIqghhqhyiqnxncY6KXEFEZWJaP0894qtzu2E","thingID":"th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"]
+            let dict = ["accessToken":setting.ownerToken,"thingID":setting.thingID]
 
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
 
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://\(setting.hostName)")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "POST")
 
                 //verify header
-                let expectedHeader = ["authorization": "Bearer \(self.owner.accessToken)", "appID": "50a62843", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
+                let expectedHeader = ["authorization": "Bearer \(owner.accessToken)", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
 
                 //verify body
-                let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": self.owner.typedID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
+                let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": owner.typedID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
                 self.verifyDict(expectedBody as! Dictionary<String, AnyObject>, actualData: request.HTTPBody!)
 
             }
@@ -221,9 +219,9 @@ class OnboardingTests: XCTestCase {
             iotSession = MockSession.self
             api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
-                    XCTAssertEqual(self.api.target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
-                    XCTAssertEqual(target!.accessToken, "BrZ3M9fIqghhqhyiqnxncY6KXEFEZWJaP0894qtzu2E", "accessToken should equal to expected one")
+                    XCTAssertEqual(target!.typedID.toString(), "THING:\(setting.thingID)")
+                    XCTAssertEqual(target!.typedID.toString(), "THING:\(setting.thingID)")
+                    XCTAssertEqual(target!.accessToken, setting.ownerToken, "accessToken should equal to expected one")
                 }else {
                     XCTFail("should success")
                 }
@@ -237,7 +235,7 @@ class OnboardingTests: XCTestCase {
                 XCTFail("execution timeout")
             }
         }
-        checkSavedIoTAPI()
+        checkSavedIoTAPI(setting)
         
     }
 
