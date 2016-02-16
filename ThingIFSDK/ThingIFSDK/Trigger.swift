@@ -374,14 +374,14 @@ public enum TriggersWhat {
 
 enum EventSource: String {
 
-    case States = "states"
-    case Schedule = "schedule"
+    case States = "STATES"
+    case Schedule = "SCHEDULE"
 
     init?(string: String) {
         switch string {
-        case "states":
+        case "STATES":
             self = .States
-        case "schedule":
+        case "SCHEDULE":
             self = .Schedule
         default: return nil
         }
