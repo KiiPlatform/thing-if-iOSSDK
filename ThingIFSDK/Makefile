@@ -1,7 +1,7 @@
 all:clean build archive doc
 
 DIST_DIR = dist
-GIT_BRANCH_NAME := $(shell git branch | grep -e '^\*' | sed -e 's/^\* //g')
+GIT_BRANCH_NAME := $(shell git branch | grep -e '^\*' | sed -e 's/^\* //g' | sed -e 's/\//-/g')
 GIT_COMMIT_ID := $(shell git rev-list -n 1 --abbrev-commit HEAD)
 
 .PHONY: clean carthage-build archive doc

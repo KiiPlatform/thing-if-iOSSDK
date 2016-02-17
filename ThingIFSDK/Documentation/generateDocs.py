@@ -65,7 +65,7 @@ class SwiftDocGenerator(object):
         if not branchStr:
             branchStr = subprocess.Popen("git branch | grep -e '^\*' | sed -e 's/^\* //g'", stdout=subprocess.PIPE, shell=True).communicate()[0].split()[0]
         p = re.compile('[\/ ]')
-        branchStr = p.sub('_', branchStr)
+        branchStr = p.sub('-', branchStr)
         print ('branchStr: ' + branchStr)
         self.gitBranch = branchStr
 

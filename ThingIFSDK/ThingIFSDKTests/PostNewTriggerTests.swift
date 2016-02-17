@@ -80,7 +80,7 @@ class PostNewTriggerTests: XCTestCase {
 
             let expectedActions = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let expectedClause = testcase.expectedClauseDict
-            let expectedEventSource = "states"
+            let expectedEventSource = "STATES"
             let expectedTriggerWhen = testcase.expectedTriggersWhenString
             let expectedPredicateDict = ["eventSource":expectedEventSource, "triggersWhen":expectedTriggerWhen, "condition":expectedClause]
 
@@ -154,7 +154,7 @@ class PostNewTriggerTests: XCTestCase {
             let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
 
             let expectedClause = ["type":"eq","filed":"color", "value": 0]
-            let expectedEventSource = "states"
+            let expectedEventSource = "STATES"
             let expectedTriggerWhen = "CONDITION_FALSE_TO_TRUE"
             let expectedPredicateDict = ["eventSource":expectedEventSource, "triggersWhen":expectedTriggerWhen, "condition":expectedClause]
 
