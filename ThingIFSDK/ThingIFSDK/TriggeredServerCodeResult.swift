@@ -16,7 +16,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
         self.succeeded = aDecoder.decodeBoolForKey("succeeded")
         self.returnedValue = aDecoder.decodeObjectForKey("returnedValue") as AnyObject?
         self.executedAt = NSDate(timeIntervalSince1970: aDecoder.decodeDoubleForKey("executedAt"))
-        self.error = aDecoder.decodeObjectForKey("error") as? Dictionary<String, AnyObject>
+        self.error = aDecoder.decodeObjectForKey("error") as? ServerError
         // TODO: add aditional decoder
     }
     
@@ -27,7 +27,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
     /** Date of the execution */
     public var executedAt: NSDate
     /** Error object of the invocation if any */
-    public var error: Dictionary<String, AnyObject>?
+    public var error: ServerError?
     
     
     /** Init TriggeredServerCodeResult with necessary attributes
@@ -37,7 +37,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
      - Parameter executedAt: Date of the execution
      - Parameter error: Error object of the invocation if any
      */
-    public init(succeeded: Bool, returnedValue: AnyObject?, executedAt: NSDate, error: Dictionary<String, AnyObject>?) {
+    public init(succeeded: Bool, returnedValue: AnyObject?, executedAt: NSDate, error: ServerError?) {
         self.succeeded = succeeded
         self.returnedValue = returnedValue
         self.executedAt = executedAt
@@ -115,7 +115,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
             if self.error != nil || aResult.error != nil {
                 return false
             }
-        } else if (!NSDictionary(dictionary: self.error!).isEqualToDictionary(aResult.error!)) {
+        } else if (!self.error!.isEqual(aResult.error!)) {
             return false
         }
         return self.succeeded == aResult.succeeded && self.executedAt == aResult.executedAt
@@ -159,14 +159,64 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
         let returnedValue = resultDict["returnedValue"] as AnyObject?
         let executedAtStamp = resultDict["executedAt"] as? NSNumber
         let error = resultDict["error"] as? Dictionary<String, AnyObject>
+        var serverError: ServerError? = nil
+        if error != nil {
+            serverError = ServerError.errorWithNSDict(error!)
+        }
 
         let executedAt = NSDate(timeIntervalSince1970: (executedAtStamp?.doubleValue)!/1000.0)
         
         var result: TriggeredServerCodeResult?
         if succeeded != nil {
-            result = TriggeredServerCodeResult(succeeded:succeeded!, returnedValue:returnedValue, executedAt:executedAt, error:error)
+            result = TriggeredServerCodeResult(succeeded:succeeded!, returnedValue:returnedValue, executedAt:executedAt, error:serverError)
         }
         return result
+    }
+}
+
+public class ServerError: NSObject, NSCoding {
+    
+    // MARK: - Implements NSCoding protocol
+    public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.errorMessage, forKey: "errorMessage")
+        aCoder.encodeObject(self.errorCode, forKey: "errorCode")
+        aCoder.encodeObject(self.detailMessage, forKey: "detailMessage")
+    }
+    
+    // MARK: - Implements NSCoding protocol
+    public required init(coder aDecoder: NSCoder) {
+        self.errorMessage = aDecoder.decodeObjectForKey("errorMessage") as? String
+        self.errorCode = aDecoder.decodeObjectForKey("errorCode") as? String
+        self.detailMessage = aDecoder.decodeObjectForKey("detailMessage") as? String
+    }
+    
+    public let errorMessage: String?
+    public let errorCode: String?
+    public let detailMessage: String?
+    
+    init(errorMessage: String?, errorCode: String?, detailMessage: String?) {
+        self.errorMessage = errorMessage
+        self.errorCode = errorCode
+        self.detailMessage = detailMessage
+    }
+    
+    public override func isEqual(object: AnyObject?) -> Bool {
+        guard let aResult = object as? ServerError else{
+            return false
+        }
+        return self.errorMessage == aResult.errorMessage && self.errorCode == aResult.errorCode && self.detailMessage == aResult.detailMessage
+    }
+    
+    class func errorWithNSDict(errorDict: NSDictionary) -> ServerError?{
+        let errorMessage = errorDict["errorMessage"] as? String
+        let details = errorDict["details"] as? NSDictionary
+        var errorCode: String?
+        var detailMessage: String?
+        if details != nil {
+            errorCode = details!["errorCode"] as? String
+            detailMessage = details!["message"] as? String
+        }
+        return ServerError(errorMessage: errorMessage, errorCode: errorCode, detailMessage: detailMessage)
     }
 
 }

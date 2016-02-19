@@ -25,7 +25,7 @@ class TriggeredServerCodeResultTest: XCTestCase {
             [true, 1455531174923, true, nil],
             [true, 1455531174923, [123, "abc", true, 123.05], nil],
             [true, 1455531174923, ["f1":"aaa", "f2":false, "f3":1000, "f4":100.05, "f5":[123]], nil],
-            [false, 1455531174923, nil, ["errorMessage":"Error found", "details":["errorCode":"RUNTIME_ERROR", "message":"faital error"]]],
+            [false, 1455531174923, nil, ServerError(errorMessage: "Error found", errorCode: "RUNTIME_ERROR", detailMessage: "faital error")],
         ]
         
         for var i = 0; i < testDataList.count; ++i {
@@ -43,7 +43,7 @@ class TriggeredServerCodeResultTest: XCTestCase {
             if expectedData[3] == nil {
                 XCTAssertNil(result.error)
             } else {
-                XCTAssertTrue(NSDictionary(dictionary: expectedData[3]! as! [String : AnyObject]).isEqualToDictionary(result.error!))
+                XCTAssertTrue(result.error!.isEqual(expectedData[3]!))
             }
         }
     }
