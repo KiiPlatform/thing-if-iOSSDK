@@ -57,28 +57,16 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
         return nil
     }
     public func getReturnedValueAsBool() -> Bool? {
-        if let bool = self.returnedValue as? Bool {
-            return bool
-        }
-        return nil
+        return self.returnedValue as? Bool
     }
     public func getReturnedValueAsNSNumber() -> NSNumber? {
-        if let num = self.returnedValue as? NSNumber {
-            return num
-        }
-        return nil
+        return self.returnedValue as? NSNumber
     }
     public func getReturnedValueAsDictionary() -> Dictionary<String, AnyObject>? {
-        if let dic = self.returnedValue as? Dictionary<String, AnyObject> {
-            return dic
-        }
-        return nil
+        return self.returnedValue as? Dictionary<String, AnyObject>
     }
     public func getReturnedValueAsArray() -> [AnyObject]? {
-        if let array = self.returnedValue as? [AnyObject] {
-            return array
-        }
-        return nil
+        return self.returnedValue as? [AnyObject]
     }
 
     public override func isEqual(object: AnyObject?) -> Bool {
@@ -89,26 +77,27 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
             if self.returnedValue != nil || aResult.returnedValue != nil {
                 return false
             }
-        }
-        if self.returnedValue is Dictionary<String, AnyObject> {
-            if !NSDictionary(dictionary: self.returnedValue as! [NSObject : AnyObject]).isEqualToDictionary(aResult.returnedValue as! [NSObject : AnyObject]) {
-                return false
-            }
-        } else if self.returnedValue is [AnyObject] {
-            if !isEqualArray(self.returnedValue as! [AnyObject], arr2: aResult.returnedValue as! [AnyObject]) {
-                return false
-            }
-        } else if self.returnedValue is String {
-            if self.returnedValue as! String != aResult.returnedValue as! String {
-                return false
-            }
-        } else if self.returnedValue is Bool {
-            if self.returnedValue as! Bool != aResult.returnedValue as! Bool {
-                return false
-            }
-        } else if self.returnedValue is NSNumber {
-            if self.returnedValue as! NSNumber != aResult.returnedValue as! NSNumber {
-                return false
+        } else {
+            if self.returnedValue! is Dictionary<String, AnyObject> {
+                if !NSDictionary(dictionary: self.returnedValue as! [NSObject : AnyObject]).isEqualToDictionary(aResult.returnedValue as! [NSObject : AnyObject]) {
+                    return false
+                }
+            } else if self.returnedValue! is [AnyObject] {
+                if !isEqualArray(self.returnedValue as! [AnyObject], arr2: aResult.returnedValue as! [AnyObject]) {
+                    return false
+                }
+            } else if self.returnedValue! is String {
+                if self.returnedValue as! String != aResult.returnedValue as! String {
+                    return false
+                }
+            } else if self.returnedValue! is NSNumber {
+                if self.returnedValue as! NSNumber != aResult.returnedValue as! NSNumber {
+                    return false
+                }
+            } else if self.returnedValue! is Bool {
+                if self.returnedValue as! Bool != aResult.returnedValue as! Bool {
+                    return false
+                }
             }
         }
         if self.error == nil || aResult.error == nil {
@@ -139,12 +128,12 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
                 if e1 as! String != e2 as! String {
                     return false
                 }
-            } else if e1 is Bool {
-                if e1 as! Bool != e2 as! Bool {
-                    return false
-                }
             } else if e1 is NSNumber {
                 if e1 as! NSNumber != e2 as! NSNumber {
+                    return false
+                }
+            } else if e1 is Bool {
+                if e1 as! Bool != e2 as! Bool {
                     return false
                 }
             } else {
@@ -155,22 +144,21 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
     }
     
     class func resultWithNSDict(resultDict: NSDictionary) -> TriggeredServerCodeResult?{
-        let succeeded = resultDict["succeeded"] as? Bool
+        guard let succeeded = resultDict["succeeded"] as? Bool else{
+            return nil
+        }
+        guard let executedAtStamp = resultDict["executedAt"] as? NSNumber else{
+            return nil
+        }
         let returnedValue = resultDict["returnedValue"] as AnyObject?
-        let executedAtStamp = resultDict["executedAt"] as? NSNumber
+        
         let error = resultDict["error"] as? Dictionary<String, AnyObject>
         var serverError: ServerError? = nil
         if error != nil {
             serverError = ServerError.errorWithNSDict(error!)
         }
-
-        let executedAt = NSDate(timeIntervalSince1970: (executedAtStamp?.doubleValue)!/1000.0)
-        
-        var result: TriggeredServerCodeResult?
-        if succeeded != nil {
-            result = TriggeredServerCodeResult(succeeded:succeeded!, returnedValue:returnedValue, executedAt:executedAt, error:serverError)
-        }
-        return result
+        let executedAt = NSDate(timeIntervalSince1970: (executedAtStamp.doubleValue)/1000.0)
+        return TriggeredServerCodeResult(succeeded:succeeded, returnedValue:returnedValue, executedAt:executedAt, error:serverError)
     }
 }
 
