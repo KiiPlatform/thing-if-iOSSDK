@@ -123,6 +123,7 @@ class PatchTriggerTests: XCTestCase {
             }catch(_){
                 XCTFail(tag)
             }
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
         }
 
         //verify get request
@@ -162,14 +163,14 @@ class PatchTriggerTests: XCTestCase {
         }
 
 
+        api._target = setting.target
         api.patchTrigger(expectedTriggerID, schemaName: testcase.schemaName, schemaVersion: testcase.schemaVersion, actions: testcase.actions, predicate: testcase.predicate, completionHandler: { (trigger, error) -> Void in
             if testcase.success {
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
-                    XCTAssertEqual(trigger!.targetID.toString(), setting.target.typedID.toString(), tag)
                     XCTAssertEqual(trigger!.enabled, true, tag)
                     XCTAssertNotNil(trigger!.predicate, tag)
-                    XCTAssertEqual(trigger!.command.commandID, "", tag)
+                    XCTAssertEqual(trigger!.command!.commandID, "", tag)
                 }else {
                     XCTFail("should success for \(tag)")
                 }

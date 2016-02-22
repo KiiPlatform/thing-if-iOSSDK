@@ -10,12 +10,10 @@ import XCTest
 @testable import ThingIFSDK
 
 class PushUninstallationTests: XCTestCase {
-
     let deviceToken = "dummyDeviceToken"
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
@@ -98,7 +96,7 @@ class PushUninstallationTests: XCTestCase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-            
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/api/apps/50a62843/installations/\(installID)")
         }
         
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 204, HTTPVersion: nil, headerFields: nil)

@@ -107,6 +107,8 @@ class PostNewTriggerTests: XCTestCase {
                 }catch(_){
                     XCTFail(tag)
                 }
+                
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -115,10 +117,9 @@ class PostNewTriggerTests: XCTestCase {
             setting.api.postNewTrigger(setting.schema, schemaVersion: setting.schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
-                    XCTAssertEqual(trigger!.targetID.toString(), setting.target.typedID.toString(), tag)
                     XCTAssertEqual(trigger!.enabled, true, tag)
                     XCTAssertNotNil(trigger!.predicate, tag)
-                    XCTAssertEqual(trigger!.command.commandID, "", tag)
+                    XCTAssertEqual(trigger!.command!.commandID, "", tag)
                 }else {
                     XCTFail("should success for \(tag)")
                 }

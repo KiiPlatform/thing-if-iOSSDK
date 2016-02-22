@@ -118,11 +118,20 @@ class ListCommandsTests: XCTestCase {
                 let actualRequestPathString = request.URL!.absoluteString
                 XCTAssertTrue(actualRequestPathString.rangeOfString(expectedBasePath) != nil, tag)
                 if testcase.paginationKey != nil || testcase.bestEffortLimit != nil {
-                     if testcase.paginationKey != nil {
-                        XCTAssertTrue(actualRequestPathString.rangeOfString("paginationKey=\(testcase.paginationKey!)") != nil, tag)
-                        }
-                    if testcase.bestEffortLimit != nil {                        XCTAssertTrue(actualRequestPathString.rangeOfString("bestEffortLimit=\(testcase.bestEffortLimit!)") != nil, tag)
+                    let expectedURL = setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands"
+                    var queryParams = ""
+                    if testcase.paginationKey != nil {
+                        queryParams = "?paginationKey=" + testcase.paginationKey!
                     }
+                    if testcase.bestEffortLimit != nil {
+                        if queryParams.isEmpty {
+                            queryParams = "?"
+                        } else {
+                            queryParams += "&"
+                        }
+                        queryParams += "bestEffortLimit=" + String(testcase.bestEffortLimit!)
+                    }
+                    XCTAssertEqual(request.URL?.absoluteString, expectedURL + queryParams)
                 }
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(owner.accessToken)", "Content-type":"application/json"]
@@ -134,6 +143,7 @@ class ListCommandsTests: XCTestCase {
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
+            api._target = setting.target
             api.listCommands(testcase.bestEffortLimit, paginationKey: testcase.paginationKey, completionHandler: { (commands, nextPaginationKey, error) -> Void in
                 if(error != nil) {
                     XCTFail("should success")

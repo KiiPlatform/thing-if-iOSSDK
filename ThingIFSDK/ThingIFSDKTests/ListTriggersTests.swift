@@ -81,6 +81,7 @@ class ListTriggersTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -101,7 +102,7 @@ class ListTriggersTests: XCTestCase {
                             do {
                                 // verify actions dictionary
                                 let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(expectedActionsDict, options: NSJSONWritingOptions(rawValue: 0))
-                                let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger.command.actions, options: NSJSONWritingOptions(rawValue: 0))
+                                let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger.command!.actions, options: NSJSONWritingOptions(rawValue: 0))
                                 XCTAssertTrue(expectedActionsData == actualActionsData)
 
                                 // verify predicate
@@ -128,7 +129,7 @@ class ListTriggersTests: XCTestCase {
             }
         }
     }
-
+    
     func testListTriggers_404_error() {
         let expectation = self.expectationWithDescription("getTrigger403Error")
         let setting = TestSetting()

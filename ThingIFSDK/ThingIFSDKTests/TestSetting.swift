@@ -30,7 +30,7 @@ public class TestSetting: NSObject {
     let thingType:String
 
     public override init() {
-        let b:NSBundle = NSBundle.mainBundle()
+        let b:NSBundle = NSBundle(forClass:TestSetting.self)
         let path:String = b.pathForResource("testapp", ofType: "plist")!
         let dict:NSDictionary = NSDictionary(contentsOfFile: path)!
 

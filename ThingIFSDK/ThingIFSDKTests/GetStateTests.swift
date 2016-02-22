@@ -86,7 +86,7 @@ class GetStateTests: XCTestCase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
         }
 
         let dict : Dictionary<String,AnyObject>? = [
@@ -107,6 +107,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
+        setting.api._target = setting.target
         setting.api.getState() { (result, error) -> Void in
 
             XCTAssertNotNil(result,"should not nil")
@@ -142,7 +143,7 @@ class GetStateTests: XCTestCase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
         }
 
         let dict = ["errorCode":"TARGET_NOT_FOUND","message":"error message"]
@@ -159,6 +160,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
+        setting.api._target = setting.target
         setting.api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
@@ -199,7 +201,7 @@ class GetStateTests: XCTestCase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
         }
 
         let dict = ["errorCode":"INVALID_INPUT_DATA","message":"error message"]
@@ -216,6 +218,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
+        setting.api._target = setting.target
         setting.api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
@@ -281,6 +284,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
+        setting.api._target = setting.target
         setting.api.getState() { (result, error) -> Void in
 
             XCTAssertNotNil(result,"should not nil")

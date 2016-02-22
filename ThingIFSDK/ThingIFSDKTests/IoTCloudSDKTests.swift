@@ -75,6 +75,7 @@ class ThingIFSDKTests: XCTestCase {
         //clear
         persistance.removeObjectForKey(baseKey)
         persistance.synchronize()
+        sleep(1)
 
         do{
             try ThingIFAPI.loadWithStoredInstance()

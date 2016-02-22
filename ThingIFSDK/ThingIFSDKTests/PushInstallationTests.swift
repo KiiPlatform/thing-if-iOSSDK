@@ -59,7 +59,7 @@ class PushInstallationTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/onboardings")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -99,6 +99,7 @@ class PushInstallationTests: XCTestCase {
             //verify request body
             let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": setting.owner.typedID.id]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/api/apps/50a62843/installations")
         }
         
         let dict = ["installationID":"dummy_installation_ID"]

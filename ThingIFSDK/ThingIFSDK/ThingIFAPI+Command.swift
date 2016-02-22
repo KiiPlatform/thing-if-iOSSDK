@@ -17,12 +17,12 @@ extension ThingIFAPI {
         completionHandler: (Command?, ThingIFError?)-> Void
         ) -> Void
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/commands"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -46,8 +46,8 @@ extension ThingIFAPI {
                     completionHandler(command, error)
                 }
             })
-            let onboardRequestOperation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(onboardRequestOperation)
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
             
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
@@ -60,12 +60,12 @@ extension ThingIFAPI {
         completionHandler: (Command?, ThingIFError?)-> Void
         )
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/commands/\(commandID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands/\(commandID)"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -81,8 +81,8 @@ extension ThingIFAPI {
             }
         })
         
-        let onboardRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(onboardRequestOperation)
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
     
     func _listCommands(
@@ -91,14 +91,14 @@ extension ThingIFAPI {
         completionHandler: ([Command]?, String?, ThingIFError?)-> Void
         )
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/commands"
+        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands"
         if paginationKey != nil && bestEffortLimit != nil{
-            requestURL += "?paginationKey=\(paginationKey!)&&bestEffortLimit=\(bestEffortLimit!)"
+            requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
         }else if bestEffortLimit != nil {
             requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
         }else if paginationKey != nil {
@@ -126,7 +126,7 @@ extension ThingIFAPI {
             }
         })
         
-        let onboardRequestOperation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(onboardRequestOperation)
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 }
