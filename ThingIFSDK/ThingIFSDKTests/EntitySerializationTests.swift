@@ -25,7 +25,6 @@ class EntitySerializationTests: XCTestCase {
         let data = NSKeyedArchiver.archivedDataWithRootObject(anEntity)
         let key = _stdlib_getDemangledTypeName(anEntity)
         NSUserDefaults.standardUserDefaults().setObject(data, forKey: key)
-        
         if let data = NSUserDefaults.standardUserDefaults().objectForKey(key) as? NSData {
             let archivedEntity = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! T
             XCTAssertTrue(anEntity == archivedEntity, "\(key) Entity should be equal")
@@ -121,8 +120,22 @@ class EntitySerializationTests: XCTestCase {
     }
     // TriggeredServerCodeResult
     func testTriggeredServerCodeResult_NSUserDefaultSerialization() {
-        let aTriggeredServerCodeResult = TriggeredServerCodeResult(succeeded: true, returnedValue: "{\"value\":50}", executedAt: NSDate(timeIntervalSince1970: 1454474985), errorMessage: nil)
-        self.doSerializationTest(aTriggeredServerCodeResult)
+        let array : [AnyObject] = [123, 123.456, "abc", true, [123], ["f1":123]]
+        let object : Dictionary<String, AnyObject> = ["f1":123, "f2":"abc", "f3":true]
+        let testDataList = [
+            TriggeredServerCodeResult(succeeded: true, returnedValue: nil, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: "abcd", executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: "", executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: 1234, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: 14544749850000, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: 1234.5678, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: true, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: array, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: object, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+        ]
+        for testData in testDataList {
+            self.doSerializationTest(testData)
+        }
     }
     //Target
     func testTarget_NSUserDefaultSerialization() {

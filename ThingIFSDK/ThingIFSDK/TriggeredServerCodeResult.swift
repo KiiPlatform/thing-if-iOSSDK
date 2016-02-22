@@ -8,26 +8,26 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
         aCoder.encodeBool(self.succeeded, forKey: "succeeded")
         aCoder.encodeObject(self.returnedValue, forKey: "returnedValue")
         aCoder.encodeDouble(self.executedAt.timeIntervalSince1970, forKey: "executedAt")
-        aCoder.encodeObject(self.errorMessage, forKey: "errorMessage")
+        aCoder.encodeObject(self.error, forKey: "error")
     }
     
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         self.succeeded = aDecoder.decodeBoolForKey("succeeded")
-        self.returnedValue = aDecoder.decodeObjectForKey("returnedValue") as? String
+        self.returnedValue = aDecoder.decodeObjectForKey("returnedValue") as AnyObject?
         self.executedAt = NSDate(timeIntervalSince1970: aDecoder.decodeDoubleForKey("executedAt"))
-        self.errorMessage = aDecoder.decodeObjectForKey("errorMessage") as? String
+        self.error = aDecoder.decodeObjectForKey("error") as? ServerError
         // TODO: add aditional decoder
     }
     
     /** Whether the invocation succeeded */
     public var succeeded: Bool
-    /** Returned value from server code */
-    public var returnedValue: String?
+    /** Returned value from server code (JsonObject, JsonArray, String, Number, Boolean or null) */
+    public var returnedValue: AnyObject?
     /** Date of the execution */
     public var executedAt: NSDate
-    /** Error message of the invocation if any */
-    public var errorMessage: String?
+    /** Error object of the invocation if any */
+    public var error: ServerError?
     
     
     /** Init TriggeredServerCodeResult with necessary attributes
@@ -35,39 +35,176 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
      - Parameter succeeded: Whether the invocation succeeded
      - Parameter returnedValue: Returned value from server code
      - Parameter executedAt: Date of the execution
-     - Parameter errorMessage: Error message of the invocation if any
+     - Parameter error: Error object of the invocation if any
      */
-    public init(succeeded: Bool, returnedValue: String?, executedAt: NSDate, errorMessage: String?) {
+    public init(succeeded: Bool, returnedValue: AnyObject?, executedAt: NSDate, error: ServerError?) {
         self.succeeded = succeeded
         self.returnedValue = returnedValue
         self.executedAt = executedAt
-        self.errorMessage = errorMessage
+        self.error = error
+    }
+    
+    public func getReturnedValue() -> AnyObject? {
+        return self.returnedValue
+    }
+    public func getReturnedValueAsString() -> String? {
+        if let str = self.returnedValue as? String {
+            return str
+        }
+        if let num = self.returnedValue as? NSNumber {
+            return String(num)
+        }
+        return nil
+    }
+    public func getReturnedValueAsBool() -> Bool? {
+        return self.returnedValue as? Bool
+    }
+    public func getReturnedValueAsNSNumber() -> NSNumber? {
+        return self.returnedValue as? NSNumber
+    }
+    public func getReturnedValueAsDictionary() -> Dictionary<String, AnyObject>? {
+        return self.returnedValue as? Dictionary<String, AnyObject>
+    }
+    public func getReturnedValueAsArray() -> [AnyObject]? {
+        return self.returnedValue as? [AnyObject]
     }
 
     public override func isEqual(object: AnyObject?) -> Bool {
         guard let aResult = object as? TriggeredServerCodeResult else{
             return false
         }
-        return self.succeeded == aResult.succeeded &&
-            self.returnedValue == aResult.returnedValue &&
-            self.executedAt == aResult.executedAt &&
-            self.errorMessage == aResult.errorMessage
+        if self.returnedValue == nil || aResult.returnedValue == nil {
+            if self.returnedValue != nil || aResult.returnedValue != nil {
+                return false
+            }
+        } else {
+            if self.returnedValue! is Dictionary<String, AnyObject> {
+                if !NSDictionary(dictionary: self.returnedValue as! [NSObject : AnyObject]).isEqualToDictionary(aResult.returnedValue as! [NSObject : AnyObject]) {
+                    return false
+                }
+            } else if self.returnedValue! is [AnyObject] {
+                if !isEqualArray(self.returnedValue as! [AnyObject], arr2: aResult.returnedValue as! [AnyObject]) {
+                    return false
+                }
+            } else if self.returnedValue! is String {
+                if self.returnedValue as! String != aResult.returnedValue as! String {
+                    return false
+                }
+            } else if self.returnedValue! is NSNumber {
+                if self.returnedValue as! NSNumber != aResult.returnedValue as! NSNumber {
+                    return false
+                }
+            } else if self.returnedValue! is Bool {
+                if self.returnedValue as! Bool != aResult.returnedValue as! Bool {
+                    return false
+                }
+            }
+        }
+        if self.error == nil || aResult.error == nil {
+            if self.error != nil || aResult.error != nil {
+                return false
+            }
+        } else if (!self.error!.isEqual(aResult.error!)) {
+            return false
+        }
+        return self.succeeded == aResult.succeeded && self.executedAt == aResult.executedAt
     }
-
+    private func isEqualArray(arr1:[AnyObject], arr2:[AnyObject]) -> Bool {
+        if arr1.count != arr2.count {
+            return false
+        }
+        for var i = 0; i < arr1.count; ++i {
+            let e1 = arr1[i]
+            let e2 = arr2[i]
+            if e1 is Dictionary<String, AnyObject> {
+                if !NSDictionary(dictionary: e1 as! [NSObject : AnyObject]).isEqualToDictionary(e2 as! [NSObject : AnyObject]) {
+                    return false
+                }
+            } else if e1 is [AnyObject] {
+                if !isEqualArray(e1 as! [AnyObject], arr2: e2 as! [AnyObject]) {
+                    return false
+                }
+            } else if e1 is String {
+                if e1 as! String != e2 as! String {
+                    return false
+                }
+            } else if e1 is NSNumber {
+                if e1 as! NSNumber != e2 as! NSNumber {
+                    return false
+                }
+            } else if e1 is Bool {
+                if e1 as! Bool != e2 as! Bool {
+                    return false
+                }
+            } else {
+                return false
+            }
+        }
+        return true
+    }
     
     class func resultWithNSDict(resultDict: NSDictionary) -> TriggeredServerCodeResult?{
-        let succeeded = resultDict["succeeded"] as? Bool
-        let returnedValue = resultDict["returnedValue"] as? String
-        let executedAtStamp = resultDict["executedAt"] as? NSNumber
-        let errorMessage = resultDict["errorMessage"] as? String
-
-        let executedAt = NSDate(timeIntervalSince1970: (executedAtStamp?.doubleValue)!/1000.0)
-        
-        var result: TriggeredServerCodeResult?
-        if succeeded != nil {
-            result = TriggeredServerCodeResult(succeeded:succeeded!, returnedValue:returnedValue, executedAt:executedAt, errorMessage:errorMessage)
+        guard let succeeded = resultDict["succeeded"] as? Bool else{
+            return nil
         }
-        return result
+        guard let executedAtStamp = resultDict["executedAt"] as? NSNumber else{
+            return nil
+        }
+        let returnedValue = resultDict["returnedValue"] as AnyObject?
+        
+        let error = resultDict["error"] as? Dictionary<String, AnyObject>
+        var serverError: ServerError? = nil
+        if error != nil {
+            serverError = ServerError.errorWithNSDict(error!)
+        }
+        let executedAt = NSDate(timeIntervalSince1970: (executedAtStamp.doubleValue)/1000.0)
+        return TriggeredServerCodeResult(succeeded:succeeded, returnedValue:returnedValue, executedAt:executedAt, error:serverError)
+    }
+}
+
+public class ServerError: NSObject, NSCoding {
+    
+    // MARK: - Implements NSCoding protocol
+    public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.errorMessage, forKey: "errorMessage")
+        aCoder.encodeObject(self.errorCode, forKey: "errorCode")
+        aCoder.encodeObject(self.detailMessage, forKey: "detailMessage")
+    }
+    
+    // MARK: - Implements NSCoding protocol
+    public required init(coder aDecoder: NSCoder) {
+        self.errorMessage = aDecoder.decodeObjectForKey("errorMessage") as? String
+        self.errorCode = aDecoder.decodeObjectForKey("errorCode") as? String
+        self.detailMessage = aDecoder.decodeObjectForKey("detailMessage") as? String
+    }
+    
+    public let errorMessage: String?
+    public let errorCode: String?
+    public let detailMessage: String?
+    
+    init(errorMessage: String?, errorCode: String?, detailMessage: String?) {
+        self.errorMessage = errorMessage
+        self.errorCode = errorCode
+        self.detailMessage = detailMessage
+    }
+    
+    public override func isEqual(object: AnyObject?) -> Bool {
+        guard let aResult = object as? ServerError else{
+            return false
+        }
+        return self.errorMessage == aResult.errorMessage && self.errorCode == aResult.errorCode && self.detailMessage == aResult.detailMessage
+    }
+    
+    class func errorWithNSDict(errorDict: NSDictionary) -> ServerError?{
+        let errorMessage = errorDict["errorMessage"] as? String
+        let details = errorDict["details"] as? NSDictionary
+        var errorCode: String?
+        var detailMessage: String?
+        if details != nil {
+            errorCode = details!["errorCode"] as? String
+            detailMessage = details!["message"] as? String
+        }
+        return ServerError(errorMessage: errorMessage, errorCode: errorCode, detailMessage: detailMessage)
     }
 
 }

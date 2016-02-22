@@ -146,7 +146,7 @@ class GetTriggerTests: XCTestCase {
             expectedParameters["arg4"] = false
             let expectedServerCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
             let serverCodeDict = expectedServerCode.toNSDictionary()
-            let eventSource = "states"
+            let eventSource = "STATES"
             let condition: Dictionary<String, AnyObject> = ["type":"eq","field":"color", "value": 0]
             let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":TriggersWhen.CONDITION_FALSE_TO_TRUE.toString(), "condition": condition]
             
