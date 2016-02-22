@@ -13,7 +13,12 @@ public class ThingIFAPI: NSObject, NSCoding {
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
 
-    let tag : String?
+    let _tag : String?
+    public var tag: String? {
+        get {
+            return _tag;
+        }
+    }
 
     let operationQueue = OperationQueue()
     /** URL of KiiApps Server */
@@ -68,7 +73,7 @@ public class ThingIFAPI: NSObject, NSCoding {
         self.owner = aDecoder.decodeObjectForKey("owner") as! Owner
         self._installationID = aDecoder.decodeObjectForKey("_installationID") as? String
         self._target = aDecoder.decodeObjectForKey("_target") as? Target
-        self.tag = aDecoder.decodeObjectForKey("tag") as? String
+        self._tag = aDecoder.decodeObjectForKey("tag") as? String
     }
 
     init(app:App, owner: Owner, tag : String?=nil) {
@@ -77,7 +82,7 @@ public class ThingIFAPI: NSObject, NSCoding {
         self.appID = app.appID
         self.appKey = app.appKey
         self.owner = owner
-        self.tag = tag
+        self._tag = tag
         super.init()
         self.saveToUserDefault()
     }
