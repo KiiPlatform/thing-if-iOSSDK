@@ -79,7 +79,6 @@ public class ThingIFAPI: NSObject, NSCoding {
         self.owner = owner
         self.tag = tag
         super.init()
-        self.saveToUserDefault()
     }
 
     // MARK: - On board methods
@@ -112,6 +111,9 @@ public class ThingIFAPI: NSObject, NSCoding {
         ) ->Void
     {
         _onboard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
+            if error == nil {
+                self.saveToUserDefault()
+            }
             completionHandler(target, error)
         }
     }
@@ -136,6 +138,9 @@ public class ThingIFAPI: NSObject, NSCoding {
         ) ->Void
     {
          _onboard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
+            if error == nil {
+                self.saveToUserDefault()
+            }
             completionHandler(target, error)
         }
     }
@@ -159,8 +164,12 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (String?, ThingIFError?)-> Void
         )
     {
-        _installPush(deviceToken, development: development, completionHandler: completionHandler)
-        
+        _installPush(deviceToken, development: development) { (token, error) -> Void in
+            if error == nil {
+                self.saveToUserDefault()
+            }
+            completionHandler(token, error)
+        }
     }
     
     /** Uninstall push notification.
@@ -454,15 +463,16 @@ public class ThingIFAPI: NSObject, NSCoding {
     /** Get new instance with new target
 
     - Parameter newTarget: target instance will be setted to new ThingIFAPI instance
+    - Parameter tag: tag of the ThingIFAPI instance or nil for default tag
     - Returns: New ThingIFAPI instance with newTarget
     */
-    public func copyWithTarget(newTarget: Target) -> ThingIFAPI {
+    public func copyWithTarget(newTarget: Target, tag : String? = nil) -> ThingIFAPI {
 
-        let newIotapi = ThingIFAPI(app: self.app, owner: self.owner)
+        let newIotapi = ThingIFAPI(app: self.app, owner: self.owner, tag: tag)
 
         newIotapi._target = newTarget
         newIotapi._installationID = self._installationID
-
+        newIotapi.saveToUserDefault()
         return newIotapi
     }
 
