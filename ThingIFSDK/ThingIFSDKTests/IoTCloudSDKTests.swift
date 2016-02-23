@@ -29,10 +29,10 @@ class ThingIFSDKTests: XCTestCase {
 
         // ThingIFAPI is not saved when ThingIFAPI is instantiation.
         ThingIFAPIBuilder(app:app, owner:owner).build()
-        do{
+        do {
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(_){
+        } catch {
         }
     }
     func testSavedInstanceWithOnboard(){
@@ -88,38 +88,35 @@ class ThingIFSDKTests: XCTestCase {
         }
 
         
-        do{
+        do {
             var temp = try ThingIFAPI.loadWithStoredInstance()
             XCTAssertEqual(api1, temp , "should be equal")
             temp = try ThingIFAPI.loadWithStoredInstance(tags[0])
             XCTAssertEqual(api2, temp , "should be equal")
             temp = try ThingIFAPI.loadWithStoredInstance(tags[1])
             XCTAssertEqual(api3, temp , "should be equal")
-        }catch(_){
+        } catch {
             XCTFail("Should not raise exception ")
         }
         
-        do{
+        do {
             ThingIFAPI.removeStoredInstances(nil)
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(_){
-            
+        } catch {
         }
-        do{
+        do {
             ThingIFAPI.removeStoredInstances(tags[0])
             try ThingIFAPI.loadWithStoredInstance(tags[0])
             XCTFail("Should raise exception")
-        }catch(_){
-            
+        } catch {
         }
         
-        do{
+        do {
             ThingIFAPI.removeAllStoredInstances()
             try ThingIFAPI.loadWithStoredInstance(tags[1])
             XCTFail("Should raise exception")
-        }catch(_){
-            
+        } catch {
         }
     }
     private func setMockResponse4Onboard(accessToken: String, thingID: String, setting:TestSetting) -> Void {
@@ -128,7 +125,7 @@ class ThingIFSDKTests: XCTestCase {
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-        }catch(_){
+        } catch {
             //should never reach this
             XCTFail("exception happened")
             return;
@@ -147,7 +144,7 @@ class ThingIFSDKTests: XCTestCase {
         var expectation = self.expectationWithDescription("testSavedInstanceWithInstallPush")
         setMockResponse4InstallPush("installationID-0001", setting: setting);
         api1.installPush("deviceToken-0001".dataUsingEncoding(NSUTF8StringEncoding)!, development: false) { (installID, error) -> Void in
-            XCTAssertTrue(error==nil,"should not error")
+            XCTAssertNil(error,"should not error")
             XCTAssertNotNil(installID,"Should not nil")
             expectation.fulfill()
         }
@@ -160,7 +157,7 @@ class ThingIFSDKTests: XCTestCase {
         expectation = self.expectationWithDescription("testSavedInstanceWithInstallPush")
         setMockResponse4InstallPush("installationID-0002", setting: setting);
         api2.installPush("deviceToken-0002".dataUsingEncoding(NSUTF8StringEncoding)!, development: false) { (installID, error) -> Void in
-            XCTAssertTrue(error==nil,"should not error")
+            XCTAssertNil(error,"should not error")
             XCTAssertNotNil(installID,"Should not nil")
             expectation.fulfill()
         }
@@ -173,7 +170,7 @@ class ThingIFSDKTests: XCTestCase {
         expectation = self.expectationWithDescription("testSavedInstanceWithInstallPush")
         setMockResponse4InstallPush("installationID-0003", setting: setting);
         api3.installPush("deviceToken-0003".dataUsingEncoding(NSUTF8StringEncoding)!, development: false) { (installID, error) -> Void in
-            XCTAssertTrue(error==nil,"should not error")
+            XCTAssertNil(error,"should not error")
             XCTAssertNotNil(installID,"Should not nil")
             expectation.fulfill()
         }
@@ -183,38 +180,35 @@ class ThingIFSDKTests: XCTestCase {
             }
         }
 
-        do{
+        do {
             var temp = try ThingIFAPI.loadWithStoredInstance()
             XCTAssertEqual(api1, temp , "should be equal")
             temp = try ThingIFAPI.loadWithStoredInstance(tags[0])
             XCTAssertEqual(api2, temp , "should be equal")
             temp = try ThingIFAPI.loadWithStoredInstance(tags[1])
             XCTAssertEqual(api3, temp , "should be equal")
-        }catch(_){
+        } catch {
             XCTFail("Should not raise exception ")
         }
         
-        do{
+        do {
             ThingIFAPI.removeStoredInstances(nil)
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(_){
-            
+        } catch {
         }
-        do{
+        do {
             ThingIFAPI.removeStoredInstances(tags[0])
             try ThingIFAPI.loadWithStoredInstance(tags[0])
             XCTFail("Should raise exception")
-        }catch(_){
-            
+        } catch {
         }
         
-        do{
+        do {
             ThingIFAPI.removeAllStoredInstances()
             try ThingIFAPI.loadWithStoredInstance(tags[1])
             XCTFail("Should raise exception")
-        }catch(_){
-            
+        } catch {
         }
     }
     private func setMockResponse4InstallPush(installationID: String, setting:TestSetting) -> Void {
@@ -223,7 +217,7 @@ class ThingIFSDKTests: XCTestCase {
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-        }catch(_){
+        } catch {
             //should never reach this
             XCTFail("exception happened")
             return;
@@ -247,117 +241,37 @@ class ThingIFSDKTests: XCTestCase {
         api1 = api1.copyWithTarget(target1)
         api2 = api2.copyWithTarget(target2, tag: tags[0])
         api3 = api3.copyWithTarget(target3, tag: tags[1])
-        do{
+        do {
             var temp = try ThingIFAPI.loadWithStoredInstance()
             XCTAssertEqual(api1, temp , "should be equal")
             temp = try ThingIFAPI.loadWithStoredInstance(tags[0])
             XCTAssertEqual(api2, temp , "should be equal")
             temp = try ThingIFAPI.loadWithStoredInstance(tags[1])
             XCTAssertEqual(api3, temp , "should be equal")
-        }catch(_){
+        } catch {
             XCTFail("Should not raise exception ")
         }
         
-        do{
+        do {
             ThingIFAPI.removeStoredInstances(nil)
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(_){
-            
+        } catch {
         }
-        do{
+        do {
             ThingIFAPI.removeStoredInstances(tags[0])
             try ThingIFAPI.loadWithStoredInstance(tags[0])
             XCTFail("Should raise exception")
-        }catch(_){
-            
+        } catch {
         }
         
-        do{
+        do {
             ThingIFAPI.removeAllStoredInstances()
             try ThingIFAPI.loadWithStoredInstance(tags[1])
             XCTFail("Should raise exception")
-        }catch(_){
-            
+        } catch {
         }
     }
-
-    
-    
-//    func testSavedInstance(){
-//        let tags = ["tag1","tag2"]
-//        let setting = TestSetting()
-//        let app = setting.app
-//        let owner = setting.owner
-//
-//        let api = ThingIFAPIBuilder(app:app, owner:owner).build()
-//        let api1 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).build()
-//        let api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[1]).build()
-//        do{
-//            var temp = try ThingIFAPI.loadWithStoredInstance()
-//            XCTAssertEqual(api,temp , "should be equal")
-//            temp = try ThingIFAPI.loadWithStoredInstance(tags[0])
-//            XCTAssertEqual(api1,temp , "should be equal")
-//            temp = try ThingIFAPI.loadWithStoredInstance(tags[1])
-//            XCTAssertEqual(api2,temp , "should be equal")
-//        }catch(_){
-//            XCTFail("Should not raise exception ")
-//        }
-//        
-//        
-//        do{
-//            ThingIFAPI.removeStoredInstances(nil)
-//            try ThingIFAPI.loadWithStoredInstance()
-//            XCTFail("Should raise exception")
-//        }catch(_){
-//            
-//        }
-//        do{
-//            ThingIFAPI.removeStoredInstances(tags[0])
-//            try ThingIFAPI.loadWithStoredInstance(tags[0])
-//            XCTFail("Should raise exception")
-//        }catch(_){
-//            
-//        }
-//        
-//        do{
-//            ThingIFAPI.removeAllStoredInstances()
-//            try ThingIFAPI.loadWithStoredInstance(tags[1])
-//            XCTFail("Should raise exception")
-//        }catch(_){
-//            
-//        }
-//        
-//    }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     func testInvalidSavedInstance(){
 
         let persistance = NSUserDefaults.standardUserDefaults()
@@ -367,10 +281,10 @@ class ThingIFSDKTests: XCTestCase {
         persistance.synchronize()
         sleep(1)
 
-        do{
+        do {
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(let e as ThingIFError){
+        } catch(let e as ThingIFError) {
             switch e {
             case .API_NOT_STORED:
                 break
@@ -379,7 +293,7 @@ class ThingIFSDKTests: XCTestCase {
                 break
             }
 
-        }catch(_){
+        } catch {
             XCTFail("Exception should be API_NOT_STORED")
         }
 
@@ -387,10 +301,10 @@ class ThingIFSDKTests: XCTestCase {
         persistance.setInteger(1, forKey: baseKey)
         persistance.synchronize()
 
-        do{
+        do {
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(let e as ThingIFError){
+        } catch(let e as ThingIFError){
             switch e {
             case .API_NOT_STORED:
                 break
@@ -399,7 +313,7 @@ class ThingIFSDKTests: XCTestCase {
                 break
             }
 
-        }catch(_){
+        } catch {
             XCTFail("Exception should be API_NOT_STORED")
         }
 
@@ -407,10 +321,10 @@ class ThingIFSDKTests: XCTestCase {
         persistance.setObject(NSDictionary(), forKey: baseKey)
         persistance.synchronize()
 
-        do{
+        do {
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(let e as ThingIFError){
+        } catch(let e as ThingIFError) {
             switch e {
             case .INVALID_STORED_API:
                 break
@@ -418,8 +332,7 @@ class ThingIFSDKTests: XCTestCase {
                 XCTFail("Exception should be INVALID_STORED_API")
                 break
             }
-
-        }catch(_){
+        } catch {
             XCTFail("Exception should be INVALID_STORED_API")
         }
 
@@ -427,10 +340,10 @@ class ThingIFSDKTests: XCTestCase {
         persistance.setObject(NSDictionary(dictionary: [baseKey:""]), forKey: baseKey)
         persistance.synchronize()
 
-        do{
+        do {
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
-        }catch(let e as ThingIFError){
+        } catch(let e as ThingIFError) {
             switch e {
             case .INVALID_STORED_API:
                 break
@@ -438,11 +351,9 @@ class ThingIFSDKTests: XCTestCase {
                 XCTFail("Exception should be INVALID_STORED_API")
                 break
             }
-
-        }catch(_){
+        } catch {
             XCTFail("Exception should be INVALID_STORED_API")
         }
-
     }
     
 }
