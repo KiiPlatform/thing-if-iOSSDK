@@ -13,7 +13,8 @@ public class ThingIFAPI: NSObject, NSCoding {
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
 
-    let tag : String?
+    /** Tag of the ThingIFAPI instance */
+    public let tag : String?
 
     let operationQueue = OperationQueue()
     /** URL of KiiApps Server */
