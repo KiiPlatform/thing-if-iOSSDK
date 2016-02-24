@@ -1,7 +1,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PostNewServerCodeTriggerTests: XCTestCase {
+class PostNewServerCodeTriggerTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()

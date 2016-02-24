@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PushInstallationTests: XCTestCase {
+class PushInstallationTests: SmallTestBase {
 
     let deviceToken = "dummyDeviceToken".dataUsingEncoding(NSUTF8StringEncoding)!
     let deviceTokenString = "dummyDeviceToken".dataUsingEncoding(NSUTF8StringEncoding)!.hexString()

@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PushUninstallationTests: XCTestCase {
+class PushUninstallationTests: SmallTestBase {
     let deviceToken = "dummyDeviceToken"
     
     override func setUp() {

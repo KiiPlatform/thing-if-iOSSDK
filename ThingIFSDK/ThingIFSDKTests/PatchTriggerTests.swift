@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PatchTriggerTests: XCTestCase {
+class PatchTriggerTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()

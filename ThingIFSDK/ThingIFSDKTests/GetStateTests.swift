@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class GetStateTests: XCTestCase {
+class GetStateTests: SmallTestBase {
 
     let deviceToken = "dummyDeviceToken"
 

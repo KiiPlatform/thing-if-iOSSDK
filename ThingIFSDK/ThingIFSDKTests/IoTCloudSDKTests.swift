@@ -10,7 +10,7 @@ import UIKit
 import XCTest
 @testable import ThingIFSDK
 
-class ThingIFSDKTests: XCTestCase {
+class ThingIFSDKTests: SmallTestBase {
     
     override func setUp() {
         super.setUp()
