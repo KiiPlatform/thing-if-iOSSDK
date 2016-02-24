@@ -509,7 +509,7 @@ class ThingIFSDKTests: SmallTestBase {
         }
 
         //set invalid object to the persistance
-        persistance.setObject(NSDictionary(dictionary: [baseKey:"a".dataUsingEncoding(NSUTF8StringEncoding)! as NSData]), forKey: baseKey)
+        persistance.setObject(NSDictionary(dictionary: [baseKey:NSKeyedArchiver.archivedDataWithRootObject("a")]), forKey: baseKey)
         persistance.synchronize()
 
         do {
