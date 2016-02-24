@@ -490,16 +490,19 @@ public class ThingIFAPI: NSObject, NSCoding {
 
         if let dict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary
         {
-            if let data = dict[key] as? NSData {
-                if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ThingIFAPI {
-                    return savedIoTAPI
+            if dict.objectForKey(key) != nil {
+                if let data = dict[key] as? NSData {
+                    if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ThingIFAPI {
+                        return savedIoTAPI
+                    }else{
+                        throw ThingIFError.INVALID_STORED_API
+                    }
                 }else{
                     throw ThingIFError.INVALID_STORED_API
                 }
-            }else{
+            } else {
                 throw ThingIFError.API_NOT_STORED
             }
-
         }else{
             throw ThingIFError.API_NOT_STORED
         }

@@ -489,6 +489,25 @@ class ThingIFSDKTests: SmallTestBase {
             XCTFail("Exception should be API_NOT_STORED")
         }
 
+        //set invalid object type to the persistance
+        persistance.setObject(NSDictionary(dictionary: [baseKey:"a"]), forKey: baseKey)
+        persistance.synchronize()
+        
+        do {
+            try ThingIFAPI.loadWithStoredInstance()
+            XCTFail("Should raise exception")
+        } catch(let e as ThingIFError) {
+            switch e {
+            case .INVALID_STORED_API:
+                break
+            default:
+                XCTFail("Exception should be INVALID_STORED_API")
+                break
+            }
+        } catch {
+            XCTFail("Exception should be INVALID_STORED_API")
+        }
+
         //set invalid object to the persistance
         persistance.setObject(NSDictionary(dictionary: [baseKey:"a".dataUsingEncoding(NSUTF8StringEncoding)! as NSData]), forKey: baseKey)
         persistance.synchronize()
