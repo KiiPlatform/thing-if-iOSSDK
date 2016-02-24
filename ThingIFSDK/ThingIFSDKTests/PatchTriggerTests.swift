@@ -157,9 +157,9 @@ class PatchTriggerTests: SmallTestBase {
             }catch(_){
                 XCTFail(tag)
             }
-            iotSession = MockSession.self
             MockSession.mockResponse = (jsonData, urlResponse: mockResponse3, error: nil)
             MockSession.requestVerifier = patchRequestVerifier
+            iotSession = MockSession.self
         }
 
 

@@ -109,6 +109,7 @@ class PushInstallationTests: SmallTestBase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this
@@ -156,6 +157,7 @@ class PushInstallationTests: SmallTestBase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this
@@ -216,6 +218,7 @@ class PushInstallationTests: SmallTestBase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 400, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this
@@ -276,6 +279,7 @@ class PushInstallationTests: SmallTestBase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this

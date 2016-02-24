@@ -497,7 +497,7 @@ public class ThingIFAPI: NSObject, NSCoding {
                     throw ThingIFError.INVALID_STORED_API
                 }
             }else{
-                throw ThingIFError.INVALID_STORED_API
+                throw ThingIFError.API_NOT_STORED
             }
 
         }else{

@@ -235,8 +235,6 @@ class OnboardingTests: SmallTestBase {
                 XCTFail("execution timeout")
             }
         }
-        checkSavedIoTAPI(setting)
-        
     }
 
     
