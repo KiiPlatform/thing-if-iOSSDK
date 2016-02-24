@@ -482,11 +482,11 @@ class ThingIFSDKTests: SmallTestBase {
             case .API_NOT_STORED:
                 break
             default:
-                XCTFail("Exception should be INVALID_STORED_API")
+                XCTFail("Exception should be API_NOT_STORED")
                 break
             }
         } catch {
-            XCTFail("Exception should be INVALID_STORED_API")
+            XCTFail("Exception should be API_NOT_STORED")
         }
 
         //set invalid object to the persistance
