@@ -64,6 +64,9 @@ class EntitySerializationTests: SmallTestBase {
         dict["target"] = "thing:thing-1234-5678"
         dict["issuer"] = "user:user-1234-5678"
         dict["commandState"] = "SENDING"
+        dict["firedByTriggerID"] = "trigger-0001"
+        dict["createdAt"] = 1454474985010
+        dict["modifiedAt"] = 1454474985020
         dict["title"] = "Command Title"
         dict["description"] = "Command Description"
         dict["metadata"] = ["sound":"noisy.mp3"]
