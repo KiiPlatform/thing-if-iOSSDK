@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class EntitySerializationTests: XCTestCase {
+class EntitySerializationTests: SmallTestBase {
     
     override func setUp() {
         super.setUp()

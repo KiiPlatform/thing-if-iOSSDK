@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PatchTriggerTests: XCTestCase {
+class PatchTriggerTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()
@@ -157,9 +157,9 @@ class PatchTriggerTests: XCTestCase {
             }catch(_){
                 XCTFail(tag)
             }
-            iotSession = MockSession.self
             MockSession.mockResponse = (jsonData, urlResponse: mockResponse3, error: nil)
             MockSession.requestVerifier = patchRequestVerifier
+            iotSession = MockSession.self
         }
 
 

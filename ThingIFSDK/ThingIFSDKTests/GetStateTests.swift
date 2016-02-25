@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class GetStateTests: XCTestCase {
+class GetStateTests: SmallTestBase {
 
     let deviceToken = "dummyDeviceToken"
 
@@ -100,7 +100,7 @@ class GetStateTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
-
+            iotSession = MockSession.self
         }catch(_){
             //should never reach this
             XCTFail("exception happened")
@@ -153,7 +153,7 @@ class GetStateTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
-
+            iotSession = MockSession.self
         }catch(_){
             //should never reach this
             XCTFail("exception happened")
@@ -211,7 +211,7 @@ class GetStateTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
-
+            iotSession = MockSession.self
         }catch(_){
             //should never reach this
             XCTFail("exception happened")
@@ -273,6 +273,7 @@ class GetStateTests: XCTestCase {
             let errorJson = try NSJSONSerialization.dataWithJSONObject(["errorCode":"INVALID_INPUT_DATA","message":"error message"], options: .PrettyPrinted)
             let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
             let mockResponse2 = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
+            iotSession = MockMultipleSession.self
             MockMultipleSession.responsePairs = [
                 ((data: jsonData, urlResponse: mockResponse1, error: nil),requestVerifier),
                 ((data: errorJson, urlResponse: mockResponse2, error: nil),requestVerifier)

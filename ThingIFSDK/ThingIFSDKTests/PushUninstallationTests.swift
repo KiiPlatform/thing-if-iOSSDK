@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PushUninstallationTests: XCTestCase {
+class PushUninstallationTests: SmallTestBase {
     let deviceToken = "dummyDeviceToken"
     
     override func setUp() {
@@ -102,6 +102,7 @@ class PushUninstallationTests: XCTestCase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
         MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         MockSession.requestVerifier = requestVerifier
+        iotSession = MockSession.self
         
         setting.api.uninstallPush(installID) { (error) -> Void in
             XCTAssertTrue(error==nil,"should not error")
@@ -140,6 +141,7 @@ class PushUninstallationTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this
@@ -197,6 +199,7 @@ class PushUninstallationTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this

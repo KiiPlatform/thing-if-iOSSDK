@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class ListTriggersTests: XCTestCase {
+class ListTriggersTests: SmallTestBase {
     override func setUp() {
         super.setUp()
     }

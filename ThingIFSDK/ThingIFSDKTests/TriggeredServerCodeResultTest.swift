@@ -1,7 +1,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class TriggeredServerCodeResultTest: XCTestCase {
+class TriggeredServerCodeResultTest: SmallTestBase {
     func testResultWithNSDict() {
         let testDataList = [
             "{\"succeeded\":true,\"executedAt\":1455531174923,\"returnedValue\":null}",

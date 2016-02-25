@@ -8,7 +8,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class DeleteTriggerTests: XCTestCase {
+class DeleteTriggerTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()
