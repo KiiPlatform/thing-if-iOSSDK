@@ -14,6 +14,13 @@ public class Command: NSObject, NSCoding {
         aCoder.encodeObject(self.issuerID, forKey: "issuerID")
         aCoder.encodeObject(self.schemaName, forKey: "schemaName")
         aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
+        aCoder.encodeObject(self.firedByTriggerID, forKey: "firedByTriggerID")
+        if let date = self.created {
+            aCoder.encodeDouble(date.timeIntervalSince1970, forKey: "created")
+        }
+        if let date = self.modified {
+            aCoder.encodeDouble(date.timeIntervalSince1970, forKey: "modified")
+        }
         aCoder.encodeObject(self.title, forKey: "title")
         aCoder.encodeObject(self.commandDescription, forKey: "commandDescription")
         aCoder.encodeObject(self.metadata, forKey: "metadata")
@@ -29,6 +36,13 @@ public class Command: NSObject, NSCoding {
         self.actions = []
         self.actionResults = []
         self.commandState = CommandState.SENDING
+        self.firedByTriggerID = aDecoder.decodeObjectForKey("firedByTriggerID") as? String
+        if aDecoder.containsValueForKey("created") {
+            self.created = NSDate(timeIntervalSince1970: aDecoder.decodeDoubleForKey("created"))
+        }
+        if aDecoder.containsValueForKey("modified") {
+            self.modified = NSDate(timeIntervalSince1970: aDecoder.decodeDoubleForKey("modified"))
+        }
         self.title = aDecoder.decodeObjectForKey("title") as? String
         self.commandDescription = aDecoder.decodeObjectForKey("commandDescription") as? String
         self.metadata = aDecoder.decodeObjectForKey("metadata") as? Dictionary<String, AnyObject>
@@ -51,6 +65,12 @@ public class Command: NSObject, NSCoding {
     public let actionResults: [Dictionary<String, AnyObject>]
     /** State of the Command. */
     public let commandState: CommandState
+    /** ID of the trigger which fired this command */
+    public var firedByTriggerID: String?
+    /** Creation time of the Command.*/
+    public var created: NSDate?
+    /** Modification time of the Command. */
+    public var modified: NSDate?
     /** Title of the Command */
     public var title: String?
     /** Description of the Command */
@@ -68,6 +88,9 @@ public class Command: NSObject, NSCoding {
         self.actions = []
         self.actionResults = []
         self.commandState = CommandState.SENDING
+        self.firedByTriggerID = nil
+        self.created = nil
+        self.modified = nil
         self.title = nil
         self.commandDescription = nil
         self.metadata = nil
@@ -95,6 +118,9 @@ public class Command: NSObject, NSCoding {
         }else {
             self.commandState = CommandState.SENDING
         }
+        self.firedByTriggerID = nil
+        self.created = nil
+        self.modified = nil
         self.title = nil
         self.commandDescription = nil
         self.metadata = nil
@@ -163,17 +189,29 @@ public class Command: NSObject, NSCoding {
                 command = Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState)
         }
         if command != nil {
+            let firedByTriggerID = nsDict["firedByTriggerID"] as? String
+            if firedByTriggerID != nil {
+                command!.firedByTriggerID = firedByTriggerID
+            }
+            let createdAt = nsDict["createdAt"] as? NSNumber
+            if createdAt != nil {
+                command!.created = NSDate(timeIntervalSince1970: (createdAt!.doubleValue)/1000.0)
+            }
+            let modifiedAt = nsDict["modifiedAt"] as? NSNumber
+            if createdAt != nil {
+                command!.modified = NSDate(timeIntervalSince1970: (modifiedAt!.doubleValue)/1000.0)
+            }
             let title = nsDict["title"] as? String
             if title != nil {
-                command?.title = title
+                command!.title = title
             }
             let triggerDescription = nsDict["description"] as? String
             if triggerDescription != nil {
-                command?.commandDescription = triggerDescription
+                command!.commandDescription = triggerDescription
             }
             let metadata = nsDict["metadata"] as? Dictionary<String, AnyObject>
             if metadata != nil {
-                command?.metadata = metadata
+                command!.metadata = metadata
             }
         }
 
