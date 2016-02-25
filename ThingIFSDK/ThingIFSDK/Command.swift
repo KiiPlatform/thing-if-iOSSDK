@@ -184,37 +184,21 @@ public class Command: NSObject, NSCoding {
                 commandState = CommandState.DONE
             }
         }
-        var command: Command?
-        if ((targetID != nil) && (issuerID != nil) && (schemaName != nil)) && (schemaVersion != nil) {
-                command = Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState)
+        if targetID == nil || issuerID == nil || schemaName == nil || schemaVersion == nil {
+            return nil
         }
-        if command != nil {
-            let firedByTriggerID = nsDict["firedByTriggerID"] as? String
-            if firedByTriggerID != nil {
-                command!.firedByTriggerID = firedByTriggerID
-            }
-            let createdAt = nsDict["createdAt"] as? NSNumber
-            if createdAt != nil {
-                command!.created = NSDate(timeIntervalSince1970: (createdAt!.doubleValue)/1000.0)
-            }
-            let modifiedAt = nsDict["modifiedAt"] as? NSNumber
-            if createdAt != nil {
-                command!.modified = NSDate(timeIntervalSince1970: (modifiedAt!.doubleValue)/1000.0)
-            }
-            let title = nsDict["title"] as? String
-            if title != nil {
-                command!.title = title
-            }
-            let triggerDescription = nsDict["description"] as? String
-            if triggerDescription != nil {
-                command!.commandDescription = triggerDescription
-            }
-            let metadata = nsDict["metadata"] as? Dictionary<String, AnyObject>
-            if metadata != nil {
-                command!.metadata = metadata
-            }
+        let command: Command = Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState)
+        
+        command.firedByTriggerID = nsDict["firedByTriggerID"] as? String
+        if let createdAt = nsDict["createdAt"] as? NSNumber {
+            command.created = NSDate(timeIntervalSince1970: (createdAt.doubleValue)/1000.0)
         }
-
+        if let modifiedAt = nsDict["modifiedAt"] as? NSNumber {
+            command.modified = NSDate(timeIntervalSince1970: (modifiedAt.doubleValue)/1000.0)
+        }
+        command.title = nsDict["title"] as? String
+        command.commandDescription = nsDict["description"] as? String
+        command.metadata = nsDict["metadata"] as? Dictionary<String, AnyObject>
         return command
     }
 }
