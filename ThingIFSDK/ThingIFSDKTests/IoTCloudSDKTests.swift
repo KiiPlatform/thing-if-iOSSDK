@@ -26,12 +26,21 @@ class ThingIFSDKTests: SmallTestBase {
         let owner = setting.owner
 
         // ThingIFAPI is not saved when ThingIFAPI is instantiation.
-        ThingIFAPIBuilder(app:app, owner:owner).build()
+        let api = ThingIFAPIBuilder(app:app, owner:owner).build()
         do {
             try ThingIFAPI.loadWithStoredInstance()
             XCTFail("Should raise exception")
         } catch {
         }
+        api.saveInstance()
+        
+        do {
+            let temp = try ThingIFAPI.loadWithStoredInstance()
+            XCTAssertEqual(api, temp , "should be equal")
+        } catch {
+            XCTFail("Should not raise exception ")
+        }
+
     }
     func testRemoveAllStoredInstances() {
         let tags = ["tag1","tag2"]

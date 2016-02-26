@@ -507,6 +507,11 @@ public class ThingIFAPI: NSObject, NSCoding {
             throw ThingIFError.API_NOT_STORED
         }
     }
+    /** Save this instance
+    */
+    public func saveInstance() -> Void {
+        self.saveToUserDefault()
+    }
 
     /** Clear all saved instances in the NSUserDefaults.
     */
