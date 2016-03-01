@@ -38,6 +38,18 @@ class EnableTriggerTests: SmallTestBase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
+            // check X-Kii-SDK header. (Just randomly choosed this test for checking this header.)
+            let p = "sn=it;sv=\\d*\\.\\d*\\.\\d*;pv=\\d*\\.\\d*"
+            do {
+                let regexp:NSRegularExpression? = try NSRegularExpression(pattern: p, options: NSRegularExpressionOptions.AnchorsMatchLines)
+                let sdkHeader:String = request.valueForHTTPHeaderField("X-Kii-SDK")!
+                print ("header: \(sdkHeader)")
+                let matches = regexp?.matchesInString(sdkHeader, options: [], range: NSMakeRange(0, sdkHeader.utf8.count))
+                XCTAssertEqual(1, matches!.count)
+            } catch(_) {
+                XCTFail()
+            }
+
             XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)/enable")
         }
 

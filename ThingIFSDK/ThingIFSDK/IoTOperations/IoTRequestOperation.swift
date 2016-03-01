@@ -33,7 +33,13 @@ func buildDefaultRequest(method : HTTPMethod,urlString: String,requestHeaderDict
     kiiVerboseLog("Request Method: \(method)")
     kiiVerboseLog("Request Header: \(requestHeaderDict)")
 
-    let defaultRequest = DefaultRequest(method: method, urlString: urlString, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, responseBodySerializer: { (responseBodyData) -> NSDictionary? in
+    // Add X-Kii-SDK header.
+    var modifiedHeaderDict:Dictionary<String, String> = requestHeaderDict;
+    let b:NSBundle? = NSBundle.allFrameworks().filter{$0.bundleIdentifier == "Kii-Corporation.ThingIFSDK"}.first
+    if let sdkVersion:String? = b?.infoDictionary?["CFBundleShortVersionString"] as! String? {
+        modifiedHeaderDict["X-Kii-SDK"] = "sn=it;sv=\(sdkVersion!);pv=\(UIDevice.currentDevice().systemVersion)"
+    }
+    let defaultRequest = DefaultRequest(method: method, urlString: urlString, requestHeaderDict: modifiedHeaderDict, requestBodyData: requestBodyData, responseBodySerializer: { (responseBodyData) -> NSDictionary? in
 
         if responseBodyData == nil {
             return nil
