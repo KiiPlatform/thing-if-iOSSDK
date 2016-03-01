@@ -34,7 +34,7 @@ func buildDefaultRequest(method : HTTPMethod,urlString: String,requestHeaderDict
     kiiVerboseLog("Request Header: \(requestHeaderDict)")
 
     // Add X-Kii-SDK header.
-    var modifiedHeaderDict:Dictionary<String, String> = requestHeaderDict;
+    var modifiedHeaderDict = requestHeaderDict
     let b:NSBundle? = NSBundle.allFrameworks().filter{$0.bundleIdentifier == "Kii-Corporation.ThingIFSDK"}.first
     if let sdkVersion:String? = b?.infoDictionary?["CFBundleShortVersionString"] as! String? {
         modifiedHeaderDict["X-Kii-SDK"] = "sn=it;sv=\(sdkVersion!);pv=\(UIDevice.currentDevice().systemVersion)"
