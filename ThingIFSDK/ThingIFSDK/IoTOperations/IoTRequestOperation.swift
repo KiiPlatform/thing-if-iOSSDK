@@ -34,7 +34,7 @@ func buildDefaultRequest(method : HTTPMethod,urlString: String,requestHeaderDict
 
     // Add X-Kii-SDK header.
     var modifiedHeaderDict = requestHeaderDict
-    modifiedHeaderDict["X-Kii-SDK"] = SDKVersion.sheredInstance.kiiSDKHeader
+    modifiedHeaderDict["X-Kii-SDK"] = SDKVersion.sharedInstance.kiiSDKHeader
     let defaultRequest = DefaultRequest(method: method, urlString: urlString, requestHeaderDict: modifiedHeaderDict, requestBodyData: requestBodyData, responseBodySerializer: { (responseBodyData) -> NSDictionary? in
 
         if responseBodyData == nil {

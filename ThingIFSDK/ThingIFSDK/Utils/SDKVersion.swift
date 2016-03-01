@@ -8,7 +8,7 @@ import UIKit
 
 /** Accessor of the Thing-IF SDK version. */
 public class SDKVersion: NSObject {
-    public static let sheredInstance = SDKVersion()
+    public static let sharedInstance = SDKVersion()
     /** Version of the Thing-IF SDK */
     public var versionString:String?
     internal var kiiSDKHeader:String?
