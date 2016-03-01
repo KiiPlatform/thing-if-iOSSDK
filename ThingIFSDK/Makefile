@@ -1,10 +1,6 @@
-all:clean build archive doc
+all:clean doc
 
-DIST_DIR = dist
-GIT_BRANCH_NAME := $(shell git branch | grep -e '^\*' | sed -e 's/^\* //g' | sed -e 's/\//-/g')
-GIT_COMMIT_ID := $(shell git rev-list -n 1 --abbrev-commit HEAD)
-
-.PHONY: clean carthage-build archive doc
+.PHONY: clean build doc
 clean:
 		rm -rf Documentation/docs
 		rm -rf Documentation/ThingIFSDK-Documentation*.zip
@@ -13,11 +9,7 @@ clean:
 		rm -rf test-reports
 
 build:
-		xcodebuild -project ThingIFSDK.xcodeproj -target ThingIFSDKAggregate clean build
-
-archive: build
-		(cd ${DIST_DIR}; \
-			zip -r "ThingIFSDK.framework.${GIT_BRANCH_NAME}-${GIT_COMMIT_ID}.zip" . -i "ThingIFSDK.framework*")
+		xcodebuild -project ThingIFSDK.xcodeproj -target ThingIFSDK clean build
 
 doc: build
 		(cd Documentation; \
