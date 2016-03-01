@@ -1,8 +1,8 @@
 machine:
   xcode:
-    version: "7.0"
+    version: "7.2"
   environment:
-    default_destination: platform=iOS Simulator,name=iPhone 6,OS=9.0
+    default_destination: platform=iOS Simulator,name=iPhone 6,OS=latest
 
 dependencies:
   pre:
@@ -14,8 +14,7 @@ test:
   pre:
     # Build sdk
     - cd ThingIFSDK; make all
-    # Copy sdk and docs to artifacts
-    - cp ThingIFSDK/dist/*.zip $CIRCLE_ARTIFACTS
+    # Copy docs to artifacts
     - cp ThingIFSDK/Documentation/*.zip $CIRCLE_ARTIFACTS
     - cp -fr ThingIFSDK/Documentation/docs $CIRCLE_ARTIFACTS/
   override:

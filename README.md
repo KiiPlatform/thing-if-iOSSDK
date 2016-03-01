@@ -55,26 +55,10 @@ To integrate thing-if iOSSDK into your Xcode project using Carthage, specify it 
 ```ogdl
 github "KiiPlatform/thing-if-iOSSDK" >= 0.8
 ```
-## Manually
 
-### Build Locally
+## CocoaPods or Carthage
 
-If you would like to build framework from the branch other than master, you can build the framework locally.
-
-- Clone the source code of thing-if iOSSDK from Github.
-
-```bash
-$ git clone https://github.com/KiiPlatform/thing-if-iOSSDK.git
-```
-
-- Build thinf-if iOSSDK locally. If built successfully, a framework named `ThingIFSDK.framework` can be found under folder `ThingIFSDK/dist/`
-
-```bash
-$ cd ThingIFSDK
-$ make build
-```
-
-- Import the generated framework to your project.
+Using CocoaPods you can only integrate with released thing-if iOSSDK, and Carthage allow you to build other branch of this repository. 
 
 # Sample Project
 
