@@ -24,7 +24,6 @@ struct IotRequest<T> {
     let requestBodyData: NSData?
     let responseBodySerializer : (responseBodyData:NSData?) -> T?
     let completionHandler: (response: T?, error: ThingIFError?) -> Void
-    
 }
 typealias DefaultRequest = IotRequest<NSDictionary>
 
@@ -35,9 +34,8 @@ func buildDefaultRequest(method : HTTPMethod,urlString: String,requestHeaderDict
 
     // Add X-Kii-SDK header.
     var modifiedHeaderDict = requestHeaderDict
-    let b:NSBundle? = NSBundle.allFrameworks().filter{$0.bundleIdentifier == "Kii-Corporation.ThingIFSDK"}.first
-    if let sdkVersion:String? = b?.infoDictionary?["CFBundleShortVersionString"] as! String? {
-        modifiedHeaderDict["X-Kii-SDK"] = "sn=it;sv=\(sdkVersion!);pv=\(UIDevice.currentDevice().systemVersion)"
+    if let sdkInfo:String = SDKVersion.sheredInstance.kiiSDKHeader {
+        modifiedHeaderDict["X-Kii-SDK"] = sdkInfo
     }
     let defaultRequest = DefaultRequest(method: method, urlString: urlString, requestHeaderDict: modifiedHeaderDict, requestBodyData: requestBodyData, responseBodySerializer: { (responseBodyData) -> NSDictionary? in
 
