@@ -14,8 +14,7 @@ test:
   pre:
     # Build sdk
     - cd ThingIFSDK; make all
-    # Copy sdk and docs to artifacts
-    - cp ThingIFSDK/dist/*.zip $CIRCLE_ARTIFACTS
+    # Copy docs to artifacts
     - cp ThingIFSDK/Documentation/*.zip $CIRCLE_ARTIFACTS
     - cp -fr ThingIFSDK/Documentation/docs $CIRCLE_ARTIFACTS/
   override:

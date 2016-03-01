@@ -5,7 +5,6 @@ clean:
 		rm -rf Documentation/docs
 		rm -rf Documentation/ThingIFSDK-Documentation*.zip
 		rm -rf build
-		rm -rf dist
 		rm -rf test-reports
 
 build:
