@@ -17,6 +17,7 @@ public class Command: NSObject, NSCoding {
         aCoder.encodeObject(self.firedByTriggerID, forKey: "firedByTriggerID")
         aCoder.encodeObject(self.actions, forKey: "actions")
         aCoder.encodeObject(self.actionResults, forKey: "actionsResults")
+        aCoder.encodeInteger(self.commandState.rawValue, forKey: "commandState")
         if let date = self.created {
             aCoder.encodeDouble(date.timeIntervalSince1970, forKey: "created")
         }
@@ -36,11 +37,11 @@ public class Command: NSObject, NSCoding {
         self.schemaName = aDecoder.decodeObjectForKey("schemaName") as! String
         self.schemaVersion = aDecoder.decodeIntegerForKey("schemaVersion")
         self.actions = aDecoder.decodeObjectForKey("actions")
-                as! Dictionary<String, AnyObject>;
+                as! [Dictionary<String, AnyObject>];
         self.actionResults = aDecoder.decodeObjectForKey("actionResults")
-                as! Dictionary<String, AnyObject>;
-        self.actionResults = []
-        self.commandState = CommandState.SENDING
+                as! [Dictionary<String, AnyObject>];
+        self.commandState =
+            CommandState(rawValue: aDecoder.decodeIntegerForKey("commandState"))!;
         self.firedByTriggerID = aDecoder.decodeObjectForKey("firedByTriggerID") as? String
         if aDecoder.containsValueForKey("created") {
             self.created = NSDate(timeIntervalSince1970: aDecoder.decodeDoubleForKey("created"))
@@ -209,13 +210,17 @@ public class Command: NSObject, NSCoding {
 }
 
 /** Enum represents state of the Command. */
-public enum CommandState {
+public enum CommandState: Int {
+    /* NOTE: These numbers must not be changed.
+       These numbers are used serialization and deserialization
+       If thses numbers are changed, then serialization and deserialization
+       is broken. */
     /** SENDING Command */
-    case SENDING
+    case SENDING = 1
     /** Command is published to the Target. */
-    case DELIVERED
+    case DELIVERED = 2
     /** Target returns execution result but not completed all actions successfully. */
-    case INCOMPLETE
+    case INCOMPLETE = 3
     /** Target returns execution result and all actions successfully done. */
-    case DONE
+    case DONE = 4
 }
