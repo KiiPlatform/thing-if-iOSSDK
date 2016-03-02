@@ -15,6 +15,8 @@ public class Command: NSObject, NSCoding {
         aCoder.encodeObject(self.schemaName, forKey: "schemaName")
         aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
         aCoder.encodeObject(self.firedByTriggerID, forKey: "firedByTriggerID")
+        aCoder.encodeObject(self.actions, forKey: "actions")
+        aCoder.encodeObject(self.actionResults, forKey: "actionsResults")
         if let date = self.created {
             aCoder.encodeDouble(date.timeIntervalSince1970, forKey: "created")
         }
@@ -33,7 +35,10 @@ public class Command: NSObject, NSCoding {
         self.issuerID = aDecoder.decodeObjectForKey("issuerID") as! TypedID
         self.schemaName = aDecoder.decodeObjectForKey("schemaName") as! String
         self.schemaVersion = aDecoder.decodeIntegerForKey("schemaVersion")
-        self.actions = []
+        self.actions = aDecoder.decodeObjectForKey("actions")
+                as! Dictionary<String, AnyObject>;
+        self.actionResults = aDecoder.decodeObjectForKey("actionResults")
+                as! Dictionary<String, AnyObject>;
         self.actionResults = []
         self.commandState = CommandState.SENDING
         self.firedByTriggerID = aDecoder.decodeObjectForKey("firedByTriggerID") as? String
