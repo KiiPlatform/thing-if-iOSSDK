@@ -14,10 +14,10 @@ public class Command: NSObject, NSCoding {
         aCoder.encodeObject(self.issuerID, forKey: "issuerID")
         aCoder.encodeObject(self.schemaName, forKey: "schemaName")
         aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
-        aCoder.encodeObject(self.firedByTriggerID, forKey: "firedByTriggerID")
         aCoder.encodeObject(self.actions, forKey: "actions")
         aCoder.encodeObject(self.actionResults, forKey: "actionsResults")
         aCoder.encodeInteger(self.commandState.rawValue, forKey: "commandState")
+        aCoder.encodeObject(self.firedByTriggerID, forKey: "firedByTriggerID")
         if let date = self.created {
             aCoder.encodeDouble(date.timeIntervalSince1970, forKey: "created")
         }
