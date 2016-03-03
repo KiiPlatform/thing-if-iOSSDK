@@ -15,7 +15,7 @@ public class Command: NSObject, NSCoding {
         aCoder.encodeObject(self.schemaName, forKey: "schemaName")
         aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
         aCoder.encodeObject(self.actions, forKey: "actions")
-        aCoder.encodeObject(self.actionResults, forKey: "actionsResults")
+        aCoder.encodeObject(self.actionResults, forKey: "actionResults")
         aCoder.encodeInteger(self.commandState.rawValue, forKey: "commandState")
         aCoder.encodeObject(self.firedByTriggerID, forKey: "firedByTriggerID")
         if let date = self.created {
