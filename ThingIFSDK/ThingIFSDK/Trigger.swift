@@ -174,7 +174,18 @@ public class Trigger: NSObject, NSCoding {
 }
 
 /** Class represents Predicate */
-public class Predicate {
+public class Predicate : NSObject, NSCoding {
+
+    public override init() {
+        super.init();
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        super.init();
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+    }
 
     /** Get Predicate as NSDictionary instance
 
@@ -399,6 +410,16 @@ public class SchedulePredicate: Predicate {
     */
     public init(schedule: String) {
         self.schedule = schedule
+        super.init()
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        self.schedule = aDecoder.decodeObjectForKey("schedule") as! String;
+        super.init(coder: aDecoder);
+    }
+
+    public override func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.schedule, forKey: "schedule");
     }
 
     /** Get Json object of SchedulePredicate instance
@@ -423,6 +444,18 @@ public class StatePredicate: Predicate {
     public init(condition:Condition, triggersWhen:TriggersWhen) {
         self.triggersWhen = triggersWhen
         self.condition = condition
+        super.init();
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        self.triggersWhen = TriggersWhen(string: aDecoder.decodeObjectForKey("triggersWhen") as! String);
+        self.condition = aDecoder.decodeObjectForKey("condition") as! Condition;
+        super.init(coder: aDecoder);
+    }
+
+    public override func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.triggersWhen.toString(), forKey: "triggersWhen");
+        aCoder.encodeObject(self.condition, forKey: "condition");
     }
 
     /** Get StatePredicate as NSDictionary instance
