@@ -449,13 +449,13 @@ public class StatePredicate: Predicate {
 
     public required init(coder aDecoder: NSCoder) {
         self.triggersWhen = TriggersWhen(string: aDecoder.decodeObjectForKey("triggersWhen") as! String);
-        self.condition = aDecoder.decodeObjectForKey("condition") as! Condition;
+        self.condition = Condition.conditionWithNSDict(aDecoder.decodeObjectForKey("condition") as! NSDictionary);
         super.init(coder: aDecoder);
     }
 
     public override func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.triggersWhen.toString(), forKey: "triggersWhen");
-        aCoder.encodeObject(self.condition, forKey: "condition");
+        aCoder.encodeObject(self.condition.toNSDictionary(), forKey: "condition");
     }
 
     /** Get StatePredicate as NSDictionary instance
