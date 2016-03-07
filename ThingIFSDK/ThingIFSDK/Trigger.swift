@@ -11,6 +11,7 @@ public class Trigger: NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.triggerID, forKey: "triggerID")
+        aCoder.encodeObject(self.predicate, forKey: "predicate")
         aCoder.encodeObject(self.command, forKey: "command")
         aCoder.encodeObject(self.serverCode, forKey: "serverCode")
         aCoder.encodeBool(self.enabled, forKey: "enabled")
@@ -24,7 +25,7 @@ public class Trigger: NSObject, NSCoding {
     public required init(coder aDecoder: NSCoder) {
         self.triggerID = aDecoder.decodeObjectForKey("triggerID") as! String
         self.enabled = aDecoder.decodeBoolForKey("enabled")
-        self.predicate = Predicate()
+        self.predicate = aDecoder.decodeObjectForKey("predicate") as! Predicate
         self.command = aDecoder.decodeObjectForKey("command") as? Command
         self.serverCode = aDecoder.decodeObjectForKey("serverCode") as? ServerCode
         self.title = aDecoder.decodeObjectForKey("title") as? String
