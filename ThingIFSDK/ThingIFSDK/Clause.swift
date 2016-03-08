@@ -256,8 +256,9 @@ public class AndClause: NSObject, Clause {
     }
 
     public required init(coder aDecoder: NSCoder) {
-        let array = aDecoder.decodeObject() as! [Clause]
-        for c in array {
+        let array = aDecoder.decodeObject() as! NSArray
+        for(var i = 0; i < array.count; ++i) {
+            let c = array.objectAtIndex(i) as! Clause
             self.clauses.append(c)
         }
     }
@@ -306,10 +307,10 @@ public class OrClause: NSObject, Clause {
         }
     }
 
-    public required convenience init(coder aDecoder: NSCoder) {
-        self.init();
-        let array = aDecoder.decodeObject() as! [Clause]
-        for c in array {
+    public required init(coder aDecoder: NSCoder) {
+        let array = aDecoder.decodeObject() as! NSArray
+        for(var i = 0; i < array.count; ++i) {
+            let c = array.objectAtIndex(i) as! Clause
             self.clauses.append(c)
         }
     }
