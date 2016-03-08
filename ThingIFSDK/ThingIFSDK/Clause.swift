@@ -5,7 +5,7 @@
 import Foundation
 
 /** Protocole of the Clause must be conformed to. */
-public protocol Clause {
+public protocol Clause: NSCoding {
 
     /** Get Clause as NSDictionary instance
 
@@ -15,10 +15,10 @@ public protocol Clause {
 }
 
 /** Class represents Equals clause. */
-public class EqualsClause: Clause {
+public class EqualsClause: NSObject, Clause {
     private var nsdict = NSMutableDictionary()
 
-    init() {
+    override init() {
         nsdict.setObject("eq", forKey: "type")
     }
 
@@ -27,10 +27,10 @@ public class EqualsClause: Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
      */
-    public convenience init(field:String, value:String) {
+    public convenience init(field:String, string:String) {
         self.init()
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(value, forKey: "value")
+        nsdict.setObject(string, forKey: "value")
     }
 
     /** Initialize with Int left hand side value.
@@ -38,10 +38,10 @@ public class EqualsClause: Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public convenience init(field:String, value:Int) {
+    public convenience init(field:String, integer:Int) {
         self.init()
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(integer: value), forKey: "value")
+        nsdict.setObject(NSNumber(integer: integer), forKey: "value")
     }
 
     /** Initialize with Bool left hand side value.
@@ -49,10 +49,19 @@ public class EqualsClause: Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public convenience init(field:String, value:Bool) {
+    public convenience init(field:String, bool:Bool) {
         self.init()
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(bool: value), forKey: "value")
+        nsdict.setObject(NSNumber(bool: bool), forKey: "value")
+    }
+
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init();
+        nsdict.addEntriesFromDictionary(aDecoder.decodeObject() as! [NSObject : AnyObject])
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeRootObject(self.nsdict)
     }
 
     /** Get Clause as NSDictionary instance
@@ -65,7 +74,7 @@ public class EqualsClause: Clause {
 }
 
 /** Class represents NotEquals clause. */
-public class NotEqualsClause: Clause {
+public class NotEqualsClause: NSObject, Clause {
     private var equalClause: EqualsClause!
 
     public init(equalStmt: EqualsClause) {
@@ -77,8 +86,8 @@ public class NotEqualsClause: Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, value:String) {
-        equalClause = EqualsClause(field: field, value: value)
+    public init(field:String, string:String) {
+        equalClause = EqualsClause(field: field, string: string)
     }
 
     /** Initialize with Int left hand side value.
@@ -86,8 +95,8 @@ public class NotEqualsClause: Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, value:Int) {
-        equalClause = EqualsClause(field: field, value: value)
+    public init(field:String, integer:Int) {
+        equalClause = EqualsClause(field: field, integer: integer)
     }
 
     /** Initialize with Bool left hand side value.
@@ -95,8 +104,16 @@ public class NotEqualsClause: Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, value:Bool) {
-        equalClause = EqualsClause(field: field, value: value)
+    public init(field:String, bool:Bool) {
+        equalClause = EqualsClause(field: field, bool: bool)
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        equalClause = aDecoder.decodeObject() as! EqualsClause
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeRootObject(equalClause)
     }
 
     /** Get Clause as NSDictionary instance
@@ -109,7 +126,7 @@ public class NotEqualsClause: Clause {
 }
 
 /** Class represents Range clause. */
-public class RangeClause: Clause {
+public class RangeClause: NSObject, Clause {
     private var nsdict: NSMutableDictionary = ["type": "range"]
 
     /** Initialize with Int left hand side value.
@@ -119,10 +136,10 @@ public class RangeClause: Clause {
     - Parameter lowerLimit: Int lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
-    public init(field:String, lowerLimit:Int, lowerIncluded: Bool) {
+    public init(field:String, lowerLimitInt:Int, lowerIncluded: Bool) {
         nsdict.setObject(lowerIncluded, forKey: "lowerIncluded")
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(integer: lowerLimit), forKey: "lowerLimit")
+        nsdict.setObject(NSNumber(integer: lowerLimitInt), forKey: "lowerLimit")
     }
 
     /** Initialize with Double left hand side value.
@@ -132,10 +149,10 @@ public class RangeClause: Clause {
     - Parameter lowerLimit: Double lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
-    public init(field:String, lowerLimit:Double, lowerIncluded: Bool) {
+    public init(field:String, lowerLimitDouble:Double, lowerIncluded: Bool) {
         nsdict.setObject(lowerIncluded, forKey: "lowerIncluded")
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(double: lowerLimit), forKey: "lowerLimit")
+        nsdict.setObject(NSNumber(double: lowerLimitDouble), forKey: "lowerLimit")
     }
 
     /** Initialize with Int left hand side value.
@@ -145,10 +162,10 @@ public class RangeClause: Clause {
     - Parameter upperLimit: Int upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    public init(field:String, upperLimit:Int, upperIncluded: Bool) {
+    public init(field:String, upperLimitInt:Int, upperIncluded: Bool) {
         nsdict.setObject(upperIncluded, forKey: "upperIncluded")
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(integer: upperLimit), forKey: "upperLimit")
+        nsdict.setObject(NSNumber(integer: upperLimitInt), forKey: "upperLimit")
     }
 
     /** Initialize with Double left hand side value.
@@ -158,10 +175,10 @@ public class RangeClause: Clause {
     - Parameter upperLimit: Double upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    public init(field:String, upperLimit:Double, upperIncluded: Bool) {
+    public init(field:String, upperLimitDouble:Double, upperIncluded: Bool) {
         nsdict.setObject(upperIncluded, forKey: "upperIncluded")
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(double: upperLimit), forKey: "upperLimit")
+        nsdict.setObject(NSNumber(double: upperLimitDouble), forKey: "upperLimit")
     }
 
     /** Initialize with Range.
@@ -177,10 +194,10 @@ public class RangeClause: Clause {
     - Parameter upperLimit: Int upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    public init(field:String, lowerLimit: Int, lowerIncluded: Bool, upperLimit: Int, upperIncluded: Bool) {
+    public init(field:String, lowerLimitInt: Int, lowerIncluded: Bool, upperLimit: Int, upperIncluded: Bool) {
         nsdict.setObject(lowerIncluded, forKey: "lowerIncluded")
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(integer: lowerLimit), forKey: "lowerLimit")
+        nsdict.setObject(NSNumber(integer: lowerLimitInt), forKey: "lowerLimit")
         nsdict.setObject(upperIncluded, forKey: "upperIncluded")
         nsdict.setObject(NSNumber(integer: upperLimit), forKey: "upperLimit")
     }
@@ -198,12 +215,20 @@ public class RangeClause: Clause {
     - Parameter upperLimit: Double upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    public init(field:String, lowerLimit: Double, lowerIncluded: Bool, upperLimit: Double, upperIncluded: Bool) {
+    public init(field:String, lowerLimitDouble: Double, lowerIncluded: Bool, upperLimit: Double, upperIncluded: Bool) {
         nsdict.setObject(lowerIncluded, forKey: "lowerIncluded")
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(double: lowerLimit), forKey: "lowerLimit")
+        nsdict.setObject(NSNumber(double: lowerLimitDouble), forKey: "lowerLimit")
         nsdict.setObject(upperIncluded, forKey: "upperIncluded")
         nsdict.setObject(NSNumber(double: upperLimit), forKey: "upperLimit")
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        nsdict.addEntriesFromDictionary(aDecoder.decodeObject() as! [NSObject : AnyObject])
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeRootObject(nsdict)
     }
 
     /** Get Clause as NSDictionary instance
@@ -216,7 +241,7 @@ public class RangeClause: Clause {
 }
 
 /** Class represents And clause. */
-public class AndClause: Clause {
+public class AndClause: NSObject, Clause {
     /** clauses array of AndClause */
     public private(set) var clauses = [Clause]()
 
@@ -228,6 +253,21 @@ public class AndClause: Clause {
         for clause in clauses {
             self.clauses.append(clause)
         }
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        let array = aDecoder.decodeObject() as! [Clause]
+        for c in array {
+            self.clauses.append(c)
+        }
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+        let array = NSMutableArray()
+        for c in self.clauses {
+            array.addObject(c)
+        }
+        aCoder.encodeObject(array)
     }
 
     /** Add clause to AndClause
@@ -252,7 +292,7 @@ public class AndClause: Clause {
     }
 }
 /** Class represents Or clause. */
-public class OrClause: Clause {
+public class OrClause: NSObject, Clause {
     /** clauses array of OrClause */
     public private(set) var clauses = [Clause]()
 
@@ -264,6 +304,22 @@ public class OrClause: Clause {
         for clause in clauses {
             self.clauses.append(clause)
         }
+    }
+
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init();
+        let array = aDecoder.decodeObject() as! [Clause]
+        for c in array {
+            self.clauses.append(c)
+        }
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+        let array = NSMutableArray()
+        for c in self.clauses {
+            array.addObject(c)
+        }
+        aCoder.encodeObject(array)
     }
 
     /** Add clause to OrClause

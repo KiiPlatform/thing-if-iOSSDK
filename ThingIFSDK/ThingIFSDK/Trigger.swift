@@ -198,7 +198,7 @@ public class Predicate : NSObject, NSCoding {
 }
 
 /** Class represents Condition */
-public class Condition {
+public class Condition : NSObject, NSCoding {
     public let clause: Clause!
 
     /** Init Condition with Clause
@@ -207,6 +207,15 @@ public class Condition {
     */
     public init(clause:Clause) {
         self.clause = clause
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        self.clause = aDecoder.decodeObjectForKey("clause") as! Clause
+        super.init();
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.clause, forKey: "clause")
     }
 
     /** Get Condition as NSDictionary instance
@@ -233,9 +242,9 @@ public class Condition {
                 if let upperLimitNumber = clauseDict["upperLimit"] as? NSNumber, lowerLimitNumber = clauseDict["lowerLimit"] as? NSNumber, field = clauseDict["field"] as? String {
                     if let upperIncluded = clauseDict["upperIncluded"] as? Bool, lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
                         if upperLimitNumber.isInt(){
-                            clause = RangeClause(field: field, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: field, lowerLimitInt: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
                         }else if upperLimitNumber.isDouble() {
-                            clause = RangeClause(field: field, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: field, lowerLimitDouble: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
                         }
                     }
                     break
@@ -245,9 +254,9 @@ public class Condition {
                     filed = clauseDict["field"] as? String {
                     if let upperIncluded = clauseDict["upperIncluded"] as? Bool {
                         if upperLimitNumber.isInt(){
-                            clause = RangeClause(field: filed, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: filed, upperLimitInt: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
                         }else if upperLimitNumber.isDouble() {
-                            clause = RangeClause(field: filed, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: filed, upperLimitDouble: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
                         }
                     }
                     break
@@ -257,9 +266,9 @@ public class Condition {
                     filed = clauseDict["field"] as? String {
                     if let lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
                         if lowerLimitNumber.isInt() {
-                            clause = RangeClause(field: filed, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded)
+                            clause = RangeClause(field: filed, lowerLimitInt: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded)
                         }else if lowerLimitNumber.isDouble() {
-                            clause = RangeClause(field: filed, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded)
+                            clause = RangeClause(field: filed, lowerLimitDouble: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded)
                         }
                     }
                     break
@@ -269,13 +278,13 @@ public class Condition {
             case "eq":
                 if let field = clauseDict["field"] as? String, value = clauseDict["value"] {
                     if value is String {
-                        clause = EqualsClause(field: field, value: value as! String)
+                        clause = EqualsClause(field: field, string: value as! String)
                     }else if value is NSNumber {
                         let numberValue = value as! NSNumber
                         if numberValue.isBool() {
-                            clause = EqualsClause(field: field, value: numberValue.boolValue)
+                            clause = EqualsClause(field: field, bool: numberValue.boolValue)
                         }else {
-                            clause = EqualsClause(field: field, value: numberValue.integerValue)
+                            clause = EqualsClause(field: field, integer: numberValue.integerValue)
                         }
                     }
                 }
@@ -450,13 +459,13 @@ public class StatePredicate: Predicate {
 
     public required init(coder aDecoder: NSCoder) {
         self.triggersWhen = TriggersWhen(string: aDecoder.decodeObjectForKey("triggersWhen") as! String);
-        self.condition = Condition.conditionWithNSDict(aDecoder.decodeObjectForKey("condition") as! NSDictionary);
+        self.condition = aDecoder.decodeObjectForKey("condition") as! Condition;
         super.init(coder: aDecoder);
     }
 
     public override func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.triggersWhen.toString(), forKey: "triggersWhen");
-        aCoder.encodeObject(self.condition.toNSDictionary(), forKey: "condition");
+        aCoder.encodeObject(self.condition, forKey: "condition");
     }
 
     /** Get StatePredicate as NSDictionary instance
