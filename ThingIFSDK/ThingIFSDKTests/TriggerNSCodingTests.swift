@@ -19,7 +19,7 @@ class TriggerNSCodingTests: SmallTestBase {
         super.tearDown()
     }
 
-    func test1() {
+    func testTriggerWithCommand() {
         let triggerID = "dummyID";
         let enabled = true;
         let predicate = SchedulePredicate(schedule: "dummySchedule");
@@ -64,7 +64,7 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertEqual((decode.metadata![key] as! String), value);
     }
 
-    func test2() {
+    func testTriggerWithServerCode() {
         let triggerID = "dummyID";
         let enabled = true;
         let predicate = StatePredicate(
