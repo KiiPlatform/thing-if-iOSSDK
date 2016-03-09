@@ -68,7 +68,7 @@ class TriggerNSCodingTests: SmallTestBase {
         let triggerID = "dummyID";
         let enabled = true;
         let predicate = StatePredicate(
-            condition: Condition(clause: EqualsClause(field: "f", string: "v")),
+            condition: Condition(clause: EqualsClause(field: "f", stringValue: "v")),
             triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE);
         let serverCode = ServerCode(endpoint: "dummyEndPoint", executorAccessToken: "dummyToken", targetAppID: nil, parameters: nil);
         let trigger = Trigger(triggerID: triggerID, enabled: enabled, predicate: predicate, serverCode: serverCode);

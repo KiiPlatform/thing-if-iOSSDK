@@ -19,7 +19,7 @@ class ClauseNSCodingTests: SmallTestBase {
     }
 
     func testEqualsClause() {
-        let clause = EqualsClause(field: "f", string: "v")
+        let clause = EqualsClause(field: "f", stringValue: "v")
 
         let data = NSKeyedArchiver.archivedDataWithRootObject(clause)
 
@@ -32,7 +32,7 @@ class ClauseNSCodingTests: SmallTestBase {
     }
 
     func testNotEqualsClause() {
-        let clause = NotEqualsClause(field: "f", string: "v")
+        let clause = NotEqualsClause(field: "f", stringValue: "v")
 
         let data = NSKeyedArchiver.archivedDataWithRootObject(clause)
 
@@ -59,7 +59,7 @@ class ClauseNSCodingTests: SmallTestBase {
 
     func testAndClause() {
         let clause = AndClause(clauses:
-            EqualsClause(field: "f", string: "v"),
+            EqualsClause(field: "f", stringValue: "v"),
             RangeClause(field: "f", lowerLimitInt: 0, lowerIncluded: false))
 
         let data = NSKeyedArchiver.archivedDataWithRootObject(clause)
@@ -74,7 +74,7 @@ class ClauseNSCodingTests: SmallTestBase {
 
     func testOrClause() {
         let clause = OrClause(clauses:
-            NotEqualsClause(field: "f", string: "v"),
+            NotEqualsClause(field: "f", stringValue: "v"),
             RangeClause(field: "f", upperLimitInt: 0, upperIncluded: false))
 
         let data = NSKeyedArchiver.archivedDataWithRootObject(clause)

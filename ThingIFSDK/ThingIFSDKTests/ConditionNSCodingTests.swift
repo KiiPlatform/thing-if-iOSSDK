@@ -19,7 +19,7 @@ class ConditionNSCodingTests: SmallTestBase {
     }
 
     func test() {
-        let clause = EqualsClause(field: "f", string: "v")
+        let clause = EqualsClause(field: "f", stringValue: "v")
         let condition = Condition(clause: clause)
 
         let data = NSKeyedArchiver.archivedDataWithRootObject(condition)

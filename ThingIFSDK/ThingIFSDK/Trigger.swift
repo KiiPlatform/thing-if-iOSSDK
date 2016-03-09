@@ -278,13 +278,13 @@ public class Condition : NSObject, NSCoding {
             case "eq":
                 if let field = clauseDict["field"] as? String, value = clauseDict["value"] {
                     if value is String {
-                        clause = EqualsClause(field: field, string: value as! String)
+                        clause = EqualsClause(field: field, stringValue: value as! String)
                     }else if value is NSNumber {
                         let numberValue = value as! NSNumber
                         if numberValue.isBool() {
-                            clause = EqualsClause(field: field, bool: numberValue.boolValue)
+                            clause = EqualsClause(field: field, boolValue: numberValue.boolValue)
                         }else {
-                            clause = EqualsClause(field: field, integer: numberValue.integerValue)
+                            clause = EqualsClause(field: field, intValue: numberValue.integerValue)
                         }
                     }
                 }

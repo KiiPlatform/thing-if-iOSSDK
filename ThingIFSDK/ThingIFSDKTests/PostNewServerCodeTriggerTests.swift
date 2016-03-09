@@ -27,7 +27,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         expectedParameters["arg4"] = false
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
-        let condition = Condition(clause: EqualsClause(field: "color", integer: 0))
+        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
         let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
 
         let expectedPredicateDict = predicate.toNSDictionary()
@@ -103,7 +103,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         expectedParameters["arg4"] = false
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
-        let condition = Condition(clause: EqualsClause(field: "color", integer: 0))
+        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
         let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
         
         let expectedPredicateDict = predicate.toNSDictionary()
@@ -202,7 +202,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_target_not_available_error")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
-        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", integer: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
         
         api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
             if error == nil{

@@ -27,10 +27,10 @@ public class EqualsClause: NSObject, Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter string: Left hand side value to be compared.
      */
-    public convenience init(field:String, string:String) {
+    public convenience init(field:String, stringValue:String) {
         self.init()
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(string, forKey: "value")
+        nsdict.setObject(stringValue, forKey: "value")
     }
 
     /** Initialize with Int left hand side value.
@@ -38,10 +38,10 @@ public class EqualsClause: NSObject, Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter integer: Left hand side value to be compared.
     */
-    public convenience init(field:String, integer:Int) {
+    public convenience init(field:String, intValue:Int) {
         self.init()
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(integer: integer), forKey: "value")
+        nsdict.setObject(NSNumber(integer: intValue), forKey: "value")
     }
 
     /** Initialize with Bool left hand side value.
@@ -49,10 +49,10 @@ public class EqualsClause: NSObject, Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter bool: Left hand side value to be compared.
     */
-    public convenience init(field:String, bool:Bool) {
+    public convenience init(field:String, boolValue:Bool) {
         self.init()
         nsdict.setObject(field, forKey: "field")
-        nsdict.setObject(NSNumber(bool: bool), forKey: "value")
+        nsdict.setObject(NSNumber(bool: boolValue), forKey: "value")
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
@@ -86,8 +86,8 @@ public class NotEqualsClause: NSObject, Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter string: Left hand side value to be compared.
     */
-    public init(field:String, string:String) {
-        equalClause = EqualsClause(field: field, string: string)
+    public init(field:String, stringValue:String) {
+        equalClause = EqualsClause(field: field, stringValue: stringValue)
     }
 
     /** Initialize with Int left hand side value.
@@ -95,8 +95,8 @@ public class NotEqualsClause: NSObject, Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter integer: Left hand side value to be compared.
     */
-    public init(field:String, integer:Int) {
-        equalClause = EqualsClause(field: field, integer: integer)
+    public init(field:String, intValue:Int) {
+        equalClause = EqualsClause(field: field, intValue: intValue)
     }
 
     /** Initialize with Bool left hand side value.
@@ -104,8 +104,8 @@ public class NotEqualsClause: NSObject, Clause {
     - Parameter field: Name of the field to be compared.
     - Parameter bool: Left hand side value to be compared.
     */
-    public init(field:String, bool:Bool) {
-        equalClause = EqualsClause(field: field, bool: bool)
+    public init(field:String, boolValue:Bool) {
+        equalClause = EqualsClause(field: field, boolValue: boolValue)
     }
 
     public required init(coder aDecoder: NSCoder) {
