@@ -327,42 +327,14 @@ public class Condition : NSObject, NSCoding {
 }
 
 /** Enum defines when the Trigger is fired based on StatePredicate */
-public enum TriggersWhen {
+public enum TriggersWhen : String {
     /** Always fires when the Condition is evaluated as true. */
-    case CONDITION_TRUE
+    case CONDITION_TRUE = "CONDITION_TRUE"
     /** Fires when previous State is evaluated as false and current State is evaluated as true. */
-    case CONDITION_FALSE_TO_TRUE
+    case CONDITION_FALSE_TO_TRUE = "CONDITION_FALSE_TO_TRUE"
     /** Fires when the previous State and current State is evaluated as
     different value. i.e. false to true, true to false. */
-    case CONDITION_CHANGED
-
-    /** Get String value of TriggerWhen */
-    public func toString() -> String {
-        switch self {
-        case .CONDITION_FALSE_TO_TRUE:
-            return "CONDITION_FALSE_TO_TRUE"
-        case .CONDITION_TRUE:
-            return "CONDITION_TRUE"
-        case .CONDITION_CHANGED:
-            return "CONDITION_CHANGED"
-        }
-    }
-
-    /** Init from string
-
-    - Prameter string: String value of triggerswhen to init
-    */
-    public init?(string: String) {
-        switch string {
-        case "CONDITION_FALSE_TO_TRUE":
-            self = .CONDITION_FALSE_TO_TRUE
-        case "CONDITION_TRUE":
-            self = .CONDITION_TRUE
-        case "CONDITION_CHANGED":
-            self = .CONDITION_CHANGED
-        default: return nil
-        }
-    }
+    case CONDITION_CHANGED = "CONDITION_CHANGED"
 }
 public enum TriggersWhat {
     case COMMAND
@@ -458,13 +430,13 @@ public class StatePredicate: Predicate {
     }
 
     public required init(coder aDecoder: NSCoder) {
-        self.triggersWhen = TriggersWhen(string: aDecoder.decodeObjectForKey("triggersWhen") as! String);
+        self.triggersWhen = TriggersWhen(rawValue: aDecoder.decodeObjectForKey("triggersWhen") as! String);
         self.condition = aDecoder.decodeObjectForKey("condition") as! Condition;
         super.init(coder: aDecoder);
     }
 
     public override func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.triggersWhen.toString(), forKey: "triggersWhen");
+        aCoder.encodeObject(self.triggersWhen.rawValue, forKey: "triggersWhen");
         aCoder.encodeObject(self.condition, forKey: "condition");
     }
 
@@ -473,14 +445,14 @@ public class StatePredicate: Predicate {
     - Returns: a NSDictionary instance
     */
     public override func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["eventSource": EventSource.States.rawValue, "triggersWhen": self.triggersWhen.toString(), "condition": self.condition.toNSDictionary()])
+        return NSDictionary(dictionary: ["eventSource": EventSource.States.rawValue, "triggersWhen": self.triggersWhen.rawValue, "condition": self.condition.toNSDictionary()])
     }
 
     class func statePredicateWithNSDict(predicateDict: NSDictionary) -> StatePredicate?{
         var triggersWhen: TriggersWhen?
         var condition: Condition?
         if let triggersWhenString = predicateDict["triggersWhen"] as? String {
-            triggersWhen = TriggersWhen(string: triggersWhenString)
+            triggersWhen = TriggersWhen(rawValue: triggersWhenString)
         }
 
         if let conditionDict = predicateDict["condition"] as? NSDictionary {
