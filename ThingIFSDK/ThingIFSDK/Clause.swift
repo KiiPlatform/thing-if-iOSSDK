@@ -25,7 +25,7 @@ public class EqualsClause: NSObject, Clause {
     /** Initialize with String left hand side value.
 
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter string: Left hand side value to be compared.
      */
     public convenience init(field:String, string:String) {
         self.init()
@@ -36,7 +36,7 @@ public class EqualsClause: NSObject, Clause {
     /** Initialize with Int left hand side value.
 
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter integer: Left hand side value to be compared.
     */
     public convenience init(field:String, integer:Int) {
         self.init()
@@ -47,7 +47,7 @@ public class EqualsClause: NSObject, Clause {
     /** Initialize with Bool left hand side value.
 
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter bool: Left hand side value to be compared.
     */
     public convenience init(field:String, bool:Bool) {
         self.init()
@@ -84,7 +84,7 @@ public class NotEqualsClause: NSObject, Clause {
     /** Initialize with String left hand side value.
     
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter string: Left hand side value to be compared.
     */
     public init(field:String, string:String) {
         equalClause = EqualsClause(field: field, string: string)
@@ -93,7 +93,7 @@ public class NotEqualsClause: NSObject, Clause {
     /** Initialize with Int left hand side value.
     
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter integer: Left hand side value to be compared.
     */
     public init(field:String, integer:Int) {
         equalClause = EqualsClause(field: field, integer: integer)
@@ -102,7 +102,7 @@ public class NotEqualsClause: NSObject, Clause {
     /** Initialize with Bool left hand side value.
     
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter bool: Left hand side value to be compared.
     */
     public init(field:String, bool:Bool) {
         equalClause = EqualsClause(field: field, bool: bool)
@@ -133,7 +133,7 @@ public class RangeClause: NSObject, Clause {
     this works as >(greater than) if lower included is false and as >=(greater than or equals) if lower included is true.
     
     - Parameter field: Name of the field to be compared.
-    - Parameter lowerLimit: Int lower limit value.
+    - Parameter lowerLimitInt: Int lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
     public init(field:String, lowerLimitInt:Int, lowerIncluded: Bool) {
@@ -146,7 +146,7 @@ public class RangeClause: NSObject, Clause {
     this works as >(greater than) if lower included is false and as >=(greater than or equals) if lower included is true.
     
     - Parameter field: Name of the field to be compared.
-    - Parameter lowerLimit: Double lower limit value.
+    - Parameter lowerLimitDouble: Double lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
     public init(field:String, lowerLimitDouble:Double, lowerIncluded: Bool) {
@@ -159,7 +159,7 @@ public class RangeClause: NSObject, Clause {
     this works as <(less than) if upper included is false and as <=(less than or equals) if upper included is true.    
     
     - Parameter field: Name of the field to be compared.
-    - Parameter upperLimit: Int upper limit value.
+    - Parameter upperLimitInt: Int upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
     public init(field:String, upperLimitInt:Int, upperIncluded: Bool) {
@@ -172,7 +172,7 @@ public class RangeClause: NSObject, Clause {
     this works as <(less than) if upper included is false and as <=(less than or equals) if upper included is true.
     
     - Parameter field: Name of the field to be compared.
-    - Parameter upperLimit: Double upper limit value.
+    - Parameter upperLimitDouble: Double upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
     public init(field:String, upperLimitDouble:Double, upperIncluded: Bool) {
@@ -189,7 +189,7 @@ public class RangeClause: NSObject, Clause {
     - ">=(greater than and equals) and <=(less than and equals)" if lower included is true and upper included is true.
     
     - Parameter field: Name of the field to be compared.
-    - Parameter lowerLimit: Int lower limit value.
+    - Parameter lowerLimitInt: Int lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     - Parameter upperLimit: Int upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
@@ -210,7 +210,7 @@ public class RangeClause: NSObject, Clause {
     - ">=(greater than and equals) and <=(less than and equals)" if lower included is true and upper included is true.
     
     - Parameter field: Name of the field to be compared.
-    - Parameter lowerLimit: Double lower limit value.
+    - Parameter lowerLimitDouble: Double lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     - Parameter upperLimit: Double upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
