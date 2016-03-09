@@ -25,6 +25,15 @@ class TriggerNSCodingTests: SmallTestBase {
         let predicate = SchedulePredicate(schedule: "dummySchedule");
         let command = Command();
         let trigger = Trigger(triggerID: triggerID, enabled: enabled, predicate: predicate, command: command);
+        let title = "dummyTitle"
+        let description = "dummyDescription"
+        let key = "dummyKey"
+        let value = "dummyValue"
+        let metadata: Dictionary<String, AnyObject> = [ key : value ]
+
+        trigger.title = title
+        trigger.triggerDescription = description
+        trigger.metadata = metadata
 
         XCTAssertNotNil(trigger);
         XCTAssertEqual(trigger.triggerID, triggerID);
@@ -32,9 +41,10 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertEqual(trigger.predicate, predicate);
         XCTAssertEqual(trigger.command, command);
         XCTAssertNil(trigger.serverCode);
-        XCTAssertNil(trigger.title);
-        XCTAssertNil(trigger.triggerDescription);
-        XCTAssertNil(trigger.metadata);
+        XCTAssertEqual(trigger.title, title);
+        XCTAssertEqual(trigger.triggerDescription, description);
+        XCTAssertEqual(trigger.metadata!.count, metadata.count);
+        XCTAssertEqual((trigger.metadata![key] as! String), value);
 
         let data = NSKeyedArchiver.archivedDataWithRootObject(trigger);
 
@@ -48,9 +58,10 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertEqual(decode.predicate.toNSDictionary(), predicate.toNSDictionary());
         XCTAssertEqual(decode.command, command);
         XCTAssertNil(decode.serverCode);
-        XCTAssertNil(decode.title);
-        XCTAssertNil(decode.triggerDescription);
-        XCTAssertNil(decode.metadata);
+        XCTAssertEqual(decode.title, title);
+        XCTAssertEqual(decode.triggerDescription, description);
+        XCTAssertEqual(decode.metadata!.count, metadata.count);
+        XCTAssertEqual((decode.metadata![key] as! String), value);
     }
 
     func test2() {
