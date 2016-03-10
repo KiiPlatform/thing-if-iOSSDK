@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		225A591C1C8ED0EE0042B007 /* ConditionNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225A591B1C8ED0EE0042B007 /* ConditionNSCodingTests.swift */; };
+		225A591E1C8ED8440042B007 /* ClauseNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225A591D1C8ED8440042B007 /* ClauseNSCodingTests.swift */; };
+		22ADEC071C89899B00F487D9 /* PredicateNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ADEC061C89899B00F487D9 /* PredicateNSCodingTests.swift */; };
+		22F2E7801C8D60BD0011F85C /* TriggerNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F2E77F1C8D60BD0011F85C /* TriggerNSCodingTests.swift */; };
 		7419C2B81C27D10100F964FB /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7419C2B71C27D10100F964FB /* App.swift */; };
 		743800F81C29303A005D8458 /* TestSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743800F71C29303A005D8458 /* TestSetting.swift */; };
 		747EB4BA1C858BFC00E30C31 /* SDKVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747EB4B91C858BFC00E30C31 /* SDKVersion.swift */; };
@@ -89,6 +93,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		225A591B1C8ED0EE0042B007 /* ConditionNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConditionNSCodingTests.swift; sourceTree = "<group>"; };
+		225A591D1C8ED8440042B007 /* ClauseNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClauseNSCodingTests.swift; sourceTree = "<group>"; };
+		22ADEC061C89899B00F487D9 /* PredicateNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PredicateNSCodingTests.swift; sourceTree = "<group>"; };
+		22F2E77F1C8D60BD0011F85C /* TriggerNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerNSCodingTests.swift; sourceTree = "<group>"; };
 		7419C2B71C27D10100F964FB /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		743800F71C29303A005D8458 /* TestSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSetting.swift; sourceTree = "<group>"; };
 		743800F91C2930C9005D8458 /* testapp.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testapp.plist; sourceTree = "<group>"; };
@@ -301,6 +309,10 @@
 				A529D2A21C7444DE00C892D2 /* TriggeredServerCodeResultTest.swift */,
 				A54EFC2D1C7D9EF500BCF4D2 /* SmallTestBase.swift */,
 				B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */,
+				22ADEC061C89899B00F487D9 /* PredicateNSCodingTests.swift */,
+				22F2E77F1C8D60BD0011F85C /* TriggerNSCodingTests.swift */,
+				225A591B1C8ED0EE0042B007 /* ConditionNSCodingTests.swift */,
+				225A591D1C8ED8440042B007 /* ClauseNSCodingTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -466,6 +478,7 @@
 				A56B0A471C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift in Sources */,
 				7D36B6A81BD4D0CC00D9B821 /* IoTCloudSDKTests.swift in Sources */,
 				7D36B6A61BD4D0CC00D9B821 /* GetTriggerTests.swift in Sources */,
+				225A591C1C8ED0EE0042B007 /* ConditionNSCodingTests.swift in Sources */,
 				743800F81C29303A005D8458 /* TestSetting.swift in Sources */,
 				7D36B6A01BD4D0CC00D9B821 /* copyWithTarget.swift in Sources */,
 				7D36B6AC1BD4D0CC00D9B821 /* PatchTriggerTests.swift in Sources */,
@@ -473,11 +486,14 @@
 				7D36B6A91BD4D0CC00D9B821 /* ListCommandsTests.swift in Sources */,
 				7D36B6AD1BD4D0CC00D9B821 /* PostNewCommandTests.swift in Sources */,
 				7D36B6B11BD4D0CC00D9B821 /* TestHelpers.swift in Sources */,
+				225A591E1C8ED8440042B007 /* ClauseNSCodingTests.swift in Sources */,
 				7D36B6AB1BD4D0CC00D9B821 /* OnboardingTests.swift in Sources */,
 				A54EFC2E1C7D9EF500BCF4D2 /* SmallTestBase.swift in Sources */,
 				7D36B6A21BD4D0CC00D9B821 /* EnableTriggerTests.swift in Sources */,
 				B68227F41C85823A00AB85D0 /* CommandSerializationTest.swift in Sources */,
 				7D36B6AE1BD4D0CC00D9B821 /* PostNewTriggerTests.swift in Sources */,
+				22ADEC071C89899B00F487D9 /* PredicateNSCodingTests.swift in Sources */,
+				22F2E7801C8D60BD0011F85C /* TriggerNSCodingTests.swift in Sources */,
 				7D36B6A11BD4D0CC00D9B821 /* DeleteTriggerTests.swift in Sources */,
 				7D36B6A31BD4D0CC00D9B821 /* EntitySerializationTests.swift in Sources */,
 				A56B0A491C62143000E653EF /* PatchServerCodeTriggerTests.swift in Sources */,

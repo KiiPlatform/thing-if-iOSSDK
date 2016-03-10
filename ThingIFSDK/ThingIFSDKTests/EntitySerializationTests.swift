@@ -96,7 +96,7 @@ class EntitySerializationTests: SmallTestBase {
         dict["description"] = "Command Description"
         dict["metadata"] = ["sound":"noisy.mp3"]
         let command = Command.commandWithNSDictionary(dict)
-        let condition = Condition(clause: EqualsClause(field: "field", value: "1234"))
+        let condition = Condition(clause: EqualsClause(field: "field", stringValue: "1234"))
         let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_TRUE)
         
         let aTrigger = Trigger(triggerID: "trigger-1234-5678", enabled: true, predicate: predicate, command: command!)
@@ -109,7 +109,7 @@ class EntitySerializationTests: SmallTestBase {
     func testServerCodeTrigger_NSUserDefaultSerialization() {
         let parameters : Dictionary = ["arg1":"abc", "arg2":1234, "arg3":true]
         let serverCode = ServerCode(endpoint: "function_name", executorAccessToken: "123456789abcde", targetAppID: "abcdefghi", parameters: parameters)
-        let condition = Condition(clause: EqualsClause(field: "field", value: "1234"))
+        let condition = Condition(clause: EqualsClause(field: "field", stringValue: "1234"))
         let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_TRUE)
 
         let aTrigger = Trigger(triggerID: "trigger-1234-5678", enabled: true, predicate: predicate, serverCode: serverCode)

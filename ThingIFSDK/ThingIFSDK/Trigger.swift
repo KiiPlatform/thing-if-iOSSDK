@@ -11,6 +11,7 @@ public class Trigger: NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.triggerID, forKey: "triggerID")
+        aCoder.encodeObject(self.predicate, forKey: "predicate")
         aCoder.encodeObject(self.command, forKey: "command")
         aCoder.encodeObject(self.serverCode, forKey: "serverCode")
         aCoder.encodeBool(self.enabled, forKey: "enabled")
@@ -24,7 +25,7 @@ public class Trigger: NSObject, NSCoding {
     public required init(coder aDecoder: NSCoder) {
         self.triggerID = aDecoder.decodeObjectForKey("triggerID") as! String
         self.enabled = aDecoder.decodeBoolForKey("enabled")
-        self.predicate = Predicate()
+        self.predicate = aDecoder.decodeObjectForKey("predicate") as! Predicate
         self.command = aDecoder.decodeObjectForKey("command") as? Command
         self.serverCode = aDecoder.decodeObjectForKey("serverCode") as? ServerCode
         self.title = aDecoder.decodeObjectForKey("title") as? String
@@ -62,7 +63,7 @@ public class Trigger: NSObject, NSCoding {
 
         if let predicateDict = triggerDict["predicate"] as? NSDictionary{
             if let eventSourceString = predicateDict["eventSource"] as? String{
-                if let eventSource = EventSource(string: eventSourceString){
+                if let eventSource = EventSource(rawValue: eventSourceString){
                     switch eventSource {
                     case EventSource.States:
                         predicate = StatePredicate.statePredicateWithNSDict(predicateDict)
@@ -174,7 +175,18 @@ public class Trigger: NSObject, NSCoding {
 }
 
 /** Class represents Predicate */
-public class Predicate {
+public class Predicate : NSObject, NSCoding {
+
+    public override init() {
+        super.init();
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        super.init();
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+    }
 
     /** Get Predicate as NSDictionary instance
 
@@ -186,7 +198,7 @@ public class Predicate {
 }
 
 /** Class represents Condition */
-public class Condition {
+public class Condition : NSObject, NSCoding {
     public let clause: Clause!
 
     /** Init Condition with Clause
@@ -195,6 +207,15 @@ public class Condition {
     */
     public init(clause:Clause) {
         self.clause = clause
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        self.clause = aDecoder.decodeObjectForKey("clause") as! Clause
+        super.init();
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.clause, forKey: "clause")
     }
 
     /** Get Condition as NSDictionary instance
@@ -221,9 +242,9 @@ public class Condition {
                 if let upperLimitNumber = clauseDict["upperLimit"] as? NSNumber, lowerLimitNumber = clauseDict["lowerLimit"] as? NSNumber, field = clauseDict["field"] as? String {
                     if let upperIncluded = clauseDict["upperIncluded"] as? Bool, lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
                         if upperLimitNumber.isInt(){
-                            clause = RangeClause(field: field, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: field, lowerLimitInt: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
                         }else if upperLimitNumber.isDouble() {
-                            clause = RangeClause(field: field, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: field, lowerLimitDouble: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
                         }
                     }
                     break
@@ -233,9 +254,9 @@ public class Condition {
                     filed = clauseDict["field"] as? String {
                     if let upperIncluded = clauseDict["upperIncluded"] as? Bool {
                         if upperLimitNumber.isInt(){
-                            clause = RangeClause(field: filed, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: filed, upperLimitInt: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
                         }else if upperLimitNumber.isDouble() {
-                            clause = RangeClause(field: filed, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: filed, upperLimitDouble: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
                         }
                     }
                     break
@@ -245,9 +266,9 @@ public class Condition {
                     filed = clauseDict["field"] as? String {
                     if let lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
                         if lowerLimitNumber.isInt() {
-                            clause = RangeClause(field: filed, lowerLimit: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded)
+                            clause = RangeClause(field: filed, lowerLimitInt: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded)
                         }else if lowerLimitNumber.isDouble() {
-                            clause = RangeClause(field: filed, lowerLimit: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded)
+                            clause = RangeClause(field: filed, lowerLimitDouble: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded)
                         }
                     }
                     break
@@ -257,13 +278,13 @@ public class Condition {
             case "eq":
                 if let field = clauseDict["field"] as? String, value = clauseDict["value"] {
                     if value is String {
-                        clause = EqualsClause(field: field, value: value as! String)
+                        clause = EqualsClause(field: field, stringValue: value as! String)
                     }else if value is NSNumber {
                         let numberValue = value as! NSNumber
                         if numberValue.isBool() {
-                            clause = EqualsClause(field: field, value: numberValue.boolValue)
+                            clause = EqualsClause(field: field, boolValue: numberValue.boolValue)
                         }else {
-                            clause = EqualsClause(field: field, value: numberValue.integerValue)
+                            clause = EqualsClause(field: field, intValue: numberValue.integerValue)
                         }
                     }
                 }
@@ -306,86 +327,33 @@ public class Condition {
 }
 
 /** Enum defines when the Trigger is fired based on StatePredicate */
-public enum TriggersWhen {
+public enum TriggersWhen : String {
+    /* NOTE: These string values must not be changed. These values are
+       used serialization and deserialization If thses values are
+       changed, then serialization and deserialization is broken. */
+
     /** Always fires when the Condition is evaluated as true. */
-    case CONDITION_TRUE
+    case CONDITION_TRUE = "CONDITION_TRUE"
     /** Fires when previous State is evaluated as false and current State is evaluated as true. */
-    case CONDITION_FALSE_TO_TRUE
+    case CONDITION_FALSE_TO_TRUE = "CONDITION_FALSE_TO_TRUE"
     /** Fires when the previous State and current State is evaluated as
     different value. i.e. false to true, true to false. */
-    case CONDITION_CHANGED
-
-    /** Get String value of TriggerWhen */
-    public func toString() -> String {
-        switch self {
-        case .CONDITION_FALSE_TO_TRUE:
-            return "CONDITION_FALSE_TO_TRUE"
-        case .CONDITION_TRUE:
-            return "CONDITION_TRUE"
-        case .CONDITION_CHANGED:
-            return "CONDITION_CHANGED"
-        }
-    }
-
-    /** Init from string
-
-    - Prameter string: String value of triggerswhen to init
-    */
-    public init?(string: String) {
-        switch string {
-        case "CONDITION_FALSE_TO_TRUE":
-            self = .CONDITION_FALSE_TO_TRUE
-        case "CONDITION_TRUE":
-            self = .CONDITION_TRUE
-        case "CONDITION_CHANGED":
-            self = .CONDITION_CHANGED
-        default: return nil
-        }
-    }
+    case CONDITION_CHANGED = "CONDITION_CHANGED"
 }
-public enum TriggersWhat {
-    case COMMAND
-    case SERVER_CODE
-    
-    /** Get String value of TriggerWhat */
-    public func toString() -> String {
-        switch self {
-        case .COMMAND:
-            return "COMMAND"
-        case .SERVER_CODE:
-            return "SERVER_CODE"
-        }
-    }
-    
-    /** Init from string
-     
-     - Prameter string: String value of triggerswhat to init
-     */
-    public init?(string: String) {
-        switch string {
-        case "COMMAND":
-            self = .COMMAND
-        case "SERVER_CODE":
-            self = .SERVER_CODE
-        default: return nil
-        }
-    }
+
+public enum TriggersWhat : String {
+    case COMMAND = "COMMAND"
+    case SERVER_CODE = "SERVER_CODE"
 }
 
 enum EventSource: String {
+    /* NOTE: These string values must not be changed. These values are
+       used serialization and deserialization If thses values are
+       changed, then serialization and deserialization is broken. */
 
     case States = "STATES"
     case Schedule = "SCHEDULE"
 
-    init?(string: String) {
-        switch string {
-        case "STATES":
-            self = .States
-        case "SCHEDULE":
-            self = .Schedule
-        default: return nil
-        }
-    }
 }
 
 /** Class represents SchedulePredicate. It is not supported now.*/
@@ -399,6 +367,16 @@ public class SchedulePredicate: Predicate {
     */
     public init(schedule: String) {
         self.schedule = schedule
+        super.init()
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        self.schedule = aDecoder.decodeObjectForKey("schedule") as! String;
+        super.init(coder: aDecoder);
+    }
+
+    public override func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.schedule, forKey: "schedule");
     }
 
     /** Get Json object of SchedulePredicate instance
@@ -423,6 +401,18 @@ public class StatePredicate: Predicate {
     public init(condition:Condition, triggersWhen:TriggersWhen) {
         self.triggersWhen = triggersWhen
         self.condition = condition
+        super.init();
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        self.triggersWhen = TriggersWhen(rawValue: aDecoder.decodeObjectForKey("triggersWhen") as! String);
+        self.condition = aDecoder.decodeObjectForKey("condition") as! Condition;
+        super.init(coder: aDecoder);
+    }
+
+    public override func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.triggersWhen.rawValue, forKey: "triggersWhen");
+        aCoder.encodeObject(self.condition, forKey: "condition");
     }
 
     /** Get StatePredicate as NSDictionary instance
@@ -430,14 +420,14 @@ public class StatePredicate: Predicate {
     - Returns: a NSDictionary instance
     */
     public override func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["eventSource": EventSource.States.rawValue, "triggersWhen": self.triggersWhen.toString(), "condition": self.condition.toNSDictionary()])
+        return NSDictionary(dictionary: ["eventSource": EventSource.States.rawValue, "triggersWhen": self.triggersWhen.rawValue, "condition": self.condition.toNSDictionary()])
     }
 
     class func statePredicateWithNSDict(predicateDict: NSDictionary) -> StatePredicate?{
         var triggersWhen: TriggersWhen?
         var condition: Condition?
         if let triggersWhenString = predicateDict["triggersWhen"] as? String {
-            triggersWhen = TriggersWhen(string: triggersWhenString)
+            triggersWhen = TriggersWhen(rawValue: triggersWhenString)
         }
 
         if let conditionDict = predicateDict["condition"] as? NSDictionary {
