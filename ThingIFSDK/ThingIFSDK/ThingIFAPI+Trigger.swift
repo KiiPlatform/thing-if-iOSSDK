@@ -38,7 +38,7 @@ extension ThingIFAPI {
         commandDict.setObject(actions, forKey: "actions")
 
         // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": commandDict, "triggersWhat": TriggersWhat.COMMAND.toString()])
+        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": commandDict, "triggersWhat": TriggersWhat.COMMAND.rawValue])
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
@@ -80,7 +80,7 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
         
         // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "serverCode": serverCode.toNSDictionary(), "triggersWhat": TriggersWhat.SERVER_CODE.toString()])
+        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "serverCode": serverCode.toNSDictionary(), "triggersWhat": TriggersWhat.SERVER_CODE.rawValue])
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
@@ -123,7 +123,7 @@ extension ThingIFAPI {
 
         // generate body
         let requestBodyDict = NSMutableDictionary()
-        requestBodyDict["triggersWhat"] = TriggersWhat.COMMAND.toString()
+        requestBodyDict["triggersWhat"] = TriggersWhat.COMMAND.rawValue
 
         // generate predicate
         if predicate != nil {
@@ -191,7 +191,7 @@ extension ThingIFAPI {
         
         // generate body
         let requestBodyDict = NSMutableDictionary()
-        requestBodyDict["triggersWhat"] = TriggersWhat.SERVER_CODE.toString()
+        requestBodyDict["triggersWhat"] = TriggersWhat.SERVER_CODE.rawValue
         
         // generate predicate
         if predicate != nil {

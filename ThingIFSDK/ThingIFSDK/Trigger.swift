@@ -63,7 +63,7 @@ public class Trigger: NSObject, NSCoding {
 
         if let predicateDict = triggerDict["predicate"] as? NSDictionary{
             if let eventSourceString = predicateDict["eventSource"] as? String{
-                if let eventSource = EventSource(string: eventSourceString){
+                if let eventSource = EventSource(rawValue: eventSourceString){
                     switch eventSource {
                     case EventSource.States:
                         predicate = StatePredicate.statePredicateWithNSDict(predicateDict)
@@ -328,6 +328,10 @@ public class Condition : NSObject, NSCoding {
 
 /** Enum defines when the Trigger is fired based on StatePredicate */
 public enum TriggersWhen : String {
+    /* NOTE: These string values must not be changed. These values are
+       used serialization and deserialization If thses values are
+       changed, then serialization and deserialization is broken. */
+
     /** Always fires when the Condition is evaluated as true. */
     case CONDITION_TRUE = "CONDITION_TRUE"
     /** Fires when previous State is evaluated as false and current State is evaluated as true. */
@@ -336,49 +340,20 @@ public enum TriggersWhen : String {
     different value. i.e. false to true, true to false. */
     case CONDITION_CHANGED = "CONDITION_CHANGED"
 }
-public enum TriggersWhat {
-    case COMMAND
-    case SERVER_CODE
-    
-    /** Get String value of TriggerWhat */
-    public func toString() -> String {
-        switch self {
-        case .COMMAND:
-            return "COMMAND"
-        case .SERVER_CODE:
-            return "SERVER_CODE"
-        }
-    }
-    
-    /** Init from string
-     
-     - Prameter string: String value of triggerswhat to init
-     */
-    public init?(string: String) {
-        switch string {
-        case "COMMAND":
-            self = .COMMAND
-        case "SERVER_CODE":
-            self = .SERVER_CODE
-        default: return nil
-        }
-    }
+
+public enum TriggersWhat : String {
+    case COMMAND = "COMMAND"
+    case SERVER_CODE = "SERVER_CODE"
 }
 
 enum EventSource: String {
+    /* NOTE: These string values must not be changed. These values are
+       used serialization and deserialization If thses values are
+       changed, then serialization and deserialization is broken. */
 
     case States = "STATES"
     case Schedule = "SCHEDULE"
 
-    init?(string: String) {
-        switch string {
-        case "STATES":
-            self = .States
-        case "SCHEDULE":
-            self = .Schedule
-        default: return nil
-        }
-    }
 }
 
 /** Class represents SchedulePredicate. It is not supported now.*/
