@@ -309,9 +309,9 @@ extension ThingIFAPI {
         
         var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/results/server-code"
 
-        if paginationKey != nil && bestEffortLimit != nil{
+        if paginationKey != nil && bestEffortLimit != nil && bestEffortLimit! != 0 {
             requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
-        }else if bestEffortLimit != nil {
+        }else if bestEffortLimit != nil && bestEffortLimit! != 0 {
             requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
         }else if paginationKey != nil {
             requestURL += "?paginationKey=\(paginationKey!)"
@@ -354,10 +354,10 @@ extension ThingIFAPI {
         }
 
         var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
-
-        if paginationKey != nil && bestEffortLimit != nil{
+        
+        if paginationKey != nil && bestEffortLimit != nil && bestEffortLimit! != 0{
             requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
-        }else if bestEffortLimit != nil {
+        }else if bestEffortLimit != nil && bestEffortLimit! != 0 {
             requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
         }else if paginationKey != nil {
             requestURL += "?paginationKey=\(paginationKey!)"
