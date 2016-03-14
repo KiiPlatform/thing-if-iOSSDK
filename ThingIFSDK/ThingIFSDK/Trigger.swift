@@ -454,7 +454,7 @@ public class ServerCode : NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         self.endpoint = aDecoder.decodeObjectForKey("endpoint") as! String
-        self.executorAccessToken = aDecoder.decodeObjectForKey("executorAccessToken") as! String
+        self.executorAccessToken = aDecoder.decodeObjectForKey("executorAccessToken") as? String
         self.targetAppID = aDecoder.decodeObjectForKey("targetAppID") as? String
         self.parameters = aDecoder.decodeObjectForKey("parameters") as? Dictionary<String, AnyObject>
     }
@@ -462,7 +462,7 @@ public class ServerCode : NSObject, NSCoding {
     /** Endpoint to call on servercode */
     public var endpoint: String
     /** This token will be used to call the external appID endpoint */
-    public var executorAccessToken: String
+    public var executorAccessToken: String?
     /** If provided, servercode endpoint will be called for this appid. Otherwise same appID of trigger is used */
     public var targetAppID: String?
     /** Parameters to pass to the servercode function */
@@ -475,7 +475,7 @@ public class ServerCode : NSObject, NSCoding {
      - Parameter targetAppID: If provided, servercode endpoint will be called for this appid. Otherwise same appID of trigger is used
      - Parameter parameters: Parameters to pass to the servercode function
      */
-    public init(endpoint: String, executorAccessToken: String, targetAppID: String?, parameters: Dictionary<String, AnyObject>?) {
+    public init(endpoint: String, executorAccessToken: String?, targetAppID: String?, parameters: Dictionary<String, AnyObject>?) {
         self.endpoint = endpoint
         self.executorAccessToken = executorAccessToken
         self.targetAppID = targetAppID
@@ -483,7 +483,10 @@ public class ServerCode : NSObject, NSCoding {
     }
 
     func toNSDictionary() -> NSDictionary {
-        let dict = NSMutableDictionary(dictionary: ["endpoint": self.endpoint, "executorAccessToken": self.executorAccessToken])
+        let dict = NSMutableDictionary(dictionary: ["endpoint": self.endpoint])
+        if self.executorAccessToken != nil {
+            dict["executorAccessToken"] = self.executorAccessToken
+        }
         if self.targetAppID != nil {
             dict["targetAppID"] = self.targetAppID
         }
@@ -516,8 +519,8 @@ public class ServerCode : NSObject, NSCoding {
         let targetAppID = nsDict["targetAppID"] as? String
         let parameters = nsDict["parameters"] as? Dictionary<String, AnyObject>
         var serverCode: ServerCode?
-        if (endpoint != nil && executorAccessToken != nil) {
-            serverCode = ServerCode(endpoint:endpoint!, executorAccessToken:executorAccessToken!, targetAppID:targetAppID, parameters:parameters)
+        if (endpoint != nil) {
+            serverCode = ServerCode(endpoint:endpoint!, executorAccessToken:executorAccessToken, targetAppID:targetAppID, parameters:parameters)
         }
         return serverCode
     }
