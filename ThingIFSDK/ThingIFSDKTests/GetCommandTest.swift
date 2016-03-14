@@ -8,7 +8,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class GetCommandTests: XCTestCase {
+class GetCommandTests: SmallTestBase {
     override func setUp() {
         super.setUp()
     }
@@ -27,6 +27,9 @@ class GetCommandTests: XCTestCase {
         let actionResults: [Dictionary<String, AnyObject>]?
         let commandState: CommandState
         let commandStateString: String
+        let firedByTriggerID: String?
+        let created: NSDate?
+        let modified: NSDate?
     }
 
     func testGetCommandSuccess() {
@@ -36,11 +39,11 @@ class GetCommandTests: XCTestCase {
         api._target = setting.target
 
         let testcases = [
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower":["power": true]]], issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE"),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING"),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED"),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE")
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower":["power": true]]], issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE", firedByTriggerID:"trigger-0001", created:NSDate(timeIntervalSince1970:1456377631.467), modified:NSDate(timeIntervalSince1970:1456377633.467)),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING", firedByTriggerID:"trigger-0002", created:NSDate(timeIntervalSince1970:1456377634.467), modified:NSDate(timeIntervalSince1970:1456377635.467)),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING",firedByTriggerID:nil, created:nil, modified:nil),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED",firedByTriggerID:nil, created:nil, modified:nil),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE", firedByTriggerID:nil, created:nil, modified:nil)
 
         ]
 
@@ -58,6 +61,15 @@ class GetCommandTests: XCTestCase {
             let commandID = "429251a0-46f7-11e5-a5eb-06d9d1527620"
             // mock response
             var dict: [String: AnyObject] = ["commandID": commandID, "schema": testcase.schema, "schemaVersion": testcase.schemaVersion, "target": testcase.targetIDString, "issuer": testcase.issuerIDString, "actions": testcase.actions, "commandState": testcase.commandStateString]
+            if let firedByTriggerID = testcase.firedByTriggerID {
+                dict["firedByTriggerID"] = firedByTriggerID
+            }
+            if let created = testcase.created {
+                dict["createdAt"] = created.timeIntervalSince1970 * 1000
+            }
+            if let modified = testcase.modified {
+                dict["modifiedAt"] = modified.timeIntervalSince1970 * 1000
+            }
             if testcase.actionResults != nil {
                 dict["actionResults"] = testcase.actionResults!
             }
@@ -78,6 +90,8 @@ class GetCommandTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands/\(commandID)")
+
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -91,6 +105,10 @@ class GetCommandTests: XCTestCase {
                     XCTAssertEqual(command!.commandID, commandID, tag)
                     XCTAssertEqual(command!.targetID.toString(), testcase.targetIDString, tag)
                     XCTAssertEqual(command!.commandState, testcase.commandState, tag)
+                    
+                    XCTAssertEqual(command?.firedByTriggerID, testcase.firedByTriggerID, tag)
+                    XCTAssertEqual(command?.created, testcase.created, tag)
+                    XCTAssertEqual(command?.modified, testcase.modified, tag)
                     do {
                         let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(testcase.actions, options: NSJSONWritingOptions(rawValue: 0))
                         let actualActionsData = try NSJSONSerialization.dataWithJSONObject(command!.actions, options: NSJSONWritingOptions(rawValue: 0))
@@ -147,6 +165,7 @@ class GetCommandTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands/\(commandID)")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier

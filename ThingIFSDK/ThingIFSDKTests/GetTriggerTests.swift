@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class GetTriggerTests: XCTestCase {
+class GetTriggerTests: SmallTestBase {
     override func setUp() {
         super.setUp()
     }
@@ -89,7 +89,7 @@ class GetTriggerTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
              }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -105,7 +105,7 @@ class GetTriggerTests: XCTestCase {
 
                     do {
                         let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(expectedActionsDict, options: NSJSONWritingOptions(rawValue: 0))
-                        let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger!.command.actions, options: NSJSONWritingOptions(rawValue: 0))
+                        let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger!.command!.actions, options: NSJSONWritingOptions(rawValue: 0))
                         XCTAssertTrue(expectedActionsData == actualActionsData)
 
                         let expectedPredicteData = try NSJSONSerialization.dataWithJSONObject(expectedPredicateDict, options: NSJSONWritingOptions(rawValue: 0))
@@ -128,6 +128,79 @@ class GetTriggerTests: XCTestCase {
         }
     }
 
+    func testGetServerCodeTrigger_success() {
+        let setting = TestSetting()
+        let api = setting.api
+        // perform onboarding
+        let expectation = self.expectationWithDescription("testGetServerCodeTrigger_success")
+        
+        do{
+            let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+            let expectedEndpoint = "my_function"
+            let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
+            let expectedTargetAppID = "app000001"
+            var expectedParameters = Dictionary<String, AnyObject>()
+            expectedParameters["arg1"] = "abcd"
+            expectedParameters["arg2"] = 1234
+            expectedParameters["arg3"] = 0.12345
+            expectedParameters["arg4"] = false
+            let expectedServerCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
+            let serverCodeDict = expectedServerCode.toNSDictionary()
+            let eventSource = "STATES"
+            let condition: Dictionary<String, AnyObject> = ["type":"eq","field":"color", "value": 0]
+            let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":TriggersWhen.CONDITION_FALSE_TO_TRUE.rawValue, "condition": condition]
+            
+            // mock response
+            let dict = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": serverCodeDict, "disabled": false]
+            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            
+            // verify request
+            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.HTTPMethod, "GET")
+                //verify header
+                let expectedHeader = ["authorization": "Bearer \(setting.ownerToken)", "Content-type":"application/json"]
+                for (key, value) in expectedHeader {
+                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                }
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
+            }
+            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
+            
+            api._target = setting.target
+            api.getTrigger(expectedTriggerID, completionHandler: { (trigger, error) -> Void in
+                if(error != nil) {
+                    XCTFail("should success")
+                }else {
+                    XCTAssertEqual(trigger!.triggerID, expectedTriggerID)
+                    XCTAssertTrue(trigger!.enabled == true)
+                    XCTAssertTrue(trigger!.serverCode == expectedServerCode)
+                    XCTAssertNil(trigger!.command)
+                    
+                    do {
+                        let expectedPredicteData = try NSJSONSerialization.dataWithJSONObject(expectedPredicateDict, options: NSJSONWritingOptions(rawValue: 0))
+                        let actualPredicateDict = trigger!.predicate.toNSDictionary()
+                        let actualBodyData = try NSJSONSerialization.dataWithJSONObject(actualPredicateDict, options: NSJSONWritingOptions(rawValue: 0))
+                        XCTAssertTrue(expectedPredicteData.length == actualBodyData.length)
+                    }catch(_){
+                        XCTFail()
+                    }
+                }
+                expectation.fulfill()
+            })
+        }catch(let e){
+            print(e)
+        }
+        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    
     func testGetTrigger_404_error() {
         let expectation = self.expectationWithDescription("getTrigger403Error")
         let setting = TestSetting()
@@ -152,6 +225,7 @@ class GetTriggerTests: XCTestCase {
                 let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)")
                 }
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)

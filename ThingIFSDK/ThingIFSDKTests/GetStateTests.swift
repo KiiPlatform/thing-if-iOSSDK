@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class GetStateTests: XCTestCase {
+class GetStateTests: SmallTestBase {
 
     let deviceToken = "dummyDeviceToken"
 
@@ -86,7 +86,7 @@ class GetStateTests: XCTestCase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
         }
 
         let dict : Dictionary<String,AnyObject>? = [
@@ -100,13 +100,14 @@ class GetStateTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
-
+            iotSession = MockSession.self
         }catch(_){
             //should never reach this
             XCTFail("exception happened")
             return;
         }
 
+        setting.api._target = setting.target
         setting.api.getState() { (result, error) -> Void in
 
             XCTAssertNotNil(result,"should not nil")
@@ -142,7 +143,7 @@ class GetStateTests: XCTestCase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
         }
 
         let dict = ["errorCode":"TARGET_NOT_FOUND","message":"error message"]
@@ -152,13 +153,14 @@ class GetStateTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
-
+            iotSession = MockSession.self
         }catch(_){
             //should never reach this
             XCTFail("exception happened")
             return;
         }
 
+        setting.api._target = setting.target
         setting.api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
@@ -199,7 +201,7 @@ class GetStateTests: XCTestCase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
         }
 
         let dict = ["errorCode":"INVALID_INPUT_DATA","message":"error message"]
@@ -209,13 +211,14 @@ class GetStateTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
-
+            iotSession = MockSession.self
         }catch(_){
             //should never reach this
             XCTFail("exception happened")
             return;
         }
 
+        setting.api._target = setting.target
         setting.api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
@@ -270,6 +273,7 @@ class GetStateTests: XCTestCase {
             let errorJson = try NSJSONSerialization.dataWithJSONObject(["errorCode":"INVALID_INPUT_DATA","message":"error message"], options: .PrettyPrinted)
             let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
             let mockResponse2 = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
+            iotSession = MockMultipleSession.self
             MockMultipleSession.responsePairs = [
                 ((data: jsonData, urlResponse: mockResponse1, error: nil),requestVerifier),
                 ((data: errorJson, urlResponse: mockResponse2, error: nil),requestVerifier)
@@ -281,6 +285,7 @@ class GetStateTests: XCTestCase {
             return;
         }
 
+        setting.api._target = setting.target
         setting.api.getState() { (result, error) -> Void in
 
             XCTAssertNotNil(result,"should not nil")

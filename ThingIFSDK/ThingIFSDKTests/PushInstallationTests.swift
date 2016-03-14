@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PushInstallationTests: XCTestCase {
+class PushInstallationTests: SmallTestBase {
 
     let deviceToken = "dummyDeviceToken".dataUsingEncoding(NSUTF8StringEncoding)!
     let deviceTokenString = "dummyDeviceToken".dataUsingEncoding(NSUTF8StringEncoding)!.hexString()
@@ -59,7 +59,7 @@ class PushInstallationTests: XCTestCase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/onboardings")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -99,6 +99,7 @@ class PushInstallationTests: XCTestCase {
             //verify request body
             let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": setting.owner.typedID.id]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/api/apps/50a62843/installations")
         }
         
         let dict = ["installationID":"dummy_installation_ID"]
@@ -108,6 +109,7 @@ class PushInstallationTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this
@@ -155,6 +157,7 @@ class PushInstallationTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this
@@ -215,6 +218,7 @@ class PushInstallationTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 400, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this
@@ -275,6 +279,7 @@ class PushInstallationTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this

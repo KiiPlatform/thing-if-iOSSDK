@@ -12,12 +12,12 @@ extension ThingIFAPI {
     func _getState(
         completionHandler: (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
         ){
-            if self.target == nil {
+            guard let target = self.target else {
                 completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
                 return
             }
 
-            let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target!.typedID.toString())/states"
+            let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states"
             
             // generate header
             let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -35,8 +35,8 @@ extension ThingIFAPI {
                 }
             })
             
-            let getStateRequestOperation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(getStateRequestOperation)
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
     }
     
 }

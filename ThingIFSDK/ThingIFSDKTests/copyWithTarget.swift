@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class CopyWithTargetTests: XCTestCase {
+class CopyWithTargetTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()

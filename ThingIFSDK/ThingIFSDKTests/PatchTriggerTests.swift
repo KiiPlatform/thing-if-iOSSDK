@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PatchTriggerTests: XCTestCase {
+class PatchTriggerTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()
@@ -79,9 +79,9 @@ class PatchTriggerTests: XCTestCase {
 
         let testsCases: [TestCase] = [
             //
-            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: EqualsClause(field: "color", value: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: NotEqualsClause(field: "power", value: true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: StatePredicate(condition: Condition(clause: RangeClause(field: "color", upperLimit: 255, upperIncluded:true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: NotEqualsClause(field: "power", boolValue: true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: StatePredicate(condition: Condition(clause: RangeClause(field: "color", upperLimitInt: 255, upperIncluded:true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
             TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
             TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: schemaVersion, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
             TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: nil, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
@@ -123,6 +123,7 @@ class PatchTriggerTests: XCTestCase {
             }catch(_){
                 XCTFail(tag)
             }
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
         }
 
         //verify get request
@@ -156,20 +157,20 @@ class PatchTriggerTests: XCTestCase {
             }catch(_){
                 XCTFail(tag)
             }
-            iotSession = MockSession.self
             MockSession.mockResponse = (jsonData, urlResponse: mockResponse3, error: nil)
             MockSession.requestVerifier = patchRequestVerifier
+            iotSession = MockSession.self
         }
 
 
+        api._target = setting.target
         api.patchTrigger(expectedTriggerID, schemaName: testcase.schemaName, schemaVersion: testcase.schemaVersion, actions: testcase.actions, predicate: testcase.predicate, completionHandler: { (trigger, error) -> Void in
             if testcase.success {
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
-                    XCTAssertEqual(trigger!.targetID.toString(), setting.target.typedID.toString(), tag)
                     XCTAssertEqual(trigger!.enabled, true, tag)
                     XCTAssertNotNil(trigger!.predicate, tag)
-                    XCTAssertEqual(trigger!.command.commandID, "", tag)
+                    XCTAssertEqual(trigger!.command!.commandID, "", tag)
                 }else {
                     XCTFail("should success for \(tag)")
                 }
@@ -233,7 +234,7 @@ class PatchTriggerTests: XCTestCase {
         let api = setting.api
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", value: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
 
         api.patchTrigger(expectedTriggerID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: predicate) { (trigger, error) -> Void in
             if error == nil{

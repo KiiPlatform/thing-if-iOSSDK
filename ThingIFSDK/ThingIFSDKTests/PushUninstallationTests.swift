@@ -9,13 +9,11 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PushUninstallationTests: XCTestCase {
-
+class PushUninstallationTests: SmallTestBase {
     let deviceToken = "dummyDeviceToken"
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
@@ -98,12 +96,13 @@ class PushUninstallationTests: XCTestCase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-            
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/api/apps/50a62843/installations/\(installID)")
         }
         
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
         MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         MockSession.requestVerifier = requestVerifier
+        iotSession = MockSession.self
         
         setting.api.uninstallPush(installID) { (error) -> Void in
             XCTAssertTrue(error==nil,"should not error")
@@ -142,6 +141,7 @@ class PushUninstallationTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this
@@ -199,6 +199,7 @@ class PushUninstallationTests: XCTestCase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
+            iotSession = MockSession.self
             
         }catch(_){
             //should never reach this

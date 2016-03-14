@@ -24,7 +24,6 @@ struct IotRequest<T> {
     let requestBodyData: NSData?
     let responseBodySerializer : (responseBodyData:NSData?) -> T?
     let completionHandler: (response: T?, error: ThingIFError?) -> Void
-    
 }
 typealias DefaultRequest = IotRequest<NSDictionary>
 
@@ -33,7 +32,10 @@ func buildDefaultRequest(method : HTTPMethod,urlString: String,requestHeaderDict
     kiiVerboseLog("Request Method: \(method)")
     kiiVerboseLog("Request Header: \(requestHeaderDict)")
 
-    let defaultRequest = DefaultRequest(method: method, urlString: urlString, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, responseBodySerializer: { (responseBodyData) -> NSDictionary? in
+    // Add X-Kii-SDK header.
+    var modifiedHeaderDict = requestHeaderDict
+    modifiedHeaderDict["X-Kii-SDK"] = SDKVersion.sharedInstance.kiiSDKHeader
+    let defaultRequest = DefaultRequest(method: method, urlString: urlString, requestHeaderDict: modifiedHeaderDict, requestBodyData: requestBodyData, responseBodySerializer: { (responseBodyData) -> NSDictionary? in
 
         if responseBodyData == nil {
             return nil

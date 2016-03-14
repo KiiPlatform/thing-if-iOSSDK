@@ -13,7 +13,8 @@ public class ThingIFAPI: NSObject, NSCoding {
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
 
-    let tag : String?
+    /** Tag of the ThingIFAPI instance */
+    public let tag : String?
 
     let operationQueue = OperationQueue()
     /** URL of KiiApps Server */
@@ -79,7 +80,6 @@ public class ThingIFAPI: NSObject, NSCoding {
         self.owner = owner
         self.tag = tag
         super.init()
-        self.saveToUserDefault()
     }
 
     // MARK: - On board methods
@@ -112,6 +112,9 @@ public class ThingIFAPI: NSObject, NSCoding {
         ) ->Void
     {
         _onboard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
+            if error == nil {
+                self.saveToUserDefault()
+            }
             completionHandler(target, error)
         }
     }
@@ -136,6 +139,9 @@ public class ThingIFAPI: NSObject, NSCoding {
         ) ->Void
     {
          _onboard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
+            if error == nil {
+                self.saveToUserDefault()
+            }
             completionHandler(target, error)
         }
     }
@@ -159,8 +165,12 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (String?, ThingIFError?)-> Void
         )
     {
-        _installPush(deviceToken, development: development, completionHandler: completionHandler)
-        
+        _installPush(deviceToken, development: development) { (token, error) -> Void in
+            if error == nil {
+                self.saveToUserDefault()
+            }
+            completionHandler(token, error)
+        }
     }
     
     /** Uninstall push notification.
@@ -266,6 +276,28 @@ public class ThingIFAPI: NSObject, NSCoding {
     {
         _postNewTrigger(schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
     }
+    
+    /** Post new Trigger to IoT Cloud.
+     
+     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+     
+     - Parameter schemaName: Name of the Schema of which the Command specified in
+     Trigger is defined.
+     - Parameter schemaVersion: Version of the Schema of which the Command
+     specified in Trigger is defined.
+     - Parameter serverCode: Server code to be executed by the Trigger.
+     - Parameter predicate: Predicate of the Command.
+     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an ThingIFError instance when failed.
+     */
+    public func postNewTrigger(
+        serverCode:ServerCode,
+        predicate:Predicate,
+        completionHandler: (Trigger?, ThingIFError?)-> Void
+        )
+    {
+        _postNewTrigger(serverCode, predicate: predicate, completionHandler: completionHandler)
+    }
+
 
     /** Get specified trigger
 
@@ -309,6 +341,26 @@ public class ThingIFAPI: NSObject, NSCoding {
         _patchTrigger(triggerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
     }
     
+    /** Apply patch to a registered Trigger
+     Modify a registered Trigger with the specified patch.
+     
+     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+     
+     - Parameter triggerID: ID of the Trigger to which the patch is applied.
+     - Parameter serverCode: Modified ServerCode to be applied as patch.
+     - Parameter predicate: Modified Predicate to be applied as patch.
+     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an ThingIFError instance when failed.
+     */
+    public func patchTrigger(
+        triggerID:String,
+        serverCode:ServerCode,
+        predicate:Predicate?,
+        completionHandler: (Trigger?, ThingIFError?)-> Void
+        )
+    {
+        _patchTrigger(triggerID, serverCode: serverCode, predicate: predicate, completionHandler: completionHandler)
+    }
+
     /** Enable/Disable a registered Trigger
     If its already enabled(/disabled), this method won't throw error and behave
     as succeeded.
@@ -364,6 +416,32 @@ public class ThingIFAPI: NSObject, NSCoding {
     {
         _listTriggers(bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
     }
+    
+    /** Retrieves list of server code results that was executed by the specified trigger.
+        Results will be listing with order by modified date descending (latest first)
+     
+     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+     
+     - Parameter bestEffortLimit: Limit the maximum number of the Results in the
+     Response. If omitted default limit internally defined is applied.
+     Meaning of 'bestEffort' is if specified value is greater than default limit,
+     default limit is applied.
+     - Parameter triggerID: ID of the Trigger
+     - Parameter paginationKey: If there is further page to be retrieved, this
+     API returns paginationKey in 2nd element. Specifying this value in next
+     call in the argument results continue to get the results from the next page.
+     - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Results instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
+     */
+    public func listTriggeredServerCodeResults(
+        triggerID:String,
+        bestEffortLimit:Int?,
+        paginationKey:String?,
+        completionHandler: (results:[TriggeredServerCodeResult]?, paginationKey:String?, error: ThingIFError?)-> Void
+        )
+    {
+        _listTriggeredServerCodeResults(triggerID, bestEffortLimit:bestEffortLimit, paginationKey:paginationKey, completionHandler: completionHandler)
+    }
+
 
     // MARK: - Get the state of specified target
 
@@ -386,15 +464,16 @@ public class ThingIFAPI: NSObject, NSCoding {
     /** Get new instance with new target
 
     - Parameter newTarget: target instance will be setted to new ThingIFAPI instance
+    - Parameter tag: tag of the ThingIFAPI instance or nil for default tag
     - Returns: New ThingIFAPI instance with newTarget
     */
-    public func copyWithTarget(newTarget: Target) -> ThingIFAPI {
+    public func copyWithTarget(newTarget: Target, tag : String? = nil) -> ThingIFAPI {
 
-        let newIotapi = ThingIFAPI(app: self.app, owner: self.owner)
+        let newIotapi = ThingIFAPI(app: self.app, owner: self.owner, tag: tag)
 
         newIotapi._target = newTarget
         newIotapi._installationID = self._installationID
-
+        newIotapi.saveToUserDefault()
         return newIotapi
     }
 
@@ -411,19 +490,27 @@ public class ThingIFAPI: NSObject, NSCoding {
 
         if let dict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary
         {
-            if let data = dict[key] as? NSData {
-                if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ThingIFAPI {
-                    return savedIoTAPI
+            if dict.objectForKey(key) != nil {
+                if let data = dict[key] as? NSData {
+                    if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ThingIFAPI {
+                        return savedIoTAPI
+                    }else{
+                        throw ThingIFError.INVALID_STORED_API
+                    }
                 }else{
                     throw ThingIFError.INVALID_STORED_API
                 }
-            }else{
-                throw ThingIFError.INVALID_STORED_API
+            } else {
+                throw ThingIFError.API_NOT_STORED
             }
-
         }else{
             throw ThingIFError.API_NOT_STORED
         }
+    }
+    /** Save this instance
+    */
+    public func saveInstance() -> Void {
+        self.saveToUserDefault()
     }
 
     /** Clear all saved instances in the NSUserDefaults.

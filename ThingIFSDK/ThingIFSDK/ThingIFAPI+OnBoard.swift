@@ -64,8 +64,8 @@ extension ThingIFAPI {
                         completionHandler(target, error)
                     }
                 })
-                let onboardRequestOperation = IoTRequestOperation(request: request)
-                operationQueue.addOperation(onboardRequestOperation)
+                let operation = IoTRequestOperation(request: request)
+                operationQueue.addOperation(operation)
                 
             }catch(_){
                 kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
