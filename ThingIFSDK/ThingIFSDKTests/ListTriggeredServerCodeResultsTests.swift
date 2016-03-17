@@ -19,10 +19,10 @@ class ListTriggeredServerCodeResultsTests: SmallTestBase {
         
         do{
             let expectedNextPaginationKey = "1234567abcde"
-            let serverCodeResultDic1: NSDictionary = ["succeeded": true, "returnedValue": "12345", "executedAt": 1454474985511]
-            let serverCodeResultDic2: NSDictionary = ["succeeded": false, "executedAt": 1454474985511, "errorMessage": "RuntimeError"]
-            let serverCodeResultDic3: NSDictionary = ["succeeded": false, "executedAt": 1454474985511, "errorMessage": "ReferenceError"]
-            let serverCodeResultDic4: NSDictionary = ["succeeded": true, "returnedValue": "{\"field\":\"abcd\"}", "executedAt": 1454474985511]
+            let serverCodeResultDic1: NSDictionary = ["succeeded": true, "returnedValue": "12345", "executedAt": 1454474985511, "endpoint":"func"]
+            let serverCodeResultDic2: NSDictionary = ["succeeded": false, "executedAt": 1454474985511, "endpoint":"func", "errorMessage": "RuntimeError"]
+            let serverCodeResultDic3: NSDictionary = ["succeeded": false, "executedAt": 1454474985511, "endpoint":"func", "errorMessage": "ReferenceError"]
+            let serverCodeResultDic4: NSDictionary = ["succeeded": true, "returnedValue": "{\"field\":\"abcd\"}", "executedAt": 1454474985511, "endpoint":"func"]
             let serverCodeResult1 = TriggeredServerCodeResult.resultWithNSDict(serverCodeResultDic1)
             let serverCodeResult2 = TriggeredServerCodeResult.resultWithNSDict(serverCodeResultDic2)
             let serverCodeResult3 = TriggeredServerCodeResult.resultWithNSDict(serverCodeResultDic3)

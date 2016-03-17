@@ -8,6 +8,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
         aCoder.encodeBool(self.succeeded, forKey: "succeeded")
         aCoder.encodeObject(self.returnedValue, forKey: "returnedValue")
         aCoder.encodeDouble(self.executedAt.timeIntervalSince1970, forKey: "executedAt")
+        aCoder.encodeObject(self.endpoint, forKey: "endpoint")
         aCoder.encodeObject(self.error, forKey: "error")
     }
     
@@ -16,6 +17,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
         self.succeeded = aDecoder.decodeBoolForKey("succeeded")
         self.returnedValue = aDecoder.decodeObjectForKey("returnedValue") as AnyObject?
         self.executedAt = NSDate(timeIntervalSince1970: aDecoder.decodeDoubleForKey("executedAt"))
+        self.endpoint = aDecoder.decodeObjectForKey("endpoint") as! String
         self.error = aDecoder.decodeObjectForKey("error") as? ServerError
         // TODO: add aditional decoder
     }
@@ -26,6 +28,8 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
     public var returnedValue: AnyObject?
     /** Date of the execution */
     public var executedAt: NSDate
+    /** The endpoint used in the server code invocation */
+    public var endpoint: String
     /** Error object of the invocation if any */
     public var error: ServerError?
     
@@ -35,12 +39,14 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
      - Parameter succeeded: Whether the invocation succeeded
      - Parameter returnedValue: Returned value from server code
      - Parameter executedAt: Date of the execution
+     - Parameter endpoint: The endpoint used in the server code invocation
      - Parameter error: Error object of the invocation if any
      */
-    public init(succeeded: Bool, returnedValue: AnyObject?, executedAt: NSDate, error: ServerError?) {
+    public init(succeeded: Bool, returnedValue: AnyObject?, executedAt: NSDate, endpoint: String, error: ServerError?) {
         self.succeeded = succeeded
         self.returnedValue = returnedValue
         self.executedAt = executedAt
+        self.endpoint = endpoint
         self.error = error
     }
     
@@ -107,7 +113,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
         } else if (!self.error!.isEqual(aResult.error!)) {
             return false
         }
-        return self.succeeded == aResult.succeeded && self.executedAt == aResult.executedAt
+        return self.succeeded == aResult.succeeded && self.executedAt == aResult.executedAt && self.endpoint == aResult.endpoint
     }
     private func isEqualArray(arr1:[AnyObject], arr2:[AnyObject]) -> Bool {
         if arr1.count != arr2.count {
@@ -158,7 +164,8 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
             serverError = ServerError.errorWithNSDict(error!)
         }
         let executedAt = NSDate(timeIntervalSince1970: (executedAtStamp.doubleValue)/1000.0)
-        return TriggeredServerCodeResult(succeeded:succeeded, returnedValue:returnedValue, executedAt:executedAt, error:serverError)
+        let endpoint = resultDict["endpoint"] as! String
+        return TriggeredServerCodeResult(succeeded:succeeded, returnedValue:returnedValue, executedAt:executedAt, endpoint:endpoint, error:serverError)
     }
 }
 
