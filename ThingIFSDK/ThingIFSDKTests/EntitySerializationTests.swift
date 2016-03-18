@@ -126,15 +126,15 @@ class EntitySerializationTests: SmallTestBase {
         let array : [AnyObject] = [123, 123.456, "abc", true, [123], ["f1":123]]
         let object : Dictionary<String, AnyObject> = ["f1":123, "f2":"abc", "f3":true]
         let testDataList = [
-            TriggeredServerCodeResult(succeeded: true, returnedValue: nil, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: "abcd", executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: "", executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: 1234, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: 14544749850000, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: 1234.5678, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: true, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: array, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: object, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: nil, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func1", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: "abcd", executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func2", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: "", executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func3", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: 1234, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func4", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: 14544749850000, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func5", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: 1234.5678, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func6", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: true, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func7", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: array, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func8", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: object, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func9", error: nil),
         ]
         for testData in testDataList {
             self.doSerializationTest(testData)
