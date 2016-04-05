@@ -222,6 +222,7 @@
 				7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */,
 				7D36B6371BD4D03100D9B821 /* Clause.swift */,
 				7D36B6381BD4D03100D9B821 /* Command.swift */,
+				B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */,
 				7D36B6431BD4D03100D9B821 /* IoTOperations */,
 				7D36B6451BD4D03100D9B821 /* NetworkObserver.swift */,
 				7D36B6461BD4D03100D9B821 /* NSNumber+checkTypes.swift */,
@@ -234,7 +235,6 @@
 				7D36B6601BD4D03100D9B821 /* TypedID.swift */,
 				7D36B6611BD4D03100D9B821 /* Utils */,
 				A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */,
-				B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */,
 			);
 			path = ThingIFSDK;
 			sourceTree = "<group>";

@@ -8,46 +8,47 @@
 
 import Foundation
 
+/**
+Form of a command.
+
+This class contains data in order to create `Command` with
+`ThingIFAPI.postNewCommand(_:completionHandler:)`.
+
+Mandatory data are followings:
+
+  - Schema name
+  - Schema version
+  - List of actions
+
+Optional data are followings:
+
+  - Title of a schema
+  - Description of a schema
+  - Meta data of a schema
+*/
 public class CommandForm: NSObject {
 
     internal let schemaName: String
     internal let schemaVersion: Int
     internal let actions: [Dictionary<String, AnyObject>]
+    private var title: String?
 
-    public var title: String? {
-        get {
-            return self.title
-        }
+    // MARK: - Properties
+    public var desc: String?
+    public var metadata: [Dictionary<String, AnyObject>]?
 
-        set (title){
-            // TODO: implement me.
-            self.title = title
-        }
-    }
+    // MARK: - Initializing CommandForm instance.
+    /**
+    Initializer of CommandForm instance.
 
-    public var desc: String? {
-        get {
-            return self.desc
-        }
-
-        set (desc) {
-            self.desc = desc
-        }
-    }
-
-    public var metadata: [Dictionary<String, AnyObject>]? {
-        get {
-            return self.metadata
-        }
-
-        set (metadata) {
-            self.metadata = metadata
-        }
-    }
-
+    - Parameter schemaName: Schema name
+    - Parameter schemaVersion: Schema version
+    - Parameter actions: List of actions
+    - Throws: error list
+    */
     public init(schemaName: String,
                 schemaVersion: Int,
-                actions: [Dictionary<String, AnyObject>])
+                actions: [Dictionary<String, AnyObject>]) throws
     {
         // TODO: implement me.
         self.schemaName = schemaName
@@ -55,4 +56,25 @@ public class CommandForm: NSObject {
         self.actions = actions
     }
 
+    // MARK: - Methods
+    /**
+    Setter of a title of a command.
+
+    Title must equal or be less than 50 characters. Title also must
+    not be empty string.
+
+    If title is nil, title is not applied to a command.
+
+    - Throws: 
+    */
+    public func setTitle(title: String?) throws -> Void {
+        // TODO: implement me.
+    }
+
+    /**
+    Getter of a title of a command.
+    */
+    public func getTitle() -> String? {
+        return nil
+    }
 }

@@ -211,7 +211,15 @@ public class ThingIFAPI: NSObject, NSCoding {
     {
         _postNewCommand(schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: completionHandler)
     }
-    
+
+    /** Post New command to IoT CLoud.
+    */
+    public func postNewCommand(
+        commandForm: CommandForm,
+        completionHandler: (Command?, ThingIFError?) -> Void) -> Void {
+        // TODO: implement me.
+    }
+
     /** Get specified command
 
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
