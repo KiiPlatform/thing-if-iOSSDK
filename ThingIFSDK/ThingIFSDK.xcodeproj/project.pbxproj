@@ -80,7 +80,6 @@
 		A56B0A471C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A461C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift */; };
 		A56B0A491C62143000E653EF /* PatchServerCodeTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A481C62143000E653EF /* PatchServerCodeTriggerTests.swift */; };
 		B68227F41C85823A00AB85D0 /* CommandSerializationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */; };
-		B6EA363A1CB4F3B900AF17CE /* ThingIFArgumentlError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6EA36391CB4F3B900AF17CE /* ThingIFArgumentlError.swift */; };
 		B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */; };
 /* End PBXBuildFile section */
 
@@ -170,7 +169,6 @@
 		A56B0A461C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewServerCodeTriggerTests.swift; sourceTree = "<group>"; };
 		A56B0A481C62143000E653EF /* PatchServerCodeTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchServerCodeTriggerTests.swift; sourceTree = "<group>"; };
 		B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandSerializationTest.swift; sourceTree = "<group>"; };
-		B6EA36391CB4F3B900AF17CE /* ThingIFArgumentlError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFArgumentlError.swift; sourceTree = "<group>"; };
 		B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandForm.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -214,7 +212,6 @@
 			isa = PBXGroup;
 			children = (
 				7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */,
-				B6EA36391CB4F3B900AF17CE /* ThingIFArgumentlError.swift */,
 				7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */,
 				7D36B6B31BD4D43700D9B821 /* ThingIFAPI.swift */,
 				7D36B6B41BD4D43700D9B821 /* ThingIFAPI+Command.swift */,
@@ -438,7 +435,6 @@
 				7D36B6891BD4D03100D9B821 /* Trigger.swift in Sources */,
 				7D36B6771BD4D03100D9B821 /* GroupOperation.swift in Sources */,
 				7D36B6751BD4D03100D9B821 /* Dictionary+Operations.swift in Sources */,
-				B6EA363A1CB4F3B900AF17CE /* ThingIFArgumentlError.swift in Sources */,
 				7D36B6641BD4D03100D9B821 /* Command.swift in Sources */,
 				7D36B67A1BD4D03100D9B821 /* NoCancelledDependencies.swift in Sources */,
 				7419C2B81C27D10100F964FB /* App.swift in Sources */,

@@ -33,4 +33,8 @@ public enum ThingIFError : ErrorType {
     /** when trying to load API from persistance but it does not have correct instance*/
     case INVALID_STORED_API
 
+    /**
+    If a argument of a method is invalid, this error is thrown.
+    */
+    case InvalidArgument(message: String)
 }
