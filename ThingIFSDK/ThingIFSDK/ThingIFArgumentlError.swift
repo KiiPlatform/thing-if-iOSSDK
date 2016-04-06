@@ -12,7 +12,7 @@ import Swift
 /**
 Argument errors for Thing-IF.
 */
-enum ThingIFArgumentError: ErrorType {
+public enum ThingIFArgumentError: ErrorType {
 
     /**
     If a argument of a method is invalid, this error is thrown.
