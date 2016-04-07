@@ -32,9 +32,9 @@ public class CommandForm: NSObject {
     internal let schemaVersion: Int
     internal let actions: [Dictionary<String, AnyObject>]
     private var title: String?
+    private var desc: String?
 
     // MARK: - Properties
-    public var desc: String?
     public var metadata: [Dictionary<String, AnyObject>]?
 
     // MARK: - Initializing CommandForm instance.
@@ -79,6 +79,32 @@ public class CommandForm: NSObject {
     - Returns: Title of a command.
     */
     public func getTitle() -> String? {
+        return nil
+    }
+
+    /**
+    Setter of a description.
+
+    Description must equal or be less than 200 characters. Description
+    also must not be empty string.
+
+    If description is nil, description is not applied to a command.
+
+    - Parameter description: Description of a command. Must not be
+        more thant 200 characters.
+    - Throws: `ThingIFError.InvalidArgument` if description is more
+        than 200 characters.
+    */
+    public func setDesc(description: String?) throws -> Void {
+        // TODO: implement me.
+    }
+
+    /**
+    Getter of a description.
+
+    - Returns: Description of a command.
+    */
+    public func getDesc() -> String? {
         return nil
     }
 }
