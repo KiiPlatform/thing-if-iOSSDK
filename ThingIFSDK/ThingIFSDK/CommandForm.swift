@@ -28,12 +28,25 @@ Optional data are followings:
 */
 public class CommandForm: NSObject {
 
-    internal let schemaName: String
-    internal let schemaVersion: Int
-    internal let actions: [Dictionary<String, AnyObject>]
-    internal let title: String?
-    internal let desc: String?
-    internal let metadata: [Dictionary<String, AnyObject>]?
+    // MARK: - Properties
+
+    /// Schema name.
+    public let schemaName: String
+
+    /// Schema version.
+    public let schemaVersion: Int
+
+    /// List of actions.
+    public let actions: [Dictionary<String, AnyObject>]
+
+    /// Title of a command.
+    public let title: String?
+
+    /// Description of a command.
+    public let desc: String?
+
+    /// Meta data of ad command.
+    public let metadata: [Dictionary<String, AnyObject>]?
 
 
     // MARK: - Initializing CommandForm instance.
@@ -43,8 +56,10 @@ public class CommandForm: NSObject {
     - Parameter schemaName: Schema name.
     - Parameter schemaVersion: Schema version.
     - Parameter actions: List of actions. Must not be empty.
-    - Parameter title: Title of a command.
-    - Parameter description: Description of a comand.
+    - Parameter title: Title of a command. This should be equal or
+      less than 50 characters.
+    - Parameter description: Description of a comand. This should be
+      equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
     public init(schemaName: String,
