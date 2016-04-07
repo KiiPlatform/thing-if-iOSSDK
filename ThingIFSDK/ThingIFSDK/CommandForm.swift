@@ -44,11 +44,10 @@ public class CommandForm: NSObject {
     - Parameter schemaName: Schema name
     - Parameter schemaVersion: Schema version
     - Parameter actions: List of actions. Must not be empty.
-    - Throws: `ThingIFError.InvalidArgument` if actions is empty.
     */
     public init(schemaName: String,
                 schemaVersion: Int,
-                actions: [Dictionary<String, AnyObject>]) throws
+                actions: [Dictionary<String, AnyObject>])
     {
         // TODO: implement me.
         self.schemaName = schemaName
@@ -66,10 +65,8 @@ public class CommandForm: NSObject {
     If title is nil, title is not applied to a command.
 
     - Parameter title: Title of a command. Must not be more thant 50 characters.
-    - Throws: `ThingIFError.InvalidArgument` if title is more
-        than 50 characters.
     */
-    public func setTitle(title: String?) throws -> Void {
+    public func setTitle(title: String?) -> Void {
         // TODO: implement me.
     }
 
@@ -92,10 +89,8 @@ public class CommandForm: NSObject {
 
     - Parameter description: Description of a command. Must not be
         more thant 200 characters.
-    - Throws: `ThingIFError.InvalidArgument` if description is more
-        than 200 characters.
     */
-    public func setDesc(description: String?) throws -> Void {
+    public func setDesc(description: String?) -> Void {
         // TODO: implement me.
     }
 
