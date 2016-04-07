@@ -43,7 +43,7 @@ public class CommandForm: NSObject {
     public let title: String?
 
     /// Description of a command.
-    public let desc: String?
+    public let commandDescription: String?
 
     /// Meta data of ad command.
     public let metadata: [Dictionary<String, AnyObject>]?
@@ -66,14 +66,14 @@ public class CommandForm: NSObject {
                 schemaVersion: Int,
                 actions: [Dictionary<String, AnyObject>],
                 title: String? = nil,
-                description: String? = nil,
+                commandDescription: String? = nil,
                 metadata: [Dictionary<String, AnyObject>]? = nil)
     {
         self.schemaName = schemaName
         self.schemaVersion = schemaVersion
         self.actions = actions
         self.title = title;
-        self.desc = description;
+        self.commandDescription = commandDescription;
         self.metadata = metadata;
     }
 }
