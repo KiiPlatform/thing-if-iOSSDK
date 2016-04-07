@@ -31,9 +31,9 @@ public class CommandForm: NSObject {
     internal let schemaName: String
     internal let schemaVersion: Int
     internal let actions: [Dictionary<String, AnyObject>]
-    internal var title: String?
-    internal var desc: String?
-    internal var metadata: [Dictionary<String, AnyObject>]?
+    internal let title: String?
+    internal let desc: String?
+    internal let metadata: [Dictionary<String, AnyObject>]?
 
 
     // MARK: - Initializing CommandForm instance.
