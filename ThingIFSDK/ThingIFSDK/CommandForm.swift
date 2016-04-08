@@ -26,7 +26,7 @@ Optional data are followings:
   - Description of a schema
   - Meta data of a schema
 */
-public class CommandForm: NSObject {
+public class CommandForm: NSObject, NSCoding {
 
     // MARK: - Properties
 
@@ -75,5 +75,27 @@ public class CommandForm: NSObject {
         self.title = title;
         self.commandDescription = commandDescription;
         self.metadata = metadata;
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.schemaName, forKey: "schemaName")
+        aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
+        aCoder.encodeObject(self.actions, forKey: "actions")
+        aCoder.encodeObject(self.title, forKey: "title")
+        aCoder.encodeObject(self.commandDescription,
+                forKey: "commandDescription");
+        aCoder.encodeObject(self.metadata, forKey: "metadata")
+    }
+
+    public required init?(coder aDecoder: NSCoder) {
+        self.schemaName = aDecoder.decodeObjectForKey("schemaName") as! String
+        self.schemaVersion = aDecoder.decodeIntegerForKey("schemaVersion")
+        self.actions = aDecoder.decodeObjectForKey("actions")
+                as! [Dictionary<String, AnyObject>];
+        self.title = aDecoder.decodeObjectForKey("title") as? String
+        self.commandDescription =
+            aDecoder.decodeObjectForKey("commandDescription") as? String;
+        self.metadata = aDecoder.decodeObjectForKey("metadata")
+                as? [Dictionary<String, AnyObject>];
     }
 }
