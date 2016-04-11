@@ -7,7 +7,6 @@
 //
 
 import XCTest
-import Foundation
 
 @testable import ThingIFSDK
 
@@ -24,6 +23,10 @@ class CommandFormTests: SmallTestBase {
             actual: Dictionary<String, AnyObject>,
             expected: Dictionary<String, AnyObject>) -> Bool
     {
+        if actual.count != expected.count {
+            return false
+        }
+
         for (key, value) in actual {
             if (!value.isEqual(expected[key])) {
                 return false
@@ -123,6 +126,124 @@ class CommandFormTests: SmallTestBase {
         XCTAssertEqual(commandForm.schemaVersion, 1)
         XCTAssertEqual(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
+        XCTAssertTrue(
+            CommandFormTests.equalDictionary(
+                commandForm.metadata!,
+                expected: metadata))
+    }
+
+    func testInitWithTitleAndDescription() {
+        let actions: [Dictionary<String, AnyObject>] = [
+            [
+                "action1" :
+                [
+                    "arg1" : "value1",
+                    "arg2": "value2"
+                ]
+            ]
+        ];
+        let commandForm = CommandForm(schemaName: "name",
+                                      schemaVersion: 1,
+                                      actions: actions,
+                                      title: "title",
+                                      commandDescription: "description")
+        XCTAssertNotNil(commandForm)
+        XCTAssertEqual(commandForm.schemaName, "name")
+        XCTAssertEqual(commandForm.schemaVersion, 1)
+        XCTAssertEqual(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.title, "title")
+        XCTAssertEqual(commandForm.commandDescription, "description")
+        XCTAssertNil(commandForm.metadata)
+    }
+
+    func testInitWithTitleAndMetadata() {
+        let actions: [Dictionary<String, AnyObject>] = [
+            [
+                "action1" :
+                [
+                    "arg1" : "value1",
+                    "arg2": "value2"
+                ]
+            ]
+        ];
+        let metadata: Dictionary<String, AnyObject> = [
+            "key1" : "value1",
+            "key2" : "value2"
+        ]
+        let commandForm = CommandForm(schemaName: "name",
+                                      schemaVersion: 1,
+                                      actions: actions,
+                                      title: "title",
+                                      metadata: metadata)
+        XCTAssertNotNil(commandForm)
+        XCTAssertEqual(commandForm.schemaName, "name")
+        XCTAssertEqual(commandForm.schemaVersion, 1)
+        XCTAssertEqual(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.title, "title")
+        XCTAssertNil(commandForm.commandDescription)
+        XCTAssertTrue(
+            CommandFormTests.equalDictionary(
+                commandForm.metadata!,
+                expected: metadata))
+    }
+
+    func testInitWithDescriptionAndMetadata() {
+        let actions: [Dictionary<String, AnyObject>] = [
+            [
+                "action1" :
+                [
+                    "arg1" : "value1",
+                    "arg2": "value2"
+                ]
+            ]
+        ];
+        let metadata: Dictionary<String, AnyObject> = [
+            "key1" : "value1",
+            "key2" : "value2"
+        ]
+        let commandForm = CommandForm(schemaName: "name",
+                                      schemaVersion: 1,
+                                      actions: actions,
+                                      commandDescription: "description",
+                                      metadata: metadata)
+        XCTAssertNotNil(commandForm)
+        XCTAssertEqual(commandForm.schemaName, "name")
+        XCTAssertEqual(commandForm.schemaVersion, 1)
+        XCTAssertEqual(commandForm.actions, actions)
+        XCTAssertNil(commandForm.title)
+        XCTAssertEqual(commandForm.commandDescription, "description")
+        XCTAssertTrue(
+            CommandFormTests.equalDictionary(
+                commandForm.metadata!,
+                expected: metadata))
+    }
+
+    func testInitWithAllFields() {
+        let actions: [Dictionary<String, AnyObject>] = [
+            [
+                "action1" :
+                [
+                    "arg1" : "value1",
+                    "arg2": "value2"
+                ]
+            ]
+        ];
+        let metadata: Dictionary<String, AnyObject> = [
+            "key1" : "value1",
+            "key2" : "value2"
+        ]
+        let commandForm = CommandForm(schemaName: "name",
+                                      schemaVersion: 1,
+                                      actions: actions,
+                                      title: "title",
+                                      commandDescription: "description",
+                                      metadata: metadata)
+        XCTAssertNotNil(commandForm)
+        XCTAssertEqual(commandForm.schemaName, "name")
+        XCTAssertEqual(commandForm.schemaVersion, 1)
+        XCTAssertEqual(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.title, "title")
+        XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertTrue(
             CommandFormTests.equalDictionary(
                 commandForm.metadata!,
