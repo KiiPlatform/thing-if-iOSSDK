@@ -224,7 +224,13 @@ public class ThingIFAPI: NSObject, NSCoding {
     public func postNewCommand(
         commandForm: CommandForm,
         completionHandler: (Command?, ThingIFError?) -> Void) -> Void {
-        // TODO: implement me.
+        _postNewCommand(commandForm.schemaName,
+                        schemaVersion: commandForm.schemaVersion,
+                        actions: commandForm.actions,
+                        title: commandForm.title,
+                        description: commandForm.commandDescription,
+                        metadata: commandForm.metadata,
+                        completionHandler: completionHandler);
     }
 
     /** Get specified command
