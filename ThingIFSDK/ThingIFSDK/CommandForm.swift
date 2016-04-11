@@ -46,7 +46,7 @@ public class CommandForm: NSObject, NSCoding {
     public let commandDescription: String?
 
     /// Meta data of ad command.
-    public let metadata: [Dictionary<String, AnyObject>]?
+    public let metadata: Dictionary<String, AnyObject>?
 
 
     // MARK: - Initializing CommandForm instance.
@@ -67,7 +67,7 @@ public class CommandForm: NSObject, NSCoding {
                 actions: [Dictionary<String, AnyObject>],
                 title: String? = nil,
                 commandDescription: String? = nil,
-                metadata: [Dictionary<String, AnyObject>]? = nil)
+                metadata: Dictionary<String, AnyObject>? = nil)
     {
         self.schemaName = schemaName
         self.schemaVersion = schemaVersion
@@ -96,6 +96,6 @@ public class CommandForm: NSObject, NSCoding {
         self.commandDescription =
             aDecoder.decodeObjectForKey("commandDescription") as? String;
         self.metadata = aDecoder.decodeObjectForKey("metadata")
-                as? [Dictionary<String, AnyObject>];
+                as? Dictionary<String, AnyObject>;
     }
 }
