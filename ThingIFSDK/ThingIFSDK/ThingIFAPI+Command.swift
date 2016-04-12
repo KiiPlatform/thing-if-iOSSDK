@@ -36,14 +36,14 @@ extension ThingIFAPI {
 
         let issuerID = owner.typedID
         requestBodyDict.setObject(issuerID.toString(), forKey: "issuer")
-        if (title == nil) {
+        if (title != nil) {
             requestBodyDict.setObject(title!, forKey: "title")
         }
-        if (description == nil) {
+        if (description != nil) {
             requestBodyDict.setObject(description!, forKey: "description")
         }
-        if (metadata == nil) {
-            requestBodyDict.setObject(metadata!, forKey: "description")
+        if (metadata != nil) {
+            requestBodyDict.setObject(metadata!, forKey: "metadata")
         }
 
         do{

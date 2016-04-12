@@ -250,4 +250,48 @@ class CommandFormTests: SmallTestBase {
                 expected: metadata))
     }
 
+    func testNSCoding() {
+        let actions: [Dictionary<String, AnyObject>] = [
+            [
+                "action1" :
+                [
+                    "arg1" : "value1",
+                    "arg2": "value2"
+                ]
+            ]
+        ];
+        let metadata: Dictionary<String, AnyObject> = [
+            "key1" : "value1",
+            "key2" : "value2"
+        ]
+        let original = CommandForm(schemaName: "name",
+                                      schemaVersion: 1,
+                                      actions: actions,
+                                      title: "title",
+                                      commandDescription: "description",
+                                      metadata: metadata)
+        let data: NSMutableData = NSMutableData(capacity: 1024)!;
+        let coder: NSKeyedArchiver =
+            NSKeyedArchiver(forWritingWithMutableData: data);
+        original.encodeWithCoder(coder);
+        coder.finishEncoding();
+
+        let decoder: NSKeyedUnarchiver =
+            NSKeyedUnarchiver(forReadingWithData: data);
+        let deserialized: CommandForm = CommandForm(coder: decoder)!;
+        decoder.finishDecoding();
+
+        XCTAssertNotNil(deserialized)
+        XCTAssertEqual(deserialized.schemaName, "name")
+        XCTAssertEqual(deserialized.schemaVersion, 1)
+        XCTAssertEqual(deserialized.actions, actions)
+        XCTAssertEqual(deserialized.title, "title")
+        XCTAssertEqual(deserialized.commandDescription, "description")
+        XCTAssertTrue(
+            CommandFormTests.equalDictionary(
+                deserialized.metadata!,
+                expected: metadata))
+
+    }
+
 }
