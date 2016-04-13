@@ -211,7 +211,28 @@ public class ThingIFAPI: NSObject, NSCoding {
     {
         _postNewCommand(schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: completionHandler)
     }
-    
+
+    /** Post new command to IoT Cloud.
+    Command will be delivered to specified target and result will be notified
+    through push notification.
+
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+
+    - Parameter commandForm: Command form of posting command.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
+    */
+    public func postNewCommand(
+        commandForm: CommandForm,
+        completionHandler: (Command?, ThingIFError?) -> Void) -> Void {
+        _postNewCommand(commandForm.schemaName,
+                        schemaVersion: commandForm.schemaVersion,
+                        actions: commandForm.actions,
+                        title: commandForm.title,
+                        description: commandForm.commandDescription,
+                        metadata: commandForm.metadata,
+                        completionHandler: completionHandler);
+    }
+
     /** Get specified command
 
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback

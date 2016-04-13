@@ -79,7 +79,10 @@
 		A56B0A431C5B43B100E653EF /* TriggeredServerCodeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */; };
 		A56B0A471C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A461C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift */; };
 		A56B0A491C62143000E653EF /* PatchServerCodeTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A481C62143000E653EF /* PatchServerCodeTriggerTests.swift */; };
+		B6651A221CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */; };
 		B68227F41C85823A00AB85D0 /* CommandSerializationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */; };
+		B683A31B1CBB807A00742570 /* CommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683A31A1CBB807A00742570 /* CommandFormTests.swift */; };
+		B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,7 +170,10 @@
 		A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredServerCodeResult.swift; sourceTree = "<group>"; };
 		A56B0A461C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewServerCodeTriggerTests.swift; sourceTree = "<group>"; };
 		A56B0A481C62143000E653EF /* PatchServerCodeTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchServerCodeTriggerTests.swift; sourceTree = "<group>"; };
+		B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewCommandWithCommandFormTests.swift; sourceTree = "<group>"; };
 		B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandSerializationTest.swift; sourceTree = "<group>"; };
+		B683A31A1CBB807A00742570 /* CommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandFormTests.swift; sourceTree = "<group>"; };
+		B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandForm.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +226,7 @@
 				7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */,
 				7D36B6371BD4D03100D9B821 /* Clause.swift */,
 				7D36B6381BD4D03100D9B821 /* Command.swift */,
+				B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */,
 				7D36B6431BD4D03100D9B821 /* IoTOperations */,
 				7D36B6451BD4D03100D9B821 /* NetworkObserver.swift */,
 				7D36B6461BD4D03100D9B821 /* NSNumber+checkTypes.swift */,
@@ -313,6 +320,8 @@
 				22F2E77F1C8D60BD0011F85C /* TriggerNSCodingTests.swift */,
 				225A591B1C8ED0EE0042B007 /* ConditionNSCodingTests.swift */,
 				225A591D1C8ED8440042B007 /* ClauseNSCodingTests.swift */,
+				B683A31A1CBB807A00742570 /* CommandFormTests.swift */,
+				B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -425,6 +434,7 @@
 				7D36B6721BD4D03100D9B821 /* BlockObserver.swift in Sources */,
 				7D36B67C1BD4D03100D9B821 /* NSLock+Operations.swift in Sources */,
 				7D36B6731BD4D03100D9B821 /* BlockOperation.swift in Sources */,
+				B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */,
 				7D36B6811BD4D03100D9B821 /* OperationObserver.swift in Sources */,
 				7D36B66F1BD4D03100D9B821 /* IoTRequestOperation.swift in Sources */,
 				A56B0A431C5B43B100E653EF /* TriggeredServerCodeResult.swift in Sources */,
@@ -479,6 +489,7 @@
 				7D36B6A81BD4D0CC00D9B821 /* IoTCloudSDKTests.swift in Sources */,
 				7D36B6A61BD4D0CC00D9B821 /* GetTriggerTests.swift in Sources */,
 				225A591C1C8ED0EE0042B007 /* ConditionNSCodingTests.swift in Sources */,
+				B683A31B1CBB807A00742570 /* CommandFormTests.swift in Sources */,
 				743800F81C29303A005D8458 /* TestSetting.swift in Sources */,
 				7D36B6A01BD4D0CC00D9B821 /* copyWithTarget.swift in Sources */,
 				7D36B6AC1BD4D0CC00D9B821 /* PatchTriggerTests.swift in Sources */,
@@ -490,6 +501,7 @@
 				7D36B6AB1BD4D0CC00D9B821 /* OnboardingTests.swift in Sources */,
 				A54EFC2E1C7D9EF500BCF4D2 /* SmallTestBase.swift in Sources */,
 				7D36B6A21BD4D0CC00D9B821 /* EnableTriggerTests.swift in Sources */,
+				B6651A221CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift in Sources */,
 				B68227F41C85823A00AB85D0 /* CommandSerializationTest.swift in Sources */,
 				7D36B6AE1BD4D0CC00D9B821 /* PostNewTriggerTests.swift in Sources */,
 				22ADEC071C89899B00F487D9 /* PredicateNSCodingTests.swift in Sources */,
