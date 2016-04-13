@@ -17,22 +17,6 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
         super.tearDown()
     }
 
-    static func equalDictionary(
-            actual: Dictionary<String, AnyObject>,
-            expected: Dictionary<String, AnyObject>) -> Bool
-    {
-        if actual.count != expected.count {
-            return false
-        }
-
-        for (key, value) in actual {
-            if (!value.isEqual(expected[key])) {
-                return false
-            }
-        }
-        return true;
-    }
-
     struct TestCase {
         let target: Target
         let schemaName: String
@@ -96,14 +80,6 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
                      actions: [["turnPower":["power": true]]],
                      title: nil,
                      commandDescription: "command description",
-                     metadata: nil,
-                     issuerID: owner.typedID),
-            TestCase(target: target,
-                     schemaName: schema,
-                     schemaVersion: schemaVersion,
-                     actions: [["turnPower":["power": true]]],
-                     title: nil,
-                     commandDescription: nil,
                      metadata: nil,
                      issuerID: owner.typedID),
             TestCase(target: target,
@@ -186,45 +162,15 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
                 }
 
                 //verify body
-                let expectedBody =
-                    NSMutableDictionary(
-                        dictionary: [
-                            "schema": testcase.schemaName,
-                            "schemaVersion": testcase.schemaVersion,
-                            "issuer": testcase.issuerID.toString(),
-                            "actions": testcase.actions])
-                if (testcase.title != nil) {
-                    expectedBody.setObject(testcase.title!, forKey:"title")
-                }
-                if (testcase.commandDescription != nil) {
-                    expectedBody.setObject(testcase.commandDescription!, forKey:"description")
-                }
-                if (testcase.metadata != nil) {
-                    expectedBody.setObject(testcase.metadata!, forKey:"metadata")
-                }
-                do {
-                    let actualBody = try NSJSONSerialization.JSONObjectWithData(
-                                             request.HTTPBody!,
-                                             options: NSJSONReadingOptions.MutableContainers) as! Dictionary<String, AnyObject>;
-                    let expectedBody2 = NSDictionary(dictionary: expectedBody);
-                    if (!PostNewCommandWithCommandFormTests.equalDictionary(
-                            actualBody,
-                            expected: expectedBody2 as! Dictionary<String, AnyObject>)) {
-                        let expectedData =
-                            try NSJSONSerialization.dataWithJSONObject(
-                                expectedBody,
-                                options: NSJSONWritingOptions.PrettyPrinted);
-                        let actualData =
-                            try NSJSONSerialization.dataWithJSONObject(
-                                actualBody,
-                                options: NSJSONWritingOptions.PrettyPrinted);
-                        let expectedStr = String(NSString(data: expectedData, encoding: NSUTF8StringEncoding))
-                        let actualStr = String(NSString(data: actualData, encoding: NSUTF8StringEncoding))
-                        XCTFail("expected: " + expectedStr + ", actual: " + actualStr)
-                    }
-                }catch(_){
-                    XCTFail(tag)
-                }
+                var expectedBody: Dictionary<String, AnyObject> = [
+                        "schema": testcase.schemaName,
+                        "schemaVersion": testcase.schemaVersion,
+                        "issuer": testcase.issuerID.toString(),
+                        "actions": testcase.actions];
+                expectedBody["title"] = testcase.title
+                expectedBody["description"] = testcase.commandDescription
+                expectedBody["metadata"] = testcase.metadata;
+                self.verifyDict(expectedBody, actualData: request.HTTPBody!)
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
