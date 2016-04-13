@@ -36,15 +36,9 @@ extension ThingIFAPI {
 
         let issuerID = owner.typedID
         requestBodyDict.setObject(issuerID.toString(), forKey: "issuer")
-        if (title != nil) {
-            requestBodyDict.setObject(title!, forKey: "title")
-        }
-        if (description != nil) {
-            requestBodyDict.setObject(description!, forKey: "description")
-        }
-        if (metadata != nil) {
-            requestBodyDict.setObject(metadata!, forKey: "metadata")
-        }
+        requestBodyDict["title"] = title;
+        requestBodyDict["description"] = description;
+        requestBodyDict["metadata"] = metadata;
 
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
