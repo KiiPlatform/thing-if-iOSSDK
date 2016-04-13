@@ -19,22 +19,6 @@ class CommandFormTests: SmallTestBase {
         super.tearDown()
     }
 
-    static func equalDictionary(
-            actual: Dictionary<String, AnyObject>,
-            expected: Dictionary<String, AnyObject>) -> Bool
-    {
-        if actual.count != expected.count {
-            return false
-        }
-
-        for (key, value) in actual {
-            if (!value.isEqual(expected[key])) {
-                return false
-            }
-        }
-        return true;
-    }
-
     func testInitWithRequiredValue() {
         let actions: [Dictionary<String, AnyObject>] = [
             [
@@ -126,10 +110,7 @@ class CommandFormTests: SmallTestBase {
         XCTAssertEqual(commandForm.schemaVersion, 1)
         XCTAssertEqual(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
-        XCTAssertTrue(
-            CommandFormTests.equalDictionary(
-                commandForm.metadata!,
-                expected: metadata))
+        verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testInitWithTitleAndDescription() {
@@ -181,10 +162,7 @@ class CommandFormTests: SmallTestBase {
         XCTAssertEqual(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
-        XCTAssertTrue(
-            CommandFormTests.equalDictionary(
-                commandForm.metadata!,
-                expected: metadata))
+        verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testInitWithDescriptionAndMetadata() {
@@ -212,10 +190,7 @@ class CommandFormTests: SmallTestBase {
         XCTAssertEqual(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
-        XCTAssertTrue(
-            CommandFormTests.equalDictionary(
-                commandForm.metadata!,
-                expected: metadata))
+        verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testInitWithAllFields() {
@@ -244,10 +219,7 @@ class CommandFormTests: SmallTestBase {
         XCTAssertEqual(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
-        XCTAssertTrue(
-            CommandFormTests.equalDictionary(
-                commandForm.metadata!,
-                expected: metadata))
+        verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testNSCoding() {
@@ -287,11 +259,7 @@ class CommandFormTests: SmallTestBase {
         XCTAssertEqual(deserialized.actions, actions)
         XCTAssertEqual(deserialized.title, "title")
         XCTAssertEqual(deserialized.commandDescription, "description")
-        XCTAssertTrue(
-            CommandFormTests.equalDictionary(
-                deserialized.metadata!,
-                expected: metadata))
-
+        verifyDict(deserialized.metadata!, actualDict: metadata)
     }
 
 }
