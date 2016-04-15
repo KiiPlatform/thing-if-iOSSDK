@@ -23,7 +23,7 @@ class EntitySerializationTests: SmallTestBase {
     
     func doSerializationTest<T:NSObject> (anEntity :T ){
         let data = NSKeyedArchiver.archivedDataWithRootObject(anEntity)
-        let key = _stdlib_getDemangledTypeName(anEntity)
+        let key = String(anEntity)
         NSUserDefaults.standardUserDefaults().setObject(data, forKey: key)
         if let data = NSUserDefaults.standardUserDefaults().objectForKey(key) as? NSData {
             let archivedEntity = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! T
