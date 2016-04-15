@@ -25,20 +25,8 @@ extension XCTestCase {
         
         do{
             let actualDict: NSDictionary = try NSJSONSerialization.JSONObjectWithData(actualData, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-            for (key, value) in actualDict {
-                if value is String {
-                    XCTAssertEqual(value as? String, expectedDict[key as! String] as? String)
-                }else if value is NSDictionary{
-                    let valueDict = value as! NSDictionary
-                    if let expectedValueDict = expectedDict[key as! String] as? Dictionary<String, String> {
-                        for (key1, value1) in valueDict {
-                            XCTAssertEqual(value1 as? String, expectedValueDict[key1 as! String]! )
-                        }
-                    }else{
-                        XCTFail()
-                    }
-                }
-            }
+            let s = "\nexpected=" + expectedDict.description + "\nactual" + actualDict.description
+            XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqualToDictionary(actualDict as [NSObject : AnyObject]), s)
         }catch(_){
             XCTFail()
         }
