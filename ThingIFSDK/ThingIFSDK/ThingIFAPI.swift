@@ -87,6 +87,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     /** On board IoT Cloud with the specified vendor thing ID.
     Specified thing will be owned by owner who consumes this API.
     (Specified on creation of ThingIFAPI instance.)
+    If you are using a gateway, you need to use onboardEndnodeWithGatewayVendorThingID instead.
     
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -124,6 +125,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     (Specified on creation of ThingIFAPI instance.)
     When you're sure that the on board process has been done,
     this method is convenient.
+     If you are using a gateway, you need to use onboardEndnodeWithGatewayThingID instead.
 
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -146,6 +148,50 @@ public class ThingIFAPI: NSObject, NSCoding {
         }
     }
 
+    /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
+     Thing act as Gateway is already registered and marked as Gateway.
+    
+     - Parameter gatewayVendorThingID: ID of the Gateway given by vendor/(given by IoT Cloud)
+     - Parameter endnodeVendorThingID: ID of the End Node given by vendor
+     - Parameter endnodePassword: Password of the End Node
+     - Parameter endnodeThingType: The type of the End Node
+     - Parameter endnodeThingProperties: End node properties
+     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
+     */
+    public func onboardEndnodeWithGatewayVendorThingID(
+        gatewayVendorThingID:String,
+        endnodeVendorThingID:String,
+        endnodePassword:String,
+        endnodeThingType:String?,
+        endnodeThingProperties:Dictionary<String,AnyObject>?,
+        completionHandler: (Target?, ThingIFError?)-> Void
+        ) ->Void
+    {
+        // TODO: implement me.
+    }
+
+    /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
+     Thing act as Gateway is already registered and marked as Gateway.
+     
+     - Parameter gatewayThingID: Thing ID of the Gateway
+     - Parameter endnodeVendorThingID: ID of the End Node given by vendor
+     - Parameter endnodePassword: Password of the End Node
+     - Parameter endnodeThingType: The type of the End Node
+     - Parameter endnodeThingProperties: End node properties
+     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
+     */
+    public func onboardEndnodeWithGatewayThingID(
+        gatewayThingID:String,
+        endnodeVendorThingID:String,
+        endnodePassword:String,
+        endnodeThingType:String?,
+        endnodeThingProperties:Dictionary<String,AnyObject>?,
+        completionHandler: (Target?, ThingIFError?)-> Void
+        ) ->Void
+    {
+        // TODO: implement me.
+    }
+    
     // MARK: - Push notification methods
 
     /** Install push notification to receive notification from IoT Cloud.
@@ -480,7 +526,33 @@ public class ThingIFAPI: NSObject, NSCoding {
         
     }
 
-    // MARK: - Copy with new target instance 
+    /** Get the Vendor Thing ID of specified Target.
+     
+     - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is Vendor Thing ID and 2nd one is an instance of ThingIFError when failed.
+     */
+    public func getVendorThingID(
+        comletionHandler: (String?, ThingIFError?)-> Void
+        )
+    {
+        // TODO: implement me.
+    }
+
+    /** Update the Vendor Thing ID of specified Target.
+
+     - Parameter newVendorThingID: New vendor thing id
+     - Parameter newPassword: New password
+     - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
+     */
+    public func updateVendorThingID(
+        newVendorThingID: String,
+        newPassword: String,
+        comletionHandler: (ThingIFError?)-> Void
+        )
+    {
+        // TODO: implement me.
+    }
+
+    // MARK: - Copy with new target instance
 
     /** Get new instance with new target
 

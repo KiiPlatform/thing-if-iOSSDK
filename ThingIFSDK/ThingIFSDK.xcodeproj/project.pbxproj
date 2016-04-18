@@ -9,7 +9,11 @@
 /* Begin PBXBuildFile section */
 		225A591C1C8ED0EE0042B007 /* ConditionNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225A591B1C8ED0EE0042B007 /* ConditionNSCodingTests.swift */; };
 		225A591E1C8ED8440042B007 /* ClauseNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225A591D1C8ED8440042B007 /* ClauseNSCodingTests.swift */; };
+		225E43381CC5FF55003A3C4B /* GatewayAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E43371CC5FF55003A3C4B /* GatewayAddress.swift */; };
+		225E433A1CC606E6003A3C4B /* GatewayAPIBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E43391CC606E6003A3C4B /* GatewayAPIBuilder.swift */; };
 		22ADEC071C89899B00F487D9 /* PredicateNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ADEC061C89899B00F487D9 /* PredicateNSCodingTests.swift */; };
+		22E486341CC4E1C000269A1E /* GatewayAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E486331CC4E1C000269A1E /* GatewayAPI.swift */; };
+		22E486361CC4ECA800269A1E /* PendingEndNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E486351CC4ECA800269A1E /* PendingEndNode.swift */; };
 		22F2E7801C8D60BD0011F85C /* TriggerNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F2E77F1C8D60BD0011F85C /* TriggerNSCodingTests.swift */; };
 		7419C2B81C27D10100F964FB /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7419C2B71C27D10100F964FB /* App.swift */; };
 		743800F81C29303A005D8458 /* TestSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743800F71C29303A005D8458 /* TestSetting.swift */; };
@@ -104,7 +108,11 @@
 /* Begin PBXFileReference section */
 		225A591B1C8ED0EE0042B007 /* ConditionNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConditionNSCodingTests.swift; sourceTree = "<group>"; };
 		225A591D1C8ED8440042B007 /* ClauseNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClauseNSCodingTests.swift; sourceTree = "<group>"; };
+		225E43371CC5FF55003A3C4B /* GatewayAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAddress.swift; sourceTree = "<group>"; };
+		225E43391CC606E6003A3C4B /* GatewayAPIBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPIBuilder.swift; sourceTree = "<group>"; };
 		22ADEC061C89899B00F487D9 /* PredicateNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PredicateNSCodingTests.swift; sourceTree = "<group>"; };
+		22E486331CC4E1C000269A1E /* GatewayAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPI.swift; sourceTree = "<group>"; };
+		22E486351CC4ECA800269A1E /* PendingEndNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingEndNode.swift; sourceTree = "<group>"; };
 		22F2E77F1C8D60BD0011F85C /* TriggerNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerNSCodingTests.swift; sourceTree = "<group>"; };
 		7419C2B71C27D10100F964FB /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		743800F71C29303A005D8458 /* TestSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSetting.swift; sourceTree = "<group>"; };
@@ -206,6 +214,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22E486321CC4E14700269A1E /* Gateway */ = {
+			isa = PBXGroup;
+			children = (
+				225E43371CC5FF55003A3C4B /* GatewayAddress.swift */,
+				22E486331CC4E1C000269A1E /* GatewayAPI.swift */,
+				225E43391CC606E6003A3C4B /* GatewayAPIBuilder.swift */,
+				22E486351CC4ECA800269A1E /* PendingEndNode.swift */,
+			);
+			path = Gateway;
+			sourceTree = "<group>";
+		};
 		7417A2F91B65CF8400D116A5 = {
 			isa = PBXGroup;
 			children = (
@@ -227,6 +246,7 @@
 		7D36B6361BD4D03100D9B821 /* ThingIFSDK */ = {
 			isa = PBXGroup;
 			children = (
+				22E486321CC4E14700269A1E /* Gateway */,
 				7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */,
 				7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */,
 				7D36B6B31BD4D43700D9B821 /* ThingIFAPI.swift */,
@@ -456,6 +476,7 @@
 			files = (
 				7D36B6631BD4D03100D9B821 /* Clause.swift in Sources */,
 				D5636AFD1CE1EAFC00760564 /* StatePredicate.swift in Sources */,
+				225E433A1CC606E6003A3C4B /* GatewayAPIBuilder.swift in Sources */,
 				7D36B6761BD4D03100D9B821 /* ExclusivityController.swift in Sources */,
 				7D36B6C41BD4D9DD00D9B821 /* ThingIFError.swift in Sources */,
 				7D36B6721BD4D03100D9B821 /* BlockObserver.swift in Sources */,
@@ -463,6 +484,7 @@
 				7D36B6731BD4D03100D9B821 /* BlockOperation.swift in Sources */,
 				B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */,
 				D5521C781CCE002D00037C9F /* Condition.swift in Sources */,
+				225E43381CC5FF55003A3C4B /* GatewayAddress.swift in Sources */,
 				7D36B6811BD4D03100D9B821 /* OperationObserver.swift in Sources */,
 				7D36B66F1BD4D03100D9B821 /* IoTRequestOperation.swift in Sources */,
 				D5521C761CCDFE7600037C9F /* ServerCode.swift in Sources */,
@@ -477,6 +499,7 @@
 				7419C2B81C27D10100F964FB /* App.swift in Sources */,
 				747EB4BA1C858BFC00E30C31 /* SDKVersion.swift in Sources */,
 				7D36B67D1BD4D03100D9B821 /* NSOperation+Operations.swift in Sources */,
+				22E486361CC4ECA800269A1E /* PendingEndNode.swift in Sources */,
 				7D36B6821BD4D03100D9B821 /* OperationQueue.swift in Sources */,
 				7D36B6801BD4D03100D9B821 /* OperationErrors.swift in Sources */,
 				D5636AFB1CE1E9E000760564 /* ScheduleOncePredicate.swift in Sources */,
@@ -491,6 +514,7 @@
 				7D36B67B1BD4D03100D9B821 /* NSData+Operations.swift in Sources */,
 				7D36B6701BD4D03100D9B821 /* NetworkObserver.swift in Sources */,
 				7D36B6BF1BD4D43700D9B821 /* ThingIFAPI+Trigger.swift in Sources */,
+				22E486341CC4E1C000269A1E /* GatewayAPI.swift in Sources */,
 				7D36B6BE1BD4D43700D9B821 /* ThingIFAPI+Push.swift in Sources */,
 				7D36B6851BD4D03100D9B821 /* URLSessionTaskOperation.swift in Sources */,
 				7D36B6791BD4D03100D9B821 /* NegatedCondition.swift in Sources */,

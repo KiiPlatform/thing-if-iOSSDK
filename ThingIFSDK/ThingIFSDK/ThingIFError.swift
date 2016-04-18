@@ -32,5 +32,7 @@ public enum ThingIFError : ErrorType {
     case API_NOT_STORED
     /** when trying to load API from persistance but it does not have correct instance*/
     case INVALID_STORED_API
+    /** when trying to load Gateway API from persistance but not avaialble*/
+    case GATEWAY_API_NOT_STORED
 
 }
