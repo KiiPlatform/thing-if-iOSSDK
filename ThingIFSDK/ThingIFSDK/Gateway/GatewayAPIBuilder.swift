@@ -33,7 +33,7 @@ public class GatewayAPIBuilder {
      - Parameter gatewayAddress: address information for the gateway
      - Parameter tag: tag of the GatewayAPI instance.
      */
-    public init(app:App, address:GatewayAddress, tag:String?=nil)
+    public init(app:App, address:NSURL, tag:String?=nil)
     {
         // TODO: implement me.
     }
@@ -44,7 +44,7 @@ public class GatewayAPIBuilder {
     public func build() -> GatewayAPI
     {
         // TODO: implement me.
-        // NOTE: this method must not return nil, this return is dummy.
-        return nil
+        return GatewayAPI(app: App(appID: "dummy", appKey: "dummy", site: Site.JP),
+            gatewayAddress: NSURL())
     }
 }

@@ -10,11 +10,18 @@ import Foundation
 public class GatewayAPI: NSObject, NSCoding {
 
     // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder) {
+    public func encodeWithCoder(aCoder: NSCoder)
+    {
         // TODO: implement me.
     }
 
-    public required init(coder aDecoder: NSCoder){
+    public required init(coder aDecoder: NSCoder)
+    {
+        // TODO: implement me.
+    }
+
+    init(app: App, gatewayAddress: NSURL)
+    {
         // TODO: implement me.
     }
 
@@ -64,7 +71,7 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is List of end nodes connected to the gateway but waiting for onboarding and 2nd one is an instance of ThingIFError when failed.
      */
     public func listPendingEndNodes(
-        comletionHandler: ([PendingEndNode]?, ThingIFError?)-> Void
+        comletionHandler: ([EndNode]?, ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -87,7 +94,8 @@ public class GatewayAPI: NSObject, NSCoding {
         // TODO: implement me.
     }
 
-    /** Restore the Gateway
+    /** Restore the Gateway.
+     This API can be used only for the Gateway App.
 
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
@@ -113,13 +121,13 @@ public class GatewayAPI: NSObject, NSCoding {
         // TODO: implement me.
     }
 
-    /** Get vendorThingID of the Gateway.
+    /** Get information of the Gateway.
      When the end user replaces the Gateway, Gateway App/End Node App need to obtain the new Gateway’s vendorThingID.
 
-     - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is vendorThingID of the Gateway and 2nd one is an instance of ThingIFError when failed.
+     - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is information of the Gateway and 2nd one is an instance of ThingIFError when failed.
      */
     public func getGatewayInformation(
-        comletionHandler: (String?, ThingIFError?)-> Void
+        comletionHandler: (GatewayInformation?, ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -175,14 +183,14 @@ public class GatewayAPI: NSObject, NSCoding {
         return "dummy"
     }
 
-    /** Get GatewayAddress
+    /** Get Gateway address
 
-     - Returns: Gateway Address
+     - Returns: Gateway address
      */
-    public func getGatewayAddress() -> GatewayAddress
+    public func getGatewayAddress() -> NSURL
     {
         // TODO: implement me.
-        return GatewayAddress(hostName: "dummy")
+        return NSURL()
     }
 
     /** Get Access Token
