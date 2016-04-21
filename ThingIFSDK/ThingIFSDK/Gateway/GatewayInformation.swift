@@ -9,7 +9,7 @@ import Foundation
 
 public class GatewayInformation: NSObject, NSCoding {
 
-    public var vendorThingID: String
+    public let vendorThingID: String
 
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder)
