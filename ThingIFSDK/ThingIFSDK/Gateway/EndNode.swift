@@ -8,10 +8,10 @@
 import Foundation
 
 public class EndNode: NSObject, NSCoding {
-    let key_thingID = "thingID"
-    let key_vendorThingID = "vendorThingID"
-    let key_thingType = "thingType"
-    let key_thingProperties = "thingProperties"
+    let KEY_THINGID = "thingID"
+    let KEY_VENDORTHINGID = "vendorThingID"
+    let KEY_THINGTYPE = "thingType"
+    let KEY_THINGPROPERTIES = "thingProperties"
 
     public let thingID: String?
     public let vendorThingID: String?
@@ -21,25 +21,25 @@ public class EndNode: NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder)
     {
-        aCoder.encodeObject(self.thingID, forKey: key_thingID)
-        aCoder.encodeObject(self.vendorThingID, forKey: key_vendorThingID)
-        aCoder.encodeObject(self.thingType, forKey: key_thingType)
-        aCoder.encodeObject(self.thingProperties, forKey: key_thingProperties)
+        aCoder.encodeObject(self.thingID, forKey: KEY_THINGID)
+        aCoder.encodeObject(self.vendorThingID, forKey: KEY_VENDORTHINGID)
+        aCoder.encodeObject(self.thingType, forKey: KEY_THINGTYPE)
+        aCoder.encodeObject(self.thingProperties, forKey: KEY_THINGPROPERTIES)
     }
 
     public required init(coder aDecoder: NSCoder)
     {
-        self.thingID = aDecoder.decodeObjectForKey(key_thingID) as? String
-        self.vendorThingID = aDecoder.decodeObjectForKey(key_vendorThingID) as? String
-        self.thingType = aDecoder.decodeObjectForKey(key_thingType) as? String
-        self.thingProperties = aDecoder.decodeObjectForKey(key_thingProperties) as? Dictionary<String, AnyObject>
+        self.thingID = aDecoder.decodeObjectForKey(KEY_THINGID) as? String
+        self.vendorThingID = aDecoder.decodeObjectForKey(KEY_VENDORTHINGID) as? String
+        self.thingType = aDecoder.decodeObjectForKey(KEY_THINGTYPE) as? String
+        self.thingProperties = aDecoder.decodeObjectForKey(KEY_THINGPROPERTIES) as? Dictionary<String, AnyObject>
     }
 
     init(json: Dictionary<String, AnyObject>)
     {
-        self.thingID = json[key_thingID] as? String
-        self.vendorThingID = json[key_vendorThingID] as? String
-        self.thingType = json[key_thingType] as? String
-        self.thingProperties = json[key_thingProperties] as? Dictionary<String, AnyObject>
+        self.thingID = json[KEY_THINGID] as? String
+        self.vendorThingID = json[KEY_VENDORTHINGID] as? String
+        self.thingType = json[KEY_THINGTYPE] as? String
+        self.thingProperties = json[KEY_THINGPROPERTIES] as? Dictionary<String, AnyObject>
     }
 }

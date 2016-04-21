@@ -9,6 +9,10 @@ import Foundation
 
 public class GatewayAPI: NSObject, NSCoding {
 
+    public let tag: String?
+    public let app: App!
+    public let gatewayAddress: NSURL!
+
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder)
     {
@@ -18,11 +22,17 @@ public class GatewayAPI: NSObject, NSCoding {
     public required init(coder aDecoder: NSCoder)
     {
         // TODO: implement me.
+        self.tag = nil
+        self.app = App(appID: "dummy", appKey: "dummy", site: Site.JP)
+        self.gatewayAddress = NSURL()
     }
 
     init(app: App, gatewayAddress: NSURL)
     {
         // TODO: implement me.
+        self.tag = nil
+        self.app = app
+        self.gatewayAddress = gatewayAddress
     }
 
     // MARK: API methods
@@ -143,56 +153,6 @@ public class GatewayAPI: NSObject, NSCoding {
         return false
     }
 
-    /** Get a tag.
-
-     - Returns: tag
-     */
-    public func getTag() -> String?
-    {
-        // TODO: implement me.
-        return nil
-    }
-
-    /** Get Kii App
-
-     - Returns: Kii Cloud Application.
-     */
-    public func getApp() -> App
-    {
-        // TODO: implement me.
-        return App(appID: "dummy", appKey: "dummy", site: Site.JP)
-    }
-
-    /** Get AppID
-
-     - Returns: Application ID
-     */
-    public func getAppID() -> String
-    {
-        // TODO: implement me.
-        return "dummy"
-    }
-
-    /** Get AppKey
-
-     - Returns: Application key
-     */
-    public func getAppKey() -> String
-    {
-        // TODO: implement me.
-        return "dummy"
-    }
-
-    /** Get Gateway address
-
-     - Returns: Gateway address
-     */
-    public func getGatewayAddress() -> NSURL
-    {
-        // TODO: implement me.
-        return NSURL()
-    }
-
     /** Get Access Token
 
      - Returns: Access token
@@ -231,6 +191,7 @@ public class GatewayAPI: NSObject, NSCoding {
     }
 
     /** Save this instance
+     This method use NSUserDefaults. Should not use the key "GatewayAPI_INSTANCE", this key is reserved.
      */
     public func saveInstance()
     {
