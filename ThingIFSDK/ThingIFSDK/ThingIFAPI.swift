@@ -531,7 +531,7 @@ public class ThingIFAPI: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is Vendor Thing ID and 2nd one is an instance of ThingIFError when failed.
      */
     public func getVendorThingID(
-        comletionHandler: (String?, ThingIFError?)-> Void
+        completionHandler: (String?, ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -546,7 +546,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     public func updateVendorThingID(
         newVendorThingID: String,
         newPassword: String,
-        comletionHandler: (ThingIFError?)-> Void
+        completionHandler: (ThingIFError?)-> Void
         )
     {
         // TODO: implement me.

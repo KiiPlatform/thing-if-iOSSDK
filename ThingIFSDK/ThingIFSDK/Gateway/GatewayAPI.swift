@@ -10,8 +10,8 @@ import Foundation
 public class GatewayAPI: NSObject, NSCoding {
 
     public let tag: String?
-    public let app: App!
-    public let gatewayAddress: NSURL!
+    public let app: App
+    public let gatewayAddress: NSURL
 
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder)
