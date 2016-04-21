@@ -154,16 +154,16 @@ public class ThingIFAPI: NSObject, NSCoding {
      - Parameter gatewayVendorThingID: ID of the Gateway given by vendor/(given by IoT Cloud)
      - Parameter endnodeVendorThingID: ID of the End Node given by vendor
      - Parameter endnodePassword: Password of the End Node
-     - Parameter endnodeThingType: The type of the End Node
-     - Parameter endnodeThingProperties: End node properties
+     - Parameter endnodeThingType: The type of the End Node. This is optional, the default value is nil.
+     - Parameter endnodeThingProperties: End node properties. This is optional, the default value is nil.
      - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
      */
     public func onboardEndnodeWithGatewayVendorThingID(
         gatewayVendorThingID:String,
         endnodeVendorThingID:String,
         endnodePassword:String,
-        endnodeThingType:String?,
-        endnodeThingProperties:Dictionary<String,AnyObject>?,
+        endnodeThingType:String? = nil,
+        endnodeThingProperties:Dictionary<String,AnyObject>? = nil,
         completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void
     {
@@ -176,16 +176,16 @@ public class ThingIFAPI: NSObject, NSCoding {
      - Parameter gatewayThingID: Thing ID of the Gateway
      - Parameter endnodeVendorThingID: ID of the End Node given by vendor
      - Parameter endnodePassword: Password of the End Node
-     - Parameter endnodeThingType: The type of the End Node
-     - Parameter endnodeThingProperties: End node properties
+     - Parameter endnodeThingType: The type of the End Node. This is optional, the default value is nil.
+     - Parameter endnodeThingProperties: End node properties. This is optional, the default value is nil.
      - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
      */
     public func onboardEndnodeWithGatewayThingID(
         gatewayThingID:String,
         endnodeVendorThingID:String,
         endnodePassword:String,
-        endnodeThingType:String?,
-        endnodeThingProperties:Dictionary<String,AnyObject>?,
+        endnodeThingType:String? = nil,
+        endnodeThingProperties:Dictionary<String,AnyObject>? = nil,
         completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void
     {

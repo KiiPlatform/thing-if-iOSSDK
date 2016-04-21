@@ -38,7 +38,7 @@ public class GatewayAPI: NSObject, NSCoding {
     public func login(
         username: String,
         password: String,
-        comletionHandler: (ThingIFError?)-> Void
+        completionHandler: (ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -49,7 +49,7 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
     public func onboardGateway(
-        comletionHandler: (String?, ThingIFError?)-> Void
+        completionHandler: (String?, ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -60,7 +60,7 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is Gateway ID and 2nd one is an instance of ThingIFError when failed.
      */
     public func getGatewayID(
-        comletionHandler: (String?, ThingIFError?)-> Void
+        completionHandler: (String?, ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -71,7 +71,7 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is List of end nodes connected to the gateway but waiting for onboarding and 2nd one is an instance of ThingIFError when failed.
      */
     public func listPendingEndNodes(
-        comletionHandler: ([EndNode]?, ThingIFError?)-> Void
+        completionHandler: ([EndNode]?, ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -88,7 +88,7 @@ public class GatewayAPI: NSObject, NSCoding {
     public func notifyOnboardingCompletion(
         endNodeThingID: String,
         endNodeVendorThingID: String,
-        comletionHandler: (ThingIFError?)-> Void
+        completionHandler: (ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -100,7 +100,7 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
     public func retore(
-        comletionHandler: (ThingIFError?)-> Void
+        completionHandler: (ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -115,7 +115,7 @@ public class GatewayAPI: NSObject, NSCoding {
     public func replaceEndNode(
         endNodeThingID: String,
         endNodeVendorThingID: String,
-        comletionHandler: (ThingIFError?)-> Void
+        completionHandler: (ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -127,7 +127,7 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is information of the Gateway and 2nd one is an instance of ThingIFError when failed.
      */
     public func getGatewayInformation(
-        comletionHandler: (GatewayInformation?, ThingIFError?)-> Void
+        completionHandler: (GatewayInformation?, ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
