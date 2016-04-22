@@ -168,7 +168,7 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter tag: tag of the GatewayAPI instance
      - Returns: GatewayIFAPI instance.
      */
-    public static func loadWithStoredInstance(tag : String? = nil) throws -> ThingIFAPI?
+    public static func loadWithStoredInstance(tag : String? = nil) throws -> GatewayAPI?
     {
         // TODO: implement me.
         return nil
