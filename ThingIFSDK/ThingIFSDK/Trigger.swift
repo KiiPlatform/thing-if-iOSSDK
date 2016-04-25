@@ -115,18 +115,6 @@ public class Trigger: NSObject, NSCoding {
     /** Metadata of the Trigger */
     public var metadata: Dictionary<String, AnyObject>?
 
-    public override init() {
-        // TODO: implement it with proper initializer.
-        self.triggerID = ""
-        self.enabled = false
-        self.predicate = Predicate()
-        self.command = nil
-        self.serverCode = nil
-        self.title = nil
-        self.triggerDescription = nil
-        self.metadata = nil
-    }
-
     /** Init Trigger with Command
 
     - Parameter triggerID: ID of trigger
