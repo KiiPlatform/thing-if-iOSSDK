@@ -8,7 +8,7 @@
 
 import Foundation
 
-/** Class represents Predicate */
+/** Protocol represents Predicate */
 public protocol Predicate :  NSCoding {
 
 
@@ -18,6 +18,10 @@ public protocol Predicate :  NSCoding {
      */
     func toNSDictionary() -> NSDictionary
 
+    /** Get EventSource enum
+
+     - Returns: an enumeration instance of the event source.
+     */
     func getEventSource() -> EventSource
 }
 /** Class represents SchedulePredicate. It is not supported now.*/
@@ -111,3 +115,44 @@ public class StatePredicate: NSObject,Predicate {
         }
     }
 }
+
+/** Class represents ScheduleOncePredicate. */
+public class ScheduleOncePredicate: NSObject,Predicate {
+    /** Specified schedule. (cron tab format) */
+    public let scheduleAt: NSDate
+
+    public func getEventSource() -> EventSource {
+        return EventSource.ScheduleOnce
+    }
+    /** Instantiate new ScheduleOncePredicate.
+
+     -Parameter scheduleAt: Specify execution schedule. It must be future date.
+     */
+    public init?(scheduleAt: NSDate) {
+        //TODO: implementations, please ignore
+        self.scheduleAt = scheduleAt
+
+        super.init()
+    }
+
+    public required init(coder aDecoder: NSCoder) {
+        //TODO: implementations, please ignore
+        self.scheduleAt = aDecoder.decodeObjectForKey("schedule") as! NSDate;
+
+    }
+
+    public func encodeWithCoder(aCoder: NSCoder) {
+        //TODO: implementations, please ignore
+        aCoder.encodeObject(self.scheduleAt, forKey: "schedule");
+    }
+
+    /** Get Json object of SchedulePredicate instance
+
+     - Returns: Json object as an instance of NSDictionary
+     */
+    public func toNSDictionary() -> NSDictionary {
+        //TODO: implementations, please ignore
+        return NSDictionary(dictionary: ["eventSource": EventSource.ScheduleOnce.rawValue, "schedule":self.scheduleAt])
+    }
+}
+
