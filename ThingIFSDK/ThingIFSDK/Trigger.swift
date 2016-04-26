@@ -67,8 +67,12 @@ public class Trigger: NSObject, NSCoding {
                     switch eventSource {
                     case EventSource.States:
                         predicate = StatePredicate.statePredicateWithNSDict(predicateDict)
+                        break
                     case EventSource.Schedule:
                         //Not supported yet
+                        break
+                    case EventSource.ScheduleOnce:
+                        //TODO: implementations
                         break
                     }
                 }
@@ -189,5 +193,6 @@ enum EventSource: String {
 
     case States = "STATES"
     case Schedule = "SCHEDULE"
+    case ScheduleOnce = "SCHEDULE_ONCE"
 
 }
