@@ -16,19 +16,25 @@ public protocol Predicate :  NSCoding {
 
      - Returns: a NSDictionary instance
      */
-    func toNSDictionary() -> NSDictionary;
+    func toNSDictionary() -> NSDictionary
+
+    func getEventSource() -> EventSource
 }
 /** Class represents SchedulePredicate. It is not supported now.*/
 public class SchedulePredicate: NSObject,Predicate {
     /** Specified schedule. (cron tab format) */
     public let schedule: String
 
+    public func getEventSource() -> EventSource {
+        return EventSource.Schedule
+    }
     /** Instantiate new SchedulePredicate.
 
      -Parameter schedule: Specify schedule. (cron tab format)
      */
     public init(schedule: String) {
         self.schedule = schedule
+
         super.init()
     }
 
@@ -55,6 +61,9 @@ public class StatePredicate: NSObject,Predicate {
     public let triggersWhen: TriggersWhen!
     public let condition: Condition!
 
+    public func getEventSource() -> EventSource {
+        return EventSource.States
+    }
     /** Initialize StatePredicate with Condition and TriggersWhen
 
      - Parameter condition: Condition of the Trigger.

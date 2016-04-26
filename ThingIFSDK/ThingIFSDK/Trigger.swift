@@ -186,7 +186,7 @@ public enum TriggersWhat : String {
     case SERVER_CODE = "SERVER_CODE"
 }
 
-enum EventSource: String {
+public enum EventSource: String {
     /* NOTE: These string values must not be changed. These values are
        used serialization and deserialization If thses values are
        changed, then serialization and deserialization is broken. */
