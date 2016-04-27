@@ -1,5 +1,5 @@
 //
-//  EndNode.swift
+//  StandaloneThing.swift
 //  ThingIFSDK
 //
 //  Copyright (c) 2016 Kii. All rights reserved.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class EndNode: AbstractThing {
+public class StandaloneThing: AbstractThing {
 
     private let accessToken: String?
 

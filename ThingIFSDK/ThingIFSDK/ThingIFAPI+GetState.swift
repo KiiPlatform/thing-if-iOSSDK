@@ -17,7 +17,7 @@ extension ThingIFAPI {
                 return
             }
 
-            let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states"
+            let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/states"
             
             // generate header
             let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]

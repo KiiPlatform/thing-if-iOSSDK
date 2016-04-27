@@ -27,14 +27,15 @@ extension ThingIFAPI {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
+        let typedID = target.getTypedID()
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(typedID.toString())/triggers"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
 
         // generate command
-        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.typedID.toString(), "target":target.typedID.toString()])
+        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.typedID.toString(), "target": typedID.toString()])
         commandDict.setObject(actions, forKey: "actions")
 
         // generate body
@@ -45,7 +46,7 @@ extension ThingIFAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(triggerID: triggerID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: self.target!.typedID, issuerID: self.owner.typedID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
+                    trigger = Trigger(triggerID: triggerID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: self.target!.getTypedID(), issuerID: self.owner.typedID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
                 }
 
                 dispatch_async(dispatch_get_main_queue()) {
@@ -74,7 +75,7 @@ extension ThingIFAPI {
             return
         }
         
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/triggers"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -116,7 +117,7 @@ extension ThingIFAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/triggers/\(triggerID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -184,7 +185,7 @@ extension ThingIFAPI {
             return
         }
         
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/triggers/\(triggerID)"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -241,7 +242,7 @@ extension ThingIFAPI {
         if !enable {
             enableString = "disable"
         }
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/\(enableString)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/triggers/\(triggerID)/\(enableString)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -275,7 +276,7 @@ extension ThingIFAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/triggers/\(triggerID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -303,7 +304,7 @@ extension ThingIFAPI {
             return
         }
         
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/results/server-code"
+        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/triggers/\(triggerID)/results/server-code"
 
         if paginationKey != nil && bestEffortLimit != nil && bestEffortLimit! != 0 {
             requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
@@ -349,7 +350,7 @@ extension ThingIFAPI {
             return
         }
 
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
+        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/triggers"
         
         if paginationKey != nil && bestEffortLimit != nil && bestEffortLimit! != 0{
             requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
@@ -394,7 +395,7 @@ extension ThingIFAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/triggers/\(triggerID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]

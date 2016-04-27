@@ -31,10 +31,14 @@ extension ThingIFAPI {
             // generate header
             var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
             
+            let vendorThingID: String
             if byVendorThingID {
+                vendorThingID = IDString
                 requestBodyDict.setObject(IDString, forKey: "vendorThingID")
                 requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
             }else {
+                // TODO: Shall we input nil, but no way.
+                vendorThingID = ""
                 requestBodyDict.setObject(IDString, forKey: "thingID")
                 requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithThingIDByOwner+json"
             }
@@ -55,7 +59,7 @@ extension ThingIFAPI {
                     var target:Target?
                     if let thingID = response?["thingID"] as? String{
                         let accessToken = response?["accessToken"] as? String
-                        target = Target(typedID: TypedID(type: "THING", id: thingID), accessToken: accessToken)
+                        target = StandaloneThing(thingID: thingID, vendorThingID: vendorThingID, accessToken: accessToken)
 
                         self._target = target
                     }

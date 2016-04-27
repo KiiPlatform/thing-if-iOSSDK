@@ -81,7 +81,7 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is List of end nodes connected to the gateway but waiting for onboarding and 2nd one is an instance of ThingIFError when failed.
      */
     public func listPendingEndNodes(
-        completionHandler: ([EndNode]?, ThingIFError?)-> Void
+        completionHandler: ([PendingEndNode]?, ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
@@ -91,13 +91,11 @@ public class GatewayAPI: NSObject, NSCoding {
      Call this api when the End Node onboarding is done.
      After the call succeeded, End Node will be fully connected to Kii Cloud through the Gateway.
 
-     - Parameter endNodeThingID: ID of the end-node assigned by Kii Cloud.
-     - Parameter endNodeVendorThingID: ID of the end-node assigned by End Node vendor.
+     - Parameter endNode: Onboarded EndNode
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
     public func notifyOnboardingCompletion(
-        endNodeThingID: String,
-        endNodeVendorThingID: String,
+        endNode: EndNode,
         completionHandler: (ThingIFError?)-> Void
         )
     {

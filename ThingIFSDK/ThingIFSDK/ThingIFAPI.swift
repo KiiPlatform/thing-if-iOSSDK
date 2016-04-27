@@ -87,7 +87,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     /** On board IoT Cloud with the specified vendor thing ID.
     Specified thing will be owned by owner who consumes this API.
     (Specified on creation of ThingIFAPI instance.)
-    If you are using a gateway, you need to use onboardEndnodeWithGatewayVendorThingID instead.
+    If you are using a gateway, you need to use onboardEndnodeWithGateway instead.
     
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -125,7 +125,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     (Specified on creation of ThingIFAPI instance.)
     When you're sure that the on board process has been done,
     this method is convenient.
-     If you are using a gateway, you need to use onboardEndnodeWithGatewayThingID instead.
+     If you are using a gateway, you need to use onboardEndnodeWithGateway instead.
 
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -151,42 +151,14 @@ public class ThingIFAPI: NSObject, NSCoding {
     /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
      Thing act as Gateway is already registered and marked as Gateway.
     
-     - Parameter gatewayVendorThingID: ID of the Gateway given by vendor/(given by IoT Cloud)
-     - Parameter endnodeVendorThingID: ID of the End Node given by vendor
+     - Parameter pendingEndnode: Pending End Node
      - Parameter endnodePassword: Password of the End Node
-     - Parameter endnodeThingType: The type of the End Node. This is optional, the default value is nil.
-     - Parameter endnodeThingProperties: End node properties. This is optional, the default value is nil.
-     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
+     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an end node, an ThingIFError
      */
-    public func onboardEndnodeWithGatewayVendorThingID(
-        gatewayVendorThingID:String,
-        endnodeVendorThingID:String,
+    public func onboardEndnodeWithGateway(
+        pendingEndnode:PendingEndNode,
         endnodePassword:String,
-        endnodeThingType:String? = nil,
-        endnodeThingProperties:Dictionary<String,AnyObject>? = nil,
-        completionHandler: (Target?, ThingIFError?)-> Void
-        ) ->Void
-    {
-        // TODO: implement me.
-    }
-
-    /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
-     Thing act as Gateway is already registered and marked as Gateway.
-     
-     - Parameter gatewayThingID: Thing ID of the Gateway
-     - Parameter endnodeVendorThingID: ID of the End Node given by vendor
-     - Parameter endnodePassword: Password of the End Node
-     - Parameter endnodeThingType: The type of the End Node. This is optional, the default value is nil.
-     - Parameter endnodeThingProperties: End node properties. This is optional, the default value is nil.
-     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
-     */
-    public func onboardEndnodeWithGatewayThingID(
-        gatewayThingID:String,
-        endnodeVendorThingID:String,
-        endnodePassword:String,
-        endnodeThingType:String? = nil,
-        endnodeThingProperties:Dictionary<String,AnyObject>? = nil,
-        completionHandler: (Target?, ThingIFError?)-> Void
+        completionHandler: (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
         // TODO: implement me.
@@ -653,7 +625,8 @@ public class ThingIFAPI: NSObject, NSCoding {
         return self.appID == anAPI.appID &&
             self.appKey == anAPI.appKey &&
             self.baseURL == anAPI.baseURL &&
-            self.target == anAPI.target &&
+            self.target?.getAccessToken() == anAPI.target?.getAccessToken() &&
+            self.target?.getTypedID() == anAPI.target?.getTypedID() &&
             self.installationID == anAPI.installationID &&
             self.tag == anAPI.tag
     }
