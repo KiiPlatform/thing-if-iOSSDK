@@ -28,7 +28,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
             [false, 1455531174923, nil, ServerError(errorMessage: "Error found", errorCode: "RUNTIME_ERROR", detailMessage: "faital error"), "func0"],
         ]
         
-        for var i = 0; i < testDataList.count; ++i {
+        for i in 0 ..< testDataList.count {
             let testData = testDataList[i]
             let expectedData = expectedDataList[i]
             let resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
