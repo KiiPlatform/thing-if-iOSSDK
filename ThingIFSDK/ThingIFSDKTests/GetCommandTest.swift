@@ -54,7 +54,10 @@ class GetCommandTests: SmallTestBase {
 
     func getCommandSuccess(tag: String, testcase: TestCase, setting: TestSetting) {
 
-        let expectation = self.expectationWithDescription(tag)
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+        defer{
+            expectation = nil
+        }
 
         do{
 

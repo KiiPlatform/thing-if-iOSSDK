@@ -136,7 +136,10 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
             testcase: TestCase,
             setting:TestSetting) {
 
-        let expectation = self.expectationWithDescription(tag)
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+        defer{
+            expectation = nil
+        }
 
         do {
             let expectedCommandID = "c6f1b8d0-46ea-11e5-a5eb-06d9d1527620"
