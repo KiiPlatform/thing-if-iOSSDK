@@ -27,7 +27,10 @@ class PostNewTriggerTests: SmallTestBase {
     }
 
     func testPostNewTrigger_success() {
-        var expectation : XCTestExpectation!
+        weak var expectation : XCTestExpectation!
+        defer {
+            expectation = nil
+        }
         func postNewTriggerSuccess(tag: String, testcase: TestCase, setting:TestSetting) {
             expectation = self.expectationWithDescription(tag)
 
