@@ -198,7 +198,7 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
             XCTFail("should not throw error")
         }
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout for \(tag)")
             }
@@ -274,7 +274,7 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -301,7 +301,7 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
