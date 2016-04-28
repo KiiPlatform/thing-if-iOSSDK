@@ -49,9 +49,11 @@ class PostNewCommandTests: SmallTestBase {
 
     func postCommandSuccess(tag: String, testcase: TestCase, setting:TestSetting) {
 
-        let expectation = self.expectationWithDescription(tag)
-
-
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+        defer{
+            expectation = nil
+        }
+        
         do {
             let expectedCommandID = "c6f1b8d0-46ea-11e5-a5eb-06d9d1527620"
 
@@ -104,7 +106,7 @@ class PostNewCommandTests: SmallTestBase {
             XCTFail("should not throw error")
         }
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout for \(tag)")
             }
@@ -176,7 +178,7 @@ class PostNewCommandTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -203,7 +205,7 @@ class PostNewCommandTests: SmallTestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

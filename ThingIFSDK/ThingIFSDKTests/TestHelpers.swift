@@ -9,6 +9,8 @@
 import Foundation
 import XCTest
 
+public let TEST_TIMEOUT = 5.0
+
 func failIfNotRunningOnDevice(){
     let environment = NSProcessInfo.processInfo().environment
     
