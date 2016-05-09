@@ -36,7 +36,7 @@ class DeleteTriggerTests: SmallTestBase {
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/triggers/\(expectedTriggerID)")
         }
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
         MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -74,7 +74,7 @@ class DeleteTriggerTests: SmallTestBase {
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.typedID.toString()) not found"]
+                "message" : "Target \(target.getTypedID().toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
@@ -86,7 +86,7 @@ class DeleteTriggerTests: SmallTestBase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/triggers/\(triggerID)")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier

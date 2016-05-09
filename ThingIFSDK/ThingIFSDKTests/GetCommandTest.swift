@@ -39,11 +39,11 @@ class GetCommandTests: SmallTestBase {
         api._target = setting.target
 
         let testcases = [
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower":["power": true]]], issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE", firedByTriggerID:"trigger-0001", created:NSDate(timeIntervalSince1970:1456377631.467), modified:NSDate(timeIntervalSince1970:1456377633.467)),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING", firedByTriggerID:"trigger-0002", created:NSDate(timeIntervalSince1970:1456377634.467), modified:NSDate(timeIntervalSince1970:1456377635.467)),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING",firedByTriggerID:nil, created:nil, modified:nil),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED",firedByTriggerID:nil, created:nil, modified:nil),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE", firedByTriggerID:nil, created:nil, modified:nil)
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower":["power": true]]], issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.getTypedID().type):\(setting.target.getTypedID().id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE", firedByTriggerID:"trigger-0001", created:NSDate(timeIntervalSince1970:1456377631.467), modified:NSDate(timeIntervalSince1970:1456377633.467)),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.getTypedID().type):\(setting.target.getTypedID().id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING", firedByTriggerID:"trigger-0002", created:NSDate(timeIntervalSince1970:1456377634.467), modified:NSDate(timeIntervalSince1970:1456377635.467)),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.getTypedID().type):\(setting.target.getTypedID().id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING",firedByTriggerID:nil, created:nil, modified:nil),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.getTypedID().type):\(setting.target.getTypedID().id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED",firedByTriggerID:nil, created:nil, modified:nil),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.getTypedID().type):\(setting.target.getTypedID().id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE", firedByTriggerID:nil, created:nil, modified:nil)
 
         ]
 
@@ -93,7 +93,7 @@ class GetCommandTests: SmallTestBase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands/\(commandID)")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/commands/\(commandID)")
 
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
@@ -152,7 +152,7 @@ class GetCommandTests: SmallTestBase {
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(setting.target.typedID.toString()) not found"]
+                "message" : "Target \(setting.target.getTypedID().toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
@@ -160,7 +160,7 @@ class GetCommandTests: SmallTestBase {
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
                 // verify path
-                let expectedPath = "\(api.baseURL!)/thing-if/apps/\(api.appID!)/targets/\(setting.target.typedID.type):\(setting.target.typedID.id)/commands/\(commandID)"
+                let expectedPath = "\(api.baseURL!)/thing-if/apps/\(api.appID!)/targets/\(setting.target.getTypedID().type):\(setting.target.getTypedID().id)/commands/\(commandID)"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header
@@ -168,7 +168,7 @@ class GetCommandTests: SmallTestBase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands/\(commandID)")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/commands/\(commandID)")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier

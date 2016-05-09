@@ -75,12 +75,12 @@ class GetTriggerTests: SmallTestBase {
         do{
             let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
             let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
-            let expectedCommandObject = Command(commandID: nil, targetID: setting.target.typedID, issuerID: setting.owner.typedID, schemaName: setting.schema, schemaVersion: setting.schemaVersion, actions: expectedActionsDict, actionResults: nil, commandState: nil)
+            let expectedCommandObject = Command(commandID: nil, targetID: setting.target.getTypedID(), issuerID: setting.owner.typedID, schemaName: setting.schema, schemaVersion: setting.schemaVersion, actions: expectedActionsDict, actionResults: nil, commandState: nil)
             let eventSource = "STATES"
             let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":triggersWhen, "condition":statementToTest]
 
             // mock response
-            let commandDict = ["schema": setting.schema, "schemaVersion": setting.schemaVersion, "target": setting.target.typedID.toString(), "issuer": setting.owner.typedID.toString(), "actions": expectedActionsDict]
+            let commandDict = ["schema": setting.schema, "schemaVersion": setting.schemaVersion, "target": setting.target.getTypedID().toString(), "issuer": setting.owner.typedID.toString(), "actions": expectedActionsDict]
             let dict = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "command": commandDict, "disabled": false]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
@@ -93,7 +93,7 @@ class GetTriggerTests: SmallTestBase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/triggers/\(expectedTriggerID)")
              }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -167,7 +167,7 @@ class GetTriggerTests: SmallTestBase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/triggers/\(expectedTriggerID)")
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
@@ -218,7 +218,7 @@ class GetTriggerTests: SmallTestBase {
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(setting.target.typedID.toString()) not found"]
+                "message" : "Target \(setting.target.getTypedID().toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
@@ -229,7 +229,7 @@ class GetTriggerTests: SmallTestBase {
                 let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
-                    XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)")
+                    XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/triggers/\(triggerID)")
                 }
             }
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
@@ -272,7 +272,7 @@ class GetTriggerTests: SmallTestBase {
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(setting.target.typedID.toString()) not found"]
+                "message" : "Target \(setting.target.getTypedID().toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 

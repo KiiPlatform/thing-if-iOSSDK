@@ -43,7 +43,14 @@ public class AbstractThing : NSObject, TargetThing {
     - Parameter accessToken: Access token of the target, can nil.
     */
     public init(thingID: String, vendorThingID : String) {
-        self.typedID = TypedID(type: "thing", id: thingID)
+        self.typedID = TypedID(type: "THING", id: thingID)
         self.vendorThingID = vendorThingID
+    }
+
+    public override func isEqual(object: AnyObject?) -> Bool {
+        guard let aTarget = object as? AbstractThing else {
+            return false
+        }
+        return self.typedID == aTarget.typedID && self.getAccessToken() == aTarget.getAccessToken()
     }
 }

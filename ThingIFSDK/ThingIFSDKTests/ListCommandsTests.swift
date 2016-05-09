@@ -30,7 +30,7 @@ class ListCommandsTests: SmallTestBase {
         let issuerID: TypedID
 
         func getCommandDict() -> [String: AnyObject] {
-            var dict: [String: AnyObject] = ["commandID": commandID, "schema": schema, "schemaVersion": schemaVersion, "target": "\(target.typedID.type):\(target.typedID.id)", "commandState": commandStateString, "issuer": "\(issuerID.type):\(issuerID.id)", "actions": actions]
+            var dict: [String: AnyObject] = ["commandID": commandID, "schema": schema, "schemaVersion": schemaVersion, "target": "\(target.getTypedID().type):\(target.getTypedID().id)", "commandState": commandStateString, "issuer": "\(issuerID.type):\(issuerID.id)", "actions": actions]
             if actionResults != nil {
                 dict["actionResults"] = actionResults!
             }
@@ -117,11 +117,11 @@ class ListCommandsTests: SmallTestBase {
                 XCTAssertEqual(request.HTTPMethod, "GET")
 
                 // verify path
-                let expectedBasePath = "\(setting.app.baseURL)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/commands"
+                let expectedBasePath = "\(setting.app.baseURL)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.getTypedID().toString())/commands"
                 let actualRequestPathString = request.URL!.absoluteString
                 XCTAssertTrue(actualRequestPathString.rangeOfString(expectedBasePath) != nil, tag)
                 if testcase.paginationKey != nil || testcase.bestEffortLimit != nil {
-                    let expectedURL = setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands"
+                    let expectedURL = setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/commands"
                     var queryParams = ""
                     if testcase.paginationKey != nil {
                         queryParams = "?paginationKey=" + testcase.paginationKey!
@@ -158,7 +158,7 @@ class ListCommandsTests: SmallTestBase {
                     if let actualCommands = commands {
                         for (i, actualCommand) in actualCommands.enumerate() {
                             let expectedCommandStruct = testcase.commands[i]
-                            XCTAssertEqual(actualCommand.targetID.toString(), testcase.target.typedID.toString(), "\(tag)_\(i)")
+                            XCTAssertEqual(actualCommand.targetID.toString(), testcase.target.getTypedID().toString(), "\(tag)_\(i)")
                             XCTAssertEqual(actualCommand.commandID, expectedCommandStruct.commandID,"\(tag)_\(i)")
                             XCTAssertEqual(actualCommand.commandState, expectedCommandStruct.commandState, "\(tag)_\(i)")
                             do {
@@ -204,7 +204,7 @@ class ListCommandsTests: SmallTestBase {
         do{
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
-                "message" : "Target \(target.typedID.toString()) not found"]
+                "message" : "Target \(target.getTypedID().toString()) not found"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
@@ -212,7 +212,7 @@ class ListCommandsTests: SmallTestBase {
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
                 // verify path
-                let expectedPath = "\(api.baseURL!)/thing-if/apps/\(api.appID!)/targets/\(setting.target.typedID.type):\(setting.target.typedID.id)/commands"
+                let expectedPath = "\(api.baseURL!)/thing-if/apps/\(api.appID!)/targets/\(setting.target.getTypedID().type):\(setting.target.getTypedID().id)/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header

@@ -38,7 +38,7 @@ class ListTriggeredServerCodeResultsTests: SmallTestBase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key), "testPostNewServerCodeTrigger_success")
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)/results/server-code")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.getTypedID().toString())/triggers/\(triggerID)/results/server-code")
             }
 
             let resDic2 = ["triggerServerCodeResults":[serverCodeResultDic3, serverCodeResultDic4]]
@@ -51,7 +51,7 @@ class ListTriggeredServerCodeResultsTests: SmallTestBase {
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key), "testPostNewServerCodeTrigger_success")
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)/results/server-code?paginationKey=\(expectedNextPaginationKey)&bestEffortLimit=2")
+                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.getTypedID().toString())/triggers/\(triggerID)/results/server-code?paginationKey=\(expectedNextPaginationKey)&bestEffortLimit=2")
             }
             
             iotSession = MockMultipleSession.self

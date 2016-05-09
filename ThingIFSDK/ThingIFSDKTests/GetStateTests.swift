@@ -54,7 +54,7 @@ class GetStateTests: SmallTestBase {
             iotSession = MockSession.self
             setting.api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    XCTAssertEqual(target!.typedID.toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
+                    XCTAssertEqual(target!.getTypedID().toString(), "THING:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
                     XCTFail("should success")
                 }
@@ -79,14 +79,14 @@ class GetStateTests: SmallTestBase {
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
+            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.getTypedID().toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/states")
         }
 
         let dict : Dictionary<String,AnyObject>? = [
@@ -136,14 +136,14 @@ class GetStateTests: SmallTestBase {
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
+            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.getTypedID().toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/states")
         }
 
         let dict = ["errorCode":"TARGET_NOT_FOUND","message":"error message"]
@@ -194,14 +194,14 @@ class GetStateTests: SmallTestBase {
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
+            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.getTypedID().toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
-            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/states")
         }
 
         let dict = ["errorCode":"INVALID_INPUT_DATA","message":"error message"]
@@ -253,7 +253,7 @@ class GetStateTests: SmallTestBase {
         // verify request
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
+            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.getTypedID().toString())/states"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]

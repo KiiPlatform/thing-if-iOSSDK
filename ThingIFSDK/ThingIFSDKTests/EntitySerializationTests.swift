@@ -142,16 +142,15 @@ class EntitySerializationTests: SmallTestBase {
     }
     //Target
     func testTarget_NSUserDefaultSerialization() {
-        let aTypedID = TypedID(type: "camera", id: "cameraID")
-        let aTarget = Target(typedID: aTypedID)
+        let aTarget = StandaloneThing(thingID: "cameraID", vendorThingID: "dummyVendorThingID", accessToken: nil)
 
-        XCTAssertNil(aTarget.accessToken)
+        XCTAssertNil(aTarget.getAccessToken())
 
         self.doSerializationTest(aTarget)
 
-        let aTargetWithAccessToken = Target(typedID: aTypedID, accessToken: "dummyAccessToken")
+        let aTargetWithAccessToken = StandaloneThing(thingID: "cameraID", vendorThingID: "dummyVendorThingID", accessToken: "dummyAccessToken")
 
-        XCTAssertNotNil(aTargetWithAccessToken.accessToken)
+        XCTAssertNotNil(aTargetWithAccessToken.getAccessToken())
 
         self.doSerializationTest(aTarget)
 

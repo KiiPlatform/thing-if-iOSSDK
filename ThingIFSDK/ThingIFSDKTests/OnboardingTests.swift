@@ -131,9 +131,9 @@ class OnboardingTests: SmallTestBase {
             iotSession = MockSession.self
             api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    XCTAssertEqual(target!.typedID.toString(), "THING:\(setting.thingID)")
-                    XCTAssertEqual(target!.typedID.toString(), "THING:\(setting.thingID)")
-                    XCTAssertEqual(target!.accessToken, setting.ownerToken, "accessToken should equal to expected one")
+                    XCTAssertEqual(target!.getTypedID().toString(), "THING:\(setting.thingID)")
+                    XCTAssertEqual(target!.getTypedID().toString(), "THING:\(setting.thingID)")
+                    XCTAssertEqual(target!.getAccessToken(), setting.ownerToken, "accessToken should equal to expected one")
                 }else {
                     XCTFail("should success")
                 }
@@ -219,9 +219,9 @@ class OnboardingTests: SmallTestBase {
             iotSession = MockSession.self
             api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
                 if error == nil{
-                    XCTAssertEqual(target!.typedID.toString(), "THING:\(setting.thingID)")
-                    XCTAssertEqual(target!.typedID.toString(), "THING:\(setting.thingID)")
-                    XCTAssertEqual(target!.accessToken, setting.ownerToken, "accessToken should equal to expected one")
+                    XCTAssertEqual(target!.getTypedID().toString(), "THING:\(setting.thingID)")
+                    XCTAssertEqual(target!.getTypedID().toString(), "THING:\(setting.thingID)")
+                    XCTAssertEqual(target!.getAccessToken(), setting.ownerToken, "accessToken should equal to expected one")
                 }else {
                     XCTFail("should success")
                 }
