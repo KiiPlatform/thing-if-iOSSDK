@@ -500,7 +500,6 @@
 				7D36B6731BD4D03100D9B821 /* BlockOperation.swift in Sources */,
 				B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */,
 				D5521C781CCE002D00037C9F /* Condition.swift in Sources */,
-				225E43381CC5FF55003A3C4B /* GatewayAddress.swift in Sources */,
 				225E43381CC5FF55003A3C4B /* GatewayInformation.swift in Sources */,
 				226EA0CF1CD0D1A9002C1821 /* Target.swift in Sources */,
 				2264021E1CD1E67B00E30967 /* EndNode.swift in Sources */,
