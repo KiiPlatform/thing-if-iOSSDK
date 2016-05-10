@@ -9,28 +9,39 @@ import Foundation
 
 public class GatewayAPI: NSObject, NSCoding {
 
+    private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "GatewayAPI_INSTANCE"
+    private static func getSharedNSDefaultKey(tag : String?) -> String{
+        return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
+    }
+
     public let tag: String?
     public let app: App
     public let gatewayAddress: NSURL
 
+    private var accessToken: String?
+
+    let operationQueue = OperationQueue()
+
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder)
     {
-        // TODO: implement me.
+        aCoder.encodeObject(self.tag, forKey: "tag")
+        aCoder.encodeObject(self.app, forKey: "app")
+        aCoder.encodeObject(self.gatewayAddress, forKey: "gatewayAddress")
+        aCoder.encodeObject(self.accessToken, forKey: "accessToken")
     }
 
     public required init(coder aDecoder: NSCoder)
     {
-        // TODO: implement me.
-        self.tag = nil
-        self.app = App(appID: "dummy", appKey: "dummy", site: Site.JP)
-        self.gatewayAddress = NSURL()
+        self.tag = aDecoder.decodeObjectForKey("tag") as? String
+        self.app = aDecoder.decodeObjectForKey("app") as! App
+        self.gatewayAddress = aDecoder.decodeObjectForKey("gatewayAddress") as! NSURL
+        self.accessToken = aDecoder.decodeObjectForKey("accessToken") as? String
     }
 
-    init(app: App, gatewayAddress: NSURL)
+    init(app: App, gatewayAddress: NSURL, tag: String? = nil)
     {
-        // TODO: implement me.
-        self.tag = nil
+        self.tag = tag
         self.app = app
         self.gatewayAddress = gatewayAddress
     }
@@ -51,7 +62,43 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (ThingIFError?)-> Void
         )
     {
-        // TODO: implement me.
+        let requestURL = "\(self.app.baseURL)/\(self.app.siteName)/token"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "authorization": "Bearer \(self.app.appID):\(self.app.appKey)"
+        ]
+
+        // genrate body
+        let requestBodyDict = NSMutableDictionary(dictionary:
+            [
+                "username": username,
+                "password": password
+            ]
+        )
+
+        do {
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // do request
+            let request = buildDefaultRequest(
+                HTTPMethod.POST,
+                urlString: requestURL,
+                requestHeaderDict: requestHeaderDict,
+                requestBodyData: requestBodyData,
+                completionHandler: { (response, error) -> Void in
+                    self.accessToken = response?["accessToken"] as? String
+                    self.saveInstance()
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler(error)
+                    }
+                }
+            )
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
+        } catch(_) {
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(ThingIFError.JSON_PARSE_ERROR)
+        }
     }
 
     /** Let the Gateway Onboard.
@@ -62,7 +109,33 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (Gateway?, ThingIFError?)-> Void
         )
     {
-        // TODO: implement me.
+        if self.isLoggedIn() == false {
+            completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
+            return;
+        }
+
+        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/onboarding"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "authorization": "Bearer \(self.accessToken)"
+        ]
+
+        // do request
+        let request = buildDefaultRequest(
+            HTTPMethod.POST,
+            urlString: requestURL,
+            requestHeaderDict: requestHeaderDict,
+            requestBodyData: nil,
+            completionHandler: { (response, error) -> Void in
+                let thingID = response?["thingID"] as? String
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler(thingID, error)
+                }
+            }
+        )
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 
     /** Get Gateway ID
@@ -73,7 +146,33 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (String?, ThingIFError?)-> Void
         )
     {
-        // TODO: implement me.
+        if self.isLoggedIn() == false {
+            completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
+            return;
+        }
+
+        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/id"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "authorization": "Bearer \(self.accessToken)"
+        ]
+
+        // do request
+        let request = buildDefaultRequest(
+            HTTPMethod.GET,
+            urlString: requestURL,
+            requestHeaderDict: requestHeaderDict,
+            requestBodyData: nil,
+            completionHandler: { (response, error) -> Void in
+                let thingID = response?["thingID"] as? String
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler(thingID, error)
+                }
+            }
+        )
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 
     /** List connected end nodes which has not been onboarded.
@@ -84,7 +183,44 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: ([PendingEndNode]?, ThingIFError?)-> Void
         )
     {
-        // TODO: implement me.
+        if self.isLoggedIn() == false {
+            completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
+            return;
+        }
+
+        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/pending"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "authorization": "Bearer \(self.accessToken)"
+        ]
+
+        // do request
+        let request = buildDefaultRequest(
+            HTTPMethod.GET,
+            urlString: requestURL,
+            requestHeaderDict: requestHeaderDict,
+            requestBodyData: nil,
+            completionHandler: { (response, error) -> Void in
+                var endNodes = [PendingEndNode]()
+                if response != nil {
+                    if let endNodeArray = response!["results"] as? [NSDictionary] {
+                        for endNode in endNodeArray {
+                            endNodes.append(PendingEndNode(json: endNode as! Dictionary<String, AnyObject>))
+                        }
+                    }
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    if error != nil {
+                        completionHandler(nil, error)
+                    } else {
+                        completionHandler(endNodes, nil)
+                    }
+                }
+            }
+        )
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 
     /** Notify Onboarding completion
@@ -99,7 +235,45 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (ThingIFError?)-> Void
         )
     {
-        // TODO: implement me.
+        if self.isLoggedIn() == false {
+            completionHandler(ThingIFError.USER_IS_NOT_LOGGED_IN)
+            return;
+        }
+
+        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(endNode.vendorThingID)"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "authorization": "Bearer \(self.accessToken)"
+        ]
+
+        // genrate body
+        let requestBodyDict = NSMutableDictionary(dictionary:
+            [
+                "thingID": endNode.thingID
+            ]
+        )
+
+        do {
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // do request
+            let request = buildDefaultRequest(
+                HTTPMethod.PUT,
+                urlString: requestURL,
+                requestHeaderDict: requestHeaderDict,
+                requestBodyData: requestBodyData,
+                completionHandler: { (response, error) -> Void in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler(error)
+                    }
+                }
+            )
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
+        } catch(_) {
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(ThingIFError.JSON_PARSE_ERROR)
+        }
     }
 
     /** Restore the Gateway.
@@ -111,7 +285,32 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (ThingIFError?)-> Void
         )
     {
-        // TODO: implement me.
+        if self.isLoggedIn() == false {
+            completionHandler(ThingIFError.USER_IS_NOT_LOGGED_IN)
+            return;
+        }
+
+        let requestURL = "\(self.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "authorization": "Bearer \(self.accessToken)"
+        ]
+
+        // do request
+        let request = buildDefaultRequest(
+            HTTPMethod.POST,
+            urlString: requestURL,
+            requestHeaderDict: requestHeaderDict,
+            requestBodyData: nil,
+            completionHandler: { (response, error) -> Void in
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler(error)
+                }
+            }
+        )
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 
     /** Replace end-node by new vendorThingID for end node thingID.
@@ -126,7 +325,45 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (ThingIFError?)-> Void
         )
     {
-        // TODO: implement me.
+        if self.isLoggedIn() == false {
+            completionHandler(ThingIFError.USER_IS_NOT_LOGGED_IN)
+            return;
+        }
+
+        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/THING_ID:\(endNodeThingID)"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "authorization": "Bearer \(self.accessToken)"
+        ]
+
+        // genrate body
+        let requestBodyDict = NSMutableDictionary(dictionary:
+            [
+                "vendorThingID": endNodeVendorThingID
+            ]
+        )
+
+        do {
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // do request
+            let request = buildDefaultRequest(
+                HTTPMethod.PUT,
+                urlString: requestURL,
+                requestHeaderDict: requestHeaderDict,
+                requestBodyData: requestBodyData,
+                completionHandler: { (response, error) -> Void in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler(error)
+                    }
+                }
+            )
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
+        } catch(_) {
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(ThingIFError.JSON_PARSE_ERROR)
+        }
     }
 
     /** Get information of the Gateway.
@@ -138,7 +375,37 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (GatewayInformation?, ThingIFError?)-> Void
         )
     {
-        // TODO: implement me.
+        if self.isLoggedIn() == false {
+            completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
+            return;
+        }
+
+        let requestURL = "\(self.gatewayAddress.absoluteString)/gateway-info"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "authorization": "Bearer \(self.accessToken)"
+        ]
+
+        // do request
+        let request = buildDefaultRequest(
+            HTTPMethod.GET,
+            urlString: requestURL,
+            requestHeaderDict: requestHeaderDict,
+            requestBodyData: nil,
+            completionHandler: { (response, error) -> Void in
+                let id = response?["vendorThingID"] as? String
+                dispatch_async(dispatch_get_main_queue()) {
+                    if id == nil {
+                        completionHandler(nil, error)
+                    } else {
+                        completionHandler(GatewayInformation(vendorThingID: id!), error)
+                    }
+                }
+            }
+        )
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 
     /** Check if user is logged in to the Gateway.
@@ -147,8 +414,7 @@ public class GatewayAPI: NSObject, NSCoding {
      */
     public func isLoggedIn() -> Bool
     {
-        // TODO: implement me.
-        return false
+        return self.accessToken?.isEmpty ?? false
     }
 
     /** Get Access Token
@@ -157,8 +423,12 @@ public class GatewayAPI: NSObject, NSCoding {
      */
     public func getAccessToken() -> String?
     {
-        // TODO: implement me.
-        return nil
+        return self.accessToken
+    }
+
+    func setAccessToken(token: String?)
+    {
+        self.accessToken = token
     }
 
     /** Try to load the instance of GatewayAPI using stored serialized instance.
@@ -168,15 +438,37 @@ public class GatewayAPI: NSObject, NSCoding {
      */
     public static func loadWithStoredInstance(tag : String? = nil) throws -> GatewayAPI?
     {
-        // TODO: implement me.
-        return nil
+        let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        let key = GatewayAPI.getSharedNSDefaultKey(tag)
+
+        // try to get iotAPI from NSUserDefaults
+
+        if let dict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
+            if dict.objectForKey(key) != nil {
+                if let data = dict[key] as? NSData {
+                    if let savedAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? GatewayAPI {
+                        return savedAPI
+                    } else {
+                        throw ThingIFError.INVALID_STORED_API
+                    }
+                } else {
+                    throw ThingIFError.INVALID_STORED_API
+                }
+            } else {
+                throw ThingIFError.API_NOT_STORED
+            }
+        } else {
+            throw ThingIFError.API_NOT_STORED
+        }
     }
 
     /** Clear all saved instances in the NSUserDefaults.
      */
     public static func removeAllStoredInstances()
     {
-        // TODO: implement me.
+        let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(baseKey)
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
 
     /** Remove saved specified instance in the NSUserDefaults.
@@ -185,7 +477,14 @@ public class GatewayAPI: NSObject, NSCoding {
      */
     public static func removeStoredInstances(tag : String?=nil)
     {
-        // TODO: implement me.
+        let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        let key = GatewayAPI.getSharedNSDefaultKey(tag)
+        if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
+            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+            dict.removeObjectForKey(key)
+            NSUserDefaults.standardUserDefaults().setObject(dict, forKey: baseKey)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
     }
 
     /** Save this instance
@@ -193,6 +492,18 @@ public class GatewayAPI: NSObject, NSCoding {
      */
     public func saveInstance()
     {
-        // TODO: implement me.
+        let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+
+        let key = GatewayAPI.getSharedNSDefaultKey(self.tag)
+        let data = NSKeyedArchiver.archivedDataWithRootObject(self)
+
+        if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
+            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+            dict[key] = data
+            NSUserDefaults.standardUserDefaults().setObject(dict, forKey: baseKey)
+        } else {
+            NSUserDefaults.standardUserDefaults().setObject(NSDictionary(dictionary: [key:data]), forKey: baseKey)
+        }
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
 }

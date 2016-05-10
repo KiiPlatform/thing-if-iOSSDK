@@ -161,7 +161,71 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
-        // TODO: implement me.
+        if (self.target == nil) || !(self.target is Gateway) {
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            return
+        }
+        if pendingEndnode.vendorThingID == nil {
+            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            return
+        }
+
+        let requestURL = "\(self.baseURL)/thing-if/apps/\(self.appID)/onboardings"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "x-kii-appid": self.appID,
+            "x-kii-appkey": self.appKey,
+            "authorization": "Bearer \(self.owner.accessToken)",
+            "Content-Type": "application/vnd.kii.OnboardingEndNodeWithGatewayVendorThingID+json"
+        ]
+
+        // genrate body
+        let requestBodyDict = NSMutableDictionary(dictionary:
+            [
+                "gatewayThingID": self.target!.typedID.id,
+                "endNodeVendorThingID": pendingEndnode.vendorThingID!,
+                "endNodePassword": endnodePassword,
+                "owner": self.owner.typedID.id
+            ]
+        )
+
+        if pendingEndnode.thingType != nil {
+            requestBodyDict.setValue(pendingEndnode.thingType, forKey: "endNodeThingType")
+        }
+
+        if !(pendingEndnode.thingProperties?.isEmpty ?? true) {
+            requestBodyDict.setObject(pendingEndnode.thingProperties!, forKey: "endNodeThingProperties")
+        }
+
+        do {
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // do request
+            let request = buildDefaultRequest(
+                HTTPMethod.POST,
+                urlString: requestURL,
+                requestHeaderDict: requestHeaderDict,
+                requestBodyData: requestBodyData,
+                completionHandler: { (response, error) -> Void in
+                    let endNode: EndNode?
+                    if error != nil {
+                        endNode = nil
+                    } else {
+                        let thingID = response?["endNodeThingID"] as! String
+                        let accessToken = response?["accessToken"] as! String
+                        endNode = EndNode(thingID: thingID, vendorThingID: pendingEndnode.vendorThingID!, accessToken: accessToken)
+                    }
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler(endNode, error)
+                    }
+                }
+            )
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
+        } catch(_) {
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+        }
     }
     
     // MARK: - Push notification methods
@@ -506,7 +570,35 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (String?, ThingIFError?)-> Void
         )
     {
-        // TODO: implement me.
+        if self.target == nil {
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            return;
+        }
+
+        let requestURL = "\(self.baseURL)/api/apps/\(self.appID)/things/\(self.target!.typedID.id)/vendor-thing-id"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "x-kii-appid": self.appID,
+            "x-kii-appkey": self.appKey,
+            "authorization": "Bearer \(self.owner.accessToken)"
+        ]
+
+        // do request
+        let request = buildDefaultRequest(
+            HTTPMethod.GET,
+            urlString: requestURL,
+            requestHeaderDict: requestHeaderDict,
+            requestBodyData: nil,
+            completionHandler: { (response, error) -> Void in
+                let vendorThingID = response?["_vendorThingID"] as? String
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler(vendorThingID, error)
+                }
+            }
+        )
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
     }
 
     /** Update the Vendor Thing ID of specified Target.
@@ -521,7 +613,49 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (ThingIFError?)-> Void
         )
     {
-        // TODO: implement me.
+        if self.target == nil {
+            completionHandler(ThingIFError.TARGET_NOT_AVAILABLE)
+            return;
+        }
+
+        let requestURL = "\(self.baseURL)/api/apps/\(self.appID)/things/\(self.target!.typedID.id)/vendor-thing-id"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "x-kii-appid": self.appID,
+            "x-kii-appkey": self.appKey,
+            "authorization": "Bearer \(self.owner.accessToken)",
+            "Content-Type": "application/vnd.kii.VendorThingIDUpdateRequest+json"
+        ]
+
+        // genrate body
+        let requestBodyDict = NSMutableDictionary(dictionary:
+            [
+                "_vendorThingID": newVendorThingID,
+                "_password": newPassword
+            ]
+        )
+
+        do {
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // do request
+            let request = buildDefaultRequest(
+                HTTPMethod.PUT,
+                urlString: requestURL,
+                requestHeaderDict: requestHeaderDict,
+                requestBodyData: requestBodyData,
+                completionHandler: { (response, error) -> Void in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler(error)
+                    }
+                }
+            )
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
+        } catch(_) {
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(ThingIFError.JSON_PARSE_ERROR)
+        }
     }
 
     // MARK: - Copy with new target instance
