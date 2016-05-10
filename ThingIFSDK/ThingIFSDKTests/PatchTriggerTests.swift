@@ -126,7 +126,7 @@ class PatchTriggerTests: SmallTestBase {
             }catch(_){
                 XCTFail(tag)
             }
-            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.getTypedID().toString())/triggers/\(expectedTriggerID)")
+            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
         }
 
         //verify get request
@@ -135,7 +135,7 @@ class PatchTriggerTests: SmallTestBase {
         // mock patch success response
         let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
         // mock get response
-        let commandDict = ["schema": setting.schema, "schemaVersion": setting.schemaVersion, "target": setting.target.getTypedID().toString(), "issuer": setting.owner.typedID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
+        let commandDict = ["schema": setting.schema, "schemaVersion": setting.schemaVersion, "target": setting.target.typedID.toString(), "issuer": setting.owner.typedID.toString(), "actions": [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]]
         let dict = ["triggerID": expectedTriggerID, "predicate": ["eventSource":"STATES", "triggersWhen":"CONDITION_FALSE_TO_TRUE", "condition": ["type":"eq","field":"color", "value": 0]], "command": commandDict, "disabled": false]
         var jsonData: NSData?
         do {

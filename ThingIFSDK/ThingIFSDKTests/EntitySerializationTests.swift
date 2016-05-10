@@ -144,13 +144,13 @@ class EntitySerializationTests: SmallTestBase {
     func testTarget_NSUserDefaultSerialization() {
         let aTarget = StandaloneThing(thingID: "cameraID", vendorThingID: "dummyVendorThingID", accessToken: nil)
 
-        XCTAssertNil(aTarget.getAccessToken())
+        XCTAssertNil(aTarget.accessToken)
 
         self.doSerializationTest(aTarget)
 
         let aTargetWithAccessToken = StandaloneThing(thingID: "cameraID", vendorThingID: "dummyVendorThingID", accessToken: "dummyAccessToken")
 
-        XCTAssertNotNil(aTargetWithAccessToken.getAccessToken())
+        XCTAssertNotNil(aTargetWithAccessToken.accessToken)
 
         self.doSerializationTest(aTarget)
 

@@ -8,6 +8,6 @@
 import Foundation
 
 public protocol TargetThing: Target {
-    func getThingID() -> String
-    func getVendorThingID() -> String
+    var thingID: String { get }
+    var vendorThingID: String { get }
 }

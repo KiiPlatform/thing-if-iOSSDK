@@ -25,7 +25,7 @@ extension ThingIFAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/commands"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -46,7 +46,7 @@ extension ThingIFAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var command:Command?
                 if let commandID = response?["commandID"] as? String{
-                    command = Command(commandID: commandID, targetID: self.target!.getTypedID(), issuerID: issuerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil)
+                    command = Command(commandID: commandID, targetID: self.target!.typedID, issuerID: issuerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil)
                 }
                 dispatch_async(dispatch_get_main_queue()) {
                     completionHandler(command, error)
@@ -71,7 +71,7 @@ extension ThingIFAPI {
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/commands/\(commandID)"
+        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands/\(commandID)"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
@@ -102,7 +102,7 @@ extension ThingIFAPI {
             return
         }
 
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.getTypedID().toString())/commands"
+        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands"
         if paginationKey != nil && bestEffortLimit != nil{
             requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
         }else if bestEffortLimit != nil {

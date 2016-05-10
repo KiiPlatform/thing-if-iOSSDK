@@ -8,6 +8,6 @@
 import Foundation
 
 public protocol Target: NSCoding {
-    func getTypedID() -> TypedID
-    func getAccessToken() -> String?
+    var typedID: TypedID { get }
+    var accessToken: String? { get }
 }

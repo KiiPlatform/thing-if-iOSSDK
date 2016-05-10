@@ -625,8 +625,8 @@ public class ThingIFAPI: NSObject, NSCoding {
         return self.appID == anAPI.appID &&
             self.appKey == anAPI.appKey &&
             self.baseURL == anAPI.baseURL &&
-            self.target?.getAccessToken() == anAPI.target?.getAccessToken() &&
-            self.target?.getTypedID() == anAPI.target?.getTypedID() &&
+            self.target?.accessToken == anAPI.target?.accessToken &&
+            self.target?.typedID == anAPI.target?.typedID &&
             self.installationID == anAPI.installationID &&
             self.tag == anAPI.tag
     }

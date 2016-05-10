@@ -68,7 +68,7 @@ class PostNewCommandTests: SmallTestBase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(testcase.target.getTypedID().toString())/commands"
+                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(testcase.target.typedID.toString())/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal for \(tag)")
 
                 //verify header
@@ -95,7 +95,7 @@ class PostNewCommandTests: SmallTestBase {
                 if error == nil{
                     XCTAssertNotNil(command, tag)
                     XCTAssertEqual(command!.commandID, expectedCommandID, tag)
-                    XCTAssertEqual(command!.targetID.toString(), testcase.target.getTypedID().toString(), tag)
+                    XCTAssertEqual(command!.targetID.toString(), testcase.target.typedID.toString(), tag)
                     XCTAssertEqual(command!.actions, testcase.actions, tag)
                 }else {
                     XCTFail("should success for \(tag)")
@@ -135,7 +135,7 @@ class PostNewCommandTests: SmallTestBase {
                 XCTAssertEqual(request.HTTPMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(target.getTypedID().toString())/commands"
+                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(target.typedID.toString())/commands"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header

@@ -23,6 +23,6 @@ class CopyWithTargetTests: SmallTestBase {
         let newTarget = StandaloneThing(thingID: "newID", vendorThingID: "vendor-thing-id-001", accessToken: "token-00001")
         let newIotapi = api.copyWithTarget(newTarget)
         XCTAssertEqualIoTAPIWithoutTarget(api, newIotapi)
-        XCTAssertEqual(newIotapi.target?.getTypedID().toString(), newTarget.getTypedID().toString())
+        XCTAssertEqual(newIotapi.target?.typedID.toString(), newTarget.typedID.toString())
     }
 }
