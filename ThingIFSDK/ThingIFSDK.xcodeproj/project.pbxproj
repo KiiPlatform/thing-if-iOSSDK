@@ -83,6 +83,9 @@
 		B68227F41C85823A00AB85D0 /* CommandSerializationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */; };
 		B683A31B1CBB807A00742570 /* CommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683A31A1CBB807A00742570 /* CommandFormTests.swift */; };
 		B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */; };
+		D5521C741CCDFDA200037C9F /* Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5521C731CCDFDA200037C9F /* Predicate.swift */; };
+		D5521C761CCDFE7600037C9F /* ServerCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5521C751CCDFE7600037C9F /* ServerCode.swift */; };
+		D5521C781CCE002D00037C9F /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5521C771CCE002D00037C9F /* Condition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +177,9 @@
 		B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandSerializationTest.swift; sourceTree = "<group>"; };
 		B683A31A1CBB807A00742570 /* CommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandFormTests.swift; sourceTree = "<group>"; };
 		B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandForm.swift; sourceTree = "<group>"; };
+		D5521C731CCDFDA200037C9F /* Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Predicate.swift; sourceTree = "<group>"; };
+		D5521C751CCDFE7600037C9F /* ServerCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerCode.swift; sourceTree = "<group>"; };
+		D5521C771CCE002D00037C9F /* Condition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Condition.swift; path = ../Condition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,9 +242,12 @@
 				7419C2B71C27D10100F964FB /* App.swift */,
 				7D36B65E1BD4D03100D9B821 /* Target.swift */,
 				7D36B65F1BD4D03100D9B821 /* Trigger.swift */,
+				D5521C771CCE002D00037C9F /* Condition.swift */,
+				D5521C731CCDFDA200037C9F /* Predicate.swift */,
 				7D36B6601BD4D03100D9B821 /* TypedID.swift */,
 				7D36B6611BD4D03100D9B821 /* Utils */,
 				A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */,
+				D5521C751CCDFE7600037C9F /* ServerCode.swift */,
 			);
 			path = ThingIFSDK;
 			sourceTree = "<group>";
@@ -435,10 +444,13 @@
 				7D36B67C1BD4D03100D9B821 /* NSLock+Operations.swift in Sources */,
 				7D36B6731BD4D03100D9B821 /* BlockOperation.swift in Sources */,
 				B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */,
+				D5521C781CCE002D00037C9F /* Condition.swift in Sources */,
 				7D36B6811BD4D03100D9B821 /* OperationObserver.swift in Sources */,
 				7D36B66F1BD4D03100D9B821 /* IoTRequestOperation.swift in Sources */,
+				D5521C761CCDFE7600037C9F /* ServerCode.swift in Sources */,
 				A56B0A431C5B43B100E653EF /* TriggeredServerCodeResult.swift in Sources */,
 				7D36B6891BD4D03100D9B821 /* Trigger.swift in Sources */,
+				D5521C741CCDFDA200037C9F /* Predicate.swift in Sources */,
 				7D36B6771BD4D03100D9B821 /* GroupOperation.swift in Sources */,
 				7D36B6751BD4D03100D9B821 /* Dictionary+Operations.swift in Sources */,
 				7D36B6641BD4D03100D9B821 /* Command.swift in Sources */,
