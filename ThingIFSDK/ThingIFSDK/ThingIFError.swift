@@ -17,11 +17,6 @@ public struct ErrorResponse {
         self.errorMessage = errorMessage
     }
 }
-/** Represents error in validation process */
-public struct ValidationError {
-    public let errorCode: String // error category
-    public let errorMessage: String // short description
-}
 
 public enum ThingIFError : ErrorType {
     case CONNECTION
@@ -37,7 +32,5 @@ public enum ThingIFError : ErrorType {
     case API_NOT_STORED
     /** when trying to load API from persistance but it does not have correct instance*/
     case INVALID_STORED_API
-    /** when passing invalid object/parameter*/
-    case VALIDATION_ERROR(error : ValidationError)
 
 }
