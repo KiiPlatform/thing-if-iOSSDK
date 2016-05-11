@@ -67,8 +67,14 @@ public class Trigger: NSObject, NSCoding {
                     switch eventSource {
                     case EventSource.States:
                         predicate = StatePredicate.statePredicateWithNSDict(predicateDict)
+                        break
                     case EventSource.Schedule:
                         //Not supported yet
+                        break
+                    case EventSource.ScheduleOnce:
+                        if let scheduleAtMilis = (predicateDict["scheduleAt"] as? NSNumber)?.longLongValue {
+                            predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSince1970: Double(scheduleAtMilis/1000)))
+                        }
                         break
                     }
                 }
@@ -189,5 +195,6 @@ public enum EventSource: String {
 
     case States = "STATES"
     case Schedule = "SCHEDULE"
+    case ScheduleOnce = "SCHEDULE_ONCE"
 
 }
