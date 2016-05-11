@@ -89,7 +89,10 @@ class ListCommandsTests: SmallTestBase {
 
     func listCommandsSuccess(tag: String, testcase: TestCase) {
 
-        let expectation = self.expectationWithDescription(tag)
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+        defer{
+            expectation = nil
+        }
         let setting = TestSetting()
         let api = setting.api
         let owner = setting.owner
@@ -181,7 +184,7 @@ class ListCommandsTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -243,7 +246,7 @@ class ListCommandsTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -272,7 +275,7 @@ class ListCommandsTests: SmallTestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

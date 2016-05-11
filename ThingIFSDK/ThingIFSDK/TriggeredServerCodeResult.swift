@@ -119,7 +119,7 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
         if arr1.count != arr2.count {
             return false
         }
-        for var i = 0; i < arr1.count; ++i {
+        for i in 0 ..< arr1.count {
             let e1 = arr1[i]
             let e2 = arr2[i]
             if e1 is Dictionary<String, AnyObject> {

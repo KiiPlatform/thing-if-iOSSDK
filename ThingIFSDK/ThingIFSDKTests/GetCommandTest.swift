@@ -54,7 +54,10 @@ class GetCommandTests: SmallTestBase {
 
     func getCommandSuccess(tag: String, testcase: TestCase, setting: TestSetting) {
 
-        let expectation = self.expectationWithDescription(tag)
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+        defer{
+            expectation = nil
+        }
 
         do{
 
@@ -130,7 +133,7 @@ class GetCommandTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -191,7 +194,7 @@ class GetCommandTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -219,7 +222,7 @@ class GetCommandTests: SmallTestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
