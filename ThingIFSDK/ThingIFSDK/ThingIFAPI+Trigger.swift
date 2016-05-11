@@ -8,6 +8,26 @@
 
 import Foundation
 
+extension Predicate {
+    func validate() -> ThingIFError? {
+        switch self {
+        case is StatePredicate:
+            //TODO: add validations if any
+            break
+        case is ScheduleOncePredicate:
+            if (self as! ScheduleOncePredicate
+                ).scheduleAt.compare(NSDate()) != .OrderedDescending {
+                // is not future date
+                return ThingIFError.VALIDATION_ERROR(error: ValidationError(errorCode:"INVALID_PREDICATE",errorMessage: "Scheduled once predicate should have future date as the scheduleAt properties"))
+            }
+            break
+        default:
+            return ThingIFError.UNSUPPORTED_ERROR
+        }
+        return nil
+    }
+}
+
 extension ThingIFAPI {
 
     func _postNewTrigger(
@@ -18,8 +38,8 @@ extension ThingIFAPI {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        if predicate is SchedulePredicate {
-            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+        if let error = predicate.validate() {
+            completionHandler(nil, error)
             return
         }
 
@@ -65,8 +85,8 @@ extension ThingIFAPI {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        if predicate is SchedulePredicate {
-            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+        if let error = predicate.validate() {
+            completionHandler(nil, error)
             return
         }
         guard let target = self.target else {
@@ -127,8 +147,8 @@ extension ThingIFAPI {
 
         // generate predicate
         if predicate != nil {
-            if predicate is SchedulePredicate {
-                completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            if let error = predicate!.validate() {
+                completionHandler(nil, error)
                 return
             }
             requestBodyDict["predicate"] = predicate!.toNSDictionary()
@@ -195,8 +215,8 @@ extension ThingIFAPI {
         
         // generate predicate
         if predicate != nil {
-            if predicate is SchedulePredicate {
-                completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            if let error = predicate!.validate() {
+                completionHandler(nil, error)
                 return
             }
             requestBodyDict["predicate"] = predicate!.toNSDictionary()
