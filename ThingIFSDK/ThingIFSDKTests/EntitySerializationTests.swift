@@ -73,8 +73,8 @@ class EntitySerializationTests: SmallTestBase {
         let aCommand = Command.commandWithNSDictionary(dict)
         self.doSerializationTest(aCommand!)
     }
-    //Command Trigger
-    func testCommandTrigger_NSUserDefaultSerialization() {
+    //Command Trigger state predicate
+    func testCommandTrigger_State_NSUserDefaultSerialization() {
         var actionsArray = [Dictionary<String, AnyObject>]()
         var action1 = Dictionary<String, AnyObject>()
         action1["turnPower"] = ["power":true]
@@ -105,6 +105,40 @@ class EntitySerializationTests: SmallTestBase {
         aTrigger.metadata = ["sound":"noisy.mp4"]
         self.doSerializationTest(aTrigger)
     }
+
+    //Command Trigger Scheduled once test
+    func testCommandTrigger_ScheduledOnce_NSUserDefaultSerialization() {
+        var actionsArray = [Dictionary<String, AnyObject>]()
+        var action1 = Dictionary<String, AnyObject>()
+        action1["turnPower"] = ["power":true]
+        actionsArray.append(action1)
+        var actionsResultArray = [Dictionary<String, AnyObject>]()
+        var result1 = Dictionary<String, AnyObject>()
+        result1["turnPower"] = ["succeeded":true, "errorMessage":"", "data":["voltage":"125"]]
+        actionsResultArray.append(result1)
+        let dict = NSMutableDictionary()
+        dict["commandID"] = "command-1234-5678"
+        dict["schema"] = "SmartLight"
+        dict["actions"] = actionsArray
+        dict["actionResults"] = actionsResultArray
+        dict["schemaVersion"] = 10
+        dict["target"] = "thing:thing-1234-5678"
+        dict["issuer"] = "user:user-1234-5678"
+        dict["commandState"] = "SENDING"
+        dict["title"] = "Command Title"
+        dict["description"] = "Command Description"
+        dict["metadata"] = ["sound":"noisy.mp3"]
+        let command = Command.commandWithNSDictionary(dict)
+
+        let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 60*60))
+
+        let aTrigger = Trigger(triggerID: "trigger-1234-5678", enabled: true, predicate: predicate, command: command!)
+        aTrigger.title = "Trigger Title"
+        aTrigger.triggerDescription = "Trigger Description"
+        aTrigger.metadata = ["sound":"noisy.mp4"]
+        self.doSerializationTest(aTrigger)
+    }
+
     //ServerCode Trigger
     func testServerCodeTrigger_NSUserDefaultSerialization() {
         let parameters : Dictionary = ["arg1":"abc", "arg2":1234, "arg3":true]
