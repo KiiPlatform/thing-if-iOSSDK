@@ -34,5 +34,4 @@ public enum ThingIFError : ErrorType {
     case INVALID_STORED_API
     /** when trying to access Gateway but user is not logged in*/
     case USER_IS_NOT_LOGGED_IN
-
 }

@@ -62,11 +62,18 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (ThingIFError?)-> Void
         )
     {
+        if username.isEmpty || password.isEmpty {
+            completionHandler(ThingIFError.UNSUPPORTED_ERROR)
+            return
+        }
+
         let requestURL = "\(self.app.baseURL)/\(self.app.siteName)/token"
 
         // generate header
+        let credential = "\(self.app.appID):\(self.app.appKey)"
+        let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.app.appID):\(self.app.appKey)"
+            "authorization": "Bearer \(base64Str)"
         ]
 
         // genrate body
@@ -118,7 +125,7 @@ public class GatewayAPI: NSObject, NSCoding {
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken)"
+            "authorization": "Bearer \(self.accessToken!)"
         ]
 
         // do request
@@ -128,9 +135,16 @@ public class GatewayAPI: NSObject, NSCoding {
             requestHeaderDict: requestHeaderDict,
             requestBodyData: nil,
             completionHandler: { (response, error) -> Void in
-                let thingID = response?["thingID"] as? String
+                let gateway: Gateway?
+                if response != nil {
+                    let thingID = response?["thingID"] as? String
+                    // FIXME: Gateway should return the vendorThingID
+                    gateway = Gateway(thingID: thingID!, vendorThingID: "")
+                } else {
+                    gateway = nil
+                }
                 dispatch_async(dispatch_get_main_queue()) {
-                    completionHandler(thingID, error)
+                    completionHandler(gateway, error)
                 }
             }
         )
@@ -155,7 +169,7 @@ public class GatewayAPI: NSObject, NSCoding {
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken)"
+            "authorization": "Bearer \(self.accessToken!)"
         ]
 
         // do request
@@ -192,7 +206,7 @@ public class GatewayAPI: NSObject, NSCoding {
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken)"
+            "authorization": "Bearer \(self.accessToken!)"
         ]
 
         // do request
@@ -240,11 +254,16 @@ public class GatewayAPI: NSObject, NSCoding {
             return;
         }
 
+        if endNode.thingID.isEmpty || endNode.vendorThingID.isEmpty {
+            completionHandler(ThingIFError.UNSUPPORTED_ERROR)
+            return;
+        }
+
         let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(endNode.vendorThingID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken)"
+            "authorization": "Bearer \(self.accessToken!)"
         ]
 
         // genrate body
@@ -294,7 +313,7 @@ public class GatewayAPI: NSObject, NSCoding {
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken)"
+            "authorization": "Bearer \(self.accessToken!)"
         ]
 
         // do request
@@ -330,11 +349,17 @@ public class GatewayAPI: NSObject, NSCoding {
             return;
         }
 
+        if endNodeThingID.isEmpty || endNodeVendorThingID.isEmpty {
+            completionHandler(ThingIFError.UNSUPPORTED_ERROR)
+            return;
+        }
+
         let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/THING_ID:\(endNodeThingID)"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken)"
+            "authorization": "Bearer \(self.accessToken!)",
+            "Content-Type": "application/json"
         ]
 
         // genrate body
@@ -384,7 +409,7 @@ public class GatewayAPI: NSObject, NSCoding {
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken)"
+            "authorization": "Bearer \(self.accessToken!)"
         ]
 
         // do request
@@ -414,7 +439,7 @@ public class GatewayAPI: NSObject, NSCoding {
      */
     public func isLoggedIn() -> Bool
     {
-        return self.accessToken?.isEmpty ?? false
+        return !(self.accessToken?.isEmpty ?? true)
     }
 
     /** Get Access Token

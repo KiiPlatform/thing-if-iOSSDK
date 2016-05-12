@@ -165,7 +165,11 @@ public class ThingIFAPI: NSObject, NSCoding {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
-        if pendingEndnode.vendorThingID == nil {
+        if pendingEndnode.vendorThingID == nil || pendingEndnode.vendorThingID!.isEmpty {
+            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            return
+        }
+        if endnodePassword.isEmpty {
             completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
             return
         }
@@ -177,7 +181,7 @@ public class ThingIFAPI: NSObject, NSCoding {
             "x-kii-appid": self.appID,
             "x-kii-appkey": self.appKey,
             "authorization": "Bearer \(self.owner.accessToken)",
-            "Content-Type": "application/vnd.kii.OnboardingEndNodeWithGatewayVendorThingID+json"
+            "Content-Type": "application/vnd.kii.OnboardingEndNodeWithGatewayThingID+json"
         ]
 
         // genrate body
@@ -615,6 +619,10 @@ public class ThingIFAPI: NSObject, NSCoding {
     {
         if self.target == nil {
             completionHandler(ThingIFError.TARGET_NOT_AVAILABLE)
+            return;
+        }
+        if newVendorThingID.isEmpty || newPassword.isEmpty {
+            completionHandler(ThingIFError.UNSUPPORTED_ERROR)
             return;
         }
 
