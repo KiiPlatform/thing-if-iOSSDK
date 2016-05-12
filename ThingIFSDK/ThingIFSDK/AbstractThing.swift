@@ -7,9 +7,7 @@ import Foundation
 /** Represents Target */
 public class AbstractThing : NSObject, TargetThing {
     public let typedID: TypedID
-    public var accessToken: String? {
-        return nil
-    }
+    public let accessToken: String?
     public var thingID: String {
         return self.typedID.id
     }
@@ -18,22 +16,26 @@ public class AbstractThing : NSObject, TargetThing {
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.typedID, forKey: "typedID")
+        aCoder.encodeObject(self.accessToken, forKey: "accessToken")
         aCoder.encodeObject(self.vendorThingID, forKey: "vendorThingID")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         self.typedID = aDecoder.decodeObjectForKey("typedID") as! TypedID
+        self.accessToken = aDecoder.decodeObjectForKey("accessToken") as! String?
         self.vendorThingID = aDecoder.decodeObjectForKey("vendorThingID") as! String
     }
 
-    /** Init with TypedID
+    /** Init
 
-    - Parameter typedID: ID of target
+    - Parameter thingID: ID of thing
+    - Parameter vendorThingID: ID of vendor thing
     - Parameter accessToken: Access token of the target, can nil.
     */
-    public init(thingID: String, vendorThingID : String) {
+    public init(thingID: String, vendorThingID : String, accessToken: String? = nil) {
         self.typedID = TypedID(type: "THING", id: thingID)
+        self.accessToken = accessToken
         self.vendorThingID = vendorThingID
     }
 
