@@ -107,7 +107,7 @@ public class GatewayAPI: NSObject, NSCoding {
 
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
-    public func retore(
+    public func restore(
         completionHandler: (ThingIFError?)-> Void
         )
     {
