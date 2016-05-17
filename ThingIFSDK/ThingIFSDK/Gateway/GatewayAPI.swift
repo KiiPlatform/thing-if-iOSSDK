@@ -56,10 +56,10 @@ public class GatewayAPI: NSObject, NSCoding {
 
     /** Let the Gateway Onboard.
 
-     - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
+     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is Gateway instance that has thingID asigned by Kii Cloud and 2nd one is an instance of ThingIFError when failed.
      */
     public func onboardGateway(
-        completionHandler: (String?, ThingIFError?)-> Void
+        completionHandler: (Gateway?, ThingIFError?)-> Void
         )
     {
         // TODO: implement me.
