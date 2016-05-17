@@ -135,7 +135,6 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
             tag: String,
             testcase: TestCase,
             setting:TestSetting) {
-
         weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
         defer{
             expectation = nil

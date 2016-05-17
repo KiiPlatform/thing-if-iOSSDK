@@ -11,11 +11,22 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         super.tearDown()
     }
 
-    func testPostNewServerCodeTrigger_success() {
+    func testPostNewServerCodeStateTrigger_success() {
+        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        postNewServerCodeTrigger_success(predicate)
+
+    }
+    func testPostNewServerCodeScheduleOnceTrigger_success() {
+        let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000))
+        postNewServerCodeTrigger_success(predicate)
+    }
+
+    func postNewServerCodeTrigger_success(predicate: Predicate) {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let tag = "PostNewServerCodeTriggerTests.testPostNewTrigger_success"
-        let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_success")
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_success_\(predicate.getEventSource().rawValue)")
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
@@ -27,8 +38,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         expectedParameters["arg4"] = false
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
-        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+
 
         let expectedPredicateDict = predicate.toNSDictionary()
         let expectedServerCodeDict = serverCode.toNSDictionary()
@@ -88,11 +98,22 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         }
     }
 
-    func testPostNewServerCodeTrigger_http_404() {
+    func testPostNewServerCodeStateTrigger_http_404() {
+        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        postNewServerCodeTrigger_success(predicate)
+
+    }
+    func testPostNewServerCodeScheduleOnceTrigger_http_404() {
+        let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000))
+        postNewServerCodeTrigger_http_404(predicate)
+    }
+    
+    func postNewServerCodeTrigger_http_404(predicate : Predicate) {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let tag = "PostNewServerCodeTriggerTests.testPostNewServerCodeTrigger_http_404"
-        let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404")
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404_\(predicate.getEventSource().rawValue)")
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
         let expectedTargetAppID = "app000001"
@@ -103,8 +124,6 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         expectedParameters["arg4"] = false
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
-        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
         
         let expectedPredicateDict = predicate.toNSDictionary()
         let expectedServerCodeDict = serverCode.toNSDictionary()
@@ -169,7 +188,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
     func testPostNewServerCodeTrigger_UnsupportError() {
         let setting:TestSetting = TestSetting()
         let api = setting.api
-        let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_UnsupportError")
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_UnsupportError")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
         let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
@@ -199,7 +218,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
     func testPostNewServerCodeTrigger_target_not_available_error() {
         let setting:TestSetting = TestSetting()
         let api = setting.api
-        let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_target_not_available_error")
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_target_not_available_error")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
         let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)

@@ -25,12 +25,11 @@ public class ScheduleOncePredicate: NSObject,Predicate {
     }
 
     public required init(coder aDecoder: NSCoder) {
-        self.scheduleAt = NSDate(timeIntervalSince1970: (aDecoder.decodeObjectForKey("scheduleAt") as! NSNumber).doubleValue)
+        self.scheduleAt = aDecoder.decodeObjectForKey("scheduleAt") as! NSDate
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeDouble(self.scheduleAt.timeIntervalSince1970, forKey: "scheduleAt")
-
+        aCoder.encodeObject(self.scheduleAt, forKey: "scheduleAt")
     }
 
     /** Get Json object of ScheduleOncePredicate instance

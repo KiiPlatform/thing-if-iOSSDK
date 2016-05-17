@@ -72,8 +72,8 @@ public class Trigger: NSObject, NSCoding {
                         //Not supported yet
                         break
                     case EventSource.ScheduleOnce:
-                        if let scheduleAtMilis = (predicateDict["scheduleAt"] as? NSNumber)?.longLongValue {
-                            predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSince1970: Double(scheduleAtMilis/1000)))
+                        if let scheduleAtMilis = (predicateDict["scheduleAt"] as? NSNumber)?.doubleValue {
+                            predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSince1970: scheduleAtMilis/1000))
                         }
                         break
                     }

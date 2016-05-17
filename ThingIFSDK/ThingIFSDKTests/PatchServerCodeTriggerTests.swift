@@ -10,12 +10,22 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
-    func testPatchServerCodeTrigger_success() {
+
+    func testPatchServerCodeStateTrigger_success() {
+        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        patchServerCodeTrigger_success(predicate)
+
+    }
+    func testPatchServerCodeScheduleOnceTrigger_success() {
+        let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000))
+        patchServerCodeTrigger_success(predicate)
+    }
+    func patchServerCodeTrigger_success(predicate: Predicate) {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let tag = "PatchServerCodeTriggerTests.testPatchServerCodeTrigger_success"
-        let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_success")
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_success_\(predicate.getEventSource().rawValue)")
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
@@ -27,9 +37,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         expectedParameters["arg4"] = false
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
-        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
-        
+
         let expectedPredicateDict = predicate.toNSDictionary()
         let expectedServerCodeDict = serverCode.toNSDictionary()
         do {
@@ -103,13 +111,22 @@ class PatchServerCodeTriggerTests: SmallTestBase {
             }
         }
     }
-    
-    func testPatchServerCodeTrigger_http_404() {
+    func testPatchServerCodeStateTrigger_http_404() {
+        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        patchServerCodeTrigger_http_404(predicate)
+
+    }
+    func testPatchServerCodeScheduleOnceTrigger_http_404() {
+        let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000))
+        patchServerCodeTrigger_http_404(predicate)
+    }
+    func patchServerCodeTrigger_http_404(predicate: Predicate) {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let tag = "PatchServerCodeTriggerTests.testPatchServerCodeTrigger_http_404"
         let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404")
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404_\(predicate.getEventSource().rawValue)")
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
         let expectedTargetAppID = "app000001"
@@ -120,9 +137,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         expectedParameters["arg4"] = false
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
-        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
-        
+
         let expectedPredicateDict = predicate.toNSDictionary()
         let expectedServerCodeDict = serverCode.toNSDictionary()
         do {
@@ -182,12 +197,12 @@ class PatchServerCodeTriggerTests: SmallTestBase {
             }
         }
     }
-    
+
     func testPatchServerCodeTrigger_UnsupportError() {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let expectation = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_UnsupportError")
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_UnsupportError")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
         let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
@@ -213,15 +228,24 @@ class PatchServerCodeTriggerTests: SmallTestBase {
             }
         }
     }
-    
-    func testPatchServerCodeTrigger_target_not_available_error() {
+
+    func testPatchServerCodeStateTrigger_target_not_available_error() {
+        let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        patchServerCodeTrigger_target_not_available_error(predicate)
+    }
+    func testPatchServerCodeScheduleOnceTrigger_target_not_available_error() {
+        let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000))
+        patchServerCodeTrigger_target_not_available_error(predicate)
+    }
+
+    func patchServerCodeTrigger_target_not_available_error(predicate: Predicate) {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let expectation = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_target_not_available_error")
+        weak var expectation : XCTestExpectation! = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_target_not_available_error_\(predicate.getEventSource().rawValue)")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
-        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
         
         api.patchTrigger(triggerID, serverCode:serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
             if error == nil{
