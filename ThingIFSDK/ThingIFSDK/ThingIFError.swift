@@ -32,5 +32,6 @@ public enum ThingIFError : ErrorType {
     case API_NOT_STORED
     /** when trying to load API from persistance but it does not have correct instance*/
     case INVALID_STORED_API
-
+    /** when trying to access Gateway but user is not logged in*/
+    case USER_IS_NOT_LOGGED_IN
 }

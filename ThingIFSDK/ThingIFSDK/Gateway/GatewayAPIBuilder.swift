@@ -9,6 +9,11 @@ import Foundation
 
 public class GatewayAPIBuilder {
 
+    private var tag: String?
+    private let app: App
+    private let gatewayAddress: NSURL
+    public var accessToken: String?
+
     /** Set tag to this GatewayAPI instance.
      tag is used to distinguish storage area of instance.
      <br>
@@ -24,7 +29,7 @@ public class GatewayAPIBuilder {
      */
     public func setTag(tag: String?) -> GatewayAPIBuilder
     {
-        // TODO: implement me.
+        self.tag = tag
         return self
     }
 
@@ -35,7 +40,9 @@ public class GatewayAPIBuilder {
      */
     public init(app:App, address:NSURL, tag:String?=nil)
     {
-        // TODO: implement me.
+        self.app = app
+        self.gatewayAddress = address
+        self.tag = tag
     }
 
     /** Build GatewayAPI instance.
@@ -43,8 +50,8 @@ public class GatewayAPIBuilder {
     */
     public func build() -> GatewayAPI
     {
-        // TODO: implement me.
-        return GatewayAPI(app: App(appID: "dummy", appKey: "dummy", site: Site.JP),
-            gatewayAddress: NSURL())
+        let api = GatewayAPI(app: self.app, gatewayAddress: self.gatewayAddress, tag: self.tag)
+        api.setAccessToken(self.accessToken)
+        return api
     }
 }
