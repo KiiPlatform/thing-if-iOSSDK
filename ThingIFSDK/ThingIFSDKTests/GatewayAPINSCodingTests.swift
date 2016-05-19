@@ -20,9 +20,9 @@ class GatewayAPINSCodingTests: GatewayAPITestBase {
         super.tearDown()
     }
 
-    func test()
+    func testSuccess()
     {
-        let expectation = self.expectationWithDescription("test")
+        let expectation = self.expectationWithDescription("testSuccess")
         let setting = TestSetting()
 
         do {

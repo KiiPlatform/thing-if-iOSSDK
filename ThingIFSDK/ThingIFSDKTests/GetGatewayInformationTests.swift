@@ -22,7 +22,7 @@ class GetGatewayInformationTests: GatewayAPITestBase {
 
     func testSuccess()
     {
-        let api:GatewayAPI = getGatewayAPIWithLoggedIn()
+        let api:GatewayAPI = getLoggedInGatewayAPI()
         let vendorThingID = "dummyID"
         let expectation = self.expectationWithDescription("testSuccess")
 
@@ -35,8 +35,10 @@ class GetGatewayInformationTests: GatewayAPITestBase {
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let expectedHeader = [
+                    "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                     "authorization": "Bearer \(self.ACCESSTOKEN)"
                 ]
+                XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
@@ -95,7 +97,7 @@ class GetGatewayInformationTests: GatewayAPITestBase {
 
     func test401Error()
     {
-        let api:GatewayAPI = getGatewayAPIWithLoggedIn()
+        let api:GatewayAPI = getLoggedInGatewayAPI()
         let expectation = self.expectationWithDescription("test401Error")
 
         // verify request
@@ -106,8 +108,10 @@ class GetGatewayInformationTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
+                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
+            XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }

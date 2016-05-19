@@ -11,8 +11,8 @@ import XCTest
 class GatewayAPITestBase: SmallTestBase {
     let ACCESSTOKEN: String = "token-0000-1111-aaaa-bbbb"
 
-    func getGatewayAPIWithLoggedIn() -> GatewayAPI {
-        let expectation = self.expectationWithDescription("getGatewayAPIWithLoggedIn")
+    func getLoggedInGatewayAPI() -> GatewayAPI {
+        let expectation = self.expectationWithDescription("getLoggedInGatewayAPI")
         let setting = TestSetting()
 
         do {

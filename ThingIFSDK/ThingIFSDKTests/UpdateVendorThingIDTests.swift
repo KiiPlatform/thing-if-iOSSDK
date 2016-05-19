@@ -44,9 +44,11 @@ class UpdateVendorThingIDTests: SmallTestBase {
             let expectedHeader = [
                 "X-kii-appid": setting.appID,
                 "x-kii-appkey": setting.appKey,
+                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                 "authorization": "Bearer \(setting.owner.accessToken)",
                 "Content-Type": "application/vnd.kii.VendorThingIDUpdateRequest+json"
             ]
+            XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -113,9 +115,11 @@ class UpdateVendorThingIDTests: SmallTestBase {
             let expectedHeader = [
                 "X-kii-appid": setting.appID,
                 "x-kii-appkey": setting.appKey,
+                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                 "authorization": "Bearer \(setting.owner.accessToken)",
                 "Content-Type": "application/vnd.kii.VendorThingIDUpdateRequest+json"
             ]
+            XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
@@ -188,9 +192,11 @@ class UpdateVendorThingIDTests: SmallTestBase {
             let expectedHeader = [
                 "X-kii-appid": setting.appID,
                 "x-kii-appkey": setting.appKey,
+                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                 "authorization": "Bearer \(setting.owner.accessToken)",
                 "Content-Type": "application/vnd.kii.VendorThingIDUpdateRequest+json"
             ]
+            XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }

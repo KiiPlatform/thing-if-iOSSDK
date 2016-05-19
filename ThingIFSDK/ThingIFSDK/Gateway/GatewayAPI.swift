@@ -116,7 +116,7 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (Gateway?, ThingIFError?)-> Void
         )
     {
-        if self.isLoggedIn() == false {
+        if !self.isLoggedIn() {
             completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
             return;
         }
@@ -160,7 +160,7 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (String?, ThingIFError?)-> Void
         )
     {
-        if self.isLoggedIn() == false {
+        if !self.isLoggedIn() {
             completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
             return;
         }
@@ -197,7 +197,7 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: ([PendingEndNode]?, ThingIFError?)-> Void
         )
     {
-        if self.isLoggedIn() == false {
+        if !self.isLoggedIn() {
             completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
             return;
         }
@@ -249,7 +249,7 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (ThingIFError?)-> Void
         )
     {
-        if self.isLoggedIn() == false {
+        if !self.isLoggedIn() {
             completionHandler(ThingIFError.USER_IS_NOT_LOGGED_IN)
             return;
         }
@@ -304,7 +304,7 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (ThingIFError?)-> Void
         )
     {
-        if self.isLoggedIn() == false {
+        if !self.isLoggedIn() {
             completionHandler(ThingIFError.USER_IS_NOT_LOGGED_IN)
             return;
         }
@@ -344,7 +344,7 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (ThingIFError?)-> Void
         )
     {
-        if self.isLoggedIn() == false {
+        if !self.isLoggedIn() {
             completionHandler(ThingIFError.USER_IS_NOT_LOGGED_IN)
             return;
         }
@@ -400,7 +400,7 @@ public class GatewayAPI: NSObject, NSCoding {
         completionHandler: (GatewayInformation?, ThingIFError?)-> Void
         )
     {
-        if self.isLoggedIn() == false {
+        if !self.isLoggedIn() {
             completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
             return;
         }

@@ -41,8 +41,10 @@ class GetVendorThingIDTests: SmallTestBase {
                 let expectedHeader = [
                     "X-kii-appid": setting.appID,
                     "x-kii-appkey": setting.appKey,
+                    "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                     "authorization": "Bearer \(setting.owner.accessToken)"
                 ]
+                XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
                 for (key, value) in expectedHeader {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
@@ -95,8 +97,10 @@ class GetVendorThingIDTests: SmallTestBase {
             let expectedHeader = [
                 "X-kii-appid": setting.appID,
                 "x-kii-appkey": setting.appKey,
+                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                 "authorization": "Bearer \(setting.owner.accessToken)"
             ]
+            XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
