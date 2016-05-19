@@ -18,7 +18,7 @@ public class GatewayAPI: NSObject, NSCoding {
     public let app: App
     public let gatewayAddress: NSURL
 
-    private var accessToken: String?
+    internal var accessToken: String?
 
     let operationQueue = OperationQueue()
 
@@ -449,11 +449,6 @@ public class GatewayAPI: NSObject, NSCoding {
     public func getAccessToken() -> String?
     {
         return self.accessToken
-    }
-
-    func setAccessToken(token: String?)
-    {
-        self.accessToken = token
     }
 
     /** Try to load the instance of GatewayAPI using stored serialized instance.

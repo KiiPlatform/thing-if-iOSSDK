@@ -51,7 +51,7 @@ public class GatewayAPIBuilder {
     public func build() -> GatewayAPI
     {
         let api = GatewayAPI(app: self.app, gatewayAddress: self.gatewayAddress, tag: self.tag)
-        api.setAccessToken(self.accessToken)
+        api.accessToken = self.accessToken
         return api
     }
 }
