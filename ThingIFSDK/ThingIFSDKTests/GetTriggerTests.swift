@@ -67,11 +67,8 @@ class GetTriggerTests: SmallTestBase {
 
     func getTriggerSuccess(tag: String, statementToTest: Dictionary<String, AnyObject>, triggersWhen: String, setting:TestSetting) {
 
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
-        defer{
-            expectation = nil
-        }
-        
+        let expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+
         do{
             let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
             let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]

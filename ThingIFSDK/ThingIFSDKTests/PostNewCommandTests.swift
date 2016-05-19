@@ -49,10 +49,7 @@ class PostNewCommandTests: SmallTestBase {
 
     func postCommandSuccess(tag: String, testcase: TestCase, setting:TestSetting) {
 
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
-        defer{
-            expectation = nil
-        }
+        let expectation : XCTestExpectation! = self.expectationWithDescription(tag)
         
         do {
             let expectedCommandID = "c6f1b8d0-46ea-11e5-a5eb-06d9d1527620"

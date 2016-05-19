@@ -89,10 +89,8 @@ class ListCommandsTests: SmallTestBase {
 
     func listCommandsSuccess(tag: String, testcase: TestCase) {
 
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
-        defer{
-            expectation = nil
-        }
+        let expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+        
         let setting = TestSetting()
         let api = setting.api
         let owner = setting.owner

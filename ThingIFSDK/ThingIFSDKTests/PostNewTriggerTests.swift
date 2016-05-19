@@ -39,12 +39,10 @@ class PostNewTriggerTests: SmallTestBase {
     }
 
     func testPostNewTrigger_success() {
-        weak var expectation : XCTestExpectation!
-        defer {
-            expectation = nil
-        }
+
+
         func postNewTriggerSuccess(tag: String, testcase: TestCase, setting:TestSetting) {
-            expectation = self.expectationWithDescription(tag)
+            let expectation = self.expectationWithDescription(tag)
 
             do{
                 let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
