@@ -35,7 +35,6 @@ class GetGatewayIDTests: GatewayAPITestBase {
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let expectedHeader = [
-                    "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                     "authorization": "Bearer \(self.ACCESSTOKEN)"
                 ]
                 XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
@@ -108,7 +107,6 @@ class GetGatewayIDTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
@@ -157,7 +155,6 @@ class GetGatewayIDTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
@@ -206,7 +203,6 @@ class GetGatewayIDTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
@@ -255,7 +251,6 @@ class GetGatewayIDTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
@@ -304,7 +299,6 @@ class GetGatewayIDTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)

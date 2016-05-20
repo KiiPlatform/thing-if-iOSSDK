@@ -73,7 +73,7 @@ public class GatewayAPI: NSObject, NSCoding {
         let credential = "\(self.app.appID):\(self.app.appKey)"
         let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(base64Str)"
+            "authorization": "Basic \(base64Str)"
         ]
 
         // genrate body
@@ -87,7 +87,7 @@ public class GatewayAPI: NSObject, NSCoding {
         do {
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
-            let request = buildDefaultRequest(
+            let request = buildNewRequest(
                 HTTPMethod.POST,
                 urlString: requestURL,
                 requestHeaderDict: requestHeaderDict,
@@ -124,12 +124,10 @@ public class GatewayAPI: NSObject, NSCoding {
         let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/onboarding"
 
         // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken!)"
-        ]
+        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
 
         // do request
-        let request = buildDefaultRequest(
+        let request = buildNewRequest(
             HTTPMethod.POST,
             urlString: requestURL,
             requestHeaderDict: requestHeaderDict,
@@ -137,9 +135,9 @@ public class GatewayAPI: NSObject, NSCoding {
             completionHandler: { (response, error) -> Void in
                 let gateway: Gateway?
                 if response != nil {
-                    let thingID = response?["thingID"] as? String
-                    // FIXME: Gateway should return the vendorThingID
-                    gateway = Gateway(thingID: thingID!, vendorThingID: "")
+                    let thingID = response!["thingID"] as? String
+                    let vendorThingID = response!["vendorThingID"] as? String
+                    gateway = Gateway(thingID: thingID!, vendorThingID: vendorThingID!)
                 } else {
                     gateway = nil
                 }
@@ -168,12 +166,10 @@ public class GatewayAPI: NSObject, NSCoding {
         let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/id"
 
         // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken!)"
-        ]
+        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
 
         // do request
-        let request = buildDefaultRequest(
+        let request = buildNewRequest(
             HTTPMethod.GET,
             urlString: requestURL,
             requestHeaderDict: requestHeaderDict,
@@ -205,12 +201,10 @@ public class GatewayAPI: NSObject, NSCoding {
         let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/pending"
 
         // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken!)"
-        ]
+        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
 
         // do request
-        let request = buildDefaultRequest(
+        let request = buildNewRequest(
             HTTPMethod.GET,
             urlString: requestURL,
             requestHeaderDict: requestHeaderDict,
@@ -262,9 +256,7 @@ public class GatewayAPI: NSObject, NSCoding {
         let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(endNode.vendorThingID)"
 
         // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken!)"
-        ]
+        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
 
         // genrate body
         let requestBodyDict = NSMutableDictionary(dictionary:
@@ -276,7 +268,7 @@ public class GatewayAPI: NSObject, NSCoding {
         do {
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
-            let request = buildDefaultRequest(
+            let request = buildNewRequest(
                 HTTPMethod.PUT,
                 urlString: requestURL,
                 requestHeaderDict: requestHeaderDict,
@@ -312,12 +304,10 @@ public class GatewayAPI: NSObject, NSCoding {
         let requestURL = "\(self.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
 
         // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken!)"
-        ]
+        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
 
         // do request
-        let request = buildDefaultRequest(
+        let request = buildNewRequest(
             HTTPMethod.POST,
             urlString: requestURL,
             requestHeaderDict: requestHeaderDict,
@@ -357,10 +347,7 @@ public class GatewayAPI: NSObject, NSCoding {
         let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/THING_ID:\(endNodeThingID)"
 
         // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken!)",
-            "Content-Type": "application/json"
-        ]
+        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
 
         // genrate body
         let requestBodyDict = NSMutableDictionary(dictionary:
@@ -372,7 +359,7 @@ public class GatewayAPI: NSObject, NSCoding {
         do {
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
-            let request = buildDefaultRequest(
+            let request = buildNewRequest(
                 HTTPMethod.PUT,
                 urlString: requestURL,
                 requestHeaderDict: requestHeaderDict,
@@ -408,12 +395,10 @@ public class GatewayAPI: NSObject, NSCoding {
         let requestURL = "\(self.gatewayAddress.absoluteString)/gateway-info"
 
         // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Bearer \(self.accessToken!)"
-        ]
+        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
 
         // do request
-        let request = buildDefaultRequest(
+        let request = buildNewRequest(
             HTTPMethod.GET,
             urlString: requestURL,
             requestHeaderDict: requestHeaderDict,
@@ -525,5 +510,9 @@ public class GatewayAPI: NSObject, NSCoding {
             NSUserDefaults.standardUserDefaults().setObject(NSDictionary(dictionary: [key:data]), forKey: baseKey)
         }
         NSUserDefaults.standardUserDefaults().synchronize()
+    }
+
+    private func generateAuthBearerHeader() -> Dictionary<String, String> {
+        return [ "authorization": "Bearer \(self.accessToken!)" ]
     }
 }

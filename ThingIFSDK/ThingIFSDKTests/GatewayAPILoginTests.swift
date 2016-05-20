@@ -38,8 +38,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
                 let credential = "\(setting.app.appID):\(setting.app.appKey)"
                 let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
                 let expectedHeader = [
-                    "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
-                    "authorization": "Bearer \(base64Str)"
+                    "authorization": "Basic \(base64Str)"
                 ]
                 XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
                 for (key, value) in expectedHeader {
@@ -145,8 +144,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             let credential = "\(setting.app.appID):\(setting.app.appKey)"
             let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
             let expectedHeader = [
-                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
-                "authorization": "Bearer \(base64Str)"
+                "authorization": "Basic \(base64Str)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
@@ -203,8 +201,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             let credential = "\(setting.app.appID):\(setting.app.appKey)"
             let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
             let expectedHeader = [
-                "x-kii-sdk": SDKVersion.sharedInstance.kiiSDKHeader,
-                "authorization": "Bearer \(base64Str)"
+                "authorization": "Basic \(base64Str)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {

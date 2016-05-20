@@ -28,6 +28,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
         let thingProperties = [
+            "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
 
@@ -122,6 +123,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
         let thingProperties = [
+            "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
 
@@ -178,7 +180,6 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
 
         let src = [
             "vendorThingID": vendorThingID,
-            "thingType": setting.thingType,
             "thingProperties": thingProperties
         ]
         let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
@@ -212,6 +213,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
         let thingProperties = [
+            "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
 
@@ -268,7 +270,6 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
 
         let src = [
             "vendorThingID": vendorThingID,
-            "thingType": setting.thingType,
             "thingProperties": thingProperties
         ]
         let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
@@ -302,6 +303,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
         let thingProperties = [
+            "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
 
@@ -358,7 +360,6 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
 
         let src = [
             "vendorThingID": vendorThingID,
-            "thingType": setting.thingType,
             "thingProperties": thingProperties
         ]
         let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
@@ -391,12 +392,12 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
         let thingProperties = [
+            "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
 
         let src = [
             "vendorThingID": vendorThingID,
-            "thingType": setting.thingType,
             "thingProperties": thingProperties
         ]
         let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
@@ -430,17 +431,17 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
         let thingProperties = [
+            "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
 
         // perform onboarding
         setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
-        let src = [
-            "thingType": setting.thingType,
+        let src: Dictionary<String, AnyObject> = [
             "thingProperties": thingProperties
         ]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -471,6 +472,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
         let thingProperties = [
+            "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
 
@@ -479,7 +481,6 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
 
         let src = [
             "vendorThingID": "",
-            "thingType": setting.thingType,
             "thingProperties": thingProperties
         ]
         let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
@@ -513,6 +514,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let vendorThingID = "dummyVendorThingID"
         let password = ""
         let thingProperties = [
+            "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
 
@@ -521,7 +523,6 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
 
         let src = [
             "vendorThingID": vendorThingID,
-            "thingType": setting.thingType,
             "thingProperties": thingProperties
         ]
         let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
