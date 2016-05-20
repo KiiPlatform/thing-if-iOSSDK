@@ -185,9 +185,57 @@ public class GatewayAPI: NSObject, NSCoding {
         operationQueue.addOperation(operation)
     }
 
+    /** List connected end nodes which has been onboarded.
+
+     - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is list of end nodes and 2nd one is an instance of ThingIFError when failed.
+     */
+    public func listOnboardedEndNodes(
+        completionHandler: ([EndNode]?, ThingIFError?)-> Void
+        )
+    {
+        if !self.isLoggedIn() {
+            completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
+            return;
+        }
+
+        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/onboarded"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
+
+        // do request
+        let request = buildNewRequest(
+            HTTPMethod.GET,
+            urlString: requestURL,
+            requestHeaderDict: requestHeaderDict,
+            requestBodyData: nil,
+            completionHandler: { (response, error) -> Void in
+                var endNodes = [EndNode]()
+                if response != nil {
+                    if let endNodeArray = response!["results"] as? [NSDictionary] {
+                        for endNode in endNodeArray {
+                            let thingID = endNode["thingID"] as? String
+                            let vendorThingID = endNode["vendorThingID"] as? String
+                            endNodes.append(EndNode(thingID: thingID!, vendorThingID: vendorThingID!))
+                        }
+                    }
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    if error != nil {
+                        completionHandler(nil, error)
+                    } else {
+                        completionHandler(endNodes, nil)
+                    }
+                }
+            }
+        )
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
+    }
+
     /** List connected end nodes which has not been onboarded.
 
-     - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is List of end nodes connected to the gateway but waiting for onboarding and 2nd one is an instance of ThingIFError when failed.
+     - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is list of end nodes connected to the gateway but waiting for onboarding and 2nd one is an instance of ThingIFError when failed.
      */
     public func listPendingEndNodes(
         completionHandler: ([PendingEndNode]?, ThingIFError?)-> Void
