@@ -12,7 +12,6 @@ public class GatewayAPIBuilder {
     private var tag: String?
     private let app: App
     private let gatewayAddress: NSURL
-    internal var accessToken: String?
 
     /** Set tag to this GatewayAPI instance.
      tag is used to distinguish storage area of instance.
@@ -30,12 +29,6 @@ public class GatewayAPIBuilder {
     public func setTag(tag: String?) -> GatewayAPIBuilder
     {
         self.tag = tag
-        return self
-    }
-
-    public func setAccessToken(token: String?) -> GatewayAPIBuilder
-    {
-        self.accessToken = token
         return self
     }
 
@@ -57,7 +50,6 @@ public class GatewayAPIBuilder {
     public func build() -> GatewayAPI
     {
         let api = GatewayAPI(app: self.app, gatewayAddress: self.gatewayAddress, tag: self.tag)
-        api.accessToken = self.accessToken
         return api
     }
 }
