@@ -18,7 +18,7 @@ public class GatewayAPI: NSObject, NSCoding {
     public let app: App
     public let gatewayAddress: NSURL
 
-    internal var accessToken: String?
+    private var accessToken: String?
 
     let operationQueue = OperationQueue()
 
