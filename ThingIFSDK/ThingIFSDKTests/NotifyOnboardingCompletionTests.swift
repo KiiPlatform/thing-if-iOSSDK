@@ -36,7 +36,8 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
+                "authorization": "Bearer \(self.ACCESSTOKEN)",
+                "Content-Type": "application/json"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
@@ -160,7 +161,8 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
+                "authorization": "Bearer \(self.ACCESSTOKEN)",
+                "Content-Type": "application/json"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
@@ -213,7 +215,8 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
+                "authorization": "Bearer \(self.ACCESSTOKEN)",
+                "Content-Type": "application/json"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
@@ -266,7 +269,8 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
+                "authorization": "Bearer \(self.ACCESSTOKEN)",
+                "Content-Type": "application/json"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
@@ -319,7 +323,8 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
+                "authorization": "Bearer \(self.ACCESSTOKEN)",
+                "Content-Type": "application/json"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
@@ -372,7 +377,8 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
+                "authorization": "Bearer \(self.ACCESSTOKEN)",
+                "Content-Type": "application/json"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {

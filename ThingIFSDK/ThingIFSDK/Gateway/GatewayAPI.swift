@@ -73,7 +73,8 @@ public class GatewayAPI: NSObject, NSCoding {
         let credential = "\(self.app.appID):\(self.app.appKey)"
         let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Basic \(base64Str)"
+            "authorization": "Basic \(base64Str)",
+            "Content-Type": "application/json"
         ]
 
         // genrate body
@@ -304,7 +305,8 @@ public class GatewayAPI: NSObject, NSCoding {
         let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(endNode.vendorThingID)"
 
         // generate header
-        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
+        var requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
+        requestHeaderDict["Content-Type"] = "application/json"
 
         // genrate body
         let requestBodyDict = NSMutableDictionary(dictionary:
@@ -395,7 +397,8 @@ public class GatewayAPI: NSObject, NSCoding {
         let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/THING_ID:\(endNodeThingID)"
 
         // generate header
-        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
+        var requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
+        requestHeaderDict["Content-Type"] = "application/json"
 
         // genrate body
         let requestBodyDict = NSMutableDictionary(dictionary:

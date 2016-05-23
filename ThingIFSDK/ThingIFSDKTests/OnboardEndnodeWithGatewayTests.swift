@@ -59,7 +59,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
 
                 //verify body
                 let expectedBody = [
-                    "owner": setting.owner.typedID.id,
+                    "owner": setting.owner.typedID.toString(),
                     "gatewayThingID": gatewayThingID,
                     "endNodeVendorThingID": vendorThingID,
                     "endNodePassword": password,
@@ -153,7 +153,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
 
             //verify body
             let expectedBody = [
-                "owner": setting.owner.typedID.id,
+                "owner": setting.owner.typedID.toString(),
                 "gatewayThingID": gatewayThingID,
                 "endNodeVendorThingID": vendorThingID,
                 "endNodePassword": password,
@@ -243,7 +243,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
 
             //verify body
             let expectedBody = [
-                "owner": setting.owner.typedID.id,
+                "owner": setting.owner.typedID.toString(),
                 "gatewayThingID": gatewayThingID,
                 "endNodeVendorThingID": vendorThingID,
                 "endNodePassword": password,
@@ -333,7 +333,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
 
             //verify body
             let expectedBody = [
-                "owner": setting.owner.typedID.id,
+                "owner": setting.owner.typedID.toString(),
                 "gatewayThingID": gatewayThingID,
                 "endNodeVendorThingID": vendorThingID,
                 "endNodePassword": password,

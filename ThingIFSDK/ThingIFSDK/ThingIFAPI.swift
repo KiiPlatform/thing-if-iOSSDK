@@ -87,7 +87,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     /** On board IoT Cloud with the specified vendor thing ID.
     Specified thing will be owned by owner who consumes this API.
     (Specified on creation of ThingIFAPI instance.)
-    If you are using a gateway, you need to use onboardEndnodeWithGateway instead.
+    If you are using a gateway, you need to use onboardEndnodeWithGateway to onboard endnode instead.
     
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -125,7 +125,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     (Specified on creation of ThingIFAPI instance.)
     When you're sure that the on board process has been done,
     this method is convenient.
-     If you are using a gateway, you need to use onboardEndnodeWithGateway instead.
+     If you are using a gateway, you need to use onboardEndnodeWithGateway to onboard endnode instead.
 
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -190,16 +190,16 @@ public class ThingIFAPI: NSObject, NSCoding {
                 "gatewayThingID": self.target!.typedID.id,
                 "endNodeVendorThingID": pendingEndnode.vendorThingID!,
                 "endNodePassword": endnodePassword,
-                "owner": self.owner.typedID.id
+                "owner": self.owner.typedID.toString()
             ]
         )
 
         if pendingEndnode.thingType != nil {
-            requestBodyDict.setValue(pendingEndnode.thingType, forKey: "endNodeThingType")
+            requestBodyDict["endNodeThingType"] = pendingEndnode.thingType
         }
 
         if !(pendingEndnode.thingProperties?.isEmpty ?? true) {
-            requestBodyDict.setObject(pendingEndnode.thingProperties!, forKey: "endNodeThingProperties")
+            requestBodyDict["endNodeThingProperties"] = pendingEndnode.thingProperties
         }
 
         do {
