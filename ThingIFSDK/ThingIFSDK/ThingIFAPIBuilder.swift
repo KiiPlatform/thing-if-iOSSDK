@@ -8,20 +8,30 @@ import Foundation
 /** Builder class of ThingIFAPI */
 public class ThingIFAPIBuilder {
 
-    var thingIFAPI: ThingIFAPI!
+    var app: App
+    var owner: Owner
+    var target: Target?
+    var tag: String?
 
     /** Initialize builder.
     - Parameter app: Kii Cloud Application.
     - Parameter owner: Owner who consumes ThingIFAPI.
+    - Parameter target: target of the ThingIFAPI instance.
     - Parameter tag: tag of the ThingIFAPI instance.
      */
-    public init(app:App, owner:Owner, tag:String?=nil) {
-        thingIFAPI = ThingIFAPI(app: app, owner: owner, tag: tag)
+    public init(app:App, owner:Owner, target: Target?=nil, tag:String?=nil) {
+        self.app = app
+        self.owner = owner
+        self.target = target
+        self.tag = tag
     }
+
     /** Build ThingIFAPI instance.
     - Returns: ThingIFAPI instance.
      */
     public func build() -> ThingIFAPI {
+        let thingIFAPI = ThingIFAPI(app: self.app, owner: self.owner, tag: self.tag)
+        thingIFAPI._target = self.target
         return thingIFAPI
     }
 }
