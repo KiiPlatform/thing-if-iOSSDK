@@ -106,6 +106,7 @@
 		B6651A221CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */; };
 		B68227F41C85823A00AB85D0 /* CommandSerializationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */; };
 		B683A31B1CBB807A00742570 /* CommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683A31A1CBB807A00742570 /* CommandFormTests.swift */; };
+		B68D7BE31CF83DFC00D69149 /* TypedIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68D7BE21CF83DFC00D69149 /* TypedIDTests.swift */; };
 		B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */; };
 		D5521C741CCDFDA200037C9F /* Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5521C731CCDFDA200037C9F /* Predicate.swift */; };
 		D5521C761CCDFE7600037C9F /* ServerCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5521C751CCDFE7600037C9F /* ServerCode.swift */; };
@@ -227,6 +228,7 @@
 		B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewCommandWithCommandFormTests.swift; sourceTree = "<group>"; };
 		B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandSerializationTest.swift; sourceTree = "<group>"; };
 		B683A31A1CBB807A00742570 /* CommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandFormTests.swift; sourceTree = "<group>"; };
+		B68D7BE21CF83DFC00D69149 /* TypedIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedIDTests.swift; sourceTree = "<group>"; };
 		B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandForm.swift; sourceTree = "<group>"; };
 		D5521C731CCDFDA200037C9F /* Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Predicate.swift; sourceTree = "<group>"; };
 		D5521C751CCDFE7600037C9F /* ServerCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerCode.swift; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 				2242770F1CEB2BB9004369EE /* GatewayAPIRestoreTests.swift */,
 				2255434C1CEC34A900C73418 /* GatewayAPIStoredInstanceTests.swift */,
 				2268EBA81CF2DA2E007F54E6 /* ListOnboardedEndNodesTests.swift */,
+				B68D7BE21CF83DFC00D69149 /* TypedIDTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -642,6 +645,7 @@
 				7D36B6A11BD4D0CC00D9B821 /* DeleteTriggerTests.swift in Sources */,
 				7D36B6A31BD4D0CC00D9B821 /* EntitySerializationTests.swift in Sources */,
 				2254F2151CE9929E00703185 /* GetGatewayInformationTests.swift in Sources */,
+				B68D7BE31CF83DFC00D69149 /* TypedIDTests.swift in Sources */,
 				22537F8A1CE44E8C006C214D /* UpdateVendorThingIDTests.swift in Sources */,
 				22537F881CE44E42006C214D /* OnboardEndnodeWithGatewayTests.swift in Sources */,
 				A56B0A491C62143000E653EF /* PatchServerCodeTriggerTests.swift in Sources */,

@@ -15,22 +15,27 @@ public class TypedID : NSObject, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        self.type = aDecoder.decodeObjectForKey("type") as! String
+        self.type =
+            (aDecoder.decodeObjectForKey("type") as! String).lowercaseString
         self.id = aDecoder.decodeObjectForKey("id") as! String
     }
 
-    /** Type of the ID */
+    /** Type of the ID
+
+     All characters in this string are lower case.
+     */
     public let type:String
     /** ID of the entity. */
     public let id:String
 
     /** Ininitialize TypedID with type and id.
 
-    - Parameter type: Type of the entity.
+    - Parameter type: Type of the entity. If characters in this string
+      is upper case, characters in type property becomes low case.
     - Parameter id: ID of the entity.
      */
     public init(type:String, id:String) {
-        self.type = type
+        self.type = type.lowercaseString
         self.id = id
     }
 
