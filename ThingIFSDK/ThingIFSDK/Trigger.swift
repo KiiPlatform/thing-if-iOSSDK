@@ -69,7 +69,7 @@ public class Trigger: NSObject, NSCoding {
                         predicate = StatePredicate.statePredicateWithNSDict(predicateDict)
                         break
                     case EventSource.Schedule:
-                        //Not supported yet
+                        predicate = SchedulePredicate(schedule:  predicateDict["schedule"] as! String)
                         break
                     case EventSource.ScheduleOnce:
                         if let scheduleAtMilis = (predicateDict["scheduleAt"] as? NSNumber)?.doubleValue {
