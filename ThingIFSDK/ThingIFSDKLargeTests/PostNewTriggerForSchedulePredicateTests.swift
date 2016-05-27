@@ -338,4 +338,47 @@ class PostNewTriggerForSchedulePredicateTests: LargeTestBase {
             }
         }
     }
+
+    func testInvalidSchedulePredicate() {
+        let api = self.onboardedApi!
+        let expectation =
+            self.expectationWithDescription("post trigger for color")
+        let actions: [Dictionary<String, AnyObject>] = [
+            [
+                "setColor": [128, 0, 255]
+            ],
+            [
+                "setColorTemperature": 25
+            ]
+        ]
+
+        api.postNewTrigger(
+            DEMO_SCHEMA_NAME,
+            schemaVersion: DEMO_SCHEMA_VERSION,
+            actions: actions,
+            predicate: SchedulePredicate(schedule: "wrong format"),
+            completionHandler: {
+                (trigger, error) -> Void in
+                XCTAssertNil(trigger)
+                XCTAssertTrue(error != nil)
+                switch error! {
+                case let .ERROR_RESPONSE(reason):
+                    XCTAssertEqual(400, reason.httpStatusCode)
+                    XCTAssertEqual("WRONG_PREDICATE", reason.errorCode)
+                    XCTAssertEqual("Value for \'schedule\' field is incorrect",
+                                   reason.errorMessage)
+                    break
+                default:
+                    XCTFail()
+                    break
+                }
+                expectation.fulfill()
+            })
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("error")
+            }
+        }
+
+    }
 }
