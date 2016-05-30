@@ -111,6 +111,7 @@
 		B68227F41C85823A00AB85D0 /* CommandSerializationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */; };
 		B683A31B1CBB807A00742570 /* CommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683A31A1CBB807A00742570 /* CommandFormTests.swift */; };
 		B68D7BE11CF8242900D69149 /* LargeTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68D7BE01CF8242900D69149 /* LargeTestBase.swift */; };
+		B699E9D11CFC3E8100EBBC39 /* TypedIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B699E9D01CFC3E8100EBBC39 /* TypedIDTests.swift */; };
 		B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */; };
 		D5521C741CCDFDA200037C9F /* Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5521C731CCDFDA200037C9F /* Predicate.swift */; };
 		D5521C761CCDFE7600037C9F /* ServerCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5521C751CCDFE7600037C9F /* ServerCode.swift */; };
@@ -245,6 +246,7 @@
 		B68227F31C85823A00AB85D0 /* CommandSerializationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandSerializationTest.swift; sourceTree = "<group>"; };
 		B683A31A1CBB807A00742570 /* CommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandFormTests.swift; sourceTree = "<group>"; };
 		B68D7BE01CF8242900D69149 /* LargeTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeTestBase.swift; sourceTree = "<group>"; };
+		B699E9D01CFC3E8100EBBC39 /* TypedIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedIDTests.swift; sourceTree = "<group>"; };
 		B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandForm.swift; sourceTree = "<group>"; };
 		D5521C731CCDFDA200037C9F /* Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Predicate.swift; sourceTree = "<group>"; };
 		D5521C751CCDFE7600037C9F /* ServerCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerCode.swift; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 		7D36B68C1BD4D0CC00D9B821 /* ThingIFSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				B699E9D01CFC3E8100EBBC39 /* TypedIDTests.swift */,
 				7D36B68D1BD4D0CC00D9B821 /* copyWithTarget.swift */,
 				7D36B68E1BD4D0CC00D9B821 /* DeleteTriggerTests.swift */,
 				7D36B68F1BD4D0CC00D9B821 /* EnableTriggerTests.swift */,
@@ -674,6 +677,7 @@
 				A529D2A31C7444DE00C892D2 /* TriggeredServerCodeResultTest.swift in Sources */,
 				2254F2191CE9C8E900703185 /* GatewayAPILoginTests.swift in Sources */,
 				7D36B6B01BD4D0CC00D9B821 /* PushUninstallationTests.swift in Sources */,
+				B699E9D11CFC3E8100EBBC39 /* TypedIDTests.swift in Sources */,
 				22537F8C1CE44EC2006C214D /* GetVendorThingIDTests.swift in Sources */,
 				2268EBA91CF2DA2E007F54E6 /* ListOnboardedEndNodesTests.swift in Sources */,
 				7D36B6AF1BD4D0CC00D9B821 /* PushInstallationTests.swift in Sources */,
