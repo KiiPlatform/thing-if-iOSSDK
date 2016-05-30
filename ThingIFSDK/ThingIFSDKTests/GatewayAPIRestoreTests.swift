@@ -45,8 +45,8 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 204, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         api.restore({ (error:ThingIFError?) -> Void in
@@ -110,8 +110,8 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 400, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         api.restore( { (error:ThingIFError?) -> Void in
@@ -157,8 +157,8 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 401, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         api.restore( { (error:ThingIFError?) -> Void in
@@ -204,8 +204,8 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 409, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         api.restore( { (error:ThingIFError?) -> Void in

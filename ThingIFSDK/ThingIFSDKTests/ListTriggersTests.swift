@@ -83,8 +83,8 @@ class ListTriggersTests: SmallTestBase {
                 }
                 XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers")
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             api.listTriggers(nil, paginationKey: nil, completionHandler: { (triggers, paginationKey, error) -> Void in
@@ -156,8 +156,8 @@ class ListTriggersTests: SmallTestBase {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             api.getTrigger(triggerID, completionHandler: { (trigger, error) -> Void in
                 if error == nil{

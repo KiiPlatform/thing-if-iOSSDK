@@ -25,7 +25,7 @@ class GatewayAPITestBase: SmallTestBase {
                 let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
                                                     statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
-                MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+                sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
                 iotSession = MockSession.self
             } catch(_) {
                 XCTFail("should not throw error")

@@ -58,8 +58,8 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
                 statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
         } catch(_) {
             XCTFail("should not throw error")
@@ -163,8 +163,8 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
             statusCode: 400, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
@@ -221,8 +221,8 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
             statusCode: 401, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)

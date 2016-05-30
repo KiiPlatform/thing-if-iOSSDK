@@ -81,7 +81,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
                 }
             }
             iotSession = MockMultipleSession.self
-            MockMultipleSession.responsePairs = [
+            sharedMockMultipleSession.responsePairs = [
                 ((data: jsonData4Patch, urlResponse: urlResponse4Patch, error: nil), patchRequestVerifier),
                 ((data: jsonData4Get, urlResponse: urlResponse4Get, error: nil),getRequestVerifier)
             ]
@@ -166,8 +166,8 @@ class PatchServerCodeTriggerTests: SmallTestBase {
                     XCTFail(tag)
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
             api._target = setting.target

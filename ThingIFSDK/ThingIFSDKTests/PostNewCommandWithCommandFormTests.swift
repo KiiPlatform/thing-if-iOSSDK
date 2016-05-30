@@ -171,8 +171,8 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
                 expectedBody["metadata"] = testcase.metadata;
                 self.verifyDict(expectedBody, actualData: request.HTTPBody!)
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             setting.api.postNewCommand(
@@ -245,8 +245,8 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
                     XCTFail()
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             api.postNewCommand(CommandForm(

@@ -49,8 +49,8 @@ class GetGatewayInformationTests: GatewayAPITestBase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
                 statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             api.getGatewayInformation( { (info:GatewayInformation?, error:ThingIFError?) -> Void in
@@ -119,8 +119,8 @@ class GetGatewayInformationTests: GatewayAPITestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 401, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         api.getGatewayInformation( { (info:GatewayInformation?, error:ThingIFError?) -> Void in

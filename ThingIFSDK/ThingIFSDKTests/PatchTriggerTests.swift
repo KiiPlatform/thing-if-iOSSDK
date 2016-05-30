@@ -150,7 +150,7 @@ class PatchTriggerTests: SmallTestBase {
 
         if testcase.success {
             iotSession = MockMultipleSession.self
-            MockMultipleSession.responsePairs = [
+            sharedMockMultipleSession.responsePairs = [
                 ((data: nil, urlResponse: mockResponse1, error: nil),patchRequestVerifier),
                 ((data: jsonData!, urlResponse: mockResponse2, error: nil),getRequestVerifier)
             ]
@@ -160,8 +160,8 @@ class PatchTriggerTests: SmallTestBase {
             }catch(_){
                 XCTFail(tag)
             }
-            MockSession.mockResponse = (jsonData, urlResponse: mockResponse3, error: nil)
-            MockSession.requestVerifier = patchRequestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: mockResponse3, error: nil)
+            sharedMockSession.requestVerifier = patchRequestVerifier
             iotSession = MockSession.self
         }
 

@@ -4,9 +4,9 @@ import XCTest
 class SmallTestBase: XCTestCase {
     override func setUp() {
         super.setUp()
-        MockSession.mockResponse = (data: nil, urlResponse: nil, error: nil)
-        MockSession.requestVerifier = {(request) in }
-        MockMultipleSession.responsePairs = [MockResponsePair?]()
+        sharedMockSession.mockResponse = (data: nil, urlResponse: nil, error: nil)
+        sharedMockSession.requestVerifier = {(request) in }
+        sharedMockMultipleSession.responsePairs = [MockResponsePair?]()
         ThingIFAPI.removeAllStoredInstances()
     }
 }

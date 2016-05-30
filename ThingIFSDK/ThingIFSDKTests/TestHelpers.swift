@@ -21,7 +21,6 @@ func failIfNotRunningOnDevice(){
 }
 typealias MockResponse = (data: NSData?, urlResponse: NSURLResponse?, error: NSError?)
 typealias MockResponsePair = (response: MockResponse,requestVerifier: ((NSURLRequest) -> Void))
-
 let sharedMockSession = MockSession()
 private class MockTask: NSURLSessionDataTask {
 
@@ -41,24 +40,26 @@ class MockSession: NSURLSession {
     var mockResponse: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?) = (data: nil, urlResponse: nil, error: nil)
 
     override class func sharedSession() -> NSURLSession {
-        return MockSession()
+        return sharedMockSession
     }
 
     override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
         self.requestVerifier(request)
 
+        self.completionHandler = completionHandler
         completionHandler(mockResponse.data, mockResponse.urlResponse, mockResponse.error)
         return MockTask()
     }
 
 }
-
+let sharedMockMultipleSession = MockMultipleSession()
 class MockMultipleSession: NSURLSession {
+
     var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
     var responsePairs = [MockResponsePair?]()
 
     override class func sharedSession() -> NSURLSession {
-        return MockMultipleSession()
+        return sharedMockMultipleSession
     }
 
     override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {

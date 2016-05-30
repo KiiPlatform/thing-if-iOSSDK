@@ -55,7 +55,7 @@ class ListTriggeredServerCodeResultsTests: SmallTestBase {
             }
             
             iotSession = MockMultipleSession.self
-            MockMultipleSession.responsePairs = [
+            sharedMockMultipleSession.responsePairs = [
                 ((data: resJson1, urlResponse: urlResponse1, error: nil), requestVerifier1),
                 ((data: resJson2, urlResponse: urlResponse2, error: nil), requestVerifier2)
             ]
