@@ -30,8 +30,8 @@ public class TypedID : NSObject, NSCoding {
 
     /** Ininitialize TypedID with type and id.
 
-    - Parameter type: Type of the entity. If characters in this string
-      is upper case, characters in type property becomes low case.
+    - Parameter type: Type of the entity. All upper case characters in
+      given string are converted to lower case.
     - Parameter id: ID of the entity.
      */
     public init(type:String, id:String) {
