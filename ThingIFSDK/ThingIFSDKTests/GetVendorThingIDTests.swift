@@ -57,8 +57,8 @@ class GetVendorThingIDTests: SmallTestBase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
                 statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             setting.api.getVendorThingID( { (gotID: String?, error: ThingIFError?) -> Void in
@@ -110,8 +110,8 @@ class GetVendorThingIDTests: SmallTestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
             statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         setting.api.getVendorThingID( { (gotID: String?, error: ThingIFError?) -> Void in

@@ -49,10 +49,7 @@ class PostNewCommandTests: SmallTestBase {
 
     func postCommandSuccess(tag: String, testcase: TestCase, setting:TestSetting) {
 
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
-        defer{
-            expectation = nil
-        }
+        let expectation : XCTestExpectation! = self.expectationWithDescription(tag)
         
         do {
             let expectedCommandID = "c6f1b8d0-46ea-11e5-a5eb-06d9d1527620"
@@ -87,8 +84,8 @@ class PostNewCommandTests: SmallTestBase {
                     XCTFail(tag)
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             setting.api.postNewCommand(testcase.schema, schemaVersion: testcase.schemaVersion, actions: testcase.actions, completionHandler: { (command, error) -> Void in
@@ -154,8 +151,8 @@ class PostNewCommandTests: SmallTestBase {
                     XCTFail()
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             api.postNewCommand("", schemaVersion: setting.schemaVersion, actions: [], completionHandler: { (command, error) -> Void in

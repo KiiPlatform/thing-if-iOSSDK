@@ -71,7 +71,7 @@ class EnableTriggerTests: SmallTestBase {
         let mockResponse2 = NSHTTPURLResponse(URL: NSURL(string: setting.app.baseURL)!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
 
         iotSession = MockMultipleSession.self
-        MockMultipleSession.responsePairs = [
+        sharedMockMultipleSession.responsePairs = [
             ((data: nil, urlResponse: mockResponse1, error: nil),putRequestVerifier),
             ((data: jsonData!, urlResponse: mockResponse2, error: nil),getRequestVerifier)
         ]
@@ -130,7 +130,7 @@ class EnableTriggerTests: SmallTestBase {
         let mockResponse2 = NSHTTPURLResponse(URL: NSURL(string: setting.app.baseURL)!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
         
         iotSession = MockMultipleSession.self
-        MockMultipleSession.responsePairs = [
+        sharedMockMultipleSession.responsePairs = [
             ((data: nil, urlResponse: mockResponse1, error: nil),putRequestVerifier),
             ((data: jsonData!, urlResponse: mockResponse2, error: nil),getRequestVerifier)
         ]
@@ -181,8 +181,8 @@ class EnableTriggerTests: SmallTestBase {
                 }
                 XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)/disable")
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             api.enableTrigger(triggerID, enable: false, completionHandler: { (trigger, error) -> Void in
                 if error == nil{

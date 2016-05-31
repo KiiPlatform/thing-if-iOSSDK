@@ -89,10 +89,8 @@ class ListCommandsTests: SmallTestBase {
 
     func listCommandsSuccess(tag: String, testcase: TestCase) {
 
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
-        defer{
-            expectation = nil
-        }
+        let expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+        
         let setting = TestSetting()
         let api = setting.api
         let owner = setting.owner
@@ -142,8 +140,8 @@ class ListCommandsTests: SmallTestBase {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             api._target = setting.target
@@ -221,8 +219,8 @@ class ListCommandsTests: SmallTestBase {
                     XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             api.listCommands(nil, paginationKey: nil, completionHandler: { (commands, paginationKey, error) -> Void in
                 if error == nil{

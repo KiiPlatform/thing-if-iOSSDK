@@ -26,7 +26,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let tag = "PostNewServerCodeTriggerTests.testPostNewTrigger_success"
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_success_\(predicate.getEventSource().rawValue)")
+        let expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_success_\(predicate.getEventSource().rawValue)")
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
@@ -68,8 +68,8 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
                 }
                 XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers")
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
             api._target = setting.target
@@ -113,7 +113,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let tag = "PostNewServerCodeTriggerTests.testPostNewServerCodeTrigger_http_404"
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404_\(predicate.getEventSource().rawValue)")
+        let expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404_\(predicate.getEventSource().rawValue)")
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
         let expectedTargetAppID = "app000001"
@@ -153,8 +153,8 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
                     XCTFail(tag)
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
             api._target = setting.target
@@ -188,7 +188,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
     func testPostNewServerCodeTrigger_UnsupportError() {
         let setting:TestSetting = TestSetting()
         let api = setting.api
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_UnsupportError")
+        let expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_UnsupportError")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
         let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
@@ -218,7 +218,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
     func testPostNewServerCodeTrigger_target_not_available_error() {
         let setting:TestSetting = TestSetting()
         let api = setting.api
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_target_not_available_error")
+        let expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_target_not_available_error")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
         let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)

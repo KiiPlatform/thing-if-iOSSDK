@@ -39,8 +39,8 @@ class DeleteTriggerTests: SmallTestBase {
             XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
         }
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = deleteRequestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = deleteRequestVerifier
         iotSession = MockSession.self
 
         api.deleteTrigger(expectedTriggerID) { (triggerID, error) -> Void in
@@ -88,8 +88,8 @@ class DeleteTriggerTests: SmallTestBase {
                 }
                 XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)")
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             api.deleteTrigger(triggerID, completionHandler: { (triggerID, error) -> Void in
                 if error == nil{
