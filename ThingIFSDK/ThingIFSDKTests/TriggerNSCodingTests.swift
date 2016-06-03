@@ -38,7 +38,8 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertNotNil(trigger);
         XCTAssertEqual(trigger.triggerID, triggerID);
         XCTAssertEqual(trigger.enabled, enabled);
-        XCTAssertEqual(trigger.predicate, predicate);
+        let expectedPredicate = trigger.predicate as? SchedulePredicate
+        XCTAssertEqual(expectedPredicate, predicate);
         XCTAssertEqual(trigger.command, command);
         XCTAssertNil(trigger.serverCode);
         XCTAssertEqual(trigger.title, title);
@@ -76,7 +77,8 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertNotNil(trigger);
         XCTAssertEqual(trigger.triggerID, triggerID);
         XCTAssertEqual(trigger.enabled, enabled);
-        XCTAssertEqual(trigger.predicate, predicate);
+        let expectedPredicate = trigger.predicate as? StatePredicate
+        XCTAssertEqual(expectedPredicate, predicate);
         XCTAssertNil(trigger.command);
         XCTAssertEqual(trigger.serverCode, serverCode);
         XCTAssertNil(trigger.title);

@@ -14,6 +14,9 @@ extension ThingIFAPI {
         schemaName:String,
         schemaVersion:Int,
         actions:[Dictionary<String,AnyObject>],
+        title:String? = nil,
+        description:String? = nil,
+        metadata:Dictionary<String, AnyObject>? = nil,
         completionHandler: (Command?, ThingIFError?)-> Void
         ) -> Void
     {
@@ -33,7 +36,10 @@ extension ThingIFAPI {
 
         let issuerID = owner.typedID
         requestBodyDict.setObject(issuerID.toString(), forKey: "issuer")
-        
+        requestBodyDict["title"] = title;
+        requestBodyDict["description"] = description;
+        requestBodyDict["metadata"] = metadata;
+
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request

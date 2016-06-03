@@ -23,7 +23,7 @@ class EntitySerializationTests: SmallTestBase {
     
     func doSerializationTest<T:NSObject> (anEntity :T ){
         let data = NSKeyedArchiver.archivedDataWithRootObject(anEntity)
-        let key = _stdlib_getDemangledTypeName(anEntity)
+        let key = String(anEntity)
         NSUserDefaults.standardUserDefaults().setObject(data, forKey: key)
         if let data = NSUserDefaults.standardUserDefaults().objectForKey(key) as? NSData {
             let archivedEntity = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! T
@@ -73,8 +73,8 @@ class EntitySerializationTests: SmallTestBase {
         let aCommand = Command.commandWithNSDictionary(dict)
         self.doSerializationTest(aCommand!)
     }
-    //Command Trigger
-    func testCommandTrigger_NSUserDefaultSerialization() {
+    //Command Trigger state predicate
+    func testCommandTrigger_State_NSUserDefaultSerialization() {
         var actionsArray = [Dictionary<String, AnyObject>]()
         var action1 = Dictionary<String, AnyObject>()
         action1["turnPower"] = ["power":true]
@@ -105,6 +105,40 @@ class EntitySerializationTests: SmallTestBase {
         aTrigger.metadata = ["sound":"noisy.mp4"]
         self.doSerializationTest(aTrigger)
     }
+
+    //Command Trigger Scheduled once test
+    func testCommandTrigger_ScheduledOnce_NSUserDefaultSerialization() {
+        var actionsArray = [Dictionary<String, AnyObject>]()
+        var action1 = Dictionary<String, AnyObject>()
+        action1["turnPower"] = ["power":true]
+        actionsArray.append(action1)
+        var actionsResultArray = [Dictionary<String, AnyObject>]()
+        var result1 = Dictionary<String, AnyObject>()
+        result1["turnPower"] = ["succeeded":true, "errorMessage":"", "data":["voltage":"125"]]
+        actionsResultArray.append(result1)
+        let dict = NSMutableDictionary()
+        dict["commandID"] = "command-1234-5678"
+        dict["schema"] = "SmartLight"
+        dict["actions"] = actionsArray
+        dict["actionResults"] = actionsResultArray
+        dict["schemaVersion"] = 10
+        dict["target"] = "thing:thing-1234-5678"
+        dict["issuer"] = "user:user-1234-5678"
+        dict["commandState"] = "SENDING"
+        dict["title"] = "Command Title"
+        dict["description"] = "Command Description"
+        dict["metadata"] = ["sound":"noisy.mp3"]
+        let command = Command.commandWithNSDictionary(dict)
+
+        let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 60*60))
+
+        let aTrigger = Trigger(triggerID: "trigger-1234-5678", enabled: true, predicate: predicate, command: command!)
+        aTrigger.title = "Trigger Title"
+        aTrigger.triggerDescription = "Trigger Description"
+        aTrigger.metadata = ["sound":"noisy.mp4"]
+        self.doSerializationTest(aTrigger)
+    }
+
     //ServerCode Trigger
     func testServerCodeTrigger_NSUserDefaultSerialization() {
         let parameters : Dictionary = ["arg1":"abc", "arg2":1234, "arg3":true]
@@ -126,15 +160,15 @@ class EntitySerializationTests: SmallTestBase {
         let array : [AnyObject] = [123, 123.456, "abc", true, [123], ["f1":123]]
         let object : Dictionary<String, AnyObject> = ["f1":123, "f2":"abc", "f3":true]
         let testDataList = [
-            TriggeredServerCodeResult(succeeded: true, returnedValue: nil, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: "abcd", executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: "", executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: 1234, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: 14544749850000, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: 1234.5678, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: true, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: array, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
-            TriggeredServerCodeResult(succeeded: true, returnedValue: object, executedAt: NSDate(timeIntervalSince1970: 1454474985), error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: nil, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func1", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: "abcd", executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func2", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: "", executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func3", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: 1234, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func4", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: 14544749850000, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func5", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: 1234.5678, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func6", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: true, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func7", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: array, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func8", error: nil),
+            TriggeredServerCodeResult(succeeded: true, returnedValue: object, executedAt: NSDate(timeIntervalSince1970: 1454474985), endpoint:"func9", error: nil),
         ]
         for testData in testDataList {
             self.doSerializationTest(testData)
@@ -142,14 +176,13 @@ class EntitySerializationTests: SmallTestBase {
     }
     //Target
     func testTarget_NSUserDefaultSerialization() {
-        let aTypedID = TypedID(type: "camera", id: "cameraID")
-        let aTarget = Target(typedID: aTypedID)
+        let aTarget = StandaloneThing(thingID: "cameraID", vendorThingID: "dummyVendorThingID", accessToken: nil)
 
         XCTAssertNil(aTarget.accessToken)
 
         self.doSerializationTest(aTarget)
 
-        let aTargetWithAccessToken = Target(typedID: aTypedID, accessToken: "dummyAccessToken")
+        let aTargetWithAccessToken = StandaloneThing(thingID: "cameraID", vendorThingID: "dummyVendorThingID", accessToken: "dummyAccessToken")
 
         XCTAssertNotNil(aTargetWithAccessToken.accessToken)
 

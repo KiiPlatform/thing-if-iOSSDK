@@ -60,7 +60,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -74,7 +74,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -88,7 +88,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -130,7 +130,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -144,7 +144,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -158,7 +158,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -212,7 +212,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -228,7 +228,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -256,7 +256,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -309,7 +309,7 @@ class ThingIFSDKTests: SmallTestBase {
             XCTAssertNotNil(installID,"Should not nil")
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -322,7 +322,7 @@ class ThingIFSDKTests: SmallTestBase {
             XCTAssertNotNil(installID,"Should not nil")
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -335,7 +335,7 @@ class ThingIFSDKTests: SmallTestBase {
             XCTAssertNotNil(installID,"Should not nil")
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -392,9 +392,9 @@ class ThingIFSDKTests: SmallTestBase {
         let app = setting.app
         let owner = setting.owner
         
-        let target1 = Target(typedID:TypedID(type: "user", id: "user-00001"), accessToken: "token-00001")
-        let target2 = Target(typedID:TypedID(type: "user", id: "user-00002"), accessToken: "token-00002")
-        let target3 = Target(typedID:TypedID(type: "user", id: "user-00003"), accessToken: "token-00003")
+        let target1 = StandaloneThing(thingID: "user-00001", vendorThingID: "vendor-thing-id-001", accessToken: "token-00001")
+        let target2 = StandaloneThing(thingID: "user-00002", vendorThingID: "vendor-thing-id-002", accessToken: "token-00002")
+        let target3 = StandaloneThing(thingID: "user-00003", vendorThingID: "vendor-thing-id-003", accessToken: "token-00003")
         
         var api1 = ThingIFAPIBuilder(app:app, owner:owner).build()
         var api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).build()

@@ -87,6 +87,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     /** On board IoT Cloud with the specified vendor thing ID.
     Specified thing will be owned by owner who consumes this API.
     (Specified on creation of ThingIFAPI instance.)
+    If you are using a gateway, you need to use onboardEndnodeWithGateway to onboard endnode instead.
     
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -124,6 +125,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     (Specified on creation of ThingIFAPI instance.)
     When you're sure that the on board process has been done,
     this method is convenient.
+     If you are using a gateway, you need to use onboardEndnodeWithGateway to onboard endnode instead.
 
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -146,6 +148,90 @@ public class ThingIFAPI: NSObject, NSCoding {
         }
     }
 
+    /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
+     Thing act as Gateway is already registered and marked as Gateway.
+    
+     - Parameter pendingEndnode: Pending End Node
+     - Parameter endnodePassword: Password of the End Node
+     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an end node, an ThingIFError
+     */
+    public func onboardEndnodeWithGateway(
+        pendingEndnode:PendingEndNode,
+        endnodePassword:String,
+        completionHandler: (EndNode?, ThingIFError?)-> Void
+        ) ->Void
+    {
+        if (self.target == nil) || !(self.target is Gateway) {
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            return
+        }
+        if pendingEndnode.vendorThingID == nil || pendingEndnode.vendorThingID!.isEmpty {
+            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            return
+        }
+        if endnodePassword.isEmpty {
+            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            return
+        }
+
+        let requestURL = "\(self.baseURL)/thing-if/apps/\(self.appID)/onboardings"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "x-kii-appid": self.appID,
+            "x-kii-appkey": self.appKey,
+            "authorization": "Bearer \(self.owner.accessToken)",
+            "Content-Type": "application/vnd.kii.OnboardingEndNodeWithGatewayThingID+json"
+        ]
+
+        // genrate body
+        let requestBodyDict = NSMutableDictionary(dictionary:
+            [
+                "gatewayThingID": self.target!.typedID.id,
+                "endNodeVendorThingID": pendingEndnode.vendorThingID!,
+                "endNodePassword": endnodePassword,
+                "owner": self.owner.typedID.toString()
+            ]
+        )
+
+        if pendingEndnode.thingType != nil {
+            requestBodyDict["endNodeThingType"] = pendingEndnode.thingType
+        }
+
+        if !(pendingEndnode.thingProperties?.isEmpty ?? true) {
+            requestBodyDict["endNodeThingProperties"] = pendingEndnode.thingProperties
+        }
+
+        do {
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // do request
+            let request = buildDefaultRequest(
+                HTTPMethod.POST,
+                urlString: requestURL,
+                requestHeaderDict: requestHeaderDict,
+                requestBodyData: requestBodyData,
+                completionHandler: { (response, error) -> Void in
+                    let endNode: EndNode?
+                    if error != nil {
+                        endNode = nil
+                    } else {
+                        let thingID = response?["endNodeThingID"] as! String
+                        let accessToken = response?["accessToken"] as! String
+                        endNode = EndNode(thingID: thingID, vendorThingID: pendingEndnode.vendorThingID!, accessToken: accessToken)
+                    }
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler(endNode, error)
+                    }
+                }
+            )
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
+        } catch(_) {
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+        }
+    }
+    
     // MARK: - Push notification methods
 
     /** Install push notification to receive notification from IoT Cloud.
@@ -211,7 +297,28 @@ public class ThingIFAPI: NSObject, NSCoding {
     {
         _postNewCommand(schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: completionHandler)
     }
-    
+
+    /** Post new command to IoT Cloud.
+    Command will be delivered to specified target and result will be notified
+    through push notification.
+
+    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+
+    - Parameter commandForm: Command form of posting command.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
+    */
+    public func postNewCommand(
+        commandForm: CommandForm,
+        completionHandler: (Command?, ThingIFError?) -> Void) -> Void {
+        _postNewCommand(commandForm.schemaName,
+                        schemaVersion: commandForm.schemaVersion,
+                        actions: commandForm.actions,
+                        title: commandForm.title,
+                        description: commandForm.commandDescription,
+                        metadata: commandForm.metadata,
+                        completionHandler: completionHandler);
+    }
+
     /** Get specified command
 
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
@@ -385,11 +492,11 @@ public class ThingIFAPI: NSObject, NSCoding {
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
 
     - Parameter triggerID: ID of the Trigger to be deleted.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the deleted Trigger instance, 2nd one is an ThingIFError instance when failed.
+    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the deleted TriggerId, 2nd one is an ThingIFError instance when failed.
     */
     public func deleteTrigger(
         triggerID:String,
-        completionHandler: (Trigger!, ThingIFError?)-> Void
+        completionHandler: (String, ThingIFError?)-> Void
         )
     {
         _deleteTrigger(triggerID, completionHandler: completionHandler)
@@ -459,7 +566,107 @@ public class ThingIFAPI: NSObject, NSCoding {
         
     }
 
-    // MARK: - Copy with new target instance 
+    /** Get the Vendor Thing ID of specified Target.
+     
+     - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is Vendor Thing ID and 2nd one is an instance of ThingIFError when failed.
+     */
+    public func getVendorThingID(
+        completionHandler: (String?, ThingIFError?)-> Void
+        )
+    {
+        if self.target == nil {
+            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            return;
+        }
+
+        let requestURL = "\(self.baseURL)/api/apps/\(self.appID)/things/\(self.target!.typedID.id)/vendor-thing-id"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "x-kii-appid": self.appID,
+            "x-kii-appkey": self.appKey,
+            "authorization": "Bearer \(self.owner.accessToken)"
+        ]
+
+        // do request
+        let request = buildDefaultRequest(
+            HTTPMethod.GET,
+            urlString: requestURL,
+            requestHeaderDict: requestHeaderDict,
+            requestBodyData: nil,
+            completionHandler: { (response, error) -> Void in
+                let vendorThingID = response?["_vendorThingID"] as? String
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler(vendorThingID, error)
+                }
+            }
+        )
+        let operation = IoTRequestOperation(request: request)
+        operationQueue.addOperation(operation)
+    }
+
+    /** Update the Vendor Thing ID of specified Target.
+
+     - Parameter newVendorThingID: New vendor thing id
+     - Parameter newPassword: New password
+     - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
+     */
+    public func updateVendorThingID(
+        newVendorThingID: String,
+        newPassword: String,
+        completionHandler: (ThingIFError?)-> Void
+        )
+    {
+        if self.target == nil {
+            completionHandler(ThingIFError.TARGET_NOT_AVAILABLE)
+            return;
+        }
+        if newVendorThingID.isEmpty || newPassword.isEmpty {
+            completionHandler(ThingIFError.UNSUPPORTED_ERROR)
+            return;
+        }
+
+        let requestURL = "\(self.baseURL)/api/apps/\(self.appID)/things/\(self.target!.typedID.id)/vendor-thing-id"
+
+        // generate header
+        let requestHeaderDict:Dictionary<String, String> = [
+            "x-kii-appid": self.appID,
+            "x-kii-appkey": self.appKey,
+            "authorization": "Bearer \(self.owner.accessToken)",
+            "Content-Type": "application/vnd.kii.VendorThingIDUpdateRequest+json"
+        ]
+
+        // genrate body
+        let requestBodyDict = NSMutableDictionary(dictionary:
+            [
+                "_vendorThingID": newVendorThingID,
+                "_password": newPassword
+            ]
+        )
+
+        do {
+            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            // do request
+            let request = buildDefaultRequest(
+                HTTPMethod.PUT,
+                urlString: requestURL,
+                requestHeaderDict: requestHeaderDict,
+                requestBodyData: requestBodyData,
+                completionHandler: { (response, error) -> Void in
+                    dispatch_async(dispatch_get_main_queue()) {
+                        completionHandler(error)
+                    }
+                }
+            )
+            let operation = IoTRequestOperation(request: request)
+            operationQueue.addOperation(operation)
+        } catch(_) {
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(ThingIFError.JSON_PARSE_ERROR)
+        }
+    }
+
+    // MARK: - Copy with new target instance
 
     /** Get new instance with new target
 
@@ -560,7 +767,8 @@ public class ThingIFAPI: NSObject, NSCoding {
         return self.appID == anAPI.appID &&
             self.appKey == anAPI.appKey &&
             self.baseURL == anAPI.baseURL &&
-            self.target == anAPI.target &&
+            self.target?.accessToken == anAPI.target?.accessToken &&
+            self.target?.typedID == anAPI.target?.typedID &&
             self.installationID == anAPI.installationID &&
             self.tag == anAPI.tag
     }

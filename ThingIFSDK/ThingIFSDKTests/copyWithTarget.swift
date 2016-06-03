@@ -20,7 +20,7 @@ class CopyWithTargetTests: SmallTestBase {
 
     func testCopyWithTarget() {
         let api: ThingIFAPI! = TestSetting().api
-        let newTarget = Target(typedID: TypedID(type: "THING", id: "newID"))
+        let newTarget = StandaloneThing(thingID: "newID", vendorThingID: "vendor-thing-id-001", accessToken: "token-00001")
         let newIotapi = api.copyWithTarget(newTarget)
         XCTAssertEqualIoTAPIWithoutTarget(api, newIotapi)
         XCTAssertEqual(newIotapi.target?.typedID.toString(), newTarget.typedID.toString())

@@ -43,17 +43,16 @@ class DeleteTriggerTests: SmallTestBase {
         MockSession.requestVerifier = deleteRequestVerifier
         iotSession = MockSession.self
 
-        api.deleteTrigger(expectedTriggerID) { (trigger, error) -> Void in
+        api.deleteTrigger(expectedTriggerID) { (triggerID, error) -> Void in
             if error == nil{
-                XCTAssertEqual(trigger!.triggerID, expectedTriggerID)
-                XCTAssertEqual(trigger!.enabled, false)
+                XCTAssertEqual(triggerID, expectedTriggerID)
             }else {
                 XCTFail("should success")
             }
             expectation.fulfill()
         }
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -92,7 +91,7 @@ class DeleteTriggerTests: SmallTestBase {
             MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             MockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.deleteTrigger(triggerID, completionHandler: { (trigger, error) -> Void in
+            api.deleteTrigger(triggerID, completionHandler: { (triggerID, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -112,7 +111,7 @@ class DeleteTriggerTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -126,7 +125,7 @@ class DeleteTriggerTests: SmallTestBase {
 
         let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
-        api.deleteTrigger(triggerID, completionHandler: { (trigger, error) -> Void in
+        api.deleteTrigger(triggerID, completionHandler: { (triggerID, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -140,7 +139,7 @@ class DeleteTriggerTests: SmallTestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

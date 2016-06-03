@@ -267,11 +267,11 @@ extension ThingIFAPI {
 
     func _deleteTrigger(
         triggerID:String,
-        completionHandler: (Trigger!, ThingIFError?)-> Void
+        completionHandler: (String, ThingIFError?)-> Void
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(triggerID, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
 
@@ -281,13 +281,9 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
 
         let request = buildDefaultRequest(HTTPMethod.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            var trigger:Trigger?
-            if error == nil {
-                trigger = Trigger()
-                trigger!.triggerID = triggerID
-            }
+
             dispatch_async(dispatch_get_main_queue()) {
-                completionHandler(trigger, error)
+                completionHandler(triggerID, error)
             }
         })
 

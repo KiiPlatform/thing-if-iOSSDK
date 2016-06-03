@@ -45,7 +45,7 @@ public class TestSetting: NSObject {
             accessToken: ownerToken)
 
         self.thingID = dict["thingID"] as! String
-        self.target = Target(typedID: TypedID(type: "thing", id: thingID))
+        self.target = StandaloneThing(thingID: thingID, vendorThingID: ownerID, accessToken: ownerToken)
 
         self.api = ThingIFAPIBuilder(app: app, owner: owner).build()
 

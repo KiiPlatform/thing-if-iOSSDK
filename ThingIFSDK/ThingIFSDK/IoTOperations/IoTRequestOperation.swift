@@ -35,7 +35,11 @@ func buildDefaultRequest(method : HTTPMethod,urlString: String,requestHeaderDict
     // Add X-Kii-SDK header.
     var modifiedHeaderDict = requestHeaderDict
     modifiedHeaderDict["X-Kii-SDK"] = SDKVersion.sharedInstance.kiiSDKHeader
-    let defaultRequest = DefaultRequest(method: method, urlString: urlString, requestHeaderDict: modifiedHeaderDict, requestBodyData: requestBodyData, responseBodySerializer: { (responseBodyData) -> NSDictionary? in
+    return buildNewRequest(method, urlString: urlString, requestHeaderDict: modifiedHeaderDict, requestBodyData: requestBodyData, completionHandler: completionHandler)
+}
+
+func buildNewRequest(method : HTTPMethod,urlString: String,requestHeaderDict: Dictionary<String, String>,requestBodyData: NSData?,completionHandler: (response: NSDictionary?, error: ThingIFError?) -> Void) -> DefaultRequest {
+    let defaultRequest = DefaultRequest(method: method, urlString: urlString, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, responseBodySerializer: { (responseBodyData) -> NSDictionary? in
 
         if responseBodyData == nil {
             return nil
@@ -72,7 +76,7 @@ class IoTRequestOperation<T>: GroupOperation {
         
         switch(request.method) {
         case .POST :
-            addPostRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData!, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
+            addPostRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
             
         case .GET:
             addGetRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
@@ -91,7 +95,7 @@ class IoTRequestOperation<T>: GroupOperation {
         }
     }
     
-    func addPostRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData, completionHandler: (response: T?, error: ThingIFError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T?) -> Void
+    func addPostRequestTask(urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: NSData?, completionHandler: (response: T?, error: ThingIFError?) -> Void,responseBodySerializer : (responseBodyData:NSData?) -> T?) -> Void
     {
         let url = NSURL(string: urlString)
         let request = NSMutableURLRequest(URL: url!)
@@ -99,8 +103,10 @@ class IoTRequestOperation<T>: GroupOperation {
         
         // Set header to request
         setHeader(requestHeaderDict, request: request)
-        
-        request.HTTPBody = requestBodyData
+
+        if requestBodyData != nil {
+            request.HTTPBody = requestBodyData
+        }
         addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
             completionHandler(response: response, error: error)
         }

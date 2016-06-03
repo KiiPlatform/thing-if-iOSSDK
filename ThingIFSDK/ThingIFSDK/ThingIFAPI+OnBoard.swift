@@ -55,7 +55,20 @@ extension ThingIFAPI {
                     var target:Target?
                     if let thingID = response?["thingID"] as? String{
                         let accessToken = response?["accessToken"] as? String
-                        target = Target(typedID: TypedID(type: "THING", id: thingID), accessToken: accessToken)
+                        /* TODO:
+                            Idealy server should send vendorThingID as response of onboarding,
+                            and SDK should use the received vendorThingID.
+                            However, current server implementation does not send vendorThingID.
+                            So we used IDString if it is vendorThingID, otherwise we set it empty string.
+                            This behavior should be fixed after server fixed.
+                        */
+                        let vendorThingID: String
+                        if byVendorThingID {
+                            vendorThingID = IDString
+                        } else {
+                            vendorThingID = ""
+                        }
+                        target = StandaloneThing(thingID: thingID, vendorThingID: vendorThingID, accessToken: accessToken)
 
                         self._target = target
                     }

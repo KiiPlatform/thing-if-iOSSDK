@@ -75,7 +75,7 @@ class PushInstallationTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -97,7 +97,7 @@ class PushInstallationTests: SmallTestBase {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": setting.owner.typedID.id]
+            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": NSNumber(bool: false)]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
             XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/api/apps/50a62843/installations")
         }
@@ -123,7 +123,7 @@ class PushInstallationTests: SmallTestBase {
             XCTAssertNotNil(installID,"Should not nil")
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -146,7 +146,7 @@ class PushInstallationTests: SmallTestBase {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": setting.owner.typedID.id]
+            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": NSNumber(bool: false)]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
         }
         
@@ -183,7 +183,7 @@ class PushInstallationTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -207,7 +207,7 @@ class PushInstallationTests: SmallTestBase {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": setting.owner.typedID.id]
+            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":NSNumber(bool: false)]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
         }
         
@@ -244,7 +244,7 @@ class PushInstallationTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -268,7 +268,7 @@ class PushInstallationTests: SmallTestBase {
                 XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":"false","userID": setting.owner.typedID.id]
+            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": NSNumber(bool: false)]
             self.verifyDict(expectedBody, actualData: request.HTTPBody!)
         }
         
@@ -305,7 +305,7 @@ class PushInstallationTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(30.0) { (error) -> Void in
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
