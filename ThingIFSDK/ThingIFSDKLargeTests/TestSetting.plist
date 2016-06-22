@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>hostName</key>
+	<string>api-jp.kii.com</string>
+	<key>appKey</key>
+	<string>d02367f1b0e51bba1e23e375d3239a72</string>
+	<key>appID</key>
+	<string>63773044</string>
+</dict>
+</plist>

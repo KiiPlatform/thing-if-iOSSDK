@@ -8,7 +8,7 @@
 
 import Foundation
 
-/** Class represents SchedulePredicate. It is not supported now.*/
+/** Class represents SchedulePredicate. */
 public class SchedulePredicate: NSObject,Predicate {
     /** Specified schedule. (cron tab format) */
     public let schedule: String

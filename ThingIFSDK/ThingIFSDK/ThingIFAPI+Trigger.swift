@@ -18,11 +18,6 @@ extension ThingIFAPI {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        if predicate is SchedulePredicate {
-            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
-            return
-        }
-
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
@@ -65,10 +60,6 @@ extension ThingIFAPI {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        if predicate is SchedulePredicate {
-            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
-            return
-        }
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
@@ -127,10 +118,6 @@ extension ThingIFAPI {
 
         // generate predicate
         if predicate != nil {
-            if predicate is SchedulePredicate {
-                completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
-                return
-            }
             requestBodyDict["predicate"] = predicate!.toNSDictionary()
         }
 
@@ -195,10 +182,6 @@ extension ThingIFAPI {
         
         // generate predicate
         if predicate != nil {
-            if predicate is SchedulePredicate {
-                completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
-                return
-            }
             requestBodyDict["predicate"] = predicate!.toNSDictionary()
         }
         requestBodyDict["serverCode"] = serverCode.toNSDictionary()
