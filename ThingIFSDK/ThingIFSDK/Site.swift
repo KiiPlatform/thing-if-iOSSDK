@@ -20,6 +20,8 @@ public enum Site {
     case CN3
     /** Use cloud in Singapore. */
     case SG
+    /** Use cloud in EU. */
+    case EU
 
     /** Get base url of Site
     - Returns: Base URL string of Site.
@@ -34,6 +36,8 @@ public enum Site {
             return "https://api-cn3.kii.com"
         case .SG:
             return "https://api-sg.kii.com"
+        case .EU:
+            return "https://api-eu.kii.com"
         }
     }
 
@@ -48,6 +52,8 @@ public enum Site {
             return "api-cn3.kii.com"
         case .SG:
             return "api-sg.kii.com"
+        case .EU:
+            return "api-eu.kii.com"
         }
     }
 
@@ -61,6 +67,8 @@ public enum Site {
             return "CN3"
         case .SG:
             return "SG"
+        case .EU:
+            return "EU"
         }
     }
 
