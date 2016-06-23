@@ -67,13 +67,13 @@ public class GatewayAPI: NSObject, NSCoding {
             return
         }
 
-        let requestURL = "\(self.app.baseURL)/\(self.app.siteName)/token"
+        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/token"
 
         // generate header
         let credential = "\(self.app.appID):\(self.app.appKey)"
         let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Basic \(base64Str)",
+            "authorization": "Basic \(String(data: base64Str!, encoding: NSUTF8StringEncoding)!)",
             "Content-Type": "application/json"
         ]
 
