@@ -253,9 +253,9 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         expectation = self.expectationWithDescription(
                           testCase.verifier.requestVerifier.tag)
 
-        MockSession.requestVerifier =
+        sharedMockSession.requestVerifier =
             testCase.verifier.requestVerifier.verifier
-        MockSession.mockResponse = testCase.mockResponse
+        sharedMockSession.mockResponse = testCase.mockResponse
         iotSession = MockSession.self
 
         setting.api._target = setting.target
