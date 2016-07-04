@@ -67,6 +67,8 @@ class MockMultipleSession: NSURLSession {
             let pair = self.responsePairs.removeAtIndex(0);
             pair.requestVerifier(request)
             completionHandler(pair.response.data, pair.response.urlResponse, pair.response.error)
+        } else {
+            assertionFailure("Invalid Mocking Detected.")
         }
         return MockTask()
     }
