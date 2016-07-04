@@ -198,37 +198,6 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         }
     }
 
-    func testPatchServerCodeTrigger_UnsupportError() {
-        let setting:TestSetting = TestSetting()
-        let api = setting.api
-        let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let expectation : XCTestExpectation! = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_UnsupportError")
-        
-        let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
-        let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
-        
-        api._target = setting.target
-        api.patchTrigger(triggerID, serverCode:serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
-            if error == nil{
-                XCTFail("should fail")
-            }else {
-                switch error! {
-                case .UNSUPPORTED_ERROR:
-                    break
-                default:
-                    XCTFail("should be unsupport error")
-                }
-            }
-            expectation.fulfill()
-        })
-        
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
-        }
-    }
-
     func testPatchServerCodeStateTrigger_target_not_available_error() {
         let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
         let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)

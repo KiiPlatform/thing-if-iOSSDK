@@ -68,8 +68,9 @@ class LargeTestBase: XCTestCase {
 
         let expectation = self.expectationWithDescription("onboard")
 
+        let vendorThingID = "vid-" + String(NSDate.init().timeIntervalSince1970)
         api.onboard(
-            "vendorThingID5",
+            vendorThingID,
             thingPassword: "password",
             thingType: DEMO_THING_TYPE,
             thingProperties: nil,

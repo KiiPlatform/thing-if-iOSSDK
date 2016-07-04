@@ -6,7 +6,7 @@ class SmallTestBase: XCTestCase {
         super.setUp()
         sharedMockSession.mockResponse = (data: nil, urlResponse: nil, error: nil)
         sharedMockSession.requestVerifier = {(request) in }
-        sharedMockMultipleSession.responsePairs = [MockResponsePair?]()
+        sharedMockMultipleSession.responsePairs = [MockResponsePair]()
         ThingIFAPI.removeAllStoredInstances()
     }
 }

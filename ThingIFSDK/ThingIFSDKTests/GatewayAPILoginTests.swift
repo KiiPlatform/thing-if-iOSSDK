@@ -36,7 +36,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let credential = "\(setting.app.appID):\(setting.app.appKey)"
-                let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+                let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
                 let expectedHeader = [
                     "authorization": "Basic \(base64Str)",
                     "Content-Type": "application/json"
@@ -143,7 +143,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let credential = "\(setting.app.appID):\(setting.app.appKey)"
-            let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+            let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
             let expectedHeader = [
                 "authorization": "Basic \(base64Str)",
                 "Content-Type": "application/json"
@@ -201,7 +201,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let credential = "\(setting.app.appID):\(setting.app.appKey)"
-            let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+            let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
             let expectedHeader = [
                 "authorization": "Basic \(base64Str)",
                 "Content-Type": "application/json"

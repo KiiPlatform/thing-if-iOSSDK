@@ -397,37 +397,6 @@ class PostNewTriggerTests: SmallTestBase {
             }
         }
     }
-
-    func testPostNewTrigger_UnsupportError() {
-        let expectation = self.expectationWithDescription("postNewTriggerUnsupportError")
-        let setting = TestSetting()
-        let api = setting.api
-        let schema = setting.schema
-        let schemaVersion = setting.schemaVersion
-
-        let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
-        let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
-
-        api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
-            if error == nil{
-                XCTFail("should fail")
-            }else {
-                switch error! {
-                case .UNSUPPORTED_ERROR:
-                    break
-                default:
-                    XCTFail("should be unsupport error")
-                }
-            }
-            expectation.fulfill()
-        })
-
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
-        }
-    }
     
     func testPostTrigger_target_not_available_error() {
         let expectation = self.expectationWithDescription("testPostTrigger_target_not_available_error")
