@@ -56,20 +56,18 @@ let sharedMockMultipleSession = MockMultipleSession()
 class MockMultipleSession: NSURLSession {
 
     var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
-    var responsePairs = [MockResponsePair?]()
+    var responsePairs = [MockResponsePair]()
 
     override class func sharedSession() -> NSURLSession {
         return sharedMockMultipleSession
     }
 
     override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
-
-        guard let pair = self.responsePairs.removeAtIndex(0) else{
-            return MockTask()
+        if (self.responsePairs.count > 0) {
+            let pair = self.responsePairs.removeAtIndex(0);
+            pair.requestVerifier(request)
+            completionHandler(pair.response.data, pair.response.urlResponse, pair.response.error)
         }
-
-        pair.requestVerifier(request)
-        completionHandler(pair.response.data, pair.response.urlResponse, pair.response.error)
         return MockTask()
     }
 }
