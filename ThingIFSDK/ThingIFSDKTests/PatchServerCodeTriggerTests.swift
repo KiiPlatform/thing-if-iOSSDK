@@ -25,7 +25,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let tag = "PatchServerCodeTriggerTests.testPatchServerCodeTrigger_success"
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_success_\(predicate.getEventSource().rawValue)")
+        let expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_success_\(predicate.getEventSource().rawValue)")
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
@@ -81,7 +81,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
                 }
             }
             iotSession = MockMultipleSession.self
-            MockMultipleSession.responsePairs = [
+            sharedMockMultipleSession.responsePairs = [
                 ((data: jsonData4Patch, urlResponse: urlResponse4Patch, error: nil), patchRequestVerifier),
                 ((data: jsonData4Get, urlResponse: urlResponse4Get, error: nil),getRequestVerifier)
             ]
@@ -126,7 +126,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         let api = setting.api
         let tag = "PatchServerCodeTriggerTests.testPatchServerCodeTrigger_http_404"
         let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404_\(predicate.getEventSource().rawValue)")
+        let expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404_\(predicate.getEventSource().rawValue)")
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
         let expectedTargetAppID = "app000001"
@@ -166,8 +166,8 @@ class PatchServerCodeTriggerTests: SmallTestBase {
                     XCTFail(tag)
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
             api._target = setting.target
@@ -198,37 +198,6 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         }
     }
 
-    func testPatchServerCodeTrigger_UnsupportError() {
-        let setting:TestSetting = TestSetting()
-        let api = setting.api
-        let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_UnsupportError")
-        
-        let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
-        let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
-        
-        api._target = setting.target
-        api.patchTrigger(triggerID, serverCode:serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
-            if error == nil{
-                XCTFail("should fail")
-            }else {
-                switch error! {
-                case .UNSUPPORTED_ERROR:
-                    break
-                default:
-                    XCTFail("should be unsupport error")
-                }
-            }
-            expectation.fulfill()
-        })
-        
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
-        }
-    }
-
     func testPatchServerCodeStateTrigger_target_not_available_error() {
         let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
         let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
@@ -243,7 +212,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_target_not_available_error_\(predicate.getEventSource().rawValue)")
+        let expectation : XCTestExpectation! = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_target_not_available_error_\(predicate.getEventSource().rawValue)")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
         

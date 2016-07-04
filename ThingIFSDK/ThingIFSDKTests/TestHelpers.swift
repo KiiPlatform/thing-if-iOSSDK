@@ -13,97 +13,64 @@ public let TEST_TIMEOUT = 5.0
 
 func failIfNotRunningOnDevice(){
     let environment = NSProcessInfo.processInfo().environment
-    
+
     if environment["SIMULATOR_RUNTIME_VERSION"] != nil {
         XCTFail("This test is prohibited to launch in simulator")
     }
-    
+
 }
 typealias MockResponse = (data: NSData?, urlResponse: NSURLResponse?, error: NSError?)
 typealias MockResponsePair = (response: MockResponse,requestVerifier: ((NSURLRequest) -> Void))
+let sharedMockSession = MockSession()
+private class MockTask: NSURLSessionDataTask {
 
+    @objc override var state : NSURLSessionTaskState {
+        return NSURLSessionTaskState.Suspended
+    }
+
+    override func resume() {
+
+    }
+
+}
 class MockSession: NSURLSession {
     var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
-    static var requestVerifier: ((NSURLRequest) -> Void) = {(request) in }
-    
-    static var mockResponse: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?) = (data: nil, urlResponse: nil, error: nil)
-    
-    override class func sharedSession() -> NSURLSession {
-        return MockSession()
-    }
-    
-    override func dataTaskWithURL(url: NSURL, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
-        self.completionHandler = completionHandler
-        
-        return MockTask(response: MockSession.mockResponse, completionHandler: completionHandler)
-    }
-    override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
-        MockSession.requestVerifier(request)
-        
-        self.completionHandler = completionHandler
-        
-        return MockTask(response: MockSession.mockResponse, completionHandler: completionHandler)
-    }
-    class MockTask: NSURLSessionDataTask {
-        @objc override var state : NSURLSessionTaskState {
-            return NSURLSessionTaskState.Suspended
-        }
-    
+    var requestVerifier: ((NSURLRequest) -> Void) = {(request) in }
 
-        var mockResponse: MockResponse
-        let completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
-        
-        init(response: MockResponse, completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?) {
-            self.mockResponse = response
-            self.completionHandler = completionHandler
-        }
-        override func resume() {
-            
-            completionHandler!(mockResponse.data, mockResponse.urlResponse, mockResponse.error)
-        }
-        
+    var mockResponse: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?) = (data: nil, urlResponse: nil, error: nil)
+
+    override class func sharedSession() -> NSURLSession {
+        return sharedMockSession
     }
+
+    override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
+        self.requestVerifier(request)
+
+        self.completionHandler = completionHandler
+        completionHandler(mockResponse.data, mockResponse.urlResponse, mockResponse.error)
+        return MockTask()
+    }
+
 }
-
+let sharedMockMultipleSession = MockMultipleSession()
 class MockMultipleSession: NSURLSession {
+
     var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
-    static var responsePairs = [MockResponsePair?]()
+    var responsePairs = [MockResponsePair]()
 
     override class func sharedSession() -> NSURLSession {
-        return MockMultipleSession()
+        return sharedMockMultipleSession
     }
 
     override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
-
-        guard let pair = MockMultipleSession.responsePairs.removeAtIndex(0) else{
-            return MockTask(response: MockSession.mockResponse, completionHandler: completionHandler)
+        if (self.responsePairs.count > 0) {
+            let pair = self.responsePairs.removeAtIndex(0);
+            pair.requestVerifier(request)
+            completionHandler(pair.response.data, pair.response.urlResponse, pair.response.error)
+        } else {
+            assertionFailure("Invalid Mocking Detected.")
         }
-
-        pair.requestVerifier(request)
-
-
-        self.completionHandler = completionHandler
-
-        return MockTask(response: pair.response, completionHandler: completionHandler)
-    }
-    class MockTask: NSURLSessionDataTask {
-        @objc override var state : NSURLSessionTaskState {
-            return NSURLSessionTaskState.Suspended
-        }
-
-
-        var mockResponse: MockResponse
-        let completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
-
-        init(response: MockResponse, completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?) {
-            self.mockResponse = response
-            self.completionHandler = completionHandler
-        }
-        override func resume() {
-
-            completionHandler!(mockResponse.data, mockResponse.urlResponse, mockResponse.error)
-        }
-
+        return MockTask()
     }
 }
 

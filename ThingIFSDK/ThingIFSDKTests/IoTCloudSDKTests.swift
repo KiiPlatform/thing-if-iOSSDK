@@ -284,7 +284,7 @@ class ThingIFSDKTests: SmallTestBase {
         do {
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
         } catch {
             //should never reach this
@@ -377,7 +377,7 @@ class ThingIFSDKTests: SmallTestBase {
         do {
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string: setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
         } catch {
             //should never reach this

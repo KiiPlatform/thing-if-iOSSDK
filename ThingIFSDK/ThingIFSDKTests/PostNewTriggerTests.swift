@@ -39,12 +39,10 @@ class PostNewTriggerTests: SmallTestBase {
     }
 
     func testPostNewTrigger_success() {
-        weak var expectation : XCTestExpectation!
-        defer {
-            expectation = nil
-        }
+
+
         func postNewTriggerSuccess(tag: String, testcase: TestCase, setting:TestSetting) {
-            expectation = self.expectationWithDescription(tag)
+            let expectation = self.expectationWithDescription(tag)
 
             do{
                 let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
@@ -97,8 +95,8 @@ class PostNewTriggerTests: SmallTestBase {
 
                     XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers")
                 }
-                MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-                MockSession.requestVerifier = requestVerifier
+                sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+                sharedMockSession.requestVerifier = requestVerifier
                 iotSession = MockSession.self
 
                 setting.api.postNewTrigger(setting.schema, schemaVersion: setting.schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
@@ -215,8 +213,8 @@ class PostNewTriggerTests: SmallTestBase {
                     XCTFail()
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
@@ -294,8 +292,8 @@ class PostNewTriggerTests: SmallTestBase {
                     XCTFail()
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
@@ -369,8 +367,8 @@ class PostNewTriggerTests: SmallTestBase {
                     XCTFail()
                 }
             }
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
             api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
@@ -393,37 +391,6 @@ class PostNewTriggerTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
-        }
-    }
-
-    func testPostNewTrigger_UnsupportError() {
-        let expectation = self.expectationWithDescription("postNewTriggerUnsupportError")
-        let setting = TestSetting()
-        let api = setting.api
-        let schema = setting.schema
-        let schemaVersion = setting.schemaVersion
-
-        let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
-        let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
-
-        api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
-            if error == nil{
-                XCTFail("should fail")
-            }else {
-                switch error! {
-                case .UNSUPPORTED_ERROR:
-                    break
-                default:
-                    XCTFail("should be unsupport error")
-                }
-            }
-            expectation.fulfill()
-        })
-
         self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")

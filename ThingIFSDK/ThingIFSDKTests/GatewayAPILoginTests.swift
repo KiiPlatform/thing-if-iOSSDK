@@ -36,7 +36,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let credential = "\(setting.app.appID):\(setting.app.appKey)"
-                let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+                let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
                 let expectedHeader = [
                     "authorization": "Basic \(base64Str)",
                     "Content-Type": "application/json"
@@ -58,8 +58,8 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
                 statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
-            MockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            MockSession.requestVerifier = requestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
+            sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
         } catch(_) {
             XCTFail("should not throw error")
@@ -143,7 +143,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let credential = "\(setting.app.appID):\(setting.app.appKey)"
-            let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+            let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
             let expectedHeader = [
                 "authorization": "Basic \(base64Str)",
                 "Content-Type": "application/json"
@@ -163,8 +163,8 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
             statusCode: 400, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
@@ -201,7 +201,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let credential = "\(setting.app.appID):\(setting.app.appKey)"
-            let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)?.base64EncodedDataWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+            let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
             let expectedHeader = [
                 "authorization": "Basic \(base64Str)",
                 "Content-Type": "application/json"
@@ -221,8 +221,8 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
             statusCode: 401, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)

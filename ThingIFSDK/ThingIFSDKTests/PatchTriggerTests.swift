@@ -95,10 +95,8 @@ class PatchTriggerTests: SmallTestBase {
     }
 
     func patchTrigger(tag: String, testcase: TestCase) {
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription(tag)
-        defer{
-            expectation = nil
-        }
+        let expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+        
         let setting = TestSetting()
         let api = setting.api
 
@@ -152,7 +150,7 @@ class PatchTriggerTests: SmallTestBase {
 
         if testcase.success {
             iotSession = MockMultipleSession.self
-            MockMultipleSession.responsePairs = [
+            sharedMockMultipleSession.responsePairs = [
                 ((data: nil, urlResponse: mockResponse1, error: nil),patchRequestVerifier),
                 ((data: jsonData!, urlResponse: mockResponse2, error: nil),getRequestVerifier)
             ]
@@ -162,8 +160,8 @@ class PatchTriggerTests: SmallTestBase {
             }catch(_){
                 XCTFail(tag)
             }
-            MockSession.mockResponse = (jsonData, urlResponse: mockResponse3, error: nil)
-            MockSession.requestVerifier = patchRequestVerifier
+            sharedMockSession.mockResponse = (jsonData, urlResponse: mockResponse3, error: nil)
+            sharedMockSession.requestVerifier = patchRequestVerifier
             iotSession = MockSession.self
         }
 
@@ -203,38 +201,8 @@ class PatchTriggerTests: SmallTestBase {
         }
     }
 
-    func testPatchTrigger_UnsupportError() {
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription("patchTriggerUnsupportError")
-        let setting = TestSetting()
-        let api = setting.api
-
-        // perform onboarding
-        api._target = setting.target
-
-        let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
-        api.patchTrigger(expectedTriggerID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: predicate) { (trigger, error) -> Void in
-            if error == nil{
-                XCTFail("should fail")
-            }else {
-                switch error! {
-                case .UNSUPPORTED_ERROR:
-                    break
-                default:
-                    XCTFail("should be unsupport error")
-                }
-            }
-            expectation.fulfill()
-        }
-
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
-        }
-    }
     func testPatchTrigger_target_not_available_error() {
-        weak var expectation : XCTestExpectation! = self.expectationWithDescription("testPatchTrigger_target_not_available_error")
+        let expectation : XCTestExpectation! = self.expectationWithDescription("testPatchTrigger_target_not_available_error")
         let setting = TestSetting()
         let api = setting.api
 

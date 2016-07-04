@@ -72,8 +72,8 @@ class UpdateVendorThingIDTests: SmallTestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
             statusCode: 204, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         setting.api.updateVendorThingID(
@@ -143,8 +143,8 @@ class UpdateVendorThingIDTests: SmallTestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
             statusCode: 400, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         setting.api.updateVendorThingID(
@@ -220,8 +220,8 @@ class UpdateVendorThingIDTests: SmallTestBase {
         let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
             statusCode: 409, HTTPVersion: nil, headerFields: nil)
 
-        MockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        MockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         setting.api.updateVendorThingID(

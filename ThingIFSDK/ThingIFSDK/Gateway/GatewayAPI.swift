@@ -76,7 +76,7 @@ public class GatewayAPI: NSObject, NSCoding {
         let base64Str = plainData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.init(rawValue: 0))
 
         let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Basic \(base64Str)",
+            "authorization": "Basic " + base64Str,
             "Content-Type": "application/json"
         ]
 
