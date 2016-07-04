@@ -125,9 +125,9 @@ class CommandSerializationTest: SmallTestBase {
         source.metadata = metadata;
 
         XCTAssertEqual(source.commandID, "testCommandID");
-        XCTAssertEqual(source.targetID.type, "testTargetType");
+        XCTAssertEqual(source.targetID.type, "testTargetType".lowercaseString);
         XCTAssertEqual(source.targetID.id, "testTargetID");
-        XCTAssertEqual(source.issuerID.type, "testIssuerType");
+        XCTAssertEqual(source.issuerID.type, "testIssuerType".lowercaseString);
         XCTAssertEqual(source.issuerID.id, "testIssuerID");
         XCTAssertEqual(source.schemaName, "testSchemaName");
         XCTAssertEqual(source.schemaVersion, 1);

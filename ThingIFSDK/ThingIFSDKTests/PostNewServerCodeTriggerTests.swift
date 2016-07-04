@@ -184,36 +184,6 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
             }
         }
     }
-
-    func testPostNewServerCodeTrigger_UnsupportError() {
-        let setting:TestSetting = TestSetting()
-        let api = setting.api
-        let expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_UnsupportError")
-        
-        let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
-        let predicate = SchedulePredicate(schedule: "'*/15 * * * *")
-        
-        api._target = setting.target
-        api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
-            if error == nil{
-                XCTFail("should fail")
-            }else {
-                switch error! {
-                case .UNSUPPORTED_ERROR:
-                    break
-                default:
-                    XCTFail("should be unsupport error")
-                }
-            }
-            expectation.fulfill()
-        })
-        
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
-        }
-    }
     
     func testPostNewServerCodeTrigger_target_not_available_error() {
         let setting:TestSetting = TestSetting()
