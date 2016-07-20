@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220FEACE1D3F7E450019A77E /* DataGroupingInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220FEACD1D3F7E450019A77E /* DataGroupingInterval.swift */; };
 		2242770A1CEAE803004369EE /* OnboardGatewayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224277091CEAE803004369EE /* OnboardGatewayTests.swift */; };
 		2242770C1CEB17BD004369EE /* GatewayAPINSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2242770B1CEB17BD004369EE /* GatewayAPINSCodingTests.swift */; };
 		2242770E1CEB1AA2004369EE /* ReplaceEndNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2242770D1CEB1AA2004369EE /* ReplaceEndNodeTests.swift */; };
@@ -140,6 +141,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		220FEACD1D3F7E450019A77E /* DataGroupingInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataGroupingInterval.swift; sourceTree = "<group>"; };
 		224277091CEAE803004369EE /* OnboardGatewayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardGatewayTests.swift; sourceTree = "<group>"; };
 		2242770B1CEB17BD004369EE /* GatewayAPINSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPINSCodingTests.swift; sourceTree = "<group>"; };
 		2242770D1CEB1AA2004369EE /* ReplaceEndNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplaceEndNodeTests.swift; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 				226EA0D31CD0D883002C1821 /* TargetThing.swift */,
 				2264021B1CD1DD8000E30967 /* StandaloneThing.swift */,
 				D5521C751CCDFE7600037C9F /* ServerCode.swift */,
+				220FEACD1D3F7E450019A77E /* DataGroupingInterval.swift */,
 			);
 			path = ThingIFSDK;
 			sourceTree = "<group>";
@@ -663,6 +666,7 @@
 				7D36B6791BD4D03100D9B821 /* NegatedCondition.swift in Sources */,
 				7D36B68A1BD4D03100D9B821 /* TypedID.swift in Sources */,
 				7D36B6BB1BD4D43700D9B821 /* ThingIFAPI+Command.swift in Sources */,
+				220FEACE1D3F7E450019A77E /* DataGroupingInterval.swift in Sources */,
 				7D36B67E1BD4D03100D9B821 /* Operation.swift in Sources */,
 				7D36B6881BD4D03100D9B821 /* AbstractThing.swift in Sources */,
 				7D36B6831BD4D03100D9B821 /* ReachabilityCondition.swift in Sources */,
