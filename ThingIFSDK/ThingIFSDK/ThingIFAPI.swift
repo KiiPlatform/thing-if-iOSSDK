@@ -130,24 +130,13 @@ public class ThingIFAPI: NSObject, NSCoding {
      - Parameter vendorThingID: Thing ID given by vendor. Must be specified.
      - Parameter thingPassword: Thing Password given by vendor.
      Must be specified.
-     - Parameter thingType: Type of the thing given by vendor.
-     If the thing is already registered,
-     this value would be ignored by IoT Cloud.
-     - Parameter dataGroupingInterval: 1_MINUTE | 15_MINUTES | 30_MINUTES | 1_HOUR | 12_HOURS.
-     Will be used to create the bucket to store the state history when the thing is not using traits.
-     - Parameter thingProperties: Properties of thing.
-     If the thing is already registered, this value would be ignored by
-     IoT Cloud.
-     Refer to the [REST API DOC](http://docs.kii.com/rest/#thing_management-register_a_thing)
-     About the format of this Document.
+     - Parameter options: Optional parameters inside.
      - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
      */
     public func onboard(
         vendorThingID:String,
         thingPassword:String,
-        thingType:String?,
-        dataGroupingInterval:DataGroupingInterval?,
-        thingProperties:Dictionary<String,AnyObject>?,
+        options:OnboardWithVendorThingIDOptions?,
         completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void
     {
@@ -194,14 +183,13 @@ public class ThingIFAPI: NSObject, NSCoding {
      - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
      - Parameter thingPassword: Thing Password given by vendor.
      Must be specified.
-     - Parameter dataGroupingInterval: 1_MINUTE | 15_MINUTES | 30_MINUTES | 1_HOUR | 12_HOURS.
-     Will be used to create the bucket to store the state history when the thing is not using traits.
+     - Parameter options: Optional parameters inside.
      - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
      */
     public func onboard(
         thingID:String,
         thingPassword:String,
-        dataGroupingInterval:DataGroupingInterval?,
+        options:OnboardWithThingIDOptions?,
         completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void
     {

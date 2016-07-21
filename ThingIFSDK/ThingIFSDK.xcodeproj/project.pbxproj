@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		220FEACE1D3F7E450019A77E /* DataGroupingInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220FEACD1D3F7E450019A77E /* DataGroupingInterval.swift */; };
+		224051F81D40D2360001BF4E /* LayoutPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051F71D40D2360001BF4E /* LayoutPosition.swift */; };
+		224051FA1D40D5C90001BF4E /* OnboardWithThingIDOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051F91D40D5C90001BF4E /* OnboardWithThingIDOptions.swift */; };
+		224051FC1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051FB1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift */; };
 		2242770A1CEAE803004369EE /* OnboardGatewayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224277091CEAE803004369EE /* OnboardGatewayTests.swift */; };
 		2242770C1CEB17BD004369EE /* GatewayAPINSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2242770B1CEB17BD004369EE /* GatewayAPINSCodingTests.swift */; };
 		2242770E1CEB1AA2004369EE /* ReplaceEndNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2242770D1CEB1AA2004369EE /* ReplaceEndNodeTests.swift */; };
@@ -142,6 +145,9 @@
 
 /* Begin PBXFileReference section */
 		220FEACD1D3F7E450019A77E /* DataGroupingInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataGroupingInterval.swift; sourceTree = "<group>"; };
+		224051F71D40D2360001BF4E /* LayoutPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutPosition.swift; sourceTree = "<group>"; };
+		224051F91D40D5C90001BF4E /* OnboardWithThingIDOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardWithThingIDOptions.swift; sourceTree = "<group>"; };
+		224051FB1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardWithVendorThingIDOptions.swift; sourceTree = "<group>"; };
 		224277091CEAE803004369EE /* OnboardGatewayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardGatewayTests.swift; sourceTree = "<group>"; };
 		2242770B1CEB17BD004369EE /* GatewayAPINSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPINSCodingTests.swift; sourceTree = "<group>"; };
 		2242770D1CEB1AA2004369EE /* ReplaceEndNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplaceEndNodeTests.swift; sourceTree = "<group>"; };
@@ -354,6 +360,9 @@
 				2264021B1CD1DD8000E30967 /* StandaloneThing.swift */,
 				D5521C751CCDFE7600037C9F /* ServerCode.swift */,
 				220FEACD1D3F7E450019A77E /* DataGroupingInterval.swift */,
+				224051F71D40D2360001BF4E /* LayoutPosition.swift */,
+				224051F91D40D5C90001BF4E /* OnboardWithThingIDOptions.swift */,
+				224051FB1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift */,
 			);
 			path = ThingIFSDK;
 			sourceTree = "<group>";
@@ -636,11 +645,13 @@
 				7D36B6891BD4D03100D9B821 /* Trigger.swift in Sources */,
 				D5521C741CCDFDA200037C9F /* Predicate.swift in Sources */,
 				7D36B6771BD4D03100D9B821 /* GroupOperation.swift in Sources */,
+				224051FA1D40D5C90001BF4E /* OnboardWithThingIDOptions.swift in Sources */,
 				7D36B6751BD4D03100D9B821 /* Dictionary+Operations.swift in Sources */,
 				7D36B6641BD4D03100D9B821 /* Command.swift in Sources */,
 				226EA0D41CD0D883002C1821 /* TargetThing.swift in Sources */,
 				7D36B67A1BD4D03100D9B821 /* NoCancelledDependencies.swift in Sources */,
 				D5636AFF1CE1EB4200760564 /* SchedulePredicate.swift in Sources */,
+				224051F81D40D2360001BF4E /* LayoutPosition.swift in Sources */,
 				7419C2B81C27D10100F964FB /* App.swift in Sources */,
 				747EB4BA1C858BFC00E30C31 /* SDKVersion.swift in Sources */,
 				7D36B67D1BD4D03100D9B821 /* NSOperation+Operations.swift in Sources */,
@@ -669,6 +680,7 @@
 				220FEACE1D3F7E450019A77E /* DataGroupingInterval.swift in Sources */,
 				7D36B67E1BD4D03100D9B821 /* Operation.swift in Sources */,
 				7D36B6881BD4D03100D9B821 /* AbstractThing.swift in Sources */,
+				224051FC1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift in Sources */,
 				7D36B6831BD4D03100D9B821 /* ReachabilityCondition.swift in Sources */,
 				7D36B6741BD4D03100D9B821 /* DelayOperation.swift in Sources */,
 				7D36B6861BD4D03100D9B821 /* Owner.swift in Sources */,
