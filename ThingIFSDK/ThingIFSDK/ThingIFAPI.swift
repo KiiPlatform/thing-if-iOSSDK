@@ -127,12 +127,11 @@ public class ThingIFAPI: NSObject, NSCoding {
 
      **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
-     - Parameter vendorThingID: Thing ID given by vendor. Must be specified.
-     - Parameter thingPassword: Thing Password given by vendor.
-     Must be specified.
-     - Parameter options: Optional parameters inside.
-     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
-     */
+    - Parameter vendorThingID: Thing ID given by vendor. Must be specified.
+    - Parameter thingPassword: Thing Password given by vendor. Must be specified.
+    - Parameter options: Optional parameters inside.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
+    */
     public func onboard(
         vendorThingID:String,
         thingPassword:String,
@@ -180,12 +179,11 @@ public class ThingIFAPI: NSObject, NSCoding {
 
      **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
-     - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
-     - Parameter thingPassword: Thing Password given by vendor.
-     Must be specified.
-     - Parameter options: Optional parameters inside.
-     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
-     */
+    - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
+    - Parameter thingPassword: Thing Password given by vendor. Must be specified.
+    - Parameter options: Optional parameters inside.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
+    */
     public func onboard(
         thingID:String,
         thingPassword:String,
