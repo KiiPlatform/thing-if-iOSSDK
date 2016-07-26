@@ -25,7 +25,7 @@ public class OnboardWithVendorThingIDOptions {
       Refer to the [REST API DOC](http://docs.kii.com/rest/#thing_management-register_a_thing)
       About the format of this Document.
     - Parameter position: GATEWAY | STANDALONE | ENDNODE.
-    - Parameter interval: 1_MINUTE | 15_MINUTES | 30_MINUTES | 1_HOUR | 12_HOURS.
+    - Parameter interval: INTERVAL_1_MINUTE | INTERVAL_15_MINUTES | INTERVAL_30_MINUTES | INTERVAL_1_HOUR | INTERVAL_12_HOURS.
       Will be used to create the bucket to store the state history when the thing is not using traits.
     */
     public init(
