@@ -277,7 +277,25 @@ public class ThingIFAPI: NSObject, NSCoding {
             completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
         }
     }
-    
+
+    /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
+     Thing act as Gateway is already registered and marked as Gateway.
+
+    - Parameter pendingEndnode: Pending End Node
+    - Parameter endnodePassword: Password of the End Node
+    - Parameter options: Optional parameters inside.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an end node, an ThingIFError
+    */
+    public func onboardEndnodeWithGateway(
+        pendingEndnode:PendingEndNode,
+        endnodePassword:String,
+        options:OnboardEndnodeWithGatewayOptions?,
+        completionHandler: (EndNode?, ThingIFError?)-> Void
+        ) ->Void
+    {
+        // TODO: implement me.
+    }
+
     // MARK: - Push notification methods
 
     /** Install push notification to receive notification from IoT Cloud.
