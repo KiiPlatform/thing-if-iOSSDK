@@ -28,10 +28,10 @@ public class OnboardWithVendorThingIDOptions {
       Will be used to create the bucket to store the state history when the thing is not using traits.
     */
     public init(
-        thingType:String?,
-        thingProperties:Dictionary<String,AnyObject>?,
-        position: LayoutPosition?,
-        interval: DataGroupingInterval?)
+        thingType:String? = nil,
+        thingProperties:Dictionary<String,AnyObject>? = nil,
+        position: LayoutPosition? = nil,
+        interval: DataGroupingInterval? = nil)
     {
         self.thingType = thingType
         self.thingProperties = thingProperties
