@@ -15,6 +15,8 @@ extension ThingIFAPI {
         thingPassword:String,
         thingType:String?,
         thingProperties:Dictionary<String,AnyObject>?,
+        layoutPosition:LayoutPosition? = nil,
+        dataGroupingInterval:DataGroupingInterval? = nil,
         completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void {
 
@@ -47,6 +49,14 @@ extension ThingIFAPI {
                 requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
             }
             
+            if layoutPosition != nil {
+                requestBodyDict.setObject(layoutPosition!.rawValue, forKey: "layoutPosition")
+            }
+
+            if dataGroupingInterval != nil {
+                requestBodyDict.setObject(dataGroupingInterval!.rawValue, forKey: "dataGroupingIntervalß")
+            }
+
             do{
                 let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
                 // do request
