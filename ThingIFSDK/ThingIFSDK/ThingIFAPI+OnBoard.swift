@@ -54,7 +54,7 @@ extension ThingIFAPI {
             }
 
             if dataGroupingInterval != nil {
-                requestBodyDict.setObject(dataGroupingInterval!.rawValue, forKey: "dataGroupingIntervalß")
+                requestBodyDict.setObject(dataGroupingInterval!.rawValue, forKey: "dataGroupingInterval")
             }
 
             do{
