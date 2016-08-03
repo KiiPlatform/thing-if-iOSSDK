@@ -87,7 +87,7 @@ class OnboardTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            setting.api.onboard(
+            setting.api.onboardWithVendorThingID(
                 vendorThingID,
                 thingPassword: password,
                 options: options,
@@ -171,7 +171,7 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboard(
+        setting.api.onboardWithVendorThingID(
             vendorThingID,
             thingPassword: password,
             options: options,
@@ -256,7 +256,7 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboard(
+        setting.api.onboardWithVendorThingID(
             vendorThingID,
             thingPassword: password,
             options: options,
@@ -341,7 +341,7 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboard(
+        setting.api.onboardWithVendorThingID(
             vendorThingID,
             thingPassword: password,
             options: options,
@@ -391,7 +391,7 @@ class OnboardTests: SmallTestBase {
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
 
-            setting.api.onboard(
+            setting.api.onboardWithVendorThingID(
                 vendorThingID,
                 thingPassword: password,
                 options: options,
@@ -412,7 +412,7 @@ class OnboardTests: SmallTestBase {
             }
         }
 
-        setting.api.onboard(
+        setting.api.onboardWithVendorThingID(
             vendorThingID,
             thingPassword: password,
             options: options,
@@ -488,7 +488,7 @@ class OnboardTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            setting.api.onboard(
+            setting.api.onboardWithThingID(
                 thingID,
                 thingPassword: password,
                 options: options,
@@ -565,7 +565,7 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboard(
+        setting.api.onboardWithThingID(
             thingID,
             thingPassword: password,
             options: options,
@@ -643,7 +643,7 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboard(
+        setting.api.onboardWithThingID(
             thingID,
             thingPassword: password,
             options: options,
@@ -721,7 +721,7 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboard(
+        setting.api.onboardWithThingID(
             thingID,
             thingPassword: password,
             options: options,
@@ -766,7 +766,7 @@ class OnboardTests: SmallTestBase {
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
 
-            setting.api.onboard(
+            setting.api.onboardWithThingID(
                 thingID,
                 thingPassword: password,
                 options: options,
@@ -787,7 +787,7 @@ class OnboardTests: SmallTestBase {
             }
         }
 
-        setting.api.onboard(
+        setting.api.onboardWithThingID(
             thingID,
             thingPassword: password,
             options: options,
