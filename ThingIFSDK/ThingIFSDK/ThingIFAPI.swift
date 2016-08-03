@@ -135,7 +135,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     public func onboard(
         vendorThingID:String,
         thingPassword:String,
-        options:OnboardWithVendorThingIDOptions?,
+        options:OnboardWithVendorThingIDOptions? = nil,
         completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void
     {
@@ -154,11 +154,13 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
     - Parameter thingPassword: Thing Password given by vendor.
     Must be specified.
+    - Parameter options: Optional parameters inside.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
     */
     public func onboard(
         thingID:String,
         thingPassword:String,
+        options:OnboardWithThingIDOptions? = nil,
         completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void
     {
@@ -170,40 +172,18 @@ public class ThingIFAPI: NSObject, NSCoding {
         }
     }
 
-    /** On board IoT Cloud with the specified thing ID.
-     Specified thing will be owned by owner who consumes this API.
-     (Specified on creation of ThingIFAPI instance.)
-     When you're sure that the on board process has been done,
-     this method is convenient.
-     If you are using a gateway, you need to use onboardEndnodeWithGateway to onboard endnode instead.
-
-     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
-
-    - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
-    - Parameter thingPassword: Thing Password given by vendor. Must be specified.
-    - Parameter options: Optional parameters inside.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
-    */
-    public func onboard(
-        thingID:String,
-        thingPassword:String,
-        options:OnboardWithThingIDOptions?,
-        completionHandler: (Target?, ThingIFError?)-> Void
-        ) ->Void
-    {
-        // TODO: implement me.
-    }
-
     /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
      Thing act as Gateway is already registered and marked as Gateway.
     
      - Parameter pendingEndnode: Pending End Node
      - Parameter endnodePassword: Password of the End Node
+     - Parameter options: Optional parameters inside.
      - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an end node, an ThingIFError
      */
     public func onboardEndnodeWithGateway(
         pendingEndnode:PendingEndNode,
         endnodePassword:String,
+        options:OnboardEndnodeWithGatewayOptions? = nil,
         completionHandler: (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
@@ -276,24 +256,6 @@ public class ThingIFAPI: NSObject, NSCoding {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
             completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
         }
-    }
-
-    /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
-     Thing act as Gateway is already registered and marked as Gateway.
-
-    - Parameter pendingEndnode: Pending End Node
-    - Parameter endnodePassword: Password of the End Node
-    - Parameter options: Optional parameters inside.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an end node, an ThingIFError
-    */
-    public func onboardEndnodeWithGateway(
-        pendingEndnode:PendingEndNode,
-        endnodePassword:String,
-        options:OnboardEndnodeWithGatewayOptions?,
-        completionHandler: (EndNode?, ThingIFError?)-> Void
-        ) ->Void
-    {
-        // TODO: implement me.
     }
 
     // MARK: - Push notification methods
