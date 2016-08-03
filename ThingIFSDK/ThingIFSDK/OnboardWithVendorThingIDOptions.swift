@@ -7,7 +7,7 @@
 
 import Foundation
 
-/** Optional parameters of `ThingIFAPI`.onboard(_:thingPassword:options:completionHandler).
+/** Optional parameters of `ThingIFAPI.onboardWithVendorThingID(_:thingPassword:options:completionHandler:)`.
  */
 public class OnboardWithVendorThingIDOptions {
     public let thingType: String?

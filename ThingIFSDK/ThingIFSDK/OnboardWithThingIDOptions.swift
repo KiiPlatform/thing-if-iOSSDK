@@ -7,7 +7,7 @@
 
 import Foundation
 
-/** Optional parameters of `ThingIFAPI`.onboard(_:thingPassword:options:completionHandler).
+/** Optional parameters of `ThingIFAPI.onboardWithThingID(_:thingPassword:options:completionHandler:)`.
 */
 public class OnboardWithThingIDOptions {
     public let layoutPosition: LayoutPosition?
