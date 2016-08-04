@@ -99,7 +99,7 @@ extension ThingIFAPI {
     func _onboardEndnodeWithGateway(
         pendingEndnode:PendingEndNode,
         endnodePassword:String,
-        dataGroupingInterval:DataGroupingInterval? = nil,
+        options:OnboardEndnodeWithGatewayOptions? = nil,
         completionHandler: (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
@@ -144,8 +144,8 @@ extension ThingIFAPI {
             requestBodyDict["endNodeThingProperties"] = pendingEndnode.thingProperties
         }
 
-        if dataGroupingInterval != nil {
-            requestBodyDict["dataGroupingInterval"] = dataGroupingInterval!.rawValue
+        if options?.dataGroupingInterval != nil {
+            requestBodyDict["dataGroupingInterval"] = options!.dataGroupingInterval!.rawValue
         }
 
         do {

@@ -229,7 +229,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     {
         _onboardEndnodeWithGateway(pendingEndnode,
             endnodePassword: endnodePassword,
-            dataGroupingInterval: options?.dataGroupingInterval,
+            options: options,
             completionHandler: completionHandler)
     }
 
