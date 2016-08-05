@@ -11,6 +11,7 @@ import Foundation
  */
 public class OnboardWithVendorThingIDOptions {
     public let thingType: String?
+    public let firmwareVersion: String?
     public let thingProperties: Dictionary<String,AnyObject>?
     public let layoutPosition: LayoutPosition?
     public let dataGroupingInterval: DataGroupingInterval?
@@ -20,6 +21,7 @@ public class OnboardWithVendorThingIDOptions {
     - Parameter thingType: Type of the thing given by vendor.
       If the thing is already registered,
       this value would be ignored by IoT Cloud.
+    - Parameter firmwareVersion: Firmware version of the thing.
     - Parameter thingProperties: The properties of the thing.
       You can set both the predefined and custom fields.
       Please read [here](https://docs.kii.com/en/starts/thingifsdk/thingsdk/management/#register-a-thing) for more details.
@@ -29,11 +31,13 @@ public class OnboardWithVendorThingIDOptions {
     */
     public init(
         thingType:String? = nil,
+        firmwareVersion:String? = nil,
         thingProperties:Dictionary<String,AnyObject>? = nil,
         position: LayoutPosition? = nil,
         interval: DataGroupingInterval? = nil)
     {
         self.thingType = thingType
+        self.firmwareVersion = firmwareVersion
         self.thingProperties = thingProperties
         self.layoutPosition = position
         self.dataGroupingInterval = interval
