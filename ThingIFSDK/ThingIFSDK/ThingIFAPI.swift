@@ -141,6 +141,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     {
         _onboard(true, IDString: vendorThingID, thingPassword: thingPassword,
             thingType: options?.thingType,
+            firmwareVersion: options?.firmwareVersion,
             thingProperties: options?.thingProperties,
             layoutPosition: options?.layoutPosition,
             dataGroupingInterval: options?.dataGroupingInterval) { (target, error) -> Void in

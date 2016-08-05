@@ -14,6 +14,7 @@ extension ThingIFAPI {
         IDString: String,
         thingPassword:String,
         thingType:String?,
+        firmwareVersion:String? = nil,
         thingProperties:Dictionary<String,AnyObject>?,
         layoutPosition:LayoutPosition? = nil,
         dataGroupingInterval:DataGroupingInterval? = nil,
@@ -45,6 +46,10 @@ extension ThingIFAPI {
                 requestBodyDict.setObject(thingType!, forKey: "thingType")
             }
             
+            if firmwareVersion != nil {
+                requestBodyDict.setObject(firmwareVersion!, forKey: "firmwareVersion")
+            }
+
             if thingProperties != nil {
                 requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
             }

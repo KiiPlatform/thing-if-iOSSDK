@@ -26,11 +26,13 @@ class OnboardTests: SmallTestBase {
         let setting = TestSetting()
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
+        let firmwareVersion = "dummyVersion"
         let thingProperties = [
             "manufacture": "kii"
         ]
         let options = OnboardWithVendorThingIDOptions(
             thingType: setting.thingType,
+            firmwareVersion:  firmwareVersion,
             thingProperties: thingProperties,
             position: LayoutPosition.STANDALONE,
             interval: DataGroupingInterval.INTERVAL_1_MINUTE)
@@ -61,6 +63,7 @@ class OnboardTests: SmallTestBase {
                     "vendorThingID": vendorThingID,
                     "thingPassword": password,
                     "thingType": setting.thingType,
+                    "firmwareVersion": firmwareVersion,
                     "thingProperties": thingProperties,
                     "layoutPosition": "STANDALONE",
                     "dataGroupingInterval": "1_MINUTE"
