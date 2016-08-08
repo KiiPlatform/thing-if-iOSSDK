@@ -172,7 +172,7 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (Target?, ThingIFError?)-> Void
         ) ->Void
     {
-         _onboard(false, IDString: thingID, thingPassword: thingPassword, thingType: nil, thingProperties: nil) { (target, error) -> Void in
+         _onboard(false, IDString: thingID, thingPassword: thingPassword) { (target, error) -> Void in
             if error == nil {
                 self.saveToUserDefault()
             }
@@ -203,7 +203,6 @@ public class ThingIFAPI: NSObject, NSCoding {
         ) ->Void
     {
         _onboard(false, IDString: thingID, thingPassword: thingPassword,
-            thingType: nil, thingProperties: nil,
             layoutPosition: options?.layoutPosition,
             dataGroupingInterval: options?.dataGroupingInterval) { (target, error) -> Void in
             if error == nil {

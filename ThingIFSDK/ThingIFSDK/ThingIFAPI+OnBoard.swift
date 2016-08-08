@@ -13,9 +13,9 @@ extension ThingIFAPI {
         byVendorThingID: Bool,
         IDString: String,
         thingPassword:String,
-        thingType:String?,
+        thingType:String? = nil,
         firmwareVersion:String? = nil,
-        thingProperties:Dictionary<String,AnyObject>?,
+        thingProperties:Dictionary<String,AnyObject>? = nil,
         layoutPosition:LayoutPosition? = nil,
         dataGroupingInterval:DataGroupingInterval? = nil,
         completionHandler: (Target?, ThingIFError?)-> Void
