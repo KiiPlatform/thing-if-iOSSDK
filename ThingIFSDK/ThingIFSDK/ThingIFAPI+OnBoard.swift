@@ -47,7 +47,7 @@ extension ThingIFAPI {
             }
             
             if firmwareVersion != nil {
-                requestBodyDict.setObject(firmwareVersion!, forKey: "firmwareVersion")
+                requestBodyDict["firmwareVersion"] = firmwareVersion
             }
 
             if thingProperties != nil {
@@ -55,11 +55,11 @@ extension ThingIFAPI {
             }
             
             if layoutPosition != nil {
-                requestBodyDict.setObject(layoutPosition!.rawValue, forKey: "layoutPosition")
+                requestBodyDict["layoutPosition"] = layoutPosition!.rawValue
             }
 
             if dataGroupingInterval != nil {
-                requestBodyDict.setObject(dataGroupingInterval!.rawValue, forKey: "dataGroupingInterval")
+                requestBodyDict["dataGroupingInterval"] = dataGroupingInterval!.rawValue
             }
 
             do{
