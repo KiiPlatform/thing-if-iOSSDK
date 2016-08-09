@@ -41,26 +41,16 @@ extension ThingIFAPI {
                 requestBodyDict.setObject(IDString, forKey: "thingID")
                 requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithThingIDByOwner+json"
             }
-            
-            if thingType != nil {
-                requestBodyDict.setObject(thingType!, forKey: "thingType")
-            }
-            
-            if firmwareVersion != nil {
-                requestBodyDict["firmwareVersion"] = firmwareVersion
-            }
 
-            if thingProperties != nil {
-                requestBodyDict.setObject(thingProperties!, forKey: "thingProperties")
-            }
-            
-            if layoutPosition != nil {
-                requestBodyDict["layoutPosition"] = layoutPosition!.rawValue
-            }
+            requestBodyDict["thingType"] = thingType
 
-            if dataGroupingInterval != nil {
-                requestBodyDict["dataGroupingInterval"] = dataGroupingInterval!.rawValue
-            }
+            requestBodyDict["firmwareVersion"] = firmwareVersion
+
+            requestBodyDict["thingProperties"] = thingProperties
+
+            requestBodyDict["layoutPosition"] = layoutPosition?.rawValue
+
+            requestBodyDict["dataGroupingInterval"] = dataGroupingInterval?.rawValue
 
             do{
                 let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
@@ -141,17 +131,13 @@ extension ThingIFAPI {
             ]
         )
 
-        if pendingEndnode.thingType != nil {
-            requestBodyDict["endNodeThingType"] = pendingEndnode.thingType
-        }
+        requestBodyDict["endNodeThingType"] = pendingEndnode.thingType
 
         if !(pendingEndnode.thingProperties?.isEmpty ?? true) {
             requestBodyDict["endNodeThingProperties"] = pendingEndnode.thingProperties
         }
 
-        if options?.dataGroupingInterval != nil {
-            requestBodyDict["dataGroupingInterval"] = options!.dataGroupingInterval!.rawValue
-        }
+        requestBodyDict["dataGroupingInterval"] = options?.dataGroupingInterval?.rawValue
 
         do {
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
