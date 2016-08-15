@@ -78,6 +78,11 @@ extension ThingIFAPI {
                                     thingID: thingID,
                                     vendorThingID: vendorThingID,
                                     accessToken: accessToken)
+                        } else if layoutPosition == LayoutPosition.ENDNODE {
+                            target = EndNode(
+                                    thingID: thingID,
+                                    vendorThingID: vendorThingID,
+                                    accessToken: accessToken)
                         } else {
                             target = StandaloneThing(
                                     thingID: thingID,
