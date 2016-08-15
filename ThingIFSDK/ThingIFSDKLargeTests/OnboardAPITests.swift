@@ -152,17 +152,18 @@ class OnboardAPITests: XCTestCase {
             }
     }
 
-    func testOnboardWithVendorThingIDSuccess() {
-        let expectation = self.expectationWithDescription("testOnboardWithVendorThingIDSuccess")
+    func testOnboardWithVendorThingIDAndThingIDSuccess() {
+        var expectation = self.expectationWithDescription("testOnboardWithVendorThingIDAndThingIDSuccess")
         let vendorThingID = "vid-" + String(NSDate.init().timeIntervalSince1970)
-        let options = OnboardWithVendorThingIDOptions(
+        let vendorThingIdOptions = OnboardWithVendorThingIDOptions(
             thingType: DEMO_THING_TYPE,
             thingProperties: nil,
-            position: LayoutPosition.STANDALONE)
+            position: LayoutPosition.STANDALONE,
+            interval: DataGroupingInterval.INTERVAL_12_HOURS)
         self.api?.onboardWithVendorThingID(
             vendorThingID,
             thingPassword: "password",
-            options: options,
+            options: vendorThingIdOptions,
             completionHandler: {
                 (target, error) -> Void in
                 XCTAssertNil(error)
@@ -176,23 +177,27 @@ class OnboardAPITests: XCTestCase {
                 XCTFail("error")
             }
         }
-    }
 
-    func testOnboardWithThingIDSuccess() {
-        let expectation = self.expectationWithDescription("testOnboardWithThingIDSuccess")
-        let thingID = "th.9980daa00022-b539-6e11-bfd5-034b3f22"
-        let options = OnboardWithThingIDOptions(
+        expectation = self.expectationWithDescription("testOnboardWithVendorThingIDAndThingIDSuccess")
+        let api = ThingIFAPIBuilder(
+                app: self.app!,
+                owner: Owner(
+                         typedID: TypedID(
+                                    type: "user",
+                                    id: self.userInfo!["userID"]! as! String),
+                         accessToken: self.userInfo!["_accessToken"]! as! String)).build()
+        let thingIdOptions = OnboardWithThingIDOptions(
             position: LayoutPosition.STANDALONE)
-        self.api?.onboardWithThingID(
-            thingID,
+        api.onboardWithThingID(
+            self.api!.target!.typedID.id,
             thingPassword: "password",
-            options: options,
+            options: thingIdOptions,
             completionHandler: {
                 (target, error) -> Void in
                 XCTAssertNil(error)
                 XCTAssertNotNil(target)
                 XCTAssertEqual("thing", target!.typedID.type)
-                XCTAssertEqual(thingID, target!.typedID.id)
+                XCTAssertEqual(self.api!.target!.typedID.id, target!.typedID.id)
                 XCTAssertNotEqual(target!.accessToken, nil)
                 expectation.fulfill()
         })
@@ -238,7 +243,8 @@ class OnboardAPITests: XCTestCase {
         self.api!.onboardEndnodeWithGateway(
             pendingEndnode,
             endnodePassword: "password",
-            options: nil,
+            options: OnboardEndnodeWithGatewayOptions(
+                       interval: DataGroupingInterval.INTERVAL_12_HOURS),
             completionHandler: {
                 (target, error) -> Void in
                 XCTAssertNil(error)
