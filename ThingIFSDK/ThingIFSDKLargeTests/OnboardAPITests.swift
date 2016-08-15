@@ -202,4 +202,56 @@ class OnboardAPITests: XCTestCase {
             }
         }
     }
+
+    func testOnboardEndnodeWithGatewaySuccess() {
+        var expectation = self.expectationWithDescription(
+                              "testOnboardEndnodeWithGatewaySuccess")
+        // Register gateway.
+        let gatewayVendorThingID =
+            "gvid-" + String(NSDate.init().timeIntervalSince1970)
+        self.api!.onboardWithVendorThingID(
+            gatewayVendorThingID,
+            thingPassword: "password",
+            options: OnboardWithVendorThingIDOptions(
+                       thingType: DEMO_THING_TYPE,
+                       position: LayoutPosition.GATEWAY),
+            completionHandler: {
+                (target, error) -> Void in
+                XCTAssertNil(error)
+                XCTAssertNotNil(target)
+                XCTAssertEqual("thing", target?.typedID.type)
+                XCTAssertNotNil(target?.accessToken)
+                expectation.fulfill()
+            })
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("error")
+            }
+        }
+
+        expectation = self.expectationWithDescription(
+                          "testOnboardEndnodeWithGatewaySuccess")
+        let endnodeVendorThingID =
+            "vid-" + String(NSDate.init().timeIntervalSince1970)
+        let pendingEndnode = PendingEndNode(
+                              json: ["vendorThingID" : endnodeVendorThingID])
+        self.api!.onboardEndnodeWithGateway(
+            pendingEndnode,
+            endnodePassword: "password",
+            options: nil,
+            completionHandler: {
+                (target, error) -> Void in
+                XCTAssertNil(error)
+                XCTAssertNotNil(target)
+                XCTAssertEqual("thing", target?.typedID.type)
+                XCTAssertNotNil(target?.accessToken)
+                expectation.fulfill()
+            })
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("error")
+            }
+        }
+    }
+
 }
