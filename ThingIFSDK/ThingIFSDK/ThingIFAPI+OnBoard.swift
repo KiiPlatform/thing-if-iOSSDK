@@ -73,7 +73,17 @@ extension ThingIFAPI {
                         } else {
                             vendorThingID = ""
                         }
-                        target = StandaloneThing(thingID: thingID, vendorThingID: vendorThingID, accessToken: accessToken)
+                        if layoutPosition == LayoutPosition.GATEWAY {
+                            target = Gateway(
+                                    thingID: thingID,
+                                    vendorThingID: vendorThingID,
+                                    accessToken: accessToken)
+                        } else {
+                            target = StandaloneThing(
+                                    thingID: thingID,
+                                    vendorThingID: vendorThingID,
+                                    accessToken: accessToken)
+                        }
 
                         self._target = target
                     }
