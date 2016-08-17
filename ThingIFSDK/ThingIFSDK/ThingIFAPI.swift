@@ -366,6 +366,10 @@ public class ThingIFAPI: NSObject, NSCoding {
 
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
 
+    When thing related to this ThingIFAPI instance meets condition
+    described by predicate, A registered command sends to thing
+    related to target.
+
     - Parameter schemaName: Name of the Schema of which the Command specified in
     Trigger is defined.
     - Parameter schemaVersion: Version of the Schema of which the Command
