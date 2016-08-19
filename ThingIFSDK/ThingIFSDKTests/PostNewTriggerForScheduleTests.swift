@@ -324,4 +324,83 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                 setting: setting),
             setting:setting)
     }
+
+    func postNewTriggerWithTarget(testCase: TestCase, setting: TestSetting) {
+        weak var expectation : XCTestExpectation!
+        defer {
+            expectation = nil
+        }
+        expectation = self.expectationWithDescription(
+            testCase.verifier.requestVerifier.tag)
+
+        sharedMockSession.requestVerifier =
+            testCase.verifier.requestVerifier.verifier
+        sharedMockSession.mockResponse = testCase.mockResponse
+        iotSession = MockSession.self
+
+        setting.api.postNewTrigger(
+            testCase.parameter.schemaName,
+            schemaVersion: testCase.parameter.schemaVersion,
+            actions: testCase.parameter.actions,
+            predicate: testCase.parameter.predicate,
+            target: setting.target,
+            completionHandler: { (trigger, error) -> Void in
+                testCase.verifier.callbackVerifier.verifier(trigger, error)
+                expectation.fulfill()
+        })
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout for \(testCase.verifier.requestVerifier.tag)")
+            }
+        }
+    }
+
+    func testPostNewTriggerWithTarget_success() {
+        let setting = TestSetting()
+
+        let predicates: [Predicate] = [
+            SchedulePredicate(schedule: "1 * * * *"),
+            SchedulePredicate(schedule: "1 1 * * *"),
+            SchedulePredicate(schedule: "1 1 1 * *"),
+            SchedulePredicate(schedule: "1 1 1 1 *"),
+            SchedulePredicate(schedule: "1 1 1 1 1")
+        ]
+
+        let testCases: [TestCase] =
+        PostNewTriggerForScheduleTests.createTestCases(
+            predicates,
+            setting:setting)
+
+        for testCase in testCases {
+            postNewTriggerWithTarget(testCase, setting: setting)
+        }
+    }
+
+    func testPostNewTriggerWithTarget_wrongScheduleString() {
+        let setting = TestSetting()
+
+        let predicate = SchedulePredicate(schedule: "wrong format")
+        let actions: [Dictionary<String, AnyObject>] =
+        [
+            ["turnPower":["power":true]],
+            ["setBrightness":["bribhtness":90]]
+        ]
+
+        postNewTriggerWithTarget(
+            PostNewTriggerForScheduleTests.createTestCase(
+                predicate,
+                actions: actions,
+                callbackVerifier: WrongFormatCallbackVerifier(tag: "wrong format test"),
+                mockResponse: MockResponse(
+                    nil,
+                    urlResponse:NSHTTPURLResponse(
+                        URL: NSURL(string: setting.app.baseURL)!,
+                        statusCode: 400,
+                        HTTPVersion: nil,
+                        headerFields: nil),
+                    error: nil),
+                tag: "wrong format test",
+                setting: setting),
+            setting:setting)
+    }
 }
