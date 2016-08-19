@@ -391,7 +391,7 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        _postNewTrigger(schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
+        _postNewTrigger(schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, target: target != nil ? target : self.target, completionHandler: completionHandler)
     }
     
     /** Post new Trigger to IoT Cloud.
