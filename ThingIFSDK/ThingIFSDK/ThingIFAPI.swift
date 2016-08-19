@@ -370,6 +370,8 @@ public class ThingIFAPI: NSObject, NSCoding {
     described by predicate, A registered command sends to thing
     related to target.
 
+    `target` property and target argument must be same owner's things.
+
     - Parameter schemaName: Name of the Schema of which the Command specified in
     Trigger is defined.
     - Parameter schemaVersion: Version of the Schema of which the Command
