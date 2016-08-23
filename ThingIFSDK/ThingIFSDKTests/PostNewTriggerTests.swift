@@ -433,6 +433,7 @@ class PostNewTriggerTests: SmallTestBase {
 
         func postNewTriggerSuccess(tag: String, testcase: TestCase, setting:TestSetting) {
             let expectation = self.expectationWithDescription(tag)
+            let commandTarget = StandaloneThing(thingID: "commandThingID", vendorThingID: setting.ownerID, accessToken: setting.ownerToken)
 
             do{
                 let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
@@ -474,7 +475,7 @@ class PostNewTriggerTests: SmallTestBase {
                     }
                     //verify body
 
-                    let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":setting.owner.typedID.toString(), "target": setting.target.typedID.toString(), "schema": setting.schema, "schemaVersion": setting.schemaVersion,"actions":expectedActions, "triggersWhat":"COMMAND"]]
+                    let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":setting.owner.typedID.toString(), "target": commandTarget.typedID.toString(), "schema": setting.schema, "schemaVersion": setting.schemaVersion,"actions":expectedActions, "triggersWhat":"COMMAND"]]
                     do {
                         let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                         let actualBodyData = request.HTTPBody
@@ -489,7 +490,7 @@ class PostNewTriggerTests: SmallTestBase {
                 sharedMockSession.requestVerifier = requestVerifier
                 iotSession = MockSession.self
 
-                setting.api.postNewTrigger(setting.schema, schemaVersion: setting.schemaVersion, actions: actions, predicate: predicate, target: setting.target, completionHandler: { (trigger, error) -> Void in
+                setting.api.postNewTrigger(setting.schema, schemaVersion: setting.schemaVersion, actions: actions, predicate: predicate, target: commandTarget, completionHandler: { (trigger, error) -> Void in
                     if error == nil{
                         XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
                         XCTAssertEqual(trigger!.enabled, true, tag)
@@ -511,6 +512,10 @@ class PostNewTriggerTests: SmallTestBase {
         }
 
         let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+        // perform onboarding
+        api._target = target
 
         let orClauseClause = ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
         let andClauseClause = ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
@@ -551,7 +556,7 @@ class PostNewTriggerTests: SmallTestBase {
     }
 
     func testPostNewTriggerWithTarget_http_404() {
-        let expectation = self.expectationWithDescription("postNewTrigger404Error")
+        let expectation = self.expectationWithDescription("testPostNewTriggerWithTarget_http_404")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -559,11 +564,15 @@ class PostNewTriggerTests: SmallTestBase {
         let schema = setting.schema
         let schemaVersion = setting.schemaVersion
 
+        // perform onboarding
+        api._target = target
+
         do{
             let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let clause = EqualsClause(field: "color", intValue: 0)
             let condition = Condition(clause: clause)
             let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+            let commandTarget = StandaloneThing(thingID: "commandThingID", vendorThingID: setting.ownerID, accessToken: setting.ownerToken)
 
             let expectedClause = ["type":"eq","filed":"color", "value": 0]
             let expectedEventSource = "STATES"
@@ -586,7 +595,7 @@ class PostNewTriggerTests: SmallTestBase {
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":owner.typedID.toString(), "target": target.typedID.toString(), "schema": schema, "schemaVersion": schemaVersion,"actions":actions, "triggersWhat":"COMMAND"]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":owner.typedID.toString(), "target": commandTarget.typedID.toString(), "schema": schema, "schemaVersion": schemaVersion,"actions":actions, "triggersWhat":"COMMAND"]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
@@ -599,7 +608,7 @@ class PostNewTriggerTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, target: target, completionHandler: { (trigger, error) -> Void in
+            api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, target: commandTarget, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -627,7 +636,7 @@ class PostNewTriggerTests: SmallTestBase {
     }
 
     func testPostNewTriggerWithTarget_http_400() {
-        let expectation = self.expectationWithDescription("postNewTrigger400Error")
+        let expectation = self.expectationWithDescription("testPostNewTriggerWithTarget_http_400")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -635,11 +644,15 @@ class PostNewTriggerTests: SmallTestBase {
         let schema = setting.schema
         let schemaVersion = setting.schemaVersion
 
+        // perform onboarding
+        api._target = target
+
         do{
             let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let clause = EqualsClause(field: "color", intValue: 0)
             let condition = Condition(clause: clause)
             let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+            let commandTarget = StandaloneThing(thingID: "commandThingID", vendorThingID: setting.ownerID, accessToken: setting.ownerToken)
 
             let expectedClause = ["type":"eq","filed":"color", "value": 0]
             let expectedEventSource = "STATES"
@@ -662,7 +675,7 @@ class PostNewTriggerTests: SmallTestBase {
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":owner.typedID.toString(), "target": target.typedID.toString(), "schema": schema, "schemaVersion": schemaVersion,"actions":actions, "triggersWhat":"COMMAND"]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":owner.typedID.toString(), "target": commandTarget.typedID.toString(), "schema": schema, "schemaVersion": schemaVersion,"actions":actions, "triggersWhat":"COMMAND"]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
@@ -675,7 +688,7 @@ class PostNewTriggerTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, target: target, completionHandler: { (trigger, error) -> Void in
+            api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, target: commandTarget, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -703,13 +716,16 @@ class PostNewTriggerTests: SmallTestBase {
     }
 
     func testPostNewTriggerWithTarget_http_400_invalidTimestamp() {
-        let expectation = self.expectationWithDescription("postNewTrigger400Error")
+        let expectation = self.expectationWithDescription("testPostNewTriggerWithTarget_http_400_invalidTimestamp")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
         let owner = setting.owner
         let schema = setting.schema
         let schemaVersion = setting.schemaVersion
+
+        // perform onboarding
+        api._target = target
 
         do{
             let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
@@ -723,6 +739,7 @@ class PostNewTriggerTests: SmallTestBase {
                 "message" : "Passed Trigger's timestamp is not valid"]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
             let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 400, HTTPVersion: nil, headerFields: nil)
+            let commandTarget = StandaloneThing(thingID: "commandThingID", vendorThingID: setting.ownerID, accessToken: setting.ownerToken)
 
             // verify request
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
@@ -734,7 +751,7 @@ class PostNewTriggerTests: SmallTestBase {
                 }
                 //verify body
 
-                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":owner.typedID.toString(), "target": target.typedID.toString(), "schema": schema, "schemaVersion": schemaVersion,"actions":actions, "triggersWhat":"COMMAND"]]
+                let expectedBody = ["predicate": expectedPredicateDict, "command":["issuer":owner.typedID.toString(), "target": commandTarget.typedID.toString(), "schema": schema, "schemaVersion": schemaVersion,"actions":actions, "triggersWhat":"COMMAND"]]
                 do {
                     let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
                     let actualBodyData = request.HTTPBody
@@ -747,7 +764,7 @@ class PostNewTriggerTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, target: target, completionHandler: { (trigger, error) -> Void in
+            api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, target: commandTarget, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
