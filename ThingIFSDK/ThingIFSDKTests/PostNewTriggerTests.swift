@@ -105,6 +105,7 @@ class PostNewTriggerTests: SmallTestBase {
                         XCTAssertEqual(trigger!.enabled, true, tag)
                         XCTAssertNotNil(trigger!.predicate, tag)
                         XCTAssertEqual(trigger!.command!.commandID, "", tag)
+                        XCTAssertEqual(trigger!.command!.targetID, setting.target.typedID, tag)
                     }else {
                         XCTFail("should success for \(tag)")
                     }
@@ -496,6 +497,7 @@ class PostNewTriggerTests: SmallTestBase {
                         XCTAssertEqual(trigger!.enabled, true, tag)
                         XCTAssertNotNil(trigger!.predicate, tag)
                         XCTAssertEqual(trigger!.command!.commandID, "", tag)
+                        XCTAssertEqual(trigger!.command!.targetID, commandTarget.typedID, tag)
                     }else {
                         XCTFail("should success for \(tag)")
                     }
