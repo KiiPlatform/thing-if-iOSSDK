@@ -11,6 +11,7 @@ public class Trigger: NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.triggerID, forKey: "triggerID")
+        aCoder.encodeObject(self.targetID, forKey: "targetID")
         aCoder.encodeObject(self.predicate, forKey: "predicate")
         aCoder.encodeObject(self.command, forKey: "command")
         aCoder.encodeObject(self.serverCode, forKey: "serverCode")
@@ -24,6 +25,7 @@ public class Trigger: NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         self.triggerID = aDecoder.decodeObjectForKey("triggerID") as! String
+        self.targetID = aDecoder.decodeObjectForKey("targetID") as! TypedID
         self.enabled = aDecoder.decodeBoolForKey("enabled")
         self.predicate = aDecoder.decodeObjectForKey("predicate") as! Predicate
         self.command = aDecoder.decodeObjectForKey("command") as? Command
@@ -46,7 +48,7 @@ public class Trigger: NSObject, NSCoding {
         }
     }
 
-    class func triggerWithNSDict(triggerDict: NSDictionary) -> Trigger?{
+    class func triggerWithNSDict(targetID: TypedID, triggerDict: NSDictionary) -> Trigger?{
         let triggerID = triggerDict["triggerID"] as? String
         let disabled = triggerDict["disabled"] as? Bool
         var predicate: Predicate?
@@ -81,10 +83,10 @@ public class Trigger: NSObject, NSCoding {
             }
         }
         if triggerID != nil && predicate != nil && command != nil && disabled != nil{
-            trigger = Trigger(triggerID: triggerID!, enabled: !(disabled!), predicate: predicate!, command: command!)
+            trigger = Trigger(triggerID: triggerID!, targetID: targetID, enabled: !(disabled!), predicate: predicate!, command: command!)
         }
         if triggerID != nil && predicate != nil && serverCode != nil && disabled != nil{
-            trigger = Trigger(triggerID: triggerID!, enabled: !(disabled!), predicate: predicate!, serverCode: serverCode!)
+            trigger = Trigger(triggerID: triggerID!, targetID: targetID, enabled: !(disabled!), predicate: predicate!, serverCode: serverCode!)
         }
         if trigger != nil {
             let title = triggerDict["title"] as? String
@@ -106,6 +108,8 @@ public class Trigger: NSObject, NSCoding {
 
     /** ID of the Trigger */
     public var triggerID: String
+    /** ID of the Trigger target */
+    public var targetID: TypedID
     /** Flag indicate whether the Trigger is enabled */
     public var enabled: Bool
     /** Predicate of the Trigger */
@@ -124,12 +128,14 @@ public class Trigger: NSObject, NSCoding {
     /** Init Trigger with Command
 
     - Parameter triggerID: ID of trigger
+    - Parameter targetID: ID of trigger target
     - Parameter enabled: True to enable trigger
     - Parameter predicate: Predicate instance
     - Parameter command: Command instance
     */
-    public init(triggerID: String, enabled: Bool, predicate: Predicate, command: Command) {
+    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command) {
         self.triggerID = triggerID
+        self.targetID = targetID
         self.enabled = enabled
         self.predicate = predicate
         self.command = command
@@ -141,12 +147,14 @@ public class Trigger: NSObject, NSCoding {
     /** Init Trigger with Server code
      
      - Parameter triggerID: ID of trigger
+     - Parameter targetID: ID of trigger target
      - Parameter enabled: True to enable trigger
      - Parameter predicate: Predicate instance
      - Parameter serverCode: ServerCode instance
      */
-    public init(triggerID: String, enabled: Bool, predicate: Predicate, serverCode: ServerCode) {
+    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, serverCode: ServerCode) {
         self.triggerID = triggerID
+        self.targetID = targetID
         self.enabled = enabled
         self.predicate = predicate
         self.command = nil
