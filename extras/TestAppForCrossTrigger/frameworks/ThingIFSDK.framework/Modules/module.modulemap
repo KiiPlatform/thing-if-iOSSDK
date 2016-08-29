@@ -1,0 +1,10 @@
+framework module ThingIFSDK {
+  umbrella header "ThingIFSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module ThingIFSDK.Swift {
+    header "ThingIFSDK-Swift.h"
+}
