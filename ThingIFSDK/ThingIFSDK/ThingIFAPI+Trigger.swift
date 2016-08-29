@@ -24,10 +24,9 @@ extension ThingIFAPI {
             return
         }
 
+        var commandTarget = commandTarget
         if commandTarget == nil {
-            // In this case, commandTarget == self.target == nil, return above.
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
-            return
+            commandTarget = target
         }
 
         let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
