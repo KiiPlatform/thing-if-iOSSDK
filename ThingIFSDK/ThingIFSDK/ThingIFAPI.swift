@@ -449,7 +449,7 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        _patchTrigger(triggerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
+        _patchTrigger(triggerID, schemaName: schemaName, schemaVersion: schemaVersion, commandTarget: commandTarget, actions: actions, predicate: predicate, completionHandler: completionHandler)
     }
     
     /** Apply patch to a registered Trigger
