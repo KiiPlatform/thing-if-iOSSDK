@@ -433,7 +433,8 @@ public class ThingIFAPI: NSObject, NSCoding {
     Trigger is defined.
     - Parameter schemaVersion: Version of the Schema of which the Command
     specified in Trigger is defined.
-    - Parameter commandTarget: new target for Command in Trigger. This is optional.
+    - Parameter commandTarget: new target for Command in Trigger. Every kind of target can be set.
+    But the owner has to be identical in Command and ThingIFAPI. This is optional.
     - Parameter actions: Modified Actions to be applied as patch.
     - Parameter predicate: Modified Predicate to be applied as patch.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an ThingIFError instance when failed.
