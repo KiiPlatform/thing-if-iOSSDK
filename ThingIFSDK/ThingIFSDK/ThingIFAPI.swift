@@ -442,6 +442,8 @@ public class ThingIFAPI: NSObject, NSCoding {
     Trigger is defined.
     - Parameter schemaVersion: Version of the Schema of which the Command
     specified in Trigger is defined.
+    - Parameter commandTarget: new target for Command in Trigger. Every kind of target can be set.
+    But the owner has to be identical in Command and ThingIFAPI. This is optional.
     - Parameter actions: Modified Actions to be applied as patch.
     - Parameter predicate: Modified Predicate to be applied as patch.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an ThingIFError instance when failed.
@@ -450,12 +452,13 @@ public class ThingIFAPI: NSObject, NSCoding {
         triggerID:String,
         schemaName:String?,
         schemaVersion:Int?,
+        commandTarget:Target? = nil,
         actions:[Dictionary<String, AnyObject>]?,
         predicate:Predicate?,
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        _patchTrigger(triggerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: completionHandler)
+        _patchTrigger(triggerID, schemaName: schemaName, schemaVersion: schemaVersion, commandTarget: commandTarget, actions: actions, predicate: predicate, completionHandler: completionHandler)
     }
     
     /** Apply patch to a registered Trigger

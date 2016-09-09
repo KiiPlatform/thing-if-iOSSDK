@@ -103,6 +103,7 @@ extension ThingIFAPI {
         triggerID:String,
         schemaName:String?,
         schemaVersion:Int?,
+        commandTarget:Target?,
         actions:[Dictionary<String, AnyObject>]?,
         predicate:Predicate?,
         completionHandler: (Trigger?, ThingIFError?) -> Void
@@ -135,6 +136,9 @@ extension ThingIFAPI {
             }
             if schemaVersion != nil {
                 commandDict["schemaVersion"] = schemaVersion!
+            }
+            if commandTarget != nil {
+                commandDict["target"] = commandTarget!.typedID.toString()
             }
             if actions != nil {
                 commandDict["actions"] = actions
