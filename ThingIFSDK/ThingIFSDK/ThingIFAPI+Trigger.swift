@@ -46,7 +46,7 @@ extension ThingIFAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(triggerID: triggerID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: commandTarget!.typedID, issuerID: self.owner.typedID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
+                    trigger = Trigger(triggerID: triggerID, targetID: target.typedID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: commandTarget!.typedID, issuerID: self.owner.typedID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
                 }
 
                 dispatch_async(dispatch_get_main_queue()) {
@@ -84,7 +84,7 @@ extension ThingIFAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(triggerID: triggerID, enabled: true, predicate: predicate, serverCode: serverCode)
+                    trigger = Trigger(triggerID: triggerID, targetID: target.typedID, enabled: true, predicate: predicate, serverCode: serverCode)
                 }
                 
                 dispatch_async(dispatch_get_main_queue()) {
@@ -359,7 +359,7 @@ extension ThingIFAPI {
                 if let triggerDicts = responseDict["triggers"] as? NSArray {
                     triggers = [Trigger]()
                     for triggerDict in triggerDicts {
-                        if let trigger = Trigger.triggerWithNSDict(triggerDict as! NSDictionary){
+                        if let trigger = Trigger.triggerWithNSDict(target.typedID, triggerDict: triggerDict as! NSDictionary){
                             triggers!.append(trigger)
                         }
                     }
@@ -392,7 +392,7 @@ extension ThingIFAPI {
 
             var trigger:Trigger?
             if let responseDict = response{
-                trigger = Trigger.triggerWithNSDict(responseDict)
+                trigger = Trigger.triggerWithNSDict(target.typedID, triggerDict: responseDict)
             }
             dispatch_async(dispatch_get_main_queue()) {
                 completionHandler(trigger, error)

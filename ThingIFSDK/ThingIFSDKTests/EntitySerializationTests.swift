@@ -99,7 +99,7 @@ class EntitySerializationTests: SmallTestBase {
         let condition = Condition(clause: EqualsClause(field: "field", stringValue: "1234"))
         let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_TRUE)
         
-        let aTrigger = Trigger(triggerID: "trigger-1234-5678", enabled: true, predicate: predicate, command: command!)
+        let aTrigger = Trigger(triggerID: "trigger-1234-5678", targetID: TypedID(type: "thing", id: "thing-1234-5678"), enabled: true, predicate: predicate, command: command!)
         aTrigger.title = "Trigger Title"
         aTrigger.triggerDescription = "Trigger Description"
         aTrigger.metadata = ["sound":"noisy.mp4"]
@@ -132,7 +132,7 @@ class EntitySerializationTests: SmallTestBase {
 
         let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 60*60))
 
-        let aTrigger = Trigger(triggerID: "trigger-1234-5678", enabled: true, predicate: predicate, command: command!)
+        let aTrigger = Trigger(triggerID: "trigger-1234-5678", targetID: TypedID(type: "thing", id: "thing-1234-5678"), enabled: true, predicate: predicate, command: command!)
         aTrigger.title = "Trigger Title"
         aTrigger.triggerDescription = "Trigger Description"
         aTrigger.metadata = ["sound":"noisy.mp4"]
@@ -146,7 +146,7 @@ class EntitySerializationTests: SmallTestBase {
         let condition = Condition(clause: EqualsClause(field: "field", stringValue: "1234"))
         let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_TRUE)
 
-        let aTrigger = Trigger(triggerID: "trigger-1234-5678", enabled: true, predicate: predicate, serverCode: serverCode)
+        let aTrigger = Trigger(triggerID: "trigger-1234-5678", targetID: TypedID(type: "thing", id: "thing-1234-5678"), enabled: true, predicate: predicate, serverCode: serverCode)
         self.doSerializationTest(aTrigger)
     }
     // ServerCode
