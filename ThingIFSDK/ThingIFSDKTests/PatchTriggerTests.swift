@@ -26,6 +26,7 @@ class PatchTriggerTests: SmallTestBase {
 
         let schemaName: String?
         let schemaVersion: Int?
+        let commandTarget: Target?
         let actions: [Dictionary<String, AnyObject>]?
 
         let predicate: Predicate?
@@ -45,6 +46,9 @@ class PatchTriggerTests: SmallTestBase {
             }
             if schemaVersion != nil {
                 commandDict["schemaVersion"] = schemaVersion!
+            }
+            if commandTarget != nil {
+                commandDict["target"] = commandTarget!.typedID.toString()
             }
             if actions != nil {
                 commandDict["actions"] = actions!
@@ -79,16 +83,46 @@ class PatchTriggerTests: SmallTestBase {
 
         let testsCases: [TestCase] = [
             //
-            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: NotEqualsClause(field: "power", boolValue: true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: StatePredicate(condition: Condition(clause: RangeClause(field: "color", upperLimitInt: 255, upperIncluded:true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000)), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: schemaVersion, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: nil, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: nil, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, commandTarget: nil, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, commandTarget: nil, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: NotEqualsClause(field: "power", boolValue: true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: nil, commandTarget: nil, actions: nil, predicate: StatePredicate(condition: Condition(clause: RangeClause(field: "color", upperLimitInt: 255, upperIncluded:true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, commandTarget: nil, actions: expectedActions, predicate: ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000)), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, commandTarget: nil, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: schemaVersion, commandTarget: nil, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: nil, commandTarget: nil, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, commandTarget: nil, actions: nil, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
             
         ]
+        for (index,testCase) in testsCases.enumerate() {
+            patchTrigger("testPatchTrigger_\(index)", testcase: testCase)
+        }
+    }
+
+    func testPatchTriggerWithCommandTarget() {
+
+        let expectedActions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+        let owner = setting.owner
+        let schema = setting.schema
+        let schemaVersion = setting.schemaVersion
+        let commandTarget = StandaloneThing(thingID: "commandThingID", vendorThingID: "commandVendorThingID")
+
+        // perform onboarding
+        api._target = setting.target
+
+        let testsCases: [TestCase] = [
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, commandTarget: commandTarget, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, commandTarget: commandTarget, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: NotEqualsClause(field: "power", boolValue: true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: nil, commandTarget: commandTarget, actions: nil, predicate: StatePredicate(condition: Condition(clause: RangeClause(field: "color", upperLimitInt: 255, upperIncluded:true)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, commandTarget: commandTarget, actions: expectedActions, predicate: ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000)), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, commandTarget: commandTarget, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: schemaVersion, commandTarget: commandTarget, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: nil, commandTarget: commandTarget, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, commandTarget: commandTarget, actions: nil, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
+
+            ]
         for (index,testCase) in testsCases.enumerate() {
             patchTrigger("testPatchTrigger_\(index)", testcase: testCase)
         }
@@ -167,7 +201,7 @@ class PatchTriggerTests: SmallTestBase {
 
 
         api._target = setting.target
-        api.patchTrigger(expectedTriggerID, schemaName: testcase.schemaName, schemaVersion: testcase.schemaVersion, actions: testcase.actions, predicate: testcase.predicate, completionHandler: { (trigger, error) -> Void in
+        api.patchTrigger(expectedTriggerID, schemaName: testcase.schemaName, schemaVersion: testcase.schemaVersion, commandTarget: testcase.commandTarget, actions: testcase.actions, predicate: testcase.predicate, completionHandler: { (trigger, error) -> Void in
             if testcase.success {
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
