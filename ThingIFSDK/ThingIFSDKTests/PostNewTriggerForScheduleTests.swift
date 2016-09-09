@@ -161,6 +161,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
     static func createSuccessTestCase(
         predicate: Predicate,
         actions: [Dictionary<String, AnyObject>],
+        commandTarget: Target,
         tag: String,
         setting: TestSetting) -> TestCase
     {
@@ -183,6 +184,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                                                HTTPVersion: nil,
                                                headerFields: nil)!,
                                 error: nil),
+                commandTarget: commandTarget,
                 tag: tag,
                 setting:setting)
     }
@@ -192,6 +194,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         actions: [Dictionary<String, AnyObject>],
         callbackVerifier: CallbackVerifier,
         mockResponse: MockResponse,
+        commandTarget: Target,
         tag: String,
         setting: TestSetting) -> TestCase
     {
@@ -214,7 +217,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                                                        "schema": setting.schema,
                                                        "schemaVersion": setting.schemaVersion,
                                                        "issuer": setting.owner.typedID.toString(),
-                                                       "target": setting.target.typedID.toString()
+                                                       "target": commandTarget.typedID.toString()
                                                    ],
                                                    "triggersWhat": "COMMAND"
                                                ],
@@ -226,6 +229,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
 
     static func createTestCases(
             predicates: [Predicate],
+            commandTarget: Target,
             setting: TestSetting) -> [TestCase]
     {
         var retval: [TestCase] = []
@@ -239,6 +243,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
             retval.append(PostNewTriggerForScheduleTests.createSuccessTestCase(
                               predicate,
                               actions: actions,
+                              commandTarget: commandTarget,
                               tag: "testPostNewTrigger_success_\(index)",
                               setting: setting))
         }
@@ -290,6 +295,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         let testCases: [TestCase] =
             PostNewTriggerForScheduleTests.createTestCases(
                 predicates,
+                commandTarget: setting.target,
                 setting:setting)
 
         for testCase in testCases {
@@ -320,8 +326,101 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                                                HTTPVersion: nil,
                                                headerFields: nil),
                                 error: nil),
+                commandTarget: setting.target,
                 tag: "wrong format test",
                 setting: setting),
+            setting:setting)
+    }
+
+    func postNewTriggerWithTarget(
+        testCase: TestCase,
+        commandTarget: Target,
+        setting: TestSetting)
+    {
+        weak var expectation : XCTestExpectation!
+        defer {
+            expectation = nil
+        }
+        expectation = self.expectationWithDescription(
+            testCase.verifier.requestVerifier.tag)
+
+        sharedMockSession.requestVerifier =
+            testCase.verifier.requestVerifier.verifier
+        sharedMockSession.mockResponse = testCase.mockResponse
+        iotSession = MockSession.self
+
+        setting.api._target = setting.target
+
+        setting.api.postNewTrigger(
+            testCase.parameter.schemaName,
+            schemaVersion: testCase.parameter.schemaVersion,
+            actions: testCase.parameter.actions,
+            predicate: testCase.parameter.predicate,
+            target: commandTarget,
+            completionHandler: { (trigger, error) -> Void in
+                testCase.verifier.callbackVerifier.verifier(trigger, error)
+                expectation.fulfill()
+        })
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout for \(testCase.verifier.requestVerifier.tag)")
+            }
+        }
+    }
+
+    func testPostNewTriggerWithTarget_success() {
+        let setting = TestSetting()
+        let commandTarget = StandaloneThing(thingID: "commandThingID",
+            vendorThingID: setting.ownerID, accessToken: setting.ownerToken)
+
+        let predicates: [Predicate] = [
+            SchedulePredicate(schedule: "1 * * * *"),
+            SchedulePredicate(schedule: "1 1 * * *"),
+            SchedulePredicate(schedule: "1 1 1 * *"),
+            SchedulePredicate(schedule: "1 1 1 1 *"),
+            SchedulePredicate(schedule: "1 1 1 1 1")
+        ]
+
+        let testCases: [TestCase] =
+        PostNewTriggerForScheduleTests.createTestCases(
+            predicates,
+            commandTarget: commandTarget,
+            setting:setting)
+
+        for testCase in testCases {
+            postNewTriggerWithTarget(testCase, commandTarget: commandTarget, setting: setting)
+        }
+    }
+
+    func testPostNewTriggerWithTarget_wrongScheduleString() {
+        let setting = TestSetting()
+        let commandTarget = StandaloneThing(thingID: "commandThingID",
+            vendorThingID: setting.ownerID, accessToken: setting.ownerToken)
+
+        let predicate = SchedulePredicate(schedule: "wrong format")
+        let actions: [Dictionary<String, AnyObject>] =
+        [
+            ["turnPower":["power":true]],
+            ["setBrightness":["bribhtness":90]]
+        ]
+
+        postNewTriggerWithTarget(
+            PostNewTriggerForScheduleTests.createTestCase(
+                predicate,
+                actions: actions,
+                callbackVerifier: WrongFormatCallbackVerifier(tag: "wrong format test"),
+                mockResponse: MockResponse(
+                    nil,
+                    urlResponse:NSHTTPURLResponse(
+                        URL: NSURL(string: setting.app.baseURL)!,
+                        statusCode: 400,
+                        HTTPVersion: nil,
+                        headerFields: nil),
+                    error: nil),
+                commandTarget: commandTarget,
+                tag: "wrong format test",
+                setting: setting),
+            commandTarget: commandTarget,
             setting:setting)
     }
 }

@@ -15,6 +15,7 @@ extension ThingIFAPI {
         schemaVersion:Int,
         actions:[Dictionary<String, AnyObject>],
         predicate:Predicate,
+        commandTarget: Target?,
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
@@ -23,13 +24,18 @@ extension ThingIFAPI {
             return
         }
 
+        var commandTarget = commandTarget
+        if commandTarget == nil {
+            commandTarget = target
+        }
+
         let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
 
         // generate command
-        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.typedID.toString(), "target":target.typedID.toString()])
+        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.typedID.toString(), "target":commandTarget!.typedID.toString()])
         commandDict.setObject(actions, forKey: "actions")
 
         // generate body
@@ -40,7 +46,7 @@ extension ThingIFAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(triggerID: triggerID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: self.target!.typedID, issuerID: self.owner.typedID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
+                    trigger = Trigger(triggerID: triggerID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: commandTarget!.typedID, issuerID: self.owner.typedID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
                 }
 
                 dispatch_async(dispatch_get_main_queue()) {
