@@ -46,7 +46,7 @@ class GetGatewayIDTests: GatewayAPITestBase {
             // mock response
             let dict = ["thingID": gatewayID]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
                 statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
@@ -116,7 +116,7 @@ class GetGatewayIDTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
+        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
             statusCode: 400, HTTPVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -164,7 +164,7 @@ class GetGatewayIDTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
+        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
             statusCode: 401, HTTPVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -212,7 +212,7 @@ class GetGatewayIDTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
+        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
             statusCode: 404, HTTPVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -260,7 +260,7 @@ class GetGatewayIDTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
+        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
             statusCode: 409, HTTPVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -308,7 +308,7 @@ class GetGatewayIDTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
+        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
             statusCode: 503, HTTPVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
