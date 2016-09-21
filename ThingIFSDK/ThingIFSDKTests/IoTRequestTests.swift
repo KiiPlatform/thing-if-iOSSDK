@@ -37,6 +37,8 @@ class IoTRequestTests: XCTestCase {
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(accessToken)", "content-type": "application/json"]
 
+        iotSession = NSURLSession.self
+
         let request = buildDefaultRequest(HTTPMethod.PUT,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
             if error == nil {
                 XCTFail("Should not be nil")
