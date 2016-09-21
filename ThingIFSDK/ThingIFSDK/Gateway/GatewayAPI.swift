@@ -67,7 +67,7 @@ public class GatewayAPI: NSObject, NSCoding {
             return
         }
 
-        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/token"
+        let requestURL = "\(self.gatewayAddress.absoluteString!)/\(self.app.siteName)/token"
 
         // generate header
         let credential = "\(self.app.appID):\(self.app.appKey)"
@@ -125,7 +125,7 @@ public class GatewayAPI: NSObject, NSCoding {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/onboarding"
+        let requestURL = "\(self.gatewayAddress.absoluteString!)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/onboarding"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
@@ -167,7 +167,7 @@ public class GatewayAPI: NSObject, NSCoding {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/id"
+        let requestURL = "\(self.gatewayAddress.absoluteString!)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/id"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
@@ -202,7 +202,7 @@ public class GatewayAPI: NSObject, NSCoding {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/onboarded"
+        let requestURL = "\(self.gatewayAddress.absoluteString!)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/onboarded"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
@@ -250,7 +250,7 @@ public class GatewayAPI: NSObject, NSCoding {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/pending"
+        let requestURL = "\(self.gatewayAddress.absoluteString!)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/pending"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
@@ -305,7 +305,7 @@ public class GatewayAPI: NSObject, NSCoding {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(endNode.vendorThingID)"
+        let requestURL = "\(self.gatewayAddress.absoluteString!)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(endNode.vendorThingID)"
 
         // generate header
         var requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
@@ -354,7 +354,7 @@ public class GatewayAPI: NSObject, NSCoding {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
+        let requestURL = "\(self.gatewayAddress.absoluteString!)/gateway-app/gateway/restore"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
@@ -397,7 +397,7 @@ public class GatewayAPI: NSObject, NSCoding {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddress.absoluteString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/THING_ID:\(endNodeThingID)"
+        let requestURL = "\(self.gatewayAddress.absoluteString!)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/THING_ID:\(endNodeThingID)"
 
         // generate header
         var requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
@@ -446,7 +446,7 @@ public class GatewayAPI: NSObject, NSCoding {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddress.absoluteString)/gateway-info"
+        let requestURL = "\(self.gatewayAddress.absoluteString!)/gateway-info"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
