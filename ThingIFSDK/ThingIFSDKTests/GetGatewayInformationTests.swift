@@ -31,7 +31,7 @@ class GetGatewayInformationTests: GatewayAPITestBase {
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
                 // verify path
-                let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-info"
+                let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-info"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let expectedHeader = [
@@ -103,7 +103,7 @@ class GetGatewayInformationTests: GatewayAPITestBase {
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-info"
+            let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-info"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
