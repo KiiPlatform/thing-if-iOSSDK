@@ -29,7 +29,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "POST")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
+            let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-app/gateway/restore"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -94,7 +94,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "POST")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
+            let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-app/gateway/restore"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -141,7 +141,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "POST")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
+            let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-app/gateway/restore"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -188,7 +188,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "POST")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
+            let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-app/gateway/restore"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
