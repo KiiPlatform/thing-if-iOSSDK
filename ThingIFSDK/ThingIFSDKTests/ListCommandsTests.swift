@@ -117,7 +117,7 @@ class ListCommandsTests: SmallTestBase {
                 // verify path
                 let expectedBasePath = "\(setting.app.baseURL)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/commands"
                 let actualRequestPathString = request.URL!.absoluteString
-                XCTAssertTrue(actualRequestPathString.rangeOfString(expectedBasePath) != nil, tag)
+                XCTAssertTrue(actualRequestPathString!.rangeOfString(expectedBasePath) != nil, tag)
                 if testcase.paginationKey != nil || testcase.bestEffortLimit != nil {
                     let expectedURL = setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands"
                     var queryParams = ""

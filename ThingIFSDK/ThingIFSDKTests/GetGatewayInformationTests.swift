@@ -31,7 +31,7 @@ class GetGatewayInformationTests: GatewayAPITestBase {
             let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
                 // verify path
-                let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-info"
+                let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-info"
                 XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let expectedHeader = [
@@ -46,7 +46,7 @@ class GetGatewayInformationTests: GatewayAPITestBase {
             // mock response
             let dict = ["vendorThingID": vendorThingID]
             let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
+            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
                 statusCode: 200, HTTPVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
@@ -103,7 +103,7 @@ class GetGatewayInformationTests: GatewayAPITestBase {
         let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.HTTPMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-info"
+            let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-info"
             XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -116,7 +116,7 @@ class GetGatewayInformationTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString)!,
+        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
             statusCode: 401, HTTPVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
