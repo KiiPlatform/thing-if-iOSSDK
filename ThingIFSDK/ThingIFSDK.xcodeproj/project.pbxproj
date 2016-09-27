@@ -120,6 +120,8 @@
 		B683A31B1CBB807A00742570 /* CommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683A31A1CBB807A00742570 /* CommandFormTests.swift */; };
 		B68D7BE11CF8242900D69149 /* LargeTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68D7BE01CF8242900D69149 /* LargeTestBase.swift */; };
 		B699E9D11CFC3E8100EBBC39 /* TypedIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B699E9D01CFC3E8100EBBC39 /* TypedIDTests.swift */; };
+		B6AC4A1A1D991CE1001A80DE /* TriggeredCommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */; };
+		B6AC4A1C1D991DF2001A80DE /* TriggerOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */; };
 		B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */; };
 		D5521C741CCDFDA200037C9F /* Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5521C731CCDFDA200037C9F /* Predicate.swift */; };
 		D5521C761CCDFE7600037C9F /* ServerCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5521C751CCDFE7600037C9F /* ServerCode.swift */; };
@@ -263,6 +265,8 @@
 		B683A31A1CBB807A00742570 /* CommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandFormTests.swift; sourceTree = "<group>"; };
 		B68D7BE01CF8242900D69149 /* LargeTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeTestBase.swift; sourceTree = "<group>"; };
 		B699E9D01CFC3E8100EBBC39 /* TypedIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedIDTests.swift; sourceTree = "<group>"; };
+		B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredCommandForm.swift; sourceTree = "<group>"; };
+		B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerOptions.swift; sourceTree = "<group>"; };
 		B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandForm.swift; sourceTree = "<group>"; };
 		D5521C731CCDFDA200037C9F /* Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Predicate.swift; sourceTree = "<group>"; };
 		D5521C751CCDFE7600037C9F /* ServerCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerCode.swift; sourceTree = "<group>"; };
@@ -370,6 +374,8 @@
 				224051F91D40D5C90001BF4E /* OnboardWithThingIDOptions.swift */,
 				224051FB1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift */,
 				229039D91D473FFB00B9D0B7 /* OnboardEndnodeWithGatewayOptions.swift */,
+				B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */,
+				B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */,
 			);
 			path = ThingIFSDK;
 			sourceTree = "<group>";
@@ -677,6 +683,7 @@
 				D5636AFB1CE1E9E000760564 /* ScheduleOncePredicate.swift in Sources */,
 				7D36B68B1BD4D03100D9B821 /* Logger.swift in Sources */,
 				7D36B6C01BD4D43700D9B821 /* ThingIFAPIBuilder.swift in Sources */,
+				B6AC4A1A1D991CE1001A80DE /* TriggeredCommandForm.swift in Sources */,
 				7D36B6BC1BD4D43700D9B821 /* ThingIFAPI+GetState.swift in Sources */,
 				7D36B6BD1BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift in Sources */,
 				226402201CD1E96300E30967 /* Gateway.swift in Sources */,
@@ -692,6 +699,7 @@
 				7D36B6BE1BD4D43700D9B821 /* ThingIFAPI+Push.swift in Sources */,
 				7D36B6851BD4D03100D9B821 /* URLSessionTaskOperation.swift in Sources */,
 				7D36B6791BD4D03100D9B821 /* NegatedCondition.swift in Sources */,
+				B6AC4A1C1D991DF2001A80DE /* TriggerOptions.swift in Sources */,
 				7D36B68A1BD4D03100D9B821 /* TypedID.swift in Sources */,
 				7D36B6BB1BD4D43700D9B821 /* ThingIFAPI+Command.swift in Sources */,
 				220FEACE1D3F7E450019A77E /* DataGroupingInterval.swift in Sources */,

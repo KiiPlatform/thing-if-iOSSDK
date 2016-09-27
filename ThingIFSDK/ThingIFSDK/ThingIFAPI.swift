@@ -362,6 +362,15 @@ public class ThingIFAPI: NSObject, NSCoding {
 
     // MARK: - Trigger methods
 
+    public func postNewTrigger(
+        form:TriggeredCommandForm,
+        predicate:Predicate,
+        options:TriggerOptions? = nil,
+        completionHandler: (Trigger?, ThingIFError?) -> Void)
+    {
+        // TODO: implement me.
+    }
+
     /** Post new Trigger to IoT Cloud.
 
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
@@ -431,6 +440,16 @@ public class ThingIFAPI: NSObject, NSCoding {
         _getTrigger(triggerID, completionHandler: completionHandler)
     }
 
+
+    public func patchTrigger(
+        triggerID:String,
+        form:TriggeredCommandForm? = nil,
+        predicate:Predicate? = nil,
+        options:TriggerOptions? = nil,
+        completionHandler: (Trigger?, ThingIFError?) -> Void)
+    {
+        // TODO: implement me.
+    }
 
     /** Apply patch to a registered Trigger
     Modify a registered Trigger with the specified patch.
