@@ -64,6 +64,16 @@ public class TriggerOptionsBuilder: NSObject, NSCoding {
 
     private var metadata: Dictionary<String, AnyObject>?
 
+    // MARK: - Initializing TriggeredCommandFormBuilder instance.
+    /**
+    Initializer of TriggerOptionsBuilder instance.
+
+    - Parameter title: Title of a command. This should be equal or
+      less than 50 characters.
+    - Parameter description: Description of a comand. This should be
+      equal or less than 200 characters.
+    - Parameter metadata: Meta data of a command.
+    */
     public init(title: String?,
                  triggerDescription: String?,
                  metadata: Dictionary<String, AnyObject>?)
@@ -76,7 +86,7 @@ public class TriggerOptionsBuilder: NSObject, NSCoding {
     /**
     Build `TriggerOptions` instance.
 
-    - returns: `TriggerOptions` instance
+    - Returns: `TriggerOptions` instance
     */
     public func build() -> TriggerOptions {
         return TriggerOptions(
@@ -87,7 +97,7 @@ public class TriggerOptionsBuilder: NSObject, NSCoding {
 
     /** Getter of title of this trigger.
 
-    - returns: title of this trigger.
+    - Returns: title of this trigger.
     */
     public func getTitle() -> String? {
         return self.title;
@@ -96,7 +106,7 @@ public class TriggerOptionsBuilder: NSObject, NSCoding {
     /** Setter of title of this trigger.
 
     - Parameter title: title, This should be equal or less than 50 characters.
-    - returns: this instance to chain.
+    - Returns: this instance to chain.
     */
     public func setTitle(title: String?) -> TriggerOptionsBuilder {
         // TODO: implement me.
@@ -105,7 +115,7 @@ public class TriggerOptionsBuilder: NSObject, NSCoding {
 
     /** Getter of description of this trigger.
 
-    - returns: description of this trigger.
+    - Returns: description of this trigger.
     */
     public func getTriggerDescription() -> String? {
         return self.triggerDescription;
@@ -115,7 +125,7 @@ public class TriggerOptionsBuilder: NSObject, NSCoding {
 
     - Parameter description: description, This should be equal or less
       than 200 characters.
-    - returns: this instance to chain.
+    - Returns: this instance to chain.
     */
     public func setTriggerDescription(
             triggerDescription: String?)
@@ -127,7 +137,7 @@ public class TriggerOptionsBuilder: NSObject, NSCoding {
 
     /** Getter of metadata of this trigger.
 
-    - returns: metadata of this trigger.
+    - Returns: metadata of this trigger.
     */
     public func getMetadata() -> Dictionary<String, AnyObject>? {
         return self.metadata;
@@ -136,7 +146,7 @@ public class TriggerOptionsBuilder: NSObject, NSCoding {
     /** Setter of metadata of this trigger.
 
     - Parameter metadata: metadata
-    - returns: this instance to chain.
+    - Returns: this instance to chain.
     */
     public func setMetadata(
             metadata: Dictionary<String, AnyObject>?)
