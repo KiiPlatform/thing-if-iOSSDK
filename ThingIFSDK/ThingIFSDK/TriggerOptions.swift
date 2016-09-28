@@ -28,132 +28,57 @@ public class TriggerOptions: NSObject, NSCoding {
     /// Meta data of a trigger.
     public let metadata: Dictionary<String, AnyObject>?
 
-    private init(title: String?,
-                 triggerDescription: String?,
-                 metadata: Dictionary<String, AnyObject>?)
-    {
-        self.title = title
-        self.triggerDescription = triggerDescription
-        self.metadata = metadata
-    }
-
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.title, forKey: "title")
-        aCoder.encodeObject(self.triggerDescription,
-                forKey: "triggerDescription")
-        aCoder.encodeObject(self.metadata, forKey: "metadata")
-    }
-
-    public required init?(coder aDecoder: NSCoder) {
-        self.title = aDecoder.decodeObjectForKey("title") as? String
-        self.triggerDescription =
-            aDecoder.decodeObjectForKey("triggerDescription") as? String
-        self.metadata = aDecoder.decodeObjectForKey("metadata")
-                as? Dictionary<String, AnyObject>
-    }
-}
-
-/**
-Builder of `TriggerOptions`.
-*/
-public class TriggerOptionsBuilder: NSObject, NSCoding {
-
-    private var title: String?
-
-    private var triggerDescription: String?
-
-    private var metadata: Dictionary<String, AnyObject>?
-
-    // MARK: - Initializing TriggeredCommandFormBuilder instance.
+    // MARK: - Initializing TriggerOptions instance.
     /**
-    Initializer of TriggerOptionsBuilder instance.
+    Initializer of TriggerOptions instance.
 
+    This initializer copies following fields:
+
+    - `Trigger.title`
+    - `Trigger.triggerDescription`
+    - `Trigger.metadata`
+
+    If you specify optional arguments corresponding to above mentioned
+    value, Optional argument values win against the `Trigger` values.
+
+    Obviously, If you do not specify `Trigger` instance as an argument
+    of this initializer, Optional values are used.
+
+    - Parameter trigger: source trigger of this TriggerOptions.
     - Parameter title: Title of a command. This should be equal or
       less than 50 characters.
     - Parameter description: Description of a comand. This should be
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(title: String?,
-                 triggerDescription: String?,
-                 metadata: Dictionary<String, AnyObject>?)
+    public init(trigger:Trigger? = nil,
+                title: String? = nil,
+                triggerDescription: String? = nil,
+                metadata: Dictionary<String, AnyObject>? = nil)
     {
-        self.title = title
-        self.triggerDescription = triggerDescription
-        self.metadata = metadata
-    }
+        if (title != nil) {
+            self.title = title
+        } else if (trigger != nil) {
+            self.title = trigger!.title
+        } else {
+            self.title = nil
+        }
 
-    /**
-    Build `TriggerOptions` instance.
+        if (triggerDescription != nil) {
+            self.triggerDescription = triggerDescription
+        } else if (trigger != nil) {
+            self.triggerDescription = trigger!.triggerDescription
+        } else {
+            self.triggerDescription = nil
+        }
 
-    - Returns: `TriggerOptions` instance
-    */
-    public func build() -> TriggerOptions {
-        return TriggerOptions(
-                title: self.title,
-                triggerDescription: self.triggerDescription,
-                metadata: self.metadata)
-    }
-
-    /** Getter of title of this trigger.
-
-    - Returns: title of this trigger.
-    */
-    public func getTitle() -> String? {
-        return self.title;
-    }
-
-    /** Setter of title of this trigger.
-
-    - Parameter title: title, This should be equal or less than 50 characters.
-    - Returns: this instance to chain.
-    */
-    public func setTitle(title: String?) -> TriggerOptionsBuilder {
-        // TODO: implement me.
-        return self;
-    }
-
-    /** Getter of description of this trigger.
-
-    - Returns: description of this trigger.
-    */
-    public func getTriggerDescription() -> String? {
-        return self.triggerDescription;
-    }
-
-    /** Setter of description of this trigger.
-
-    - Parameter description: description, This should be equal or less
-      than 200 characters.
-    - Returns: this instance to chain.
-    */
-    public func setTriggerDescription(
-            triggerDescription: String?)
-        -> TriggerOptionsBuilder
-    {
-        // TODO: implement me.
-        return self;
-    }
-
-    /** Getter of metadata of this trigger.
-
-    - Returns: metadata of this trigger.
-    */
-    public func getMetadata() -> Dictionary<String, AnyObject>? {
-        return self.metadata;
-    }
-
-    /** Setter of metadata of this trigger.
-
-    - Parameter metadata: metadata
-    - Returns: this instance to chain.
-    */
-    public func setMetadata(
-            metadata: Dictionary<String, AnyObject>?)
-        -> TriggerOptionsBuilder
-    {
-        // TODO: implement me.
-        return self;
+        if (metadata != nil) {
+            self.metadata = metadata
+        } else if (trigger != nil) {
+            self.metadata = trigger!.metadata
+        } else {
+            self.metadata = nil
+        }
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
