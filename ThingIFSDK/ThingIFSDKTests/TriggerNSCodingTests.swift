@@ -24,16 +24,12 @@ class TriggerNSCodingTests: SmallTestBase {
         let enabled = true;
         let predicate = SchedulePredicate(schedule: "dummySchedule");
         let command = Command();
-        let trigger = Trigger(triggerID: triggerID, targetID: TypedID(type: "thing", id: "dummyTargetID"), enabled: enabled, predicate: predicate, command: command);
         let title = "dummyTitle"
         let description = "dummyDescription"
         let key = "dummyKey"
         let value = "dummyValue"
         let metadata: Dictionary<String, AnyObject> = [ key : value ]
-
-        trigger.title = title
-        trigger.triggerDescription = description
-        trigger.metadata = metadata
+        let trigger = Trigger(triggerID: triggerID, targetID: TypedID(type: "thing", id: "dummyTargetID"), enabled: enabled, predicate: predicate, command: command, title: title, triggerDescription: description, metadata: metadata);
 
         XCTAssertNotNil(trigger);
         XCTAssertEqual(trigger.triggerID, triggerID);
