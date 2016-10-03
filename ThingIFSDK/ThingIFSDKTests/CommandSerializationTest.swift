@@ -116,13 +116,13 @@ class CommandSerializationTest: SmallTestBase {
                 schemaVersion: 1,
                 actions: actions,
                 actionResults: actionResults,
-                commandState: CommandState.SENDING);
-        source.firedByTriggerID = "testFiredByTriggerID";
-        source.created = created;
-        source.modified = modified;
-        source.title = "testTitle";
-        source.commandDescription = "testCommandDescription";
-        source.metadata = metadata;
+                commandState: CommandState.SENDING,
+                firedByTriggerID: "testFiredByTriggerID",
+                created: created,
+                modified: modified,
+                title: "testTitle",
+                commandDescription: "testCommandDescription",
+                metadata: metadata);
 
         XCTAssertEqual(source.commandID, "testCommandID");
         XCTAssertEqual(source.targetID.type, "testTargetType".lowercaseString);

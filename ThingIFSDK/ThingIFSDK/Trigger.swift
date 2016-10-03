@@ -82,48 +82,39 @@ public class Trigger: NSObject, NSCoding {
                 }
             }
         }
+
+        let title = triggerDict["title"] as? String
+        let triggerDescription = triggerDict["description"] as? String
+        let metadata = triggerDict["metadata"] as? Dictionary<String, AnyObject>
+
         if triggerID != nil && predicate != nil && command != nil && disabled != nil{
-            trigger = Trigger(triggerID: triggerID!, targetID: targetID, enabled: !(disabled!), predicate: predicate!, command: command!)
+            trigger = Trigger(triggerID: triggerID!, targetID: targetID, enabled: !(disabled!), predicate: predicate!, command: command!, title: title, triggerDescription: triggerDescription, metadata: metadata)
         }
         if triggerID != nil && predicate != nil && serverCode != nil && disabled != nil{
-            trigger = Trigger(triggerID: triggerID!, targetID: targetID, enabled: !(disabled!), predicate: predicate!, serverCode: serverCode!)
-        }
-        if trigger != nil {
-            let title = triggerDict["title"] as? String
-            if title != nil {
-                trigger?.title = title
-            }
-            let triggerDescription = triggerDict["description"] as? String
-            if triggerDescription != nil {
-                trigger?.triggerDescription = triggerDescription
-            }
-            let metadata = triggerDict["metadata"] as? Dictionary<String, AnyObject>
-            if metadata != nil {
-                trigger?.metadata = metadata
-            }
+            trigger = Trigger(triggerID: triggerID!, targetID: targetID, enabled: !(disabled!), predicate: predicate!, serverCode: serverCode!, title: title, triggerDescription: triggerDescription, metadata: metadata)
         }
         
         return trigger
     }
 
     /** ID of the Trigger */
-    public var triggerID: String
+    public let triggerID: String
     /** ID of the Trigger target */
-    public var targetID: TypedID
+    public let targetID: TypedID
     /** Flag indicate whether the Trigger is enabled */
-    public var enabled: Bool
+    public let enabled: Bool
     /** Predicate of the Trigger */
-    public var predicate: Predicate
+    public let predicate: Predicate
     /** Command to be fired */
-    public var command: Command?
+    public let command: Command?
     /** ServerCode to be fired */
-    public var serverCode: ServerCode?
+    public let serverCode: ServerCode?
     /** Title of the Trigger */
-    public var title: String?
+    public let title: String?
     /** Description of the Trigger */
-    public var triggerDescription: String?
+    public let triggerDescription: String?
     /** Metadata of the Trigger */
-    public var metadata: Dictionary<String, AnyObject>?
+    public let metadata: Dictionary<String, AnyObject>?
 
     /** Init Trigger with Command
 
@@ -133,16 +124,16 @@ public class Trigger: NSObject, NSCoding {
     - Parameter predicate: Predicate instance
     - Parameter command: Command instance
     */
-    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command) {
+    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, AnyObject>? = nil) {
         self.triggerID = triggerID
         self.targetID = targetID
         self.enabled = enabled
         self.predicate = predicate
         self.command = command
         self.serverCode = nil
-        self.title = nil
-        self.triggerDescription = nil
-        self.metadata = nil
+        self.title = title
+        self.triggerDescription = triggerDescription
+        self.metadata = metadata
     }
     /** Init Trigger with Server code
      
@@ -152,16 +143,16 @@ public class Trigger: NSObject, NSCoding {
      - Parameter predicate: Predicate instance
      - Parameter serverCode: ServerCode instance
      */
-    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, serverCode: ServerCode) {
+    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, serverCode: ServerCode, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, AnyObject>? = nil) {
         self.triggerID = triggerID
         self.targetID = targetID
         self.enabled = enabled
         self.predicate = predicate
         self.command = nil
         self.serverCode = serverCode
-        self.title = nil
-        self.triggerDescription = nil
-        self.metadata = nil
+        self.title = title
+        self.triggerDescription = triggerDescription
+        self.metadata = metadata
     }
 
     public override func isEqual(object: AnyObject?) -> Bool {
