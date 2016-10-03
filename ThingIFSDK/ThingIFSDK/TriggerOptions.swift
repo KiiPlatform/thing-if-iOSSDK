@@ -14,8 +14,8 @@ Options of trigger.
 This class contains optional data in order to create and modify
 `Trigger` with following methods:
 
- - `ThingIFAPI.postNewTrigger(form:predicate:options:completionHandler:)`
- - `ThingIFAPI.patchTrigger(triggerID:form:predicate:options:completionHandler:)`
+ - `ThingIFAPI.postNewTrigger(triggeredCommandForm:predicate:options:completionHandler:)`
+ - `ThingIFAPI.patchTrigger(triggerID:triggeredCommandForm:predicate:options:completionHandler:)`
 */
 public class TriggerOptions: NSObject, NSCoding {
 

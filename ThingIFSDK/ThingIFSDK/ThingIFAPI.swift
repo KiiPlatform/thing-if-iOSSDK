@@ -376,7 +376,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     `target` property and `TriggeredCommandForm.targetID` must be same
     owner's things.
 
-    - Parameter form: Triggered command form of posting trigger.
+    - Parameter triggeredCommandForm: Triggered command form of posting trigger.
     - Parameter predicate: Predicate of this trigger.
     - Parameter options: Optional data for this trigger.
     - Parameter completionHandler: A closure to be executed once
@@ -385,7 +385,7 @@ public class ThingIFAPI: NSObject, NSCoding {
       failed.
     */
     public func postNewTrigger(
-        form:TriggeredCommandForm,
+        triggeredCommandForm:TriggeredCommandForm,
         predicate:Predicate,
         options:TriggerOptions? = nil,
         completionHandler: (Trigger?, ThingIFError?) -> Void)
@@ -474,7 +474,8 @@ public class ThingIFAPI: NSObject, NSCoding {
     owner's things.
 
     - Parameter triggerID: ID of the Trigger to which the patch is applied.
-    - Parameter form: Modified triggered command form to patch trigger.
+    - Parameter triggeredCommandForm: Modified triggered command form
+      to patch trigger.
     - Parameter predicate: Modified Predicate to be applied as patch.
     - Parameter options: Modified optional data for this trigger.
     - Parameter completionHandler: A closure to be executed once
@@ -484,7 +485,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     */
     public func patchTrigger(
         triggerID:String,
-        form:TriggeredCommandForm? = nil,
+        triggeredCommandForm:TriggeredCommandForm? = nil,
         predicate:Predicate? = nil,
         options:TriggerOptions? = nil,
         completionHandler: (Trigger?, ThingIFError?) -> Void)
