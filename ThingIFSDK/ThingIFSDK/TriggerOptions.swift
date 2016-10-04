@@ -32,27 +32,13 @@ public class TriggerOptions: NSObject, NSCoding {
     /**
     Initializer of TriggerOptions instance.
 
-    This initializer copies following fields:
-
-    - `Trigger.title`
-    - `Trigger.triggerDescription`
-    - `Trigger.metadata`
-
-    If you specify optional arguments corresponding to above mentioned
-    value, Optional argument values win against the `Trigger` values.
-
-    Obviously, If you do not specify `Trigger` instance as an argument
-    of this initializer, Optional values are used.
-
-    - Parameter trigger: source trigger of this TriggerOptions.
     - Parameter title: Title of a command. This should be equal or
       less than 50 characters.
     - Parameter description: Description of a comand. This should be
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(trigger:Trigger? = nil,
-                title: String? = nil,
+    public init(title: String? = nil,
                 triggerDescription: String? = nil,
                 metadata: Dictionary<String, AnyObject>? = nil)
     {
