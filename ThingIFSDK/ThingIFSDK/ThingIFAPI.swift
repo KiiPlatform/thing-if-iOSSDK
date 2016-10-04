@@ -558,8 +558,8 @@ public class ThingIFAPI: NSObject, NSCoding {
      */
     public func patchTrigger(
         triggerID:String,
-        serverCode:ServerCode,
-        predicate:Predicate?,
+        serverCode:ServerCode? = nil,
+        predicate:Predicate? = nil,
         options:TriggerOptions? = nil,
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
