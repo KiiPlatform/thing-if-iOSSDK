@@ -139,7 +139,7 @@ public class TriggeredCommandForm: NSObject, NSCoding {
         aCoder.encodeObject(self.schemaName, forKey: "schemaName")
         aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
         aCoder.encodeObject(self.actions, forKey: "actions")
-        aCoder.encodeObject(self.targetID, forKey: "typedID")
+        aCoder.encodeObject(self.targetID, forKey: "targetID")
         aCoder.encodeObject(self.title, forKey: "title")
         aCoder.encodeObject(self.commandDescription,
                 forKey: "commandDescription");
