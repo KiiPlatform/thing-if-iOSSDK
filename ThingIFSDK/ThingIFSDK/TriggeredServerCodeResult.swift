@@ -23,15 +23,15 @@ public class TriggeredServerCodeResult: NSObject, NSCoding {
     }
     
     /** Whether the invocation succeeded */
-    public var succeeded: Bool
+    public let succeeded: Bool
     /** Returned value from server code (JsonObject, JsonArray, String, Number, Boolean or null) */
-    public var returnedValue: AnyObject?
+    public let returnedValue: AnyObject?
     /** Date of the execution */
-    public var executedAt: NSDate
+    public let executedAt: NSDate
     /** The endpoint used in the server code invocation */
-    public var endpoint: String
+    public let endpoint: String
     /** Error object of the invocation if any */
-    public var error: ServerError?
+    public let error: ServerError?
     
     
     /** Init TriggeredServerCodeResult with necessary attributes

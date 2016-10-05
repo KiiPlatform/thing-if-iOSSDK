@@ -10,7 +10,7 @@ import UIKit
 public class SDKVersion: NSObject {
     public static let sharedInstance = SDKVersion()
     /** Version of the Thing-IF SDK */
-    public var versionString:String?
+    public let versionString:String?
     internal var kiiSDKHeader:String?
     private override init() {
         let b:NSBundle? = NSBundle.allFrameworks().filter{$0.bundleIdentifier == "Kii-Corporation.ThingIFSDK"}.first

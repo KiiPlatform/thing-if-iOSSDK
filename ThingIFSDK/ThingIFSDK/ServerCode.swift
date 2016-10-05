@@ -25,13 +25,13 @@ public class ServerCode : NSObject, NSCoding {
     }
 
     /** Endpoint to call on servercode */
-    public var endpoint: String
+    public let endpoint: String
     /** This token will be used to call the external appID endpoint */
-    public var executorAccessToken: String?
+    public let executorAccessToken: String?
     /** If provided, servercode endpoint will be called for this appid. Otherwise same appID of trigger is used */
-    public var targetAppID: String?
+    public let targetAppID: String?
     /** Parameters to pass to the servercode function */
-    public var parameters: Dictionary<String, AnyObject>?
+    public let parameters: Dictionary<String, AnyObject>?
 
     /** Init TriggeredServerCodeResult with necessary attributes
 
