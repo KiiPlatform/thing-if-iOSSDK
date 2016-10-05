@@ -11,22 +11,14 @@ import Foundation
 extension ThingIFAPI {
 
     func _postNewTrigger(
-        schemaName:String,
-        schemaVersion:Int,
-        actions:[Dictionary<String, AnyObject>],
-        predicate:Predicate,
-        commandTarget: Target?,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
-        )
+        triggeredCommandForm: TriggeredCommandForm,
+        predicate: Predicate,
+        options: TriggerOptions? = nil,
+        completionHandler: (Trigger?, ThingIFError?)-> Void)
     {
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
-        }
-
-        var commandTarget = commandTarget
-        if commandTarget == nil {
-            commandTarget = target
         }
 
         let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
@@ -35,18 +27,40 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
 
         // generate command
-        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.typedID.toString(), "target":commandTarget!.typedID.toString()])
-        commandDict.setObject(actions, forKey: "actions")
+        let targetID = triggeredCommandForm.targetID ?? target.typedID
+        let commandDict = NSMutableDictionary(dictionary: ["schema": triggeredCommandForm.schemaName, "schemaVersion": triggeredCommandForm.schemaVersion, "issuer": owner.typedID.toString(), "target": targetID.toString()])
+        commandDict.setObject(triggeredCommandForm.actions, forKey: "actions")
+        if let title = triggeredCommandForm.title {
+            commandDict.setObject(title, forKey: "title")
+        }
+        if let description = triggeredCommandForm.commandDescription {
+            commandDict.setObject(description, forKey: "description")
+        }
+        if let metadata = triggeredCommandForm.metadata {
+            commandDict.setObject(metadata, forKey: "metadata")
+        }
 
         // generate body
         let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": commandDict, "triggersWhat": TriggersWhat.COMMAND.rawValue])
+        if let triggerOptions = options {
+            if let title = triggerOptions.title {
+                requestBodyDict.setObject(title, forKey: "title")
+            }
+            if let description = triggerOptions.triggerDescription {
+                requestBodyDict.setObject(description, forKey: "description")
+            }
+            if let metadata = triggerOptions.metadata {
+                requestBodyDict.setObject(metadata, forKey: "metadata")
+            }
+        }
+
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(triggerID: triggerID, targetID: target.typedID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: commandTarget!.typedID, issuerID: self.owner.typedID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
+                    trigger = Trigger(triggerID: triggerID, targetID: target.typedID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: targetID, issuerID: self.owner.typedID, schemaName: triggeredCommandForm.schemaName, schemaVersion: triggeredCommandForm.schemaVersion, actions: triggeredCommandForm.actions, actionResults: nil, commandState: nil))
                 }
 
                 dispatch_async(dispatch_get_main_queue()) {
