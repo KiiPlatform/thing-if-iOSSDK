@@ -42,29 +42,9 @@ public class TriggerOptions: NSObject, NSCoding {
                 triggerDescription: String? = nil,
                 metadata: Dictionary<String, AnyObject>? = nil)
     {
-        if (title != nil) {
-            self.title = title
-        } else if (trigger != nil) {
-            self.title = trigger!.title
-        } else {
-            self.title = nil
-        }
-
-        if (triggerDescription != nil) {
-            self.triggerDescription = triggerDescription
-        } else if (trigger != nil) {
-            self.triggerDescription = trigger!.triggerDescription
-        } else {
-            self.triggerDescription = nil
-        }
-
-        if (metadata != nil) {
-            self.metadata = metadata
-        } else if (trigger != nil) {
-            self.metadata = trigger!.metadata
-        } else {
-            self.metadata = nil
-        }
+        self.title = title
+        self.triggerDescription = triggerDescription;
+        self.metadata = metadata;
     }
 
     public func encodeWithCoder(aCoder: NSCoder) {
