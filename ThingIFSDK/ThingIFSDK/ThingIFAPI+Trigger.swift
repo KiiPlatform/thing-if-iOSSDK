@@ -28,20 +28,14 @@ extension ThingIFAPI {
 
         // generate command
         let targetID = triggeredCommandForm.targetID ?? target.typedID
-        let commandDict = NSMutableDictionary(dictionary: ["schema": triggeredCommandForm.schemaName, "schemaVersion": triggeredCommandForm.schemaVersion, "issuer": owner.typedID.toString(), "target": targetID.toString()])
-        commandDict.setObject(triggeredCommandForm.actions, forKey: "actions")
-        if let title = triggeredCommandForm.title {
-            commandDict.setObject(title, forKey: "title")
-        }
-        if let description = triggeredCommandForm.commandDescription {
-            commandDict.setObject(description, forKey: "description")
-        }
-        if let metadata = triggeredCommandForm.metadata {
-            commandDict.setObject(metadata, forKey: "metadata")
+        var commandDict = triggeredCommandForm.toDictionary()
+        commandDict["issuer"] = owner.typedID.toString()
+        if commandDict["target"] == nil {
+            commandDict["target"] = targetID.toString()
         }
 
         // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": commandDict, "triggersWhat": TriggersWhat.COMMAND.rawValue])
+        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": NSDictionary(dictionary: commandDict), "triggersWhat": TriggersWhat.COMMAND.rawValue])
         if let triggerOptions = options {
             if let title = triggerOptions.title {
                 requestBodyDict.setObject(title, forKey: "title")
