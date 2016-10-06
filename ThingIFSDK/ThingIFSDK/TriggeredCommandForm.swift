@@ -158,4 +158,20 @@ public class TriggeredCommandForm: NSObject, NSCoding {
         self.metadata = aDecoder.decodeObjectForKey("metadata")
                 as? Dictionary<String, AnyObject>;
     }
+
+    func toDictionary() -> Dictionary<String, AnyObject> {
+        var retval: Dictionary<String, AnyObject> =
+            [
+                "schema": self.schemaName,
+                "schemaVersion": self.schemaVersion,
+                "actions": self.actions
+            ]
+        if let targetID = self.targetID {
+            retval["target"] = targetID.toString()
+        }
+        retval["title"] = self.title
+        retval["description"] = self.commandDescription;
+        retval["metadata"] = self.metadata;
+        return retval;
+    }
 }
