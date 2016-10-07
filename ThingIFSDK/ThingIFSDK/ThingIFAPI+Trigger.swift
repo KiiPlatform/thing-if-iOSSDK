@@ -53,23 +53,24 @@ extension ThingIFAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
+                    let command = Command(
+                      commandID: nil,
+                      targetID: targetID,
+                      issuerID: self.owner.typedID,
+                      schemaName: triggeredCommandForm.schemaName,
+                      schemaVersion: triggeredCommandForm.schemaVersion,
+                      actions: triggeredCommandForm.actions,
+                      actionResults: nil,
+                      commandState: nil,
+                      title: triggeredCommandForm.title,
+                      commandDescription: triggeredCommandForm.commandDescription,
+                      metadata: triggeredCommandForm.metadata)
                     trigger = Trigger(
                       triggerID: triggerID,
                       targetID: target.typedID,
                       enabled: true,
                       predicate: predicate,
-                      command: Command(
-                        commandID: nil,
-                        targetID: targetID,
-                        issuerID: self.owner.typedID,
-                        schemaName: triggeredCommandForm.schemaName,
-                        schemaVersion: triggeredCommandForm.schemaVersion,
-                        actions: triggeredCommandForm.actions,
-                        actionResults: nil,
-                        commandState: nil,
-                        title: triggeredCommandForm.title,
-                        commandDescription: triggeredCommandForm.commandDescription,
-                        metadata: triggeredCommandForm.metadata),
+                      command: command,
                       title: triggerOptions.title,
                       triggerDescription: triggerOptions.triggerDescription,
                       metadata: triggerOptions.metadata
