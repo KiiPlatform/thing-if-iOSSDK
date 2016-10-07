@@ -220,19 +220,74 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
                   options: options,
                   completionHandler: {
                       (trigger, error) -> Void in
-                      if error == nil {
-                          XCTAssertEqual(trigger!.triggerID,
-                                         "triggerID",
+                      if let actual = trigger {
+                          XCTAssertEqual(actual.triggerID, "triggerID",
                                          error_message)
-                          XCTAssertEqual(trigger!.enabled,
-                                         Bool(true),
+                          XCTAssertEqual(actual.targetID,
+                                         setting.target.typedID,
                                          error_message)
-                          XCTAssertEqual(trigger!.predicate.toNSDictionary(),
+                          XCTAssertEqual(actual.enabled, Bool(true),
+                                         error_message)
+                          XCTAssertEqual(actual.predicate.toNSDictionary(),
                                          predicate.toNSDictionary(),
                                          error_message)
-                          XCTAssertEqual(trigger!.command!.commandID,
-                                         "",
+
+                          let actualcmd = actual.command!
+                          XCTAssertEqual(actualcmd.commandID, "", error_message)
+
+                          XCTAssertEqual(actualcmd.targetID,
+                                        form.targetID ?? setting.target.typedID,
+                                        error_message)
+                          XCTAssertEqual(actualcmd.issuerID,
+                                         setting.owner.typedID,
                                          error_message)
+                          XCTAssertEqual(actualcmd.schemaName, form.schemaName,
+                                         error_message)
+                          XCTAssertEqual(actualcmd.schemaVersion,
+                                         form.schemaVersion,
+                                         error_message)
+                          for i in 0..<actualcmd.actions.count {
+                              XCTAssertEqual(
+                                NSDictionary(
+                                  dictionary: actualcmd.actions[i]),
+                                NSDictionary(dictionary: form.actions[i]),
+                                error_message)
+                          }
+                          XCTAssertEqual(actualcmd.title, form.title,
+                                         error_message)
+                          XCTAssertEqual(actualcmd.commandDescription,
+                                         form.commandDescription,
+                                         error_message)
+                          if let expectedMetadata = form.metadata {
+                              XCTAssertEqual(
+                                NSDictionary(dictionary: actualcmd.metadata!),
+                                NSDictionary(dictionary: expectedMetadata),
+                                error_message)
+                          } else {
+                              XCTAssertNil(actualcmd.metadata)
+                          }
+
+                          if let expectedOptions = options {
+                              XCTAssertEqual(actual.title,
+                                             expectedOptions.title,
+                                             error_message)
+                              XCTAssertEqual(actual.triggerDescription,
+                                             expectedOptions.triggerDescription,
+                                             error_message)
+                              if let expectedMetadata =
+                                   expectedOptions.metadata {
+                                  XCTAssertEqual(
+                                    NSDictionary(dictionary: actual.metadata!),
+                                    NSDictionary(dictionary: expectedMetadata),
+                                    error_message)
+                              } else {
+                                  XCTAssertNil(actual.metadata)
+                              }
+                          } else {
+                              XCTAssertNil(actual.title)
+                              XCTAssertNil(actual.triggerDescription)
+                              XCTAssertNil(actual.metadata)
+                          }
                       } else {
                           XCTFail(error_message)
                       }
