@@ -217,7 +217,12 @@ extension ThingIFAPI {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
-        
+
+        if serverCode == nil && predicate == nil && options == nil {
+            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            return
+        }
+
         let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
         
         // generate header
