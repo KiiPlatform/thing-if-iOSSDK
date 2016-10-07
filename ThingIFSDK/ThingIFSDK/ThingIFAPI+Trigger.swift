@@ -20,7 +20,6 @@ extension ThingIFAPI {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
-        let triggerOptions = options ?? TriggerOptions()
 
         let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
 
@@ -36,16 +35,13 @@ extension ThingIFAPI {
         }
 
         // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": NSDictionary(dictionary: commandDict), "triggersWhat": TriggersWhat.COMMAND.rawValue])
-        if let title = triggerOptions.title {
-            requestBodyDict.setObject(title, forKey: "title")
-        }
-        if let description = triggerOptions.triggerDescription {
-            requestBodyDict.setObject(description, forKey: "description")
-        }
-        if let metadata = triggerOptions.metadata {
-            requestBodyDict.setObject(metadata, forKey: "metadata")
-        }
+        var requestBodyDict: Dictionary<String, AnyObject> = [
+          "predicate": predicate.toNSDictionary(),
+          "command": commandDict,
+          "triggersWhat": TriggersWhat.COMMAND.rawValue]
+        requestBodyDict["title"] = options?.title
+        requestBodyDict["description"] = options?.triggerDescription
+        requestBodyDict["metadata"] = options?.metadata
 
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
@@ -71,9 +67,9 @@ extension ThingIFAPI {
                       enabled: true,
                       predicate: predicate,
                       command: command,
-                      title: triggerOptions.title,
-                      triggerDescription: triggerOptions.triggerDescription,
-                      metadata: triggerOptions.metadata
+                      title: options?.title,
+                      triggerDescription: options?.triggerDescription,
+                      metadata: options?.metadata
                     )
                 }
 
