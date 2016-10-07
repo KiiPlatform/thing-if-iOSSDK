@@ -207,8 +207,9 @@ extension ThingIFAPI {
 
     func _patchTrigger(
         triggerID:String,
-        serverCode:ServerCode,
+        serverCode:ServerCode?,
         predicate:Predicate?,
+        options:TriggerOptions?,
         completionHandler: (Trigger?, ThingIFError?) -> Void
         )
     {
@@ -223,14 +224,14 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
         
         // generate body
-        let requestBodyDict = NSMutableDictionary()
-        requestBodyDict["triggersWhat"] = TriggersWhat.SERVER_CODE.rawValue
-        
-        // generate predicate
-        if predicate != nil {
-            requestBodyDict["predicate"] = predicate!.toNSDictionary()
-        }
-        requestBodyDict["serverCode"] = serverCode.toNSDictionary()
+        var requestBodyDict: Dictionary<String, AnyObject> = [
+          "triggersWhat" : TriggersWhat.SERVER_CODE.rawValue
+        ]
+        requestBodyDict["predicate"] = predicate?.toNSDictionary()
+        requestBodyDict["serverCode"] = serverCode?.toNSDictionary()
+        requestBodyDict["title"] = options?.title;
+        requestBodyDict["description"] = options?.triggerDescription;
+        requestBodyDict["metadata"] = options?.metadata;
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request

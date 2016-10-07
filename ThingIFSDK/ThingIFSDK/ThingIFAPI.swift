@@ -568,7 +568,11 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        _patchTrigger(triggerID, serverCode: serverCode!, predicate: predicate, completionHandler: completionHandler)
+        _patchTrigger(triggerID,
+                      serverCode: serverCode,
+                      predicate: predicate,
+                      options: options,
+                      completionHandler: completionHandler)
     }
 
     /** Enable/Disable a registered Trigger
