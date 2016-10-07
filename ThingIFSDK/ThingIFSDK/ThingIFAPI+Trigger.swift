@@ -91,6 +91,7 @@ extension ThingIFAPI {
     func _postNewTrigger(
         serverCode:ServerCode,
         predicate:Predicate,
+        options:TriggerOptions? = nil,
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
@@ -106,6 +107,17 @@ extension ThingIFAPI {
         
         // generate body
         let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "serverCode": serverCode.toNSDictionary(), "triggersWhat": TriggersWhat.SERVER_CODE.rawValue])
+        if let triggerOptions = options {
+            if let title = triggerOptions.title {
+                requestBodyDict["title"] = title
+            }
+            if let description = triggerOptions.triggerDescription {
+                requestBodyDict["description"] = description
+            }
+            if let metadata = triggerOptions.metadata {
+                requestBodyDict["metadata"] = metadata
+            }
+        }
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request

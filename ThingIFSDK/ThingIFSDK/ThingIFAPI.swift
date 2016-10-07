@@ -451,7 +451,11 @@ public class ThingIFAPI: NSObject, NSCoding {
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        _postNewTrigger(serverCode, predicate: predicate, completionHandler: completionHandler)
+        _postNewTrigger(
+          serverCode,
+          predicate: predicate,
+          options: options,
+          completionHandler: completionHandler)
     }
 
 
