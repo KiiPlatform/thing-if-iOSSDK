@@ -99,6 +99,7 @@ extension ThingIFAPI {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
+        let triggerOptions = options ?? TriggerOptions()
         
         let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
         
@@ -107,16 +108,14 @@ extension ThingIFAPI {
         
         // generate body
         let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "serverCode": serverCode.toNSDictionary(), "triggersWhat": TriggersWhat.SERVER_CODE.rawValue])
-        if let triggerOptions = options {
-            if let title = triggerOptions.title {
-                requestBodyDict["title"] = title
-            }
-            if let description = triggerOptions.triggerDescription {
-                requestBodyDict["description"] = description
-            }
-            if let metadata = triggerOptions.metadata {
-                requestBodyDict["metadata"] = metadata
-            }
+        if let title = triggerOptions.title {
+            requestBodyDict["title"] = title
+        }
+        if let description = triggerOptions.triggerDescription {
+            requestBodyDict["description"] = description
+        }
+        if let metadata = triggerOptions.metadata {
+            requestBodyDict["metadata"] = metadata
         }
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
@@ -124,7 +123,15 @@ extension ThingIFAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(triggerID: triggerID, targetID: target.typedID, enabled: true, predicate: predicate, serverCode: serverCode)
+                    trigger = Trigger(
+                      triggerID: triggerID,
+                      targetID: target.typedID,
+                      enabled: true,
+                      predicate: predicate,
+                      serverCode: serverCode,
+                      title: triggerOptions.title,
+                      triggerDescription: triggerOptions.triggerDescription,
+                      metadata: triggerOptions.metadata)
                 }
                 
                 dispatch_async(dispatch_get_main_queue()) {
