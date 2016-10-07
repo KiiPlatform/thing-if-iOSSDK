@@ -11,22 +11,14 @@ import Foundation
 extension ThingIFAPI {
 
     func _postNewTrigger(
-        schemaName:String,
-        schemaVersion:Int,
-        actions:[Dictionary<String, AnyObject>],
-        predicate:Predicate,
-        commandTarget: Target?,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
-        )
+        triggeredCommandForm: TriggeredCommandForm,
+        predicate: Predicate,
+        options: TriggerOptions? = nil,
+        completionHandler: (Trigger?, ThingIFError?)-> Void)
     {
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
-        }
-
-        var commandTarget = commandTarget
-        if commandTarget == nil {
-            commandTarget = target
         }
 
         let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
@@ -35,18 +27,34 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
 
         // generate command
-        let commandDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion, "issuer":owner.typedID.toString(), "target":commandTarget!.typedID.toString()])
-        commandDict.setObject(actions, forKey: "actions")
+        let targetID = triggeredCommandForm.targetID ?? target.typedID
+        var commandDict = triggeredCommandForm.toDictionary()
+        commandDict["issuer"] = owner.typedID.toString()
+        if commandDict["target"] == nil {
+            commandDict["target"] = targetID.toString()
+        }
 
         // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": commandDict, "triggersWhat": TriggersWhat.COMMAND.rawValue])
+        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": NSDictionary(dictionary: commandDict), "triggersWhat": TriggersWhat.COMMAND.rawValue])
+        if let triggerOptions = options {
+            if let title = triggerOptions.title {
+                requestBodyDict.setObject(title, forKey: "title")
+            }
+            if let description = triggerOptions.triggerDescription {
+                requestBodyDict.setObject(description, forKey: "description")
+            }
+            if let metadata = triggerOptions.metadata {
+                requestBodyDict.setObject(metadata, forKey: "metadata")
+            }
+        }
+
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(triggerID: triggerID, targetID: target.typedID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: commandTarget!.typedID, issuerID: self.owner.typedID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil))
+                    trigger = Trigger(triggerID: triggerID, targetID: target.typedID, enabled: true, predicate: predicate, command: Command(commandID: nil, targetID: targetID, issuerID: self.owner.typedID, schemaName: triggeredCommandForm.schemaName, schemaVersion: triggeredCommandForm.schemaVersion, actions: triggeredCommandForm.actions, actionResults: nil, commandState: nil))
                 }
 
                 dispatch_async(dispatch_get_main_queue()) {
@@ -100,17 +108,19 @@ extension ThingIFAPI {
     }
 
     func _patchTrigger(
-        triggerID:String,
-        schemaName:String?,
-        schemaVersion:Int?,
-        commandTarget:Target?,
-        actions:[Dictionary<String, AnyObject>]?,
-        predicate:Predicate?,
-        completionHandler: (Trigger?, ThingIFError?) -> Void
-        )
+        triggerID: String,
+        triggeredCommandForm: TriggeredCommandForm? = nil,
+        predicate: Predicate? = nil,
+        options: TriggerOptions? = nil,
+        completionHandler: (Trigger?, ThingIFError?) -> Void)
     {
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            return
+        }
+
+        if triggeredCommandForm == nil && predicate == nil && options == nil {
+            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
             return
         }
 
@@ -129,21 +139,13 @@ extension ThingIFAPI {
         }
 
         // generate command
-        if schemaName != nil || schemaVersion != nil || actions != nil {
-            var commandDict: Dictionary<String, AnyObject> = ["issuer":owner.typedID.toString()]
-            if schemaName != nil {
-                commandDict["schema"] = schemaName!
+        if let form = triggeredCommandForm {
+            var command = form.toDictionary()
+            command["issuer"] = owner.typedID.toString()
+            if command["target"] == nil {
+                command["target"] = target.typedID.toString()
             }
-            if schemaVersion != nil {
-                commandDict["schemaVersion"] = schemaVersion!
-            }
-            if commandTarget != nil {
-                commandDict["target"] = commandTarget!.typedID.toString()
-            }
-            if actions != nil {
-                commandDict["actions"] = actions
-            }
-            requestBodyDict["command"] = commandDict
+            requestBodyDict["command"] = NSDictionary(dictionary: command)
         }
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
