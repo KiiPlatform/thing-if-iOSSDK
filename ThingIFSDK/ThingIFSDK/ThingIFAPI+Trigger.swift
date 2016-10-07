@@ -108,17 +108,19 @@ extension ThingIFAPI {
     }
 
     func _patchTrigger(
-        triggerID:String,
-        schemaName:String?,
-        schemaVersion:Int?,
-        commandTarget:Target?,
-        actions:[Dictionary<String, AnyObject>]?,
-        predicate:Predicate?,
-        completionHandler: (Trigger?, ThingIFError?) -> Void
-        )
+        triggerID: String,
+        triggeredCommandForm: TriggeredCommandForm? = nil,
+        predicate: Predicate? = nil,
+        options: TriggerOptions? = nil,
+        completionHandler: (Trigger?, ThingIFError?) -> Void)
     {
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            return
+        }
+
+        if triggeredCommandForm == nil && predicate == nil && options == nil {
+            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
             return
         }
 
@@ -137,21 +139,13 @@ extension ThingIFAPI {
         }
 
         // generate command
-        if schemaName != nil || schemaVersion != nil || actions != nil {
-            var commandDict: Dictionary<String, AnyObject> = ["issuer":owner.typedID.toString()]
-            if schemaName != nil {
-                commandDict["schema"] = schemaName!
+        if let form = triggeredCommandForm {
+            var command = form.toDictionary()
+            command["issuer"] = owner.typedID.toString()
+            if command["target"] == nil {
+                command["target"] = target.typedID.toString()
             }
-            if schemaVersion != nil {
-                commandDict["schemaVersion"] = schemaVersion!
-            }
-            if commandTarget != nil {
-                commandDict["target"] = commandTarget!.typedID.toString()
-            }
-            if actions != nil {
-                commandDict["actions"] = actions
-            }
-            requestBodyDict["command"] = commandDict
+            requestBodyDict["command"] = NSDictionary(dictionary: command)
         }
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
