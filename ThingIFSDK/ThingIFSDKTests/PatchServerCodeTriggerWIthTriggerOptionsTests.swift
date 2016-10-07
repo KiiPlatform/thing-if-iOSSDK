@@ -31,9 +31,9 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
     }
 
     private func expectedRequestBody(
-      serverCode: ServerCode?,
-      predicate: Predicate?,
-      options: TriggerOptions?) -> Dictionary<String, AnyObject>
+      serverCode: ServerCode? = nil,
+      predicate: Predicate? = nil,
+      options: TriggerOptions? = nil) -> Dictionary<String, AnyObject>
     {
         var retval: Dictionary<String, AnyObject> = [
           "triggersWhat" : "SERVER_CODE"
@@ -212,5 +212,297 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                 }
             }
         }
+    }
+
+
+    func testServerCodeAndOption() {
+        let metadata: Dictionary<String, AnyObject> = [
+          "key" : "value"
+        ]
+        let options = TriggerOptions(title: "title",
+                                     triggerDescription: "trigger description",
+                                     metadata: metadata)
+        let serverCode =  ServerCode(endpoint: "my_function",
+                                     executorAccessToken: "executorAccessToken",
+                                     targetAppID: "targetAppID",
+                                     parameters: ["param key" : "param value"])
+        let predicate = SchedulePredicate(schedule: "1 * * * *")
+
+        let setting = TestSetting()
+        setting.api._target = setting.target
+
+
+        weak var expectation : XCTestExpectation!
+        defer {
+            expectation = nil
+        }
+        expectation = self.expectationWithDescription("error")
+
+        sharedMockMultipleSession.responsePairs = [
+          (
+            (data: try! NSJSONSerialization.dataWithJSONObject(
+               ["triggerID", "triggerID"],
+               options: .PrettyPrinted),
+             urlResponse: NSHTTPURLResponse(
+               URL: NSURL(string:setting.app.baseURL)!,
+               statusCode: 200,
+               HTTPVersion: nil,
+               headerFields: nil)!,
+             error: nil),
+            { (request) in
+                XCTAssertEqual(request.HTTPMethod, "PATCH")
+
+                var requestHeaders = request.allHTTPHeaderFields!;
+                // X-Kii-SDK header is not required to check because
+                // this is SDK version dependent.
+                requestHeaders["X-Kii-SDK"] = nil
+                // verify request header.
+                XCTAssertEqual(
+                  requestHeaders,
+                  [
+                    "Authorization": "Bearer \(setting.owner.accessToken)",
+                    "Content-Type": "application/json"
+                  ]);
+                XCTAssertEqual(
+                  request.URL?.absoluteString,
+                  setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID")
+                XCTAssertEqual(
+                  NSDictionary(
+                    dictionary: try! NSJSONSerialization.JSONObjectWithData(
+                      request.HTTPBody!,
+                      options: .MutableContainers)
+                      as! Dictionary<String, AnyObject>),
+                  NSDictionary(dictionary: self.expectedRequestBody(
+                                 serverCode,
+                                 options: options)))
+            }
+          ),
+          (
+            (data: try! NSJSONSerialization.dataWithJSONObject(
+               NSDictionary(dictionary: self.getResonseData(
+                              "triggerID",
+                              serverCode: serverCode,
+                              predicate: predicate,
+                              options: options)),
+               options: .PrettyPrinted),
+             urlResponse: NSHTTPURLResponse(
+               URL: NSURL(string:setting.app.baseURL)!,
+               statusCode: 200,
+               HTTPVersion: nil,
+               headerFields: nil)!,
+             error: nil),
+            { (request) in
+                XCTAssertEqual(request.HTTPMethod, "GET")
+
+                var requestHeaders = request.allHTTPHeaderFields!;
+                // X-Kii-SDK header is not required to check because
+                // this is SDK version dependent.
+                requestHeaders["X-Kii-SDK"] = nil
+                // verify request header.
+                XCTAssertEqual(
+                  requestHeaders,
+                  [
+                    "Authorization": "Bearer \(setting.owner.accessToken)",
+                    "Content-Type": "application/json"
+                  ]);
+                XCTAssertEqual(
+                  request.URL?.absoluteString,
+                  setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID")
+            }
+          )
+        ]
+        iotSession = MockMultipleSession.self
+        setting.api.patchTrigger(
+          "triggerID",
+          serverCode: serverCode,
+          options: options,
+          completionHandler: {
+              (trigger, error) -> Void in
+
+              XCTAssertEqual(trigger?.triggerID, "triggerID")
+              XCTAssertEqual(trigger?.targetID.toString(),
+                             setting.target.typedID.toString())
+              XCTAssertEqual(trigger?.enabled, Bool(true))
+              XCTAssertEqual(trigger?.predicate.toNSDictionary(),
+                             predicate.toNSDictionary())
+              XCTAssertNil(trigger?.command)
+              XCTAssertEqual(trigger?.serverCode!.toNSDictionary(),
+                             serverCode.toNSDictionary())
+              XCTAssertEqual(trigger?.title, options.title)
+              XCTAssertEqual(trigger?.triggerDescription,
+                             options.triggerDescription)
+              if let expectedMetadata = options.metadata {
+                  XCTAssertEqual(
+                    NSDictionary(dictionary: (trigger?.metadata!)!),
+                    NSDictionary(dictionary: expectedMetadata))
+              } else {
+                  XCTAssertNil(trigger?.metadata)
+              }
+              expectation.fulfill()
+          })
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT)
+        { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    func testPredicateAndOption() {
+        let metadata: Dictionary<String, AnyObject> = [
+          "key" : "value"
+        ]
+        let options = TriggerOptions(title: "title",
+                                     triggerDescription: "trigger description",
+                                     metadata: metadata)
+        let serverCode =  ServerCode(endpoint: "my_function",
+                                     executorAccessToken: "executorAccessToken",
+                                     targetAppID: "targetAppID",
+                                     parameters: ["param key" : "param value"])
+        let predicate = SchedulePredicate(schedule: "1 * * * *")
+
+        let setting = TestSetting()
+        setting.api._target = setting.target
+
+        weak var expectation : XCTestExpectation!
+        defer {
+            expectation = nil
+        }
+        expectation = self.expectationWithDescription("error")
+
+        sharedMockMultipleSession.responsePairs = [
+          (
+            (data: try! NSJSONSerialization.dataWithJSONObject(
+               ["triggerID", "triggerID"],
+               options: .PrettyPrinted),
+             urlResponse: NSHTTPURLResponse(
+               URL: NSURL(string:setting.app.baseURL)!,
+               statusCode: 200,
+               HTTPVersion: nil,
+               headerFields: nil)!,
+             error: nil),
+            { (request) in
+                XCTAssertEqual(request.HTTPMethod, "PATCH")
+
+                var requestHeaders = request.allHTTPHeaderFields!;
+                // X-Kii-SDK header is not required to check because
+                // this is SDK version dependent.
+                requestHeaders["X-Kii-SDK"] = nil
+                // verify request header.
+                XCTAssertEqual(
+                  requestHeaders,
+                  [
+                    "Authorization": "Bearer \(setting.owner.accessToken)",
+                    "Content-Type": "application/json"
+                  ]);
+                XCTAssertEqual(
+                  request.URL?.absoluteString,
+                  setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID")
+                XCTAssertEqual(
+                  NSDictionary(
+                    dictionary: try! NSJSONSerialization.JSONObjectWithData(
+                      request.HTTPBody!,
+                      options: .MutableContainers)
+                      as! Dictionary<String, AnyObject>),
+                  NSDictionary(dictionary: self.expectedRequestBody(
+                    predicate: predicate,
+                                 options: options)))
+            }
+          ),
+          (
+            (data: try! NSJSONSerialization.dataWithJSONObject(
+               NSDictionary(dictionary: self.getResonseData(
+                              "triggerID",
+                              serverCode: serverCode,
+                              predicate: predicate,
+                              options: options)),
+               options: .PrettyPrinted),
+             urlResponse: NSHTTPURLResponse(
+               URL: NSURL(string:setting.app.baseURL)!,
+               statusCode: 200,
+               HTTPVersion: nil,
+               headerFields: nil)!,
+             error: nil),
+            { (request) in
+                XCTAssertEqual(request.HTTPMethod, "GET")
+
+                var requestHeaders = request.allHTTPHeaderFields!;
+                // X-Kii-SDK header is not required to check because
+                // this is SDK version dependent.
+                requestHeaders["X-Kii-SDK"] = nil
+                // verify request header.
+                XCTAssertEqual(
+                  requestHeaders,
+                  [
+                    "Authorization": "Bearer \(setting.owner.accessToken)",
+                    "Content-Type": "application/json"
+                  ]);
+                XCTAssertEqual(
+                  request.URL?.absoluteString,
+                  setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID")
+            }
+          )
+        ]
+        iotSession = MockMultipleSession.self
+        setting.api.patchTrigger(
+          "triggerID",
+          serverCode: nil,
+          predicate: predicate,
+          options: options,
+          completionHandler: {
+              (trigger, error) -> Void in
+
+              XCTAssertEqual(trigger?.triggerID, "triggerID")
+              XCTAssertEqual(trigger?.targetID.toString(),
+                             setting.target.typedID.toString())
+              XCTAssertEqual(trigger?.enabled, Bool(true))
+              XCTAssertEqual(trigger?.predicate.toNSDictionary(),
+                             predicate.toNSDictionary())
+              XCTAssertNil(trigger?.command)
+              XCTAssertEqual(trigger?.serverCode!.toNSDictionary(),
+                             serverCode.toNSDictionary())
+              XCTAssertEqual(trigger?.title, options.title)
+              XCTAssertEqual(trigger?.triggerDescription,
+                             options.triggerDescription)
+              if let expectedMetadata = options.metadata {
+                  XCTAssertEqual(
+                    NSDictionary(dictionary: (trigger?.metadata!)!),
+                    NSDictionary(dictionary: expectedMetadata))
+              } else {
+                  XCTAssertNil(trigger?.metadata)
+              }
+              expectation.fulfill()
+          })
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT)
+        { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    func testNoOptionalArgument() {
+        let setting = TestSetting()
+        setting.api._target = setting.target
+        var executed: Bool = false;
+
+        setting.api.patchTrigger(
+          "triggerID",
+          serverCode: nil,
+          predicate: nil,
+          options: nil,
+          completionHandler: {
+              (trigger, error) -> Void in
+              switch(error!) {
+              case ThingIFError.UNSUPPORTED_ERROR:
+                  break
+              default:
+                  XCTFail("invalid error")
+                  break
+              }
+
+              executed = true;
+          })
+        XCTAssertTrue(executed)
     }
 }
