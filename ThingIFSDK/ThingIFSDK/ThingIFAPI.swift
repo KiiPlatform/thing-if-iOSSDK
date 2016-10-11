@@ -441,15 +441,21 @@ public class ThingIFAPI: NSObject, NSCoding {
      specified in Trigger is defined.
      - Parameter serverCode: Server code to be executed by the Trigger.
      - Parameter predicate: Predicate of the Command.
+     - Parameter options: Optional data for this trigger.
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an ThingIFError instance when failed.
      */
     public func postNewTrigger(
         serverCode:ServerCode,
         predicate:Predicate,
+        options:TriggerOptions? = nil,
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        _postNewTrigger(serverCode, predicate: predicate, completionHandler: completionHandler)
+        _postNewTrigger(
+          serverCode,
+          predicate: predicate,
+          options: options,
+          completionHandler: completionHandler)
     }
 
 
@@ -551,16 +557,22 @@ public class ThingIFAPI: NSObject, NSCoding {
      - Parameter triggerID: ID of the Trigger to which the patch is applied.
      - Parameter serverCode: Modified ServerCode to be applied as patch.
      - Parameter predicate: Modified Predicate to be applied as patch.
+     - Parameter options: Optional data for this trigger.
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an ThingIFError instance when failed.
      */
     public func patchTrigger(
         triggerID:String,
-        serverCode:ServerCode,
-        predicate:Predicate?,
+        serverCode:ServerCode? = nil,
+        predicate:Predicate? = nil,
+        options:TriggerOptions? = nil,
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
-        _patchTrigger(triggerID, serverCode: serverCode, predicate: predicate, completionHandler: completionHandler)
+        _patchTrigger(triggerID,
+                      serverCode: serverCode,
+                      predicate: predicate,
+                      options: options,
+                      completionHandler: completionHandler)
     }
 
     /** Enable/Disable a registered Trigger

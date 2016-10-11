@@ -20,7 +20,6 @@ extension ThingIFAPI {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
-        let triggerOptions = options ?? TriggerOptions()
 
         let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
 
@@ -36,16 +35,13 @@ extension ThingIFAPI {
         }
 
         // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "command": NSDictionary(dictionary: commandDict), "triggersWhat": TriggersWhat.COMMAND.rawValue])
-        if let title = triggerOptions.title {
-            requestBodyDict.setObject(title, forKey: "title")
-        }
-        if let description = triggerOptions.triggerDescription {
-            requestBodyDict.setObject(description, forKey: "description")
-        }
-        if let metadata = triggerOptions.metadata {
-            requestBodyDict.setObject(metadata, forKey: "metadata")
-        }
+        var requestBodyDict: Dictionary<String, AnyObject> = [
+          "predicate": predicate.toNSDictionary(),
+          "command": commandDict,
+          "triggersWhat": TriggersWhat.COMMAND.rawValue]
+        requestBodyDict["title"] = options?.title
+        requestBodyDict["description"] = options?.triggerDescription
+        requestBodyDict["metadata"] = options?.metadata
 
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
@@ -71,9 +67,9 @@ extension ThingIFAPI {
                       enabled: true,
                       predicate: predicate,
                       command: command,
-                      title: triggerOptions.title,
-                      triggerDescription: triggerOptions.triggerDescription,
-                      metadata: triggerOptions.metadata
+                      title: options?.title,
+                      triggerDescription: options?.triggerDescription,
+                      metadata: options?.metadata
                     )
                 }
 
@@ -91,6 +87,7 @@ extension ThingIFAPI {
     func _postNewTrigger(
         serverCode:ServerCode,
         predicate:Predicate,
+        options:TriggerOptions? = nil,
         completionHandler: (Trigger?, ThingIFError?)-> Void
         )
     {
@@ -105,14 +102,31 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
         
         // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary: ["predicate": predicate.toNSDictionary(), "serverCode": serverCode.toNSDictionary(), "triggersWhat": TriggersWhat.SERVER_CODE.rawValue])
+        var requestBodyDict: Dictionary<String, AnyObject> = [
+          "predicate": predicate.toNSDictionary(),
+          "serverCode": serverCode.toNSDictionary(),
+          "triggersWhat": TriggersWhat.SERVER_CODE.rawValue]
+        requestBodyDict["title"] = options?.title
+        requestBodyDict["description"] = options?.triggerDescription
+        requestBodyDict["metadata"] = options?.metadata
         do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData =
+              try NSJSONSerialization.dataWithJSONObject(
+                requestBodyDict,
+                options: NSJSONWritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
                 if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(triggerID: triggerID, targetID: target.typedID, enabled: true, predicate: predicate, serverCode: serverCode)
+                    trigger = Trigger(
+                      triggerID: triggerID,
+                      targetID: target.typedID,
+                      enabled: true,
+                      predicate: predicate,
+                      serverCode: serverCode,
+                      title: options?.title,
+                      triggerDescription: options?.triggerDescription,
+                      metadata: options?.metadata)
                 }
                 
                 dispatch_async(dispatch_get_main_queue()) {
@@ -193,8 +207,9 @@ extension ThingIFAPI {
 
     func _patchTrigger(
         triggerID:String,
-        serverCode:ServerCode,
+        serverCode:ServerCode?,
         predicate:Predicate?,
+        options:TriggerOptions?,
         completionHandler: (Trigger?, ThingIFError?) -> Void
         )
     {
@@ -202,21 +217,26 @@ extension ThingIFAPI {
             completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
             return
         }
-        
+
+        if serverCode == nil && predicate == nil && options == nil {
+            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            return
+        }
+
         let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
         
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
         
         // generate body
-        let requestBodyDict = NSMutableDictionary()
-        requestBodyDict["triggersWhat"] = TriggersWhat.SERVER_CODE.rawValue
-        
-        // generate predicate
-        if predicate != nil {
-            requestBodyDict["predicate"] = predicate!.toNSDictionary()
-        }
-        requestBodyDict["serverCode"] = serverCode.toNSDictionary()
+        var requestBodyDict: Dictionary<String, AnyObject> = [
+          "triggersWhat" : TriggersWhat.SERVER_CODE.rawValue
+        ]
+        requestBodyDict["predicate"] = predicate?.toNSDictionary()
+        requestBodyDict["serverCode"] = serverCode?.toNSDictionary()
+        requestBodyDict["title"] = options?.title;
+        requestBodyDict["description"] = options?.triggerDescription;
+        requestBodyDict["metadata"] = options?.metadata;
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
             // do request
