@@ -24,16 +24,12 @@ class TriggerNSCodingTests: SmallTestBase {
         let enabled = true;
         let predicate = SchedulePredicate(schedule: "dummySchedule");
         let command = Command();
-        let trigger = Trigger(triggerID: triggerID, enabled: enabled, predicate: predicate, command: command);
         let title = "dummyTitle"
         let description = "dummyDescription"
         let key = "dummyKey"
         let value = "dummyValue"
         let metadata: Dictionary<String, AnyObject> = [ key : value ]
-
-        trigger.title = title
-        trigger.triggerDescription = description
-        trigger.metadata = metadata
+        let trigger = Trigger(triggerID: triggerID, targetID: TypedID(type: "thing", id: "dummyTargetID"), enabled: enabled, predicate: predicate, command: command, title: title, triggerDescription: description, metadata: metadata);
 
         XCTAssertNotNil(trigger);
         XCTAssertEqual(trigger.triggerID, triggerID);
@@ -72,7 +68,7 @@ class TriggerNSCodingTests: SmallTestBase {
             condition: Condition(clause: EqualsClause(field: "f", stringValue: "v")),
             triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE);
         let serverCode = ServerCode(endpoint: "dummyEndPoint", executorAccessToken: "dummyToken", targetAppID: nil, parameters: nil);
-        let trigger = Trigger(triggerID: triggerID, enabled: enabled, predicate: predicate, serverCode: serverCode);
+        let trigger = Trigger(triggerID: triggerID, targetID: TypedID(type: "thing", id: "dummyTargetID"), enabled: enabled, predicate: predicate, serverCode: serverCode);
 
         XCTAssertNotNil(trigger);
         XCTAssertEqual(trigger.triggerID, triggerID);

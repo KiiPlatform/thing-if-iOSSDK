@@ -49,6 +49,7 @@ class PatchTriggerTests: SmallTestBase {
             if actions != nil {
                 commandDict["actions"] = actions!
             }
+            commandDict["target"] = target.typedID.toString()
             return commandDict
         }
 
@@ -120,9 +121,14 @@ class PatchTriggerTests: SmallTestBase {
             }
             //verify body
             do {
-                let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBodyDict, options: NSJSONWritingOptions(rawValue: 0))
-                let actualBodyData = request.HTTPBody
-                XCTAssertTrue(expectedBodyData.length == actualBodyData!.length, tag)
+                XCTAssertEqual(expectedBodyDict,
+                               NSDictionary(
+                                 dictionary: try! NSJSONSerialization.JSONObjectWithData(
+                                   request.HTTPBody!,
+                                   options: .MutableContainers)
+                                   as! Dictionary<String, AnyObject>),
+                               tag)
+
             }catch(_){
                 XCTFail(tag)
             }

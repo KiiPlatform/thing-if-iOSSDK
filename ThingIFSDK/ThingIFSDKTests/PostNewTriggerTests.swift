@@ -102,6 +102,7 @@ class PostNewTriggerTests: SmallTestBase {
                 setting.api.postNewTrigger(setting.schema, schemaVersion: setting.schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                     if error == nil{
                         XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
+                        XCTAssertEqual(trigger!.targetID, setting.target.typedID, tag)
                         XCTAssertEqual(trigger!.enabled, true, tag)
                         XCTAssertNotNil(trigger!.predicate, tag)
                         XCTAssertEqual(trigger!.command!.commandID, "", tag)

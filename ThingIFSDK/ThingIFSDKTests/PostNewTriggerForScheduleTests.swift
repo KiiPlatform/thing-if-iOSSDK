@@ -324,4 +324,5 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                 setting: setting),
             setting:setting)
     }
+
 }

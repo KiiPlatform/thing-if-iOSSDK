@@ -195,6 +195,8 @@ class IoTRequestOperation<T>: GroupOperation {
                 }else {
                     completionHandler(response: nil, error: nil)
                 }
+            }else{
+                completionHandler(response: nil, error: ThingIFError.ERROR_REQUEST(required: errorOptional!))
             }
         })
         let taskOperation = URLSessionTaskOperation(task: task)
@@ -246,6 +248,8 @@ class IoTRequestOperation<T>: GroupOperation {
                     kiiDebugLog("Response Body serialized: \(serialized)")
                     completionHandler(response: serialized, error: nil)
                 }
+            }else{
+                completionHandler(response: nil, error: ThingIFError.ERROR_REQUEST(required: errorOptional!))
             }
         })
         let taskOperation = URLSessionTaskOperation(task: task)
