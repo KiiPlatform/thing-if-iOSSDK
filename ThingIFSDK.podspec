@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ThingIFSDK"
-  s.version          = "0.12.0"
+  s.version          = "0.13.0"
   s.summary          = "Thing Interaction Framework"
 
   s.description      = <<-DESC
