@@ -7,8 +7,9 @@
 
 import Foundation
 
-/** Optional parameters of `ThingIFAPI.onboardEndnodeWithGateway(_:endnodePassword:options:completionHandler:)`.
- */
+/** Optional parameters of
+`ThingIFAPI.onboardEndnodeWithGateway(pendingEndnode:endnodePassword:options:completionHandler:)`.
+*/
 public class OnboardEndnodeWithGatewayOptions {
     public let dataGroupingInterval: DataGroupingInterval?
 

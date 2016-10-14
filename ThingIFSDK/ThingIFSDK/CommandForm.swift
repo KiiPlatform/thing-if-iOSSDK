@@ -12,7 +12,7 @@ import Foundation
 Form of a command.
 
 This class contains data in order to create `Command` with
-`ThingIFAPI.postNewCommand(_:completionHandler:)`.
+`ThingIFAPI.postNewCommand(commandForm:completionHandler:)`.
 
 Mandatory data are followings:
 
