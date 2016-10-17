@@ -11,6 +11,49 @@ import XCTest
 
 class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
 
+    private func createSuccessRequestBody(
+      triggeredCommandForm: TriggeredCommandForm?,
+      predicate: Predicate?,
+      options: TriggerOptions?,
+      setting: TestSetting) -> Dictionary<String, AnyObject>
+    {
+        var command: Dictionary<String, AnyObject>?
+        if let form = triggeredCommandForm {
+            let targetID = form.targetID ?? setting.api.target!.typedID
+            command = [
+              "schema" : form.schemaName,
+              "schemaVersion" : form.schemaVersion,
+              "actions" : form.actions,
+              "issuer" : setting.owner.typedID.toString(),
+              "target" : targetID.toString()
+            ]
+            command!["title"] = form.title
+            command!["description"] = form.commandDescription
+            command!["metadata"] = form.metadata
+        } else {
+            command = nil
+        }
+
+        var trigger: Dictionary<String, AnyObject> = [
+            "triggersWhat": TriggersWhat.COMMAND.rawValue
+          ]
+        trigger["command"] = command
+        trigger["predicate"] = predicate?.toNSDictionary()
+
+        if let triggerOptions = options {
+            if let title = triggerOptions.title {
+                trigger["title"] = title
+            }
+            if let description = triggerOptions.triggerDescription {
+                trigger["description"] = description
+            }
+            if let metadata = triggerOptions.metadata {
+                trigger["metadata"] = metadata
+            }
+        }
+        return trigger;
+    }
+
     func testSuccess() {
         let actions: [Dictionary<String, AnyObject>] =
             [["actions-key" : "actions-value"]]
@@ -188,6 +231,21 @@ class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
                             XCTAssertEqual(
                               request.URL?.absoluteString,
                               setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID",
+                              error_message)
+
+                            // verify body.
+                            XCTAssertEqual(
+                              NSDictionary(
+                                dictionary: try! NSJSONSerialization.JSONObjectWithData(
+                                  request.HTTPBody!,
+                                  options: .MutableContainers)
+                                  as! Dictionary<String, AnyObject>),
+                              NSDictionary(
+                                dictionary: self.createSuccessRequestBody(
+                                  form,
+                                  predicate: predicate,
+                                  options: options,
+                                  setting: setting)),
                               error_message)
                         }
                       ),
