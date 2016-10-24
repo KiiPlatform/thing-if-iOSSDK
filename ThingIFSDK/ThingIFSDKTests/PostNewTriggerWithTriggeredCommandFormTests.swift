@@ -201,6 +201,8 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
                                  error_message)
                   XCTAssertEqual(actualcmd.schemaVersion, form.schemaVersion,
                                  error_message)
+                  XCTAssertEqual(actualcmd.actions.count, form.actions.count,
+                                 error_message)
                   for i in 0..<actualcmd.actions.count {
                       XCTAssertEqual(
                         NSDictionary(
@@ -213,13 +215,15 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
                   XCTAssertEqual(actualcmd.commandDescription,
                                  form.commandDescription,
                                  error_message)
-                  if let expectedMetadata = form.metadata {
+                  if actualcmd.metadata == nil {
+                      // If actual.metadata is nil, then options.metadata must
+                      // be nil
+                      XCTAssertNil(form.metadata, error_message)
+                  } else {
                       XCTAssertEqual(
                         NSDictionary(dictionary: actualcmd.metadata!),
-                        NSDictionary(dictionary: expectedMetadata),
+                        NSDictionary(dictionary: form.metadata!),
                         error_message)
-                  } else {
-                      XCTAssertNil(actualcmd.metadata)
                   }
                   expectation.fulfill()
               })

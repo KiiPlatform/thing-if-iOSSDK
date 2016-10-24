@@ -242,6 +242,8 @@ class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
                                    error_message)
                     XCTAssertEqual(command.schemaName, "name", error_message)
                     XCTAssertEqual(command.schemaVersion, 1, error_message)
+                    XCTAssertEqual(command.actions.count, actions.count,
+                                   error_message)
                     for i in 0..<command.actions.count {
                         XCTAssertEqual(
                           NSDictionary(

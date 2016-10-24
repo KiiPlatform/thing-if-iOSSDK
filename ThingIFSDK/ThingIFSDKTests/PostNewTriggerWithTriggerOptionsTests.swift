@@ -154,13 +154,15 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
                   XCTAssertEqual(actual.triggerDescription,
                                  options.triggerDescription,
                                  error_message)
-                  if let expectedMetadata = options.metadata {
+                  if actual.metadata == nil {
+                      // If actual.metadata is nil, then options.metadata must
+                      // be nil
+                      XCTAssertNil(options.metadata, error_message)
+                  } else  {
                       XCTAssertEqual(
                         NSDictionary(dictionary: actual.metadata!),
-                        NSDictionary(dictionary: expectedMetadata),
+                        NSDictionary(dictionary: options.metadata!),
                         error_message)
-                  } else {
-                      XCTAssertNil(actual.metadata)
                   }
                   expectation.fulfill()
               })
