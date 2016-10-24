@@ -118,55 +118,49 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
               options: options,
               completionHandler: {
                   (trigger, error) -> Void in
-                  if let actual = trigger {
-                      XCTAssertEqual(actual.triggerID, "triggerID",
-                                     error_message)
-                      XCTAssertEqual(actual.targetID,
-                                     setting.target.typedID,
-                                     error_message)
-                      XCTAssertEqual(actual.enabled, Bool(true),
-                                     error_message)
-                      XCTAssertEqual(actual.predicate.toNSDictionary(),
-                                     NSDictionary(
-                                       dictionary:
-                                         [ "eventSource" : "SCHEDULE",
-                                           "schedule" : "1 * * * *" ]),
-                                     error_message)
+                  XCTAssertNotNil(trigger)
+                  let actual = trigger!
+                  XCTAssertEqual(actual.triggerID, "triggerID", error_message)
+                  XCTAssertEqual(actual.targetID, setting.target.typedID,
+                                 error_message)
+                  XCTAssertEqual(actual.enabled, Bool(true), error_message)
+                  XCTAssertEqual(actual.predicate.toNSDictionary(),
+                                 NSDictionary(
+                                   dictionary:
+                                     [ "eventSource" : "SCHEDULE",
+                                       "schedule" : "1 * * * *" ]),
+                                 error_message)
 
-                      let actualcmd = actual.command!
-                      XCTAssertEqual(actualcmd.commandID, "", error_message)
+                  let actualcmd = actual.command!
+                  XCTAssertEqual(actualcmd.commandID, "", error_message)
 
-                      XCTAssertEqual(actualcmd.targetID,
-                                     setting.api.target!.typedID,
-                                     error_message)
-                      XCTAssertEqual(actualcmd.issuerID,
-                                     setting.owner.typedID,
-                                     error_message)
-                      XCTAssertEqual(actualcmd.schemaName, "name",
-                                     error_message)
-                      XCTAssertEqual(actualcmd.schemaVersion, 1, error_message)
-                      XCTAssertEqual(actualcmd.actions.count, 1, error_message)
-                      XCTAssertEqual(NSDictionary(
-                                       dictionary: actualcmd.actions[0]),
-                                     NSDictionary(
-                                       dictionary:
-                                         [ "actions-key" : "actions-value"]),
-                                     error_message)
+                  XCTAssertEqual(actualcmd.targetID,
+                                 setting.api.target!.typedID,
+                                 error_message)
+                  XCTAssertEqual(actualcmd.issuerID,
+                                 setting.owner.typedID,
+                                 error_message)
+                  XCTAssertEqual(actualcmd.schemaName, "name", error_message)
+                  XCTAssertEqual(actualcmd.schemaVersion, 1, error_message)
+                  XCTAssertEqual(actualcmd.actions.count, 1, error_message)
+                  XCTAssertEqual(NSDictionary(
+                                   dictionary: actualcmd.actions[0]),
+                                 NSDictionary(
+                                   dictionary:
+                                     [ "actions-key" : "actions-value"]),
+                                 error_message)
 
-                      XCTAssertEqual(actual.title, options.title, error_message)
-                      XCTAssertEqual(actual.triggerDescription,
-                                     options.triggerDescription,
-                                     error_message)
-                      if let expectedMetadata = options.metadata {
-                          XCTAssertEqual(
-                            NSDictionary(dictionary: actual.metadata!),
-                            NSDictionary(dictionary: expectedMetadata),
-                            error_message)
-                      } else {
-                          XCTAssertNil(actual.metadata)
-                      }
+                  XCTAssertEqual(actual.title, options.title, error_message)
+                  XCTAssertEqual(actual.triggerDescription,
+                                 options.triggerDescription,
+                                 error_message)
+                  if let expectedMetadata = options.metadata {
+                      XCTAssertEqual(
+                        NSDictionary(dictionary: actual.metadata!),
+                        NSDictionary(dictionary: expectedMetadata),
+                        error_message)
                   } else {
-                      XCTFail(error_message)
+                      XCTAssertNil(actual.metadata)
                   }
                   expectation.fulfill()
               })

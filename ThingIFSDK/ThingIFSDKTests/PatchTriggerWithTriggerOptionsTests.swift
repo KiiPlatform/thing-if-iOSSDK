@@ -160,65 +160,51 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
                 options: options,
                 completionHandler: {
                     (trigger, error) -> Void in
-                    if let tgr = trigger {
-                        XCTAssertEqual(
-                          tgr.triggerID, "triggerID", error_message)
-                        XCTAssertEqual(
-                          tgr.targetID.toString(),
-                          setting.api.target?.typedID.toString(),
-                          error_message)
-                        XCTAssertTrue(tgr.enabled, error_message)
-                        XCTAssertEqual(tgr.predicate.toNSDictionary(),
-                                       NSDictionary(
-                                         dictionary:
-                                           [
-                                             "eventSource" : "SCHEDULE",
-                                             "schedule" : "1 * * * *"
-                         ]))
-                        XCTAssertEqual(tgr.title, "trigger title",
-                                       error_message)
-                        XCTAssertEqual(tgr.triggerDescription,
-                                       "trigger description", error_message)
-                        XCTAssertEqual(
-                            NSDictionary(dictionary: tgr.metadata!),
-                            NSDictionary(dictionary: trigger_metadata),
-                            error_message)
-                        if let command = tgr.command {
-                            XCTAssertEqual(command.targetID.toString(),
-                                           "thing:target", error_message)
-                            XCTAssertEqual(command.issuerID.toString(),
-                                           setting.owner.typedID.toString(),
-                                           error_message)
-                            XCTAssertEqual(command.schemaName, "name",
-                                           error_message)
-                            XCTAssertEqual(command.schemaVersion, 1,
-                                           error_message)
-                            XCTAssertEqual(command.actions.count, 1,
-                                           error_message)
-                            XCTAssertEqual(
-                              NSDictionary(
-                                dictionary: command.actions[0]),
-                              NSDictionary(
-                                dictionary: ["actions-key" : "actions-value"]),
-                              error_message)
-                            XCTAssertEqual(command.title!, "command title",
-                                           error_message)
-                            XCTAssertEqual(command.commandDescription!,
-                                           "command description",
-                                           error_message)
-                            XCTAssertEqual(
-                              NSDictionary(dictionary: command.metadata!),
-                              NSDictionary(
-                                dictionary: ["command_metadata-key" :
-                                               "command_metadata-value"]),
-                              error_message)
-                        } else {
-                            XCTFail(error_message)
-                        }
-
-                    } else {
-                        XCTFail(error_message)
-                    }
+                    XCTAssertNotNil(trigger)
+                    let tgr = trigger!
+                    XCTAssertEqual(tgr.triggerID, "triggerID", error_message)
+                    XCTAssertEqual(tgr.targetID.toString(),
+                                   setting.api.target?.typedID.toString(),
+                                   error_message)
+                    XCTAssertTrue(tgr.enabled, error_message)
+                    XCTAssertEqual(tgr.predicate.toNSDictionary(),
+                                   NSDictionary(dictionary:
+                                                  [
+                                                    "eventSource" : "SCHEDULE",
+                                                    "schedule" : "1 * * * *"
+                                                  ]))
+                    XCTAssertEqual(tgr.title, "trigger title", error_message)
+                    XCTAssertEqual(tgr.triggerDescription,
+                                   "trigger description", error_message)
+                    XCTAssertEqual(NSDictionary(dictionary: tgr.metadata!),
+                                   NSDictionary(dictionary: trigger_metadata),
+                                   error_message)
+                    let command = tgr.command!
+                     XCTAssertEqual(command.targetID.toString(),
+                                    "thing:target", error_message)
+                     XCTAssertEqual(command.issuerID.toString(),
+                                    setting.owner.typedID.toString(),
+                                    error_message)
+                     XCTAssertEqual(command.schemaName, "name", error_message)
+                     XCTAssertEqual(command.schemaVersion, 1, error_message)
+                     XCTAssertEqual(command.actions.count, 1, error_message)
+                     XCTAssertEqual(
+                       NSDictionary(
+                         dictionary: command.actions[0]),
+                       NSDictionary(
+                         dictionary: ["actions-key" : "actions-value"]),
+                       error_message)
+                     XCTAssertEqual(command.title!, "command title",
+                                    error_message)
+                     XCTAssertEqual(command.commandDescription!,
+                                    "command description",
+                                    error_message)
+                     XCTAssertEqual(
+                       NSDictionary(dictionary: command.metadata!),
+                       NSDictionary(
+                         dictionary: ["command_metadata-key" :
+                                        "command_metadata-value"]),
+                       error_message)
                     expectation.fulfill()
                 })
             self.waitForExpectationsWithTimeout(TEST_TIMEOUT)

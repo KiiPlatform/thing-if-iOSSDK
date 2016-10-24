@@ -177,55 +177,49 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
               options: nil,
               completionHandler: {
                   (trigger, error) -> Void in
-                  if let actual = trigger {
-                      XCTAssertEqual(actual.triggerID, "triggerID",
-                                     error_message)
-                      XCTAssertEqual(actual.targetID,
-                                     setting.target.typedID,
-                                     error_message)
-                      XCTAssertEqual(actual.enabled, Bool(true),
-                                     error_message)
-                      XCTAssertEqual(actual.predicate.toNSDictionary(),
-                                     SchedulePredicate(
-                                       schedule: "1 * * * *").toNSDictionary(),
-                                     error_message)
-                      let actualcmd = actual.command!
-                      XCTAssertEqual(actualcmd.commandID, "", error_message)
+                  XCTAssertNotNil(trigger)
+                  let actual = trigger!
+                  XCTAssertEqual(actual.triggerID, "triggerID", error_message)
+                  XCTAssertEqual(actual.targetID,
+                                 setting.target.typedID,
+                                 error_message)
+                  XCTAssertEqual(actual.enabled, Bool(true), error_message)
 
-                      XCTAssertEqual(actualcmd.targetID,
-                                    form.targetID ?? setting.target.typedID,
-                                    error_message)
-                      XCTAssertEqual(actualcmd.issuerID,
-                                     setting.owner.typedID,
-                                     error_message)
-                      XCTAssertEqual(actualcmd.schemaName, form.schemaName,
-                                     error_message)
-                      XCTAssertEqual(actualcmd.schemaVersion,
-                                     form.schemaVersion,
-                                     error_message)
-                      for i in 0..<actualcmd.actions.count {
-                          XCTAssertEqual(
-                            NSDictionary(
-                              dictionary: actualcmd.actions[i]),
-                            NSDictionary(dictionary: form.actions[i]),
-                            error_message)
-                      }
-                      XCTAssertEqual(actualcmd.title, form.title,
-                                     error_message)
-                      XCTAssertEqual(actualcmd.commandDescription,
-                                     form.commandDescription,
-                                     error_message)
-                      if let expectedMetadata = form.metadata {
-                          XCTAssertEqual(
-                            NSDictionary(dictionary: actualcmd.metadata!),
-                            NSDictionary(dictionary: expectedMetadata),
-                            error_message)
-                      } else {
-                          XCTAssertNil(actualcmd.metadata)
-                      }
+                  XCTAssertEqual(actual.predicate.toNSDictionary(),
+                                 SchedulePredicate(
+                                   schedule: "1 * * * *").toNSDictionary(),
+                                 error_message)
+                  let actualcmd = actual.command!
+                  XCTAssertEqual(actualcmd.commandID, "", error_message)
 
+                  XCTAssertEqual(actualcmd.targetID,
+                                form.targetID ?? setting.target.typedID,
+                                error_message)
+                  XCTAssertEqual(actualcmd.issuerID, setting.owner.typedID,
+                                 error_message)
+                  XCTAssertEqual(actualcmd.schemaName, form.schemaName,
+                                 error_message)
+                  XCTAssertEqual(actualcmd.schemaVersion, form.schemaVersion,
+                                 error_message)
+                  for i in 0..<actualcmd.actions.count {
+                      XCTAssertEqual(
+                        NSDictionary(
+                          dictionary: actualcmd.actions[i]),
+                        NSDictionary(dictionary: form.actions[i]),
+                        error_message)
+                  }
+                  XCTAssertEqual(actualcmd.title, form.title,
+                                 error_message)
+                  XCTAssertEqual(actualcmd.commandDescription,
+                                 form.commandDescription,
+                                 error_message)
+                  if let expectedMetadata = form.metadata {
+                      XCTAssertEqual(
+                        NSDictionary(dictionary: actualcmd.metadata!),
+                        NSDictionary(dictionary: expectedMetadata),
+                        error_message)
                   } else {
-                      XCTFail(error_message)
+                      XCTAssertNil(actualcmd.metadata)
                   }
                   expectation.fulfill()
               })

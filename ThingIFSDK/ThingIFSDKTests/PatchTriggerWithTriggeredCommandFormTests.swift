@@ -219,55 +219,46 @@ class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
                 options: nil,
                 completionHandler: {
                     (trigger, error) -> Void in
-                    if let tgr = trigger {
+                    XCTAssertNotNil(trigger)
+                    let tgr = trigger!
+                    XCTAssertEqual(tgr.triggerID, "triggerID", error_message)
+                    XCTAssertEqual(
+                      tgr.targetID.toString(),
+                      setting.api.target?.typedID.toString(),
+                      error_message)
+                    XCTAssertTrue(tgr.enabled, error_message)
+                    XCTAssertEqual(tgr.predicate.toNSDictionary(),
+                                   NSDictionary(dictionary:
+                                                  [
+                                                    "eventSource" : "SCHEDULE",
+                                                    "schedule" : "1 * * * *"
+                                                  ]))
+                    let command = tgr.command!
+                    XCTAssertEqual(command.targetID.toString(),
+                                   expectedThingID.toString(),
+                                   error_message)
+                    XCTAssertEqual(command.issuerID.toString(),
+                                   setting.owner.typedID.toString(),
+                                   error_message)
+                    XCTAssertEqual(command.schemaName, "name", error_message)
+                    XCTAssertEqual(command.schemaVersion, 1, error_message)
+                    for i in 0..<command.actions.count {
                         XCTAssertEqual(
-                          tgr.triggerID, "triggerID", error_message)
-                        XCTAssertEqual(
-                          tgr.targetID.toString(),
-                          setting.api.target?.typedID.toString(),
+                          NSDictionary(
+                            dictionary: command.actions[i]),
+                          NSDictionary(dictionary: actions[i]),
                           error_message)
-                        XCTAssertTrue(tgr.enabled, error_message)
-                        XCTAssertEqual(tgr.predicate.toNSDictionary(),
-                                       NSDictionary(
-                                         dictionary:
-                                           [
-                                             "eventSource" : "SCHEDULE",
-                                             "schedule" : "1 * * * *"
-                         ]))
-                        if let command = tgr.command {
-                            XCTAssertEqual(command.targetID.toString(),
-                                           expectedThingID.toString(),
-                                           error_message)
-                            XCTAssertEqual(command.issuerID.toString(),
-                                           setting.owner.typedID.toString(),
-                                           error_message)
-                            XCTAssertEqual(command.schemaName, "name",
-                                           error_message)
-                            XCTAssertEqual(command.schemaVersion, 1,
-                                           error_message)
-                            for i in 0..<command.actions.count {
-                                XCTAssertEqual(
-                                  NSDictionary(
-                                    dictionary: command.actions[i]),
-                                  NSDictionary(dictionary: actions[i]),
-                                  error_message)
-                            }
-                            XCTAssertEqual(command.title!, "command title",
-                                           error_message)
-                            XCTAssertEqual(command.commandDescription!,
-                                           "command description",
-                                           error_message)
-                            XCTAssertEqual(
-                              NSDictionary(dictionary: command.metadata!),
-                              NSDictionary(dictionary: command_metadata),
-                              error_message)
-                        } else {
-                            XCTFail(error_message)
-                        }
-
-                    } else {
-                        XCTFail(error_message)
                     }
+                    XCTAssertEqual(command.title!, "command title",
+                                   error_message)
+                    XCTAssertEqual(command.commandDescription!,
+                                   "command description",
+                                   error_message)
+                    XCTAssertEqual(
+                      NSDictionary(dictionary: command.metadata!),
+                      NSDictionary(dictionary: command_metadata),
+                      error_message)
+
                     expectation.fulfill()
                 })
             self.waitForExpectationsWithTimeout(TEST_TIMEOUT)
