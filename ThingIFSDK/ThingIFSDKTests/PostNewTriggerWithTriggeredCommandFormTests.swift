@@ -39,6 +39,12 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
         let command_metadata: Dictionary<String, AnyObject> =
             ["command_metadata-key" : "command_metadata-value"]
         let targetID = TypedID(type: "THING", id: "thing-id")
+
+        // TriggeredCommandForm instances below are used as inputs and
+        // expected outputs of this test. It is little bit lazy but
+        // TriggeredCommandForm class is tested by
+        // TriggeredCommandFormTests.swift. So TriggeredCommandForm
+        // instance can be adequate as expected output of this tests.
         let forms = [
             TriggeredCommandForm(schemaName: "name",
                                  schemaVersion: 1,
@@ -213,15 +219,16 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
                   XCTAssertEqual(actualcmd.commandDescription,
                                  form.commandDescription,
                                  error_message)
-                  if actualcmd.metadata == nil {
-                      // If actual.metadata is nil, then options.metadata must
-                      // be nil
-                      XCTAssertNil(form.metadata, error_message)
-                  } else {
+                  if let expectedMetadata = form.metadata {
+                      XCTAssertNotNil(actualcmd.metadata, error_message)
                       XCTAssertEqual(
                         NSDictionary(dictionary: actualcmd.metadata!),
-                        NSDictionary(dictionary: form.metadata!),
+                        NSDictionary(dictionary: expectedMetadata),
                         error_message)
+                  } else {
+                      // If input metadata is nil, then output
+                      // metadata must be nil.
+                      XCTAssertNil(actualcmd.metadata, error_message)
                   }
                   expectation.fulfill()
               })

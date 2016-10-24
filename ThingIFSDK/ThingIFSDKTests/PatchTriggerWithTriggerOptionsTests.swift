@@ -35,6 +35,12 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
     func testSuccess() {
         let trigger_metadata: Dictionary<String, AnyObject> =
             ["trigger_metadata-key" : "trigger_metadata-value"]
+
+        // TriggerOptions instances below are used as inputs and
+        // expected outputs of this test. It is little bit lazy but
+        // TriggerOptions class is tested by
+        // TriggerOptionsTests.swift. So TriggerOptions instance can
+        // be adequate as expected output of this tests.
         let optionsArray: [TriggerOptions] = [
             TriggerOptions(title: "trigger title"),
             TriggerOptions(triggerDescription: "trigger description"),

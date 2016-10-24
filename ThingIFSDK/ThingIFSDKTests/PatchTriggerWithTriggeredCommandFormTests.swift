@@ -37,6 +37,12 @@ class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
         let command_metadata: Dictionary<String, AnyObject> =
             ["command_metadata-key" : "command_metadata-value"]
         let targetID = TypedID(type: "THING", id: "thing-id")
+
+        // TriggeredCommandForm instances below are used as inputs and
+        // expected outputs of this test. It is little bit lazy but
+        // TriggeredCommandForm class is tested by
+        // TriggeredCommandFormTests.swift. So TriggeredCommandForm
+        // instance can be adequate as expected output of this tests.
         let forms: [TriggeredCommandForm] = [
             TriggeredCommandForm(schemaName: "name",
                                  schemaVersion: 1,

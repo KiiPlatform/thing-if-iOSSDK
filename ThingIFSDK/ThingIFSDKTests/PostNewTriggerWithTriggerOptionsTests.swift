@@ -36,6 +36,12 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
     func testSuccess () {
         let trigger_metadata: Dictionary<String, AnyObject> =
             ["trigger_metadata-key" : "trigger_metadata-value"]
+
+        // TriggerOptions instances below are used as inputs and
+        // expected outputs of this test. It is little bit lazy but
+        // TriggerOptions class is tested by
+        // TriggerOptionsTests.swift. So TriggerOptions instance can
+        // be adequate as expected output of this tests.
         let optionsArray: [TriggerOptions] = [
             TriggerOptions(title: "trigger title"),
             TriggerOptions(triggerDescription: "trigger description"),
@@ -152,15 +158,16 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
                   XCTAssertEqual(actual.triggerDescription,
                                  options.triggerDescription,
                                  error_message)
-                  if actual.metadata == nil {
-                      // If actual.metadata is nil, then options.metadata must
-                      // be nil
-                      XCTAssertNil(options.metadata, error_message)
-                  } else  {
+                  if let expectedMetadata = options.metadata {
+                      XCTAssertNotNil(actual.metadata, error_message)
                       XCTAssertEqual(
                         NSDictionary(dictionary: actual.metadata!),
-                        NSDictionary(dictionary: options.metadata!),
+                        NSDictionary(dictionary: expectedMetadata),
                         error_message)
+                  } else  {
+                      // If input metadata is nil, then output
+                      // metadata must be nil.
+                      XCTAssertNil(actual.metadata, error_message)
                   }
                   expectation.fulfill()
               })
