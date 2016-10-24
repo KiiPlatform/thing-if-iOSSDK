@@ -82,16 +82,14 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
                 XCTAssertEqual(request.URL!.absoluteString,
                                "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers",
                                error_message)
-                var requestHeaders = request.allHTTPHeaderFields!;
-                // X-Kii-SDK header is not required to check because
-                // this is SDK version dependent.
-                requestHeaders["X-Kii-SDK"] = nil
+                let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
                 XCTAssertEqual(
                   requestHeaders,
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                   ],
                   error_message);
 
