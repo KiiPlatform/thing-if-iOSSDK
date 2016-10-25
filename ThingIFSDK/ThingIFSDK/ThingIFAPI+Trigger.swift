@@ -164,8 +164,12 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
 
         // generate body
-        let requestBodyDict = NSMutableDictionary()
-        requestBodyDict["triggersWhat"] = TriggersWhat.COMMAND.rawValue
+        var requestBodyDict: Dictionary<String, AnyObject> = [
+          "triggersWhat": TriggersWhat.COMMAND.rawValue
+        ];
+        requestBodyDict["title"] = options?.title
+        requestBodyDict["description"] = options?.triggerDescription
+        requestBodyDict["metadata"] = options?.metadata
 
         // generate predicate
         if predicate != nil {
@@ -179,7 +183,7 @@ extension ThingIFAPI {
             if command["target"] == nil {
                 command["target"] = target.typedID.toString()
             }
-            requestBodyDict["command"] = NSDictionary(dictionary: command)
+            requestBodyDict["command"] = command
         }
         do{
             let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))

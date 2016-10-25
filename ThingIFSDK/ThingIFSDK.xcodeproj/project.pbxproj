@@ -118,6 +118,8 @@
 		B63FC8AE1CEEDBFF0042C747 /* ThingIFSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */; };
 		B63FC8B51CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */; };
 		B6651A221CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */; };
+		B66BDDA91DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66BDDA81DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift */; };
+		B66BDDAB1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66BDDAA1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift */; };
 		B66EA4521DA4B61000B6AB75 /* TriggeredCommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA4511DA4B61000B6AB75 /* TriggeredCommandFormTests.swift */; };
 		B66EA4541DA4BC1400B6AB75 /* TriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66EA4531DA4BC1400B6AB75 /* TriggerOptionsTests.swift */; };
 		B673C0051CF81CEC00AEF519 /* TestSetting.plist in Resources */ = {isa = PBXBuildFile; fileRef = B673C0041CF81CEC00AEF519 /* TestSetting.plist */; };
@@ -269,6 +271,8 @@
 		B63FC8AD1CEEDBFF0042C747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerForSchedulePredicateTests.swift; sourceTree = "<group>"; };
 		B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewCommandWithCommandFormTests.swift; sourceTree = "<group>"; };
+		B66BDDA81DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchTriggerWithTriggerOptionsTests.swift; sourceTree = "<group>"; };
+		B66BDDAA1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerWithTriggerOptionsTests.swift; sourceTree = "<group>"; };
 		B66EA4511DA4B61000B6AB75 /* TriggeredCommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredCommandFormTests.swift; sourceTree = "<group>"; };
 		B66EA4531DA4BC1400B6AB75 /* TriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerOptionsTests.swift; sourceTree = "<group>"; };
 		B673C0041CF81CEC00AEF519 /* TestSetting.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TestSetting.plist; sourceTree = "<group>"; };
@@ -496,6 +500,8 @@
 				B60BBBD11DA5024D004B4AFB /* PostNewTriggerWithTriggeredCommandFormTests.swift */,
 				B6323D281DA6271B0012D6A1 /* PatchTriggerWithTriggeredCommandFormTests.swift */,
 				B6323D2C1DA78BC70012D6A1 /* PatchServerCodeTriggerWIthTriggerOptionsTests.swift */,
+				B66BDDA81DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift */,
+				B66BDDAA1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -754,6 +760,7 @@
 				7D36B6A41BD4D0CC00D9B821 /* GetCommandTest.swift in Sources */,
 				A56B0A471C61EA7A00E653EF /* PostNewServerCodeTriggerTests.swift in Sources */,
 				226CD83E1CE5A3490049252A /* GetGatewayIDTests.swift in Sources */,
+				B66BDDA91DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift in Sources */,
 				7D36B6A81BD4D0CC00D9B821 /* IoTCloudSDKTests.swift in Sources */,
 				7D36B6A61BD4D0CC00D9B821 /* GetTriggerTests.swift in Sources */,
 				B67938251CE4448A000B9322 /* PostNewTriggerForScheduleTests.swift in Sources */,
@@ -784,6 +791,7 @@
 				7D36B6AE1BD4D0CC00D9B821 /* PostNewTriggerTests.swift in Sources */,
 				226C79871D4F19B700E8C440 /* OnboardTests.swift in Sources */,
 				B6323D2B1DA7572E0012D6A1 /* PostNewServerCodeTriggerWithTriggerOptionsTests.swift in Sources */,
+				B66BDDAB1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift in Sources */,
 				22ADEC071C89899B00F487D9 /* PredicateNSCodingTests.swift in Sources */,
 				22F2E7801C8D60BD0011F85C /* TriggerNSCodingTests.swift in Sources */,
 				7D36B6A11BD4D0CC00D9B821 /* DeleteTriggerTests.swift in Sources */,
@@ -840,7 +848,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.13.0;
+				CURRENT_PROJECT_VERSION = 0.13.1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -889,7 +897,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.13.0;
+				CURRENT_PROJECT_VERSION = 0.13.1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -919,7 +927,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 0.13.0;
+				DYLIB_CURRENT_VERSION = 0.13.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "ThingIFSDK-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -941,7 +949,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 0.13.0;
+				DYLIB_CURRENT_VERSION = 0.13.1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "ThingIFSDK-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

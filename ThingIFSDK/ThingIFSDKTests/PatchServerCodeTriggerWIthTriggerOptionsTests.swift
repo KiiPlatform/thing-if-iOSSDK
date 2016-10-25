@@ -105,16 +105,14 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                 { (request) in
                     XCTAssertEqual(request.HTTPMethod, "PATCH")
 
-                    var requestHeaders = request.allHTTPHeaderFields!;
-                    // X-Kii-SDK header is not required to check because
-                    // this is SDK version dependent.
-                    requestHeaders["X-Kii-SDK"] = nil
+                    let requestHeaders = request.allHTTPHeaderFields!;
                     // verify request header.
                     XCTAssertEqual(
                       requestHeaders,
                       [
                         "Authorization": "Bearer \(setting.owner.accessToken)",
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                       ],
                       error_message);
                     XCTAssertEqual(
@@ -151,16 +149,14 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                 { (request) in
                     XCTAssertEqual(request.HTTPMethod, "GET")
 
-                    var requestHeaders = request.allHTTPHeaderFields!;
-                    // X-Kii-SDK header is not required to check because
-                    // this is SDK version dependent.
-                    requestHeaders["X-Kii-SDK"] = nil
+                    let requestHeaders = request.allHTTPHeaderFields!;
                     // verify request header.
                     XCTAssertEqual(
                       requestHeaders,
                       [
                         "Authorization": "Bearer \(setting.owner.accessToken)",
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                       ],
                       error_message);
                     XCTAssertEqual(
@@ -252,16 +248,14 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
             { (request) in
                 XCTAssertEqual(request.HTTPMethod, "PATCH")
 
-                var requestHeaders = request.allHTTPHeaderFields!;
-                // X-Kii-SDK header is not required to check because
-                // this is SDK version dependent.
-                requestHeaders["X-Kii-SDK"] = nil
+                let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
                 XCTAssertEqual(
                   requestHeaders,
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                   ]);
                 XCTAssertEqual(
                   request.URL?.absoluteString,
@@ -294,16 +288,14 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
             { (request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
 
-                var requestHeaders = request.allHTTPHeaderFields!;
-                // X-Kii-SDK header is not required to check because
-                // this is SDK version dependent.
-                requestHeaders["X-Kii-SDK"] = nil
+                let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
                 XCTAssertEqual(
                   requestHeaders,
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                   ]);
                 XCTAssertEqual(
                   request.URL?.absoluteString,
@@ -384,16 +376,14 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
             { (request) in
                 XCTAssertEqual(request.HTTPMethod, "PATCH")
 
-                var requestHeaders = request.allHTTPHeaderFields!;
-                // X-Kii-SDK header is not required to check because
-                // this is SDK version dependent.
-                requestHeaders["X-Kii-SDK"] = nil
+                let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
                 XCTAssertEqual(
                   requestHeaders,
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                   ]);
                 XCTAssertEqual(
                   request.URL?.absoluteString,
@@ -426,16 +416,14 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
             { (request) in
                 XCTAssertEqual(request.HTTPMethod, "GET")
 
-                var requestHeaders = request.allHTTPHeaderFields!;
-                // X-Kii-SDK header is not required to check because
-                // this is SDK version dependent.
-                requestHeaders["X-Kii-SDK"] = nil
+                let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
                 XCTAssertEqual(
                   requestHeaders,
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                   ]);
                 XCTAssertEqual(
                   request.URL?.absoluteString,

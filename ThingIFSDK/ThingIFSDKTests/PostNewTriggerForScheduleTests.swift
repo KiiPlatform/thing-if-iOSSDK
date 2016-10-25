@@ -36,10 +36,7 @@ class TriggerRequestVerifier: NSObject, RequestVerifier {
                        // verify request method.
                        XCTAssertEqual(request.HTTPMethod, "POST")
 
-                       var requestHeaders = request.allHTTPHeaderFields!;
-                       // X-Kii-SDK header is not required to check because
-                       // this is SDK version dependent.
-                       requestHeaders["X-Kii-SDK"] = nil
+                       let requestHeaders = request.allHTTPHeaderFields!;
                        // verify request header.
                        XCTAssertEqual(self.expectedHeader,
                                       requestHeaders,
@@ -205,7 +202,8 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                             requestVerifier: TriggerRequestVerifier(
                                                expectedHeader: [
                                                      "Authorization": "Bearer \(setting.owner.accessToken)",
-                                                     "Content-Type": "application/json"
+                                                     "Content-Type": "application/json",
+                                                     "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                                                  ],
                                                expectedBody: [
                                                    "predicate": predicate.toNSDictionary() as Dictionary,
