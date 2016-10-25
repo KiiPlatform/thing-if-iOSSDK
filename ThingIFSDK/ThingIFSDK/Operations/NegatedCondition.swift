@@ -32,24 +32,24 @@ struct NegatedCondition<T: OperationCondition>: OperationCondition {
         self.condition = condition
     }
     
-    func dependencyForOperation(operation: Operation) -> NSOperation? {
+    func dependencyForOperation(_ operation: Operation) -> Foundation.Operation? {
         return condition.dependencyForOperation(operation)
     }
     
-    func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void) {
+    func evaluateForOperation(_ operation: Operation, completion: @escaping (OperationConditionResult) -> Void) {
         condition.evaluateForOperation(operation) { result in
-            if result == .Satisfied {
+            if result == .satisfied {
                 // If the composed condition succeeded, then this one failed.
-                let error = NSError(code: .ConditionFailed, userInfo: [
-                    OperationConditionKey: self.dynamicType.name,
-                    self.dynamicType.negatedConditionKey: self.condition.dynamicType.name
+                let error = NSError(code: .conditionFailed, userInfo: [
+                    OperationConditionKey: type(of: self).name,
+                    type(of: self).negatedConditionKey: type(of: self.condition).name
                     ])
                 
-                completion(.Failed(error))
+                completion(.failed(error))
             }
             else {
                 // If the composed condition failed, then this one succeeded.
-                completion(.Satisfied)
+                completion(.satisfied)
             }
         }
     }

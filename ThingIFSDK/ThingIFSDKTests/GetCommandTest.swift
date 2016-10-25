@@ -28,8 +28,8 @@ class GetCommandTests: SmallTestBase {
         let commandState: CommandState
         let commandStateString: String
         let firedByTriggerID: String?
-        let created: NSDate?
-        let modified: NSDate?
+        let created: Date?
+        let modified: Date?
     }
 
     func testGetCommandSuccess() {
@@ -39,30 +39,30 @@ class GetCommandTests: SmallTestBase {
         api._target = setting.target
 
         let testcases = [
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower":["power": true]]], issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.INCOMPLETE, commandStateString: "INCOMPLETE", firedByTriggerID:"trigger-0001", created:NSDate(timeIntervalSince1970:1456377631.467), modified:NSDate(timeIntervalSince1970:1456377633.467)),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING", firedByTriggerID:"trigger-0002", created:NSDate(timeIntervalSince1970:1456377634.467), modified:NSDate(timeIntervalSince1970:1456377635.467)),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.SENDING, commandStateString: "SENDING",firedByTriggerID:nil, created:nil, modified:nil),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.DELIVERED, commandStateString: "DELIVERED",firedByTriggerID:nil, created:nil, modified:nil),
-            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.DONE, commandStateString: "DONE", firedByTriggerID:nil, created:nil, modified:nil)
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower":["power": true]]], issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.incomplete, commandStateString: "INCOMPLETE", firedByTriggerID:"trigger-0001", created:Date(timeIntervalSince1970:1456377631.467), modified:Date(timeIntervalSince1970:1456377633.467)),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["setBrightness":["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.sending, commandStateString: "SENDING", firedByTriggerID:"trigger-0002", created:Date(timeIntervalSince1970:1456377634.467), modified:Date(timeIntervalSince1970:1456377635.467)),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.sending, commandStateString: "SENDING",firedByTriggerID:nil, created:nil, modified:nil),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:nil, commandState: CommandState.delivered, commandStateString: "DELIVERED",firedByTriggerID:nil, created:nil, modified:nil),
+            TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]],  issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults:[["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], commandState: CommandState.done, commandStateString: "DONE", firedByTriggerID:nil, created:nil, modified:nil)
 
         ]
 
-        for (index, testcase) in testcases.enumerate() {
+        for (index, testcase) in testcases.enumerated() {
             getCommandSuccess("testGetCommandSuccess_\(index)", testcase: testcase, setting: setting)
         }
     }
 
-    func getCommandSuccess(tag: String, testcase: TestCase, setting: TestSetting) {
+    func getCommandSuccess(_ tag: String, testcase: TestCase, setting: TestSetting) {
 
-        let expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+        let expectation : XCTestExpectation! = self.expectation(description: tag)
 
         do{
 
             let commandID = "429251a0-46f7-11e5-a5eb-06d9d1527620"
             // mock response
-            var dict: [String: AnyObject] = ["commandID": commandID, "schema": testcase.schema, "schemaVersion": testcase.schemaVersion, "target": testcase.targetIDString, "issuer": testcase.issuerIDString, "actions": testcase.actions, "commandState": testcase.commandStateString]
+            var dict: [String: AnyObject] = ["commandID": commandID as AnyObject, "schema": testcase.schema as AnyObject, "schemaVersion": testcase.schemaVersion as AnyObject, "target": testcase.targetIDString as AnyObject, "issuer": testcase.issuerIDString as AnyObject, "actions": testcase.actions as AnyObject, "commandState": testcase.commandStateString as AnyObject]
             if let firedByTriggerID = testcase.firedByTriggerID {
-                dict["firedByTriggerID"] = firedByTriggerID
+                dict["firedByTriggerID"] = firedByTriggerID as AnyObject?
             }
             if let created = testcase.created {
                 dict["createdAt"] = created.timeIntervalSince1970 * 1000
@@ -71,26 +71,26 @@ class GetCommandTests: SmallTestBase {
                 dict["modifiedAt"] = modified.timeIntervalSince1970 * 1000
             }
             if testcase.actionResults != nil {
-                dict["actionResults"] = testcase.actionResults!
+                dict["actionResults"] = testcase.actionResults! as AnyObject?
             }
 
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
 
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "GET")
 
                 // verify path
                 let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(testcase.targetIDString)/commands/\(commandID)"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal for \(tag)")
+                XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal for \(tag)")
 
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands/\(commandID)")
+                XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands/\(commandID)")
 
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
@@ -110,13 +110,13 @@ class GetCommandTests: SmallTestBase {
                     XCTAssertEqual(command?.created, testcase.created, tag)
                     XCTAssertEqual(command?.modified, testcase.modified, tag)
                     do {
-                        let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(testcase.actions, options: NSJSONWritingOptions(rawValue: 0))
-                        let actualActionsData = try NSJSONSerialization.dataWithJSONObject(command!.actions, options: NSJSONWritingOptions(rawValue: 0))
+                        let expectedActionsData = try JSONSerialization.data(withJSONObject: testcase.actions, options: JSONSerialization.WritingOptions(rawValue: 0))
+                        let actualActionsData = try JSONSerialization.data(withJSONObject: command!.actions, options: JSONSerialization.WritingOptions(rawValue: 0))
                         XCTAssertTrue(expectedActionsData == actualActionsData, tag)
 
                         if testcase.actionResults != nil {
-                            let expectedActionResultsData = try NSJSONSerialization.dataWithJSONObject(testcase.actionResults!, options: NSJSONWritingOptions(rawValue: 0))
-                            let actualActionResultsData = try NSJSONSerialization.dataWithJSONObject(command!.actionResults, options: NSJSONWritingOptions(rawValue: 0))
+                            let expectedActionResultsData = try JSONSerialization.data(withJSONObject: testcase.actionResults!, options: JSONSerialization.WritingOptions(rawValue: 0))
+                            let actualActionResultsData = try JSONSerialization.data(withJSONObject: command!.actionResults, options: JSONSerialization.WritingOptions(rawValue: 0))
                             XCTAssertTrue(expectedActionResultsData == actualActionResultsData, tag)
                         }else{
                             XCTAssertEqual(command!.actionResults.count, 0, tag)
@@ -130,7 +130,7 @@ class GetCommandTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -138,7 +138,7 @@ class GetCommandTests: SmallTestBase {
     }
 
     func testGetCommand_404_error() {
-        let expectation = self.expectationWithDescription("getCommand404Error")
+        let expectation = self.expectation(description: "getCommand404Error")
         let setting = TestSetting()
         let api = setting.api
         do{
@@ -150,22 +150,22 @@ class GetCommandTests: SmallTestBase {
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
                 "message" : "Target \(setting.target.typedID.toString()) not found"]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: responsedDict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 404, httpVersion: nil, headerFields: nil)
 
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "GET")
                 // verify path
                 let expectedPath = "\(api.baseURL!)/thing-if/apps/\(api.appID!)/targets/\(setting.target.typedID.type):\(setting.target.typedID.id)/commands/\(commandID)"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+                XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands/\(commandID)")
+                XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/commands/\(commandID)")
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -176,9 +176,9 @@ class GetCommandTests: SmallTestBase {
                 }else {
                     XCTAssertNil(command)
                     switch error! {
-                    case .CONNECTION:
+                    case .connection:
                         XCTFail("should not be connection error")
-                    case .ERROR_RESPONSE(let actualErrorResponse):
+                    case .error_RESPONSE(let actualErrorResponse):
                         XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
@@ -191,7 +191,7 @@ class GetCommandTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -199,7 +199,7 @@ class GetCommandTests: SmallTestBase {
     }
 
     func testGetCommand_trigger_not_available_error() {
-        let expectation = self.expectationWithDescription("testGetCommand_trigger_not_available_error")
+        let expectation = self.expectation(description: "testGetCommand_trigger_not_available_error")
         let setting = TestSetting()
         let api = setting.api
 
@@ -210,7 +210,7 @@ class GetCommandTests: SmallTestBase {
                 XCTFail("should fail")
             }else {
                 switch error! {
-                case .TARGET_NOT_AVAILABLE:
+                case .target_NOT_AVAILABLE:
                     break
                 default:
                     XCTFail("should be TARGET_NOT_AVAILABLE error")
@@ -219,7 +219,7 @@ class GetCommandTests: SmallTestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

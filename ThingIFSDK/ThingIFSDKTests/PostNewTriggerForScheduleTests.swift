@@ -10,14 +10,14 @@ import XCTest
 @testable import ThingIFSDK
 
 protocol RequestVerifier: class {
-    var verifier: ((NSURLRequest) -> Void) { get }
+    var verifier: ((URLRequest) -> Void) { get }
     var tag: String { get }
 }
 
 class TriggerRequestVerifier: NSObject, RequestVerifier {
-    private let expectedHeader: Dictionary<String, String>
-    private let expectedBody: Dictionary<String, AnyObject>
-    private let url: String
+    fileprivate let expectedHeader: Dictionary<String, String>
+    fileprivate let expectedBody: Dictionary<String, AnyObject>
+    fileprivate let url: String
     let tag: String
 
     init (expectedHeader: Dictionary<String, String>,
@@ -30,11 +30,11 @@ class TriggerRequestVerifier: NSObject, RequestVerifier {
         self.tag = tag
     }
 
-    var verifier: ((NSURLRequest) -> Void) {
+    var verifier: ((URLRequest) -> Void) {
         get {
             return { (request) in
                        // verify request method.
-                       XCTAssertEqual(request.HTTPMethod, "POST")
+                       XCTAssertEqual(request.httpMethod, "POST")
 
                        let requestHeaders = request.allHTTPHeaderFields!;
                        // verify request header.
@@ -44,9 +44,9 @@ class TriggerRequestVerifier: NSObject, RequestVerifier {
 
                        // verify request body.
                        let actualBody =
-                           try! NSJSONSerialization.JSONObjectWithData(
-                               request.HTTPBody!,
-                               options: .MutableContainers)
+                           try! JSONSerialization.jsonObject(
+                               with: request.httpBody!,
+                               options: .mutableContainers)
                            as! Dictionary<String, AnyObject>
                        XCTAssertEqual(
                            NSDictionary(dictionary: self.expectedBody),
@@ -54,7 +54,7 @@ class TriggerRequestVerifier: NSObject, RequestVerifier {
                            self.tag)
 
                        // verify URL.
-                       XCTAssertEqual(request.URL!.absoluteString,
+                       XCTAssertEqual(request.url!.absoluteString,
                                       self.url,
                                       self.tag);
                    }
@@ -117,9 +117,9 @@ class WrongFormatCallbackVerifier: CallbackVerifier {
         get {
             return { (trigger, error) in
                        switch error! {
-                       case .CONNECTION:
+                       case .connection:
                            XCTFail(self.tag + ": should not be connection")
-                       case .ERROR_RESPONSE(let actualErrorResponse):
+                       case .error_RESPONSE(let actualErrorResponse):
                            XCTAssertEqual(400,
                                           actualErrorResponse.httpStatusCode,
                                           self.tag)
@@ -156,7 +156,7 @@ struct TestCase {
 class PostNewTriggerForScheduleTests: SmallTestBase {
 
     static func createSuccessTestCase(
-        predicate: Predicate,
+        _ predicate: Predicate,
         actions: [Dictionary<String, AnyObject>],
         tag: String,
         setting: TestSetting) -> TestCase
@@ -171,13 +171,13 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                                     commandID:"",
                                     tag: tag),
                 mockResponse: MockResponse(
-                                try! NSJSONSerialization.dataWithJSONObject(
-                                    ["triggerID": "0267251d9d60-1858-5e11-3dc3-00f3f0b5"],
-                                    options: .PrettyPrinted),
-                                urlResponse: NSHTTPURLResponse(
-                                               URL: NSURL(string:setting.app.baseURL)!,
+                                try! JSONSerialization.data(
+                                    withJSONObject: ["triggerID": "0267251d9d60-1858-5e11-3dc3-00f3f0b5"],
+                                    options: .prettyPrinted),
+                                urlResponse: HTTPURLResponse(
+                                               url: URL(string:setting.app.baseURL)!,
                                                statusCode: 201,
-                                               HTTPVersion: nil,
+                                               httpVersion: nil,
                                                headerFields: nil)!,
                                 error: nil),
                 tag: tag,
@@ -185,7 +185,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
     }
 
     static func createTestCase(
-        predicate: Predicate,
+        _ predicate: Predicate,
         actions: [Dictionary<String, AnyObject>],
         callbackVerifier: CallbackVerifier,
         mockResponse: MockResponse,
@@ -223,7 +223,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
     }
 
     static func createTestCases(
-            predicates: [Predicate],
+            _ predicates: [Predicate],
             setting: TestSetting) -> [TestCase]
     {
         var retval: [TestCase] = []
@@ -233,7 +233,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                 ["setBrightness":["bribhtness":90]]
             ]
 
-        for (index, predicate) in predicates.enumerate() {
+        for (index, predicate) in predicates.enumerated() {
             retval.append(PostNewTriggerForScheduleTests.createSuccessTestCase(
                               predicate,
                               actions: actions,
@@ -243,13 +243,13 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         return retval;
     }
 
-    func postNewTrigger(testCase: TestCase, setting: TestSetting) {
+    func postNewTrigger(_ testCase: TestCase, setting: TestSetting) {
         weak var expectation : XCTestExpectation!
         defer {
             expectation = nil
         }
-        expectation = self.expectationWithDescription(
-                          testCase.verifier.requestVerifier.tag)
+        expectation = self.expectation(
+                          description: testCase.verifier.requestVerifier.tag)
 
         sharedMockSession.requestVerifier =
             testCase.verifier.requestVerifier.verifier
@@ -267,7 +267,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                 testCase.verifier.callbackVerifier.verifier(trigger, error)
                 expectation.fulfill()
             })
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout for \(testCase.verifier.requestVerifier.tag)")
             }
@@ -312,10 +312,10 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                 callbackVerifier: WrongFormatCallbackVerifier(tag: "wrong format test"),
                 mockResponse: MockResponse(
                                 nil,
-                                urlResponse:NSHTTPURLResponse(
-                                               URL: NSURL(string: setting.app.baseURL)!,
+                                urlResponse:HTTPURLResponse(
+                                               url: URL(string: setting.app.baseURL)!,
                                                statusCode: 400,
-                                               HTTPVersion: nil,
+                                               httpVersion: nil,
                                                headerFields: nil),
                                 error: nil),
                 tag: "wrong format test",

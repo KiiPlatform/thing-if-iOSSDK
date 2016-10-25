@@ -100,8 +100,8 @@ class TriggeredCommandFormTest: SmallTestBase {
           ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1",
-          "key2" : "value2"
+          "key1" : "value1" as AnyObject,
+          "key2" : "value2" as AnyObject
         ]
         let form = TriggeredCommandForm(schemaName: "name",
                                         schemaVersion: 1,
@@ -150,8 +150,8 @@ class TriggeredCommandFormTest: SmallTestBase {
           ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1",
-          "key2" : "value2"
+          "key1" : "value1" as AnyObject,
+          "key2" : "value2" as AnyObject
         ]
         let form = TriggeredCommandForm(schemaName: "name",
                                         schemaVersion: 1,
@@ -178,8 +178,8 @@ class TriggeredCommandFormTest: SmallTestBase {
           ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1",
-          "key2" : "value2"
+          "key1" : "value1" as AnyObject,
+          "key2" : "value2" as AnyObject
         ]
         let form = TriggeredCommandForm(schemaName: "name",
                                         schemaVersion: 1,
@@ -283,8 +283,8 @@ class TriggeredCommandFormTest: SmallTestBase {
           ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1",
-          "key2" : "value2"
+          "key1" : "value1" as AnyObject,
+          "key2" : "value2" as AnyObject
         ]
         let targetID = TypedID(type: "THING", id: "id");
         let form = TriggeredCommandForm(schemaName: "name",
@@ -341,8 +341,8 @@ class TriggeredCommandFormTest: SmallTestBase {
           ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1",
-          "key2" : "value2"
+          "key1" : "value1" as AnyObject,
+          "key2" : "value2" as AnyObject
         ]
         let targetID = TypedID(type: "THING", id: "id");
         let form = TriggeredCommandForm(schemaName: "name",
@@ -372,8 +372,8 @@ class TriggeredCommandFormTest: SmallTestBase {
           ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1",
-          "key2" : "value2"
+          "key1" : "value1" as AnyObject,
+          "key2" : "value2" as AnyObject
         ]
         let targetID = TypedID(type: "THING", id: "id");
         let form = TriggeredCommandForm(schemaName: "name",
@@ -402,8 +402,8 @@ class TriggeredCommandFormTest: SmallTestBase {
           ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1",
-          "key2" : "value2"
+          "key1" : "value1" as AnyObject,
+          "key2" : "value2" as AnyObject
         ]
         let targetID = TypedID(type: "THING", id: "id");
         let form = TriggeredCommandForm(schemaName: "name",
@@ -434,8 +434,8 @@ class TriggeredCommandFormTest: SmallTestBase {
             ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let targetID = TypedID(type: "THING", id: "id");
         let original = TriggeredCommandForm(schemaName: "name",
@@ -447,12 +447,12 @@ class TriggeredCommandFormTest: SmallTestBase {
                                       metadata: metadata)
         let data: NSMutableData = NSMutableData(capacity: 1024)!;
         let coder: NSKeyedArchiver =
-            NSKeyedArchiver(forWritingWithMutableData: data);
-        original.encodeWithCoder(coder);
+            NSKeyedArchiver(forWritingWith: data);
+        original.encode(with: coder);
         coder.finishEncoding();
 
         let decoder: NSKeyedUnarchiver =
-            NSKeyedUnarchiver(forReadingWithData: data);
+            NSKeyedUnarchiver(forReadingWith: data as Data);
         let deserialized: TriggeredCommandForm =
           TriggeredCommandForm(coder: decoder)!;
         decoder.finishDecoding();

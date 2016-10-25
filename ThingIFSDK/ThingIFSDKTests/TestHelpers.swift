@@ -12,20 +12,20 @@ import XCTest
 public let TEST_TIMEOUT = 5.0
 
 func failIfNotRunningOnDevice(){
-    let environment = NSProcessInfo.processInfo().environment
+    let environment = ProcessInfo.processInfo.environment
 
     if environment["SIMULATOR_RUNTIME_VERSION"] != nil {
         XCTFail("This test is prohibited to launch in simulator")
     }
 
 }
-typealias MockResponse = (data: NSData?, urlResponse: NSURLResponse?, error: NSError?)
-typealias MockResponsePair = (response: MockResponse,requestVerifier: ((NSURLRequest) -> Void))
+typealias MockResponse = (data: Data?, urlResponse: URLResponse?, error: NSError?)
+typealias MockResponsePair = (response: MockResponse,requestVerifier: ((URLRequest) -> Void))
 let sharedMockSession = MockSession()
-private class MockTask: NSURLSessionDataTask {
+private class MockTask: URLSessionDataTask {
 
-    @objc override var state : NSURLSessionTaskState {
-        return NSURLSessionTaskState.Suspended
+    @objc override var state : URLSessionTask.State {
+        return URLSessionTask.State.suspended
     }
 
     override func resume() {
@@ -33,17 +33,17 @@ private class MockTask: NSURLSessionDataTask {
     }
 
 }
-class MockSession: NSURLSession {
-    var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
-    var requestVerifier: ((NSURLRequest) -> Void) = {(request) in }
+class MockSession: URLSession {
+    var completionHandler: ((Data?, URLResponse?, NSError?) -> Void)?
+    var requestVerifier: ((URLRequest) -> Void) = {(request) in }
 
-    var mockResponse: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?) = (data: nil, urlResponse: nil, error: nil)
+    var mockResponse: (data: Data?, urlResponse: URLResponse?, error: NSError?) = (data: nil, urlResponse: nil, error: nil)
 
-    override class func sharedSession() -> NSURLSession {
+    override class func sharedSession() -> URLSession {
         return sharedMockSession
     }
 
-    override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
+    override func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         self.requestVerifier(request)
 
         self.completionHandler = completionHandler
@@ -53,18 +53,18 @@ class MockSession: NSURLSession {
 
 }
 let sharedMockMultipleSession = MockMultipleSession()
-class MockMultipleSession: NSURLSession {
+class MockMultipleSession: URLSession {
 
-    var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
+    var completionHandler: ((Data?, URLResponse?, NSError?) -> Void)?
     var responsePairs = [MockResponsePair]()
 
-    override class func sharedSession() -> NSURLSession {
+    override class func sharedSession() -> URLSession {
         return sharedMockMultipleSession
     }
 
-    override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
+    override func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         if (self.responsePairs.count > 0) {
-            let pair = self.responsePairs.removeAtIndex(0);
+            let pair = self.responsePairs.remove(at: 0);
             pair.requestVerifier(request)
             completionHandler(pair.response.data, pair.response.urlResponse, pair.response.error)
         } else {

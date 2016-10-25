@@ -8,7 +8,7 @@
 import UIKit
 @testable import ThingIFSDK
 
-public class TestSetting: NSObject {
+open class TestSetting: NSObject {
 
     let app:App!
 
@@ -30,8 +30,8 @@ public class TestSetting: NSObject {
     let thingType:String
 
     public override init() {
-        let b:NSBundle = NSBundle(forClass:TestSetting.self)
-        let path:String = b.pathForResource("testapp", ofType: "plist")!
+        let b:Bundle = Bundle(for:TestSetting.self)
+        let path:String = b.path(forResource: "testapp", ofType: "plist")!
         let dict:NSDictionary = NSDictionary(contentsOfFile: path)!
 
         self.appID = dict["appID"] as! String

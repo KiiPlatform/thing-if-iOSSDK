@@ -11,8 +11,8 @@ import XCTest
 
 class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
 
-    private func getResonseData(
-      triggerID: String,
+    fileprivate func getResonseData(
+      _ triggerID: String,
       serverCode: ServerCode,
       predicate: Predicate,
       options: TriggerOptions?) -> Dictionary<String, AnyObject>
@@ -30,13 +30,13 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
         return retval;
     }
 
-    private func expectedRequestBody(
-      serverCode: ServerCode? = nil,
+    fileprivate func expectedRequestBody(
+      _ serverCode: ServerCode? = nil,
       predicate: Predicate? = nil,
       options: TriggerOptions? = nil) -> Dictionary<String, AnyObject>
     {
         var retval: Dictionary<String, AnyObject> = [
-          "triggersWhat" : "SERVER_CODE"
+          "triggersWhat" : "SERVER_CODE" as AnyObject
         ]
         retval["serverCode"] = serverCode?.toNSDictionary()
         retval["predicate"] = predicate?.toNSDictionary()
@@ -48,7 +48,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
 
     func testSuccess() {
         let metadata: Dictionary<String, AnyObject> = [
-          "key" : "value"
+          "key" : "value" as AnyObject
         ]
         let optionsArray: [TriggerOptions?] = [
           nil,
@@ -89,21 +89,21 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
             defer {
                 expectation = nil
             }
-            expectation = self.expectationWithDescription(error_message)
+            expectation = self.expectation(withDescription: error_message)
 
             sharedMockMultipleSession.responsePairs = [
               (
-                (data: try! NSJSONSerialization.dataWithJSONObject(
-                   ["triggerID", "triggerID"],
-                   options: .PrettyPrinted),
-                 urlResponse: NSHTTPURLResponse(
-                   URL: NSURL(string:setting.app.baseURL)!,
+                (data: try! JSONSerialization.data(
+                   withJSONObject: ["triggerID", "triggerID"],
+                   options: .prettyPrinted),
+                 urlResponse: HTTPURLResponse(
+                   url: URL(string:setting.app.baseURL)!,
                    statusCode: 200,
-                   HTTPVersion: nil,
+                   httpVersion: nil,
                    headerFields: nil)!,
                  error: nil),
                 { (request) in
-                    XCTAssertEqual(request.HTTPMethod, "PATCH")
+                    XCTAssertEqual(request.httpMethod, "PATCH")
 
                     let requestHeaders = request.allHTTPHeaderFields!;
                     // verify request header.
@@ -116,14 +116,14 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                       ],
                       error_message);
                     XCTAssertEqual(
-                      request.URL?.absoluteString,
+                      request.url?.absoluteString,
                       setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID",
                       error_message)
                     XCTAssertEqual(
                       NSDictionary(
-                        dictionary: try! NSJSONSerialization.JSONObjectWithData(
-                         request.HTTPBody!,
-                         options: .MutableContainers)
+                        dictionary: try! JSONSerialization.jsonObject(
+                         with: request.httpBody!,
+                         options: .mutableContainers)
                           as! Dictionary<String, AnyObject>),
                       NSDictionary(dictionary: self.expectedRequestBody(
                                      serverCode,
@@ -133,21 +133,21 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                 }
               ),
               (
-                (data: try! NSJSONSerialization.dataWithJSONObject(
-                   NSDictionary(dictionary: self.getResonseData(
+                (data: try! JSONSerialization.data(
+                   withJSONObject: NSDictionary(dictionary: self.getResonseData(
                                   "triggerID",
                                   serverCode: serverCode,
                                   predicate: predicate,
                                   options: options)),
-                   options: .PrettyPrinted),
-                 urlResponse: NSHTTPURLResponse(
-                   URL: NSURL(string:setting.app.baseURL)!,
+                   options: .prettyPrinted),
+                 urlResponse: HTTPURLResponse(
+                   url: URL(string:setting.app.baseURL)!,
                    statusCode: 200,
-                   HTTPVersion: nil,
+                   httpVersion: nil,
                    headerFields: nil)!,
                  error: nil),
                 { (request) in
-                    XCTAssertEqual(request.HTTPMethod, "GET")
+                    XCTAssertEqual(request.httpMethod, "GET")
 
                     let requestHeaders = request.allHTTPHeaderFields!;
                     // verify request header.
@@ -160,7 +160,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                       ],
                       error_message);
                     XCTAssertEqual(
-                      request.URL?.absoluteString,
+                      request.url?.absoluteString,
                       setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID",
                       error_message)
                 }
@@ -201,7 +201,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                   }
                   expectation.fulfill()
               })
-            self.waitForExpectationsWithTimeout(TEST_TIMEOUT)
+            self.waitForExpectations(withTimeout: TEST_TIMEOUT)
             { (error) -> Void in
                 if error != nil {
                     XCTFail("execution timeout for \(error_message)")
@@ -213,7 +213,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
 
     func testServerCodeAndOption() {
         let metadata: Dictionary<String, AnyObject> = [
-          "key" : "value"
+          "key" : "value" as AnyObject
         ]
         let options = TriggerOptions(title: "title",
                                      triggerDescription: "trigger description",
@@ -232,21 +232,21 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
         defer {
             expectation = nil
         }
-        expectation = self.expectationWithDescription("error")
+        expectation = self.expectation(description: "error")
 
         sharedMockMultipleSession.responsePairs = [
           (
-            (data: try! NSJSONSerialization.dataWithJSONObject(
-               ["triggerID", "triggerID"],
-               options: .PrettyPrinted),
-             urlResponse: NSHTTPURLResponse(
-               URL: NSURL(string:setting.app.baseURL)!,
+            (data: try! JSONSerialization.data(
+               withJSONObject: ["triggerID", "triggerID"],
+               options: .prettyPrinted),
+             urlResponse: HTTPURLResponse(
+               url: URL(string:setting.app.baseURL)!,
                statusCode: 200,
-               HTTPVersion: nil,
+               httpVersion: nil,
                headerFields: nil)!,
              error: nil),
             { (request) in
-                XCTAssertEqual(request.HTTPMethod, "PATCH")
+                XCTAssertEqual(request.httpMethod, "PATCH")
 
                 let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
@@ -258,13 +258,13 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                     "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                   ]);
                 XCTAssertEqual(
-                  request.URL?.absoluteString,
+                  request.url?.absoluteString,
                   setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID")
                 XCTAssertEqual(
                   NSDictionary(
-                    dictionary: try! NSJSONSerialization.JSONObjectWithData(
-                      request.HTTPBody!,
-                      options: .MutableContainers)
+                    dictionary: try! JSONSerialization.jsonObject(
+                      with: request.httpBody!,
+                      options: .mutableContainers)
                       as! Dictionary<String, AnyObject>),
                   NSDictionary(dictionary: self.expectedRequestBody(
                                  serverCode,
@@ -272,21 +272,21 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
             }
           ),
           (
-            (data: try! NSJSONSerialization.dataWithJSONObject(
-               NSDictionary(dictionary: self.getResonseData(
+            (data: try! JSONSerialization.data(
+               withJSONObject: NSDictionary(dictionary: self.getResonseData(
                               "triggerID",
                               serverCode: serverCode,
                               predicate: predicate,
                               options: options)),
-               options: .PrettyPrinted),
-             urlResponse: NSHTTPURLResponse(
-               URL: NSURL(string:setting.app.baseURL)!,
+               options: .prettyPrinted),
+             urlResponse: HTTPURLResponse(
+               url: URL(string:setting.app.baseURL)!,
                statusCode: 200,
-               HTTPVersion: nil,
+               httpVersion: nil,
                headerFields: nil)!,
              error: nil),
             { (request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+                XCTAssertEqual(request.httpMethod, "GET")
 
                 let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
@@ -298,7 +298,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                     "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                   ]);
                 XCTAssertEqual(
-                  request.URL?.absoluteString,
+                  request.url?.absoluteString,
                   setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID")
             }
           )
@@ -332,7 +332,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
               }
               expectation.fulfill()
           })
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT)
+        self.waitForExpectations(timeout: TEST_TIMEOUT)
         { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
@@ -342,7 +342,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
 
     func testPredicateAndOption() {
         let metadata: Dictionary<String, AnyObject> = [
-          "key" : "value"
+          "key" : "value" as AnyObject
         ]
         let options = TriggerOptions(title: "title",
                                      triggerDescription: "trigger description",
@@ -360,21 +360,21 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
         defer {
             expectation = nil
         }
-        expectation = self.expectationWithDescription("error")
+        expectation = self.expectation(description: "error")
 
         sharedMockMultipleSession.responsePairs = [
           (
-            (data: try! NSJSONSerialization.dataWithJSONObject(
-               ["triggerID", "triggerID"],
-               options: .PrettyPrinted),
-             urlResponse: NSHTTPURLResponse(
-               URL: NSURL(string:setting.app.baseURL)!,
+            (data: try! JSONSerialization.data(
+               withJSONObject: ["triggerID", "triggerID"],
+               options: .prettyPrinted),
+             urlResponse: HTTPURLResponse(
+               url: URL(string:setting.app.baseURL)!,
                statusCode: 200,
-               HTTPVersion: nil,
+               httpVersion: nil,
                headerFields: nil)!,
              error: nil),
             { (request) in
-                XCTAssertEqual(request.HTTPMethod, "PATCH")
+                XCTAssertEqual(request.httpMethod, "PATCH")
 
                 let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
@@ -386,13 +386,13 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                     "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                   ]);
                 XCTAssertEqual(
-                  request.URL?.absoluteString,
+                  request.url?.absoluteString,
                   setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID")
                 XCTAssertEqual(
                   NSDictionary(
-                    dictionary: try! NSJSONSerialization.JSONObjectWithData(
-                      request.HTTPBody!,
-                      options: .MutableContainers)
+                    dictionary: try! JSONSerialization.jsonObject(
+                      with: request.httpBody!,
+                      options: .mutableContainers)
                       as! Dictionary<String, AnyObject>),
                   NSDictionary(dictionary: self.expectedRequestBody(
                     predicate: predicate,
@@ -400,21 +400,21 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
             }
           ),
           (
-            (data: try! NSJSONSerialization.dataWithJSONObject(
-               NSDictionary(dictionary: self.getResonseData(
+            (data: try! JSONSerialization.data(
+               withJSONObject: NSDictionary(dictionary: self.getResonseData(
                               "triggerID",
                               serverCode: serverCode,
                               predicate: predicate,
                               options: options)),
-               options: .PrettyPrinted),
-             urlResponse: NSHTTPURLResponse(
-               URL: NSURL(string:setting.app.baseURL)!,
+               options: .prettyPrinted),
+             urlResponse: HTTPURLResponse(
+               url: URL(string:setting.app.baseURL)!,
                statusCode: 200,
-               HTTPVersion: nil,
+               httpVersion: nil,
                headerFields: nil)!,
              error: nil),
             { (request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+                XCTAssertEqual(request.httpMethod, "GET")
 
                 let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
@@ -426,7 +426,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                     "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
                   ]);
                 XCTAssertEqual(
-                  request.URL?.absoluteString,
+                  request.url?.absoluteString,
                   setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID")
             }
           )
@@ -461,7 +461,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
               }
               expectation.fulfill()
           })
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT)
+        self.waitForExpectations(timeout: TEST_TIMEOUT)
         { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
@@ -482,7 +482,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
           completionHandler: {
               (trigger, error) -> Void in
               switch(error!) {
-              case ThingIFError.UNSUPPORTED_ERROR:
+              case ThingIFError.unsupported_ERROR:
                   break
               default:
                   XCTFail("invalid error")

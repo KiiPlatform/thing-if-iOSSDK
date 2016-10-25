@@ -13,30 +13,30 @@ import Foundation
 */
 public enum Site {
     /** Use cloud in US. */
-    case US
+    case us
     /** Use cloud in Japan. */
-    case JP
+    case jp
     /** Use cloud in cn3 site of China. */
-    case CN3
+    case cn3
     /** Use cloud in Singapore. */
-    case SG
+    case sg
     /** Use cloud in EU. */
-    case EU
+    case eu
 
     /** Get base url of Site
     - Returns: Base URL string of Site.
     */
     public func getBaseUrl() -> String{
         switch self {
-        case .US:
+        case .us:
             return "https://api.kii.com"
-        case .JP:
+        case .jp:
             return "https://api-jp.kii.com"
-        case .CN3:
+        case .cn3:
             return "https://api-cn3.kii.com"
-        case .SG:
+        case .sg:
             return "https://api-sg.kii.com"
-        case .EU:
+        case .eu:
             return "https://api-eu.kii.com"
         }
     }
@@ -44,30 +44,30 @@ public enum Site {
     /** */
     public func getHostName() -> String {
         switch self {
-        case .US:
+        case .us:
             return "api.kii.com"
-        case .JP:
+        case .jp:
             return "api-jp.kii.com"
-        case .CN3:
+        case .cn3:
             return "api-cn3.kii.com"
-        case .SG:
+        case .sg:
             return "api-sg.kii.com"
-        case .EU:
+        case .eu:
             return "api-eu.kii.com"
         }
     }
 
     public func getName() -> String {
         switch self {
-        case .US:
+        case .us:
             return "US"
-        case .JP:
+        case .jp:
             return "JP"
-        case .CN3:
+        case .cn3:
             return "CN3"
-        case .SG:
+        case .sg:
             return "SG"
-        case .EU:
+        case .eu:
             return "EU"
         }
     }

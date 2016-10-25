@@ -17,16 +17,16 @@ This class contains optional data in order to create and modify
  - `ThingIFAPI.postNewTrigger(triggeredCommandForm:predicate:options:completionHandler:)`
  - `ThingIFAPI.patchTrigger(triggerID:triggeredCommandForm:predicate:options:completionHandler:)`
 */
-public class TriggerOptions: NSObject, NSCoding {
+open class TriggerOptions: NSObject, NSCoding {
 
     /// Title of a command.
-    public let title: String?
+    open let title: String?
 
     /// Description of a trigger.
-    public let triggerDescription: String?
+    open let triggerDescription: String?
 
     /// Meta data of a trigger.
-    public let metadata: Dictionary<String, AnyObject>?
+    open let metadata: Dictionary<String, AnyObject>?
 
     // MARK: - Initializing TriggerOptions instance.
     /**
@@ -47,18 +47,18 @@ public class TriggerOptions: NSObject, NSCoding {
         self.metadata = metadata;
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.title, forKey: "title")
-        aCoder.encodeObject(self.triggerDescription,
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.title, forKey: "title")
+        aCoder.encode(self.triggerDescription,
                 forKey: "triggerDescription")
-        aCoder.encodeObject(self.metadata, forKey: "metadata")
+        aCoder.encode(self.metadata, forKey: "metadata")
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        self.title = aDecoder.decodeObjectForKey("title") as? String
+        self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.triggerDescription =
-            aDecoder.decodeObjectForKey("triggerDescription") as? String
-        self.metadata = aDecoder.decodeObjectForKey("metadata")
+            aDecoder.decodeObject(forKey: "triggerDescription") as? String
+        self.metadata = aDecoder.decodeObject(forKey: "metadata")
                 as? Dictionary<String, AnyObject>
     }
 }

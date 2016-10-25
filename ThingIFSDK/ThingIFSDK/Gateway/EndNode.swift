@@ -7,6 +7,6 @@
 
 import Foundation
 
-public class EndNode: AbstractThing {
+open class EndNode: AbstractThing {
 
 }

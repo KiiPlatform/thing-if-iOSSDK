@@ -12,31 +12,31 @@ import XCTest
 
 extension XCTestCase {
     
-    func verifyDict(expectedDict:Dictionary<String, AnyObject>, actualDict: Dictionary<String, AnyObject>){
+    func verifyDict(_ expectedDict:Dictionary<String, AnyObject>, actualDict: Dictionary<String, AnyObject>){
         let s = "expected=" + expectedDict.description + "actual" + actualDict.description
-        XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqualToDictionary(actualDict), s)
+        XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqual(to: actualDict), s)
     }
-    func verifyNsDict(expectedDict:NSDictionary, actualDict:NSDictionary){
+    func verifyNsDict(_ expectedDict:NSDictionary, actualDict:NSDictionary){
         let s = "expected=" + expectedDict.description + "actual" + actualDict.description
-        XCTAssertTrue(expectedDict.isEqualToDictionary(actualDict as [NSObject : AnyObject]), s)
+        XCTAssertTrue(expectedDict.isEqual(to: actualDict as! [AnyHashable: Any]), s)
     }
     
-    func verifyDict(expectedDict:Dictionary<String, AnyObject>, actualData: NSData){
+    func verifyDict(_ expectedDict:Dictionary<String, AnyObject>, actualData: Data){
         
         do{
-            let actualDict: NSDictionary = try NSJSONSerialization.JSONObjectWithData(actualData, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
+            let actualDict: NSDictionary = try JSONSerialization.jsonObject(with: actualData, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
             let s = "\nexpected=" + expectedDict.description + "\nactual" + actualDict.description
-            XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqualToDictionary(actualDict as [NSObject : AnyObject]), s)
+            XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqual(to: actualDict as! [AnyHashable: Any]), s)
         }catch(_){
             XCTFail()
         }
     }
 
-    func XCTAssertEqualDictionaries<S, T: Equatable>(first: [S:T], _ second: [S:T]) {
+    func XCTAssertEqualDictionaries<S, T: Equatable>(_ first: [S:T], _ second: [S:T]) {
         XCTAssert(first == second)
     }
 
-    func XCTAssertEqualIoTAPIWithoutTarget(first: ThingIFAPI, _ second: ThingIFAPI) {
+    func XCTAssertEqualIoTAPIWithoutTarget(_ first: ThingIFAPI, _ second: ThingIFAPI) {
         XCTAssertEqual(first.appID, second.appID)
         XCTAssertEqual(first.appKey, second.appKey)
         XCTAssertEqual(first.baseURL, second.baseURL)

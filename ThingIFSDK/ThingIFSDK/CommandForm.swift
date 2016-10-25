@@ -26,27 +26,27 @@ Optional data are followings:
   - Description of a schema
   - Meta data of a schema
 */
-public class CommandForm: NSObject, NSCoding {
+open class CommandForm: NSObject, NSCoding {
 
     // MARK: - Properties
 
     /// Schema name.
-    public let schemaName: String
+    open let schemaName: String
 
     /// Schema version.
-    public let schemaVersion: Int
+    open let schemaVersion: Int
 
     /// List of actions.
-    public let actions: [Dictionary<String, AnyObject>]
+    open let actions: [Dictionary<String, AnyObject>]
 
     /// Title of a command.
-    public let title: String?
+    open let title: String?
 
     /// Description of a command.
-    public let commandDescription: String?
+    open let commandDescription: String?
 
     /// Meta data of ad command.
-    public let metadata: Dictionary<String, AnyObject>?
+    open let metadata: Dictionary<String, AnyObject>?
 
 
     // MARK: - Initializing CommandForm instance.
@@ -77,25 +77,25 @@ public class CommandForm: NSObject, NSCoding {
         self.metadata = metadata;
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.schemaName, forKey: "schemaName")
-        aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
-        aCoder.encodeObject(self.actions, forKey: "actions")
-        aCoder.encodeObject(self.title, forKey: "title")
-        aCoder.encodeObject(self.commandDescription,
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.schemaName, forKey: "schemaName")
+        aCoder.encode(self.schemaVersion, forKey: "schemaVersion")
+        aCoder.encode(self.actions, forKey: "actions")
+        aCoder.encode(self.title, forKey: "title")
+        aCoder.encode(self.commandDescription,
                 forKey: "commandDescription");
-        aCoder.encodeObject(self.metadata, forKey: "metadata")
+        aCoder.encode(self.metadata, forKey: "metadata")
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        self.schemaName = aDecoder.decodeObjectForKey("schemaName") as! String
-        self.schemaVersion = aDecoder.decodeIntegerForKey("schemaVersion")
-        self.actions = aDecoder.decodeObjectForKey("actions")
+        self.schemaName = aDecoder.decodeObject(forKey: "schemaName") as! String
+        self.schemaVersion = aDecoder.decodeInteger(forKey: "schemaVersion")
+        self.actions = aDecoder.decodeObject(forKey: "actions")
                 as! [Dictionary<String, AnyObject>];
-        self.title = aDecoder.decodeObjectForKey("title") as? String
+        self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription =
-            aDecoder.decodeObjectForKey("commandDescription") as? String;
-        self.metadata = aDecoder.decodeObjectForKey("metadata")
+            aDecoder.decodeObject(forKey: "commandDescription") as? String;
+        self.metadata = aDecoder.decodeObject(forKey: "metadata")
                 as? Dictionary<String, AnyObject>;
     }
 }

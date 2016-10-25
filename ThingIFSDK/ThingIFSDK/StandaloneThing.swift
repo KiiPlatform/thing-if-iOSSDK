@@ -7,6 +7,6 @@
 
 import Foundation
 
-public class StandaloneThing: AbstractThing {
+open class StandaloneThing: AbstractThing {
 
 }

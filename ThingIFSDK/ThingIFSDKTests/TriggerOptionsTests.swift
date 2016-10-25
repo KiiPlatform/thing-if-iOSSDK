@@ -40,8 +40,8 @@ class TriggerOptionsTests: SmallTestBase {
 
     func testInitWithMetadata() {
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let form = TriggerOptions(metadata: metadata)
 
@@ -63,8 +63,8 @@ class TriggerOptionsTests: SmallTestBase {
 
     func testInitWithTitleAndMetadata() {
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let form = TriggerOptions(title: "title",
                                   metadata: metadata)
@@ -77,8 +77,8 @@ class TriggerOptionsTests: SmallTestBase {
 
     func testInitWithDescriptionAndMetadata() {
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let form = TriggerOptions(triggerDescription: "description",
                                   metadata: metadata)
@@ -90,8 +90,8 @@ class TriggerOptionsTests: SmallTestBase {
 
     func testInitWithAllFields() {
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let form = TriggerOptions(title: "title",
                                   triggerDescription: "description",
@@ -104,20 +104,20 @@ class TriggerOptionsTests: SmallTestBase {
 
     func testNSCoding() {
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let original = TriggerOptions(title: "title",
                                       triggerDescription: "description",
                                       metadata: metadata)
         let data: NSMutableData = NSMutableData(capacity: 1024)!;
         let coder: NSKeyedArchiver =
-            NSKeyedArchiver(forWritingWithMutableData: data);
-        original.encodeWithCoder(coder);
+            NSKeyedArchiver(forWritingWith: data);
+        original.encode(with: coder);
         coder.finishEncoding();
 
         let decoder: NSKeyedUnarchiver =
-            NSKeyedUnarchiver(forReadingWithData: data);
+            NSKeyedUnarchiver(forReadingWith: data as Data);
         let deserialized: TriggerOptions = TriggerOptions(coder: decoder)!;
         decoder.finishDecoding();
 

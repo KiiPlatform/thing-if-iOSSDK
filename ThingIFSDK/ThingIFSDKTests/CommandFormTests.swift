@@ -98,8 +98,8 @@ class CommandFormTests: SmallTestBase {
             ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let commandForm = CommandForm(schemaName: "name",
                                       schemaVersion: 1,
@@ -148,8 +148,8 @@ class CommandFormTests: SmallTestBase {
             ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let commandForm = CommandForm(schemaName: "name",
                                       schemaVersion: 1,
@@ -176,8 +176,8 @@ class CommandFormTests: SmallTestBase {
             ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let commandForm = CommandForm(schemaName: "name",
                                       schemaVersion: 1,
@@ -204,8 +204,8 @@ class CommandFormTests: SmallTestBase {
             ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let commandForm = CommandForm(schemaName: "name",
                                       schemaVersion: 1,
@@ -233,8 +233,8 @@ class CommandFormTests: SmallTestBase {
             ]
         ];
         let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1",
-            "key2" : "value2"
+            "key1" : "value1" as AnyObject,
+            "key2" : "value2" as AnyObject
         ]
         let original = CommandForm(schemaName: "name",
                                       schemaVersion: 1,
@@ -244,12 +244,12 @@ class CommandFormTests: SmallTestBase {
                                       metadata: metadata)
         let data: NSMutableData = NSMutableData(capacity: 1024)!;
         let coder: NSKeyedArchiver =
-            NSKeyedArchiver(forWritingWithMutableData: data);
-        original.encodeWithCoder(coder);
+            NSKeyedArchiver(forWritingWith: data);
+        original.encode(with: coder);
         coder.finishEncoding();
 
         let decoder: NSKeyedUnarchiver =
-            NSKeyedUnarchiver(forReadingWithData: data);
+            NSKeyedUnarchiver(forReadingWith: data as Data);
         let deserialized: CommandForm = CommandForm(coder: decoder)!;
         decoder.finishDecoding();
 

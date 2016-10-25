@@ -9,11 +9,11 @@
 import Foundation
 
 /** Class represents SchedulePredicate. */
-public class SchedulePredicate: NSObject,Predicate {
+open class SchedulePredicate: NSObject,Predicate {
     /** Specified schedule. (cron tab format) */
-    public let schedule: String
+    open let schedule: String
 
-    public func getEventSource() -> EventSource {
+    open func getEventSource() -> EventSource {
         return EventSource.Schedule
     }
     /** Instantiate new SchedulePredicate.
@@ -27,19 +27,19 @@ public class SchedulePredicate: NSObject,Predicate {
     }
 
     public required init(coder aDecoder: NSCoder) {
-        self.schedule = aDecoder.decodeObjectForKey("schedule") as! String;
+        self.schedule = aDecoder.decodeObject(forKey: "schedule") as! String;
 
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.schedule, forKey: "schedule");
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.schedule, forKey: "schedule");
     }
 
     /** Get Json object of SchedulePredicate instance
 
      - Returns: Json object as an instance of NSDictionary
      */
-    public func toNSDictionary() -> NSDictionary {
+    open func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["eventSource": EventSource.Schedule.rawValue, "schedule":self.schedule])
     }
 }

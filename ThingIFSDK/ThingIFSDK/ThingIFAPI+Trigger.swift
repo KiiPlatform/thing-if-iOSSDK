@@ -11,13 +11,13 @@ import Foundation
 extension ThingIFAPI {
 
     func _postNewTrigger(
-        triggeredCommandForm: TriggeredCommandForm,
+        _ triggeredCommandForm: TriggeredCommandForm,
         predicate: Predicate,
         options: TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?)-> Void)
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void)
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
 
@@ -29,22 +29,22 @@ extension ThingIFAPI {
         // generate command
         let targetID = triggeredCommandForm.targetID ?? target.typedID
         var commandDict = triggeredCommandForm.toDictionary()
-        commandDict["issuer"] = owner.typedID.toString()
+        commandDict["issuer"] = owner.typedID.toString() as AnyObject?
         if commandDict["target"] == nil {
-            commandDict["target"] = targetID.toString()
+            commandDict["target"] = targetID.toString() as AnyObject?
         }
 
         // generate body
         var requestBodyDict: Dictionary<String, AnyObject> = [
           "predicate": predicate.toNSDictionary(),
-          "command": commandDict,
-          "triggersWhat": TriggersWhat.COMMAND.rawValue]
-        requestBodyDict["title"] = options?.title
-        requestBodyDict["description"] = options?.triggerDescription
-        requestBodyDict["metadata"] = options?.metadata
+          "command": commandDict as AnyObject,
+          "triggersWhat": TriggersWhat.COMMAND.rawValue as AnyObject]
+        requestBodyDict["title"] = options?.title as AnyObject?
+        requestBodyDict["description"] = options?.triggerDescription as AnyObject?
+        requestBodyDict["metadata"] = options?.metadata as AnyObject?
 
         do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
@@ -73,7 +73,7 @@ extension ThingIFAPI {
                     )
                 }
 
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler(trigger, error)
                 }
             })
@@ -81,18 +81,18 @@ extension ThingIFAPI {
             operationQueue.addOperation(operation)
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
         }
     }
     func _postNewTrigger(
-        serverCode:ServerCode,
+        _ serverCode:ServerCode,
         predicate:Predicate,
         options:TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
         
@@ -105,15 +105,15 @@ extension ThingIFAPI {
         var requestBodyDict: Dictionary<String, AnyObject> = [
           "predicate": predicate.toNSDictionary(),
           "serverCode": serverCode.toNSDictionary(),
-          "triggersWhat": TriggersWhat.SERVER_CODE.rawValue]
-        requestBodyDict["title"] = options?.title
-        requestBodyDict["description"] = options?.triggerDescription
-        requestBodyDict["metadata"] = options?.metadata
+          "triggersWhat": TriggersWhat.SERVER_CODE.rawValue as AnyObject]
+        requestBodyDict["title"] = options?.title as AnyObject?
+        requestBodyDict["description"] = options?.triggerDescription as AnyObject?
+        requestBodyDict["metadata"] = options?.metadata as AnyObject?
         do{
             let requestBodyData =
-              try NSJSONSerialization.dataWithJSONObject(
-                requestBodyDict,
-                options: NSJSONWritingOptions(rawValue: 0))
+              try JSONSerialization.data(
+                withJSONObject: requestBodyDict,
+                options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var trigger: Trigger?
@@ -129,7 +129,7 @@ extension ThingIFAPI {
                       metadata: options?.metadata)
                 }
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler(trigger, error)
                 }
             })
@@ -137,24 +137,24 @@ extension ThingIFAPI {
             operationQueue.addOperation(operation)
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
         }
     }
 
     func _patchTrigger(
-        triggerID: String,
+        _ triggerID: String,
         triggeredCommandForm: TriggeredCommandForm? = nil,
         predicate: Predicate? = nil,
         options: TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?) -> Void)
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
 
         if triggeredCommandForm == nil && predicate == nil && options == nil {
-            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            completionHandler(nil, ThingIFError.unsupported_ERROR)
             return
         }
 
@@ -165,11 +165,11 @@ extension ThingIFAPI {
 
         // generate body
         var requestBodyDict: Dictionary<String, AnyObject> = [
-          "triggersWhat": TriggersWhat.COMMAND.rawValue
+          "triggersWhat": TriggersWhat.COMMAND.rawValue as AnyObject
         ];
-        requestBodyDict["title"] = options?.title
-        requestBodyDict["description"] = options?.triggerDescription
-        requestBodyDict["metadata"] = options?.metadata
+        requestBodyDict["title"] = options?.title as AnyObject?
+        requestBodyDict["description"] = options?.triggerDescription as AnyObject?
+        requestBodyDict["metadata"] = options?.metadata as AnyObject?
 
         // generate predicate
         if predicate != nil {
@@ -179,24 +179,24 @@ extension ThingIFAPI {
         // generate command
         if let form = triggeredCommandForm {
             var command = form.toDictionary()
-            command["issuer"] = owner.typedID.toString()
+            command["issuer"] = owner.typedID.toString() as AnyObject?
             if command["target"] == nil {
-                command["target"] = target.typedID.toString()
+                command["target"] = target.typedID.toString() as AnyObject?
             }
-            requestBodyDict["command"] = command
+            requestBodyDict["command"] = command as AnyObject?
         }
         do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(.PATCH,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 if error == nil {
                     self._getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             completionHandler(updatedTrigger, error2)
                         }
                     })
                 }else{
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completionHandler(nil, error)
                     }
                 }
@@ -205,25 +205,25 @@ extension ThingIFAPI {
             operationQueue.addOperation(operation)
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
         }
     }
 
     func _patchTrigger(
-        triggerID:String,
+        _ triggerID:String,
         serverCode:ServerCode?,
         predicate:Predicate?,
         options:TriggerOptions?,
-        completionHandler: (Trigger?, ThingIFError?) -> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
 
         if serverCode == nil && predicate == nil && options == nil {
-            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            completionHandler(nil, ThingIFError.unsupported_ERROR)
             return
         }
 
@@ -234,25 +234,25 @@ extension ThingIFAPI {
         
         // generate body
         var requestBodyDict: Dictionary<String, AnyObject> = [
-          "triggersWhat" : TriggersWhat.SERVER_CODE.rawValue
+          "triggersWhat" : TriggersWhat.SERVER_CODE.rawValue as AnyObject
         ]
         requestBodyDict["predicate"] = predicate?.toNSDictionary()
         requestBodyDict["serverCode"] = serverCode?.toNSDictionary()
-        requestBodyDict["title"] = options?.title;
-        requestBodyDict["description"] = options?.triggerDescription;
-        requestBodyDict["metadata"] = options?.metadata;
+        requestBodyDict["title"] = options?.title as AnyObject?;
+        requestBodyDict["description"] = options?.triggerDescription as AnyObject?;
+        requestBodyDict["metadata"] = options?.metadata as AnyObject?;
         do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(.PATCH,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 if error == nil {
                     self._getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
-                        dispatch_async(dispatch_get_main_queue()) {
+                        DispatchQueue.main.async {
                             completionHandler(updatedTrigger, error2)
                         }
                     })
                 }else{
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completionHandler(nil, error)
                     }
                 }
@@ -261,18 +261,18 @@ extension ThingIFAPI {
             operationQueue.addOperation(operation)
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
         }
     }
     
     func _enableTrigger(
-        triggerID:String,
+        _ triggerID:String,
         enable:Bool,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
 
@@ -288,12 +288,12 @@ extension ThingIFAPI {
         let request = buildDefaultRequest(HTTPMethod.PUT,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
             if error == nil {
                 self._getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completionHandler(updatedTrigger, error2)
                     }
                 })
             }else{
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler(nil, error)
                 }
             }
@@ -305,12 +305,12 @@ extension ThingIFAPI {
     }
 
     func _deleteTrigger(
-        triggerID:String,
-        completionHandler: (String, ThingIFError?)-> Void
+        _ triggerID:String,
+        completionHandler: @escaping (String, ThingIFError?)-> Void
         )
     {
         guard let target = self.target else {
-            completionHandler(triggerID, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(triggerID, ThingIFError.target_NOT_AVAILABLE)
             return
         }
 
@@ -321,7 +321,7 @@ extension ThingIFAPI {
 
         let request = buildDefaultRequest(HTTPMethod.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
 
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completionHandler(triggerID, error)
             }
         })
@@ -331,14 +331,14 @@ extension ThingIFAPI {
     }
     
     func _listTriggeredServerCodeResults(
-        triggerID:String,
+        _ triggerID:String,
         bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: (results:[TriggeredServerCodeResult]?, paginationKey:String?, error: ThingIFError?)-> Void
+        completionHandler: @escaping (_ results:[TriggeredServerCodeResult]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
     )
     {
         guard let target = self.target else {
-            completionHandler(results: nil, paginationKey: nil, error: ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
         
@@ -369,7 +369,7 @@ extension ThingIFAPI {
                     }
                 }
             }
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completionHandler(results: results, paginationKey: nextPaginationKey, error: error)
             }
         })
@@ -378,13 +378,13 @@ extension ThingIFAPI {
     }
 
     func _listTriggers(
-        bestEffortLimit:Int?,
+        _ bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: ThingIFError?)-> Void
+        completionHandler: @escaping (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
         )
     {
         guard let target = self.target else {
-            completionHandler(triggers: nil, paginationKey: nil, error: ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
 
@@ -415,7 +415,7 @@ extension ThingIFAPI {
                     }
                 }
             }
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completionHandler(triggers: triggers, paginationKey: nextPaginationKey, error: error)
             }
         })
@@ -424,12 +424,12 @@ extension ThingIFAPI {
     }
 
     func _getTrigger(
-        triggerID:String,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        _ triggerID:String,
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
 
@@ -444,7 +444,7 @@ extension ThingIFAPI {
             if let responseDict = response{
                 trigger = Trigger.triggerWithNSDict(target.typedID, triggerDict: responseDict)
             }
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completionHandler(trigger, error)
             }
         })

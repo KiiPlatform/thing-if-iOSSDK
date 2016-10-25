@@ -7,11 +7,11 @@
 
 import Foundation
 
-public class GatewayAPIBuilder {
+open class GatewayAPIBuilder {
 
-    private var tag: String?
-    private let app: App
-    private let gatewayAddress: NSURL
+    fileprivate var tag: String?
+    fileprivate let app: App
+    fileprivate let gatewayAddress: URL
 
     /** Set tag to this GatewayAPI instance.
      tag is used to distinguish storage area of instance.
@@ -26,7 +26,7 @@ public class GatewayAPIBuilder {
      - Parameter tag: If null or empty String us passed, it will be ignored.
      - Returns: builder instance for chaining call.
      */
-    public func setTag(tag: String?) -> GatewayAPIBuilder
+    open func setTag(_ tag: String?) -> GatewayAPIBuilder
     {
         self.tag = tag
         return self
@@ -37,7 +37,7 @@ public class GatewayAPIBuilder {
      - Parameter gatewayAddress: address information for the gateway
      - Parameter tag: tag of the GatewayAPI instance.
      */
-    public init(app:App, address:NSURL, tag:String?=nil)
+    public init(app:App, address:URL, tag:String?=nil)
     {
         self.app = app
         self.gatewayAddress = address
@@ -47,7 +47,7 @@ public class GatewayAPIBuilder {
     /** Build GatewayAPI instance.
     - Returns: GatewayAPI instance.
     */
-    public func build() -> GatewayAPI
+    open func build() -> GatewayAPI
     {
         let api = GatewayAPI(app: self.app, gatewayAddress: self.gatewayAddress, tag: self.tag)
         return api

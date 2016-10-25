@@ -14,7 +14,7 @@ class ListTriggeredServerCodeResultsTests: SmallTestBase {
     func testListTriggeredServerCodeResultsTests_success() {
         let setting:TestSetting = TestSetting()
         let api = setting.api
-        let expectation = self.expectationWithDescription("testPostNewServerCodeTrigger_success")
+        let expectation = self.expectation(description: "testPostNewServerCodeTrigger_success")
         let triggerID = "abcdefgHIJKLMN1234567"
         
         do{
@@ -28,30 +28,30 @@ class ListTriggeredServerCodeResultsTests: SmallTestBase {
             let serverCodeResult3 = TriggeredServerCodeResult.resultWithNSDict(serverCodeResultDic3)
             let serverCodeResult4 = TriggeredServerCodeResult.resultWithNSDict(serverCodeResultDic4)
             
-            let resDic1 = ["nextPaginationKey":expectedNextPaginationKey, "triggerServerCodeResults":[serverCodeResultDic1, serverCodeResultDic2]]
-            let resJson1 = try NSJSONSerialization.dataWithJSONObject(resDic1, options: .PrettyPrinted)
-            let urlResponse1 = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
-            let requestVerifier1: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+            let resDic1 = ["nextPaginationKey":expectedNextPaginationKey, "triggerServerCodeResults":[serverCodeResultDic1, serverCodeResultDic2]] as [String : Any]
+            let resJson1 = try JSONSerialization.data(withJSONObject: resDic1, options: .prettyPrinted)
+            let urlResponse1 = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
+            let requestVerifier1: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "GET")
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.ownerToken)"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key), "testPostNewServerCodeTrigger_success")
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key), "testPostNewServerCodeTrigger_success")
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)/results/server-code")
+                XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)/results/server-code")
             }
 
             let resDic2 = ["triggerServerCodeResults":[serverCodeResultDic3, serverCodeResultDic4]]
-            let resJson2 = try NSJSONSerialization.dataWithJSONObject(resDic2, options: .PrettyPrinted)
-            let urlResponse2 = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
-            let requestVerifier2: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+            let resJson2 = try JSONSerialization.data(withJSONObject: resDic2, options: .prettyPrinted)
+            let urlResponse2 = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
+            let requestVerifier2: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "GET")
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.ownerToken)"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key), "testPostNewServerCodeTrigger_success")
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key), "testPostNewServerCodeTrigger_success")
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)/results/server-code?paginationKey=\(expectedNextPaginationKey)&bestEffortLimit=2")
+                XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)/results/server-code?paginationKey=\(expectedNextPaginationKey)&bestEffortLimit=2")
             }
             
             iotSession = MockMultipleSession.self
@@ -78,7 +78,7 @@ class ListTriggeredServerCodeResultsTests: SmallTestBase {
             print(e)
         }
 
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout for testListTriggeredServerCodeResultsTests_success")
             }

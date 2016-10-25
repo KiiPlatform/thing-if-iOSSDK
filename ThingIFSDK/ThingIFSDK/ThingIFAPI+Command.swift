@@ -11,17 +11,17 @@ import Foundation
 extension ThingIFAPI {
 
     func _postNewCommand(
-        schemaName:String,
+        _ schemaName:String,
         schemaVersion:Int,
         actions:[Dictionary<String,AnyObject>],
         title:String? = nil,
         description:String? = nil,
         metadata:Dictionary<String, AnyObject>? = nil,
-        completionHandler: (Command?, ThingIFError?)-> Void
+        completionHandler: @escaping (Command?, ThingIFError?)-> Void
         ) -> Void
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
 
@@ -32,23 +32,23 @@ extension ThingIFAPI {
         
         // generate body
         let requestBodyDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion])
-        requestBodyDict.setObject(actions, forKey: "actions")
+        requestBodyDict.setObject(actions, forKey: "actions" as NSCopying)
 
         let issuerID = owner.typedID
-        requestBodyDict.setObject(issuerID.toString(), forKey: "issuer")
+        requestBodyDict.setObject(issuerID.toString(), forKey: "issuer" as NSCopying)
         requestBodyDict["title"] = title;
         requestBodyDict["description"] = description;
         requestBodyDict["metadata"] = metadata;
 
         do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 var command:Command?
                 if let commandID = response?["commandID"] as? String{
                     command = Command(commandID: commandID, targetID: self.target!.typedID, issuerID: issuerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil)
                 }
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler(command, error)
                 }
             })
@@ -57,17 +57,17 @@ extension ThingIFAPI {
             
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
         }
     }
 
     func _getCommand(
-        commandID:String,
-        completionHandler: (Command?, ThingIFError?)-> Void
+        _ commandID:String,
+        completionHandler: @escaping (Command?, ThingIFError?)-> Void
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
 
@@ -82,7 +82,7 @@ extension ThingIFAPI {
             if let responseDict = response{
                 command = Command.commandWithNSDictionary(responseDict)
             }
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completionHandler(command, error)
             }
         })
@@ -92,13 +92,13 @@ extension ThingIFAPI {
     }
     
     func _listCommands(
-        bestEffortLimit:Int?,
+        _ bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: ([Command]?, String?, ThingIFError?)-> Void
+        completionHandler: @escaping ([Command]?, String?, ThingIFError?)-> Void
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, nil, ThingIFError.target_NOT_AVAILABLE)
             return
         }
 
@@ -127,7 +127,7 @@ extension ThingIFAPI {
                 }
                 nextPaginationKey = response!["nextPaginationKey"] as? String
             }
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completionHandler(commands, nextPaginationKey, error)
             }
         })

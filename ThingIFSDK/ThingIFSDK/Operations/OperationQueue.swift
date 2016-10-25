@@ -19,8 +19,8 @@ import Foundation
     `OperationQueue` and uses it to manage dependencies.
 */
 @objc protocol OperationQueueDelegate: NSObjectProtocol {
-    optional func operationQueue(operationQueue: OperationQueue, willAddOperation operation: NSOperation)
-    optional func operationQueue(operationQueue: OperationQueue, operationDidFinish operation: NSOperation, withErrors errors: [NSError])
+    @objc optional func operationQueue(_ operationQueue: OperationQueue, willAddOperation operation: Foundation.Operation)
+    @objc optional func operationQueue(_ operationQueue: OperationQueue, operationDidFinish operation: Foundation.Operation, withErrors errors: [NSError])
 }
 
 /**
@@ -31,10 +31,10 @@ import Foundation
     - Extracting generated dependencies from operation conditions
     - Setting up dependencies to enforce mutual exclusivity
 */
-class OperationQueue: NSOperationQueue {
+class OperationQueue: Foundation.OperationQueue {
     weak var delegate: OperationQueueDelegate?
     
-    override func addOperation(operation: NSOperation) {
+    override func addOperation(_ operation: Operation) {
         if let op = operation as? Operation {
             // Set up a `BlockObserver` to invoke the `OperationQueueDelegate` method.
             let delegate = BlockObserver(
@@ -66,9 +66,9 @@ class OperationQueue: NSOperationQueue {
                 dependencies to enforce mutual exclusivity.
             */
             let concurrencyCategories: [String] = op.conditions.flatMap { condition in
-                if !condition.dynamicType.isMutuallyExclusive { return nil }
+                if !type(of: condition).isMutuallyExclusive { return nil }
                 
-                return "\(condition.dynamicType)"
+                return "\(type(of: condition))"
             }
 
             if !concurrencyCategories.isEmpty {
@@ -106,7 +106,7 @@ class OperationQueue: NSOperationQueue {
         super.addOperation(operation)
     }
     
-    override func addOperations(operations: [NSOperation], waitUntilFinished wait: Bool) {
+    override func addOperations(_ operations: [Operation], waitUntilFinished wait: Bool) {
         /*
             The base implementation of this method does not call `addOperation()`,
             so we'll call it ourselves.
