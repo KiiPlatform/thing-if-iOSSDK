@@ -370,7 +370,7 @@ extension ThingIFAPI {
                 }
             }
             DispatchQueue.main.async {
-                completionHandler(results: results, paginationKey: nextPaginationKey, error: error)
+                completionHandler(results, nextPaginationKey, error)
             }
         })
         let operation = IoTRequestOperation(request: request)
@@ -416,7 +416,7 @@ extension ThingIFAPI {
                 }
             }
             DispatchQueue.main.async {
-                completionHandler(triggers: triggers, paginationKey: nextPaginationKey, error: error)
+                completionHandler(triggers, nextPaginationKey, error)
             }
         })
         let operation = IoTRequestOperation(request: request)

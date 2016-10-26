@@ -69,7 +69,7 @@ class IoTRequestOperation<T>: GroupOperation {
         let notConnectedCondition = NegatedCondition<ReachabilityCondition>(condition: ReachabilityCondition(host: url!))
         let errorNotConnectedOperation = BlockOperation { () -> Void in
             let iotCloudError = ThingIFError.connection
-            request.completionHandler(response: nil, error: iotCloudError)
+            request.completionHandler(nil, iotCloudError)
         }
         errorNotConnectedOperation.addCondition(notConnectedCondition)
         addOperation(errorNotConnectedOperation)
@@ -239,7 +239,7 @@ class IoTRequestOperation<T>: GroupOperation {
                     }
                     let errorResponse = ErrorResponse(httpStatusCode: statusCode, errorCode: errorCode, errorMessage: errorMessage)
                     let iotCloudError = ThingIFError.error_RESPONSE(required: errorResponse)
-                    completionHandler(response: nil, error: iotCloudError)
+                    completionHandler(nil, iotCloudError)
                 }else {
                     guard let serialized : T? = responseBodySerializer(responseDataOptional) else{
                         completionHandler(nil,nil)
