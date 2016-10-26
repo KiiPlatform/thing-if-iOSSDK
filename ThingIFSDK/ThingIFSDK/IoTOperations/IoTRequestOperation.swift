@@ -242,7 +242,7 @@ class IoTRequestOperation<T>: GroupOperation {
                     let iotCloudError = ThingIFError.error_RESPONSE(required: errorResponse)
                     completionHandler(nil, iotCloudError)
                 }else {
-                    guard let serialized : T? = responseBodySerializer(responseDataOptional) else{
+                    guard let serialized : T = responseBodySerializer(responseDataOptional) else {
                         completionHandler(nil,nil)
                         return
                     }
