@@ -98,16 +98,16 @@ class IoTRequestOperation<T>: GroupOperation {
     func addPostRequestTask(_ urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: Data?, completionHandler: @escaping (_ response: T?, _ error: ThingIFError?) -> Void,responseBodySerializer : @escaping (_ responseBodyData:Data?) -> T?) -> Void
     {
         let url = URL(string: urlString)
-        let request = NSMutableURLRequest(url: url!)
+        var request = URLRequest(url: url!)
         request.httpMethod = "POST"
         
         // Set header to request
-        setHeader(requestHeaderDict, request: request)
+        setHeader(requestHeaderDict, request: &request)
 
         if requestBodyData != nil {
             request.httpBody = requestBodyData
         }
-        addExecRequestTask(request as URLRequest,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
+        addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
             completionHandler(response, error)
         }
     }
@@ -115,14 +115,14 @@ class IoTRequestOperation<T>: GroupOperation {
     func addPatchRequestTask(_ urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: Data, completionHandler: @escaping (_ response: T?, _ error: ThingIFError?) -> Void,responseBodySerializer : @escaping (_ responseBodyData:Data?) -> T?) -> Void
     {
         let url = URL(string: urlString)
-        let request = NSMutableURLRequest(url: url!)
+        var request = URLRequest(url: url!)
         request.httpMethod = "PATCH"
 
         // Set header to request
-        setHeader(requestHeaderDict, request: request)
+        setHeader(requestHeaderDict, request: &request)
 
         request.httpBody = requestBodyData
-        addExecRequestTask(request as URLRequest,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
+        addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
             completionHandler(response, error)
         }
     }
@@ -130,16 +130,16 @@ class IoTRequestOperation<T>: GroupOperation {
     func addPutRequestTask(_ urlString: String, requestHeaderDict: Dictionary<String, String>, requestBodyData: Data?, completionHandler: @escaping (_ response: T?, _ error: ThingIFError?) -> Void,responseBodySerializer : @escaping (_ responseBodyData:Data?) -> T?) -> Void
     {
         let url = URL(string: urlString)
-        let request = NSMutableURLRequest(url: url!)
+        var request = URLRequest(url: url!)
         request.httpMethod = "PUT"
 
         // Set header to request
-        setHeader(requestHeaderDict, request: request)
+        setHeader(requestHeaderDict, request: &request)
 
         if requestBodyData != nil {
             request.httpBody = requestBodyData
         }
-        addExecRequestTask(request as URLRequest,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
+        addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
             completionHandler(response, error)
         }
     }
@@ -147,13 +147,13 @@ class IoTRequestOperation<T>: GroupOperation {
     func addGetRequestTask(_ urlString: String, requestHeaderDict: Dictionary<String, String>, completionHandler: @escaping (_ response: T?, _ error: ThingIFError?) -> Void,responseBodySerializer : @escaping (_ responseBodyData:Data?) -> T?) -> Void
     {
         let url = URL(string: urlString)
-        let request = NSMutableURLRequest(url: url!)
+        var request = URLRequest(url: url!)
         request.httpMethod = "GET"
         
         // Set header to request
-        setHeader(requestHeaderDict, request: request)
+        setHeader(requestHeaderDict, request: &request)
         
-        addExecRequestTask(request as URLRequest,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
+        addExecRequestTask(request,responseBodySerializer: responseBodySerializer) { (response, error) -> Void in
             completionHandler(response, error)
         }
     }
@@ -161,14 +161,15 @@ class IoTRequestOperation<T>: GroupOperation {
     func addDeleteRequestTask(_ urlString: String, requestHeaderDict: Dictionary<String, String>, completionHandler: @escaping (_ response: T?, _ error: ThingIFError?) -> Void,responseBodySerializer : (_ responseBodyData:Data?) -> T?) -> Void
     {
         let url = URL(string: urlString)
-        let request = NSMutableURLRequest(url: url!)
+        var request = URLRequest(url: url!)
         request.httpMethod = "DELETE"
         
         // Set header to request
-        setHeader(requestHeaderDict, request: request)
+        setHeader(requestHeaderDict, request: &request)
         
         let session = iotSession.shared
-        let task = session.dataTask(with: request, completionHandler: { (responseDataOptional: Data?, responseOptional: URLResponse?, errorOptional: NSError?) -> Void in
+        
+        let task = session.dataTask(with: request, completionHandler: { (responseDataOptional, responseOptional, errorOptional) -> Void in
             if responseOptional != nil {
                 let httpResponse = responseOptional as! HTTPURLResponse
                 let statusCode = httpResponse.statusCode
@@ -191,12 +192,12 @@ class IoTRequestOperation<T>: GroupOperation {
                     }
                     let errorResponse = ErrorResponse(httpStatusCode: statusCode, errorCode: errorCode, errorMessage: errorMessage)
                     let iotCloudError = ThingIFError.error_RESPONSE(required: errorResponse)
-                    completionHandler(response: nil, error: iotCloudError)
+                    completionHandler(nil, iotCloudError)
                 }else {
-                    completionHandler(response: nil, error: nil)
+                    completionHandler(nil, nil)
                 }
             }else{
-                completionHandler(response: nil, error: ThingIFError.error_REQUEST(required: errorOptional!))
+                completionHandler(nil, ThingIFError.error_REQUEST(required: errorOptional! as NSError))
             }
         })
         let taskOperation = URLSessionTaskOperation(task: task)
@@ -262,7 +263,7 @@ class IoTRequestOperation<T>: GroupOperation {
         addOperation(taskOperation)
     }
     
-    fileprivate func setHeader(_ headerDict: Dictionary<String, String>, request: NSMutableURLRequest) -> Void {
+    fileprivate func setHeader(_ headerDict: Dictionary<String, String>, request: inout URLRequest) -> Void {
         for(key, value) in headerDict {
             request.addValue(value, forHTTPHeaderField: key)
         }
