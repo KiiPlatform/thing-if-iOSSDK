@@ -24,7 +24,7 @@ struct MutuallyExclusive<T>: OperationCondition {
         return nil
     }
     
-    func evaluateForOperation(_ operation: Operation, completion: (OperationConditionResult) -> Void) {
+    func evaluateForOperation(_ operation: Operation, completion: @escaping (OperationConditionResult) -> Void) {
         completion(.satisfied)
     }
 }
