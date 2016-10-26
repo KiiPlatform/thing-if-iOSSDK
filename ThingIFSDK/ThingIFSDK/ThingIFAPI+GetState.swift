@@ -26,9 +26,11 @@ extension ThingIFAPI {
                 var states : Dictionary<String, AnyObject>?
                 if response != nil {
                     states = Dictionary<String, AnyObject>()
-                    response!.enumerateKeysAndObjects{ (key, obj, stop) -> Void in
-                        states![key as! String] = obj
-                    }
+                    response!.enumerateKeysAndObjects(
+                      { (key, obj, stop) -> Void in
+                          states![key as! String] = obj as AnyObject
+                      }
+                    )
                 }
                 DispatchQueue.main.async {
                     completionHandler(states, error)
