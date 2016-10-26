@@ -42,7 +42,7 @@ protocol OperationCondition {
     func dependencyForOperation(_ operation: Operation) -> Foundation.Operation?
     
     /// Evaluate the condition, to see if it has been satisfied or not.
-    func evaluateForOperation(_ operation: Operation, completion: (OperationConditionResult) -> Void)
+    func evaluateForOperation(_ operation: Operation, completion: @escaping (OperationConditionResult) -> Void)
 }
 
 /**
