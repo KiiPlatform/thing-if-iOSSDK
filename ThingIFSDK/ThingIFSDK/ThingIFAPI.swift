@@ -224,7 +224,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         _ pendingEndnode:PendingEndNode,
         endnodePassword:String,
         options:OnboardEndnodeWithGatewayOptions? = nil,
-        completionHandler: (EndNode?, ThingIFError?)-> Void
+        completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
         _onboardEndnodeWithGateway(pendingEndnode,
@@ -268,7 +268,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     */
     open func uninstallPush(
         _ installationID:String?,
-        completionHandler: (ThingIFError?)-> Void
+        completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
         _uninstallPush(installationID, completionHandler: completionHandler)
@@ -293,7 +293,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         _ schemaName:String,
         schemaVersion:Int,
         actions:[Dictionary<String,AnyObject>],
-        completionHandler: (Command?, ThingIFError?)-> Void
+        completionHandler: @escaping (Command?, ThingIFError?)-> Void
         ) -> Void
     {
         _postNewCommand(schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: completionHandler)
@@ -310,7 +310,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     */
     open func postNewCommand(
         _ commandForm: CommandForm,
-        completionHandler: (Command?, ThingIFError?) -> Void) -> Void {
+        completionHandler: @escaping (Command?, ThingIFError?) -> Void) -> Void {
         _postNewCommand(commandForm.schemaName,
                         schemaVersion: commandForm.schemaVersion,
                         actions: commandForm.actions,
@@ -329,7 +329,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      */
     open func getCommand(
         _ commandID:String,
-        completionHandler: (Command?, ThingIFError?)-> Void
+        completionHandler: @escaping (Command?, ThingIFError?)-> Void
         )
     {
         _getCommand(commandID, completionHandler: completionHandler)
@@ -354,7 +354,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func listCommands(
         _ bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: ([Command]?, String?, ThingIFError?)-> Void
+        completionHandler: @escaping ([Command]?, String?, ThingIFError?)-> Void
         )
     {
         _listCommands(bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
@@ -388,7 +388,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         _ triggeredCommandForm:TriggeredCommandForm,
         predicate:Predicate,
         options:TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?) -> Void)
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
     {
         _postNewTrigger(triggeredCommandForm,
                         predicate: predicate,
@@ -419,7 +419,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         schemaVersion:Int,
         actions:[Dictionary<String, AnyObject>],
         predicate:Predicate,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         _postNewTrigger(
@@ -448,7 +448,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         _ serverCode:ServerCode,
         predicate:Predicate,
         options:TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         _postNewTrigger(
@@ -468,7 +468,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     */
     open func getTrigger(
         _ triggerID:String,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         _getTrigger(triggerID, completionHandler: completionHandler)
@@ -500,7 +500,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         triggeredCommandForm:TriggeredCommandForm? = nil,
         predicate:Predicate? = nil,
         options:TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?) -> Void)
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
     {
         _patchTrigger(
             triggerID,
@@ -530,7 +530,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         schemaVersion:Int?,
         actions:[Dictionary<String, AnyObject>]?,
         predicate:Predicate?,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         let triggeredCommandForm: TriggeredCommandForm?
@@ -565,7 +565,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         serverCode:ServerCode? = nil,
         predicate:Predicate? = nil,
         options:TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         _patchTrigger(triggerID,
@@ -588,7 +588,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func enableTrigger(
         _ triggerID:String,
         enable:Bool,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         _enableTrigger(triggerID, enable: enable, completionHandler: completionHandler)
@@ -603,7 +603,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     */
     open func deleteTrigger(
         _ triggerID:String,
-        completionHandler: (String, ThingIFError?)-> Void
+        completionHandler: @escaping (String, ThingIFError?)-> Void
         )
     {
         _deleteTrigger(triggerID, completionHandler: completionHandler)
@@ -625,7 +625,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func listTriggers(
         _ bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
+        completionHandler: @escaping (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
         )
     {
         _listTriggers(bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
@@ -650,7 +650,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         _ triggerID:String,
         bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: (_ results:[TriggeredServerCodeResult]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
+        completionHandler: @escaping (_ results:[TriggeredServerCodeResult]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
         )
     {
         _listTriggeredServerCodeResults(triggerID, bestEffortLimit:bestEffortLimit, paginationKey:paginationKey, completionHandler: completionHandler)
@@ -666,7 +666,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of ThingIFError when failed.
     */
     open func getState(
-        _ completionHandler: (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
+        _ completionHandler: @escaping (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
         )
     {
         _getState(completionHandler)
