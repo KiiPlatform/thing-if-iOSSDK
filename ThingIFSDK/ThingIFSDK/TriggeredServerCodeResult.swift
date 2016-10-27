@@ -15,7 +15,7 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         self.succeeded = aDecoder.decodeBool(forKey: "succeeded")
-        self.returnedValue = aDecoder.decodeObject(forKey: "returnedValue") as AnyObject?
+        self.returnedValue = aDecoder.decodeObject(forKey: "returnedValue")
         self.executedAt = Date(timeIntervalSince1970: aDecoder.decodeDouble(forKey: "executedAt"))
         self.endpoint = aDecoder.decodeObject(forKey: "endpoint") as! String
         self.error = aDecoder.decodeObject(forKey: "error") as? ServerError
@@ -25,7 +25,7 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
     /** Whether the invocation succeeded */
     open let succeeded: Bool
     /** Returned value from server code (JsonObject, JsonArray, String, Number, Boolean or null) */
-    open let returnedValue: AnyObject?
+    open let returnedValue: Any?
     /** Date of the execution */
     open let executedAt: Date
     /** The endpoint used in the server code invocation */
@@ -42,7 +42,7 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
      - Parameter endpoint: The endpoint used in the server code invocation
      - Parameter error: Error object of the invocation if any
      */
-    public init(succeeded: Bool, returnedValue: AnyObject?, executedAt: Date, endpoint: String, error: ServerError?) {
+    public init(succeeded: Bool, returnedValue: Any?, executedAt: Date, endpoint: String, error: ServerError?) {
         self.succeeded = succeeded
         self.returnedValue = returnedValue
         self.executedAt = executedAt
@@ -50,7 +50,7 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
         self.error = error
     }
     
-    open func getReturnedValue() -> AnyObject? {
+    open func getReturnedValue() -> Any? {
         return self.returnedValue
     }
     open func getReturnedValueAsString() -> String? {
@@ -68,11 +68,11 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
     open func getReturnedValueAsNSNumber() -> NSNumber? {
         return self.returnedValue as? NSNumber
     }
-    open func getReturnedValueAsDictionary() -> Dictionary<String, AnyObject>? {
-        return self.returnedValue as? Dictionary<String, AnyObject>
+    open func getReturnedValueAsDictionary() -> Dictionary<String, Any>? {
+        return self.returnedValue as? Dictionary<String, Any>
     }
-    open func getReturnedValueAsArray() -> [AnyObject]? {
-        return self.returnedValue as? [AnyObject]
+    open func getReturnedValueAsArray() -> [Any]? {
+        return self.returnedValue as? [Any]
     }
 
     open override func isEqual(_ object: Any?) -> Bool {
@@ -84,12 +84,12 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
                 return false
             }
         } else {
-            if self.returnedValue! is Dictionary<String, AnyObject> {
+            if self.returnedValue! is Dictionary<String, Any> {
                 if !NSDictionary(dictionary: self.returnedValue as! [AnyHashable: Any]).isEqual(to: aResult.returnedValue as! [AnyHashable: Any]) {
                     return false
                 }
-            } else if self.returnedValue! is [AnyObject] {
-                if !isEqualArray(self.returnedValue as! [AnyObject], arr2: aResult.returnedValue as! [AnyObject]) {
+            } else if self.returnedValue! is [Any] {
+                if !isEqualArray(self.returnedValue as! [Any], arr2: aResult.returnedValue as! [Any]) {
                     return false
                 }
             } else if self.returnedValue! is String {
@@ -115,19 +115,19 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
         }
         return self.succeeded == aResult.succeeded && self.executedAt == aResult.executedAt && self.endpoint == aResult.endpoint
     }
-    fileprivate func isEqualArray(_ arr1:[AnyObject], arr2:[AnyObject]) -> Bool {
+    fileprivate func isEqualArray(_ arr1:[Any], arr2:[Any]) -> Bool {
         if arr1.count != arr2.count {
             return false
         }
         for i in 0 ..< arr1.count {
             let e1 = arr1[i]
             let e2 = arr2[i]
-            if e1 is Dictionary<String, AnyObject> {
+            if e1 is Dictionary<String, Any> {
                 if !NSDictionary(dictionary: e1 as! [AnyHashable: Any]).isEqual(to: e2 as! [AnyHashable: Any]) {
                     return false
                 }
-            } else if e1 is [AnyObject] {
-                if !isEqualArray(e1 as! [AnyObject], arr2: e2 as! [AnyObject]) {
+            } else if e1 is [Any] {
+                if !isEqualArray(e1 as! [Any], arr2: e2 as! [Any]) {
                     return false
                 }
             } else if e1 is String {
@@ -156,9 +156,9 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
         guard let executedAtStamp = resultDict["executedAt"] as? NSNumber else{
             return nil
         }
-        let returnedValue = resultDict["returnedValue"] as AnyObject?
+        let returnedValue = resultDict["returnedValue"]
         
-        let error = resultDict["error"] as? Dictionary<String, AnyObject>
+        let error = resultDict["error"] as? Dictionary<String, Any>
         var serverError: ServerError? = nil
         if error != nil {
             serverError = ServerError.errorWithNSDict(error! as NSDictionary)
