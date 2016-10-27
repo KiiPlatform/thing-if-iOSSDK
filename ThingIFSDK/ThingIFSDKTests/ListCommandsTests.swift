@@ -23,16 +23,16 @@ class ListCommandsTests: SmallTestBase {
         let commandID: String
         let schema: String
         let schemaVersion: Int
-        let actions: [Dictionary<String, AnyObject>]
-        let actionResults: [Dictionary<String, AnyObject>]?
+        let actions: [Dictionary<String, Any>]
+        let actionResults: [Dictionary<String, Any>]?
         let commandState: CommandState
         let commandStateString: String
         let issuerID: TypedID
 
-        func getCommandDict() -> [String: AnyObject] {
-            var dict: [String: AnyObject] = ["commandID": commandID as AnyObject, "schema": schema as AnyObject, "schemaVersion": schemaVersion as AnyObject, "target": "\(target.typedID.type):\(target.typedID.id)", "commandState": commandStateString, "issuer": "\(issuerID.type):\(issuerID.id)", "actions": actions]
+        func getCommandDict() -> [String: Any] {
+            var dict: [String: Any] = ["commandID": commandID, "schema": schema, "schemaVersion": schemaVersion, "target": "\(target.typedID.type):\(target.typedID.id)", "commandState": commandStateString, "issuer": "\(issuerID.type):\(issuerID.id)", "actions": actions]
             if actionResults != nil {
-                dict["actionResults"] = actionResults! as AnyObject?
+                dict["actionResults"] = actionResults!
             }
             return dict
         }
@@ -97,15 +97,15 @@ class ListCommandsTests: SmallTestBase {
 
         do{
             // mock response
-            var bodyDict = [String: AnyObject]()
+            var bodyDict = [String: Any]()
             if let nextPaginationKey = testcase.nextPaginationKey {
-                bodyDict["nextPaginationKey"] = nextPaginationKey as AnyObject?
+                bodyDict["nextPaginationKey"] = nextPaginationKey
             }
-            var commandDicts = [Dictionary<String, AnyObject>]()
+            var commandDicts = [Dictionary<String, Any>]()
             for commandStruct in testcase.commands {
                 commandDicts.append(commandStruct.getCommandDict())
             }
-            bodyDict["commands"] = commandDicts as AnyObject?
+            bodyDict["commands"] = commandDicts
 
             let jsonData = try JSONSerialization.data(withJSONObject: bodyDict, options: .prettyPrinted)
             let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
