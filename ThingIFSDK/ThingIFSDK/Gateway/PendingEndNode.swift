@@ -12,7 +12,7 @@ open class PendingEndNode: NSObject, NSCoding {
     let KEY_THINGPROPERTIES = "thingProperties"
 
     open let vendorThingID: String?
-    open let thingProperties: Dictionary<String, AnyObject>?
+    open let thingProperties: Dictionary<String, Any>?
 
     open var thingType: String? {
         return self.thingProperties?["_thingType"] as? String
@@ -28,12 +28,12 @@ open class PendingEndNode: NSObject, NSCoding {
     public required init(coder aDecoder: NSCoder)
     {
         self.vendorThingID = aDecoder.decodeObject(forKey: KEY_VENDORTHINGID) as? String
-        self.thingProperties = aDecoder.decodeObject(forKey: KEY_THINGPROPERTIES) as? Dictionary<String, AnyObject>
+        self.thingProperties = aDecoder.decodeObject(forKey: KEY_THINGPROPERTIES) as? Dictionary<String, Any>
     }
 
-    init(json: Dictionary<String, AnyObject>)
+    init(json: Dictionary<String, Any>)
     {
         self.vendorThingID = json[KEY_VENDORTHINGID] as? String
-        self.thingProperties = json[KEY_THINGPROPERTIES] as? Dictionary<String, AnyObject>
+        self.thingProperties = json[KEY_THINGPROPERTIES] as? Dictionary<String, Any>
     }
 }
