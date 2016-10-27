@@ -37,7 +37,7 @@ open class CommandForm: NSObject, NSCoding {
     open let schemaVersion: Int
 
     /// List of actions.
-    open let actions: [Dictionary<String, AnyObject>]
+    open let actions: [Dictionary<String, Any>]
 
     /// Title of a command.
     open let title: String?
@@ -46,7 +46,7 @@ open class CommandForm: NSObject, NSCoding {
     open let commandDescription: String?
 
     /// Meta data of ad command.
-    open let metadata: Dictionary<String, AnyObject>?
+    open let metadata: Dictionary<String, Any>?
 
 
     // MARK: - Initializing CommandForm instance.
@@ -64,10 +64,10 @@ open class CommandForm: NSObject, NSCoding {
     */
     public init(schemaName: String,
                 schemaVersion: Int,
-                actions: [Dictionary<String, AnyObject>],
+                actions: [Dictionary<String, Any>],
                 title: String? = nil,
                 commandDescription: String? = nil,
-                metadata: Dictionary<String, AnyObject>? = nil)
+                metadata: Dictionary<String, Any>? = nil)
     {
         self.schemaName = schemaName
         self.schemaVersion = schemaVersion
@@ -91,11 +91,11 @@ open class CommandForm: NSObject, NSCoding {
         self.schemaName = aDecoder.decodeObject(forKey: "schemaName") as! String
         self.schemaVersion = aDecoder.decodeInteger(forKey: "schemaVersion")
         self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [Dictionary<String, AnyObject>];
+                as! [Dictionary<String, Any>];
         self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription =
             aDecoder.decodeObject(forKey: "commandDescription") as? String;
         self.metadata = aDecoder.decodeObject(forKey: "metadata")
-                as? Dictionary<String, AnyObject>;
+                as? Dictionary<String, Any>;
     }
 }
