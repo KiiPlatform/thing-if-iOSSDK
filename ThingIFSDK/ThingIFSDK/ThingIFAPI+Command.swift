@@ -13,17 +13,17 @@ extension ThingIFAPI {
     func _postNewCommand(
         _ schemaName:String,
         schemaVersion:Int,
-        actions:[Dictionary<String,AnyObject>],
+        actions:[Dictionary<String, Any>],
         title:String? = nil,
         description:String? = nil,
-        metadata:Dictionary<String, AnyObject>? = nil,
+        metadata:Dictionary<String, Any>? = nil,
         completionHandler: @escaping (Command?, ThingIFError?)-> Void
         ) -> Void
     {
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
             return
-        }
+        }   
 
         let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands"
         
@@ -31,11 +31,15 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
         
         // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary: ["schema": schemaName, "schemaVersion": schemaVersion])
-        requestBodyDict.setObject(actions, forKey: "actions" as NSCopying)
+        var requestBodyDict: Dictionary<String, Any> =
+          [
+            "schema": schemaName,
+            "schemaVersion": schemaVersion,
+            "actions": actions
+          ]
 
         let issuerID = owner.typedID
-        requestBodyDict.setObject(issuerID.toString(), forKey: "issuer" as NSCopying)
+        requestBodyDict["issuer"] = issuerID.toString()
         requestBodyDict["title"] = title;
         requestBodyDict["description"] = description;
         requestBodyDict["metadata"] = metadata;
