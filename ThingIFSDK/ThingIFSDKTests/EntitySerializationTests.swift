@@ -47,12 +47,12 @@ class EntitySerializationTests: SmallTestBase {
     }
     //Command
     func testCommand_NSUserDefaultSerialization() {
-        var actionsArray = [Dictionary<String, AnyObject>]()
-        var action1 = Dictionary<String, AnyObject>()
+        var actionsArray = [Dictionary<String, Any>]()
+        var action1 = Dictionary<String, Any>()
         action1["turnPower"] = ["power":true]
         actionsArray.append(action1)
-        var actionsResultArray = [Dictionary<String, AnyObject>]()
-        var result1 = Dictionary<String, AnyObject>()
+        var actionsResultArray = [Dictionary<String, Any>]()
+        var result1 = Dictionary<String, Any>()
         result1["turnPower"] = ["succeeded":true, "errorMessage":"", "data":["voltage":"125"]]
         actionsResultArray.append(result1)
         let dict = NSMutableDictionary()
@@ -75,12 +75,12 @@ class EntitySerializationTests: SmallTestBase {
     }
     //Command Trigger state predicate
     func testCommandTrigger_State_NSUserDefaultSerialization() {
-        var actionsArray = [Dictionary<String, AnyObject>]()
-        var action1 = Dictionary<String, AnyObject>()
+        var actionsArray = [Dictionary<String, Any>]()
+        var action1 = Dictionary<String, Any>()
         action1["turnPower"] = ["power":true]
         actionsArray.append(action1)
-        var actionsResultArray = [Dictionary<String, AnyObject>]()
-        var result1 = Dictionary<String, AnyObject>()
+        var actionsResultArray = [Dictionary<String, Any>]()
+        var result1 = Dictionary<String, Any>()
         result1["turnPower"] = ["succeeded":true, "errorMessage":"", "data":["voltage":"125"]]
         actionsResultArray.append(result1)
         let dict = NSMutableDictionary()
@@ -105,12 +105,12 @@ class EntitySerializationTests: SmallTestBase {
 
     //Command Trigger Scheduled once test
     func testCommandTrigger_ScheduledOnce_NSUserDefaultSerialization() {
-        var actionsArray = [Dictionary<String, AnyObject>]()
-        var action1 = Dictionary<String, AnyObject>()
+        var actionsArray = [Dictionary<String, Any>]()
+        var action1 = Dictionary<String, Any>()
         action1["turnPower"] = ["power":true]
         actionsArray.append(action1)
-        var actionsResultArray = [Dictionary<String, AnyObject>]()
-        var result1 = Dictionary<String, AnyObject>()
+        var actionsResultArray = [Dictionary<String, Any>]()
+        var result1 = Dictionary<String, Any>()
         result1["turnPower"] = ["succeeded":true, "errorMessage":"", "data":["voltage":"125"]]
         actionsResultArray.append(result1)
         let dict = NSMutableDictionary()
@@ -151,8 +151,8 @@ class EntitySerializationTests: SmallTestBase {
     }
     // TriggeredServerCodeResult
     func testTriggeredServerCodeResult_NSUserDefaultSerialization() {
-        let array : [AnyObject] = [123 as AnyObject, 123.456 as AnyObject, "abc" as AnyObject, true as AnyObject, [123], ["f1":123]]
-        let object : Dictionary<String, AnyObject> = ["f1":123 as AnyObject, "f2":"abc" as AnyObject, "f3":true as AnyObject]
+        let array : [Any] = [123, 123.456, "abc", true, [123], ["f1":123]]
+        let object : Dictionary<String, Any> = ["f1":123, "f2":"abc", "f3":true]
         let testDataList = [
             TriggeredServerCodeResult(succeeded: true, returnedValue: nil, executedAt: Date(timeIntervalSince1970: 1454474985), endpoint:"func1", error: nil),
             TriggeredServerCodeResult(succeeded: true, returnedValue: "abcd", executedAt: Date(timeIntervalSince1970: 1454474985), endpoint:"func2", error: nil),
