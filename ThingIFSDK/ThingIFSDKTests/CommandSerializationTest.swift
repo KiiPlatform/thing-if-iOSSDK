@@ -19,7 +19,7 @@ class CommandSerializationTest: SmallTestBase {
     }
 
     class func isSameArray(
-            source: [Dictionary<String, AnyObject>],
+            _ source: [Dictionary<String, AnyObject>],
             target: [Dictionary<String, AnyObject>]) -> Bool {
         if source.count != target.count {
             return false;
@@ -34,7 +34,7 @@ class CommandSerializationTest: SmallTestBase {
     }
 
     class func isSameDictionary(
-            source: Dictionary<String, AnyObject>,
+            _ source: Dictionary<String, AnyObject>,
             target: Dictionary<String, AnyObject>) -> Bool {
         if source.count != target.count {
             return false;
@@ -83,8 +83,8 @@ class CommandSerializationTest: SmallTestBase {
     }
 
     func testSerializeCommand() {
-        let created = NSDate(timeIntervalSince1970: 100);
-        let modified = NSDate(timeIntervalSince1970: 200);
+        let created = Date(timeIntervalSince1970: 100);
+        let modified = Date(timeIntervalSince1970: 200);
         let actions: [Dictionary<String, AnyObject>] =
             [
                 [ "turnPower" : [ "power" : true ] ],
@@ -107,7 +107,7 @@ class CommandSerializationTest: SmallTestBase {
                     ]
                 ]
             ];
-        let metadata: Dictionary<String, AnyObject> = [ "sound" : "noisy.mp3" ];
+        let metadata: Dictionary<String, AnyObject> = [ "sound" : "noisy.mp3" as AnyObject ];
         let source: Command = Command(
                 commandID: "testCommandID",
                 targetID: TypedID(type: "testTargetType", id: "testTargetID"),
@@ -116,7 +116,7 @@ class CommandSerializationTest: SmallTestBase {
                 schemaVersion: 1,
                 actions: actions,
                 actionResults: actionResults,
-                commandState: CommandState.SENDING,
+                commandState: CommandState.sending,
                 firedByTriggerID: "testFiredByTriggerID",
                 created: created,
                 modified: modified,
@@ -125,9 +125,9 @@ class CommandSerializationTest: SmallTestBase {
                 metadata: metadata);
 
         XCTAssertEqual(source.commandID, "testCommandID");
-        XCTAssertEqual(source.targetID.type, "testTargetType".lowercaseString);
+        XCTAssertEqual(source.targetID.type, "testTargetType".lowercased());
         XCTAssertEqual(source.targetID.id, "testTargetID");
-        XCTAssertEqual(source.issuerID.type, "testIssuerType".lowercaseString);
+        XCTAssertEqual(source.issuerID.type, "testIssuerType".lowercased());
         XCTAssertEqual(source.issuerID.id, "testIssuerID");
         XCTAssertEqual(source.schemaName, "testSchemaName");
         XCTAssertEqual(source.schemaVersion, 1);
@@ -149,12 +149,12 @@ class CommandSerializationTest: SmallTestBase {
 
         let data: NSMutableData = NSMutableData(capacity: 1024)!;
         let coder: NSKeyedArchiver =
-            NSKeyedArchiver(forWritingWithMutableData: data);
-        source.encodeWithCoder(coder);
+            NSKeyedArchiver(forWritingWith: data);
+        source.encode(with: coder);
         coder.finishEncoding();
 
         let decoder: NSKeyedUnarchiver =
-            NSKeyedUnarchiver(forReadingWithData: data);
+            NSKeyedUnarchiver(forReadingWith: data as Data);
         let target: Command = Command(coder: decoder);
         decoder.finishDecoding();
 

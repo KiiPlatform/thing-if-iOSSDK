@@ -6,27 +6,27 @@
 import Foundation
 
 /** Class provides API of the ThingIF. */
-public class ThingIFAPI: NSObject, NSCoding {
+open class ThingIFAPI: NSObject, NSCoding {
 
-    private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "ThingIFAPI_INSTANCE"
-    private static func getSharedNSDefaultKey(tag : String?) -> String{
+    fileprivate static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "ThingIFAPI_INSTANCE"
+    fileprivate static func getSharedNSDefaultKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
 
     /** Tag of the ThingIFAPI instance */
-    public let tag : String?
+    open let tag : String?
 
     let operationQueue = OperationQueue()
     /** URL of KiiApps Server */
-    public let baseURL: String!
+    open let baseURL: String!
     /** The application ID found in your Kii developer console */
-    public let appID: String!
+    open let appID: String!
     /** The application key found in your Kii developer console */
-    public let appKey: String!
+    open let appKey: String!
     /** Kii Cloud Application */
-    public let app: App!
+    open let app: App!
     /** owner of target */
-    public let owner: Owner!
+    open let owner: Owner!
 
     var _installationID:String?
     var _target: Target?
@@ -36,40 +36,40 @@ public class ThingIFAPI: NSObject, NSCoding {
 
     - Returns: Installation ID used in IoT Cloud.
     */
-    public var installationID: String? {
+    open var installationID: String? {
         get {
             return _installationID
         }
     }
 
     /** target */
-    public var target: Target? {
+    open var target: Target? {
         get {
             return _target
         }
     }
 
     // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.app, forKey: "app")
-        aCoder.encodeObject(self.baseURL, forKey: "baseURL")
-        aCoder.encodeObject(self.appID, forKey: "appID")
-        aCoder.encodeObject(self.appKey, forKey: "appKey")
-        aCoder.encodeObject(self.owner, forKey: "owner")
-        aCoder.encodeObject(self._installationID, forKey: "_installationID")
-        aCoder.encodeObject(self._target, forKey: "_target")
-        aCoder.encodeObject(self.tag, forKey: "tag")
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.app, forKey: "app")
+        aCoder.encode(self.baseURL, forKey: "baseURL")
+        aCoder.encode(self.appID, forKey: "appID")
+        aCoder.encode(self.appKey, forKey: "appKey")
+        aCoder.encode(self.owner, forKey: "owner")
+        aCoder.encode(self._installationID, forKey: "_installationID")
+        aCoder.encode(self._target, forKey: "_target")
+        aCoder.encode(self.tag, forKey: "tag")
     }
 
     public required init(coder aDecoder: NSCoder){
-        self.app = aDecoder.decodeObjectForKey("app") as! App
-        self.baseURL = aDecoder.decodeObjectForKey("baseURL") as! String
-        self.appID = aDecoder.decodeObjectForKey("appID") as! String
-        self.appKey = aDecoder.decodeObjectForKey("appKey") as! String
-        self.owner = aDecoder.decodeObjectForKey("owner") as! Owner
-        self._installationID = aDecoder.decodeObjectForKey("_installationID") as? String
-        self._target = aDecoder.decodeObjectForKey("_target") as? Target
-        self.tag = aDecoder.decodeObjectForKey("tag") as? String
+        self.app = aDecoder.decodeObject(forKey: "app") as! App
+        self.baseURL = aDecoder.decodeObject(forKey: "baseURL") as! String
+        self.appID = aDecoder.decodeObject(forKey: "appID") as! String
+        self.appKey = aDecoder.decodeObject(forKey: "appKey") as! String
+        self.owner = aDecoder.decodeObject(forKey: "owner") as! Owner
+        self._installationID = aDecoder.decodeObject(forKey: "_installationID") as? String
+        self._target = aDecoder.decodeObject(forKey: "_target") as? Target
+        self.tag = aDecoder.decodeObject(forKey: "tag") as? String
     }
 
     init(app:App, owner: Owner, tag : String?=nil) {
@@ -104,12 +104,12 @@ public class ThingIFAPI: NSObject, NSCoding {
     About the format of this Document.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
     */
-    public func onboard(
-        vendorThingID:String,
+    open func onboard(
+        _ vendorThingID:String,
         thingPassword:String,
         thingType:String?,
         thingProperties:Dictionary<String,AnyObject>?,
-        completionHandler: (Target?, ThingIFError?)-> Void
+        completionHandler: @escaping (Target?, ThingIFError?)-> Void
         ) ->Void
     {
         _onboard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
@@ -132,11 +132,11 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter options: Optional parameters inside.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
     */
-    public func onboardWithVendorThingID(
-        vendorThingID:String,
+    open func onboardWithVendorThingID(
+        _ vendorThingID:String,
         thingPassword:String,
         options:OnboardWithVendorThingIDOptions? = nil,
-        completionHandler: (Target?, ThingIFError?)-> Void
+        completionHandler: @escaping (Target?, ThingIFError?)-> Void
         ) ->Void
     {
         _onboard(true, IDString: vendorThingID, thingPassword: thingPassword,
@@ -166,10 +166,10 @@ public class ThingIFAPI: NSObject, NSCoding {
     Must be specified.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
     */
-    public func onboard(
-        thingID:String,
+    open func onboard(
+        _ thingID:String,
         thingPassword:String,
-        completionHandler: (Target?, ThingIFError?)-> Void
+        completionHandler: @escaping (Target?, ThingIFError?)-> Void
         ) ->Void
     {
          _onboard(false, IDString: thingID, thingPassword: thingPassword) { (target, error) -> Void in
@@ -195,11 +195,11 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter options: Optional parameters inside.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
      */
-    public func onboardWithThingID(
-        thingID:String,
+    open func onboardWithThingID(
+        _ thingID:String,
         thingPassword:String,
         options:OnboardWithThingIDOptions? = nil,
-        completionHandler: (Target?, ThingIFError?)-> Void
+        completionHandler: @escaping (Target?, ThingIFError?)-> Void
         ) ->Void
     {
         _onboard(false, IDString: thingID, thingPassword: thingPassword,
@@ -220,11 +220,11 @@ public class ThingIFAPI: NSObject, NSCoding {
      - Parameter options: Optional parameters inside.
      - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an end node, an ThingIFError
      */
-    public func onboardEndnodeWithGateway(
-        pendingEndnode:PendingEndNode,
+    open func onboardEndnodeWithGateway(
+        _ pendingEndnode:PendingEndNode,
         endnodePassword:String,
         options:OnboardEndnodeWithGatewayOptions? = nil,
-        completionHandler: (EndNode?, ThingIFError?)-> Void
+        completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
         _onboardEndnodeWithGateway(pendingEndnode,
@@ -246,10 +246,10 @@ public class ThingIFAPI: NSObject, NSCoding {
     production. This is optional, the default is false (production).
     - Parameter completionHandler: A closure to be executed once on board has finished.
     */
-    public func installPush(
-        deviceToken:NSData,
+    open func installPush(
+        _ deviceToken:Data,
         development:Bool?=false,
-        completionHandler: (String?, ThingIFError?)-> Void
+        completionHandler: @escaping (String?, ThingIFError?)-> Void
         )
     {
         _installPush(deviceToken, development: development) { (token, error) -> Void in
@@ -266,9 +266,9 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter installationID: installation ID returned from installPush().
     If null is specified, value of the installationID property is used.
     */
-    public func uninstallPush(
-        installationID:String?,
-        completionHandler: (ThingIFError?)-> Void
+    open func uninstallPush(
+        _ installationID:String?,
+        completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
         _uninstallPush(installationID, completionHandler: completionHandler)
@@ -289,11 +289,11 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter actions: List of Actions to be executed in the Target.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
     */
-    public func postNewCommand(
-        schemaName:String,
+    open func postNewCommand(
+        _ schemaName:String,
         schemaVersion:Int,
         actions:[Dictionary<String,AnyObject>],
-        completionHandler: (Command?, ThingIFError?)-> Void
+        completionHandler: @escaping (Command?, ThingIFError?)-> Void
         ) -> Void
     {
         _postNewCommand(schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: completionHandler)
@@ -308,9 +308,9 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter commandForm: Command form of posting command.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
     */
-    public func postNewCommand(
-        commandForm: CommandForm,
-        completionHandler: (Command?, ThingIFError?) -> Void) -> Void {
+    open func postNewCommand(
+        _ commandForm: CommandForm,
+        completionHandler: @escaping (Command?, ThingIFError?) -> Void) -> Void {
         _postNewCommand(commandForm.schemaName,
                         schemaVersion: commandForm.schemaVersion,
                         actions: commandForm.actions,
@@ -327,9 +327,9 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter commandID: ID of the Command to obtain.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
      */
-    public func getCommand(
-        commandID:String,
-        completionHandler: (Command?, ThingIFError?)-> Void
+    open func getCommand(
+        _ commandID:String,
+        completionHandler: @escaping (Command?, ThingIFError?)-> Void
         )
     {
         _getCommand(commandID, completionHandler: completionHandler)
@@ -351,10 +351,10 @@ public class ThingIFAPI: NSObject, NSCoding {
     to be retrieved.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Commands if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
      */
-    public func listCommands(
-        bestEffortLimit:Int?,
+    open func listCommands(
+        _ bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: ([Command]?, String?, ThingIFError?)-> Void
+        completionHandler: @escaping ([Command]?, String?, ThingIFError?)-> Void
         )
     {
         _listCommands(bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
@@ -384,11 +384,11 @@ public class ThingIFAPI: NSObject, NSCoding {
       Trigger instance, 2nd one is an ThingIFError instance when
       failed.
     */
-    public func postNewTrigger(
-        triggeredCommandForm:TriggeredCommandForm,
+    open func postNewTrigger(
+        _ triggeredCommandForm:TriggeredCommandForm,
         predicate:Predicate,
         options:TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?) -> Void)
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
     {
         _postNewTrigger(triggeredCommandForm,
                         predicate: predicate,
@@ -414,12 +414,12 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter predicate: Predicate of the Command.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an ThingIFError instance when failed.
     */
-    public func postNewTrigger(
-        schemaName:String,
+    open func postNewTrigger(
+        _ schemaName:String,
         schemaVersion:Int,
         actions:[Dictionary<String, AnyObject>],
         predicate:Predicate,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         _postNewTrigger(
@@ -444,11 +444,11 @@ public class ThingIFAPI: NSObject, NSCoding {
      - Parameter options: Optional data for this trigger.
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an ThingIFError instance when failed.
      */
-    public func postNewTrigger(
-        serverCode:ServerCode,
+    open func postNewTrigger(
+        _ serverCode:ServerCode,
         predicate:Predicate,
         options:TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         _postNewTrigger(
@@ -466,9 +466,9 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter triggerID: ID of the Trigger to obtain.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of Trigger, an instance of ThingIFError when failed.
     */
-    public func getTrigger(
-        triggerID:String,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+    open func getTrigger(
+        _ triggerID:String,
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         _getTrigger(triggerID, completionHandler: completionHandler)
@@ -495,12 +495,12 @@ public class ThingIFAPI: NSObject, NSCoding {
       Trigger instance, 2nd one is an ThingIFError instance when
       failed.
     */
-    public func patchTrigger(
-        triggerID:String,
+    open func patchTrigger(
+        _ triggerID:String,
         triggeredCommandForm:TriggeredCommandForm? = nil,
         predicate:Predicate? = nil,
         options:TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?) -> Void)
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
     {
         _patchTrigger(
             triggerID,
@@ -524,13 +524,13 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter predicate: Modified Predicate to be applied as patch.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an ThingIFError instance when failed.
     */
-    public func patchTrigger(
-        triggerID:String,
+    open func patchTrigger(
+        _ triggerID:String,
         schemaName:String?,
         schemaVersion:Int?,
         actions:[Dictionary<String, AnyObject>]?,
         predicate:Predicate?,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         let triggeredCommandForm: TriggeredCommandForm?
@@ -560,12 +560,12 @@ public class ThingIFAPI: NSObject, NSCoding {
      - Parameter options: Optional data for this trigger.
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an ThingIFError instance when failed.
      */
-    public func patchTrigger(
-        triggerID:String,
+    open func patchTrigger(
+        _ triggerID:String,
         serverCode:ServerCode? = nil,
         predicate:Predicate? = nil,
         options:TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         _patchTrigger(triggerID,
@@ -585,10 +585,10 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter enable: Flag indicate enable/disable Trigger.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the enabled/disabled Trigger instance, 2nd one is an ThingIFError instance when failed.
     */
-    public func enableTrigger(
-        triggerID:String,
+    open func enableTrigger(
+        _ triggerID:String,
         enable:Bool,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
         _enableTrigger(triggerID, enable: enable, completionHandler: completionHandler)
@@ -601,9 +601,9 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter triggerID: ID of the Trigger to be deleted.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the deleted TriggerId, 2nd one is an ThingIFError instance when failed.
     */
-    public func deleteTrigger(
-        triggerID:String,
-        completionHandler: (String, ThingIFError?)-> Void
+    open func deleteTrigger(
+        _ triggerID:String,
+        completionHandler: @escaping (String, ThingIFError?)-> Void
         )
     {
         _deleteTrigger(triggerID, completionHandler: completionHandler)
@@ -622,10 +622,10 @@ public class ThingIFAPI: NSObject, NSCoding {
     call in the argument results continue to get the results from the next page.
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Triggers instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
     */
-    public func listTriggers(
-        bestEffortLimit:Int?,
+    open func listTriggers(
+        _ bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: ThingIFError?)-> Void
+        completionHandler: @escaping (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
         )
     {
         _listTriggers(bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
@@ -646,11 +646,11 @@ public class ThingIFAPI: NSObject, NSCoding {
      call in the argument results continue to get the results from the next page.
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Results instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
      */
-    public func listTriggeredServerCodeResults(
-        triggerID:String,
+    open func listTriggeredServerCodeResults(
+        _ triggerID:String,
         bestEffortLimit:Int?,
         paginationKey:String?,
-        completionHandler: (results:[TriggeredServerCodeResult]?, paginationKey:String?, error: ThingIFError?)-> Void
+        completionHandler: @escaping (_ results:[TriggeredServerCodeResult]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
         )
     {
         _listTriggeredServerCodeResults(triggerID, bestEffortLimit:bestEffortLimit, paginationKey:paginationKey, completionHandler: completionHandler)
@@ -665,8 +665,8 @@ public class ThingIFAPI: NSObject, NSCoding {
 
     - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of ThingIFError when failed.
     */
-    public func getState(
-        completionHandler: (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
+    open func getState(
+        _ completionHandler: @escaping (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
         )
     {
         _getState(completionHandler)
@@ -677,12 +677,12 @@ public class ThingIFAPI: NSObject, NSCoding {
      
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is Vendor Thing ID and 2nd one is an instance of ThingIFError when failed.
      */
-    public func getVendorThingID(
-        completionHandler: (String?, ThingIFError?)-> Void
+    open func getVendorThingID(
+        _ completionHandler: @escaping (String?, ThingIFError?)-> Void
         )
     {
         if self.target == nil {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
             return;
         }
 
@@ -703,7 +703,7 @@ public class ThingIFAPI: NSObject, NSCoding {
             requestBodyData: nil,
             completionHandler: { (response, error) -> Void in
                 let vendorThingID = response?["_vendorThingID"] as? String
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler(vendorThingID, error)
                 }
             }
@@ -718,18 +718,18 @@ public class ThingIFAPI: NSObject, NSCoding {
      - Parameter newPassword: New password
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
-    public func updateVendorThingID(
-        newVendorThingID: String,
+    open func updateVendorThingID(
+        _ newVendorThingID: String,
         newPassword: String,
-        completionHandler: (ThingIFError?)-> Void
+        completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
         if self.target == nil {
-            completionHandler(ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(ThingIFError.target_NOT_AVAILABLE)
             return;
         }
         if newVendorThingID.isEmpty || newPassword.isEmpty {
-            completionHandler(ThingIFError.UNSUPPORTED_ERROR)
+            completionHandler(ThingIFError.unsupported_ERROR)
             return;
         }
 
@@ -752,7 +752,7 @@ public class ThingIFAPI: NSObject, NSCoding {
         )
 
         do {
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(
                 HTTPMethod.PUT,
@@ -760,7 +760,7 @@ public class ThingIFAPI: NSObject, NSCoding {
                 requestHeaderDict: requestHeaderDict,
                 requestBodyData: requestBodyData,
                 completionHandler: { (response, error) -> Void in
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completionHandler(error)
                     }
                 }
@@ -769,7 +769,7 @@ public class ThingIFAPI: NSObject, NSCoding {
             operationQueue.addOperation(operation)
         } catch(_) {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.JSON_PARSE_ERROR)
+            completionHandler(ThingIFError.json_PARSE_ERROR)
         }
     }
 
@@ -781,7 +781,7 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter tag: tag of the ThingIFAPI instance or nil for default tag
     - Returns: New ThingIFAPI instance with newTarget
     */
-    public func copyWithTarget(newTarget: Target, tag : String? = nil) -> ThingIFAPI {
+    open func copyWithTarget(_ newTarget: Target, tag : String? = nil) -> ThingIFAPI {
 
         let newIotapi = ThingIFAPI(app: self.app, owner: self.owner, tag: tag)
 
@@ -796,56 +796,56 @@ public class ThingIFAPI: NSObject, NSCoding {
     - Parameter tag: tag of the ThingIFAPI instance
     - Returns: ThingIFAPI instance.
     */
-    public static func loadWithStoredInstance(tag : String? = nil) throws -> ThingIFAPI?{
+    open static func loadWithStoredInstance(_ tag : String? = nil) throws -> ThingIFAPI?{
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let key = ThingIFAPI.getSharedNSDefaultKey(tag)
 
         // try to get iotAPI from NSUserDefaults
 
-        if let dict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary
+        if let dict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary
         {
-            if dict.objectForKey(key) != nil {
-                if let data = dict[key] as? NSData {
-                    if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ThingIFAPI {
+            if dict.object(forKey: key) != nil {
+                if let data = dict[key] as? Data {
+                    if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObject(with: data) as? ThingIFAPI {
                         return savedIoTAPI
                     }else{
-                        throw ThingIFError.INVALID_STORED_API
+                        throw ThingIFError.invalid_STORED_API
                     }
                 }else{
-                    throw ThingIFError.INVALID_STORED_API
+                    throw ThingIFError.invalid_STORED_API
                 }
             } else {
-                throw ThingIFError.API_NOT_STORED
+                throw ThingIFError.api_NOT_STORED
             }
         }else{
-            throw ThingIFError.API_NOT_STORED
+            throw ThingIFError.api_NOT_STORED
         }
     }
     /** Save this instance
     */
-    public func saveInstance() -> Void {
+    open func saveInstance() -> Void {
         self.saveToUserDefault()
     }
 
     /** Clear all saved instances in the NSUserDefaults.
     */
-    public static func removeAllStoredInstances(){
+    open static func removeAllStoredInstances(){
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(baseKey)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.removeObject(forKey: baseKey)
+        UserDefaults.standard.synchronize()
     }
 
     /** Remove saved specified instance in the NSUserDefaults.
     - Parameter tag: tag of the ThingIFAPI instance or nil for default tag
     */
-    public static func removeStoredInstances(tag : String?=nil){
+    open static func removeStoredInstances(_ tag : String?=nil){
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let key = ThingIFAPI.getSharedNSDefaultKey(tag)
-        if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
+        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
-            dict.removeObjectForKey(key)
-            NSUserDefaults.standardUserDefaults().setObject(dict, forKey: baseKey)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            dict.removeObject(forKey: key)
+            UserDefaults.standard.set(dict, forKey: baseKey)
+            UserDefaults.standard.synchronize()
         }
     }
 
@@ -854,19 +854,19 @@ public class ThingIFAPI: NSObject, NSCoding {
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
 
         let key = ThingIFAPI.getSharedNSDefaultKey(self.tag)
-        let data = NSKeyedArchiver.archivedDataWithRootObject(self)
+        let data = NSKeyedArchiver.archivedData(withRootObject: self)
 
-        if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
+        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
             dict[key] = data
-            NSUserDefaults.standardUserDefaults().setObject(dict, forKey: baseKey)
+            UserDefaults.standard.set(dict, forKey: baseKey)
         }else{
-            NSUserDefaults.standardUserDefaults().setObject(NSDictionary(dictionary: [key:data]), forKey: baseKey)
+            UserDefaults.standard.set(NSDictionary(dictionary: [key:data]), forKey: baseKey)
         }
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.synchronize()
     }
 
-    public override func isEqual(object: AnyObject?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         guard let anAPI = object as? ThingIFAPI else{
             return false
         }

@@ -10,12 +10,12 @@ import Foundation
 /** Optional parameters of
 `ThingIFAPI.onboardWithVendorThingID(vendorThingID:thingPassword:options:completionHandler:)`.
 */
-public class OnboardWithVendorThingIDOptions {
-    public let thingType: String?
-    public let firmwareVersion: String?
-    public let thingProperties: Dictionary<String,AnyObject>?
-    public let layoutPosition: LayoutPosition?
-    public let dataGroupingInterval: DataGroupingInterval?
+open class OnboardWithVendorThingIDOptions {
+    open let thingType: String?
+    open let firmwareVersion: String?
+    open let thingProperties: Dictionary<String,AnyObject>?
+    open let layoutPosition: LayoutPosition?
+    open let dataGroupingInterval: DataGroupingInterval?
 
     /** initializer.
 

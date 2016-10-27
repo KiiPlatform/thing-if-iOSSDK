@@ -23,36 +23,36 @@ import Foundation
 class DelayOperation: Operation {
     // MARK: Types
 
-    private enum Delay {
-        case Interval(NSTimeInterval)
-        case Date(NSDate)
+    fileprivate enum Delay {
+        case interval(TimeInterval)
+        case date(Foundation.Date)
     }
     
     // MARK: Properties
     
-    private let delay: Delay
+    fileprivate let delay: Delay
     
     // MARK: Initialization
     
-    init(interval: NSTimeInterval) {
-        delay = .Interval(interval)
+    init(interval: TimeInterval) {
+        delay = .interval(interval)
         super.init()
     }
     
-    init(until date: NSDate) {
-        delay = .Date(date)
+    init(until date: Date) {
+        delay = .date(date)
         super.init()
     }
     
     override func execute() {
-        let interval: NSTimeInterval
+        let interval: TimeInterval
         
         // Figure out how long we should wait for.
         switch delay {
-            case .Interval(let theInterval):
+            case .interval(let theInterval):
                 interval = theInterval
 
-            case .Date(let date):
+            case .date(let date):
                 interval = date.timeIntervalSinceNow
         }
         
@@ -61,10 +61,10 @@ class DelayOperation: Operation {
             return
         }
 
-        let when = dispatch_time(DISPATCH_TIME_NOW, Int64(interval * Double(NSEC_PER_SEC)))
-        dispatch_after(when, dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)) {
+        let when = DispatchTime.now() + Double(Int64(interval * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).asyncAfter(deadline: when) {
             // If we were cancelled, then finish() has already been called.
-            if !self.cancelled {
+            if !self.isCancelled {
                 self.finish()
             }
         }

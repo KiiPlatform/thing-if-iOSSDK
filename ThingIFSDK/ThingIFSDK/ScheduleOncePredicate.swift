@@ -7,11 +7,11 @@
 //
 
 /** Class represents ScheduleOncePredicate. */
-public class ScheduleOncePredicate: NSObject,Predicate {
+open class ScheduleOncePredicate: NSObject,Predicate {
     /** Specified schedule. */
-    public let scheduleAt: NSDate
+    open let scheduleAt: Date
 
-    public func getEventSource() -> EventSource {
+    open func getEventSource() -> EventSource {
         return EventSource.ScheduleOnce
     }
     
@@ -19,26 +19,26 @@ public class ScheduleOncePredicate: NSObject,Predicate {
 
      -Parameter scheduleAt: Specify execution schedule. It must be future date.
      */
-    public init(scheduleAt: NSDate) {
+    public init(scheduleAt: Date) {
         self.scheduleAt = scheduleAt
         super.init()
     }
 
     public required init(coder aDecoder: NSCoder) {
-        self.scheduleAt = aDecoder.decodeObjectForKey("scheduleAt") as! NSDate
+        self.scheduleAt = aDecoder.decodeObject(forKey: "scheduleAt") as! Date
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.scheduleAt, forKey: "scheduleAt")
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.scheduleAt, forKey: "scheduleAt")
     }
 
     /** Get Json object of ScheduleOncePredicate instance
 
      - Returns: Json object as an instance of NSDictionary
      */
-    public func toNSDictionary() -> NSDictionary {
+    open func toNSDictionary() -> NSDictionary {
 
-        let dateNumber = NSNumber(longLong: Int64(self.scheduleAt.timeIntervalSince1970 * 1000))
+        let dateNumber = NSNumber(value: Int64(self.scheduleAt.timeIntervalSince1970 * 1000) as Int64)
 
         return NSDictionary(dictionary: ["eventSource": EventSource.ScheduleOnce.rawValue,
             "scheduleAt":dateNumber])

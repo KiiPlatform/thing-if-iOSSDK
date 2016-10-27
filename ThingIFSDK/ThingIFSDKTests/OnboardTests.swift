@@ -22,7 +22,7 @@ class OnboardTests: SmallTestBase {
 
     func testOnboardWithVendorThingIDAndOptionsSuccess()
     {
-        let expectation = self.expectationWithDescription("testOnboardWithVendorThingIDAndOptionsSuccess")
+        let expectation = self.expectation(description: "testOnboardWithVendorThingIDAndOptionsSuccess")
         let setting = TestSetting()
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
@@ -39,12 +39,12 @@ class OnboardTests: SmallTestBase {
 
         do {
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "POST")
 
                 // verify path
                 let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+                XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header
                 let expectedHeader = [
@@ -54,7 +54,7 @@ class OnboardTests: SmallTestBase {
                 ]
                 XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
 
                 //verify body
@@ -69,10 +69,10 @@ class OnboardTests: SmallTestBase {
                     "dataGroupingInterval": "1_MINUTE"
                 ]
                 do {
-                    let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(
-                        expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                    let actualBodyData = request.HTTPBody
-                    XCTAssertTrue(expectedBodyData.length == actualBodyData!.length)
+                    let expectedBodyData = try JSONSerialization.data(
+                        withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                    let actualBodyData = request.httpBody
+                    XCTAssertTrue(expectedBodyData.count == actualBodyData!.count)
                 }catch(_){
                     XCTFail()
                 }
@@ -82,9 +82,9 @@ class OnboardTests: SmallTestBase {
             let thingID = "dummyThingID"
             let accessToken = "dummyAccessToken"
             let dict = ["thingID": thingID, "accessToken": accessToken]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -105,7 +105,7 @@ class OnboardTests: SmallTestBase {
             XCTFail("should not throw error")
         }
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -114,7 +114,7 @@ class OnboardTests: SmallTestBase {
 
     func testOnboardWithVendorThingIDAndOptions403Error()
     {
-        let expectation = self.expectationWithDescription("testOnboardWithVendorThingIDAndOptions403Error")
+        let expectation = self.expectation(description: "testOnboardWithVendorThingIDAndOptions403Error")
         let setting = TestSetting()
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
@@ -128,12 +128,12 @@ class OnboardTests: SmallTestBase {
             interval: DataGroupingInterval.INTERVAL_15_MINUTES)
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "POST")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
             let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
             let expectedHeader = [
@@ -143,7 +143,7 @@ class OnboardTests: SmallTestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
 
             //verify body
@@ -157,18 +157,18 @@ class OnboardTests: SmallTestBase {
                 "dataGroupingInterval": "15_MINUTES"
             ]
             do {
-                let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(
-                    expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                let actualBodyData = request.HTTPBody
-                XCTAssertTrue(expectedBodyData.length == actualBodyData!.length)
+                let expectedBodyData = try JSONSerialization.data(
+                    withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                let actualBodyData = request.httpBody
+                XCTAssertTrue(expectedBodyData.count == actualBodyData!.count)
             }catch(_){
                 XCTFail()
             }
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-            statusCode: 403, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+            statusCode: 403, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -182,7 +182,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -190,7 +190,7 @@ class OnboardTests: SmallTestBase {
                 expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -199,7 +199,7 @@ class OnboardTests: SmallTestBase {
 
     func testOnboardWithVendorThingIDAndOptions404Error()
     {
-        let expectation = self.expectationWithDescription("testOnboardWithVendorThingIDAndOptions404Error")
+        let expectation = self.expectation(description: "testOnboardWithVendorThingIDAndOptions404Error")
         let setting = TestSetting()
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
@@ -213,12 +213,12 @@ class OnboardTests: SmallTestBase {
             interval: DataGroupingInterval.INTERVAL_1_HOUR)
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "POST")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
             let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
             let expectedHeader = [
@@ -228,7 +228,7 @@ class OnboardTests: SmallTestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
 
             //verify body
@@ -242,18 +242,18 @@ class OnboardTests: SmallTestBase {
                 "dataGroupingInterval": "1_HOUR"
             ]
             do {
-                let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(
-                    expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                let actualBodyData = request.HTTPBody
-                XCTAssertTrue(expectedBodyData.length == actualBodyData!.length)
+                let expectedBodyData = try JSONSerialization.data(
+                    withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                let actualBodyData = request.httpBody
+                XCTAssertTrue(expectedBodyData.count == actualBodyData!.count)
             }catch(_){
                 XCTFail()
             }
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-            statusCode: 404, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+            statusCode: 404, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -267,7 +267,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -275,7 +275,7 @@ class OnboardTests: SmallTestBase {
                 expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -284,7 +284,7 @@ class OnboardTests: SmallTestBase {
 
     func testOnboardWithVendorThingIDAndOptions500Error()
     {
-        let expectation = self.expectationWithDescription("testOnboardWithVendorThingIDAndOptions500Error")
+        let expectation = self.expectation(description: "testOnboardWithVendorThingIDAndOptions500Error")
         let setting = TestSetting()
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
@@ -298,12 +298,12 @@ class OnboardTests: SmallTestBase {
             interval: DataGroupingInterval.INTERVAL_12_HOURS)
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "POST")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
             let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
             let expectedHeader = [
@@ -313,7 +313,7 @@ class OnboardTests: SmallTestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
 
             //verify body
@@ -327,18 +327,18 @@ class OnboardTests: SmallTestBase {
                 "dataGroupingInterval": "12_HOURS"
             ]
             do {
-                let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(
-                    expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                let actualBodyData = request.HTTPBody
-                XCTAssertTrue(expectedBodyData.length == actualBodyData!.length)
+                let expectedBodyData = try JSONSerialization.data(
+                    withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                let actualBodyData = request.httpBody
+                XCTAssertTrue(expectedBodyData.count == actualBodyData!.count)
             }catch(_){
                 XCTFail()
             }
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-            statusCode: 500, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+            statusCode: 500, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -352,7 +352,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -360,7 +360,7 @@ class OnboardTests: SmallTestBase {
                 expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -369,7 +369,7 @@ class OnboardTests: SmallTestBase {
 
     func testOnboardWithVendorThingIDAndOptionsTwiceTest()
     {
-        let expectation = self.expectationWithDescription("testOnboardWithVendorThingIDAndOptionsTwiceTest")
+        let expectation = self.expectation(description: "testOnboardWithVendorThingIDAndOptionsTwiceTest")
         let setting = TestSetting()
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
@@ -387,9 +387,9 @@ class OnboardTests: SmallTestBase {
             let thingID = "dummyThingID"
             let accessToken = "dummyAccessToken"
             let dict = ["thingID": thingID, "accessToken": accessToken]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
@@ -409,7 +409,7 @@ class OnboardTests: SmallTestBase {
             XCTFail("should not throw error")
         }
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -423,7 +423,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ALREADY_ONBOARDED:
+                case .already_ONBOARDED:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -433,7 +433,7 @@ class OnboardTests: SmallTestBase {
 
     func testOnboardWithThingIDAndOptionsSuccess()
     {
-        let expectation = self.expectationWithDescription("testOnboardWithThingIDAndOptionsSuccess")
+        let expectation = self.expectation(description: "testOnboardWithThingIDAndOptionsSuccess")
         let setting = TestSetting()
         let thingID = "dummyThingID"
         let password = "dummyPassword"
@@ -443,12 +443,12 @@ class OnboardTests: SmallTestBase {
 
         do {
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "POST")
 
                 // verify path
                 let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+                XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header
                 let expectedHeader = [
@@ -458,7 +458,7 @@ class OnboardTests: SmallTestBase {
                 ]
                 XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
 
                 //verify body
@@ -470,10 +470,10 @@ class OnboardTests: SmallTestBase {
                     "dataGroupingInterval": "1_MINUTE"
                 ]
                 do {
-                    let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(
-                        expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                    let actualBodyData = request.HTTPBody
-                    XCTAssertTrue(expectedBodyData.length == actualBodyData!.length)
+                    let expectedBodyData = try JSONSerialization.data(
+                        withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                    let actualBodyData = request.httpBody
+                    XCTAssertTrue(expectedBodyData.count == actualBodyData!.count)
                 }catch(_){
                     XCTFail()
                 }
@@ -483,9 +483,9 @@ class OnboardTests: SmallTestBase {
             let thingID = "dummyThingID"
             let accessToken = "dummyAccessToken"
             let dict = ["thingID": thingID, "accessToken": accessToken]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -506,7 +506,7 @@ class OnboardTests: SmallTestBase {
             XCTFail("should not throw error")
         }
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -515,7 +515,7 @@ class OnboardTests: SmallTestBase {
 
     func testOnboardWithThingIDAndOptions403Error()
     {
-        let expectation = self.expectationWithDescription("testOnboardWithThingIDAndOptions403Error")
+        let expectation = self.expectation(description: "testOnboardWithThingIDAndOptions403Error")
         let setting = TestSetting()
         let thingID = "dummyThingID"
         let password = "dummyPassword"
@@ -524,12 +524,12 @@ class OnboardTests: SmallTestBase {
             interval: DataGroupingInterval.INTERVAL_30_MINUTES)
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "POST")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
             let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
             let expectedHeader = [
@@ -539,7 +539,7 @@ class OnboardTests: SmallTestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
 
             //verify body
@@ -551,18 +551,18 @@ class OnboardTests: SmallTestBase {
                 "dataGroupingInterval": "30_MINUTES"
             ]
             do {
-                let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(
-                    expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                let actualBodyData = request.HTTPBody
-                XCTAssertTrue(expectedBodyData.length == actualBodyData!.length)
+                let expectedBodyData = try JSONSerialization.data(
+                    withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                let actualBodyData = request.httpBody
+                XCTAssertTrue(expectedBodyData.count == actualBodyData!.count)
             }catch(_){
                 XCTFail()
             }
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-            statusCode: 403, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+            statusCode: 403, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -576,7 +576,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -584,7 +584,7 @@ class OnboardTests: SmallTestBase {
                 expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -593,7 +593,7 @@ class OnboardTests: SmallTestBase {
 
     func testOnboardWithThingIDAndOptions404Error()
     {
-        let expectation = self.expectationWithDescription("testOnboardWithThingIDAndOptions404Error")
+        let expectation = self.expectation(description: "testOnboardWithThingIDAndOptions404Error")
         let setting = TestSetting()
         let thingID = "dummyThingID"
         let password = "dummyPassword"
@@ -602,12 +602,12 @@ class OnboardTests: SmallTestBase {
             interval: DataGroupingInterval.INTERVAL_1_HOUR)
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "POST")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
             let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
             let expectedHeader = [
@@ -617,7 +617,7 @@ class OnboardTests: SmallTestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
 
             //verify body
@@ -629,18 +629,18 @@ class OnboardTests: SmallTestBase {
                 "dataGroupingInterval": "1_HOUR"
             ]
             do {
-                let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(
-                    expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                let actualBodyData = request.HTTPBody
-                XCTAssertTrue(expectedBodyData.length == actualBodyData!.length)
+                let expectedBodyData = try JSONSerialization.data(
+                    withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                let actualBodyData = request.httpBody
+                XCTAssertTrue(expectedBodyData.count == actualBodyData!.count)
             }catch(_){
                 XCTFail()
             }
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-            statusCode: 404, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+            statusCode: 404, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -654,7 +654,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -662,7 +662,7 @@ class OnboardTests: SmallTestBase {
                 expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -671,7 +671,7 @@ class OnboardTests: SmallTestBase {
 
     func testOnboardWithThingIDAndOptions500Error()
     {
-        let expectation = self.expectationWithDescription("testOnboardWithThingIDAndOptions500Error")
+        let expectation = self.expectation(description: "testOnboardWithThingIDAndOptions500Error")
         let setting = TestSetting()
         let thingID = "dummyThingID"
         let password = "dummyPassword"
@@ -680,12 +680,12 @@ class OnboardTests: SmallTestBase {
             interval: DataGroupingInterval.INTERVAL_12_HOURS)
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "POST")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
             let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
             let expectedHeader = [
@@ -695,7 +695,7 @@ class OnboardTests: SmallTestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
 
             //verify body
@@ -707,18 +707,18 @@ class OnboardTests: SmallTestBase {
                 "dataGroupingInterval": "12_HOURS"
             ]
             do {
-                let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(
-                    expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                let actualBodyData = request.HTTPBody
-                XCTAssertTrue(expectedBodyData.length == actualBodyData!.length)
+                let expectedBodyData = try JSONSerialization.data(
+                    withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                let actualBodyData = request.httpBody
+                XCTAssertTrue(expectedBodyData.count == actualBodyData!.count)
             }catch(_){
                 XCTFail()
             }
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-            statusCode: 500, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+            statusCode: 500, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -732,7 +732,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -740,7 +740,7 @@ class OnboardTests: SmallTestBase {
                 expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -749,7 +749,7 @@ class OnboardTests: SmallTestBase {
 
     func testOnboardWithThingIDAndOptionsTwiceTest()
     {
-        let expectation = self.expectationWithDescription("testOnboardWithThingIDAndOptionsTwiceTest")
+        let expectation = self.expectation(description: "testOnboardWithThingIDAndOptionsTwiceTest")
         let setting = TestSetting()
         let thingID = "dummyThingID"
         let password = "dummyPassword"
@@ -762,9 +762,9 @@ class OnboardTests: SmallTestBase {
             let thingID = "dummyThingID"
             let accessToken = "dummyAccessToken"
             let dict = ["thingID": thingID, "accessToken": accessToken]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
@@ -784,7 +784,7 @@ class OnboardTests: SmallTestBase {
             XCTFail("should not throw error")
         }
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -798,7 +798,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ALREADY_ONBOARDED:
+                case .already_ONBOARDED:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")

@@ -26,7 +26,7 @@ class ListTriggersTests: SmallTestBase {
         let enabled: Bool
 
         func getPredicateDict() -> Dictionary<String, AnyObject> {
-            return ["eventSource":"STATES", "triggersWhen":triggersWhenString, "condition":statement]
+            return ["eventSource":"STATES" as AnyObject, "triggersWhen":triggersWhenString as AnyObject, "condition":statement as AnyObject]
         }
 
     }
@@ -40,9 +40,9 @@ class ListTriggersTests: SmallTestBase {
         api._target = setting.target
 
         var expectedTriggerStructs: [ExpectedTriggerStruct] = [
-            ExpectedTriggerStruct(statement: ["type":"eq","field":"color", "value": 0], triggerID: "\(triggerIDPrifex)1", triggersWhenString: "CONDITION_TRUE", enabled: true),
-            ExpectedTriggerStruct(statement: ["type":"eq","field":"power", "value": true], triggerID: "\(triggerIDPrifex)2", triggersWhenString: "CONDITION_TRUE", enabled: true),
-            ExpectedTriggerStruct(statement: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], triggerID: "\(triggerIDPrifex)3", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type":"eq" as AnyObject,"field":"color" as AnyObject, "value": 0 as AnyObject], triggerID: "\(triggerIDPrifex)1", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type":"eq" as AnyObject,"field":"power" as AnyObject, "value": true as AnyObject], triggerID: "\(triggerIDPrifex)2", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type": "not" as AnyObject, "clause": ["type":"eq","field":"power", "value": true]], triggerID: "\(triggerIDPrifex)3", triggersWhenString: "CONDITION_TRUE", enabled: true),
             ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], triggerID: "\(triggerIDPrifex)4", triggersWhenString: "CONDITION_TRUE", enabled: true),
             ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "upperLimit": 200, "upperIncluded": false], triggerID: "\(triggerIDPrifex)5", triggersWhenString: "CONDITION_TRUE", enabled: true),
             ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": true], triggerID: "\(triggerIDPrifex)6", triggersWhenString: "CONDITION_TRUE", enabled: true),
@@ -56,7 +56,7 @@ class ListTriggersTests: SmallTestBase {
         ]
 
 
-        let expectation = self.expectationWithDescription("testListTriggers_success_predicates")
+        let expectation = self.expectation(description: "testListTriggers_success_predicates")
 
         do{
             let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
@@ -70,18 +70,18 @@ class ListTriggersTests: SmallTestBase {
             for expectedTriggerStruct in expectedTriggerStructs {
                 expectedTriggerDicts.append(["triggerID": expectedTriggerStruct.triggerID, "predicate": ["eventSource":eventSource, "triggersWhen":expectedTriggerStruct.triggersWhenString, "condition":expectedTriggerStruct.statement], "command": commandDict, "disabled": !(expectedTriggerStruct.enabled)])
             }
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(["triggers":expectedTriggerDicts], options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: ["triggers":expectedTriggerDicts], options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
 
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "GET")
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers")
+                XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers")
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -94,22 +94,22 @@ class ListTriggersTests: SmallTestBase {
                 }else {
                     if triggers != nil {
                         XCTAssertEqual(triggers!.count, expectedTriggerStructs.count)
-                        for (index,trigger) in triggers!.enumerate() {
+                        for (index,trigger) in triggers!.enumerated() {
                             XCTAssertEqual(trigger.triggerID, expectedTriggerStructs[index].triggerID)
                             XCTAssertTrue(trigger.enabled == expectedTriggerStructs[index].enabled)
                             XCTAssertTrue(trigger.command == expectedCommandObject)
 
                             do {
                                 // verify actions dictionary
-                                let expectedActionsData = try NSJSONSerialization.dataWithJSONObject(expectedActionsDict, options: NSJSONWritingOptions(rawValue: 0))
-                                let actualActionsData = try NSJSONSerialization.dataWithJSONObject(trigger.command!.actions, options: NSJSONWritingOptions(rawValue: 0))
+                                let expectedActionsData = try JSONSerialization.data(withJSONObject: expectedActionsDict, options: JSONSerialization.WritingOptions(rawValue: 0))
+                                let actualActionsData = try JSONSerialization.data(withJSONObject: trigger.command!.actions, options: JSONSerialization.WritingOptions(rawValue: 0))
                                 XCTAssertTrue(expectedActionsData == actualActionsData)
 
                                 // verify predicate
-                                let expectedPredicteData = try NSJSONSerialization.dataWithJSONObject(expectedTriggerStructs[index].getPredicateDict(), options: NSJSONWritingOptions(rawValue: 0))
+                                let expectedPredicteData = try JSONSerialization.data(withJSONObject: expectedTriggerStructs[index].getPredicateDict(), options: JSONSerialization.WritingOptions(rawValue: 0))
                                 let actualPredicateDict = trigger.predicate.toNSDictionary()
-                                let actualBodyData = try NSJSONSerialization.dataWithJSONObject(actualPredicateDict, options: NSJSONWritingOptions(rawValue: 0))
-                                XCTAssertTrue(expectedPredicteData.length == actualBodyData.length)
+                                let actualBodyData = try JSONSerialization.data(withJSONObject: actualPredicateDict, options: JSONSerialization.WritingOptions(rawValue: 0))
+                                XCTAssertTrue(expectedPredicteData.count == actualBodyData.count)
                             }catch(_){
                                 XCTFail()
                             }
@@ -123,7 +123,7 @@ class ListTriggersTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -131,7 +131,7 @@ class ListTriggersTests: SmallTestBase {
     }
     
     func testListTriggers_404_error() {
-        let expectation = self.expectationWithDescription("getTrigger403Error")
+        let expectation = self.expectation(description: "getTrigger403Error")
         let setting = TestSetting()
         let api = setting.api
 
@@ -144,16 +144,16 @@ class ListTriggersTests: SmallTestBase {
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
                 "message" : "Target \(setting.target.typedID.toString()) not found"]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: responsedDict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 404, httpVersion: nil, headerFields: nil)
 
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "GET")
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
@@ -164,9 +164,9 @@ class ListTriggersTests: SmallTestBase {
                     XCTFail("should fail")
                 }else {
                     switch error! {
-                    case .CONNECTION:
+                    case .connection:
                         XCTFail("should not be connection error")
-                    case .ERROR_RESPONSE(let actualErrorResponse):
+                    case .error_RESPONSE(let actualErrorResponse):
                         XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
@@ -179,7 +179,7 @@ class ListTriggersTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -187,7 +187,7 @@ class ListTriggersTests: SmallTestBase {
     }
 
     func testListTriggers_target_not_available_error() {
-        let expectation = self.expectationWithDescription("testListTriggers_target_not_available_error")
+        let expectation = self.expectation(description: "testListTriggers_target_not_available_error")
         let setting = TestSetting()
         let api = setting.api
 
@@ -198,7 +198,7 @@ class ListTriggersTests: SmallTestBase {
                 XCTAssertNil(commands)
                 XCTAssertNil(paginationKey)
                 switch error! {
-                case .TARGET_NOT_AVAILABLE:
+                case .target_NOT_AVAILABLE:
                     break
                 default:
                     XCTFail("error should be TARGET_NOT_AVAILABLE")
@@ -207,7 +207,7 @@ class ListTriggersTests: SmallTestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

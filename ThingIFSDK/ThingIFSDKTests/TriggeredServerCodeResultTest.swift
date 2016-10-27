@@ -31,10 +31,10 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         for i in 0 ..< testDataList.count {
             let testData = testDataList[i]
             let expectedData = expectedDataList[i]
-            let resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+            let resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
             let result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
             XCTAssertEqual(expectedData[0] as? Bool, result.succeeded)
-            XCTAssertEqual(NSDate(timeIntervalSince1970: ((expectedData[1] as? NSNumber)?.doubleValue)!/1000), result.executedAt)
+            XCTAssertEqual(Date(timeIntervalSince1970: ((expectedData[1] as? NSNumber)?.doubleValue)!/1000), result.executedAt)
             if result.returnedValue == nil {
                 XCTAssertNil(expectedData[2])
             } else {
@@ -55,19 +55,19 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         
         // nil
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\"}"
-        resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+        resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         XCTAssertNil(result!.getReturnedValue())
         
         // null
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":null}"
-        resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+        resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         XCTAssertTrue(NSNull().isEqual(result!.getReturnedValue()))
         
         // String
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":\"1234\"}"
-        resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+        resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         XCTAssertEqual("1234", result?.getReturnedValueAsString())
         XCTAssertNil(result?.getReturnedValueAsNSNumber())
@@ -77,7 +77,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         
         // Bool
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":true}"
-        resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+        resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         XCTAssertTrue(result!.getReturnedValueAsBool()!)
         XCTAssertEqual("1", result?.getReturnedValueAsString())
@@ -87,7 +87,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         
         // Number int
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":1234}"
-        resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+        resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         XCTAssertEqual(1234, result!.getReturnedValueAsNSNumber()!)
         XCTAssertEqual("1234", result?.getReturnedValueAsString())
@@ -97,7 +97,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         
         // Number long
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":145553117492300}"
-        resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+        resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         XCTAssertEqual(145553117492300, result!.getReturnedValueAsNSNumber()!)
         XCTAssertEqual("145553117492300", result?.getReturnedValueAsString())
@@ -107,7 +107,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
 
         // Number double
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":1234.567}"
-        resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+        resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         XCTAssertEqual(1234.567, result!.getReturnedValueAsNSNumber()!)
         XCTAssertEqual("1234.567", result?.getReturnedValueAsString())
@@ -117,7 +117,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         
         // Array
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":[123, true, \"456\"]}"
-        resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+        resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         let array = result!.getReturnedValueAsArray()!
         XCTAssertEqual(123, array[0] as? NSNumber)
@@ -130,7 +130,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         
         // Dictionary
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":{\"f1\":\"aaa\",\"f2\":false,\"f3\":1000,\"f4\":100.05}}"
-        resultDict = try! NSJSONSerialization.JSONObjectWithData(testData.dataUsingEncoding(NSUTF8StringEncoding)!, options: NSJSONReadingOptions.AllowFragments) as? NSDictionary
+        resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         let dict = result!.getReturnedValueAsDictionary()!
         XCTAssertEqual("aaa", dict["f1"] as? String)
@@ -146,148 +146,148 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         let testCases: [[AnyObject]] = [
             // succeeded
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:false, returnedValue:"abcd", executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:false, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             // executedAt
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:NSDate(timeIntervalSince1970:14555311748), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311748), endpoint:"func", error:nil),
                 false
             ],
             // endpoint
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func1", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func2", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func1", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func2", error:nil),
                 false
             ],
             // returnedValue:String
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 true
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcde", executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcde", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             // returnedValue:nil
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 true
             ],
             // returnedValue:Int
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:123, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:123, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:123, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:123, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 true
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:123, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:1234, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:123, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:1234, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             // returnedValue:Double
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:123.45, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:123.45, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:123.45, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:123.45, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 true
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:123.45, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:123.46, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:123.45, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:123.46, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             // returnedValue:Bool
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:false, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:false, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:false, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:false, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 true
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:false, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:true, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:false, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:true, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             // returnedValue:Array
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 true
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:[1234, "abc", true, 123.45], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:[1234, "abc", true, 123.45], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abcd", true, 123.45], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abcd", true, 123.45], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", false, 123.45], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", false, 123.45], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.46], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.45], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:[123, "abc", true, 123.46], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             // returnedValue:Dictionary
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 true
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abcd", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abcd", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":1234, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":1234, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.5, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.5, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":false, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":false, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,4], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,4], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":124]], executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":123]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:["f1":"abc", "f2":123, "f3":123.4, "f4":true, "f5":[1,2,3], "f6":["child":124]], executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
                 false
             ],
             // ServerError
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:ServerError(errorMessage: "msg", errorCode: "code", detailMessage: "detail")),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:ServerError(errorMessage: "msg", errorCode: "code", detailMessage: "detail")),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:ServerError(errorMessage: "msg", errorCode: "code", detailMessage: "detail")),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:ServerError(errorMessage: "msg", errorCode: "code", detailMessage: "detail")),
                 true
             ],
             [
-                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:ServerError(errorMessage: "msg", errorCode: "code", detailMessage: "detail")),
-                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:NSDate(timeIntervalSince1970:14555311749), endpoint:"func", error:ServerError(errorMessage: "msg", errorCode: "code2", detailMessage: "detail")),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:ServerError(errorMessage: "msg", errorCode: "code", detailMessage: "detail")),
+                TriggeredServerCodeResult(succeeded:true, returnedValue:nil, executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:ServerError(errorMessage: "msg", errorCode: "code2", detailMessage: "detail")),
                 false
             ],
         ]

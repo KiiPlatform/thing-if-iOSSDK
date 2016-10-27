@@ -18,7 +18,7 @@ class OnboardingTests: SmallTestBase {
         super.tearDown()
     }
 
-    func checkSavedIoTAPI(setting:TestSetting){
+    func checkSavedIoTAPI(_ setting:TestSetting){
         do{
             let savedIoTAPI = try ThingIFAPI.loadWithStoredInstance(setting.api.tag)
             XCTAssertNotNil(savedIoTAPI)
@@ -31,31 +31,31 @@ class OnboardingTests: SmallTestBase {
 
     func testOnboardWithThingIDFail() {
         
-        let expectation = self.expectationWithDescription("onboardWithThingID")
+        let expectation = self.expectation(description: "onboardWithThingID")
         let setting = TestSetting()
         let api = setting.api
         let owner = setting.owner
         
 
         do{
-            let dict = ["errorCode":"INVALID_INPUT_DATA","message":"There are validation errors: password - password is required.", "invalidFields":["password": "password is required"]]
+            let dict = ["errorCode":"INVALID_INPUT_DATA","message":"There are validation errors: password - password is required.", "invalidFields":["password": "password is required"]] as [String : Any]
 
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
 
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 400, HTTPVersion: nil, headerFields: nil)
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+            let urlResponse = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 400, httpVersion: nil, headerFields: nil)
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "POST")
                 
                 //verify request header
                 let expectedHeader = ["authorization": "Bearer \(owner.accessToken)",  "Content-type":"application/vnd.kii.OnboardingWithThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
 
                 //verify request body
                 let expectedBody = ["thingID": "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", "thingPassword": "dummyPassword", "owner": owner.typedID.toString()]
-                self.verifyDict(expectedBody, actualData: request.HTTPBody!)
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/onboardings")
+                self.verifyDict(expectedBody, actualData: request.httpBody!)
+                XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/onboardings")
             }
             
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
@@ -68,9 +68,9 @@ class OnboardingTests: SmallTestBase {
                 }else {
                     
                     switch error! {
-                    case .CONNECTION:
+                    case .connection:
                         XCTFail("should not be connection error")
-                    case .ERROR_RESPONSE(let actualErrorResponse):
+                    case .error_RESPONSE(let actualErrorResponse):
                         XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
@@ -83,7 +83,7 @@ class OnboardingTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -93,13 +93,13 @@ class OnboardingTests: SmallTestBase {
     
     func testOnboardWithVendorThingIDSuccess() {
         
-        let expectation = self.expectationWithDescription("onboardWithVendorThingID")
+        let expectation = self.expectation(description: "onboardWithVendorThingID")
         let setting = TestSetting()
         let api = setting.api
         let owner = setting.owner
 
         do{
-            let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1", "key2":"value2"]
+            let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1" as AnyObject, "key2":"value2" as AnyObject]
             let thingType = "LED"
             let vendorThingID = "th.abcd-efgh"
             let thingPassword = "dummyPassword"
@@ -107,24 +107,24 @@ class OnboardingTests: SmallTestBase {
             // mock response
             let dict = ["accessToken":setting.ownerToken,"thingID":setting.thingID]
             
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
             
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://\(setting.hostName)")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = HTTPURLResponse(url: URL(string: "https://\(setting.hostName)")!, statusCode: 200, httpVersion: nil, headerFields: nil)
             
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "POST")
                 
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(owner.accessToken)", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
                 
                 //verify body
                 let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": owner.typedID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
-                self.verifyDict(expectedBody as! Dictionary<String, AnyObject>, actualData: request.HTTPBody!)
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/onboardings")
+                self.verifyDict(expectedBody as! Dictionary<String, AnyObject>, actualData: request.httpBody!)
+                XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/onboardings")
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -142,7 +142,7 @@ class OnboardingTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -152,7 +152,7 @@ class OnboardingTests: SmallTestBase {
     }
 
     func testOnboardWithThingID_already_onboarded_error() {
-        let expectation = self.expectationWithDescription("testOnboardWithThingID_already_onboarded_error")
+        let expectation = self.expectation(description: "testOnboardWithThingID_already_onboarded_error")
         let setting = TestSetting()
         let api = setting.api
 
@@ -162,7 +162,7 @@ class OnboardingTests: SmallTestBase {
                 XCTFail("should fail")
             }else {
                 switch error! {
-                case .ALREADY_ONBOARDED:
+                case .already_ONBOARDED:
                     break
                 default:
                     XCTFail("should be ALREADY_ONBOARDED error")
@@ -171,7 +171,7 @@ class OnboardingTests: SmallTestBase {
             expectation.fulfill()
         }
 
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -180,14 +180,14 @@ class OnboardingTests: SmallTestBase {
 
     func testOnboardWithVendorThingIDAndImplementTag() {
 
-        let expectation = self.expectationWithDescription("onboardWithVendorThingID")
+        let expectation = self.expectation(description: "onboardWithVendorThingID")
         let setting = TestSetting()
         let owner = setting.owner
         let app = setting.app
 
         let api = ThingIFAPIBuilder(app:app, owner:owner, tag:"target1").build()
         do{
-            let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1", "key2":"value2"]
+            let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1" as AnyObject, "key2":"value2" as AnyObject]
             let thingType = "LED"
             let vendorThingID = "th.abcd-efgh"
             let thingPassword = "dummyPassword"
@@ -195,24 +195,24 @@ class OnboardingTests: SmallTestBase {
             // mock response
             let dict = ["accessToken":setting.ownerToken,"thingID":setting.thingID]
 
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
 
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://\(setting.hostName)")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = HTTPURLResponse(url: URL(string: "https://\(setting.hostName)")!, statusCode: 200, httpVersion: nil, headerFields: nil)
 
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "POST")
 
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(owner.accessToken)", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
 
                 //verify body
                 let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": owner.typedID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
-                self.verifyDict(expectedBody as! Dictionary<String, AnyObject>, actualData: request.HTTPBody!)
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/onboardings")
+                self.verifyDict(expectedBody as! Dictionary<String, AnyObject>, actualData: request.httpBody!)
+                XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/onboardings")
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -230,7 +230,7 @@ class OnboardingTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

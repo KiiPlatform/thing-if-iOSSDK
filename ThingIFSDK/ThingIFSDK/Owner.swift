@@ -6,24 +6,24 @@
 import Foundation
 
 /** Represents Owner */
-public class Owner: NSObject, NSCoding {
+open class Owner: NSObject, NSCoding {
 
     // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.typedID, forKey: "typedID")
-        aCoder.encodeObject(self.accessToken, forKey: "accessToken")
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.typedID, forKey: "typedID")
+        aCoder.encode(self.accessToken, forKey: "accessToken")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        self.typedID = aDecoder.decodeObjectForKey("typedID") as! TypedID
-        self.accessToken = aDecoder.decodeObjectForKey("accessToken") as! String
+        self.typedID = aDecoder.decodeObject(forKey: "typedID") as! TypedID
+        self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as! String
     }
 
     /** ID of the owner. */
-    public let typedID: TypedID
+    open let typedID: TypedID
     /** Access token of the owner. */
-    public let accessToken: String
+    open let accessToken: String
 
     /** instantiate Owner.
 
@@ -35,7 +35,7 @@ public class Owner: NSObject, NSCoding {
         self.accessToken = accessToken
     }
     
-    public override func isEqual(object: AnyObject?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         guard let anOwner = object as? Owner else{
             return false
         }

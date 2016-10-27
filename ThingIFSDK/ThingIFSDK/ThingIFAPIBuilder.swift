@@ -6,7 +6,7 @@
 import Foundation
 
 /** Builder class of ThingIFAPI */
-public class ThingIFAPIBuilder {
+open class ThingIFAPIBuilder {
 
     var app: App
     var owner: Owner
@@ -29,7 +29,7 @@ public class ThingIFAPIBuilder {
     /** Build ThingIFAPI instance.
     - Returns: ThingIFAPI instance.
      */
-    public func build() -> ThingIFAPI {
+    open func build() -> ThingIFAPI {
         let thingIFAPI = ThingIFAPI(app: self.app, owner: self.owner, tag: self.tag)
         thingIFAPI._target = self.target
         return thingIFAPI

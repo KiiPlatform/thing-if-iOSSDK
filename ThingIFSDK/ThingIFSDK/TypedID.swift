@@ -5,28 +5,28 @@
 import Foundation
 
 /** Represents entity type and its ID. */
-public class TypedID : NSObject, NSCoding {
+open class TypedID : NSObject, NSCoding {
 
     // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.type, forKey: "type")
-        aCoder.encodeObject(self.id, forKey: "id")
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.type, forKey: "type")
+        aCoder.encode(self.id, forKey: "id")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
         self.type =
-            (aDecoder.decodeObjectForKey("type") as! String).lowercaseString
-        self.id = aDecoder.decodeObjectForKey("id") as! String
+            (aDecoder.decodeObject(forKey: "type") as! String).lowercased()
+        self.id = aDecoder.decodeObject(forKey: "id") as! String
     }
 
     /** Type of the ID
 
      All characters in this string are lower case.
      */
-    public let type:String
+    open let type:String
     /** ID of the entity. */
-    public let id:String
+    open let id:String
 
     /** Ininitialize TypedID with type and id.
 
@@ -35,7 +35,7 @@ public class TypedID : NSObject, NSCoding {
     - Parameter id: ID of the entity.
      */
     public init(type:String, id:String) {
-        self.type = type.lowercaseString
+        self.type = type.lowercased()
         self.id = id
     }
 
@@ -43,7 +43,7 @@ public class TypedID : NSObject, NSCoding {
         return "\(type):\(id)"
     }
 
-    public override func isEqual(object: AnyObject?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         guard let aType = object as? TypedID else{
             return false
         }

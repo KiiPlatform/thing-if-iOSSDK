@@ -22,14 +22,14 @@ class GatewayAPIStoredInstanceTests: GatewayAPITestBase {
 
     func testLoadFromStoredInstance()
     {
-        let expectation = self.expectationWithDescription("testLoadFromStoredInstanceWithTag")
+        let expectation = self.expectation(description: "testLoadFromStoredInstanceWithTag")
         let setting = TestSetting()
 
         do {
             let dict = ["accessToken": ACCESSTOKEN]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
@@ -37,14 +37,14 @@ class GatewayAPIStoredInstanceTests: GatewayAPITestBase {
             XCTFail("should not throw error")
         }
 
-        let api = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!, tag: nil)
+        let api = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!, tag: nil)
         api.login("dummy", password: "dummy", completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNil(error)
             expectation.fulfill()
         })
         XCTAssertNil(api.tag)
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -66,15 +66,15 @@ class GatewayAPIStoredInstanceTests: GatewayAPITestBase {
 
     func testLoadFromStoredInstanceWithTag()
     {
-        let expectation = self.expectationWithDescription("testLoadFromStoredInstanceWithTag")
+        let expectation = self.expectation(description: "testLoadFromStoredInstanceWithTag")
         let setting = TestSetting()
         let tag = "dummyTag"
 
         do {
             let dict = ["accessToken": ACCESSTOKEN]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
@@ -82,14 +82,14 @@ class GatewayAPIStoredInstanceTests: GatewayAPITestBase {
             XCTFail("should not throw error")
         }
 
-        let api = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!, tag: tag)
+        let api = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!, tag: tag)
         api.login("dummy", password: "dummy", completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNil(error)
             expectation.fulfill()
         })
         XCTAssertEqual(tag, api.tag)
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

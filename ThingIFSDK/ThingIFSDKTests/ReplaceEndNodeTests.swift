@@ -23,16 +23,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
     func testSuccess()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("testSuccess")
+        let expectation = self.expectation(description: "testSuccess")
         let thingID = "dummyThingID"
         let vendorThingID = "dummyVendorThingID"
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "PUT")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
             let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/THING_ID:\(thingID)"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)",
@@ -40,16 +40,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID];
-            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 204, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+            statusCode: 204, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -64,7 +64,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             }
         )
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -74,8 +74,8 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
     func testNoLoggedInError()
     {
         let setting = TestSetting()
-        let api:GatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
-        let expectation = self.expectationWithDescription("testNoLoggedInError")
+        let api:GatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
+        let expectation = self.expectation(description: "testNoLoggedInError")
         let thingID = "dummyThingID"
         let vendorThingID = "dummyVendorThingID"
 
@@ -85,7 +85,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .USER_IS_NOT_LOGGED_IN:
+                case .user_IS_NOT_LOGGED_IN:
                     break
                 default:
                     XCTFail("unknown error response")
@@ -94,7 +94,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             }
         )
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -104,7 +104,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
     func testEmptyThingIDError()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("testEmptyThingIDError")
+        let expectation = self.expectation(description: "testEmptyThingIDError")
         let vendorThingID = "dummyVendorThingID"
 
         api.replaceEndNode(
@@ -113,7 +113,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .UNSUPPORTED_ERROR:
+                case .unsupported_ERROR:
                     break
                 default:
                     XCTFail("unknown error response")
@@ -122,7 +122,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             }
         )
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -132,7 +132,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
     func testEmptyVendorThingIDError()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("testEmptyThingIDError")
+        let expectation = self.expectation(description: "testEmptyThingIDError")
         let thingID = "dummyThingID"
 
         api.replaceEndNode(
@@ -141,7 +141,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .UNSUPPORTED_ERROR:
+                case .unsupported_ERROR:
                     break
                 default:
                     XCTFail("unknown error response")
@@ -150,7 +150,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             }
         )
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -160,16 +160,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
     func test400Error()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test400Error")
+        let expectation = self.expectation(description: "test400Error")
         let thingID = "dummyThingID"
         let vendorThingID = "dummyVendorThingID"
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "PUT")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
             let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/THING_ID:\(thingID)"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)",
@@ -177,16 +177,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID];
-            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 400, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+            statusCode: 400, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -198,7 +198,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unknown error response")
@@ -207,7 +207,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             }
         )
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -217,16 +217,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
     func test401Error()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test401Error")
+        let expectation = self.expectation(description: "test401Error")
         let thingID = "dummyThingID"
         let vendorThingID = "dummyVendorThingID"
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "PUT")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
             let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/THING_ID:\(thingID)"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)",
@@ -234,16 +234,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID];
-            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 401, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+            statusCode: 401, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -255,7 +255,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unknown error response")
@@ -264,7 +264,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             }
         )
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -274,16 +274,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
     func test404Error()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test404Error")
+        let expectation = self.expectation(description: "test404Error")
         let thingID = "dummyThingID"
         let vendorThingID = "dummyVendorThingID"
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "PUT")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
             let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/THING_ID:\(thingID)"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)",
@@ -291,16 +291,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID];
-            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 404, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+            statusCode: 404, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -312,7 +312,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unknown error response")
@@ -321,7 +321,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             }
         )
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -331,16 +331,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
     func test409Error()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test409Error")
+        let expectation = self.expectation(description: "test409Error")
         let thingID = "dummyThingID"
         let vendorThingID = "dummyVendorThingID"
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "PUT")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
             let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/THING_ID:\(thingID)"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)",
@@ -348,16 +348,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID];
-            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 409, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+            statusCode: 409, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -369,7 +369,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(409, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unknown error response")
@@ -378,7 +378,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             }
         )
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -388,16 +388,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
     func test503Error()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test503Error")
+        let expectation = self.expectation(description: "test503Error")
         let thingID = "dummyThingID"
         let vendorThingID = "dummyVendorThingID"
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "PUT")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
             let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/THING_ID:\(thingID)"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)",
@@ -405,16 +405,16 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID];
-            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 503, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+            statusCode: 503, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -426,7 +426,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .error_RESPONSE(let actualErrorResponse):
                     XCTAssertEqual(503, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unknown error response")
@@ -435,7 +435,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             }
         )
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

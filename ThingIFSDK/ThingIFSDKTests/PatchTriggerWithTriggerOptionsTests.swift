@@ -13,8 +13,8 @@ import XCTest
 
 class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
 
-    private func createSuccessRequestBody(
-      options: TriggerOptions) -> Dictionary<String, AnyObject>
+    fileprivate func createSuccessRequestBody(
+      _ options: TriggerOptions) -> Dictionary<String, AnyObject>
     {
         var trigger: Dictionary<String, AnyObject> = [
             "triggersWhat": TriggersWhat.COMMAND.rawValue
@@ -34,7 +34,7 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
 
     func testSuccess() {
         let trigger_metadata: Dictionary<String, AnyObject> =
-            ["trigger_metadata-key" : "trigger_metadata-value"]
+            ["trigger_metadata-key" : "trigger_metadata-value" as AnyObject]
 
         // TriggerOptions instances below are used as inputs and
         // expected outputs of this test. It is little bit lazy but
@@ -71,22 +71,22 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
             defer {
                 expectation = nil
             }
-            expectation = self.expectationWithDescription(error_message)
+            expectation = self.expectation(withDescription: error_message)
 
             sharedMockMultipleSession.responsePairs =
                 [
                   (
                     (
                       data: nil,
-                      urlResponse: NSHTTPURLResponse(
-                        URL: NSURL(string:setting.app.baseURL)!,
+                      urlResponse: HTTPURLResponse(
+                        url: URL(string:setting.app.baseURL)!,
                         statusCode: 204,
-                        HTTPVersion: nil,
+                        httpVersion: nil,
                         headerFields: nil),
                       error: nil
                     ),
                     {(request) in
-                        XCTAssertEqual(request.HTTPMethod, "PATCH")
+                        XCTAssertEqual(request.httpMethod, "PATCH")
 
                         let requestHeaders = request.allHTTPHeaderFields!;
                         // verify request header.
@@ -99,16 +99,16 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
                           ],
                           error_message);
                         XCTAssertEqual(
-                          request.URL?.absoluteString,
+                          request.url?.absoluteString,
                           setting.app.baseURL + "/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers/triggerID",
                           error_message)
 
                         // verify body.
                         XCTAssertEqual(
                           NSDictionary(
-                            dictionary: try! NSJSONSerialization.JSONObjectWithData(
-                              request.HTTPBody!,
-                              options: .MutableContainers)
+                            dictionary: try! JSONSerialization.jsonObject(
+                              with: request.httpBody!,
+                              options: .mutableContainers)
                               as! Dictionary<String, AnyObject>),
                           NSDictionary(
                             dictionary: self.createSuccessRequestBody(options)),
@@ -117,8 +117,8 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
                   ),
                   (
                     (
-                      data: try! NSJSONSerialization.dataWithJSONObject(
-                        [
+                      data: try! JSONSerialization.data(
+                        withJSONObject: [
                           "triggerID" : "triggerID",
                           "command" :
                             [
@@ -143,11 +143,11 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
                           "metadata" : trigger_metadata,
                           "disabled": false
                         ],
-                        options: .PrettyPrinted),
-                      urlResponse: NSHTTPURLResponse(
-                        URL: NSURL(string: setting.app.baseURL)!,
+                        options: .prettyPrinted),
+                      urlResponse: HTTPURLResponse(
+                        url: URL(string: setting.app.baseURL)!,
                         statusCode: 201,
-                        HTTPVersion: nil,
+                        httpVersion: nil,
                         headerFields: nil),
                       error: nil
                     ),
@@ -211,7 +211,7 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
                        error_message)
                     expectation.fulfill()
                 })
-            self.waitForExpectationsWithTimeout(TEST_TIMEOUT)
+            self.waitForExpectations(withTimeout: TEST_TIMEOUT)
                 { (error) -> Void in
                     if error != nil {
                         XCTFail(error_message)

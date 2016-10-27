@@ -28,7 +28,7 @@ class TriggerNSCodingTests: SmallTestBase {
         let description = "dummyDescription"
         let key = "dummyKey"
         let value = "dummyValue"
-        let metadata: Dictionary<String, AnyObject> = [ key : value ]
+        let metadata: Dictionary<String, AnyObject> = [ key : value as AnyObject ]
         let trigger = Trigger(triggerID: triggerID, targetID: TypedID(type: "thing", id: "dummyTargetID"), enabled: enabled, predicate: predicate, command: command, title: title, triggerDescription: description, metadata: metadata);
 
         XCTAssertNotNil(trigger);
@@ -43,11 +43,11 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertEqual(trigger.metadata!.count, metadata.count);
         XCTAssertEqual((trigger.metadata![key] as! String), value);
 
-        let data = NSKeyedArchiver.archivedDataWithRootObject(trigger);
+        let data = NSKeyedArchiver.archivedData(withRootObject: trigger);
 
         XCTAssertNotNil(data);
 
-        let decode = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Trigger;
+        let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! Trigger;
 
         XCTAssertNotNil(decode);
         XCTAssertEqual(decode.triggerID, triggerID);
@@ -81,11 +81,11 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertNil(trigger.triggerDescription);
         XCTAssertNil(trigger.metadata);
 
-        let data = NSKeyedArchiver.archivedDataWithRootObject(trigger);
+        let data = NSKeyedArchiver.archivedData(withRootObject: trigger);
 
         XCTAssertNotNil(data);
 
-        let decode = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Trigger;
+        let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! Trigger;
 
         XCTAssertNotNil(decode);
         XCTAssertEqual(decode.triggerID, triggerID);

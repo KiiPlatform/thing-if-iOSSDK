@@ -10,9 +10,9 @@ import Foundation
 
 extension ThingIFAPI {
     func _installPush(
-        deviceToken:NSData,
+        _ deviceToken:Data,
         development:Bool?=false,
-        completionHandler: (String?, ThingIFError?)-> Void
+        completionHandler: @escaping (String?, ThingIFError?)-> Void
         )
     {
         let requestURL = "\(baseURL)/api/apps/\(appID)/installations"
@@ -22,7 +22,7 @@ extension ThingIFAPI {
         
         requestBodyDict["installationRegistrationID"] = deviceToken.hexString()
         requestBodyDict["deviceType"] = "IOS"
-        requestBodyDict["development"] = NSNumber(bool: development!)
+        requestBodyDict["development"] = NSNumber(value: development! as Bool)
         kiiVerboseLog("Request body",requestBodyDict)
         // generate header
         var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
@@ -30,7 +30,7 @@ extension ThingIFAPI {
         requestHeaderDict["Content-type"] = "application/vnd.kii.InstallationCreationRequest+json"
         
         do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 
@@ -38,7 +38,7 @@ extension ThingIFAPI {
                     self._installationID = installationID
                 }
                 self.saveToUserDefault()
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler(self._installationID, error)
                 }
             })
@@ -47,16 +47,16 @@ extension ThingIFAPI {
             
         }catch(let e){
             kiiSevereLog(e)
-            dispatch_async(dispatch_get_main_queue()) {
-                completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+            DispatchQueue.main.async {
+                completionHandler(nil, ThingIFError.json_PARSE_ERROR)
             }
         }
 
     }
 
     func _uninstallPush(
-        installationID:String?,
-        completionHandler: (ThingIFError?)-> Void
+        _ installationID:String?,
+        completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
         let idParam = installationID != nil ? installationID : self._installationID
@@ -71,7 +71,7 @@ extension ThingIFAPI {
                 self._installationID = nil
             }
             self.saveToUserDefault()
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completionHandler( error)
             }
         })

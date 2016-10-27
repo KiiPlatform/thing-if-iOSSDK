@@ -6,33 +6,33 @@
 import Foundation
 
 /** Class represents Trigger */
-public class Trigger: NSObject, NSCoding {
+open class Trigger: NSObject, NSCoding {
 
     // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.triggerID, forKey: "triggerID")
-        aCoder.encodeObject(self.targetID, forKey: "targetID")
-        aCoder.encodeObject(self.predicate, forKey: "predicate")
-        aCoder.encodeObject(self.command, forKey: "command")
-        aCoder.encodeObject(self.serverCode, forKey: "serverCode")
-        aCoder.encodeBool(self.enabled, forKey: "enabled")
-        aCoder.encodeObject(self.title, forKey: "title")
-        aCoder.encodeObject(self.triggerDescription, forKey: "triggerDescription")
-        aCoder.encodeObject(self.metadata, forKey: "metadata")
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.triggerID, forKey: "triggerID")
+        aCoder.encode(self.targetID, forKey: "targetID")
+        aCoder.encode(self.predicate, forKey: "predicate")
+        aCoder.encode(self.command, forKey: "command")
+        aCoder.encode(self.serverCode, forKey: "serverCode")
+        aCoder.encode(self.enabled, forKey: "enabled")
+        aCoder.encode(self.title, forKey: "title")
+        aCoder.encode(self.triggerDescription, forKey: "triggerDescription")
+        aCoder.encode(self.metadata, forKey: "metadata")
         
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        self.triggerID = aDecoder.decodeObjectForKey("triggerID") as! String
-        self.targetID = aDecoder.decodeObjectForKey("targetID") as! TypedID
-        self.enabled = aDecoder.decodeBoolForKey("enabled")
-        self.predicate = aDecoder.decodeObjectForKey("predicate") as! Predicate
-        self.command = aDecoder.decodeObjectForKey("command") as? Command
-        self.serverCode = aDecoder.decodeObjectForKey("serverCode") as? ServerCode
-        self.title = aDecoder.decodeObjectForKey("title") as? String
-        self.triggerDescription = aDecoder.decodeObjectForKey("triggerDescription") as? String
-        self.metadata = aDecoder.decodeObjectForKey("metadata") as? Dictionary<String, AnyObject>
+        self.triggerID = aDecoder.decodeObject(forKey: "triggerID") as! String
+        self.targetID = aDecoder.decodeObject(forKey: "targetID") as! TypedID
+        self.enabled = aDecoder.decodeBool(forKey: "enabled")
+        self.predicate = aDecoder.decodeObject(forKey: "predicate") as! Predicate
+        self.command = aDecoder.decodeObject(forKey: "command") as? Command
+        self.serverCode = aDecoder.decodeObject(forKey: "serverCode") as? ServerCode
+        self.title = aDecoder.decodeObject(forKey: "title") as? String
+        self.triggerDescription = aDecoder.decodeObject(forKey: "triggerDescription") as? String
+        self.metadata = aDecoder.decodeObject(forKey: "metadata") as? Dictionary<String, AnyObject>
         // TODO: add aditional decoder
     }
     
@@ -48,7 +48,7 @@ public class Trigger: NSObject, NSCoding {
         }
     }
 
-    class func triggerWithNSDict(targetID: TypedID, triggerDict: NSDictionary) -> Trigger?{
+    class func triggerWithNSDict(_ targetID: TypedID, triggerDict: NSDictionary) -> Trigger?{
         let triggerID = triggerDict["triggerID"] as? String
         let disabled = triggerDict["disabled"] as? Bool
         var predicate: Predicate?
@@ -75,7 +75,7 @@ public class Trigger: NSObject, NSCoding {
                         break
                     case EventSource.ScheduleOnce:
                         if let scheduleAtMilis = (predicateDict["scheduleAt"] as? NSNumber)?.doubleValue {
-                            predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSince1970: scheduleAtMilis/1000))
+                            predicate = ScheduleOncePredicate(scheduleAt: Date(timeIntervalSince1970: scheduleAtMilis/1000))
                         }
                         break
                     }
@@ -98,23 +98,23 @@ public class Trigger: NSObject, NSCoding {
     }
 
     /** ID of the Trigger */
-    public let triggerID: String
+    open let triggerID: String
     /** ID of the Trigger target */
-    public let targetID: TypedID
+    open let targetID: TypedID
     /** Flag indicate whether the Trigger is enabled */
-    public let enabled: Bool
+    open let enabled: Bool
     /** Predicate of the Trigger */
-    public let predicate: Predicate
+    open let predicate: Predicate
     /** Command to be fired */
-    public let command: Command?
+    open let command: Command?
     /** ServerCode to be fired */
-    public let serverCode: ServerCode?
+    open let serverCode: ServerCode?
     /** Title of the Trigger */
-    public let title: String?
+    open let title: String?
     /** Description of the Trigger */
-    public let triggerDescription: String?
+    open let triggerDescription: String?
     /** Metadata of the Trigger */
-    public let metadata: Dictionary<String, AnyObject>?
+    open let metadata: Dictionary<String, AnyObject>?
 
     /** Init Trigger with Command
 
@@ -155,7 +155,7 @@ public class Trigger: NSObject, NSCoding {
         self.metadata = metadata
     }
 
-    public override func isEqual(object: AnyObject?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         guard let aTrigger = object as? Trigger else{
             return false
         }

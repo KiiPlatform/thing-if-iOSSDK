@@ -10,9 +10,9 @@ import Foundation
 /** Optional parameters of
 `ThingIFAPI.onboardWithThingID(thingID:thingPassword:options:completionHandler:)`.
 */
-public class OnboardWithThingIDOptions {
-    public let layoutPosition: LayoutPosition?
-    public let dataGroupingInterval: DataGroupingInterval?
+open class OnboardWithThingIDOptions {
+    open let layoutPosition: LayoutPosition?
+    open let dataGroupingInterval: DataGroupingInterval?
 
     /** initializer.
 

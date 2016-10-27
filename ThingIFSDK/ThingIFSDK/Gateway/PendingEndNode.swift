@@ -7,28 +7,28 @@
 
 import Foundation
 
-public class PendingEndNode: NSObject, NSCoding {
+open class PendingEndNode: NSObject, NSCoding {
     let KEY_VENDORTHINGID = "vendorThingID"
     let KEY_THINGPROPERTIES = "thingProperties"
 
-    public let vendorThingID: String?
-    public let thingProperties: Dictionary<String, AnyObject>?
+    open let vendorThingID: String?
+    open let thingProperties: Dictionary<String, AnyObject>?
 
-    public var thingType: String? {
+    open var thingType: String? {
         return self.thingProperties?["_thingType"] as? String
     }
 
     // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder)
+    open func encode(with aCoder: NSCoder)
     {
-        aCoder.encodeObject(self.vendorThingID, forKey: KEY_VENDORTHINGID)
-        aCoder.encodeObject(self.thingProperties, forKey: KEY_THINGPROPERTIES)
+        aCoder.encode(self.vendorThingID, forKey: KEY_VENDORTHINGID)
+        aCoder.encode(self.thingProperties, forKey: KEY_THINGPROPERTIES)
     }
 
     public required init(coder aDecoder: NSCoder)
     {
-        self.vendorThingID = aDecoder.decodeObjectForKey(KEY_VENDORTHINGID) as? String
-        self.thingProperties = aDecoder.decodeObjectForKey(KEY_THINGPROPERTIES) as? Dictionary<String, AnyObject>
+        self.vendorThingID = aDecoder.decodeObject(forKey: KEY_VENDORTHINGID) as? String
+        self.thingProperties = aDecoder.decodeObject(forKey: KEY_THINGPROPERTIES) as? Dictionary<String, AnyObject>
     }
 
     init(json: Dictionary<String, AnyObject>)

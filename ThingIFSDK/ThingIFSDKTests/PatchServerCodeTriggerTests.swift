@@ -18,23 +18,23 @@ class PatchServerCodeTriggerTests: SmallTestBase {
 
     }
     func testPatchServerCodeScheduleOnceTrigger_success() {
-        let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000))
+        let predicate = ScheduleOncePredicate(scheduleAt: Date(timeIntervalSinceNow: 1000))
         patchServerCodeTrigger_success(predicate)
     }
-    func patchServerCodeTrigger_success(predicate: Predicate) {
+    func patchServerCodeTrigger_success(_ predicate: Predicate) {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let tag = "PatchServerCodeTriggerTests.testPatchServerCodeTrigger_success"
-        let expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_success_\(predicate.getEventSource().rawValue)")
+        let expectation : XCTestExpectation! = self.expectation(withDescription: "testPostNewServerCodeTrigger_success_\(predicate.getEventSource().rawValue)")
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
         let expectedTargetAppID = "app000001"
         var expectedParameters = Dictionary<String, AnyObject>()
-        expectedParameters["arg1"] = "abcd"
-        expectedParameters["arg2"] = 1234
-        expectedParameters["arg3"] = 0.12345
-        expectedParameters["arg4"] = false
+        expectedParameters["arg1"] = "abcd" as AnyObject?
+        expectedParameters["arg2"] = 1234 as AnyObject?
+        expectedParameters["arg3"] = 0.12345 as AnyObject?
+        expectedParameters["arg4"] = false as AnyObject?
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
 
@@ -43,41 +43,41 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         do {
             // mock response for patch
             let dict4Patch = ["triggerID": expectedTriggerID]
-            let jsonData4Patch = try NSJSONSerialization.dataWithJSONObject(dict4Patch, options: .PrettyPrinted)
-            let urlResponse4Patch = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData4Patch = try JSONSerialization.data(withJSONObject: dict4Patch, options: .prettyPrinted)
+            let urlResponse4Patch = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
             // mock response for get
             let dict4Get = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": expectedServerCodeDict, "triggersWhat":"SERVER_CODE", "disabled":false]
-            let jsonData4Get = try NSJSONSerialization.dataWithJSONObject(dict4Get, options: .PrettyPrinted)
-            let urlResponse4Get = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData4Get = try JSONSerialization.data(withJSONObject: dict4Get, options: .prettyPrinted)
+            let urlResponse4Get = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
             
             // verify request for patch
-            let patchRequestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "PATCH")
+            let patchRequestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "PATCH")
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.ownerToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key), tag)
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key), tag)
                 }
                 //verify body
                 
                 let expectedBody = ["predicate": expectedPredicateDict, "serverCode": expectedServerCodeDict, "triggersWhat":"SERVER_CODE"]
                 do {
-                    let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                    let actualBodyData = request.HTTPBody
-                    XCTAssertTrue(expectedBodyData.length == actualBodyData!.length, tag)
+                    let expectedBodyData = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                    let actualBodyData = request.httpBody
+                    XCTAssertTrue(expectedBodyData.count == actualBodyData!.count, tag)
                 }catch(_){
                     XCTFail(tag)
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
+                XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
 
             }
             // verify request for get
-            let getRequestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+            let getRequestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "GET")
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.ownerToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key), tag)
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key), tag)
                 }
             }
             iotSession = MockMultipleSession.self
@@ -105,7 +105,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout for \(tag)")
             }
@@ -118,23 +118,23 @@ class PatchServerCodeTriggerTests: SmallTestBase {
 
     }
     func testPatchServerCodeScheduleOnceTrigger_http_404() {
-        let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000))
+        let predicate = ScheduleOncePredicate(scheduleAt: Date(timeIntervalSinceNow: 1000))
         patchServerCodeTrigger_http_404(predicate)
     }
-    func patchServerCodeTrigger_http_404(predicate: Predicate) {
+    func patchServerCodeTrigger_http_404(_ predicate: Predicate) {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let tag = "PatchServerCodeTriggerTests.testPatchServerCodeTrigger_http_404"
         let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let expectation : XCTestExpectation! = self.expectationWithDescription("testPostNewServerCodeTrigger_http_404_\(predicate.getEventSource().rawValue)")
+        let expectation : XCTestExpectation! = self.expectation(withDescription: "testPostNewServerCodeTrigger_http_404_\(predicate.getEventSource().rawValue)")
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
         let expectedTargetAppID = "app000001"
         var expectedParameters = Dictionary<String, AnyObject>()
-        expectedParameters["arg1"] = "abcd"
-        expectedParameters["arg2"] = 1234
-        expectedParameters["arg3"] = 0.12345
-        expectedParameters["arg4"] = false
+        expectedParameters["arg1"] = "abcd" as AnyObject?
+        expectedParameters["arg2"] = 1234 as AnyObject?
+        expectedParameters["arg3"] = 0.12345 as AnyObject?
+        expectedParameters["arg4"] = false as AnyObject?
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
 
@@ -144,24 +144,24 @@ class PatchServerCodeTriggerTests: SmallTestBase {
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
                 "message" : "Target \(setting.target.typedID.toString()) not found"]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: responsedDict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 404, httpVersion: nil, headerFields: nil)
             
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "PATCH")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "PATCH")
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.ownerToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key), tag)
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key), tag)
                 }
                 //verify body
                 
                 let expectedBody = ["predicate": expectedPredicateDict, "serverCode": expectedServerCodeDict, "triggersWhat":"SERVER_CODE"]
                 do {
-                    let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                    let actualBodyData = request.HTTPBody
-                    XCTAssertTrue(expectedBodyData.length == actualBodyData!.length, tag)
+                    let expectedBodyData = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                    let actualBodyData = request.httpBody
+                    XCTAssertTrue(expectedBodyData.count == actualBodyData!.count, tag)
                 }catch(_){
                     XCTFail(tag)
                 }
@@ -176,9 +176,9 @@ class PatchServerCodeTriggerTests: SmallTestBase {
                     XCTFail("should fail")
                 }else {
                     switch error! {
-                    case .CONNECTION:
+                    case .connection:
                         XCTFail("should not be connection error")
-                    case .ERROR_RESPONSE(let actualErrorResponse):
+                    case .error_RESPONSE(let actualErrorResponse):
                         XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
@@ -191,7 +191,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout for \(tag)")
             }
@@ -204,15 +204,15 @@ class PatchServerCodeTriggerTests: SmallTestBase {
         patchServerCodeTrigger_target_not_available_error(predicate)
     }
     func testPatchServerCodeScheduleOnceTrigger_target_not_available_error() {
-        let predicate = ScheduleOncePredicate(scheduleAt: NSDate(timeIntervalSinceNow: 1000))
+        let predicate = ScheduleOncePredicate(scheduleAt: Date(timeIntervalSinceNow: 1000))
         patchServerCodeTrigger_target_not_available_error(predicate)
     }
 
-    func patchServerCodeTrigger_target_not_available_error(predicate: Predicate) {
+    func patchServerCodeTrigger_target_not_available_error(_ predicate: Predicate) {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let expectation : XCTestExpectation! = self.expectationWithDescription("PatchServerCodeTriggerTests.testPatchServerCodeTrigger_target_not_available_error_\(predicate.getEventSource().rawValue)")
+        let expectation : XCTestExpectation! = self.expectation(withDescription: "PatchServerCodeTriggerTests.testPatchServerCodeTrigger_target_not_available_error_\(predicate.getEventSource().rawValue)")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
         
@@ -221,7 +221,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
                 XCTFail("should fail")
             }else {
                 switch error! {
-                case .TARGET_NOT_AVAILABLE:
+                case .target_NOT_AVAILABLE:
                     break
                 default:
                     XCTFail("should be TARGET_NOT_AVAILABLE")
@@ -230,7 +230,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
             expectation.fulfill()
         })
         
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

@@ -18,22 +18,22 @@ public struct ErrorResponse {
     }
 }
 
-public enum ThingIFError : ErrorType {
-    case CONNECTION
-    case ERROR_RESPONSE(required: ErrorResponse)
-    case PUSH_NOT_AVAILABLE
-    case JSON_PARSE_ERROR
-    case UNSUPPORTED_ERROR
+public enum ThingIFError : Error {
+    case connection
+    case error_RESPONSE(required: ErrorResponse)
+    case push_NOT_AVAILABLE
+    case json_PARSE_ERROR
+    case unsupported_ERROR
     /** when already onboarded */
-    case ALREADY_ONBOARDED
+    case already_ONBOARDED
     /** where target not found */
-    case TARGET_NOT_AVAILABLE
+    case target_NOT_AVAILABLE
     /** when trying to load API from persistance but not avaialble*/
-    case API_NOT_STORED
+    case api_NOT_STORED
     /** when trying to load API from persistance but it does not have correct instance*/
-    case INVALID_STORED_API
+    case invalid_STORED_API
     /** when trying to access Gateway but user is not logged in*/
-    case USER_IS_NOT_LOGGED_IN
+    case user_IS_NOT_LOGGED_IN
     /** whenever request operation is failed. (i.e invalid URL) */
-    case ERROR_REQUEST(required: NSError)
+    case error_REQUEST(required: NSError)
 }

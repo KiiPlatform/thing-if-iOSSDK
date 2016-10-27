@@ -10,10 +10,10 @@ import Foundation
 
 extension ThingIFAPI {
     func _getState(
-        completionHandler: (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
+        _ completionHandler: @escaping (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
         ){
             guard let target = self.target else {
-                completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+                completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
                 return
             }
 
@@ -26,11 +26,13 @@ extension ThingIFAPI {
                 var states : Dictionary<String, AnyObject>?
                 if response != nil {
                     states = Dictionary<String, AnyObject>()
-                    response!.enumerateKeysAndObjectsUsingBlock{ (key, obj, stop) -> Void in
-                        states![key as! String] = obj
-                    }
+                    response!.enumerateKeysAndObjects(
+                      { (key, obj, stop) -> Void in
+                          states![key as! String] = obj as AnyObject
+                      }
+                    )
                 }
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler(states, error)
                 }
             })

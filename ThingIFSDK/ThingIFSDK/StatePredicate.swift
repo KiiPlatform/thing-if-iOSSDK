@@ -9,11 +9,11 @@
 import Foundation
 
 /** Class represents StatePredicate */
-public class StatePredicate: NSObject,Predicate {
-    public let triggersWhen: TriggersWhen!
-    public let condition: Condition!
+open class StatePredicate: NSObject,Predicate {
+    open let triggersWhen: TriggersWhen!
+    open let condition: Condition!
 
-    public func getEventSource() -> EventSource {
+    open func getEventSource() -> EventSource {
         return EventSource.States
     }
     /** Initialize StatePredicate with Condition and TriggersWhen
@@ -28,24 +28,24 @@ public class StatePredicate: NSObject,Predicate {
     }
 
     public required init(coder aDecoder: NSCoder) {
-        self.triggersWhen = TriggersWhen(rawValue: aDecoder.decodeObjectForKey("triggersWhen") as! String);
-        self.condition = aDecoder.decodeObjectForKey("condition") as! Condition;
+        self.triggersWhen = TriggersWhen(rawValue: aDecoder.decodeObject(forKey: "triggersWhen") as! String);
+        self.condition = aDecoder.decodeObject(forKey: "condition") as! Condition;
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.triggersWhen.rawValue, forKey: "triggersWhen");
-        aCoder.encodeObject(self.condition, forKey: "condition");
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.triggersWhen.rawValue, forKey: "triggersWhen");
+        aCoder.encode(self.condition, forKey: "condition");
     }
 
     /** Get StatePredicate as NSDictionary instance
 
      - Returns: a NSDictionary instance
      */
-    public func toNSDictionary() -> NSDictionary {
+    open func toNSDictionary() -> NSDictionary {
         return NSDictionary(dictionary: ["eventSource": EventSource.States.rawValue, "triggersWhen": self.triggersWhen.rawValue, "condition": self.condition.toNSDictionary()])
     }
 
-    class func statePredicateWithNSDict(predicateDict: NSDictionary) -> StatePredicate?{
+    class func statePredicateWithNSDict(_ predicateDict: NSDictionary) -> StatePredicate?{
         var triggersWhen: TriggersWhen?
         var condition: Condition?
         if let triggersWhenString = predicateDict["triggersWhen"] as? String {

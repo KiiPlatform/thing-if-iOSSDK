@@ -22,8 +22,8 @@ class IoTRequestTests: XCTestCase {
     }
 
     func testRequestInvalidURL(){
-        let operationQueue = OperationQueue()
-        let expectation = self.expectationWithDescription("testRequestInvalidURL")
+        let operationQueue = ThingIFSDK.OperationQueue()
+        let expectation = self.expectation(description: "testRequestInvalidURL")
         let appID = "dummyApp"
         let targetStr = "dummy_target"
         let triggerID = "dummy_id"
@@ -37,16 +37,16 @@ class IoTRequestTests: XCTestCase {
         // generate header
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(accessToken)", "content-type": "application/json"]
 
-        iotSession = NSURLSession.self
+        iotSession = URLSession.self
 
         let request = buildDefaultRequest(HTTPMethod.PUT,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
             if error == nil {
                 XCTFail("Should not be nil")
             }else{
                 switch error! {
-                case .CONNECTION:
+                case .connection:
                     XCTFail(": should not be connection")
-                case .ERROR_REQUEST(let actualErrorRequest):
+                case .error_REQUEST(let actualErrorRequest):
                     XCTAssertEqual("A server with the specified hostname could not be found.",
                         actualErrorRequest.localizedDescription)
                 default:
@@ -58,7 +58,7 @@ class IoTRequestTests: XCTestCase {
 
         let operation = IoTRequestOperation(request: request)
         operationQueue.addOperation(operation)
-        self.waitForExpectationsWithTimeout(30) { (error) in
+        self.waitForExpectations(timeout: 30) { (error) in
             if error != nil {
                 XCTFail()
             }
