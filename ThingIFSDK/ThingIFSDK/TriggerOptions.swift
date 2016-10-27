@@ -26,7 +26,7 @@ open class TriggerOptions: NSObject, NSCoding {
     open let triggerDescription: String?
 
     /// Meta data of a trigger.
-    open let metadata: Dictionary<String, AnyObject>?
+    open let metadata: Dictionary<String, Any>?
 
     // MARK: - Initializing TriggerOptions instance.
     /**
@@ -40,7 +40,7 @@ open class TriggerOptions: NSObject, NSCoding {
     */
     public init(title: String? = nil,
                 triggerDescription: String? = nil,
-                metadata: Dictionary<String, AnyObject>? = nil)
+                metadata: Dictionary<String, Any>? = nil)
     {
         self.title = title
         self.triggerDescription = triggerDescription;
@@ -59,6 +59,6 @@ open class TriggerOptions: NSObject, NSCoding {
         self.triggerDescription =
             aDecoder.decodeObject(forKey: "triggerDescription") as? String
         self.metadata = aDecoder.decodeObject(forKey: "metadata")
-                as? Dictionary<String, AnyObject>
+                as? Dictionary<String, Any>
     }
 }
