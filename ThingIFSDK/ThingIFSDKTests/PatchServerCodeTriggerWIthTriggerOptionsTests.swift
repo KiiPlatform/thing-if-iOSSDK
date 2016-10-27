@@ -15,9 +15,9 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
       _ triggerID: String,
       serverCode: ServerCode,
       predicate: Predicate,
-      options: TriggerOptions?) -> Dictionary<String, AnyObject>
+      options: TriggerOptions?) -> Dictionary<String, Any>
     {
-        var retval: Dictionary<String, AnyObject> = [
+        var retval: Dictionary<String, Any> = [
           "triggerID" : triggerID,
           "triggersWhat" : "SERVER_CODE",
           "serverCode" : serverCode.toNSDictionary(),
@@ -33,10 +33,10 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
     fileprivate func expectedRequestBody(
       _ serverCode: ServerCode? = nil,
       predicate: Predicate? = nil,
-      options: TriggerOptions? = nil) -> Dictionary<String, AnyObject>
+      options: TriggerOptions? = nil) -> Dictionary<String, Any>
     {
-        var retval: Dictionary<String, AnyObject> = [
-          "triggersWhat" : "SERVER_CODE" as AnyObject
+        var retval: Dictionary<String, Any> = [
+          "triggersWhat" : "SERVER_CODE"
         ]
         retval["serverCode"] = serverCode?.toNSDictionary()
         retval["predicate"] = predicate?.toNSDictionary()
@@ -47,8 +47,8 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
     }
 
     func testSuccess() {
-        let metadata: Dictionary<String, AnyObject> = [
-          "key" : "value" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key" : "value"
         ]
         let optionsArray: [TriggerOptions?] = [
           nil,
@@ -124,7 +124,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                         dictionary: try! JSONSerialization.jsonObject(
                          with: request.httpBody!,
                          options: .mutableContainers)
-                          as! Dictionary<String, AnyObject>),
+                          as! Dictionary<String, Any>),
                       NSDictionary(dictionary: self.expectedRequestBody(
                                      serverCode,
                                      predicate: predicate,
@@ -212,8 +212,8 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
 
 
     func testServerCodeAndOption() {
-        let metadata: Dictionary<String, AnyObject> = [
-          "key" : "value" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key" : "value"
         ]
         let options = TriggerOptions(title: "title",
                                      triggerDescription: "trigger description",
@@ -265,7 +265,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                     dictionary: try! JSONSerialization.jsonObject(
                       with: request.httpBody!,
                       options: .mutableContainers)
-                      as! Dictionary<String, AnyObject>),
+                      as! Dictionary<String, Any>),
                   NSDictionary(dictionary: self.expectedRequestBody(
                                  serverCode,
                                  options: options)))
@@ -341,8 +341,8 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
     }
 
     func testPredicateAndOption() {
-        let metadata: Dictionary<String, AnyObject> = [
-          "key" : "value" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key" : "value"
         ]
         let options = TriggerOptions(title: "title",
                                      triggerDescription: "trigger description",
@@ -393,7 +393,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                     dictionary: try! JSONSerialization.jsonObject(
                       with: request.httpBody!,
                       options: .mutableContainers)
-                      as! Dictionary<String, AnyObject>),
+                      as! Dictionary<String, Any>),
                   NSDictionary(dictionary: self.expectedRequestBody(
                     predicate: predicate,
                                  options: options)))
