@@ -13,7 +13,7 @@ import Foundation
 open class OnboardWithVendorThingIDOptions {
     open let thingType: String?
     open let firmwareVersion: String?
-    open let thingProperties: Dictionary<String,AnyObject>?
+    open let thingProperties: Dictionary<String, Any>?
     open let layoutPosition: LayoutPosition?
     open let dataGroupingInterval: DataGroupingInterval?
 
@@ -33,7 +33,7 @@ open class OnboardWithVendorThingIDOptions {
     public init(
         thingType:String? = nil,
         firmwareVersion:String? = nil,
-        thingProperties:Dictionary<String,AnyObject>? = nil,
+        thingProperties:Dictionary<String, Any>? = nil,
         position: LayoutPosition? = nil,
         interval: DataGroupingInterval? = nil)
     {
