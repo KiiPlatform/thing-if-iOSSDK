@@ -37,7 +37,7 @@ class GetTriggerTests: SmallTestBase {
             ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
         ]
         for simpleStatement in simpleStatementsToTest {
-            getTriggerSuccess("testGetTrigger_success_predicates", statementToTest: simpleStatement as Dictionary<String, AnyObject>, triggersWhen: "CONDITION_FALSE_TO_TRUE", setting: setting)
+            getTriggerSuccess("testGetTrigger_success_predicates", statementToTest: simpleStatement, triggersWhen: "CONDITION_FALSE_TO_TRUE", setting: setting)
         }
 
         let orClauseStatement = ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]] as [String : Any]
@@ -47,7 +47,7 @@ class GetTriggerTests: SmallTestBase {
             ["type": "or", "clauses": [["type":"eq","field":"brightness", "value": 50], andClauseStatement]]
         ]
         for complextStatement in complexStatementsToTest {
-            getTriggerSuccess("getTriggerSuccess", statementToTest: complextStatement as Dictionary<String, AnyObject>, triggersWhen: "CONDITION_FALSE_TO_TRUE", setting: setting)
+            getTriggerSuccess("getTriggerSuccess", statementToTest: complextStatement, triggersWhen: "CONDITION_FALSE_TO_TRUE", setting: setting)
         }
 
     }
@@ -65,7 +65,7 @@ class GetTriggerTests: SmallTestBase {
 
     }
 
-    func getTriggerSuccess(_ tag: String, statementToTest: Dictionary<String, AnyObject>, triggersWhen: String, setting:TestSetting) {
+    func getTriggerSuccess(_ tag: String, statementToTest: Dictionary<String, Any>, triggersWhen: String, setting:TestSetting) {
 
         let expectation : XCTestExpectation! = self.expectation(description: tag)
 
