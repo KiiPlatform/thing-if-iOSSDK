@@ -39,9 +39,9 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithMetadata() {
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let form = TriggerOptions(metadata: metadata)
 
@@ -62,9 +62,9 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithTitleAndMetadata() {
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let form = TriggerOptions(title: "title",
                                   metadata: metadata)
@@ -76,9 +76,9 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithDescriptionAndMetadata() {
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let form = TriggerOptions(triggerDescription: "description",
                                   metadata: metadata)
@@ -89,9 +89,9 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithAllFields() {
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let form = TriggerOptions(title: "title",
                                   triggerDescription: "description",
@@ -103,9 +103,9 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testNSCoding() {
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let original = TriggerOptions(title: "title",
                                       triggerDescription: "description",
