@@ -93,7 +93,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 "thingType": setting.thingType,
                 "thingProperties": thingProperties
             ] as [String : Any]
-            let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+            let pending = PendingEndNode(json: src)
             setting.api.onboardEndnodeWithGateway(
                 pending,
                 endnodePassword: password,
@@ -182,7 +182,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": vendorThingID,
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -272,7 +272,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": vendorThingID,
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -362,7 +362,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": vendorThingID,
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -400,7 +400,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": vendorThingID,
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -483,7 +483,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": "",
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -525,7 +525,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": vendorThingID,
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -623,7 +623,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 "thingType": setting.thingType,
                 "thingProperties": thingProperties
             ] as [String : Any]
-            let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+            let pending = PendingEndNode(json: src)
             setting.api.onboardEndnodeWithGateway(
                 pending,
                 endnodePassword: password,
@@ -715,7 +715,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": vendorThingID,
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -808,7 +808,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": vendorThingID,
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -901,7 +901,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": vendorThingID,
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -940,7 +940,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": vendorThingID,
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -1025,7 +1025,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": "",
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
@@ -1068,7 +1068,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "vendorThingID": vendorThingID,
             "thingProperties": thingProperties
         ] as [String : Any]
-        let pending = PendingEndNode(json: src as! Dictionary<String, AnyObject>)
+        let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
             pending,
             endnodePassword: password,
