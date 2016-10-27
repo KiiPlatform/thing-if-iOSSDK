@@ -60,7 +60,7 @@ class GetTriggerTests: SmallTestBase {
 
         let triggersWhensToTest = ["CONDITION_TRUE", "CONDITION_FALSE_TO_TRUE", "CONDITION_CHANGED"]
         for triggersWhen in triggersWhensToTest {
-            getTriggerSuccess("testGetTrigger_success_triggersWhens", statementToTest: ["type":"eq" as AnyObject,"field":"color" as AnyObject, "value": 0 as AnyObject], triggersWhen: triggersWhen, setting: setting)
+            getTriggerSuccess("testGetTrigger_success_triggersWhens", statementToTest: ["type":"eq", "field": "color", "value": 0], triggersWhen: triggersWhen, setting: setting)
         }
 
     }
@@ -71,7 +71,7 @@ class GetTriggerTests: SmallTestBase {
 
         do{
             let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-            let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+            let expectedActionsDict: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let expectedCommandObject = Command(commandID: nil, targetID: setting.target.typedID, issuerID: setting.owner.typedID, schemaName: setting.schema, schemaVersion: setting.schemaVersion, actions: expectedActionsDict, actionResults: nil, commandState: nil)
             let eventSource = "STATES"
             let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":triggersWhen, "condition":statementToTest] as [String : Any]
@@ -140,15 +140,15 @@ class GetTriggerTests: SmallTestBase {
             let expectedEndpoint = "my_function"
             let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
             let expectedTargetAppID = "app000001"
-            var expectedParameters = Dictionary<String, AnyObject>()
-            expectedParameters["arg1"] = "abcd" as AnyObject?
-            expectedParameters["arg2"] = 1234 as AnyObject?
-            expectedParameters["arg3"] = 0.12345 as AnyObject?
-            expectedParameters["arg4"] = false as AnyObject?
+            var expectedParameters = Dictionary<String, Any>()
+            expectedParameters["arg1"] = "abcd"
+            expectedParameters["arg2"] = 1234
+            expectedParameters["arg3"] = 0.12345
+            expectedParameters["arg4"] = false
             let expectedServerCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
             let serverCodeDict = expectedServerCode.toNSDictionary()
             let eventSource = "STATES"
-            let condition: Dictionary<String, AnyObject> = ["type":"eq" as AnyObject,"field":"color" as AnyObject, "value": 0 as AnyObject]
+            let condition: Dictionary<String, Any> = ["type":"eq", "field":"color", "value": 0]
             let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":TriggersWhen.CONDITION_FALSE_TO_TRUE.rawValue, "condition": condition]
             
             // mock response
