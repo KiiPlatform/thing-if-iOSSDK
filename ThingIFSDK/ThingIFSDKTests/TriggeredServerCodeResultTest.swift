@@ -15,7 +15,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
             "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func9\",\"returnedValue\":{\"f1\":\"aaa\",\"f2\":false,\"f3\":1000,\"f4\":100.05,\"f5\":[123]}}",
             "{\"succeeded\":false,\"executedAt\":1455531174923,\"endpoint\":\"func0\",\"error\":{\"errorMessage\":\"Error found\",\"details\":{\"errorCode\":\"RUNTIME_ERROR\",\"message\":\"faital error\"}}}",
         ]
-        let expectedDataList: [[AnyObject?]] = [
+        let expectedDataList: [[Any?]] = [
             [true, 1455531174923, NSNull(), nil, "func1"],
             [true, 1455531174923, "", nil, "func2"],
             [true, 1455531174923, "abc", nil, "func3"],
@@ -38,7 +38,23 @@ class TriggeredServerCodeResultTest: SmallTestBase {
             if result.returnedValue == nil {
                 XCTAssertNil(expectedData[2])
             } else {
-                XCTAssertTrue(result.returnedValue!.isEqual(expectedData[2]!))
+                if let returnedValue = result.returnedValue as? String {
+                    XCTAssertEqual(returnedValue, expectedData[2] as? String)
+                } else if let returnedValue = result.returnedValue as? Int {
+                    XCTAssertEqual(returnedValue, expectedData[2] as? Int)
+                } else if let returnedValue = result.returnedValue as? Double {
+                    XCTAssertEqual(returnedValue, expectedData[2] as? Double)
+                } else if let returnedValue = result.returnedValue as? Bool {
+                    XCTAssertEqual(returnedValue, expectedData[2] as? Bool)
+                } else if let returnedValue = result.returnedValue as? [Any] {
+                    verifyArray(returnedValue,
+                                actual: expectedData[2] as? [Any])
+                } else if let returnedValue =
+                            result.returnedValue as? Dictionary<String, Any> {
+                    verifyDict(returnedValue,
+                               actualDict:expectedData[2]
+                                 as? Dictionary<String, Any>)
+                }
             }
             if expectedData[3] == nil {
                 XCTAssertNil(result.error)
@@ -143,7 +159,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         XCTAssertNil(result?.getReturnedValueAsArray())
     }
     func testIsEqual() {
-        let testCases: [[AnyObject]] = [
+        let testCases: [[Any]] = [
             // succeeded
             [
                 TriggeredServerCodeResult(succeeded:true, returnedValue:"abcd", executedAt:Date(timeIntervalSince1970:14555311749), endpoint:"func", error:nil),
@@ -292,7 +308,12 @@ class TriggeredServerCodeResultTest: SmallTestBase {
             ],
         ]
         for var testCase in testCases {
-            XCTAssertEqual(testCase[0].isEqual(testCase[1]), (testCase[2] as! Bool))
+            if let testCase0 = testCase[0] as? TriggeredServerCodeResult,
+               let testCase1 = testCase[1] as? TriggeredServerCodeResult {
+                XCTAssertEqual(testCase0.isEqual(testCase1), (testCase[2] as! Bool))
+            } else {
+                XCTFail("unexpected test case.")
+            }
         }
     }
 }
