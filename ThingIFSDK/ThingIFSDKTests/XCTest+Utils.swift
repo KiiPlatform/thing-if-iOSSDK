@@ -12,7 +12,7 @@ import XCTest
 
 extension XCTestCase {
     
-    func verifyDict(_ expectedDict:Dictionary<String, AnyObject>, actualDict: Dictionary<String, AnyObject>){
+    func verifyDict(_ expectedDict:Dictionary<String, Any>, actualDict: Dictionary<String, Any>){
         let s = "expected=" + expectedDict.description + "actual" + actualDict.description
         XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqual(to: actualDict), s)
     }
@@ -21,7 +21,7 @@ extension XCTestCase {
         XCTAssertTrue(expectedDict.isEqual(to: actualDict as! [AnyHashable: Any]), s)
     }
     
-    func verifyDict(_ expectedDict:Dictionary<String, AnyObject>, actualData: Data){
+    func verifyDict(_ expectedDict:Dictionary<String, Any>, actualData: Data){
         
         do{
             let actualDict: NSDictionary = try JSONSerialization.jsonObject(with: actualData, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
