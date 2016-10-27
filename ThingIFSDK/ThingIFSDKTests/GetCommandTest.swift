@@ -21,10 +21,10 @@ class GetCommandTests: SmallTestBase {
         let target: Target
         let schema: String
         let schemaVersion: Int
-        let actions: [Dictionary<String, AnyObject>]
+        let actions: [Dictionary<String, Any>]
         let issuerIDString: String
         let targetIDString: String
-        let actionResults: [Dictionary<String, AnyObject>]?
+        let actionResults: [Dictionary<String, Any>]?
         let commandState: CommandState
         let commandStateString: String
         let firedByTriggerID: String?
@@ -60,9 +60,9 @@ class GetCommandTests: SmallTestBase {
 
             let commandID = "429251a0-46f7-11e5-a5eb-06d9d1527620"
             // mock response
-            var dict: [String: AnyObject] = ["commandID": commandID as AnyObject, "schema": testcase.schema as AnyObject, "schemaVersion": testcase.schemaVersion as AnyObject, "target": testcase.targetIDString as AnyObject, "issuer": testcase.issuerIDString as AnyObject, "actions": testcase.actions as AnyObject, "commandState": testcase.commandStateString as AnyObject]
+            var dict: [String: Any] = ["commandID": commandID, "schema": testcase.schema, "schemaVersion": testcase.schemaVersion, "target": testcase.targetIDString, "issuer": testcase.issuerIDString, "actions": testcase.actions, "commandState": testcase.commandStateString]
             if let firedByTriggerID = testcase.firedByTriggerID {
-                dict["firedByTriggerID"] = firedByTriggerID as AnyObject?
+                dict["firedByTriggerID"] = firedByTriggerID
             }
             if let created = testcase.created {
                 dict["createdAt"] = created.timeIntervalSince1970 * 1000
@@ -71,7 +71,7 @@ class GetCommandTests: SmallTestBase {
                 dict["modifiedAt"] = modified.timeIntervalSince1970 * 1000
             }
             if testcase.actionResults != nil {
-                dict["actionResults"] = testcase.actionResults! as AnyObject?
+                dict["actionResults"] = testcase.actionResults
             }
 
             let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
