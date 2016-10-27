@@ -26,7 +26,7 @@ class GetStateTests: SmallTestBase {
         let expectation = self.expectation(description: "onboardWithVendorThingID")
 
         do{
-            let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1" as AnyObject, "key2":"value2" as AnyObject]
+            let thingProperties:Dictionary<String, Any> = ["key1":"value1", "key2":"value2"]
             let thingType = "LED"
             let vendorThingID = "th.abcd-efgh"
             let thingPassword = "dummyPassword"
@@ -89,10 +89,10 @@ class GetStateTests: SmallTestBase {
             XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
         }
 
-        let dict : Dictionary<String,AnyObject>? = [
-            "power" : true as AnyObject,
-            "brightness" : 70 as AnyObject,
-            "color" : 0 as AnyObject
+        let dict : Dictionary<String, Any>? = [
+            "power" : true,
+            "brightness" : 70,
+            "color" : 0
         ]
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted)
@@ -263,10 +263,10 @@ class GetStateTests: SmallTestBase {
 
         }
 
-        let dict : Dictionary<String,AnyObject>? = [
-            "power" : true as AnyObject,
-            "brightness" : 70 as AnyObject,
-            "color" : 0 as AnyObject
+        let dict : Dictionary<String, Any>? = [
+            "power" : true,
+            "brightness" : 70,
+            "color" : 0
         ]
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted)
