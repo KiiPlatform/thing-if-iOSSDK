@@ -21,7 +21,7 @@ open class ServerCode : NSObject, NSCoding {
         self.endpoint = aDecoder.decodeObject(forKey: "endpoint") as! String
         self.executorAccessToken = aDecoder.decodeObject(forKey: "executorAccessToken") as? String
         self.targetAppID = aDecoder.decodeObject(forKey: "targetAppID") as? String
-        self.parameters = aDecoder.decodeObject(forKey: "parameters") as? Dictionary<String, AnyObject>
+        self.parameters = aDecoder.decodeObject(forKey: "parameters") as? Dictionary<String, Any>
     }
 
     /** Endpoint to call on servercode */
@@ -31,7 +31,7 @@ open class ServerCode : NSObject, NSCoding {
     /** If provided, servercode endpoint will be called for this appid. Otherwise same appID of trigger is used */
     open let targetAppID: String?
     /** Parameters to pass to the servercode function */
-    open let parameters: Dictionary<String, AnyObject>?
+    open let parameters: Dictionary<String, Any>?
 
     /** Init TriggeredServerCodeResult with necessary attributes
 
@@ -40,7 +40,7 @@ open class ServerCode : NSObject, NSCoding {
      - Parameter targetAppID: If provided, servercode endpoint will be called for this appid. Otherwise same appID of trigger is used
      - Parameter parameters: Parameters to pass to the servercode function
      */
-    public init(endpoint: String, executorAccessToken: String?, targetAppID: String?, parameters: Dictionary<String, AnyObject>?) {
+    public init(endpoint: String, executorAccessToken: String?, targetAppID: String?, parameters: Dictionary<String, Any>?) {
         self.endpoint = endpoint
         self.executorAccessToken = executorAccessToken
         self.targetAppID = targetAppID
@@ -82,7 +82,7 @@ open class ServerCode : NSObject, NSCoding {
         let endpoint = nsDict["endpoint"] as? String
         let executorAccessToken = nsDict["executorAccessToken"] as? String
         let targetAppID = nsDict["targetAppID"] as? String
-        let parameters = nsDict["parameters"] as? Dictionary<String, AnyObject>
+        let parameters = nsDict["parameters"] as? Dictionary<String, Any>
         var serverCode: ServerCode?
         if (endpoint != nil) {
             serverCode = ServerCode(endpoint:endpoint!, executorAccessToken:executorAccessToken, targetAppID:targetAppID, parameters:parameters)

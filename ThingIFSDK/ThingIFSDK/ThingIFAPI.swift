@@ -108,7 +108,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         _ vendorThingID:String,
         thingPassword:String,
         thingType:String?,
-        thingProperties:Dictionary<String,AnyObject>?,
+        thingProperties:Dictionary<String, Any>?,
         completionHandler: @escaping (Target?, ThingIFError?)-> Void
         ) ->Void
     {
@@ -292,7 +292,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func postNewCommand(
         _ schemaName:String,
         schemaVersion:Int,
-        actions:[Dictionary<String,AnyObject>],
+        actions:[Dictionary<String, Any>],
         completionHandler: @escaping (Command?, ThingIFError?)-> Void
         ) -> Void
     {
@@ -417,7 +417,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func postNewTrigger(
         _ schemaName:String,
         schemaVersion:Int,
-        actions:[Dictionary<String, AnyObject>],
+        actions:[Dictionary<String, Any>],
         predicate:Predicate,
         completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
@@ -528,7 +528,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         _ triggerID:String,
         schemaName:String?,
         schemaVersion:Int?,
-        actions:[Dictionary<String, AnyObject>]?,
+        actions:[Dictionary<String, Any>]?,
         predicate:Predicate?,
         completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
@@ -666,7 +666,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of ThingIFError when failed.
     */
     open func getState(
-        _ completionHandler: @escaping (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
+        _ completionHandler: @escaping (Dictionary<String, Any>?,  ThingIFError?)-> Void
         )
     {
         _getState(completionHandler)

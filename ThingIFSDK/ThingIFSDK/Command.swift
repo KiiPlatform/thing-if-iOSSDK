@@ -37,9 +37,9 @@ open class Command: NSObject, NSCoding {
         self.schemaName = aDecoder.decodeObject(forKey: "schemaName") as! String
         self.schemaVersion = aDecoder.decodeInteger(forKey: "schemaVersion")
         self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [Dictionary<String, AnyObject>];
+                as! [Dictionary<String, Any>];
         self.actionResults = aDecoder.decodeObject(forKey: "actionResults")
-                as! [Dictionary<String, AnyObject>];
+                as! [Dictionary<String, Any>];
         self.commandState =
             CommandState(rawValue: aDecoder.decodeInteger(forKey: "commandState"))!;
         self.firedByTriggerID = aDecoder.decodeObject(forKey: "firedByTriggerID") as? String
@@ -55,7 +55,7 @@ open class Command: NSObject, NSCoding {
         }
         self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription = aDecoder.decodeObject(forKey: "commandDescription") as? String
-        self.metadata = aDecoder.decodeObject(forKey: "metadata") as? Dictionary<String, AnyObject>
+        self.metadata = aDecoder.decodeObject(forKey: "metadata") as? Dictionary<String, Any>
     }
 
 
@@ -70,9 +70,9 @@ open class Command: NSObject, NSCoding {
     /** Version of the Schema of which this Command is defined. */
     open let schemaVersion: Int
     /** Actions to be executed. */
-    open let actions: [Dictionary<String, AnyObject>]
+    open let actions: [Dictionary<String, Any>]
     /** Results of the action. */
-    open let actionResults: [Dictionary<String, AnyObject>]
+    open let actionResults: [Dictionary<String, Any>]
     /** State of the Command. */
     open let commandState: CommandState
     /** ID of the trigger which fired this command */
@@ -86,7 +86,7 @@ open class Command: NSObject, NSCoding {
     /** Description of the Command */
     open let commandDescription: String?
     /** Metadata of the Command */
-    open let metadata: Dictionary<String, AnyObject>?
+    open let metadata: Dictionary<String, Any>?
 
     public override init() {
         // TODO: implement it with proper initilizer.
@@ -111,15 +111,15 @@ open class Command: NSObject, NSCoding {
          issuerID: TypedID,
          schemaName: String,
          schemaVersion: Int,
-         actions:[Dictionary<String, AnyObject>],
-         actionResults:[Dictionary<String, AnyObject>]?,
+         actions:[Dictionary<String, Any>],
+         actionResults:[Dictionary<String, Any>]?,
          commandState: CommandState?,
          firedByTriggerID: String? = nil,
          created: Date? = nil,
          modified: Date? = nil,
          title: String? = nil,
          commandDescription: String? = nil,
-         metadata: Dictionary<String, AnyObject>? = nil) {
+         metadata: Dictionary<String, Any>? = nil) {
         if commandID != nil {
             self.commandID = commandID!
         }else {
@@ -167,14 +167,14 @@ open class Command: NSObject, NSCoding {
         let commandID = nsDict["commandID"] as? String
         let schemaName = nsDict["schema"] as? String
         // actions array
-        var actionsArray = [Dictionary<String, AnyObject>]()
+        var actionsArray = [Dictionary<String, Any>]()
         if let actions = nsDict["actions"] as? [NSDictionary] {
-            actionsArray = actions as! [Dictionary<String, AnyObject>]
+            actionsArray = actions as! [Dictionary<String, Any>]
         }
         // actionResult array
-        var actionsResultArray = [Dictionary<String, AnyObject>]()
+        var actionsResultArray = [Dictionary<String, Any>]()
         if let actionResults = nsDict["actionResults"] as? [NSDictionary] {
-            actionsResultArray = actionResults as! [Dictionary<String, AnyObject>]
+            actionsResultArray = actionResults as! [Dictionary<String, Any>]
         }
         let schemaVersion = nsDict["schemaVersion"] as? Int
 
@@ -218,7 +218,7 @@ open class Command: NSObject, NSCoding {
         if let modifiedAt = nsDict["modifiedAt"] as? NSNumber {
             modified = Date(timeIntervalSince1970: (modifiedAt.doubleValue)/1000.0)
         }
-        return Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState, firedByTriggerID: nsDict["firedByTriggerID"] as? String, created: created, modified: modified, title: nsDict["title"] as? String, commandDescription: nsDict["description"] as? String, metadata: nsDict["metadata"] as? Dictionary<String, AnyObject>)
+        return Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState, firedByTriggerID: nsDict["firedByTriggerID"] as? String, created: created, modified: modified, title: nsDict["title"] as? String, commandDescription: nsDict["description"] as? String, metadata: nsDict["metadata"] as? Dictionary<String, Any>)
     }
 }
 

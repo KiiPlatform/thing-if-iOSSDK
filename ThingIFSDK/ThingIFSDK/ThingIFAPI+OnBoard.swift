@@ -15,7 +15,7 @@ extension ThingIFAPI {
         thingPassword:String,
         thingType:String? = nil,
         firmwareVersion:String? = nil,
-        thingProperties:Dictionary<String,AnyObject>? = nil,
+        thingProperties:Dictionary<String, Any>? = nil,
         layoutPosition:LayoutPosition? = nil,
         dataGroupingInterval:DataGroupingInterval? = nil,
         completionHandler: @escaping (Target?, ThingIFError?)-> Void
@@ -29,16 +29,20 @@ extension ThingIFAPI {
             let requestURL = "\(baseURL)/thing-if/apps/\(appID)/onboardings"
             
             // genrate body
-            let requestBodyDict = NSMutableDictionary(dictionary: ["thingPassword": thingPassword, "owner": owner.typedID.toString()])
+            var requestBodyDict: Dictionary<String, Any> =
+              [
+                "thingPassword": thingPassword,
+                "owner": owner.typedID.toString()
+              ]
             
             // generate header
             var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
             
             if byVendorThingID {
-                requestBodyDict.setObject(IDString, forKey: "vendorThingID" as NSCopying)
+                requestBodyDict["vendorThingID"] = IDString
                 requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
-            }else {
-                requestBodyDict.setObject(IDString, forKey: "thingID" as NSCopying)
+            } else {
+                requestBodyDict["thingID"] = IDString
                 requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithThingIDByOwner+json"
             }
 

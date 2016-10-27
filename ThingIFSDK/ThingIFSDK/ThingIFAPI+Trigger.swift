@@ -29,19 +29,19 @@ extension ThingIFAPI {
         // generate command
         let targetID = triggeredCommandForm.targetID ?? target.typedID
         var commandDict = triggeredCommandForm.toDictionary()
-        commandDict["issuer"] = owner.typedID.toString() as AnyObject?
+        commandDict["issuer"] = owner.typedID.toString()
         if commandDict["target"] == nil {
-            commandDict["target"] = targetID.toString() as AnyObject?
+            commandDict["target"] = targetID.toString()
         }
 
         // generate body
-        var requestBodyDict: Dictionary<String, AnyObject> = [
+        var requestBodyDict: Dictionary<String, Any> = [
           "predicate": predicate.toNSDictionary(),
-          "command": commandDict as AnyObject,
-          "triggersWhat": TriggersWhat.COMMAND.rawValue as AnyObject]
-        requestBodyDict["title"] = options?.title as AnyObject?
-        requestBodyDict["description"] = options?.triggerDescription as AnyObject?
-        requestBodyDict["metadata"] = options?.metadata as AnyObject?
+          "command": commandDict,
+          "triggersWhat": TriggersWhat.COMMAND.rawValue]
+        requestBodyDict["title"] = options?.title
+        requestBodyDict["description"] = options?.triggerDescription
+        requestBodyDict["metadata"] = options?.metadata
 
         do{
             let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
@@ -102,13 +102,13 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
         
         // generate body
-        var requestBodyDict: Dictionary<String, AnyObject> = [
+        var requestBodyDict: Dictionary<String, Any> = [
           "predicate": predicate.toNSDictionary(),
           "serverCode": serverCode.toNSDictionary(),
-          "triggersWhat": TriggersWhat.SERVER_CODE.rawValue as AnyObject]
-        requestBodyDict["title"] = options?.title as AnyObject?
-        requestBodyDict["description"] = options?.triggerDescription as AnyObject?
-        requestBodyDict["metadata"] = options?.metadata as AnyObject?
+          "triggersWhat": TriggersWhat.SERVER_CODE.rawValue]
+        requestBodyDict["title"] = options?.title
+        requestBodyDict["description"] = options?.triggerDescription
+        requestBodyDict["metadata"] = options?.metadata
         do{
             let requestBodyData =
               try JSONSerialization.data(
@@ -164,12 +164,12 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
 
         // generate body
-        var requestBodyDict: Dictionary<String, AnyObject> = [
-          "triggersWhat": TriggersWhat.COMMAND.rawValue as AnyObject
+        var requestBodyDict: Dictionary<String, Any> = [
+          "triggersWhat": TriggersWhat.COMMAND.rawValue
         ];
-        requestBodyDict["title"] = options?.title as AnyObject?
-        requestBodyDict["description"] = options?.triggerDescription as AnyObject?
-        requestBodyDict["metadata"] = options?.metadata as AnyObject?
+        requestBodyDict["title"] = options?.title
+        requestBodyDict["description"] = options?.triggerDescription
+        requestBodyDict["metadata"] = options?.metadata
 
         // generate predicate
         if predicate != nil {
@@ -179,11 +179,11 @@ extension ThingIFAPI {
         // generate command
         if let form = triggeredCommandForm {
             var command = form.toDictionary()
-            command["issuer"] = owner.typedID.toString() as AnyObject?
+            command["issuer"] = owner.typedID.toString()
             if command["target"] == nil {
-                command["target"] = target.typedID.toString() as AnyObject?
+                command["target"] = target.typedID.toString()
             }
-            requestBodyDict["command"] = command as AnyObject?
+            requestBodyDict["command"] = command
         }
         do{
             let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
@@ -233,14 +233,14 @@ extension ThingIFAPI {
         let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
         
         // generate body
-        var requestBodyDict: Dictionary<String, AnyObject> = [
-          "triggersWhat" : TriggersWhat.SERVER_CODE.rawValue as AnyObject
+        var requestBodyDict: Dictionary<String, Any> = [
+          "triggersWhat" : TriggersWhat.SERVER_CODE.rawValue
         ]
         requestBodyDict["predicate"] = predicate?.toNSDictionary()
         requestBodyDict["serverCode"] = serverCode?.toNSDictionary()
-        requestBodyDict["title"] = options?.title as AnyObject?;
-        requestBodyDict["description"] = options?.triggerDescription as AnyObject?;
-        requestBodyDict["metadata"] = options?.metadata as AnyObject?;
+        requestBodyDict["title"] = options?.title
+        requestBodyDict["description"] = options?.triggerDescription
+        requestBodyDict["metadata"] = options?.metadata
         do{
             let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
