@@ -32,7 +32,7 @@ open class Trigger: NSObject, NSCoding {
         self.serverCode = aDecoder.decodeObject(forKey: "serverCode") as? ServerCode
         self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.triggerDescription = aDecoder.decodeObject(forKey: "triggerDescription") as? String
-        self.metadata = aDecoder.decodeObject(forKey: "metadata") as? Dictionary<String, AnyObject>
+        self.metadata = aDecoder.decodeObject(forKey: "metadata") as? Dictionary<String, Any>
         // TODO: add aditional decoder
     }
     
@@ -85,7 +85,7 @@ open class Trigger: NSObject, NSCoding {
 
         let title = triggerDict["title"] as? String
         let triggerDescription = triggerDict["description"] as? String
-        let metadata = triggerDict["metadata"] as? Dictionary<String, AnyObject>
+        let metadata = triggerDict["metadata"] as? Dictionary<String, Any>
 
         if triggerID != nil && predicate != nil && command != nil && disabled != nil{
             trigger = Trigger(triggerID: triggerID!, targetID: targetID, enabled: !(disabled!), predicate: predicate!, command: command!, title: title, triggerDescription: triggerDescription, metadata: metadata)
@@ -114,7 +114,7 @@ open class Trigger: NSObject, NSCoding {
     /** Description of the Trigger */
     open let triggerDescription: String?
     /** Metadata of the Trigger */
-    open let metadata: Dictionary<String, AnyObject>?
+    open let metadata: Dictionary<String, Any>?
 
     /** Init Trigger with Command
 
@@ -124,7 +124,7 @@ open class Trigger: NSObject, NSCoding {
     - Parameter predicate: Predicate instance
     - Parameter command: Command instance
     */
-    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, AnyObject>? = nil) {
+    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, Any>? = nil) {
         self.triggerID = triggerID
         self.targetID = targetID
         self.enabled = enabled
@@ -143,7 +143,7 @@ open class Trigger: NSObject, NSCoding {
      - Parameter predicate: Predicate instance
      - Parameter serverCode: ServerCode instance
      */
-    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, serverCode: ServerCode, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, AnyObject>? = nil) {
+    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, serverCode: ServerCode, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, Any>? = nil) {
         self.triggerID = triggerID
         self.targetID = targetID
         self.enabled = enabled
