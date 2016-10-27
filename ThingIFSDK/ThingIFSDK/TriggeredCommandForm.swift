@@ -41,7 +41,7 @@ open class TriggeredCommandForm: NSObject, NSCoding {
     open let schemaVersion: Int
 
     /// List of actions.
-    open let actions: [Dictionary<String, AnyObject>]
+    open let actions: [Dictionary<String, Any>]
 
     /// Target thing ID.
     open let targetID: TypedID?
@@ -53,7 +53,7 @@ open class TriggeredCommandForm: NSObject, NSCoding {
     open let commandDescription: String?
 
     /// Meta data of ad command.
-    open let metadata: Dictionary<String, AnyObject>?
+    open let metadata: Dictionary<String, Any>?
 
 
     // MARK: - Initializing TriggeredCommandForm instance.
@@ -72,11 +72,11 @@ open class TriggeredCommandForm: NSObject, NSCoding {
     */
     public init(schemaName: String,
                 schemaVersion: Int,
-                actions: [Dictionary<String, AnyObject>],
+                actions: [Dictionary<String, Any>],
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
-                metadata: Dictionary<String, AnyObject>? = nil)
+                metadata: Dictionary<String, Any>? = nil)
     {
         self.schemaName = schemaName
         self.schemaVersion = schemaVersion
@@ -117,11 +117,11 @@ open class TriggeredCommandForm: NSObject, NSCoding {
     public init(command: Command,
                 schemaName: String? = nil,
                 schemaVersion: Int? = nil,
-                actions: [Dictionary<String, AnyObject>]? = nil,
+                actions: [Dictionary<String, Any>]? = nil,
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
-                metadata: Dictionary<String, AnyObject>? = nil)
+                metadata: Dictionary<String, Any>? = nil)
     {
         self.schemaName = schemaName != nil ? schemaName! : command.schemaName
         self.schemaVersion =
@@ -150,28 +150,28 @@ open class TriggeredCommandForm: NSObject, NSCoding {
         self.schemaName = aDecoder.decodeObject(forKey: "schemaName") as! String
         self.schemaVersion = aDecoder.decodeInteger(forKey: "schemaVersion")
         self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [Dictionary<String, AnyObject>];
+                as! [Dictionary<String, Any>];
         self.targetID = aDecoder.decodeObject(forKey: "targetID") as? TypedID
         self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription =
             aDecoder.decodeObject(forKey: "commandDescription") as? String;
         self.metadata = aDecoder.decodeObject(forKey: "metadata")
-                as? Dictionary<String, AnyObject>;
+                as? Dictionary<String, Any>;
     }
 
-    func toDictionary() -> Dictionary<String, AnyObject> {
-        var retval: Dictionary<String, AnyObject> =
+    func toDictionary() -> Dictionary<String, Any> {
+        var retval: Dictionary<String, Any> =
             [
-                "schema": self.schemaName as AnyObject,
-                "schemaVersion": self.schemaVersion as AnyObject,
-                "actions": self.actions as AnyObject
+                "schema": self.schemaName,
+                "schemaVersion": self.schemaVersion,
+                "actions": self.actions
             ]
         if let targetID = self.targetID {
-            retval["target"] = targetID.toString() as AnyObject?
+            retval["target"] = targetID.toString()
         }
-        retval["title"] = self.title as AnyObject?
-        retval["description"] = self.commandDescription as AnyObject?;
-        retval["metadata"] = self.metadata as AnyObject?;
+        retval["title"] = self.title
+        retval["description"] = self.commandDescription
+        retval["metadata"] = self.metadata
         return retval;
     }
 }
