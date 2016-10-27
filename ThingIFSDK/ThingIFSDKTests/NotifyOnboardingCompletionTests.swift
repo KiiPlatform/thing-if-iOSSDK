@@ -44,7 +44,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "thingID": thingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "thingID": thingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -169,7 +169,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "thingID": thingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "thingID": thingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -223,7 +223,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "thingID": thingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "thingID": thingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -277,7 +277,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "thingID": thingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "thingID": thingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -331,7 +331,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "thingID": thingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "thingID": thingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -385,7 +385,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "thingID": thingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "thingID": thingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
