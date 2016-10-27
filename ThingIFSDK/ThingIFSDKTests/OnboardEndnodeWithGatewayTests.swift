@@ -438,8 +438,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         // perform onboarding
         setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
-        let src: Dictionary<String, AnyObject> = [
-            "thingProperties": thingProperties as AnyObject
+        let src: Dictionary<String, Any> = [
+            "thingProperties": thingProperties
         ]
         let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
@@ -979,8 +979,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         // perform onboarding
         setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
-        let src: Dictionary<String, AnyObject> = [
-            "thingProperties": thingProperties as AnyObject
+        let src: Dictionary<String, Any> = [
+            "thingProperties": thingProperties
         ]
         let pending = PendingEndNode(json: src)
         setting.api.onboardEndnodeWithGateway(
