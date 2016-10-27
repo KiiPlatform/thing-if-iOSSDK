@@ -10,7 +10,7 @@ import Foundation
 
 extension ThingIFAPI {
     func _getState(
-        _ completionHandler: @escaping (Dictionary<String, AnyObject>?,  ThingIFError?)-> Void
+        _ completionHandler: @escaping (Dictionary<String, Any>?,  ThingIFError?)-> Void
         ){
             guard let target = self.target else {
                 completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
@@ -23,12 +23,12 @@ extension ThingIFAPI {
             let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
             
             let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-                var states : Dictionary<String, AnyObject>?
+                var states : Dictionary<String, Any>?
                 if response != nil {
-                    states = Dictionary<String, AnyObject>()
+                    states = Dictionary<String, Any>()
                     response!.enumerateKeysAndObjects(
                       { (key, obj, stop) -> Void in
-                          states![key as! String] = obj as AnyObject
+                          states![key as! String] = obj
                       }
                     )
                 }
