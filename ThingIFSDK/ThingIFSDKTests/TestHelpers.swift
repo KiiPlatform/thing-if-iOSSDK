@@ -39,8 +39,10 @@ class MockSession: URLSession {
 
     var mockResponse: (data: Data?, urlResponse: URLResponse?, error: NSError?) = (data: nil, urlResponse: nil, error: nil)
 
-    override class func sharedSession() -> URLSession {
-        return sharedMockSession
+    override class var shared: URLSession {
+        get {
+            return sharedMockSession
+        }
     }
 
     override func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
@@ -58,8 +60,10 @@ class MockMultipleSession: URLSession {
     var completionHandler: ((Data?, URLResponse?, NSError?) -> Void)?
     var responsePairs = [MockResponsePair]()
 
-    override class func sharedSession() -> URLSession {
-        return sharedMockMultipleSession
+    override class var shared: URLSession {
+        get {
+            return sharedMockMultipleSession
+        }
     }
 
     override func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
