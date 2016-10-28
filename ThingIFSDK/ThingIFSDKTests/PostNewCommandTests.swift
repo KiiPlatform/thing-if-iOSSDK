@@ -75,7 +75,7 @@ class PostNewCommandTests: SmallTestBase {
                 }
 
                 //verify body
-                let expectedBody = ["schema": testcase.schema, "schemaVersion": testcase.schemaVersion, "issuer": testcase.issuerID.toString(), "actions": testcase.actions]
+                let expectedBody: [String : Any] = ["schema": testcase.schema, "schemaVersion": testcase.schemaVersion, "issuer": testcase.issuerID.toString(), "actions": testcase.actions]
                 do {
                     let expectedBodyData = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
                     let actualBodyData = request.httpBody
@@ -142,7 +142,7 @@ class PostNewCommandTests: SmallTestBase {
                 }
 
                 //verify body
-                let expectedBody = ["schema": "", "schemaVersion": setting.schemaVersion, "issuer": setting.owner.typedID.toString(), "actions": []]
+                let expectedBody: [String : Any] = ["schema": "", "schemaVersion": setting.schemaVersion, "issuer": setting.owner.typedID.toString(), "actions": []]
                 do {
                     let expectedBodyData = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
                     let actualBodyData = request.httpBody

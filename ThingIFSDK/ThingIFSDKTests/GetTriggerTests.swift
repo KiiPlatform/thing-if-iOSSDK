@@ -77,8 +77,8 @@ class GetTriggerTests: SmallTestBase {
             let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":triggersWhen, "condition":statementToTest] as [String : Any]
 
             // mock response
-            let commandDict = ["schema": setting.schema, "schemaVersion": setting.schemaVersion, "target": setting.target.typedID.toString(), "issuer": setting.owner.typedID.toString(), "actions": expectedActionsDict]
-            let dict = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "command": commandDict, "disabled": false]
+            let commandDict: [String : Any] = ["schema": setting.schema, "schemaVersion": setting.schemaVersion, "target": setting.target.typedID.toString(), "issuer": setting.owner.typedID.toString(), "actions": expectedActionsDict]
+            let dict: [String : Any] = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "command": commandDict, "disabled": false]
             let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
             let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
 
@@ -149,10 +149,10 @@ class GetTriggerTests: SmallTestBase {
             let serverCodeDict = expectedServerCode.toNSDictionary()
             let eventSource = "STATES"
             let condition: Dictionary<String, Any> = ["type":"eq", "field":"color", "value": 0]
-            let expectedPredicateDict = ["eventSource":eventSource, "triggersWhen":TriggersWhen.CONDITION_FALSE_TO_TRUE.rawValue, "condition": condition]
+            let expectedPredicateDict: [String : Any] = ["eventSource":eventSource, "triggersWhen":TriggersWhen.CONDITION_FALSE_TO_TRUE.rawValue, "condition": condition]
             
             // mock response
-            let dict = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": serverCodeDict, "disabled": false]
+            let dict: [String : Any] = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": serverCodeDict, "disabled": false]
             let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
             let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
             

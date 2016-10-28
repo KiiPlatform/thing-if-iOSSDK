@@ -342,8 +342,8 @@ class PostNewTriggerTests: SmallTestBase {
             let scheduleDate = Date()
             let predicate = ScheduleOncePredicate(scheduleAt: scheduleDate)
             let dateMilis = Int64(scheduleDate.timeIntervalSince1970 * 1000)
-            let expectedPredicateDict = ["eventSource":EventSource.ScheduleOnce.rawValue,
-                                     "scheduleAt":NSNumber(value: dateMilis as Int64)]            // mock response
+            let expectedPredicateDict: [String : Any] = ["eventSource":EventSource.ScheduleOnce.rawValue,
+                                     "scheduleAt":dateMilis]            // mock response
             let responsedDict = ["errorCode" : "Time stamp not valid",
                                  "message" : "Passed Trigger's timestamp is not valid"]
             let jsonData = try JSONSerialization.data(withJSONObject: responsedDict, options: .prettyPrinted)

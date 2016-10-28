@@ -97,7 +97,7 @@ class PushInstallationTests: SmallTestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": NSNumber(value: false as Bool)]
+            let expectedBody: [String: Any] = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": false]
             self.verifyDict(expectedBody, actualData: request.httpBody!)
             XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/api/apps/50a62843/installations")
         }
@@ -146,7 +146,7 @@ class PushInstallationTests: SmallTestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": NSNumber(value: false as Bool)]
+            let expectedBody: [String: Any] = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": false]
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
         
@@ -207,7 +207,7 @@ class PushInstallationTests: SmallTestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development":NSNumber(value: false as Bool)]
+            let expectedBody: [String: Any] = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": false]
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
         
@@ -268,7 +268,7 @@ class PushInstallationTests: SmallTestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify request body
-            let expectedBody = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": NSNumber(value: false as Bool)]
+            let expectedBody: [String : Any] = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": false]
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
         
