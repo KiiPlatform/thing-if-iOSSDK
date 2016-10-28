@@ -13,10 +13,10 @@ class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
 
     fileprivate func createSuccessRequestBody(
       _ form: TriggeredCommandForm,
-      setting: TestSetting) -> Dictionary<String, AnyObject>
+      setting: TestSetting) -> Dictionary<String, Any>
     {
         let targetID = form.targetID ?? setting.api.target!.typedID
-        var command: Dictionary<String, AnyObject> = [
+        var command: Dictionary<String, Any> = [
           "schema" : form.schemaName,
           "schemaVersion" : form.schemaVersion,
           "actions" : form.actions,
@@ -32,10 +32,10 @@ class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
     }
 
     func testSuccess() {
-        let actions: [Dictionary<String, AnyObject>] =
-            [["actions-key" : "actions-value" as AnyObject]]
-        let command_metadata: Dictionary<String, AnyObject> =
-            ["command_metadata-key" : "command_metadata-value" as AnyObject]
+        let actions: [Dictionary<String, Any>] =
+            [["actions-key" : "actions-value"]]
+        let command_metadata: Dictionary<String, Any> =
+            ["command_metadata-key" : "command_metadata-value"]
         let targetID = TypedID(type: "THING", id: "thing-id")
 
         // TriggeredCommandForm instances below are used as inputs and
@@ -171,7 +171,7 @@ class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
                             dictionary: try! JSONSerialization.jsonObject(
                               with: request.httpBody!,
                               options: .mutableContainers)
-                              as! Dictionary<String, AnyObject>),
+                              as! Dictionary<String, Any>),
                           NSDictionary(
                             dictionary: self.createSuccessRequestBody(
                               form,
