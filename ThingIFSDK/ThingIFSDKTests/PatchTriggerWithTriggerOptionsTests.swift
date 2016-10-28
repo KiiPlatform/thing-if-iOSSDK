@@ -14,7 +14,7 @@ import XCTest
 class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
 
     fileprivate func createSuccessRequestBody(
-      _ options: TriggerOptions) -> Dictionary<String, >
+      _ options: TriggerOptions) -> Dictionary<String, Any>
     {
         var trigger: Dictionary<String, Any> = [
             "triggersWhat": TriggersWhat.COMMAND.rawValue
