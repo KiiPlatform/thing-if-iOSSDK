@@ -19,8 +19,8 @@ class CommandSerializationTest: SmallTestBase {
     }
 
     class func isSameArray(
-            _ source: [Dictionary<String, AnyObject>],
-            target: [Dictionary<String, AnyObject>]) -> Bool {
+            _ source: [Dictionary<String, Any>],
+            target: [Dictionary<String, Any>]) -> Bool {
         if source.count != target.count {
             return false;
         }
@@ -34,8 +34,8 @@ class CommandSerializationTest: SmallTestBase {
     }
 
     class func isSameDictionary(
-            _ source: Dictionary<String, AnyObject>,
-            target: Dictionary<String, AnyObject>) -> Bool {
+            _ source: Dictionary<String, Any>,
+            target: Dictionary<String, Any>) -> Bool {
         if source.count != target.count {
             return false;
         }
@@ -45,11 +45,11 @@ class CommandSerializationTest: SmallTestBase {
                 return false;
             }
 
-            if value is Dictionary<String, AnyObject> &&
-                     targetValue is Dictionary<String, AnyObject> {
+            if value is Dictionary<String, Any> &&
+                     targetValue is Dictionary<String, Any> {
                 CommandSerializationTest.isSameDictionary(
-                    value as! Dictionary<String, AnyObject>,
-                    target: targetValue as! Dictionary<String, AnyObject>);
+                    value
+                    target: targetValue
             } else if value is Int && targetValue is Int {
                 if value as! Int != targetValue as! Int {
                     return false;
@@ -85,12 +85,12 @@ class CommandSerializationTest: SmallTestBase {
     func testSerializeCommand() {
         let created = Date(timeIntervalSince1970: 100);
         let modified = Date(timeIntervalSince1970: 200);
-        let actions: [Dictionary<String, AnyObject>] =
+        let actions: [Dictionary<String, Any>] =
             [
                 [ "turnPower" : [ "power" : true ] ],
                 [ "setFanSpeed" : [ "fanSpeed": 100] ]
             ];
-        let actionResults: [Dictionary<String, AnyObject>] =
+        let actionResults: [Dictionary<String, Any>] =
             [
                 [ "turnPower" :
                     [
@@ -107,7 +107,7 @@ class CommandSerializationTest: SmallTestBase {
                     ]
                 ]
             ];
-        let metadata: Dictionary<String, AnyObject> = [ "sound" : "noisy.mp3" as AnyObject ];
+        let metadata: Dictionary<String, Any> = [ "sound" : "noisy.mp3" ];
         let source: Command = Command(
                 commandID: "testCommandID",
                 targetID: TypedID(type: "testTargetType", id: "testTargetID"),
