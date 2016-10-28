@@ -28,7 +28,7 @@ class TriggerNSCodingTests: SmallTestBase {
         let description = "dummyDescription"
         let key = "dummyKey"
         let value = "dummyValue"
-        let metadata: Dictionary<String, AnyObject> = [ key : value as AnyObject ]
+        let metadata: Dictionary<String, Any> = [ key : value ]
         let trigger = Trigger(triggerID: triggerID, targetID: TypedID(type: "thing", id: "dummyTargetID"), enabled: enabled, predicate: predicate, command: command, title: title, triggerDescription: description, metadata: metadata);
 
         XCTAssertNotNil(trigger);
