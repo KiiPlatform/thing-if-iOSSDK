@@ -46,7 +46,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
             let jsonData4Patch = try JSONSerialization.data(withJSONObject: dict4Patch, options: .prettyPrinted)
             let urlResponse4Patch = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
             // mock response for get
-            let dict4Get = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": expectedServerCodeDict, "triggersWhat":"SERVER_CODE", "disabled":false]
+            let dict4Get: [String : Any] = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": expectedServerCodeDict, "triggersWhat":"SERVER_CODE", "disabled":false]
             let jsonData4Get = try JSONSerialization.data(withJSONObject: dict4Get, options: .prettyPrinted)
             let urlResponse4Get = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
             
@@ -60,7 +60,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
                 }
                 //verify body
                 
-                let expectedBody = ["predicate": expectedPredicateDict, "serverCode": expectedServerCodeDict, "triggersWhat":"SERVER_CODE"]
+                let expectedBody: [String : Any] = ["predicate": expectedPredicateDict, "serverCode": expectedServerCodeDict, "triggersWhat":"SERVER_CODE"]
                 do {
                     let expectedBodyData = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
                     let actualBodyData = request.httpBody
@@ -157,7 +157,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
                 }
                 //verify body
                 
-                let expectedBody = ["predicate": expectedPredicateDict, "serverCode": expectedServerCodeDict, "triggersWhat":"SERVER_CODE"]
+                let expectedBody: [String : Any] = ["predicate": expectedPredicateDict, "serverCode": expectedServerCodeDict, "triggersWhat":"SERVER_CODE"]
                 do {
                     let expectedBodyData = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
                     let actualBodyData = request.httpBody

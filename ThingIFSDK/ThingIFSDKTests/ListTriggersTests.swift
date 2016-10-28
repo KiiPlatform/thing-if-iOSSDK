@@ -64,7 +64,7 @@ class ListTriggersTests: SmallTestBase {
             let eventSource = "STATES"
 
             // mock response
-            let commandDict = ["schema": setting.schema, "schemaVersion": setting.schemaVersion, "target": setting.target.typedID.toString(), "issuer": setting.owner.typedID.toString(), "actions": expectedActionsDict]
+            let commandDict: [String : Any] = ["schema": setting.schema, "schemaVersion": setting.schemaVersion, "target": setting.target.typedID.toString(), "issuer": setting.owner.typedID.toString(), "actions": expectedActionsDict]
 
             var expectedTriggerDicts = [Dictionary<String, Any>]()
             for expectedTriggerStruct in expectedTriggerStructs {

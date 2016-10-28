@@ -58,7 +58,7 @@ class OnboardTests: SmallTestBase {
                 }
 
                 //verify body
-                let expectedBody = [
+                let expectedBody: [String: Any] = [
                     "owner": setting.owner.typedID.toString(),
                     "vendorThingID": vendorThingID,
                     "thingPassword": password,
@@ -147,7 +147,7 @@ class OnboardTests: SmallTestBase {
             }
 
             //verify body
-            let expectedBody = [
+            let expectedBody: [String : Any] = [
                 "owner": setting.owner.typedID.toString(),
                 "vendorThingID": vendorThingID,
                 "thingPassword": password,
@@ -232,7 +232,7 @@ class OnboardTests: SmallTestBase {
             }
 
             //verify body
-            let expectedBody = [
+            let expectedBody: [String : Any] = [
                 "owner": setting.owner.typedID.toString(),
                 "vendorThingID": vendorThingID,
                 "thingPassword": password,
@@ -317,7 +317,7 @@ class OnboardTests: SmallTestBase {
             }
 
             //verify body
-            let expectedBody = [
+            let expectedBody: [String : Any] = [
                 "owner": setting.owner.typedID.toString(),
                 "vendorThingID": vendorThingID,
                 "thingPassword": password,

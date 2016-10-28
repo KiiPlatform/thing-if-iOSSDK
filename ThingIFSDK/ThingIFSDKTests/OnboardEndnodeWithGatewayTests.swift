@@ -58,7 +58,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 }
 
                 //verify body
-                let expectedBody = [
+                let expectedBody: [String : Any] = [
                     "owner": setting.owner.typedID.toString(),
                     "gatewayThingID": gatewayThingID,
                     "endNodeVendorThingID": vendorThingID,
@@ -152,7 +152,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             }
 
             //verify body
-            let expectedBody = [
+            let expectedBody: [String : Any] = [
                 "owner": setting.owner.typedID.toString(),
                 "gatewayThingID": gatewayThingID,
                 "endNodeVendorThingID": vendorThingID,
@@ -242,7 +242,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             }
 
             //verify body
-            let expectedBody = [
+            let expectedBody: [String : Any] = [
                 "owner": setting.owner.typedID.toString(),
                 "gatewayThingID": gatewayThingID,
                 "endNodeVendorThingID": vendorThingID,
@@ -332,7 +332,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             }
 
             //verify body
-            let expectedBody = [
+            let expectedBody: [String : Any] = [
                 "owner": setting.owner.typedID.toString(),
                 "gatewayThingID": gatewayThingID,
                 "endNodeVendorThingID": vendorThingID,
@@ -587,7 +587,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 }
 
                 //verify body
-                let expectedBody = [
+                let expectedBody: [String : Any] = [
                     "owner": setting.owner.typedID.toString(),
                     "gatewayThingID": gatewayThingID,
                     "endNodeVendorThingID": vendorThingID,
@@ -684,7 +684,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             }
 
             //verify body
-            let expectedBody = [
+            let expectedBody: [String : Any] = [
                 "owner": setting.owner.typedID.toString(),
                 "gatewayThingID": gatewayThingID,
                 "endNodeVendorThingID": vendorThingID,
@@ -777,7 +777,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             }
 
             //verify body
-            let expectedBody = [
+            let expectedBody: [String : Any] = [
                 "owner": setting.owner.typedID.toString(),
                 "gatewayThingID": gatewayThingID,
                 "endNodeVendorThingID": vendorThingID,
@@ -870,7 +870,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             }
 
             //verify body
-            let expectedBody = [
+            let expectedBody: [String : Any] = [
                 "owner": setting.owner.typedID.toString(),
                 "gatewayThingID": gatewayThingID,
                 "endNodeVendorThingID": vendorThingID,
