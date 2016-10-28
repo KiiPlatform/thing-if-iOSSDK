@@ -20,7 +20,7 @@ class CommandFormTests: SmallTestBase {
     }
 
     func testInitWithRequiredValue() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -35,14 +35,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyDict(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithTitle() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -58,14 +58,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyDict(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithCommandDescription() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -81,14 +81,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyDict(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -97,9 +97,9 @@ class CommandFormTests: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let commandForm = CommandForm(schemaName: "name",
                                       schemaVersion: 1,
@@ -108,13 +108,13 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyDict(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
         verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testInitWithTitleAndDescription() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -131,14 +131,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyDict(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithTitleAndMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -147,9 +147,9 @@ class CommandFormTests: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let commandForm = CommandForm(schemaName: "name",
                                       schemaVersion: 1,
@@ -159,14 +159,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyDict(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
         verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testInitWithDescriptionAndMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -175,9 +175,9 @@ class CommandFormTests: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let commandForm = CommandForm(schemaName: "name",
                                       schemaVersion: 1,
@@ -187,14 +187,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyDict(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
         verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testInitWithAllFields() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -203,9 +203,9 @@ class CommandFormTests: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let commandForm = CommandForm(schemaName: "name",
                                       schemaVersion: 1,
@@ -216,14 +216,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyDict(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
         verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testNSCoding() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -232,9 +232,9 @@ class CommandFormTests: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let original = CommandForm(schemaName: "name",
                                       schemaVersion: 1,

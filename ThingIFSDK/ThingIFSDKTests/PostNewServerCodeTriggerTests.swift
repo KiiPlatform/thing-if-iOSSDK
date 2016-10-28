@@ -31,11 +31,11 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
         let expectedTargetAppID = "app000001"
-        var expectedParameters = Dictionary<String, AnyObject>()
-        expectedParameters["arg1"] = "abcd" as AnyObject?
-        expectedParameters["arg2"] = 1234 as AnyObject?
-        expectedParameters["arg3"] = 0.12345 as AnyObject?
-        expectedParameters["arg4"] = false as AnyObject?
+        var expectedParameters = Dictionary<String, Any>()
+        expectedParameters["arg1"] = "abcd"
+        expectedParameters["arg2"] = 1234
+        expectedParameters["arg3"] = 0.12345
+        expectedParameters["arg4"] = false
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
 
@@ -117,11 +117,11 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         let expectedEndpoint = "my_function"
         let expectedExecutorAccessToken = "abcdefgHIJKLMN1234567"
         let expectedTargetAppID = "app000001"
-        var expectedParameters = Dictionary<String, AnyObject>()
-        expectedParameters["arg1"] = "abcd" as AnyObject?
-        expectedParameters["arg2"] = 1234 as AnyObject?
-        expectedParameters["arg3"] = 0.12345 as AnyObject?
-        expectedParameters["arg4"] = false as AnyObject?
+        var expectedParameters = Dictionary<String, Any>()
+        expectedParameters["arg1"] = "abcd"
+        expectedParameters["arg2"] = 1234
+        expectedParameters["arg3"] = 0.12345
+        expectedParameters["arg4"] = false
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
         

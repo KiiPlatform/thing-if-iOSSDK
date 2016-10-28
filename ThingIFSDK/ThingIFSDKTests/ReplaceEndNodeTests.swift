@@ -43,7 +43,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "vendorThingID": vendorThingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -180,7 +180,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "vendorThingID": vendorThingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -237,7 +237,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "vendorThingID": vendorThingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -294,7 +294,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "vendorThingID": vendorThingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -351,7 +351,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "vendorThingID": vendorThingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -408,7 +408,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [ "vendorThingID": vendorThingID as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [ "vendorThingID": vendorThingID];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 

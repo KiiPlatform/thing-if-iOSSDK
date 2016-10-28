@@ -21,10 +21,10 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
         let target: Target
         let schemaName: String
         let schemaVersion: Int
-        let actions: [Dictionary<String, AnyObject>]
+        let actions: [Dictionary<String, Any>]
         let title: String?
         let commandDescription: String?
-        let metadata: Dictionary<String, AnyObject>?
+        let metadata: Dictionary<String, Any>?
         let issuerID: TypedID
     }
 
@@ -161,14 +161,14 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
                 }
 
                 //verify body
-                var expectedBody: Dictionary<String, AnyObject> = [
-                        "schema": testcase.schemaName as AnyObject,
-                        "schemaVersion": testcase.schemaVersion as AnyObject,
+                var expectedBody: Dictionary<String, Any> = [
+                        "schema": testcase.schemaName,
+                        "schemaVersion": testcase.schemaVersion,
                         "issuer": testcase.issuerID.toString(),
                         "actions": testcase.actions];
-                expectedBody["title"] = testcase.title as AnyObject?
-                expectedBody["description"] = testcase.commandDescription as AnyObject?
-                expectedBody["metadata"] = testcase.metadata as AnyObject?;
+                expectedBody["title"] = testcase.title
+                expectedBody["description"] = testcase.commandDescription
+                expectedBody["metadata"] = testcase.metadata;
                 self.verifyDict(expectedBody, actualData: request.httpBody!)
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)

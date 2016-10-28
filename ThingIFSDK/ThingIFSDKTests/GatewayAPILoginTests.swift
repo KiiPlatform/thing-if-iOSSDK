@@ -46,9 +46,9 @@ class GatewayAPILoginTests: GatewayAPITestBase {
                     XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
                 //verify body
-                let expectedBody: Dictionary<String, AnyObject> = [
-                    "username": username as AnyObject,
-                    "password": password as AnyObject];
+                let expectedBody: Dictionary<String, Any> = [
+                    "username": username,
+                    "password": password];
                 self.verifyDict(expectedBody, actualData: request.httpBody!)
             }
 
@@ -153,9 +153,9 @@ class GatewayAPILoginTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [
-                "username": username as AnyObject,
-                "password": password as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [
+                "username": username,
+                "password": password];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
@@ -211,9 +211,9 @@ class GatewayAPILoginTests: GatewayAPITestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [
-                "username": username as AnyObject,
-                "password": password as AnyObject];
+            let expectedBody: Dictionary<String, Any> = [
+                "username": username,
+                "password": password];
             self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 

@@ -16,12 +16,12 @@ protocol RequestVerifier: class {
 
 class TriggerRequestVerifier: NSObject, RequestVerifier {
     fileprivate let expectedHeader: Dictionary<String, String>
-    fileprivate let expectedBody: Dictionary<String, AnyObject>
+    fileprivate let expectedBody: Dictionary<String, Any>
     fileprivate let url: String
     let tag: String
 
     init (expectedHeader: Dictionary<String, String>,
-          expectedBody: Dictionary<String, AnyObject>,
+          expectedBody: Dictionary<String, Any>,
           url: String,
           tag: String) {
         self.expectedHeader = expectedHeader
@@ -47,7 +47,7 @@ class TriggerRequestVerifier: NSObject, RequestVerifier {
                            try! JSONSerialization.jsonObject(
                                with: request.httpBody!,
                                options: .mutableContainers)
-                           as! Dictionary<String, AnyObject>
+                           as! Dictionary<String, Any>
                        XCTAssertEqual(
                            NSDictionary(dictionary: self.expectedBody),
                            NSDictionary(dictionary:actualBody),
@@ -143,7 +143,7 @@ struct Verifier {
 struct Parameter {
     let schemaName: String
     let schemaVersion: Int
-    let actions: [Dictionary<String, AnyObject>]
+    let actions: [Dictionary<String, Any>]
     let predicate: Predicate
 }
 
@@ -157,7 +157,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
 
     static func createSuccessTestCase(
         _ predicate: Predicate,
-        actions: [Dictionary<String, AnyObject>],
+        actions: [Dictionary<String, Any>],
         tag: String,
         setting: TestSetting) -> TestCase
     {
@@ -186,7 +186,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
 
     static func createTestCase(
         _ predicate: Predicate,
-        actions: [Dictionary<String, AnyObject>],
+        actions: [Dictionary<String, Any>],
         callbackVerifier: CallbackVerifier,
         mockResponse: MockResponse,
         tag: String,
@@ -227,7 +227,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
             setting: TestSetting) -> [TestCase]
     {
         var retval: [TestCase] = []
-        let actions: [Dictionary<String, AnyObject>] =
+        let actions: [Dictionary<String, Any>] =
             [
                 ["turnPower":["power":true]],
                 ["setBrightness":["bribhtness":90]]
@@ -299,7 +299,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         let setting = TestSetting()
 
         let predicate = SchedulePredicate(schedule: "wrong format")
-        let actions: [Dictionary<String, AnyObject>] =
+        let actions: [Dictionary<String, Any>] =
             [
                 ["turnPower":["power":true]],
                 ["setBrightness":["bribhtness":90]]

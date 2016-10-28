@@ -20,13 +20,13 @@ class ListTriggersTests: SmallTestBase {
     }
 
     struct ExpectedTriggerStruct {
-        let statement: Dictionary<String, AnyObject>
+        let statement: Dictionary<String, Any>
         let triggerID: String
         let triggersWhenString: String
         let enabled: Bool
 
-        func getPredicateDict() -> Dictionary<String, AnyObject> {
-            return ["eventSource":"STATES" as AnyObject, "triggersWhen":triggersWhenString as AnyObject, "condition":statement as AnyObject]
+        func getPredicateDict() -> Dictionary<String, Any> {
+            return ["eventSource":"STATES", "triggersWhen":triggersWhenString, "condition":statement]
         }
 
     }
@@ -40,9 +40,9 @@ class ListTriggersTests: SmallTestBase {
         api._target = setting.target
 
         var expectedTriggerStructs: [ExpectedTriggerStruct] = [
-            ExpectedTriggerStruct(statement: ["type":"eq" as AnyObject,"field":"color" as AnyObject, "value": 0 as AnyObject], triggerID: "\(triggerIDPrifex)1", triggersWhenString: "CONDITION_TRUE", enabled: true),
-            ExpectedTriggerStruct(statement: ["type":"eq" as AnyObject,"field":"power" as AnyObject, "value": true as AnyObject], triggerID: "\(triggerIDPrifex)2", triggersWhenString: "CONDITION_TRUE", enabled: true),
-            ExpectedTriggerStruct(statement: ["type": "not" as AnyObject, "clause": ["type":"eq","field":"power", "value": true]], triggerID: "\(triggerIDPrifex)3", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type":"eq","field":"color", "value": 0], triggerID: "\(triggerIDPrifex)1", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type":"eq","field":"power", "value": true], triggerID: "\(triggerIDPrifex)2", triggersWhenString: "CONDITION_TRUE", enabled: true),
+            ExpectedTriggerStruct(statement: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], triggerID: "\(triggerIDPrifex)3", triggersWhenString: "CONDITION_TRUE", enabled: true),
             ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], triggerID: "\(triggerIDPrifex)4", triggersWhenString: "CONDITION_TRUE", enabled: true),
             ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "upperLimit": 200, "upperIncluded": false], triggerID: "\(triggerIDPrifex)5", triggersWhenString: "CONDITION_TRUE", enabled: true),
             ExpectedTriggerStruct(statement: ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": true], triggerID: "\(triggerIDPrifex)6", triggersWhenString: "CONDITION_TRUE", enabled: true),
@@ -59,14 +59,14 @@ class ListTriggersTests: SmallTestBase {
         let expectation = self.expectation(description: "testListTriggers_success_predicates")
 
         do{
-            let expectedActionsDict: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+            let expectedActionsDict: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let expectedCommandObject = Command(commandID: nil, targetID: setting.target.typedID, issuerID: setting.owner.typedID, schemaName: setting.schema, schemaVersion: setting.schemaVersion, actions: expectedActionsDict, actionResults: nil, commandState: nil)
             let eventSource = "STATES"
 
             // mock response
             let commandDict = ["schema": setting.schema, "schemaVersion": setting.schemaVersion, "target": setting.target.typedID.toString(), "issuer": setting.owner.typedID.toString(), "actions": expectedActionsDict]
 
-            var expectedTriggerDicts = [Dictionary<String, AnyObject>]()
+            var expectedTriggerDicts = [Dictionary<String, Any>]()
             for expectedTriggerStruct in expectedTriggerStructs {
                 expectedTriggerDicts.append(["triggerID": expectedTriggerStruct.triggerID, "predicate": ["eventSource":eventSource, "triggersWhen":expectedTriggerStruct.triggersWhenString, "condition":expectedTriggerStruct.statement], "command": commandDict, "disabled": !(expectedTriggerStruct.enabled)])
             }

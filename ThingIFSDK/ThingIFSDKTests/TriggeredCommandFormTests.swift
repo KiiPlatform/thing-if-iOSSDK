@@ -21,7 +21,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithRequiredValue() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -44,7 +44,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTitle() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -67,7 +67,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithCommandDescription() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -90,7 +90,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -99,9 +99,9 @@ class TriggeredCommandFormTest: SmallTestBase {
               ]
           ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1" as AnyObject,
-          "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key1" : "value1",
+          "key2" : "value2"
         ]
         let form = TriggeredCommandForm(schemaName: "name",
                                         schemaVersion: 1,
@@ -116,7 +116,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTitleAndDescription() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -140,7 +140,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTitleAndMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -149,9 +149,9 @@ class TriggeredCommandFormTest: SmallTestBase {
               ]
           ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1" as AnyObject,
-          "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key1" : "value1",
+          "key2" : "value2"
         ]
         let form = TriggeredCommandForm(schemaName: "name",
                                         schemaVersion: 1,
@@ -168,7 +168,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithDescriptionAndMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -177,9 +177,9 @@ class TriggeredCommandFormTest: SmallTestBase {
               ]
           ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1" as AnyObject,
-          "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key1" : "value1",
+          "key2" : "value2"
         ]
         let form = TriggeredCommandForm(schemaName: "name",
                                         schemaVersion: 1,
@@ -196,7 +196,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTargetID() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -220,7 +220,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTargetIDAndTitle() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -246,7 +246,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTargetIDAndTitleAndDescription() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -273,7 +273,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTargetIDAndTitleAndDescriptionAndMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -282,9 +282,9 @@ class TriggeredCommandFormTest: SmallTestBase {
               ]
           ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1" as AnyObject,
-          "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key1" : "value1",
+          "key2" : "value2"
         ]
         let targetID = TypedID(type: "THING", id: "id");
         let form = TriggeredCommandForm(schemaName: "name",
@@ -305,7 +305,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTargetIDAndDescription() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -331,7 +331,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTargetIDAndDescriptionAndMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -340,9 +340,9 @@ class TriggeredCommandFormTest: SmallTestBase {
               ]
           ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1" as AnyObject,
-          "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key1" : "value1",
+          "key2" : "value2"
         ]
         let targetID = TypedID(type: "THING", id: "id");
         let form = TriggeredCommandForm(schemaName: "name",
@@ -362,7 +362,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTargetIDAndMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -371,9 +371,9 @@ class TriggeredCommandFormTest: SmallTestBase {
               ]
           ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1" as AnyObject,
-          "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key1" : "value1",
+          "key2" : "value2"
         ]
         let targetID = TypedID(type: "THING", id: "id");
         let form = TriggeredCommandForm(schemaName: "name",
@@ -392,7 +392,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithAllFields() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
           [
             "action1" :
               [
@@ -401,9 +401,9 @@ class TriggeredCommandFormTest: SmallTestBase {
               ]
           ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-          "key1" : "value1" as AnyObject,
-          "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key1" : "value1",
+          "key2" : "value2"
         ]
         let targetID = TypedID(type: "THING", id: "id");
         let form = TriggeredCommandForm(schemaName: "name",
@@ -424,7 +424,7 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testNSCoding() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -433,9 +433,9 @@ class TriggeredCommandFormTest: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
-            "key1" : "value1" as AnyObject,
-            "key2" : "value2" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+            "key1" : "value1",
+            "key2" : "value2"
         ]
         let targetID = TypedID(type: "THING", id: "id");
         let original = TriggeredCommandForm(schemaName: "name",

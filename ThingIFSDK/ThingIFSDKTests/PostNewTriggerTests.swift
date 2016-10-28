@@ -21,12 +21,12 @@ class PostNewTriggerTests: SmallTestBase {
 
     struct TestCase {
         var clause: Clause?
-        var expectedClauseDict: Dictionary<String, AnyObject>?
+        var expectedClauseDict: Dictionary<String, Any>?
         var triggersWhen: TriggersWhen?
         var expectedTriggersWhenString: String?
         var expectedScheduleAt : Date? = nil
         // State predicate
-        init(clause: Clause , expectedClauseDict: Dictionary<String, AnyObject>?, triggersWhen: TriggersWhen,
+        init(clause: Clause , expectedClauseDict: Dictionary<String, Any>?, triggersWhen: TriggersWhen,
              expectedTriggersWhenString: String?){
             self.clause = clause
             self.expectedClauseDict = expectedClauseDict
@@ -46,19 +46,19 @@ class PostNewTriggerTests: SmallTestBase {
 
             do{
                 let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-                let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+                let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
 
                 let predicate : Predicate
-                let expectedPredicateDict : Dictionary<String, AnyObject>
+                let expectedPredicateDict : Dictionary<String, Any>
                 if testcase.clause != nil {
                     let expectedClause = testcase.expectedClauseDict!
                     let expectedEventSource = "STATES"
                     let expectedTriggerWhen = testcase.expectedTriggersWhenString!
                     let condition = Condition(clause: testcase.clause!)
                     predicate = StatePredicate(condition: condition, triggersWhen: testcase.triggersWhen!)
-                    expectedPredicateDict = ["eventSource":expectedEventSource as AnyObject,
-                                             "triggersWhen":expectedTriggerWhen as AnyObject,
-                                             "condition":expectedClause as AnyObject]
+                    expectedPredicateDict = ["eventSource":expectedEventSource,
+                                             "triggersWhen":expectedTriggerWhen,
+                                             "condition":expectedClause]
                 }else{
                     predicate = ScheduleOncePredicate(scheduleAt: testcase.expectedScheduleAt!)
                     let dateMilis = Int64(testcase.expectedScheduleAt!.timeIntervalSince1970 * 1000)
@@ -129,8 +129,8 @@ class PostNewTriggerTests: SmallTestBase {
 
         let orClauseClause = ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]] as [String : Any]
         let andClauseClause = ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]] as [String : Any]
-        let complexExpectedClauses:[Dictionary<String, AnyObject>] = [
-            ["type": "and" as AnyObject, "clauses": [["type":"eq","field":"brightness", "value": 50], orClauseClause]],
+        let complexExpectedClauses:[Dictionary<String, Any>] = [
+            ["type": "and", "clauses": [["type":"eq","field":"brightness", "value": 50], orClauseClause]],
             ["type": "or", "clauses": [["type":"eq","field":"brightness", "value": 50], andClauseClause]]
         ]
 
@@ -179,7 +179,7 @@ class PostNewTriggerTests: SmallTestBase {
         api._target = target
 
         do{
-            let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+            let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let clause = EqualsClause(field: "color", intValue: 0)
             let condition = Condition(clause: clause)
             let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
@@ -258,7 +258,7 @@ class PostNewTriggerTests: SmallTestBase {
         api._target = target
 
         do{
-            let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+            let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
             let clause = EqualsClause(field: "color", intValue: 0)
             let condition = Condition(clause: clause)
             let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
@@ -337,7 +337,7 @@ class PostNewTriggerTests: SmallTestBase {
         api._target = target
 
         do{
-            let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+            let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
 
             let scheduleDate = Date()
             let predicate = ScheduleOncePredicate(scheduleAt: scheduleDate)
@@ -406,7 +406,7 @@ class PostNewTriggerTests: SmallTestBase {
         let schema = setting.schema
         let schemaVersion = setting.schemaVersion
 
-        let actions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+        let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
         let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
 
         api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in

@@ -99,7 +99,7 @@ class OnboardingTests: SmallTestBase {
         let owner = setting.owner
 
         do{
-            let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1" as AnyObject, "key2":"value2" as AnyObject]
+            let thingProperties:Dictionary<String, Any> = ["key1":"value1", "key2":"value2"]
             let thingType = "LED"
             let vendorThingID = "th.abcd-efgh"
             let thingPassword = "dummyPassword"
@@ -123,7 +123,7 @@ class OnboardingTests: SmallTestBase {
                 
                 //verify body
                 let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": owner.typedID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
-                self.verifyDict(expectedBody as! Dictionary<String, AnyObject>, actualData: request.httpBody!)
+                self.verifyDict(expectedBody as! Dictionary<String, Any>, actualData: request.httpBody!)
                 XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/onboardings")
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
@@ -187,7 +187,7 @@ class OnboardingTests: SmallTestBase {
 
         let api = ThingIFAPIBuilder(app:app, owner:owner, tag:"target1").build()
         do{
-            let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1" as AnyObject, "key2":"value2" as AnyObject]
+            let thingProperties:Dictionary<String, Any> = ["key1":"value1", "key2":"value2"]
             let thingType = "LED"
             let vendorThingID = "th.abcd-efgh"
             let thingPassword = "dummyPassword"
@@ -211,7 +211,7 @@ class OnboardingTests: SmallTestBase {
 
                 //verify body
                 let expectedBody = ["vendorThingID": vendorThingID, "thingPassword": thingPassword, "owner": owner.typedID.toString(), "thingType":thingType, "thingProperties":["key1":"value1", "key2":"value2"]]
-                self.verifyDict(expectedBody as! Dictionary<String, AnyObject>, actualData: request.httpBody!)
+                self.verifyDict(expectedBody as! Dictionary<String, Any>, actualData: request.httpBody!)
                 XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/onboardings")
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)

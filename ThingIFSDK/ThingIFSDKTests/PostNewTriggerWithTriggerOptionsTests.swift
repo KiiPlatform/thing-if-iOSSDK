@@ -13,9 +13,9 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
 
     fileprivate func createSuccessRequestBody(
       _ options: TriggerOptions,
-      setting: TestSetting) -> Dictionary<String, AnyObject>
+      setting: TestSetting) -> Dictionary<String, Any>
     {
-        var trigger: Dictionary<String, AnyObject> =
+        var trigger: Dictionary<String, Any> =
           [
             "command" : [
               "schema" : "name",
@@ -34,8 +34,8 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
     }
 
     func testSuccess () {
-        let trigger_metadata: Dictionary<String, AnyObject> =
-            ["trigger_metadata-key" : "trigger_metadata-value" as AnyObject]
+        let trigger_metadata: Dictionary<String, Any> =
+            ["trigger_metadata-key" : "trigger_metadata-value"]
 
         // TriggerOptions instances below are used as inputs and
         // expected outputs of this test. It is little bit lazy but
@@ -105,7 +105,7 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
                     dictionary: try! JSONSerialization.jsonObject(
                       with: request.httpBody!,
                       options: .mutableContainers)
-                      as! Dictionary<String, AnyObject>),
+                      as! Dictionary<String, Any>),
                   NSDictionary(
                     dictionary: self.createSuccessRequestBody(
                       options, setting: setting)),

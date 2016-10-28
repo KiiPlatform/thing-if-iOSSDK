@@ -38,7 +38,7 @@ class PushInstallationTests: SmallTestBase {
         let expectation = self.expectation(description: "onboardWithVendorThingID")
         
         do{
-            let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1" as AnyObject, "key2":"value2" as AnyObject]
+            let thingProperties:Dictionary<String, Any> = ["key1":"value1", "key2":"value2"]
             let thingType = "LED"
             let vendorThingID = "th.abcd-efgh"
             let thingPassword = "dummyPassword"

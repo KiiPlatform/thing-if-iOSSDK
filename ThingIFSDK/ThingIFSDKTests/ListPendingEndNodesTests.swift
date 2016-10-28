@@ -24,7 +24,7 @@ class ListPendingEndNodesTests: GatewayAPITestBase {
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
         let expectation = self.expectation(description: "testSuccess")
-        let propeties:Dictionary<String, AnyObject> = [ "debug": true as AnyObject ]
+        let propeties:Dictionary<String, Any> = [ "debug": true ]
         let list = [
             [ "vendorThingID": "abcd-1234" ],
             [ "vendorThingID": "efgh-5678" ],
