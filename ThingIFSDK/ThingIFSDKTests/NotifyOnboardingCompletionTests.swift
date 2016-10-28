@@ -32,7 +32,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -49,7 +49,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 204, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -157,7 +157,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -174,7 +174,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 400, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -211,7 +211,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -228,7 +228,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 401, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -265,7 +265,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -282,7 +282,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 404, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -319,7 +319,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -336,7 +336,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 409, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -373,7 +373,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "PUT")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(vendorThingID)"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -390,7 +390,7 @@ class NotifyOnboardingCompletionTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 503, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)

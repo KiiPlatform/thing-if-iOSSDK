@@ -29,7 +29,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-app/gateway/restore"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -42,7 +42,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 204, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -94,7 +94,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-app/gateway/restore"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -107,7 +107,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 400, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -141,7 +141,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-app/gateway/restore"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -154,7 +154,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 401, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -188,7 +188,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/gateway-app/gateway/restore"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/gateway-app/gateway/restore"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -201,7 +201,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         }
 
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 409, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)

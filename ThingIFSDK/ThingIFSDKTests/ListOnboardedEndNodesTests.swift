@@ -35,7 +35,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             let requestVerifier: ((URLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.httpMethod, "GET")
                 // verify path
-                let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+                let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
                 XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let expectedHeader = [
@@ -50,7 +50,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             // mock response
             let dict = [ "results": list ]
             let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
-            let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+            let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
                 statusCode: 200, httpVersion: nil, headerFields: nil)
             
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
@@ -92,7 +92,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             let requestVerifier: ((URLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.httpMethod, "GET")
                 // verify path
-                let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+                let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
                 XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let expectedHeader = [
@@ -107,7 +107,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             // mock response
             let dict = [ "results": list ]
             let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
-            let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+            let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
                 statusCode: 200, httpVersion: nil, headerFields: nil)
             
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
@@ -165,7 +165,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -178,7 +178,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         }
         
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 400, httpVersion: nil, headerFields: nil)
         
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -213,7 +213,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -226,7 +226,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         }
         
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 401, httpVersion: nil, headerFields: nil)
         
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -261,7 +261,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -274,7 +274,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         }
         
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 404, httpVersion: nil, headerFields: nil)
         
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -309,7 +309,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -322,7 +322,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         }
         
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 409, httpVersion: nil, headerFields: nil)
         
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
@@ -357,7 +357,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
@@ -370,7 +370,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         }
         
         // mock response
-        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString!)!,
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
             statusCode: 503, httpVersion: nil, headerFields: nil)
         
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
