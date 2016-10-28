@@ -71,7 +71,7 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
             defer {
                 expectation = nil
             }
-            expectation = self.expectation(withDescription: error_message)
+            expectation = self.expectation(description: error_message)
 
             sharedMockMultipleSession.responsePairs =
                 [
@@ -211,7 +211,7 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
                        error_message)
                     expectation.fulfill()
                 })
-            self.waitForExpectations(withTimeout: TEST_TIMEOUT)
+            self.waitForExpectations(timeout: TEST_TIMEOUT)
                 { (error) -> Void in
                     if error != nil {
                         XCTFail(error_message)
