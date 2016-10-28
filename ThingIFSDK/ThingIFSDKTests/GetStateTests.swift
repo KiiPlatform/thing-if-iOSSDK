@@ -117,7 +117,7 @@ class GetStateTests: SmallTestBase {
             }
 
             for (k,v) in dict! {
-                let val : AnyObject = result![k]!
+                let val : Any = result![k]!
                 XCTAssertTrue(v === val)
             }
 
