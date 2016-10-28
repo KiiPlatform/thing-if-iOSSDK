@@ -14,9 +14,9 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
     fileprivate func createSuccessRequestBody(
       _ serverCode: ServerCode,
       predicate: Predicate,
-      options: TriggerOptions?) -> Dictionary<String, AnyObject>
+      options: TriggerOptions?) -> Dictionary<String, Any>
     {
-        var retval: Dictionary<String, AnyObject> =
+        var retval: Dictionary<String, Any> =
           [
             "serverCode" : serverCode.toNSDictionary(),
             "predicate" : predicate.toNSDictionary(),
@@ -37,8 +37,8 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
     }
 
     func testSuccess() {
-        let metadata: Dictionary<String, AnyObject> = [
-          "key" : "value" as AnyObject
+        let metadata: Dictionary<String, Any> = [
+          "key" : "value"
         ]
         let optionsArray: [TriggerOptions?] = [
           nil,
@@ -113,7 +113,7 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
                     dictionary: try! JSONSerialization.jsonObject(
                       with: request.httpBody!,
                       options: .mutableContainers)
-                      as! Dictionary<String, AnyObject>),
+                      as! Dictionary<String, Any>),
                   NSDictionary(
                     dictionary: self.createSuccessRequestBody(
                       serverCode,
