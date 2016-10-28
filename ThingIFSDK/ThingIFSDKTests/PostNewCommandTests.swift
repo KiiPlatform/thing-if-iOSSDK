@@ -21,7 +21,7 @@ class PostNewCommandTests: SmallTestBase {
         let target: Target
         let schema: String
         let schemaVersion: Int
-        let actions: [Dictionary<String, AnyObject>]
+        let actions: [Dictionary<String, Any>]
         let issuerID: TypedID
     }
 
