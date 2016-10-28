@@ -26,28 +26,28 @@ class PatchTriggerTests: SmallTestBase {
 
         let schemaName: String?
         let schemaVersion: Int?
-        let actions: [Dictionary<String, AnyObject>]?
+        let actions: [Dictionary<String, Any>]?
 
         let predicate: Predicate?
-        let expectedStatementDict: Dictionary<String, AnyObject>?
+        let expectedStatementDict: Dictionary<String, Any>?
         let expectedTriggersWhenString: String?
         let success: Bool
 
-        func getExpectedCommandDict() -> Dictionary<String, AnyObject>? {
+        func getExpectedCommandDict() -> Dictionary<String, Any>? {
 
             if schemaName == nil && schemaVersion == nil && actions == nil {
                 return nil
             }
 
-            var commandDict: Dictionary<String, AnyObject> = ["issuer":issuerID.toString()]
+            var commandDict: Dictionary<String, Any> = ["issuer":issuerID.toString()]
             if schemaName != nil {
-                commandDict["schema"] = schemaName! as AnyObject?
+                commandDict["schema"] = schemaName!
             }
             if schemaVersion != nil {
-                commandDict["schemaVersion"] = schemaVersion! as AnyObject?
+                commandDict["schemaVersion"] = schemaVersion!
             }
             if actions != nil {
-                commandDict["actions"] = actions! as AnyObject?
+                commandDict["actions"] = actions!
             }
             commandDict["target"] = target.typedID.toString()
             return commandDict
@@ -57,17 +57,17 @@ class PatchTriggerTests: SmallTestBase {
             return predicate != nil
         }
 
-        func getExpectedPredictDict() -> Dictionary<String, AnyObject>? {
+        func getExpectedPredictDict() -> Dictionary<String, Any>? {
             if predicate == nil {
                 return nil
             }
-            return predicate?.toNSDictionary() as? Dictionary<String, AnyObject>
+            return predicate?.toNSDictionary() as? Dictionary<String, Any>
         }
     }
 
     func testPatchTrigger() {
 
-        let expectedActions: [Dictionary<String, AnyObject>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
+        let expectedActions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -104,13 +104,13 @@ class PatchTriggerTests: SmallTestBase {
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
         // verify patch request
-        var expectedBodyDict = Dictionary<String, AnyObject>()
-        expectedBodyDict["triggersWhat"] = "COMMAND" as AnyObject?
+        var expectedBodyDict = Dictionary<String, Any>()
+        expectedBodyDict["triggersWhat"] = "COMMAND"
         if let expectedCommandDict = testcase.getExpectedCommandDict(){
-            expectedBodyDict["command"] = expectedCommandDict as AnyObject?
+            expectedBodyDict["command"] = expectedCommandDict
         }
         if let expectedPredicateDict = testcase.getExpectedPredictDict() {
-            expectedBodyDict["predicate"] = expectedPredicateDict as AnyObject?
+            expectedBodyDict["predicate"] = expectedPredicateDict
         }
         let patchRequestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "PATCH")
@@ -126,7 +126,7 @@ class PatchTriggerTests: SmallTestBase {
                                  dictionary: try! JSONSerialization.jsonObject(
                                    with: request.httpBody!,
                                    options: .mutableContainers)
-                                   as! Dictionary<String, AnyObject>),
+                                   as! Dictionary<String, Any>),
                                tag)
 
             }catch(_){
