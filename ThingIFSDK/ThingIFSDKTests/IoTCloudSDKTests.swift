@@ -246,7 +246,7 @@ class ThingIFSDKTests: SmallTestBase {
     func testOverwriteSavedInstanceWithOnboard222(){
         let setting = TestSetting()
         
-        let api1 = ThingIFAPIBuilder(app:setting.app, owner:setting.owner!, tag: "tag1").build()
+        let api1 = ThingIFAPIBuilder(app:setting.app, owner:setting.owner, tag: "tag1").build()
         
         let expectation = self.expectation(description: "testOverwriteSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)

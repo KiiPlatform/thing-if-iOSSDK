@@ -79,7 +79,7 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
             defer {
                 expectation = nil
             }
-            expectation = self.expectation(withDescription: error_message)
+            expectation = self.expectation(description: error_message)
 
             sharedMockSession.mockResponse = MockResponse(
               try! JSONSerialization.data(
@@ -165,7 +165,7 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
                   }
                   expectation.fulfill()
               })
-            self.waitForExpectations(withTimeout: TEST_TIMEOUT)
+            self.waitForExpectations(timeout: TEST_TIMEOUT)
             { (error) -> Void in
                 if error != nil {
                     XCTFail("execution timeout for \(error_message)")
