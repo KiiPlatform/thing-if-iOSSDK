@@ -98,7 +98,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
                     self.verifyDict(expectedParameters, actualDict: trigger!.serverCode!.parameters!)
                     XCTAssertNil(trigger!.command)
                 } else {
-                    XCTFail("should success for \(tag) " + String(error))
+                    XCTFail("should success for \(tag) " + String(describing: error))
                 }
                 expectation.fulfill()
             })
