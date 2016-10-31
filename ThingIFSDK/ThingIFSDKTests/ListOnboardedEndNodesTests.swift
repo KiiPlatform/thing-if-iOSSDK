@@ -84,8 +84,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
         let expectation = self.expectation(description: "testEmpty")
-        let list = [
-        ]
+        let list: [String : Any] = [ : ]
         
         do {
             // verify request
