@@ -118,7 +118,7 @@ class GetStateTests: SmallTestBase {
 
             for (k,v) in dict! {
                 let val : Any = result![k]!
-                XCTAssertTrue(v === val)
+                XCTAssertTrue(v as AnyObject ===  val as AnyObject)
             }
 
             expectation.fulfill()
@@ -295,8 +295,8 @@ class GetStateTests: SmallTestBase {
             }
             
             for (k,v) in dict! {
-                let val : AnyObject = result![k]!
-                XCTAssertTrue(v === val)
+                let val : Any = result![k]!
+                XCTAssertTrue(v as AnyObject === val as AnyObject)
             }
         }
 
