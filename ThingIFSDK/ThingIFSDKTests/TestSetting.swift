@@ -10,18 +10,18 @@ import UIKit
 
 open class TestSetting: NSObject {
 
-    let app:App!
+    let app:App
 
-    let owner:Owner!
-    let ownerID:String!
-    let ownerToken:String!
+    let owner:Owner
+    let ownerID:String
+    let ownerToken:String
 
-    let target:Target!
-    let thingID:String!
+    let target:Target
+    let thingID:String
 
-    let appID:String!
-    let appKey:String!
-    let hostName:String!
+    let appID:String
+    let appKey:String
+    let hostName:String
 
     let api:ThingIFAPI
 
