@@ -201,7 +201,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                   }
                   expectation.fulfill()
               })
-            self.waitForExpectations(withTimeout: TEST_TIMEOUT)
+            self.waitForExpectations(timeout: TEST_TIMEOUT)
             { (error) -> Void in
                 if error != nil {
                     XCTFail("execution timeout for \(error_message)")
