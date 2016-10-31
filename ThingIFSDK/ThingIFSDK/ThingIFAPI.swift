@@ -18,15 +18,15 @@ open class ThingIFAPI: NSObject, NSCoding {
 
     let operationQueue = OperationQueue()
     /** URL of KiiApps Server */
-    open let baseURL: String!
+    open let baseURL: String
     /** The application ID found in your Kii developer console */
-    open let appID: String!
+    open let appID: String
     /** The application key found in your Kii developer console */
-    open let appKey: String!
+    open let appKey: String
     /** Kii Cloud Application */
-    open let app: App!
+    open let app: App
     /** owner of target */
-    open let owner: Owner!
+    open let owner: Owner
 
     var _installationID:String?
     var _target: Target?
