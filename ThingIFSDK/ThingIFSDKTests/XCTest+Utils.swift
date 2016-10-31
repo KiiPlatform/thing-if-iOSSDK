@@ -18,19 +18,26 @@ extension XCTestCase {
             return
         }
 
-        let error_message = "expected=" + expected.joinWithSeparator(",") +
-          "actual=" + actual2.joinWithSeparator(",")
-        XCTAssertTrue(NSArray(array: expected), NSArray(array: actual2),
+        let error_message = "expected=" + expected.description +
+          "actual=" + actual2.description
+        XCTAssertEqual(NSArray(array: expected), NSArray(array: actual2),
                       error_message)
     }
     
-    func verifyDict(_ expectedDict:Dictionary<String, Any>, actualDict: Dictionary<String, Any>?){
+    func verifyDict(_ expectedDict:Dictionary<String, Any>, actualDict: Dictionary<String, Any>?, errorMessage: String? = nil){
         guard let actualDict2 = actualDict else {
             XCTFail("actualDict must not be nil")
             return
         }
 
-        let s = "expected=" + expectedDict.description + "actual" + actualDict2.description
+        let s: String
+        if let message = errorMessage {
+            s = message + ", expected=" +
+              expectedDict.description + "actual" + actualDict2.description
+        } else {
+            s = "expected=" + expectedDict.description +
+              "actual" + actualDict2.description
+        }
         XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqual(to: actualDict2), s)
     }
     func verifyNsDict(_ expectedDict:NSDictionary, actualDict:NSDictionary){

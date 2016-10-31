@@ -121,13 +121,11 @@ class PatchTriggerTests: SmallTestBase {
             }
             //verify body
             do {
-                XCTAssertEqual(expectedBodyDict,
-                               NSDictionary(
-                                 dictionary: try! JSONSerialization.jsonObject(
-                                   with: request.httpBody!,
-                                   options: .mutableContainers)
-                                   as! Dictionary<String, Any>),
-                               tag)
+                self.verifyDict(expectedBodyDict,
+                           actualDict: try! JSONSerialization.jsonObject(
+                             with: request.httpBody!,
+                             options: .mutableContainers) as! [String : Any],
+                           errorMessage: tag)
 
             }catch(_){
                 XCTFail(tag)
