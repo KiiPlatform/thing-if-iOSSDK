@@ -89,7 +89,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
             defer {
                 expectation = nil
             }
-            expectation = self.expectation(withDescription: error_message)
+            expectation = self.expectation(description: error_message)
 
             sharedMockMultipleSession.responsePairs = [
               (
