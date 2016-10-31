@@ -72,8 +72,8 @@ class OnboardingTests: SmallTestBase {
                         XCTFail("should not be connection error")
                     case .error_RESPONSE(let actualErrorResponse):
                         XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
-                        XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
-                        XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
+                        XCTAssertEqual(dict["errorCode"] as! String, actualErrorResponse.errorCode)
+                        XCTAssertEqual(dict["message"] as! String, actualErrorResponse.errorMessage)
                     default:
                         break
                     }
