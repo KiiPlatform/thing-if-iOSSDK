@@ -115,7 +115,7 @@ class ListCommandsTests: SmallTestBase {
                 XCTAssertEqual(request.httpMethod, "GET")
 
                 // verify path
-                let expectedBasePath = "\(setting.app.baseURL)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/commands"
+                let expectedBasePath = "\(setting.app.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/commands"
                 let actualRequestPathString = request.url!.absoluteString
                 XCTAssertTrue(actualRequestPathString.range(of: expectedBasePath) != nil, tag)
                 if testcase.paginationKey != nil || testcase.bestEffortLimit != nil {
@@ -210,7 +210,7 @@ class ListCommandsTests: SmallTestBase {
             let requestVerifier: ((URLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.httpMethod, "GET")
                 // verify path
-                let expectedPath = "\(api.baseURL!)/thing-if/apps/\(api.appID!)/targets/\(setting.target.typedID.type):\(setting.target.typedID.id)/commands"
+                let expectedPath = "\(api.baseURL)/thing-if/apps/\(api.appID)/targets/\(setting.target.typedID.type):\(setting.target.typedID.id)/commands"
                 XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header

@@ -148,7 +148,7 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
             sharedMockSession.requestVerifier = {(request) in
                 XCTAssertEqual(request.httpMethod, "POST", error_message)
                 XCTAssertEqual(request.url!.absoluteString,
-                               "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers",
+                               "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers",
                                error_message)
                 let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.

@@ -151,7 +151,7 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
                 XCTAssertEqual(request.httpMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(testcase.target.typedID.toString())/commands"
+                let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(testcase.target.typedID.toString())/commands"
                 XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal for \(tag)")
 
                 //verify header
@@ -226,7 +226,7 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
                 XCTAssertEqual(request.httpMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(target.typedID.toString())/commands"
+                let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(target.typedID.toString())/commands"
                 XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header
