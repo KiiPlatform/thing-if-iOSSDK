@@ -12,15 +12,27 @@ import XCTest
 
 extension XCTestCase {
 
-    func verifyArray(_ expected: [Any], actual: [Any]?) {
-        guard let actual2 = actual else {
-            XCTFail("actual must not be nil")
+    func verifyArray(_ expected: [Any]?,
+                     actual: [Any]?,
+                     message: String? = nil)
+    {
+        if expected == nil && actual == nil {
+            return
+        }
+        guard let expected2 = expected, let actual2 = actual else {
+            XCTFail("one of expected or actual is nil")
             return
         }
 
-        let error_message = "expected=" + expected.description +
-          "actual=" + actual2.description
-        XCTAssertEqual(NSArray(array: expected), NSArray(array: actual2),
+        let error_message: String
+        if let message2 = message {
+            error_message = message2 + ", expected=" + expected2.description +
+              "actual=" + actual2.description
+        } else {
+            error_message = "expected=" + expected2.description +
+              "actual=" + actual2.description
+        }
+        XCTAssertEqual(NSArray(array: expected2), NSArray(array: actual2),
                       error_message)
     }
     

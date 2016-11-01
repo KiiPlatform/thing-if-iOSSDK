@@ -187,7 +187,7 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
                     XCTAssertNotNil(command, tag)
                     XCTAssertEqual(command!.commandID, expectedCommandID, tag)
                     XCTAssertEqual(command!.targetID.toString(), testcase.target.typedID.toString(), tag)
-                    XCTAssertEqual(command!.actions, testcase.actions, tag)
+                    self.verifyArray(command!.actions, actual: testcase.actions, message: tag)
                 }else {
                     XCTFail("should success for \(tag)")
                 }
