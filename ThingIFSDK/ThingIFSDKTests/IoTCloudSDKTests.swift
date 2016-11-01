@@ -21,14 +21,21 @@ class ThingIFSDKTests: SmallTestBase {
     }
     
     func testSavedInstanceWithInit(){
+        let persistance = UserDefaults.standard
+        let baseKey = "ThingIFAPI_INSTANCE"
         let setting = TestSetting()
         let app = setting.app
         let owner = setting.owner
+        //clear
+        persistance.removeObject(forKey: baseKey)
+        persistance.synchronize()
+        sleep(1)
 
         // ThingIFAPI is not saved when ThingIFAPI is instantiation.
         let api = ThingIFAPIBuilder(app:app, owner:owner).build()
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
         api.saveInstance()
+        sleep(1)
         
         do {
             let temp = try ThingIFAPI.loadWithStoredInstance()
@@ -477,6 +484,8 @@ class ThingIFSDKTests: SmallTestBase {
 
         let persistance = UserDefaults.standard
         let baseKey = "ThingIFAPI_INSTANCE"
+        let versionKey = "ThingIFAPI_VERSION"
+        let sdkVersion = SDKVersion.sharedInstance.versionString
         //clear
         persistance.removeObject(forKey: baseKey)
         persistance.synchronize()
@@ -521,7 +530,7 @@ class ThingIFSDKTests: SmallTestBase {
         }
 
         //set invalid object type to the persistance
-        persistance.set(NSDictionary(dictionary: [baseKey:"a"]), forKey: baseKey)
+        persistance.set(NSDictionary(dictionary: [baseKey:"a", versionKey:sdkVersion]), forKey: baseKey)
         persistance.synchronize()
         
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
@@ -535,7 +544,7 @@ class ThingIFSDKTests: SmallTestBase {
         }
 
         //set invalid object to the persistance
-        persistance.set(NSDictionary(dictionary: [baseKey:NSKeyedArchiver.archivedData(withRootObject: "a")]), forKey: baseKey)
+        persistance.set(NSDictionary(dictionary: [baseKey:NSKeyedArchiver.archivedData(withRootObject: "a"), versionKey:sdkVersion]), forKey: baseKey)
         persistance.synchronize()
 
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
@@ -549,4 +558,124 @@ class ThingIFSDKTests: SmallTestBase {
         }
     }
     
+    func testLoadFromStoredInstanceNoSDKVersion()
+    {
+        let expectation = self.expectation(description: "testLoadFromStoredInstanceNoSDKVersion")
+        let setting = TestSetting()
+        let app = setting.app
+        let owner = setting.owner
+
+        let api = ThingIFAPIBuilder(app:app, owner:owner).build()
+
+        setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
+        api.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+            if error != nil{
+                XCTFail("should success")
+            }
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+
+        let baseKey = "ThingIFAPI_INSTANCE"
+        let versionKey = "ThingIFAPI_VERSION"
+        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
+            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+            dict.removeObject(forKey: versionKey)
+            UserDefaults.standard.set(dict, forKey: baseKey)
+            UserDefaults.standard.synchronize()
+        }
+
+        do {
+            try ThingIFAPI.loadWithStoredInstance()
+            XCTFail("Should raise exception")
+        } catch ThingIFError.api_NOT_STORED {
+            // Succeed.
+        } catch {
+            XCTAssertFalse(false, "Unexpected exception throwed.")
+        }
+    }
+
+    func testLoadFromStoredInstanceLowerSDKVersion()
+    {
+        let expectation = self.expectation(description: "testLoadFromStoredInstanceLowerSDKVersion")
+        let setting = TestSetting()
+        let app = setting.app
+        let owner = setting.owner
+
+        let api = ThingIFAPIBuilder(app:app, owner:owner).build()
+
+        setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
+        api.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+            if error != nil{
+                XCTFail("should success")
+            }
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+
+        let baseKey = "ThingIFAPI_INSTANCE"
+        let versionKey = "ThingIFAPI_VERSION"
+        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
+            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+            dict[versionKey] = "0.0.0"
+            UserDefaults.standard.set(dict, forKey: baseKey)
+            UserDefaults.standard.synchronize()
+        }
+
+        do {
+            try ThingIFAPI.loadWithStoredInstance()
+            XCTFail("Should raise exception")
+        } catch ThingIFError.api_NOT_STORED {
+            // Succeed.
+        } catch {
+            XCTAssertFalse(false, "Unexpected exception throwed.")
+        }
+    }
+
+    func testLoadFromStoredInstanceUpperSDKVersion()
+    {
+        let expectation = self.expectation(description: "testLoadFromStoredInstanceUpperSDKVersion")
+        let setting = TestSetting()
+        let app = setting.app
+        let owner = setting.owner
+
+        let api = ThingIFAPIBuilder(app:app, owner:owner).build()
+
+        setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
+        api.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+            if error != nil{
+                XCTFail("should success")
+            }
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+
+        let baseKey = "ThingIFAPI_INSTANCE"
+        let versionKey = "ThingIFAPI_VERSION"
+        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
+            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+            dict[versionKey] = "0.0.0"
+            UserDefaults.standard.set(dict, forKey: baseKey)
+            UserDefaults.standard.synchronize()
+        }
+
+        do {
+            let temp = try ThingIFAPI.loadWithStoredInstance()
+            XCTAssertEqual(api, temp , "should be equal")
+        } catch {
+            XCTAssertFalse(false, "Unexpected exception throwed.")
+        }
+    }
 }
