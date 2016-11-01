@@ -67,7 +67,7 @@ class ListPendingEndNodesTests: GatewayAPITestBase {
                 XCTAssertEqual(list[1]["vendorThingID"] as? String, nodes![1].vendorThingID)
                 XCTAssertNil(nodes![1].thingProperties)
                 XCTAssertEqual(list[2]["vendorThingID"] as? String, nodes![2].vendorThingID)
-                XCTAssertEqual(propeties.description, nodes![2].thingProperties?.description)
+                self.verifyDict(propeties, actualDict: nodes![2].thingProperties)
                 expectation.fulfill()
             })
         } catch(_) {

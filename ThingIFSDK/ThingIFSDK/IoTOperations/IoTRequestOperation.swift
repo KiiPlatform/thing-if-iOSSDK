@@ -213,7 +213,7 @@ class IoTRequestOperation<T>: GroupOperation {
     func addExecRequestTask(_ request: URLRequest,responseBodySerializer : @escaping (_ responseBodyData:Data?) -> T?, completionHandler: @escaping (_ response: T?, _ error: ThingIFError?) -> Void) -> Void {
         
         let session = iotSession.shared
-        let task = session.dataTask(with: request, completionHandler: { (responseDataOptional: Data?, responseOptional: URLResponse?, errorOptional: NSError?) -> Void in
+        let task = session.dataTask(with: request, completionHandler: { (responseDataOptional: Data?, responseOptional: URLResponse?, errorOptional: Error?) -> Void in
             kiiVerboseLog(responseDataOptional)
             if responseOptional != nil {
                 let httpResponse = responseOptional as! HTTPURLResponse
@@ -250,9 +250,9 @@ class IoTRequestOperation<T>: GroupOperation {
                     completionHandler(serialized, nil)
                 }
             }else{
-                completionHandler(nil, ThingIFError.error_REQUEST(required: errorOptional!))
+                completionHandler(nil, ThingIFError.error_REQUEST(required: errorOptional as! NSError))
             }
-        } as! (Data?, URLResponse?, Error?) -> Void)
+        })
         let taskOperation = URLSessionTaskOperation(task: task)
         
         let reachabilityCondition = ReachabilityCondition(host: request.url!)

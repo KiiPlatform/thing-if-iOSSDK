@@ -38,23 +38,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
             if result.returnedValue == nil {
                 XCTAssertNil(expectedData[2])
             } else {
-                if let returnedValue = result.returnedValue as? String {
-                    XCTAssertEqual(returnedValue, expectedData[2] as? String)
-                } else if let returnedValue = result.returnedValue as? Int {
-                    XCTAssertEqual(returnedValue, expectedData[2] as? Int)
-                } else if let returnedValue = result.returnedValue as? Double {
-                    XCTAssertEqual(returnedValue, expectedData[2] as? Double)
-                } else if let returnedValue = result.returnedValue as? Bool {
-                    XCTAssertEqual(returnedValue, expectedData[2] as? Bool)
-                } else if let returnedValue = result.returnedValue as? [Any] {
-                    verifyArray(returnedValue,
-                                actual: expectedData[2] as? [Any])
-                } else if let returnedValue =
-                            result.returnedValue as? Dictionary<String, Any> {
-                    verifyDict(returnedValue,
-                               actualDict:expectedData[2]
-                                 as? Dictionary<String, Any>)
-                }
+                XCTAssertTrue((result.returnedValue as! AnyObject).isEqual(expectedData[2]!))
             }
             if expectedData[3] == nil {
                 XCTAssertNil(result.error)
