@@ -43,7 +43,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertEqual(request.httpMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
+                let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.appID)/onboardings"
                 XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header
@@ -132,7 +132,7 @@ class OnboardTests: SmallTestBase {
             XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
+            let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.appID)/onboardings"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
@@ -217,7 +217,7 @@ class OnboardTests: SmallTestBase {
             XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
+            let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.appID)/onboardings"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
@@ -302,7 +302,7 @@ class OnboardTests: SmallTestBase {
             XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
+            let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.appID)/onboardings"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
@@ -447,7 +447,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertEqual(request.httpMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
+                let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.appID)/onboardings"
                 XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header
@@ -528,7 +528,7 @@ class OnboardTests: SmallTestBase {
             XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
+            let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.appID)/onboardings"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
@@ -606,7 +606,7 @@ class OnboardTests: SmallTestBase {
             XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
+            let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.appID)/onboardings"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
@@ -684,7 +684,7 @@ class OnboardTests: SmallTestBase {
             XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.appID)/onboardings"
+            let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.appID)/onboardings"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header

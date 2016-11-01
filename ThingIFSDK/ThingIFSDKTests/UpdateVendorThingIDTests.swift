@@ -37,7 +37,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
             XCTAssertEqual(request.httpMethod, "PUT")
 
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.appID)/things/\(target.typedID.id)/vendor-thing-id"
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.appID)/things/\(target.typedID.id)/vendor-thing-id"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
@@ -108,7 +108,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
             XCTAssertEqual(request.httpMethod, "PUT")
 
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.appID)/things/\(target.typedID.id)/vendor-thing-id"
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.appID)/things/\(target.typedID.id)/vendor-thing-id"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header
@@ -185,7 +185,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
             XCTAssertEqual(request.httpMethod, "PUT")
 
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.appID)/things/\(target.typedID.id)/vendor-thing-id"
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.appID)/things/\(target.typedID.id)/vendor-thing-id"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
             //verify header

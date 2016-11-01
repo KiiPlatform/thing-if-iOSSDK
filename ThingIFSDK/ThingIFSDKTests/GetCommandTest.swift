@@ -82,7 +82,7 @@ class GetCommandTests: SmallTestBase {
                 XCTAssertEqual(request.httpMethod, "GET")
 
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(testcase.targetIDString)/commands/\(commandID)"
+                let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(testcase.targetIDString)/commands/\(commandID)"
                 XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal for \(tag)")
 
                 //verify header
@@ -157,7 +157,7 @@ class GetCommandTests: SmallTestBase {
             let requestVerifier: ((URLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.httpMethod, "GET")
                 // verify path
-                let expectedPath = "\(api.baseURL!)/thing-if/apps/\(api.appID!)/targets/\(setting.target.typedID.type):\(setting.target.typedID.id)/commands/\(commandID)"
+                let expectedPath = "\(api.baseURL)/thing-if/apps/\(api.appID)/targets/\(setting.target.typedID.type):\(setting.target.typedID.id)/commands/\(commandID)"
                 XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header

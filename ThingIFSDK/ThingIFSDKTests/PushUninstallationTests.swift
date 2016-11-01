@@ -89,7 +89,7 @@ class PushUninstallationTests: SmallTestBase {
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "DELETE")
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.api.appID)/installations/\(installID)"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
@@ -124,7 +124,7 @@ class PushUninstallationTests: SmallTestBase {
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "DELETE")
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.api.appID)/installations/\(installID)"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
@@ -182,7 +182,7 @@ class PushUninstallationTests: SmallTestBase {
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "DELETE")
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.api.appID)/installations/\(installID)"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
