@@ -13,6 +13,11 @@ open class GatewayAPI: NSObject, NSCoding {
     private static func getSharedNSDefaultKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
+    fileprivate static let SHARED_NSUSERDEFAULT_SDK_VERSION_KEY = "GatewayAPI_VERSION"
+    fileprivate static func getSharedSDKVersionKey(_ tag : String?) -> String{
+        return SHARED_NSUSERDEFAULT_SDK_VERSION_KEY + (tag == nil ? "" : "_\(tag)")
+    }
+    fileprivate static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
 
     open let tag: String?
     open let app: App
@@ -501,11 +506,17 @@ open class GatewayAPI: NSObject, NSCoding {
     open static func loadWithStoredInstance(_ tag : String? = nil) throws -> GatewayAPI?
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        let versionKey = GatewayAPI.getSharedSDKVersionKey(tag)
         let key = GatewayAPI.getSharedNSDefaultKey(tag)
 
         // try to get iotAPI from NSUserDefaults
 
         if let dict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
+            let sdkVersion = dict.object(forKey: versionKey) as? String
+            if isLoadable(sdkVersion) == false {
+                throw ThingIFError.api_NOT_STORED
+            }
+
             if dict.object(forKey: key) != nil {
                 if let data = dict[key] as? Data {
                     if let savedAPI = NSKeyedUnarchiver.unarchiveObject(with: data) as? GatewayAPI {
@@ -540,9 +551,11 @@ open class GatewayAPI: NSObject, NSCoding {
     open static func removeStoredInstances(_ tag : String?=nil)
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        let versionKey = GatewayAPI.getSharedSDKVersionKey(tag)
         let key = GatewayAPI.getSharedNSDefaultKey(tag)
         if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+            dict.removeObject(forKey: versionKey)
             dict.removeObject(forKey: key)
             UserDefaults.standard.set(dict, forKey: baseKey)
             UserDefaults.standard.synchronize()
@@ -556,11 +569,13 @@ open class GatewayAPI: NSObject, NSCoding {
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
 
+        let versionKey = GatewayAPI.getSharedSDKVersionKey(self.tag)
         let key = GatewayAPI.getSharedNSDefaultKey(self.tag)
         let data = NSKeyedArchiver.archivedData(withRootObject: self)
 
         if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+            dict[versionKey] = SDKVersion.sharedInstance.versionString
             dict[key] = data
             UserDefaults.standard.set(dict, forKey: baseKey)
         } else {
@@ -571,5 +586,29 @@ open class GatewayAPI: NSObject, NSCoding {
 
     private func generateAuthBearerHeader() -> Dictionary<String, String> {
         return [ "authorization": "Bearer \(self.accessToken!)" ]
+    }
+
+    static func isLoadable(_ sdkVersion: String?) -> Bool {
+        if sdkVersion == nil {
+            return false
+        }
+
+        let actualVersions = sdkVersion!.components(separatedBy: ".")
+        if actualVersions.count != 3 {
+            return false
+        }
+
+        let expectVersions = MINIMUM_LOADABLE_SDK_VERSION.components(separatedBy: ".")
+        for i in 0..<3 {
+            let actual = Int(actualVersions[i])!
+            let expect = Int(expectVersions[i])!
+            if actual < expect {
+                return false
+            } else if actual > expect {
+                break
+            }
+        }
+
+        return true
     }
 }
