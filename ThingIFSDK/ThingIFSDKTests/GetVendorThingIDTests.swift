@@ -35,7 +35,7 @@ class GetVendorThingIDTests: SmallTestBase {
             let requestVerifier: ((URLRequest) -> Void) = {(request) in
                 XCTAssertEqual(request.httpMethod, "GET")
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.appID)/things/\(setting.target.typedID.id)/vendor-thing-id"
+                let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.appID)/things/\(setting.target.typedID.id)/vendor-thing-id"
                 XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let expectedHeader = [
@@ -91,7 +91,7 @@ class GetVendorThingIDTests: SmallTestBase {
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.appID)/things/\(setting.target.typedID.id)/vendor-thing-id"
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.appID)/things/\(setting.target.typedID.id)/vendor-thing-id"
             XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
