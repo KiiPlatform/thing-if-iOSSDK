@@ -485,7 +485,7 @@ class ThingIFSDKTests: SmallTestBase {
         let persistance = UserDefaults.standard
         let baseKey = "ThingIFAPI_INSTANCE"
         let versionKey = "ThingIFAPI_VERSION"
-        let sdkVersion = SDKVersion.sharedInstance.versionString
+        let sdkVersion = SDKVersion.sharedInstance.versionString!
         //clear
         persistance.removeObject(forKey: baseKey)
         persistance.synchronize()
