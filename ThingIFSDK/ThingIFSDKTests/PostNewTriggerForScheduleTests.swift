@@ -203,7 +203,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                                                expectedHeader: [
                                                      "Authorization": "Bearer \(setting.owner.accessToken)",
                                                      "Content-Type": "application/json",
-                                                     "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                                                     "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                                                  ],
                                                expectedBody: [
                                                    "predicate": predicate.toNSDictionary() as Dictionary,

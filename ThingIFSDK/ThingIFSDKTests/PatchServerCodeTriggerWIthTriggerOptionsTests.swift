@@ -112,7 +112,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                       [
                         "Authorization": "Bearer \(setting.owner.accessToken)",
                         "Content-Type": "application/json",
-                        "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                        "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                       ],
                       error_message);
                     XCTAssertEqual(
@@ -156,7 +156,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                       [
                         "Authorization": "Bearer \(setting.owner.accessToken)",
                         "Content-Type": "application/json",
-                        "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                        "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                       ],
                       error_message);
                     XCTAssertEqual(
@@ -255,7 +255,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/json",
-                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                   ]);
                 XCTAssertEqual(
                   request.url?.absoluteString,
@@ -295,7 +295,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/json",
-                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                   ]);
                 XCTAssertEqual(
                   request.url?.absoluteString,
@@ -383,7 +383,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/json",
-                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                   ]);
                 XCTAssertEqual(
                   request.url?.absoluteString,
@@ -423,7 +423,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/json",
-                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                   ]);
                 XCTAssertEqual(
                   request.url?.absoluteString,
