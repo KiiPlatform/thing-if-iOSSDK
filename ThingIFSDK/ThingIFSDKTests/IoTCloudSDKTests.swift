@@ -27,11 +27,7 @@ class ThingIFSDKTests: SmallTestBase {
 
         // ThingIFAPI is not saved when ThingIFAPI is instantiation.
         let api = ThingIFAPIBuilder(app:app, owner:owner).build()
-        do {
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch {
-        }
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
         api.saveInstance()
         
         do {
@@ -96,21 +92,9 @@ class ThingIFSDKTests: SmallTestBase {
         
         ThingIFAPI.removeAllStoredInstances()
         
-        do {
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch {
-        }
-        do {
-            try ThingIFAPI.loadWithStoredInstance(tags[0])
-            XCTFail("Should raise exception")
-        } catch {
-        }
-        do {
-            try ThingIFAPI.loadWithStoredInstance(tags[1])
-            XCTFail("Should raise exception")
-        } catch {
-        }
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0]))
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1]))
     }
     func testSavedInstanceWithOnboard(){
         let tags = ["tag1","tag2"]
@@ -175,24 +159,12 @@ class ThingIFSDKTests: SmallTestBase {
             XCTFail("Should not raise exception ")
         }
         
-        do {
-            ThingIFAPI.removeStoredInstances(nil)
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch {
-        }
-        do {
-            ThingIFAPI.removeStoredInstances(tags[0])
-            try ThingIFAPI.loadWithStoredInstance(tags[0])
-            XCTFail("Should raise exception")
-        } catch {
-        }
-        do {
-            ThingIFAPI.removeAllStoredInstances()
-            try ThingIFAPI.loadWithStoredInstance(tags[1])
-            XCTFail("Should raise exception")
-        } catch {
-        }
+        ThingIFAPI.removeStoredInstances(nil)
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
+        ThingIFAPI.removeStoredInstances(tags[0])
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0]))
+        ThingIFAPI.removeAllStoredInstances()
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1]))
     }
     func testOverwriteSavedInstanceWithOnboard(){
         let tag = "tag1"
@@ -262,19 +234,14 @@ class ThingIFSDKTests: SmallTestBase {
             }
         }
         
-        do {
-            try ThingIFAPI.loadWithStoredInstance("tag2")
-            XCTFail("Should raise exception")
-        } catch(let e as ThingIFError){
-            switch e {
-            case .api_NOT_STORED:
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance("tag2")) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
                 break
             default:
                 XCTFail("Exception should be API_NOT_STORED")
                 break
             }
-        } catch {
-            XCTFail("Exception should be API_NOT_STORED")
         }
     }
 
@@ -352,25 +319,13 @@ class ThingIFSDKTests: SmallTestBase {
             XCTFail("Should not raise exception ")
         }
         
-        do {
-            ThingIFAPI.removeStoredInstances(nil)
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch {
-        }
-        do {
-            ThingIFAPI.removeStoredInstances(tags[0])
-            try ThingIFAPI.loadWithStoredInstance(tags[0])
-            XCTFail("Should raise exception")
-        } catch {
-        }
+        ThingIFAPI.removeStoredInstances(nil)
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
+        ThingIFAPI.removeStoredInstances(tags[0])
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0]))
         
-        do {
-            ThingIFAPI.removeAllStoredInstances()
-            try ThingIFAPI.loadWithStoredInstance(tags[1])
-            XCTFail("Should raise exception")
-        } catch {
-        }
+        ThingIFAPI.removeAllStoredInstances()
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1]))
     }
     fileprivate func setMockResponse4InstallPush(_ installationID: String, setting:TestSetting) -> Void {
         let dict = ["installationID":installationID]
@@ -414,25 +369,13 @@ class ThingIFSDKTests: SmallTestBase {
             XCTFail("Should not raise exception ")
         }
         
-        do {
-            ThingIFAPI.removeStoredInstances(nil)
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch {
-        }
-        do {
-            ThingIFAPI.removeStoredInstances(tags[0])
-            try ThingIFAPI.loadWithStoredInstance(tags[0])
-            XCTFail("Should raise exception")
-        } catch {
-        }
+        ThingIFAPI.removeStoredInstances(nil)
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
+        ThingIFAPI.removeStoredInstances(tags[0])
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0]))
         
-        do {
-            ThingIFAPI.removeAllStoredInstances()
-            try ThingIFAPI.loadWithStoredInstance(tags[1])
-            XCTFail("Should raise exception")
-        } catch {
-        }
+        ThingIFAPI.removeAllStoredInstances()
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1]))
     }
     func testInvalidSavedInstance(){
 
@@ -443,97 +386,70 @@ class ThingIFSDKTests: SmallTestBase {
         persistance.synchronize()
         sleep(1)
 
-        do {
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch(let e as ThingIFError) {
-            switch e {
-            case .api_NOT_STORED:
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
                 break
             default:
                 XCTFail("Exception should be API_NOT_STORED")
                 break
             }
-
-        } catch {
-            XCTFail("Exception should be API_NOT_STORED")
         }
 
         //set invalid object to base key
         persistance.set(1, forKey: baseKey)
         persistance.synchronize()
 
-        do {
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch(let e as ThingIFError){
-            switch e {
-            case .api_NOT_STORED:
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
                 break
             default:
                 XCTFail("Exception should be API_NOT_STORED")
                 break
             }
-
-        } catch {
-            XCTFail("Exception should be API_NOT_STORED")
         }
 
         //set empty dict to base key
         persistance.set(NSDictionary(), forKey: baseKey)
         persistance.synchronize()
 
-        do {
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch(let e as ThingIFError) {
-            switch e {
-            case .api_NOT_STORED:
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
                 break
             default:
                 XCTFail("Exception should be API_NOT_STORED")
                 break
             }
-        } catch {
-            XCTFail("Exception should be API_NOT_STORED")
         }
 
         //set invalid object type to the persistance
         persistance.set(NSDictionary(dictionary: [baseKey:"a"]), forKey: baseKey)
         persistance.synchronize()
         
-        do {
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch(let e as ThingIFError) {
-            switch e {
-            case .invalid_STORED_API:
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.invalid_STORED_API:
                 break
             default:
                 XCTFail("Exception should be INVALID_STORED_API")
                 break
             }
-        } catch {
-            XCTFail("Exception should be INVALID_STORED_API")
         }
 
         //set invalid object to the persistance
         persistance.set(NSDictionary(dictionary: [baseKey:NSKeyedArchiver.archivedData(withRootObject: "a")]), forKey: baseKey)
         persistance.synchronize()
 
-        do {
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch(let e as ThingIFError) {
-            switch e {
-            case .invalid_STORED_API:
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.invalid_STORED_API:
                 break
             default:
                 XCTFail("Exception should be INVALID_STORED_API")
                 break
             }
-        } catch {
-            XCTFail("Exception should be INVALID_STORED_API")
         }
     }
     

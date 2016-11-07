@@ -47,7 +47,7 @@ class CommandSerializationTest: SmallTestBase {
 
             if value is Dictionary<String, Any> &&
                      targetValue is Dictionary<String, Any> {
-                CommandSerializationTest.isSameDictionary(
+                return CommandSerializationTest.isSameDictionary(
                     value as! Dictionary<String, Any>,
                     target: targetValue as! Dictionary<String, Any>)
             } else if value is Int && targetValue is Int {
