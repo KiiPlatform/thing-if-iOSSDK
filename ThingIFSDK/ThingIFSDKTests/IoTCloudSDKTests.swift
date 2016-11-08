@@ -668,7 +668,7 @@ class ThingIFSDKTests: SmallTestBase {
         let versionKey = "ThingIFAPI_VERSION"
         if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
-            dict[versionKey] = "0.0.0"
+            dict[versionKey] = "1000.0.0"
             UserDefaults.standard.set(dict, forKey: baseKey)
             UserDefaults.standard.synchronize()
         }
