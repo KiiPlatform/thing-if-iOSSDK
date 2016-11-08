@@ -34,7 +34,7 @@ class OnboardTests: SmallTestBase {
             thingType: setting.thingType,
             firmwareVersion:  firmwareVersion,
             thingProperties: thingProperties,
-            position: LayoutPosition.STANDALONE,
+            position: LayoutPosition.standalone,
             interval: DataGroupingInterval.interval1Minute)
 
         do {
@@ -124,7 +124,7 @@ class OnboardTests: SmallTestBase {
         let options = OnboardWithVendorThingIDOptions(
             thingType: setting.thingType,
             thingProperties: thingProperties,
-            position: LayoutPosition.GATEWAY,
+            position: LayoutPosition.gateway,
             interval: DataGroupingInterval.interval15Minutes)
 
         // verify request
@@ -209,7 +209,7 @@ class OnboardTests: SmallTestBase {
         let options = OnboardWithVendorThingIDOptions(
             thingType: setting.thingType,
             thingProperties: thingProperties,
-            position: LayoutPosition.ENDNODE,
+            position: LayoutPosition.endnode,
             interval: DataGroupingInterval.interval1Hour)
 
         // verify request
@@ -294,7 +294,7 @@ class OnboardTests: SmallTestBase {
         let options = OnboardWithVendorThingIDOptions(
             thingType: setting.thingType,
             thingProperties: thingProperties,
-            position: LayoutPosition.STANDALONE,
+            position: LayoutPosition.standalone,
             interval: DataGroupingInterval.interval12Hours)
 
         // verify request
@@ -379,7 +379,7 @@ class OnboardTests: SmallTestBase {
         let options = OnboardWithVendorThingIDOptions(
             thingType: setting.thingType,
             thingProperties: thingProperties,
-            position: LayoutPosition.STANDALONE,
+            position: LayoutPosition.standalone,
             interval: DataGroupingInterval.interval12Hours)
 
         do {
@@ -438,7 +438,7 @@ class OnboardTests: SmallTestBase {
         let thingID = "dummyThingID"
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
-            position: LayoutPosition.STANDALONE,
+            position: LayoutPosition.standalone,
             interval: DataGroupingInterval.interval1Minute)
 
         do {
@@ -520,7 +520,7 @@ class OnboardTests: SmallTestBase {
         let thingID = "dummyThingID"
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
-            position: LayoutPosition.GATEWAY,
+            position: LayoutPosition.gateway,
             interval: DataGroupingInterval.interval30Minutes)
 
         // verify request
@@ -598,7 +598,7 @@ class OnboardTests: SmallTestBase {
         let thingID = "dummyThingID"
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
-            position: LayoutPosition.ENDNODE,
+            position: LayoutPosition.endnode,
             interval: DataGroupingInterval.interval1Hour)
 
         // verify request
@@ -676,7 +676,7 @@ class OnboardTests: SmallTestBase {
         let thingID = "dummyThingID"
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
-            position: LayoutPosition.STANDALONE,
+            position: LayoutPosition.standalone,
             interval: DataGroupingInterval.interval12Hours)
 
         // verify request
@@ -754,7 +754,7 @@ class OnboardTests: SmallTestBase {
         let thingID = "dummyThingID"
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
-            position: LayoutPosition.STANDALONE,
+            position: LayoutPosition.standalone,
             interval: DataGroupingInterval.interval12Hours)
 
         do {

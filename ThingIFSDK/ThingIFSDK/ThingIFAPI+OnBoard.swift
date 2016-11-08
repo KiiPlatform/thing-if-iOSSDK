@@ -77,12 +77,12 @@ extension ThingIFAPI {
                         } else {
                             vendorThingID = ""
                         }
-                        if layoutPosition == LayoutPosition.GATEWAY {
+                        if layoutPosition == LayoutPosition.gateway {
                             target = Gateway(
                                     thingID: thingID,
                                     vendorThingID: vendorThingID,
                                     accessToken: accessToken)
-                        } else if layoutPosition == LayoutPosition.ENDNODE {
+                        } else if layoutPosition == LayoutPosition.endnode {
                             target = EndNode(
                                     thingID: thingID,
                                     vendorThingID: vendorThingID,
