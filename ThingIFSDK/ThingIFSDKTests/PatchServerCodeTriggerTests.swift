@@ -13,7 +13,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
 
     func testPatchServerCodeStateTrigger_success() {
         let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.conditionFalseToTrue)
         patchServerCodeTrigger_success(predicate)
 
     }
@@ -113,7 +113,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
     }
     func testPatchServerCodeStateTrigger_http_404() {
         let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.conditionFalseToTrue)
         patchServerCodeTrigger_http_404(predicate)
 
     }
@@ -200,7 +200,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
 
     func testPatchServerCodeStateTrigger_target_not_available_error() {
         let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.conditionFalseToTrue)
         patchServerCodeTrigger_target_not_available_error(predicate)
     }
     func testPatchServerCodeScheduleOnceTrigger_target_not_available_error() {

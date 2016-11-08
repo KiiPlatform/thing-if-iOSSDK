@@ -174,12 +174,12 @@ public enum TriggersWhen : String {
        changed, then serialization and deserialization is broken. */
 
     /** Always fires when the Condition is evaluated as true. */
-    case CONDITION_TRUE = "CONDITION_TRUE"
+    case conditionTrue = "CONDITION_TRUE"
     /** Fires when previous State is evaluated as false and current State is evaluated as true. */
-    case CONDITION_FALSE_TO_TRUE = "CONDITION_FALSE_TO_TRUE"
+    case conditionFalseToTrue = "CONDITION_FALSE_TO_TRUE"
     /** Fires when the previous State and current State is evaluated as
     different value. i.e. false to true, true to false. */
-    case CONDITION_CHANGED = "CONDITION_CHANGED"
+    case conditionChanged = "CONDITION_CHANGED"
 }
 
 public enum TriggersWhat : String {

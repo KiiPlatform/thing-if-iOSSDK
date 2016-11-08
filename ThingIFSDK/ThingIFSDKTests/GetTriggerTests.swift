@@ -149,7 +149,7 @@ class GetTriggerTests: SmallTestBase {
             let serverCodeDict = expectedServerCode.toNSDictionary()
             let eventSource = "STATES"
             let condition: Dictionary<String, Any> = ["type":"eq", "field":"color", "value": 0]
-            let expectedPredicateDict: [String : Any] = ["eventSource":eventSource, "triggersWhen":TriggersWhen.CONDITION_FALSE_TO_TRUE.rawValue, "condition": condition]
+            let expectedPredicateDict: [String : Any] = ["eventSource":eventSource, "triggersWhen":TriggersWhen.conditionFalseToTrue.rawValue, "condition": condition]
             
             // mock response
             let dict: [String : Any] = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": serverCodeDict, "disabled": false]

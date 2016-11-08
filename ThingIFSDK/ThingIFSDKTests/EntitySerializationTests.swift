@@ -97,7 +97,7 @@ class EntitySerializationTests: SmallTestBase {
         dict["metadata"] = ["sound":"noisy.mp3"]
         let command = Command.commandWithNSDictionary(dict)
         let condition = Condition(clause: EqualsClause(field: "field", stringValue: "1234"))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_TRUE)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.conditionTrue)
         
         let aTrigger = Trigger(triggerID: "trigger-1234-5678", targetID: TypedID(type: "thing", id: "thing-1234-5678"), enabled: true, predicate: predicate, command: command!, title: "Trigger Title", triggerDescription: "Trigger Description", metadata: ["sound":"noisy.mp4"])
         self.doSerializationTest(aTrigger)
@@ -138,7 +138,7 @@ class EntitySerializationTests: SmallTestBase {
         let parameters : Dictionary = ["arg1":"abc", "arg2":1234, "arg3":true] as [String : Any]
         let serverCode = ServerCode(endpoint: "function_name", executorAccessToken: "123456789abcde", targetAppID: "abcdefghi", parameters: parameters)
         let condition = Condition(clause: EqualsClause(field: "field", stringValue: "1234"))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_TRUE)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.conditionTrue)
 
         let aTrigger = Trigger(triggerID: "trigger-1234-5678", targetID: TypedID(type: "thing", id: "thing-1234-5678"), enabled: true, predicate: predicate, serverCode: serverCode)
         self.doSerializationTest(aTrigger)

@@ -13,7 +13,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
 
     func testPostNewServerCodeStateTrigger_success() {
         let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.conditionFalseToTrue)
         postNewServerCodeTrigger_success(predicate)
 
     }
@@ -100,7 +100,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
 
     func testPostNewServerCodeStateTrigger_http_404() {
         let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.conditionFalseToTrue)
         postNewServerCodeTrigger_success(predicate)
 
     }
@@ -191,7 +191,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         let expectation : XCTestExpectation! = self.expectation(description: "testPostNewServerCodeTrigger_target_not_available_error")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
-        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.conditionFalseToTrue)
         
         api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
             if error == nil{
