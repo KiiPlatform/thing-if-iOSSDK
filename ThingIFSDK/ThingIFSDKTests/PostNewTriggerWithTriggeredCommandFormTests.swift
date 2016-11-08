@@ -30,7 +30,7 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
         return [ "command" : command,
                  "predicate" : [ "eventSource" : "SCHEDULE",
                                  "schedule" : "1 * * * *" ],
-                 "triggersWhat": TriggersWhat.COMMAND.rawValue ]
+                 "triggersWhat": TriggersWhat.command.rawValue ]
     }
 
     func testSuccess () {

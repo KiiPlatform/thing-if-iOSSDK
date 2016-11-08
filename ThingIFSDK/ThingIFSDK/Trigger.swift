@@ -39,9 +39,9 @@ open class Trigger: NSObject, NSCoding {
     var triggersWhat: TriggersWhat? {
         get {
             if self.command != nil {
-                return TriggersWhat.COMMAND
+                return TriggersWhat.command
             } else if self.serverCode != nil {
-                return TriggersWhat.SERVER_CODE
+                return TriggersWhat.serverCode
             } else {
                 return nil
             }
@@ -183,8 +183,8 @@ public enum TriggersWhen : String {
 }
 
 public enum TriggersWhat : String {
-    case COMMAND = "COMMAND"
-    case SERVER_CODE = "SERVER_CODE"
+    case command = "COMMAND"
+    case serverCode = "SERVER_CODE"
 }
 
 public enum EventSource: String {

@@ -27,7 +27,7 @@ class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
         command["description"] = form.commandDescription
         command["metadata"] = form.metadata
 
-        return [ "triggersWhat": TriggersWhat.COMMAND.rawValue,
+        return [ "triggersWhat": TriggersWhat.command.rawValue,
                  "command" : command ]
     }
 

@@ -38,7 +38,7 @@ extension ThingIFAPI {
         var requestBodyDict: Dictionary<String, Any> = [
           "predicate": predicate.toNSDictionary(),
           "command": commandDict,
-          "triggersWhat": TriggersWhat.COMMAND.rawValue]
+          "triggersWhat": TriggersWhat.command.rawValue]
         requestBodyDict["title"] = options?.title
         requestBodyDict["description"] = options?.triggerDescription
         requestBodyDict["metadata"] = options?.metadata
@@ -105,7 +105,7 @@ extension ThingIFAPI {
         var requestBodyDict: Dictionary<String, Any> = [
           "predicate": predicate.toNSDictionary(),
           "serverCode": serverCode.toNSDictionary(),
-          "triggersWhat": TriggersWhat.SERVER_CODE.rawValue]
+          "triggersWhat": TriggersWhat.serverCode.rawValue]
         requestBodyDict["title"] = options?.title
         requestBodyDict["description"] = options?.triggerDescription
         requestBodyDict["metadata"] = options?.metadata
@@ -165,7 +165,7 @@ extension ThingIFAPI {
 
         // generate body
         var requestBodyDict: Dictionary<String, Any> = [
-          "triggersWhat": TriggersWhat.COMMAND.rawValue
+          "triggersWhat": TriggersWhat.command.rawValue
         ];
         requestBodyDict["title"] = options?.title
         requestBodyDict["description"] = options?.triggerDescription
@@ -234,7 +234,7 @@ extension ThingIFAPI {
         
         // generate body
         var requestBodyDict: Dictionary<String, Any> = [
-          "triggersWhat" : TriggersWhat.SERVER_CODE.rawValue
+          "triggersWhat" : TriggersWhat.serverCode.rawValue
         ]
         requestBodyDict["predicate"] = predicate?.toNSDictionary()
         requestBodyDict["serverCode"] = serverCode?.toNSDictionary()
