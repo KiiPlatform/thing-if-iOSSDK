@@ -29,9 +29,9 @@ public enum ThingIFError : Error {
     /** where target not found */
     case targetNotAvailable
     /** when trying to load API from persistance but not avaialble*/
-    case apiNotStored
+    case apiNotStored(tag: String?)
     /** when trying to load API from persistance but unloadable by version*/
-    case apiUnloadable
+    case apiUnloadable(tag: String?, storedVersion: String?, minimumVersion: String)
     /** when trying to load API from persistance but it does not have correct instance*/
     case invalidStoredApi
     /** when trying to access Gateway but user is not logged in*/

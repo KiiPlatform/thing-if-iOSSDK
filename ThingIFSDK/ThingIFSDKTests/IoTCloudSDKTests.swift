@@ -606,8 +606,9 @@ class ThingIFSDKTests: SmallTestBase {
         let setting = TestSetting()
         let app = setting.app
         let owner = setting.owner
+        let tagName = "testLoadFromStoredInstanceLowerSDKVersion"
 
-        let api = ThingIFAPIBuilder(app:app, owner:owner).build()
+        let api = ThingIFAPIBuilder(app:app, owner:owner, tag:tagName).build()
 
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
         api.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
@@ -623,7 +624,7 @@ class ThingIFSDKTests: SmallTestBase {
         }
 
         let baseKey = "ThingIFAPI_INSTANCE"
-        let versionKey = "ThingIFAPI_VERSION"
+        let versionKey = "ThingIFAPI_VERSION" + "_\(tagName)"
         if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
             dict[versionKey] = "0.0.0"
@@ -631,14 +632,16 @@ class ThingIFSDKTests: SmallTestBase {
             UserDefaults.standard.synchronize()
         }
 
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
-            switch error {
-            case ThingIFError.apiUnloadable:
-                // Succeed.
-                break
-            default:
-                XCTFail("Unexpected exception throwed.")
-            }
+        do {
+            let loaded = try ThingIFAPI.loadWithStoredInstance(tagName)
+            XCTAssertNotNil(loaded)
+        } catch ThingIFError.apiUnloadable(let tag, let storedVersion, let minimumVersion) {
+            XCTAssertEqual(tagName, tag)
+            XCTAssertEqual("0.0.0", storedVersion)
+            // Please check ThingIFAPI.MINIMUM_LOADABLE_SDK_VERSION if this check failed.
+            XCTAssertEqual("0.13.0", minimumVersion)
+        } catch {
+            XCTFail("Unexpected exception throwed.")
         }
     }
 
