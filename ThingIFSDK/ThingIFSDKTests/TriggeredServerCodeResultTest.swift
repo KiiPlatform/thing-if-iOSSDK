@@ -38,7 +38,7 @@ class TriggeredServerCodeResultTest: SmallTestBase {
             if result.returnedValue == nil {
                 XCTAssertNil(expectedData[2])
             } else {
-                XCTAssertTrue((result.returnedValue as! AnyObject).isEqual(expectedData[2]!))
+                XCTAssertTrue((result.returnedValue as AnyObject).isEqual(expectedData[2]!))
             }
             if expectedData[3] == nil {
                 XCTAssertNil(result.error)

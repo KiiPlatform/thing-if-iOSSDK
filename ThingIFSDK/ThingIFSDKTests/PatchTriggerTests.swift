@@ -120,16 +120,12 @@ class PatchTriggerTests: SmallTestBase {
                 XCTAssertEqual(value, request.value(forHTTPHeaderField: key), tag)
             }
             //verify body
-            do {
-                self.verifyDict(expectedBodyDict,
+            self.verifyDict(expectedBodyDict,
                            actualDict: try! JSONSerialization.jsonObject(
                              with: request.httpBody!,
                              options: .mutableContainers) as! [String : Any],
                            errorMessage: tag)
 
-            }catch(_){
-                XCTFail(tag)
-            }
             XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
         }
 
