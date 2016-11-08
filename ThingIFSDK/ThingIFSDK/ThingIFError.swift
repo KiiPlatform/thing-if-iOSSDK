@@ -30,6 +30,8 @@ public enum ThingIFError : Error {
     case targetNotAvailable
     /** when trying to load API from persistance but not avaialble*/
     case apiNotStored
+    /** when trying to load API from persistance but unloadable by version*/
+    case apiUnloadable
     /** when trying to load API from persistance but it does not have correct instance*/
     case invalidStoredApi
     /** when trying to access Gateway but user is not logged in*/

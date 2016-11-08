@@ -9,11 +9,11 @@ import Foundation
 open class ThingIFAPI: NSObject, NSCoding {
 
     private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "ThingIFAPI_INSTANCE"
-    private static func getSharedNSDefaultKey(_ tag : String?) -> String{
+    private static func getStoredInstanceKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
     fileprivate static let SHARED_NSUSERDEFAULT_SDK_VERSION_KEY = "ThingIFAPI_VERSION"
-    fileprivate static func getSharedSDKVersionKey(_ tag : String?) -> String{
+    fileprivate static func getStoredSDKVersionKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_SDK_VERSION_KEY + (tag == nil ? "" : "_\(tag)")
     }
     fileprivate static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
@@ -803,19 +803,20 @@ open class ThingIFAPI: NSObject, NSCoding {
     */
     open static func loadWithStoredInstance(_ tag : String? = nil) throws -> ThingIFAPI?{
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        let versionKey = ThingIFAPI.getSharedSDKVersionKey(tag)
-        let key = ThingIFAPI.getSharedNSDefaultKey(tag)
+        let versionKey = ThingIFAPI.getStoredSDKVersionKey(tag)
+        let key = ThingIFAPI.getStoredInstanceKey(tag)
 
         // try to get iotAPI from NSUserDefaults
 
         if let dict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary
         {
-            let sdkVersion = dict.object(forKey: versionKey) as? String
-            if isLoadable(sdkVersion) == false {
-                throw ThingIFError.api_NOT_STORED
-            }
-
             if dict.object(forKey: key) != nil {
+
+                let sdkVersion = dict.object(forKey: versionKey) as? String
+                if isLoadable(sdkVersion) == false {
+                    throw ThingIFError.apiUnloadable
+                }
+
                 if let data = dict[key] as? Data {
                     if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObject(with: data) as? ThingIFAPI {
                         return savedIoTAPI
@@ -851,8 +852,8 @@ open class ThingIFAPI: NSObject, NSCoding {
     */
     open static func removeStoredInstances(_ tag : String?=nil){
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        let versionKey = ThingIFAPI.getSharedSDKVersionKey(tag)
-        let key = ThingIFAPI.getSharedNSDefaultKey(tag)
+        let versionKey = ThingIFAPI.getStoredSDKVersionKey(tag)
+        let key = ThingIFAPI.getStoredInstanceKey(tag)
         if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
             dict.removeObject(forKey: versionKey)
@@ -866,8 +867,8 @@ open class ThingIFAPI: NSObject, NSCoding {
 
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
 
-        let versionKey = ThingIFAPI.getSharedSDKVersionKey(self.tag)
-        let key = ThingIFAPI.getSharedNSDefaultKey(self.tag)
+        let versionKey = ThingIFAPI.getStoredSDKVersionKey(self.tag)
+        let key = ThingIFAPI.getStoredInstanceKey(self.tag)
         let data = NSKeyedArchiver.archivedData(withRootObject: self)
 
         if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
@@ -881,20 +882,20 @@ open class ThingIFAPI: NSObject, NSCoding {
         UserDefaults.standard.synchronize()
     }
 
-    static func isLoadable(_ sdkVersion: String?) -> Bool {
-        if sdkVersion == nil {
+    static func isLoadable(_ storedSDKVersion: String?) -> Bool {
+        if storedSDKVersion == nil {
             return false
         }
 
-        let actualVersions = sdkVersion!.components(separatedBy: ".")
+        let actualVersions = storedSDKVersion!.components(separatedBy: ".")
         if actualVersions.count != 3 {
             return false
         }
 
-        let expectVersions = MINIMUM_LOADABLE_SDK_VERSION.components(separatedBy: ".")
+        let minimumLoadableVersions = MINIMUM_LOADABLE_SDK_VERSION.components(separatedBy: ".")
         for i in 0..<3 {
             let actual = Int(actualVersions[i])!
-            let expect = Int(expectVersions[i])!
+            let expect = Int(minimumLoadableVersions[i])!
             if actual < expect {
                 return false
             } else if actual > expect {

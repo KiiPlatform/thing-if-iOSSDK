@@ -148,14 +148,14 @@ class GatewayAPIStoredInstanceTests: GatewayAPITestBase {
             UserDefaults.standard.synchronize()
         }
 
-        do {
-            let restoreApi = try GatewayAPI.loadWithStoredInstance()
-
-            XCTAssertNotNil(restoreApi, "should not be restored.")
-        } catch ThingIFError.api_NOT_STORED {
-            // Succeed.
-        } catch {
-            XCTAssertFalse(false, "Unexpected exception throwed.")
+        XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.apiUnloadable:
+                // Succeed.
+                break
+            default:
+                XCTFail("Unexpected exception throwed.")
+            }
         }
     }
 
@@ -198,14 +198,14 @@ class GatewayAPIStoredInstanceTests: GatewayAPITestBase {
             UserDefaults.standard.synchronize()
         }
 
-        do {
-            let restoreApi = try GatewayAPI.loadWithStoredInstance()
-
-            XCTAssertNotNil(restoreApi, "should not be restored.")
-        } catch ThingIFError.api_NOT_STORED {
-            // Succeed.
-        } catch {
-            XCTAssertFalse(false, "Unexpected exception throwed.")
+        XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.apiUnloadable:
+                // Succeed.
+                break
+            default:
+                XCTFail("Unexpected exception throwed.")
+            }
         }
     }
 

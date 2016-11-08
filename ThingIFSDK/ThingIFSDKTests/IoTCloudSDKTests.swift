@@ -589,13 +589,14 @@ class ThingIFSDKTests: SmallTestBase {
             UserDefaults.standard.synchronize()
         }
 
-        do {
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch ThingIFError.api_NOT_STORED {
-            // Succeed.
-        } catch {
-            XCTAssertFalse(false, "Unexpected exception throwed.")
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.apiUnloadable:
+                // Succeed.
+                break
+            default:
+                XCTFail("Unexpected exception throwed.")
+            }
         }
     }
 
@@ -630,13 +631,14 @@ class ThingIFSDKTests: SmallTestBase {
             UserDefaults.standard.synchronize()
         }
 
-        do {
-            try ThingIFAPI.loadWithStoredInstance()
-            XCTFail("Should raise exception")
-        } catch ThingIFError.api_NOT_STORED {
-            // Succeed.
-        } catch {
-            XCTAssertFalse(false, "Unexpected exception throwed.")
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.apiUnloadable:
+                // Succeed.
+                break
+            default:
+                XCTFail("Unexpected exception throwed.")
+            }
         }
     }
 
@@ -675,7 +677,7 @@ class ThingIFSDKTests: SmallTestBase {
             let temp = try ThingIFAPI.loadWithStoredInstance()
             XCTAssertEqual(api, temp , "should be equal")
         } catch {
-            XCTAssertFalse(false, "Unexpected exception throwed.")
+            XCTFail("Unexpected exception throwed.")
         }
     }
 }
