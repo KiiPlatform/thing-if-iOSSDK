@@ -92,9 +92,33 @@ class ThingIFSDKTests: SmallTestBase {
         
         ThingIFAPI.removeAllStoredInstances()
         
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0]))
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1]))
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0])) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1])) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
     }
     func testSavedInstanceWithOnboard(){
         let tags = ["tag1","tag2"]
@@ -160,11 +184,35 @@ class ThingIFSDKTests: SmallTestBase {
         }
         
         ThingIFAPI.removeStoredInstances(nil)
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
         ThingIFAPI.removeStoredInstances(tags[0])
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0]))
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0])) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
         ThingIFAPI.removeAllStoredInstances()
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1]))
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1])) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
     }
     func testOverwriteSavedInstanceWithOnboard(){
         let tag = "tag1"
@@ -320,12 +368,36 @@ class ThingIFSDKTests: SmallTestBase {
         }
         
         ThingIFAPI.removeStoredInstances(nil)
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
         ThingIFAPI.removeStoredInstances(tags[0])
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0]))
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0])) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
         
         ThingIFAPI.removeAllStoredInstances()
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1]))
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1])) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
     }
     fileprivate func setMockResponse4InstallPush(_ installationID: String, setting:TestSetting) -> Void {
         let dict = ["installationID":installationID]
@@ -370,12 +442,36 @@ class ThingIFSDKTests: SmallTestBase {
         }
         
         ThingIFAPI.removeStoredInstances(nil)
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
         ThingIFAPI.removeStoredInstances(tags[0])
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0]))
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0])) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
         
         ThingIFAPI.removeAllStoredInstances()
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1]))
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1])) { error in
+            switch error {
+            case ThingIFError.api_NOT_STORED:
+                // Succeed.
+                break;
+            default:
+                XCTFail("Unexpect error")
+            }
+        }
     }
     func testInvalidSavedInstance(){
 
