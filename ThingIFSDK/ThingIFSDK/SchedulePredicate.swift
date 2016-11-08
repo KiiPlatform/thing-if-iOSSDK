@@ -14,7 +14,7 @@ open class SchedulePredicate: NSObject,Predicate {
     open let schedule: String
 
     open func getEventSource() -> EventSource {
-        return EventSource.Schedule
+        return EventSource.schedule
     }
     /** Instantiate new SchedulePredicate.
 
@@ -40,6 +40,6 @@ open class SchedulePredicate: NSObject,Predicate {
      - Returns: Json object as an instance of NSDictionary
      */
     open func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["eventSource": EventSource.Schedule.rawValue, "schedule":self.schedule])
+        return NSDictionary(dictionary: ["eventSource": EventSource.schedule.rawValue, "schedule":self.schedule])
     }
 }

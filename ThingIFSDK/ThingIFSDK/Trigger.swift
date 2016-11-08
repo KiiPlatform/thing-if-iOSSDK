@@ -67,13 +67,13 @@ open class Trigger: NSObject, NSCoding {
             if let eventSourceString = predicateDict["eventSource"] as? String{
                 if let eventSource = EventSource(rawValue: eventSourceString){
                     switch eventSource {
-                    case EventSource.States:
+                    case EventSource.states:
                         predicate = StatePredicate.statePredicateWithNSDict(predicateDict)
                         break
-                    case EventSource.Schedule:
+                    case EventSource.schedule:
                         predicate = SchedulePredicate(schedule:  predicateDict["schedule"] as! String)
                         break
-                    case EventSource.ScheduleOnce:
+                    case EventSource.scheduleOnce:
                         if let scheduleAtMilis = (predicateDict["scheduleAt"] as? NSNumber)?.doubleValue {
                             predicate = ScheduleOncePredicate(scheduleAt: Date(timeIntervalSince1970: scheduleAtMilis/1000))
                         }
@@ -192,8 +192,8 @@ public enum EventSource: String {
        used serialization and deserialization If thses values are
        changed, then serialization and deserialization is broken. */
 
-    case States = "STATES"
-    case Schedule = "SCHEDULE"
-    case ScheduleOnce = "SCHEDULE_ONCE"
+    case states = "STATES"
+    case schedule = "SCHEDULE"
+    case scheduleOnce = "SCHEDULE_ONCE"
 
 }

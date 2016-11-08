@@ -62,7 +62,7 @@ class PostNewTriggerTests: SmallTestBase {
                 }else{
                     predicate = ScheduleOncePredicate(scheduleAt: testcase.expectedScheduleAt!)
                     let dateMilis = Int64(testcase.expectedScheduleAt!.timeIntervalSince1970 * 1000)
-                    expectedPredicateDict = ["eventSource":EventSource.ScheduleOnce.rawValue,
+                    expectedPredicateDict = ["eventSource":EventSource.scheduleOnce.rawValue,
                                              "scheduleAt":NSNumber(value: dateMilis as Int64)]
 
                 }
@@ -342,7 +342,7 @@ class PostNewTriggerTests: SmallTestBase {
             let scheduleDate = Date()
             let predicate = ScheduleOncePredicate(scheduleAt: scheduleDate)
             let dateMilis = Int64(scheduleDate.timeIntervalSince1970 * 1000)
-            let expectedPredicateDict: [String : Any] = ["eventSource":EventSource.ScheduleOnce.rawValue,
+            let expectedPredicateDict: [String : Any] = ["eventSource":EventSource.scheduleOnce.rawValue,
                                      "scheduleAt":dateMilis]            // mock response
             let responsedDict = ["errorCode" : "Time stamp not valid",
                                  "message" : "Passed Trigger's timestamp is not valid"]

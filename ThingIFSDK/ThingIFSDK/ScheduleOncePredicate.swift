@@ -12,7 +12,7 @@ open class ScheduleOncePredicate: NSObject,Predicate {
     open let scheduleAt: Date
 
     open func getEventSource() -> EventSource {
-        return EventSource.ScheduleOnce
+        return EventSource.scheduleOnce
     }
     
     /** Instantiate new ScheduleOncePredicate.
@@ -40,7 +40,7 @@ open class ScheduleOncePredicate: NSObject,Predicate {
 
         let dateNumber = NSNumber(value: Int64(self.scheduleAt.timeIntervalSince1970 * 1000) as Int64)
 
-        return NSDictionary(dictionary: ["eventSource": EventSource.ScheduleOnce.rawValue,
+        return NSDictionary(dictionary: ["eventSource": EventSource.scheduleOnce.rawValue,
             "scheduleAt":dateNumber])
 
     }
