@@ -27,7 +27,7 @@ open class OnboardWithVendorThingIDOptions {
       You can set both the predefined and custom fields.
       Please read [here](https://docs.kii.com/en/starts/thingifsdk/thingsdk/management/#register-a-thing) for more details.
     - Parameter position: GATEWAY | STANDALONE | ENDNODE.
-    - Parameter interval: INTERVAL_1_MINUTE | INTERVAL_15_MINUTES | INTERVAL_30_MINUTES | INTERVAL_1_HOUR | INTERVAL_12_HOURS.
+    - Parameter interval: interval1Minute | interval15Minutes | interval30Minutes | interval1Hour | interval12Hours.
       Will be used to create the bucket to store the state history when the thing is not using traits.
     */
     public init(

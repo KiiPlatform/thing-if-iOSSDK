@@ -35,7 +35,7 @@ class OnboardTests: SmallTestBase {
             firmwareVersion:  firmwareVersion,
             thingProperties: thingProperties,
             position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_1_MINUTE)
+            interval: DataGroupingInterval.interval1Minute)
 
         do {
             // verify request
@@ -125,7 +125,7 @@ class OnboardTests: SmallTestBase {
             thingType: setting.thingType,
             thingProperties: thingProperties,
             position: LayoutPosition.GATEWAY,
-            interval: DataGroupingInterval.INTERVAL_15_MINUTES)
+            interval: DataGroupingInterval.interval15Minutes)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -210,7 +210,7 @@ class OnboardTests: SmallTestBase {
             thingType: setting.thingType,
             thingProperties: thingProperties,
             position: LayoutPosition.ENDNODE,
-            interval: DataGroupingInterval.INTERVAL_1_HOUR)
+            interval: DataGroupingInterval.interval1Hour)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -295,7 +295,7 @@ class OnboardTests: SmallTestBase {
             thingType: setting.thingType,
             thingProperties: thingProperties,
             position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_12_HOURS)
+            interval: DataGroupingInterval.interval12Hours)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -380,7 +380,7 @@ class OnboardTests: SmallTestBase {
             thingType: setting.thingType,
             thingProperties: thingProperties,
             position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_12_HOURS)
+            interval: DataGroupingInterval.interval12Hours)
 
         do {
             // mock response
@@ -439,7 +439,7 @@ class OnboardTests: SmallTestBase {
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
             position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_1_MINUTE)
+            interval: DataGroupingInterval.interval1Minute)
 
         do {
             // verify request
@@ -521,7 +521,7 @@ class OnboardTests: SmallTestBase {
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
             position: LayoutPosition.GATEWAY,
-            interval: DataGroupingInterval.INTERVAL_30_MINUTES)
+            interval: DataGroupingInterval.interval30Minutes)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -599,7 +599,7 @@ class OnboardTests: SmallTestBase {
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
             position: LayoutPosition.ENDNODE,
-            interval: DataGroupingInterval.INTERVAL_1_HOUR)
+            interval: DataGroupingInterval.interval1Hour)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -677,7 +677,7 @@ class OnboardTests: SmallTestBase {
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
             position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_12_HOURS)
+            interval: DataGroupingInterval.interval12Hours)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -755,7 +755,7 @@ class OnboardTests: SmallTestBase {
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
             position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_12_HOURS)
+            interval: DataGroupingInterval.interval12Hours)
 
         do {
             // mock response

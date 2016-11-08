@@ -559,7 +559,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
-        let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.INTERVAL_1_MINUTE)
+        let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.interval1Minute)
 
         // perform onboarding
         setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
@@ -657,7 +657,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
-        let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.INTERVAL_15_MINUTES)
+        let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.interval15Minutes)
 
         // perform onboarding
         setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
@@ -750,7 +750,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
-        let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.INTERVAL_30_MINUTES)
+        let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.interval30Minutes)
 
         // perform onboarding
         setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
@@ -843,7 +843,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "_thingType": setting.thingType,
             "manufacture": "kii"
         ]
-        let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.INTERVAL_1_HOUR)
+        let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.interval1Hour)
 
         // perform onboarding
         setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
