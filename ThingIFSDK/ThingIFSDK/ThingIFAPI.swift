@@ -798,6 +798,19 @@ open class ThingIFAPI: NSObject, NSCoding {
 
     /** Try to load the instance of ThingIFAPI using stored serialized instance.
 
+    Instance is automatically saved when following methods are called.
+    onboard, onboardWithVendorThingID, copyWithTarget and installPush
+    has been successfully completed.
+    (When copyWithTarget is called, only the copied instance is saved.)
+
+    If the ThingIFAPI instance is build without the tag, all instance is saved in same place
+    and overwritten when the instance is saved.
+
+    If the ThingIFAPI instance is build with the tag(optional), tag is used as key to distinguish
+    the storage area to save the instance. This would be useful to saving multiple instance.
+
+    When you catch exceptions, please call onload for saving or updating serialized instance.
+
     - Parameter tag: tag of the ThingIFAPI instance
     - Returns: ThingIFAPI instance.
     */

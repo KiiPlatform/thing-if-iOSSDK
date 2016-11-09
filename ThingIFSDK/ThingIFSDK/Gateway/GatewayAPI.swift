@@ -500,6 +500,16 @@ open class GatewayAPI: NSObject, NSCoding {
 
     /** Try to load the instance of GatewayAPI using stored serialized instance.
 
+     Instance is automatically saved when login method is called and successfully completed.
+
+     If the GatewayAPI instance is build without the tag, all instance is saved in same place
+     and overwritten when the instance is saved.
+
+     If the GatewayAPI instance is build with the tag(optional), tag is used as key to distinguish
+     the storage area to save the instance. This would be useful to saving multiple instance.
+
+     When you catch exceptions, please call login for saving or updating serialized instance.
+
      - Parameter tag: tag of the GatewayAPI instance
      - Returns: GatewayIFAPI instance.
      */
