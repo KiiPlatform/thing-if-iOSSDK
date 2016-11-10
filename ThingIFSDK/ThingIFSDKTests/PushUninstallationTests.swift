@@ -157,7 +157,7 @@ class PushUninstallationTests: SmallTestBase {
                 switch error! {
                 case .connection:
                     XCTFail("should not be connection error")
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                     XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
                     XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
@@ -215,7 +215,7 @@ class PushUninstallationTests: SmallTestBase {
                 switch error! {
                 case .connection:
                     XCTFail("should not be connection error")
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
                     XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
                     XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)

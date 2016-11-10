@@ -79,7 +79,7 @@ class GetGatewayInformationTests: GatewayAPITestBase {
             XCTAssertNil(info)
             XCTAssertNotNil(error)
             switch error! {
-            case .user_IS_NOT_LOGGED_IN:
+            case .userIsNotLoggedIn:
                 break
             default:
                 XCTFail("unknown error response")
@@ -127,7 +127,7 @@ class GetGatewayInformationTests: GatewayAPITestBase {
             XCTAssertNil(info)
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")

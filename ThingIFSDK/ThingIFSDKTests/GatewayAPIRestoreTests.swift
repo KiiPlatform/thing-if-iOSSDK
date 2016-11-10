@@ -70,7 +70,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         api.restore({ (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .user_IS_NOT_LOGGED_IN:
+            case .userIsNotLoggedIn:
                 break
             default:
                 XCTFail("unknown error response")
@@ -117,7 +117,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         api.restore( { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -164,7 +164,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         api.restore( { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -211,7 +211,7 @@ class GatewayAPIRestoreTests: GatewayAPITestBase {
         api.restore( { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(409, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")

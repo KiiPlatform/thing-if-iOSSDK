@@ -48,7 +48,7 @@ extension ThingIFAPI {
         }catch(let e){
             kiiSevereLog(e)
             DispatchQueue.main.async {
-                completionHandler(nil, ThingIFError.json_PARSE_ERROR)
+                completionHandler(nil, ThingIFError.jsonParseError)
             }
         }
 

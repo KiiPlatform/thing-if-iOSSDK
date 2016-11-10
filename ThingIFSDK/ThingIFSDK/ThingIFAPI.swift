@@ -682,7 +682,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         )
     {
         if self.target == nil {
-            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return;
         }
 
@@ -725,11 +725,11 @@ open class ThingIFAPI: NSObject, NSCoding {
         )
     {
         if self.target == nil {
-            completionHandler(ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(ThingIFError.targetNotAvailable)
             return;
         }
         if newVendorThingID.isEmpty || newPassword.isEmpty {
-            completionHandler(ThingIFError.unsupported_ERROR)
+            completionHandler(ThingIFError.unsupportedError)
             return;
         }
 
@@ -769,7 +769,7 @@ open class ThingIFAPI: NSObject, NSCoding {
             operationQueue.addOperation(operation)
         } catch(_) {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.json_PARSE_ERROR)
+            completionHandler(ThingIFError.jsonParseError)
         }
     }
 
@@ -809,16 +809,16 @@ open class ThingIFAPI: NSObject, NSCoding {
                     if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObject(with: data) as? ThingIFAPI {
                         return savedIoTAPI
                     }else{
-                        throw ThingIFError.invalid_STORED_API
+                        throw ThingIFError.invalidStoredApi
                     }
                 }else{
-                    throw ThingIFError.invalid_STORED_API
+                    throw ThingIFError.invalidStoredApi
                 }
             } else {
-                throw ThingIFError.api_NOT_STORED
+                throw ThingIFError.apiNotStored
             }
         }else{
-            throw ThingIFError.api_NOT_STORED
+            throw ThingIFError.apiNotStored
         }
     }
     /** Save this instance

@@ -81,7 +81,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
             XCTAssertNil(gateway)
             XCTAssertNotNil(error)
             switch error! {
-            case .user_IS_NOT_LOGGED_IN:
+            case .userIsNotLoggedIn:
                 break
             default:
                 XCTFail("unknown error")
@@ -129,7 +129,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
             XCTAssertNil(gateway)
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -177,7 +177,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
             XCTAssertNil(gateway)
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -225,7 +225,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
             XCTAssertNil(gateway)
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(409, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -273,7 +273,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
             XCTAssertNil(gateway)
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(503, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")

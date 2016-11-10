@@ -184,7 +184,7 @@ class PatchTriggerTests: SmallTestBase {
                     switch error! {
                     case .connection:
                         XCTFail("should not be connection error for \(tag)")
-                    case .error_RESPONSE(let actualErrorResponse):
+                    case .errorResponse(let actualErrorResponse):
                         XCTAssertEqual(400, actualErrorResponse.httpStatusCode, tag)
                     default:
                         break
@@ -214,7 +214,7 @@ class PatchTriggerTests: SmallTestBase {
                 XCTFail("should fail")
             }else {
                 switch error! {
-                case .target_NOT_AVAILABLE:
+                case .targetNotAvailable:
                     break
                 default:
                     XCTFail("should be TARGET_NOT_AVAILABLE")

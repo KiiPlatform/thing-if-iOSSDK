@@ -66,7 +66,7 @@ open class GatewayAPI: NSObject, NSCoding {
         )
     {
         if username.isEmpty || password.isEmpty {
-            completionHandler(ThingIFError.unsupported_ERROR)
+            completionHandler(ThingIFError.unsupportedError)
             return
         }
 
@@ -111,7 +111,7 @@ open class GatewayAPI: NSObject, NSCoding {
             operationQueue.addOperation(operation)
         } catch(_) {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.json_PARSE_ERROR)
+            completionHandler(ThingIFError.jsonParseError)
         }
     }
 
@@ -124,7 +124,7 @@ open class GatewayAPI: NSObject, NSCoding {
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(nil, ThingIFError.user_IS_NOT_LOGGED_IN)
+            completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -166,7 +166,7 @@ open class GatewayAPI: NSObject, NSCoding {
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(nil, ThingIFError.user_IS_NOT_LOGGED_IN)
+            completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -201,7 +201,7 @@ open class GatewayAPI: NSObject, NSCoding {
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(nil, ThingIFError.user_IS_NOT_LOGGED_IN)
+            completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -249,7 +249,7 @@ open class GatewayAPI: NSObject, NSCoding {
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(nil, ThingIFError.user_IS_NOT_LOGGED_IN)
+            completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -299,12 +299,12 @@ open class GatewayAPI: NSObject, NSCoding {
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(ThingIFError.user_IS_NOT_LOGGED_IN)
+            completionHandler(ThingIFError.userIsNotLoggedIn)
             return;
         }
 
         if endNode.thingID.isEmpty || endNode.vendorThingID.isEmpty {
-            completionHandler(ThingIFError.unsupported_ERROR)
+            completionHandler(ThingIFError.unsupportedError)
             return;
         }
 
@@ -339,7 +339,7 @@ open class GatewayAPI: NSObject, NSCoding {
             operationQueue.addOperation(operation)
         } catch(_) {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.json_PARSE_ERROR)
+            completionHandler(ThingIFError.jsonParseError)
         }
     }
 
@@ -353,7 +353,7 @@ open class GatewayAPI: NSObject, NSCoding {
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(ThingIFError.user_IS_NOT_LOGGED_IN)
+            completionHandler(ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -391,12 +391,12 @@ open class GatewayAPI: NSObject, NSCoding {
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(ThingIFError.user_IS_NOT_LOGGED_IN)
+            completionHandler(ThingIFError.userIsNotLoggedIn)
             return;
         }
 
         if endNodeThingID.isEmpty || endNodeVendorThingID.isEmpty {
-            completionHandler(ThingIFError.unsupported_ERROR)
+            completionHandler(ThingIFError.unsupportedError)
             return;
         }
 
@@ -431,7 +431,7 @@ open class GatewayAPI: NSObject, NSCoding {
             operationQueue.addOperation(operation)
         } catch(_) {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.json_PARSE_ERROR)
+            completionHandler(ThingIFError.jsonParseError)
         }
     }
 
@@ -445,7 +445,7 @@ open class GatewayAPI: NSObject, NSCoding {
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(nil, ThingIFError.user_IS_NOT_LOGGED_IN)
+            completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -511,16 +511,16 @@ open class GatewayAPI: NSObject, NSCoding {
                     if let savedAPI = NSKeyedUnarchiver.unarchiveObject(with: data) as? GatewayAPI {
                         return savedAPI
                     } else {
-                        throw ThingIFError.invalid_STORED_API
+                        throw ThingIFError.invalidStoredApi
                     }
                 } else {
-                    throw ThingIFError.invalid_STORED_API
+                    throw ThingIFError.invalidStoredApi
                 }
             } else {
-                throw ThingIFError.api_NOT_STORED
+                throw ThingIFError.apiNotStored
             }
         } else {
-            throw ThingIFError.api_NOT_STORED
+            throw ThingIFError.apiNotStored
         }
     }
 

@@ -182,7 +182,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -267,7 +267,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -352,7 +352,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -423,7 +423,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .already_ONBOARDED:
+                case .alreadyOnboarded:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -576,7 +576,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -654,7 +654,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -732,7 +732,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -798,7 +798,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .already_ONBOARDED:
+                case .alreadyOnboarded:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")

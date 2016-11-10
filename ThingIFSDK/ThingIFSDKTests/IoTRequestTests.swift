@@ -46,7 +46,7 @@ class IoTRequestTests: XCTestCase {
                 switch error! {
                 case .connection:
                     XCTFail(": should not be connection")
-                case .error_REQUEST(let actualErrorRequest):
+                case .errorRequest(let actualErrorRequest):
                     XCTAssertEqual("A server with the specified hostname could not be found.",
                         actualErrorRequest.localizedDescription)
                 default:

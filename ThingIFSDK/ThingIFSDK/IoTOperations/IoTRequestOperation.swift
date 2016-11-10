@@ -191,13 +191,13 @@ class IoTRequestOperation<T>: GroupOperation {
                         errorMessage = responseBody!["message"] as! String
                     }
                     let errorResponse = ErrorResponse(httpStatusCode: statusCode, errorCode: errorCode, errorMessage: errorMessage)
-                    let iotCloudError = ThingIFError.error_RESPONSE(required: errorResponse)
+                    let iotCloudError = ThingIFError.errorResponse(required: errorResponse)
                     completionHandler(nil, iotCloudError)
                 }else {
                     completionHandler(nil, nil)
                 }
             }else{
-                completionHandler(nil, ThingIFError.error_REQUEST(required: errorOptional! as NSError))
+                completionHandler(nil, ThingIFError.errorRequest(required: errorOptional! as NSError))
             }
         })
         let taskOperation = URLSessionTaskOperation(task: task)
@@ -239,7 +239,7 @@ class IoTRequestOperation<T>: GroupOperation {
                         errorMessage = responseBody!["message"] as! String
                     }
                     let errorResponse = ErrorResponse(httpStatusCode: statusCode, errorCode: errorCode, errorMessage: errorMessage)
-                    let iotCloudError = ThingIFError.error_RESPONSE(required: errorResponse)
+                    let iotCloudError = ThingIFError.errorResponse(required: errorResponse)
                     completionHandler(nil, iotCloudError)
                 }else {
                     guard let serialized : T = responseBodySerializer(responseDataOptional) else {
@@ -250,7 +250,7 @@ class IoTRequestOperation<T>: GroupOperation {
                     completionHandler(serialized, nil)
                 }
             }else{
-                completionHandler(nil, ThingIFError.error_REQUEST(required: errorOptional as! NSError))
+                completionHandler(nil, ThingIFError.errorRequest(required: errorOptional as! NSError))
             }
         })
         let taskOperation = URLSessionTaskOperation(task: task)

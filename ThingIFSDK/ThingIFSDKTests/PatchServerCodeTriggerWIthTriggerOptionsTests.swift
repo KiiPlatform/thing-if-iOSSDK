@@ -482,7 +482,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
           completionHandler: {
               (trigger, error) -> Void in
               switch(error!) {
-              case ThingIFError.unsupported_ERROR:
+              case ThingIFError.unsupportedError:
                   break
               default:
                   XCTFail("invalid error")

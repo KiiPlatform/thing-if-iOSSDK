@@ -239,7 +239,7 @@ class GetTriggerTests: SmallTestBase {
                     switch error! {
                     case .connection:
                         XCTFail("should not be connection error")
-                    case .error_RESPONSE(let actualErrorResponse):
+                    case .errorResponse(let actualErrorResponse):
                         XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
@@ -292,7 +292,7 @@ class GetTriggerTests: SmallTestBase {
                     switch error! {
                     case .connection:
                         XCTFail("should not be connection error")
-                    case .error_RESPONSE(let actualErrorResponse):
+                    case .errorResponse(let actualErrorResponse):
                         XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)

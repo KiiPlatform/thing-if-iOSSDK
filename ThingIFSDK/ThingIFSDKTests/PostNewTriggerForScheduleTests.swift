@@ -119,7 +119,7 @@ class WrongFormatCallbackVerifier: CallbackVerifier {
                        switch error! {
                        case .connection:
                            XCTFail(self.tag + ": should not be connection")
-                       case .error_RESPONSE(let actualErrorResponse):
+                       case .errorResponse(let actualErrorResponse):
                            XCTAssertEqual(400,
                                           actualErrorResponse.httpStatusCode,
                                           self.tag)

@@ -190,7 +190,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -280,7 +280,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -370,7 +370,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -408,7 +408,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .target_NOT_AVAILABLE:
+                case .targetNotAvailable:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -449,7 +449,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .unsupported_ERROR:
+                case .unsupportedError:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -491,7 +491,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .unsupported_ERROR:
+                case .unsupportedError:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -533,7 +533,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .unsupported_ERROR:
+                case .unsupportedError:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -724,7 +724,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -817,7 +817,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -910,7 +910,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -949,7 +949,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .target_NOT_AVAILABLE:
+                case .targetNotAvailable:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -991,7 +991,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .unsupported_ERROR:
+                case .unsupportedError:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -1034,7 +1034,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .unsupported_ERROR:
+                case .unsupportedError:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -1077,7 +1077,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 XCTAssertNil(endNode)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .unsupported_ERROR:
+                case .unsupportedError:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
