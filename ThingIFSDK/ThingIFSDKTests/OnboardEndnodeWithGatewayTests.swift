@@ -94,8 +94,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 "thingProperties": thingProperties
             ] as [String : Any]
             let pending = PendingEndNode(json: src)
-            setting.api.onboardEndnodeWithGateway(
-                pending,
+            setting.api.onboardWith(
+                pendingEndnode: pending,
                 endnodePassword: password,
                 completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
                     XCTAssertNil(error)
@@ -183,8 +183,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
                 XCTAssertNil(endNode)
@@ -273,8 +273,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
                 XCTAssertNil(endNode)
@@ -363,8 +363,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
                 XCTAssertNil(endNode)
@@ -401,8 +401,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
                 XCTAssertNil(endNode)
@@ -442,8 +442,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
                 XCTAssertNil(endNode)
@@ -484,8 +484,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
                 XCTAssertNil(endNode)
@@ -526,8 +526,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
                 XCTAssertNil(endNode)
@@ -624,8 +624,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
                 "thingProperties": thingProperties
             ] as [String : Any]
             let pending = PendingEndNode(json: src)
-            setting.api.onboardEndnodeWithGateway(
-                pending,
+            setting.api.onboardWith(
+                pendingEndnode: pending,
                 endnodePassword: password,
                 options: options,
                 completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
@@ -716,8 +716,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             options: options,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
@@ -809,8 +809,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             options: options,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
@@ -902,8 +902,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             options: options,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
@@ -941,8 +941,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             options: nil,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
@@ -983,8 +983,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             options: nil,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
@@ -1026,8 +1026,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             options: nil,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
@@ -1069,8 +1069,8 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
             "thingProperties": thingProperties
         ] as [String : Any]
         let pending = PendingEndNode(json: src)
-        setting.api.onboardEndnodeWithGateway(
-            pending,
+        setting.api.onboardWith(
+            pendingEndnode: pending,
             endnodePassword: password,
             options: nil,
             completionHandler: { (endNode:EndNode?, error:ThingIFError?) -> Void in
