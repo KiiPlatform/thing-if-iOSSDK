@@ -23,7 +23,7 @@ open class GatewayAPIBuilder {
      the api instance is tagged with different string, Different key
      is used to store the instance.
 
-     Please refer to [GatewayAPI.loadWithStoredInstance(_:)]
+     Please refer to `GatewayAPI.loadWithStoredInstance(_:)`
 
      - Parameter app: Kii Cloud Application.
      - Parameter gatewayAddress: address information for the gateway
