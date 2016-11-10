@@ -90,12 +90,12 @@ class Operation: Foundation.Operation {
     }
     
     /// Private storage for the `state` property that will be KVO observed.
-    fileprivate var _state = State.initialized
+    private var _state = State.initialized
     
     /// A lock to guard reads and writes to the `_state` property
-    fileprivate let stateLock = NSLock()
+    private let stateLock = NSLock()
     
-    fileprivate var state: State {
+    private var state: State {
         get {
             return stateLock.withCriticalScope {
                 _state
@@ -176,7 +176,7 @@ class Operation: Foundation.Operation {
         return state == .finished
     }
     
-    fileprivate func evaluateConditions() {
+    private func evaluateConditions() {
         assert(state == .pending && !isCancelled, "evaluateConditions() was called out-of-order")
 
         state = .evaluatingConditions
@@ -189,7 +189,7 @@ class Operation: Foundation.Operation {
     
     // MARK: Observers and Conditions
     
-    fileprivate(set) var conditions = [OperationCondition]()
+    private(set) var conditions = [OperationCondition]()
 
     func addCondition(_ condition: OperationCondition) {
         assert(state < .evaluatingConditions, "Cannot modify conditions after execution has begun.")
@@ -197,7 +197,7 @@ class Operation: Foundation.Operation {
         conditions.append(condition)
     }
     
-    fileprivate(set) var observers = [OperationObserver]()
+    private(set) var observers = [OperationObserver]()
     
     func addObserver(_ observer: OperationObserver) {
         assert(state < .executing, "Cannot modify observers after execution has begun.")
@@ -256,7 +256,7 @@ class Operation: Foundation.Operation {
         finish()
     }
     
-    fileprivate var _internalErrors = [NSError]()    
+    private var _internalErrors = [NSError]()
     func cancelWithError(_ error: NSError? = nil) {
         if let error = error {
             _internalErrors.append(error)
@@ -294,7 +294,7 @@ class Operation: Foundation.Operation {
         A private property to ensure we only notify the observers once that the
         operation has finished.
     */
-    fileprivate var hasFinishedAlready = false
+    private var hasFinishedAlready = false
     final func finish(_ errors: [NSError] = []) {
         if !hasFinishedAlready {
             hasFinishedAlready = true

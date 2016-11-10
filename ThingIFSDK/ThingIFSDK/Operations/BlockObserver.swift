@@ -15,9 +15,9 @@ import Foundation
 struct BlockObserver: OperationObserver {
     // MARK: Properties
     
-    fileprivate let startHandler: ((Operation) -> Void)?
-    fileprivate let produceHandler: ((Operation, Foundation.Operation) -> Void)?
-    fileprivate let finishHandler: ((Operation, [NSError]) -> Void)?
+    private let startHandler: ((Operation) -> Void)?
+    private let produceHandler: ((Operation, Foundation.Operation) -> Void)?
+    private let finishHandler: ((Operation, [NSError]) -> Void)?
     
     init(startHandler: ((Operation) -> Void)? = nil, produceHandler: ((Operation, Foundation.Operation) -> Void)? = nil, finishHandler: ((Operation, [NSError]) -> Void)? = nil) {
         self.startHandler = startHandler

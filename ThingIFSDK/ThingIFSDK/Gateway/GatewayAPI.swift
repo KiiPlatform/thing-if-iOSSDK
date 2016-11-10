@@ -9,19 +9,19 @@ import Foundation
 
 open class GatewayAPI: NSObject, NSCoding {
 
-    fileprivate static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "GatewayAPI_INSTANCE"
-    fileprivate static func getSharedNSDefaultKey(_ tag : String?) -> String{
+    private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "GatewayAPI_INSTANCE"
+    private static func getSharedNSDefaultKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
 
     open let tag: String?
     open let app: App
     open let gatewayAddress: URL
-    fileprivate var gatewayAddressString: String {
+    private var gatewayAddressString: String {
         return self.gatewayAddress.absoluteString
     }
 
-    fileprivate var accessToken: String?
+    private var accessToken: String?
 
     let operationQueue = OperationQueue()
 
@@ -569,7 +569,7 @@ open class GatewayAPI: NSObject, NSCoding {
         UserDefaults.standard.synchronize()
     }
 
-    fileprivate func generateAuthBearerHeader() -> Dictionary<String, String> {
+    private func generateAuthBearerHeader() -> Dictionary<String, String> {
         return [ "authorization": "Bearer \(self.accessToken!)" ]
     }
 }

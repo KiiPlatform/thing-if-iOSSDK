@@ -294,7 +294,7 @@ class ThingIFSDKTests: SmallTestBase {
     }
 
     
-    fileprivate func setMockResponse4Onboard(_ accessToken: String, thingID: String, setting:TestSetting) -> Void {
+    private func setMockResponse4Onboard(_ accessToken: String, thingID: String, setting:TestSetting) -> Void {
         let dict = ["accessToken":accessToken,"thingID":thingID]
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
@@ -399,7 +399,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
         }
     }
-    fileprivate func setMockResponse4InstallPush(_ installationID: String, setting:TestSetting) -> Void {
+    private func setMockResponse4InstallPush(_ installationID: String, setting:TestSetting) -> Void {
         let dict = ["installationID":installationID]
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)

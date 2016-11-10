@@ -11,7 +11,7 @@ import XCTest
 
 class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
 
-    fileprivate func createSuccessRequestBody(
+    private func createSuccessRequestBody(
       _ form: TriggeredCommandForm,
       setting: TestSetting) -> Dictionary<String, Any>
     {

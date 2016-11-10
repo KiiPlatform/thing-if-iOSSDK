@@ -76,12 +76,12 @@ open class App: NSObject, NSCoding {
  Just use App(appID:appKey:site) constructor is fine.
 */
 open class AppBuilder: NSObject {
-    fileprivate let appID:String
-    fileprivate let appKey:String
-    fileprivate let hostName:String
-    fileprivate var urlSchema:String
-    fileprivate var siteName:String
-    fileprivate var port:Int32
+    private let appID:String
+    private let appKey:String
+    private let hostName:String
+    private var urlSchema:String
+    private var siteName:String
+    private var port:Int32
 
     /** Init the Builder.
 

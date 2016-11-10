@@ -263,7 +263,7 @@ class IoTRequestOperation<T>: GroupOperation {
         addOperation(taskOperation)
     }
     
-    fileprivate func setHeader(_ headerDict: Dictionary<String, String>, request: inout URLRequest) -> Void {
+    private func setHeader(_ headerDict: Dictionary<String, String>, request: inout URLRequest) -> Void {
         for(key, value) in headerDict {
             request.addValue(value, forHTTPHeaderField: key)
         }

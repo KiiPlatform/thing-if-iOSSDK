@@ -12,7 +12,7 @@ open class SDKVersion: NSObject {
     /** Version of the Thing-IF SDK */
     open let versionString:String?
     internal var kiiSDKHeader:String?
-    fileprivate override init() {
+    private override init() {
         let b:Bundle? = Bundle.allFrameworks.filter{$0.bundleIdentifier == "Kii-Corporation.ThingIFSDK"}.first
         versionString = b?.infoDictionary?["CFBundleShortVersionString"] as! String?
         if let v = versionString {
