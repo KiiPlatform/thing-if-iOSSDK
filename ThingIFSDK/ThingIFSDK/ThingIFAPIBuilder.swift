@@ -26,10 +26,10 @@ open class ThingIFAPIBuilder {
         self.tag = tag
     }
 
-    /** Build ThingIFAPI instance.
+    /** Make ThingIFAPI instance.
     - Returns: ThingIFAPI instance.
      */
-    open func build() -> ThingIFAPI {
+    open func make() -> ThingIFAPI {
         let thingIFAPI = ThingIFAPI(app: self.app, owner: self.owner, tag: self.tag)
         thingIFAPI._target = self.target
         return thingIFAPI
