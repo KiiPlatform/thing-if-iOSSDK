@@ -95,7 +95,7 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/json",
-                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                   ],
                   error_message);
 
