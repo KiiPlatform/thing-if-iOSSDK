@@ -88,7 +88,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         gatewayAPI.login("", password: password, completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .unsupported_ERROR:
+            case .unsupportedError:
                 break
             default:
                 XCTFail("unknown error")
@@ -113,7 +113,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         gatewayAPI.login(username, password: "", completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .unsupported_ERROR:
+            case .unsupportedError:
                 break
             default:
                 XCTFail("unknown error")
@@ -171,7 +171,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         gatewayAPI.login(username, password: password, completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -229,7 +229,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         gatewayAPI.login(username, password: password, completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")

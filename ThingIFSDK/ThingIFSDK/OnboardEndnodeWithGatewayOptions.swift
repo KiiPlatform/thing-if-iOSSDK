@@ -15,7 +15,7 @@ open class OnboardEndnodeWithGatewayOptions {
 
     /** initializer.
 
-    - Parameter interval: INTERVAL_1_MINUTE | INTERVAL_15_MINUTES | INTERVAL_30_MINUTES | INTERVAL_1_HOUR | INTERVAL_12_HOURS.
+    - Parameter interval: interval1Minute | interval15Minutes | interval30Minutes | interval1Hour | interval12Hours.
      Will be used to create the bucket to store the state history when the thing is not using traits.
     */
     public init(interval: DataGroupingInterval? = nil) {

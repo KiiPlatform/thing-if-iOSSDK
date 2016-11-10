@@ -94,7 +94,7 @@ class ThingIFSDKTests: SmallTestBase {
         
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -103,7 +103,7 @@ class ThingIFSDKTests: SmallTestBase {
         }
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0])) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -112,7 +112,7 @@ class ThingIFSDKTests: SmallTestBase {
         }
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1])) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -186,7 +186,7 @@ class ThingIFSDKTests: SmallTestBase {
         ThingIFAPI.removeStoredInstances(nil)
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -196,7 +196,7 @@ class ThingIFSDKTests: SmallTestBase {
         ThingIFAPI.removeStoredInstances(tags[0])
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0])) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -206,7 +206,7 @@ class ThingIFSDKTests: SmallTestBase {
         ThingIFAPI.removeAllStoredInstances()
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1])) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -284,7 +284,7 @@ class ThingIFSDKTests: SmallTestBase {
         
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance("tag2")) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 break
             default:
                 XCTFail("Exception should be API_NOT_STORED")
@@ -370,7 +370,7 @@ class ThingIFSDKTests: SmallTestBase {
         ThingIFAPI.removeStoredInstances(nil)
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -380,7 +380,7 @@ class ThingIFSDKTests: SmallTestBase {
         ThingIFAPI.removeStoredInstances(tags[0])
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0])) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -391,7 +391,7 @@ class ThingIFSDKTests: SmallTestBase {
         ThingIFAPI.removeAllStoredInstances()
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1])) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -444,7 +444,7 @@ class ThingIFSDKTests: SmallTestBase {
         ThingIFAPI.removeStoredInstances(nil)
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -454,7 +454,7 @@ class ThingIFSDKTests: SmallTestBase {
         ThingIFAPI.removeStoredInstances(tags[0])
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[0])) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -465,7 +465,7 @@ class ThingIFSDKTests: SmallTestBase {
         ThingIFAPI.removeAllStoredInstances()
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tags[1])) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 // Succeed.
                 break;
             default:
@@ -484,7 +484,7 @@ class ThingIFSDKTests: SmallTestBase {
 
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 break
             default:
                 XCTFail("Exception should be API_NOT_STORED")
@@ -498,7 +498,7 @@ class ThingIFSDKTests: SmallTestBase {
 
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 break
             default:
                 XCTFail("Exception should be API_NOT_STORED")
@@ -512,7 +512,7 @@ class ThingIFSDKTests: SmallTestBase {
 
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
             switch error {
-            case ThingIFError.api_NOT_STORED:
+            case ThingIFError.apiNotStored:
                 break
             default:
                 XCTFail("Exception should be API_NOT_STORED")
@@ -526,7 +526,7 @@ class ThingIFSDKTests: SmallTestBase {
         
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
             switch error {
-            case ThingIFError.invalid_STORED_API:
+            case ThingIFError.invalidStoredApi:
                 break
             default:
                 XCTFail("Exception should be INVALID_STORED_API")
@@ -540,7 +540,7 @@ class ThingIFSDKTests: SmallTestBase {
 
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
             switch error {
-            case ThingIFError.invalid_STORED_API:
+            case ThingIFError.invalidStoredApi:
                 break
             default:
                 XCTFail("Exception should be INVALID_STORED_API")

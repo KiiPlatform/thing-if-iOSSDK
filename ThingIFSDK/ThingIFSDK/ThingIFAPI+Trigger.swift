@@ -17,7 +17,7 @@ extension ThingIFAPI {
         completionHandler: @escaping (Trigger?, ThingIFError?)-> Void)
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
@@ -38,7 +38,7 @@ extension ThingIFAPI {
         var requestBodyDict: Dictionary<String, Any> = [
           "predicate": predicate.toNSDictionary(),
           "command": commandDict,
-          "triggersWhat": TriggersWhat.COMMAND.rawValue]
+          "triggersWhat": TriggersWhat.command.rawValue]
         requestBodyDict["title"] = options?.title
         requestBodyDict["description"] = options?.triggerDescription
         requestBodyDict["metadata"] = options?.metadata
@@ -81,7 +81,7 @@ extension ThingIFAPI {
             operationQueue.addOperation(operation)
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.jsonParseError)
         }
     }
     func _postNewTrigger(
@@ -92,7 +92,7 @@ extension ThingIFAPI {
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
         
@@ -105,7 +105,7 @@ extension ThingIFAPI {
         var requestBodyDict: Dictionary<String, Any> = [
           "predicate": predicate.toNSDictionary(),
           "serverCode": serverCode.toNSDictionary(),
-          "triggersWhat": TriggersWhat.SERVER_CODE.rawValue]
+          "triggersWhat": TriggersWhat.serverCode.rawValue]
         requestBodyDict["title"] = options?.title
         requestBodyDict["description"] = options?.triggerDescription
         requestBodyDict["metadata"] = options?.metadata
@@ -137,7 +137,7 @@ extension ThingIFAPI {
             operationQueue.addOperation(operation)
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.jsonParseError)
         }
     }
 
@@ -149,12 +149,12 @@ extension ThingIFAPI {
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
         if triggeredCommandForm == nil && predicate == nil && options == nil {
-            completionHandler(nil, ThingIFError.unsupported_ERROR)
+            completionHandler(nil, ThingIFError.unsupportedError)
             return
         }
 
@@ -165,7 +165,7 @@ extension ThingIFAPI {
 
         // generate body
         var requestBodyDict: Dictionary<String, Any> = [
-          "triggersWhat": TriggersWhat.COMMAND.rawValue
+          "triggersWhat": TriggersWhat.command.rawValue
         ];
         requestBodyDict["title"] = options?.title
         requestBodyDict["description"] = options?.triggerDescription
@@ -205,7 +205,7 @@ extension ThingIFAPI {
             operationQueue.addOperation(operation)
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.jsonParseError)
         }
     }
 
@@ -218,12 +218,12 @@ extension ThingIFAPI {
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
         if serverCode == nil && predicate == nil && options == nil {
-            completionHandler(nil, ThingIFError.unsupported_ERROR)
+            completionHandler(nil, ThingIFError.unsupportedError)
             return
         }
 
@@ -234,7 +234,7 @@ extension ThingIFAPI {
         
         // generate body
         var requestBodyDict: Dictionary<String, Any> = [
-          "triggersWhat" : TriggersWhat.SERVER_CODE.rawValue
+          "triggersWhat" : TriggersWhat.serverCode.rawValue
         ]
         requestBodyDict["predicate"] = predicate?.toNSDictionary()
         requestBodyDict["serverCode"] = serverCode?.toNSDictionary()
@@ -261,7 +261,7 @@ extension ThingIFAPI {
             operationQueue.addOperation(operation)
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.jsonParseError)
         }
     }
     
@@ -272,7 +272,7 @@ extension ThingIFAPI {
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
@@ -310,7 +310,7 @@ extension ThingIFAPI {
         )
     {
         guard let target = self.target else {
-            completionHandler(triggerID, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(triggerID, ThingIFError.targetNotAvailable)
             return
         }
 
@@ -338,7 +338,7 @@ extension ThingIFAPI {
     )
     {
         guard let target = self.target else {
-            completionHandler(nil, nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
         }
         
@@ -384,7 +384,7 @@ extension ThingIFAPI {
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
         }
 
@@ -429,7 +429,7 @@ extension ThingIFAPI {
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 

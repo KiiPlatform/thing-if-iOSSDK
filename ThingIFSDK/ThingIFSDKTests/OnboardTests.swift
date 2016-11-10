@@ -34,8 +34,8 @@ class OnboardTests: SmallTestBase {
             thingType: setting.thingType,
             firmwareVersion:  firmwareVersion,
             thingProperties: thingProperties,
-            position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_1_MINUTE)
+            position: LayoutPosition.standalone,
+            interval: DataGroupingInterval.interval1Minute)
 
         do {
             // verify request
@@ -124,8 +124,8 @@ class OnboardTests: SmallTestBase {
         let options = OnboardWithVendorThingIDOptions(
             thingType: setting.thingType,
             thingProperties: thingProperties,
-            position: LayoutPosition.GATEWAY,
-            interval: DataGroupingInterval.INTERVAL_15_MINUTES)
+            position: LayoutPosition.gateway,
+            interval: DataGroupingInterval.interval15Minutes)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -182,7 +182,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -209,8 +209,8 @@ class OnboardTests: SmallTestBase {
         let options = OnboardWithVendorThingIDOptions(
             thingType: setting.thingType,
             thingProperties: thingProperties,
-            position: LayoutPosition.ENDNODE,
-            interval: DataGroupingInterval.INTERVAL_1_HOUR)
+            position: LayoutPosition.endnode,
+            interval: DataGroupingInterval.interval1Hour)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -267,7 +267,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -294,8 +294,8 @@ class OnboardTests: SmallTestBase {
         let options = OnboardWithVendorThingIDOptions(
             thingType: setting.thingType,
             thingProperties: thingProperties,
-            position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_12_HOURS)
+            position: LayoutPosition.standalone,
+            interval: DataGroupingInterval.interval12Hours)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -352,7 +352,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -379,8 +379,8 @@ class OnboardTests: SmallTestBase {
         let options = OnboardWithVendorThingIDOptions(
             thingType: setting.thingType,
             thingProperties: thingProperties,
-            position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_12_HOURS)
+            position: LayoutPosition.standalone,
+            interval: DataGroupingInterval.interval12Hours)
 
         do {
             // mock response
@@ -423,7 +423,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .already_ONBOARDED:
+                case .alreadyOnboarded:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -438,8 +438,8 @@ class OnboardTests: SmallTestBase {
         let thingID = "dummyThingID"
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
-            position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_1_MINUTE)
+            position: LayoutPosition.standalone,
+            interval: DataGroupingInterval.interval1Minute)
 
         do {
             // verify request
@@ -520,8 +520,8 @@ class OnboardTests: SmallTestBase {
         let thingID = "dummyThingID"
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
-            position: LayoutPosition.GATEWAY,
-            interval: DataGroupingInterval.INTERVAL_30_MINUTES)
+            position: LayoutPosition.gateway,
+            interval: DataGroupingInterval.interval30Minutes)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -576,7 +576,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -598,8 +598,8 @@ class OnboardTests: SmallTestBase {
         let thingID = "dummyThingID"
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
-            position: LayoutPosition.ENDNODE,
-            interval: DataGroupingInterval.INTERVAL_1_HOUR)
+            position: LayoutPosition.endnode,
+            interval: DataGroupingInterval.interval1Hour)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -654,7 +654,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -676,8 +676,8 @@ class OnboardTests: SmallTestBase {
         let thingID = "dummyThingID"
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
-            position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_12_HOURS)
+            position: LayoutPosition.standalone,
+            interval: DataGroupingInterval.interval12Hours)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -732,7 +732,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -754,8 +754,8 @@ class OnboardTests: SmallTestBase {
         let thingID = "dummyThingID"
         let password = "dummyPassword"
         let options = OnboardWithThingIDOptions(
-            position: LayoutPosition.STANDALONE,
-            interval: DataGroupingInterval.INTERVAL_12_HOURS)
+            position: LayoutPosition.standalone,
+            interval: DataGroupingInterval.interval12Hours)
 
         do {
             // mock response
@@ -798,7 +798,7 @@ class OnboardTests: SmallTestBase {
                 XCTAssertNil(target)
                 XCTAssertNotNil(error)
                 switch error! {
-                case .already_ONBOARDED:
+                case .alreadyOnboarded:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")

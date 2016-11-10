@@ -35,7 +35,7 @@ class PredicateNSCodingTests: SmallTestBase {
     func testStatePredicate() {
         let predicate = StatePredicate(
                 condition: Condition(clause: EqualsClause(field: "f", stringValue: "v")),
-                triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE);
+                triggersWhen: TriggersWhen.conditionFalseToTrue);
 
         let data = NSKeyedArchiver.archivedData(withRootObject: predicate);
 

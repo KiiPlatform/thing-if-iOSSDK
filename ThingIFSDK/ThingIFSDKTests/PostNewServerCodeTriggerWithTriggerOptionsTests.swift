@@ -20,7 +20,7 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
           [
             "serverCode" : serverCode.toNSDictionary(),
             "predicate" : predicate.toNSDictionary(),
-            "triggersWhat": TriggersWhat.SERVER_CODE.rawValue
+            "triggersWhat": TriggersWhat.serverCode.rawValue
           ]
         if let triggerOptions = options {
             if let title = triggerOptions.title {

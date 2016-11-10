@@ -70,7 +70,7 @@ class OnboardingTests: SmallTestBase {
                     switch error! {
                     case .connection:
                         XCTFail("should not be connection error")
-                    case .error_RESPONSE(let actualErrorResponse):
+                    case .errorResponse(let actualErrorResponse):
                         XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(dict["errorCode"] as! String, actualErrorResponse.errorCode)
                         XCTAssertEqual(dict["message"] as! String, actualErrorResponse.errorMessage)
@@ -162,7 +162,7 @@ class OnboardingTests: SmallTestBase {
                 XCTFail("should fail")
             }else {
                 switch error! {
-                case .already_ONBOARDED:
+                case .alreadyOnboarded:
                     break
                 default:
                     XCTFail("should be ALREADY_ONBOARDED error")

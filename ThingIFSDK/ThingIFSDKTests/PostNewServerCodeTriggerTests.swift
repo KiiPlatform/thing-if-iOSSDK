@@ -13,7 +13,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
 
     func testPostNewServerCodeStateTrigger_success() {
         let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.conditionFalseToTrue)
         postNewServerCodeTrigger_success(predicate)
 
     }
@@ -100,7 +100,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
 
     func testPostNewServerCodeStateTrigger_http_404() {
         let condition = Condition(clause: EqualsClause(field: "color", intValue: 0))
-        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: condition, triggersWhen: TriggersWhen.conditionFalseToTrue)
         postNewServerCodeTrigger_success(predicate)
 
     }
@@ -165,7 +165,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
                     switch error! {
                     case .connection:
                         XCTFail("should not be connection error")
-                    case .error_RESPONSE(let actualErrorResponse):
+                    case .errorResponse(let actualErrorResponse):
                         XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
@@ -191,14 +191,14 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         let expectation : XCTestExpectation! = self.expectation(description: "testPostNewServerCodeTrigger_target_not_available_error")
         
         let serverCode:ServerCode = ServerCode(endpoint: "function_name", executorAccessToken: "abcd", targetAppID: "app001", parameters: nil)
-        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE)
+        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.conditionFalseToTrue)
         
         api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
                 switch error! {
-                case .target_NOT_AVAILABLE:
+                case .targetNotAvailable:
                     break
                 default:
                     XCTFail("should be TARGET_NOT_AVAILABLE")

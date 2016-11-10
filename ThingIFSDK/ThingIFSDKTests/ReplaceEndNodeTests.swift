@@ -85,7 +85,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .user_IS_NOT_LOGGED_IN:
+                case .userIsNotLoggedIn:
                     break
                 default:
                     XCTFail("unknown error response")
@@ -113,7 +113,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .unsupported_ERROR:
+                case .unsupportedError:
                     break
                 default:
                     XCTFail("unknown error response")
@@ -141,7 +141,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .unsupported_ERROR:
+                case .unsupportedError:
                     break
                 default:
                     XCTFail("unknown error response")
@@ -198,7 +198,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unknown error response")
@@ -255,7 +255,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unknown error response")
@@ -312,7 +312,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unknown error response")
@@ -369,7 +369,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(409, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unknown error response")
@@ -426,7 +426,7 @@ class ReplaceEndNodeTests: GatewayAPITestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(503, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unknown error response")

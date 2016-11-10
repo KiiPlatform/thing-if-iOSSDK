@@ -14,7 +14,7 @@ open class StatePredicate: NSObject,Predicate {
     open let condition: Condition!
 
     open func getEventSource() -> EventSource {
-        return EventSource.States
+        return EventSource.states
     }
     /** Initialize StatePredicate with Condition and TriggersWhen
 
@@ -42,7 +42,7 @@ open class StatePredicate: NSObject,Predicate {
      - Returns: a NSDictionary instance
      */
     open func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["eventSource": EventSource.States.rawValue, "triggersWhen": self.triggersWhen.rawValue, "condition": self.condition.toNSDictionary()])
+        return NSDictionary(dictionary: ["eventSource": EventSource.states.rawValue, "triggersWhen": self.triggersWhen.rawValue, "condition": self.condition.toNSDictionary()])
     }
 
     class func statePredicateWithNSDict(_ predicateDict: NSDictionary) -> StatePredicate?{

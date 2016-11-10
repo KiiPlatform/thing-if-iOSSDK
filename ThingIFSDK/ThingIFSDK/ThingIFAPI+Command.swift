@@ -21,7 +21,7 @@ extension ThingIFAPI {
         ) -> Void
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }   
 
@@ -61,7 +61,7 @@ extension ThingIFAPI {
             
         }catch(_){
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.jsonParseError)
         }
     }
 
@@ -71,7 +71,7 @@ extension ThingIFAPI {
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
@@ -102,7 +102,7 @@ extension ThingIFAPI {
         )
     {
         guard let target = self.target else {
-            completionHandler(nil, nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
         }
 

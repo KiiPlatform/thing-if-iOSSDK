@@ -118,7 +118,7 @@ class GetVendorThingIDTests: SmallTestBase {
             XCTAssertNil(gotID)
             XCTAssertNotNil(error)
             switch error! {
-            case .error_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")

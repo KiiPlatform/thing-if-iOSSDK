@@ -260,7 +260,7 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
                     switch error! {
                     case .connection:
                         XCTFail("should not be connection error")
-                    case .error_RESPONSE(let actualErrorResponse):
+                    case .errorResponse(let actualErrorResponse):
                         XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
@@ -291,7 +291,7 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
                 XCTFail("should fail")
             }else {
                 switch error! {
-                case .target_NOT_AVAILABLE:
+                case .targetNotAvailable:
                     break
                 default:
                     XCTFail("should be TARGET_NOT_AVAILABLE")

@@ -22,7 +22,7 @@ extension ThingIFAPI {
         ) ->Void {
 
             if self.target != nil {
-                completionHandler(nil, ThingIFError.already_ONBOARDED)
+                completionHandler(nil, ThingIFError.alreadyOnboarded)
                 return
             }
             
@@ -77,12 +77,12 @@ extension ThingIFAPI {
                         } else {
                             vendorThingID = ""
                         }
-                        if layoutPosition == LayoutPosition.GATEWAY {
+                        if layoutPosition == LayoutPosition.gateway {
                             target = Gateway(
                                     thingID: thingID,
                                     vendorThingID: vendorThingID,
                                     accessToken: accessToken)
-                        } else if layoutPosition == LayoutPosition.ENDNODE {
+                        } else if layoutPosition == LayoutPosition.endnode {
                             target = EndNode(
                                     thingID: thingID,
                                     vendorThingID: vendorThingID,
@@ -106,7 +106,7 @@ extension ThingIFAPI {
                 
             }catch(_){
                 kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-                completionHandler(nil, ThingIFError.json_PARSE_ERROR)
+                completionHandler(nil, ThingIFError.jsonParseError)
             }
     }
 
@@ -118,15 +118,15 @@ extension ThingIFAPI {
         ) ->Void
     {
         if self.target == nil || !(self.target is Gateway) {
-            completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
         if pendingEndnode.vendorThingID == nil || pendingEndnode.vendorThingID!.isEmpty {
-            completionHandler(nil, ThingIFError.unsupported_ERROR)
+            completionHandler(nil, ThingIFError.unsupportedError)
             return
         }
         if endnodePassword.isEmpty {
-            completionHandler(nil, ThingIFError.unsupported_ERROR)
+            completionHandler(nil, ThingIFError.unsupportedError)
             return
         }
 
@@ -184,7 +184,7 @@ extension ThingIFAPI {
             operationQueue.addOperation(operation)
         } catch(_) {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.json_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.jsonParseError)
         }
     }
 }

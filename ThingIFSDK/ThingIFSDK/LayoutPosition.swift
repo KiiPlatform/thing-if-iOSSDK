@@ -8,7 +8,7 @@
 import Foundation
 
 public enum LayoutPosition: String {
-    case GATEWAY = "GATEWAY"
-    case STANDALONE = "STANDALONE"
-    case ENDNODE = "ENDNODE"
+    case gateway = "GATEWAY"
+    case standalone = "STANDALONE"
+    case endnode = "ENDNODE"
 }

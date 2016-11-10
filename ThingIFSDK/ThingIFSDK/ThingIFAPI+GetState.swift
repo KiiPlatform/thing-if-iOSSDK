@@ -13,7 +13,7 @@ extension ThingIFAPI {
         _ completionHandler: @escaping (Dictionary<String, Any>?,  ThingIFError?)-> Void
         ){
             guard let target = self.target else {
-                completionHandler(nil, ThingIFError.target_NOT_AVAILABLE)
+                completionHandler(nil, ThingIFError.targetNotAvailable)
                 return
             }
 

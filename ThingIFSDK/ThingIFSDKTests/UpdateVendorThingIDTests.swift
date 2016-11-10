@@ -153,7 +153,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -230,7 +230,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .error_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(409, actualErrorResponse.httpStatusCode)
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -263,7 +263,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .unsupported_ERROR:
+                case .unsupportedError:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")
@@ -296,7 +296,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
-                case .unsupported_ERROR:
+                case .unsupportedError:
                     break
                 default:
                     XCTFail("unexpected error: \(error)")

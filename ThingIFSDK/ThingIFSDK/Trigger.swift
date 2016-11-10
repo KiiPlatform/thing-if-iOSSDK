@@ -39,9 +39,9 @@ open class Trigger: NSObject, NSCoding {
     var triggersWhat: TriggersWhat? {
         get {
             if self.command != nil {
-                return TriggersWhat.COMMAND
+                return TriggersWhat.command
             } else if self.serverCode != nil {
-                return TriggersWhat.SERVER_CODE
+                return TriggersWhat.serverCode
             } else {
                 return nil
             }
@@ -67,13 +67,13 @@ open class Trigger: NSObject, NSCoding {
             if let eventSourceString = predicateDict["eventSource"] as? String{
                 if let eventSource = EventSource(rawValue: eventSourceString){
                     switch eventSource {
-                    case EventSource.States:
+                    case EventSource.states:
                         predicate = StatePredicate.statePredicateWithNSDict(predicateDict)
                         break
-                    case EventSource.Schedule:
+                    case EventSource.schedule:
                         predicate = SchedulePredicate(schedule:  predicateDict["schedule"] as! String)
                         break
-                    case EventSource.ScheduleOnce:
+                    case EventSource.scheduleOnce:
                         if let scheduleAtMilis = (predicateDict["scheduleAt"] as? NSNumber)?.doubleValue {
                             predicate = ScheduleOncePredicate(scheduleAt: Date(timeIntervalSince1970: scheduleAtMilis/1000))
                         }
@@ -174,17 +174,17 @@ public enum TriggersWhen : String {
        changed, then serialization and deserialization is broken. */
 
     /** Always fires when the Condition is evaluated as true. */
-    case CONDITION_TRUE = "CONDITION_TRUE"
+    case conditionTrue = "CONDITION_TRUE"
     /** Fires when previous State is evaluated as false and current State is evaluated as true. */
-    case CONDITION_FALSE_TO_TRUE = "CONDITION_FALSE_TO_TRUE"
+    case conditionFalseToTrue = "CONDITION_FALSE_TO_TRUE"
     /** Fires when the previous State and current State is evaluated as
     different value. i.e. false to true, true to false. */
-    case CONDITION_CHANGED = "CONDITION_CHANGED"
+    case conditionChanged = "CONDITION_CHANGED"
 }
 
 public enum TriggersWhat : String {
-    case COMMAND = "COMMAND"
-    case SERVER_CODE = "SERVER_CODE"
+    case command = "COMMAND"
+    case serverCode = "SERVER_CODE"
 }
 
 public enum EventSource: String {
@@ -192,8 +192,8 @@ public enum EventSource: String {
        used serialization and deserialization If thses values are
        changed, then serialization and deserialization is broken. */
 
-    case States = "STATES"
-    case Schedule = "SCHEDULE"
-    case ScheduleOnce = "SCHEDULE_ONCE"
+    case states = "STATES"
+    case schedule = "SCHEDULE"
+    case scheduleOnce = "SCHEDULE_ONCE"
 
 }

@@ -25,7 +25,7 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
               "target" : setting.api.target!.typedID.toString()],
             "predicate" : [ "eventSource" : "SCHEDULE",
                             "schedule" : "1 * * * *" ],
-            "triggersWhat": TriggersWhat.COMMAND.rawValue
+            "triggersWhat": TriggersWhat.command.rawValue
           ]
         trigger["title"] = options.title
         trigger["description"] = options.triggerDescription

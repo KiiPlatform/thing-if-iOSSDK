@@ -17,7 +17,7 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
       _ options: TriggerOptions) -> Dictionary<String, Any>
     {
         var trigger: Dictionary<String, Any> = [
-            "triggersWhat": TriggersWhat.COMMAND.rawValue
+            "triggersWhat": TriggersWhat.command.rawValue
           ]
 
         if let title = options.title {

@@ -149,7 +149,7 @@ class GetTriggerTests: SmallTestBase {
             let serverCodeDict = expectedServerCode.toNSDictionary()
             let eventSource = "STATES"
             let condition: Dictionary<String, Any> = ["type":"eq", "field":"color", "value": 0]
-            let expectedPredicateDict: [String : Any] = ["eventSource":eventSource, "triggersWhen":TriggersWhen.CONDITION_FALSE_TO_TRUE.rawValue, "condition": condition]
+            let expectedPredicateDict: [String : Any] = ["eventSource":eventSource, "triggersWhen":TriggersWhen.conditionFalseToTrue.rawValue, "condition": condition]
             
             // mock response
             let dict: [String : Any] = ["triggerID": expectedTriggerID, "predicate": expectedPredicateDict, "serverCode": serverCodeDict, "disabled": false]
@@ -239,7 +239,7 @@ class GetTriggerTests: SmallTestBase {
                     switch error! {
                     case .connection:
                         XCTFail("should not be connection error")
-                    case .error_RESPONSE(let actualErrorResponse):
+                    case .errorResponse(let actualErrorResponse):
                         XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
@@ -292,7 +292,7 @@ class GetTriggerTests: SmallTestBase {
                     switch error! {
                     case .connection:
                         XCTFail("should not be connection error")
-                    case .error_RESPONSE(let actualErrorResponse):
+                    case .errorResponse(let actualErrorResponse):
                         XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
