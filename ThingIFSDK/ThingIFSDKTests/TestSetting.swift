@@ -37,7 +37,7 @@ open class TestSetting: NSObject {
         self.appID = dict["appID"] as! String
         self.appKey = dict["appKey"] as! String
         self.hostName = dict["hostName"] as! String
-        self.app = AppBuilder(appID: appID, appKey: appKey, hostName: hostName).build()
+        self.app = AppBuilder(appID: appID, appKey: appKey, hostName: hostName).make()
 
         self.ownerID = dict["ownerID"] as! String
         self.ownerToken = dict["ownerToken"] as! String
@@ -47,7 +47,7 @@ open class TestSetting: NSObject {
         self.thingID = dict["thingID"] as! String
         self.target = StandaloneThing(thingID: thingID, vendorThingID: ownerID, accessToken: ownerToken)
 
-        self.api = ThingIFAPIBuilder(app: app, owner: owner).build()
+        self.api = ThingIFAPIBuilder(app: app, owner: owner).make()
 
         self.schema = dict["schema"] as! String
         self.schemaVersion = dict["schemaVersion"] as! Int
