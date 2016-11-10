@@ -57,7 +57,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
-            api.listOnboardedEndNodes( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
+            api.list( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
                 XCTAssertNil(error)
                 XCTAssertNotNil(nodes)
                 XCTAssertEqual(3, nodes!.count)
@@ -113,7 +113,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
-            api.listOnboardedEndNodes( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
+            api.list( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
                 XCTAssertNil(error)
                 XCTAssertNotNil(nodes)
                 XCTAssertEqual(0, nodes!.count)
@@ -136,7 +136,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         let api:GatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
         let expectation = self.expectation(description: "testNoLoggedInError")
         
-        api.listOnboardedEndNodes( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
+        api.list( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
@@ -184,7 +184,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
         
-        api.listOnboardedEndNodes( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
+        api.list( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
@@ -232,7 +232,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
         
-        api.listOnboardedEndNodes( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
+        api.list( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
@@ -280,7 +280,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
         
-        api.listOnboardedEndNodes( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
+        api.list( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
@@ -328,7 +328,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
         
-        api.listOnboardedEndNodes( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
+        api.list( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
@@ -376,7 +376,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
         
-        api.listOnboardedEndNodes( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
+        api.list( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
