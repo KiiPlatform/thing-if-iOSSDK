@@ -12,11 +12,11 @@ open class ThingIFAPI: NSObject, NSCoding {
     private static func getStoredInstanceKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag!)")
     }
-    fileprivate static let SHARED_NSUSERDEFAULT_SDK_VERSION_KEY = "ThingIFAPI_VERSION"
-    fileprivate static func getStoredSDKVersionKey(_ tag : String?) -> String{
+    private static let SHARED_NSUSERDEFAULT_SDK_VERSION_KEY = "ThingIFAPI_VERSION"
+    private static func getStoredSDKVersionKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_SDK_VERSION_KEY + (tag == nil ? "" : "_\(tag!)")
     }
-    fileprivate static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
+    private static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
 
     /** Tag of the ThingIFAPI instance */
     open let tag : String?
