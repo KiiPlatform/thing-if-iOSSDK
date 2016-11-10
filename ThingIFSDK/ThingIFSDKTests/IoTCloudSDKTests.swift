@@ -26,7 +26,7 @@ class ThingIFSDKTests: SmallTestBase {
         let owner = setting.owner
 
         // ThingIFAPI is not saved when ThingIFAPI is instantiation.
-        let api = ThingIFAPIBuilder(app:app, owner:owner).build()
+        let api = ThingIFAPIBuilder(app:app, owner:owner).make()
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance())
         api.saveInstance()
         
@@ -44,9 +44,9 @@ class ThingIFSDKTests: SmallTestBase {
         let app = setting.app
         let owner = setting.owner
         
-        let api1 = ThingIFAPIBuilder(app:app, owner:owner).build()
-        let api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).build()
-        let api3 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[1]).build()
+        let api1 = ThingIFAPIBuilder(app:app, owner:owner).make()
+        let api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).make()
+        let api3 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[1]).make()
         
         var expectation = self.expectation(description: "testSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
@@ -126,9 +126,9 @@ class ThingIFSDKTests: SmallTestBase {
         let app = setting.app
         let owner = setting.owner
         
-        let api1 = ThingIFAPIBuilder(app:app, owner:owner).build()
-        let api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).build()
-        let api3 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[1]).build()
+        let api1 = ThingIFAPIBuilder(app:app, owner:owner).make()
+        let api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).make()
+        let api3 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[1]).make()
         
         var expectation = self.expectation(description: "testSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
@@ -222,7 +222,7 @@ class ThingIFSDKTests: SmallTestBase {
         let owner1 = Owner(typedID: TypedID(type: "user", id: "user001"), accessToken: "token001")
         let owner2 = Owner(typedID: TypedID(type: "user", id: "user002"), accessToken: "token002")
         
-        let api1 = ThingIFAPIBuilder(app:app1, owner:owner1, tag: tag).build()
+        let api1 = ThingIFAPIBuilder(app:app1, owner:owner1, tag: tag).make()
         
         var expectation = self.expectation(description: "testOverwriteSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
@@ -238,7 +238,7 @@ class ThingIFSDKTests: SmallTestBase {
             }
         }
         
-        let api2 = ThingIFAPIBuilder(app:app2, owner:owner2, tag: tag).build()
+        let api2 = ThingIFAPIBuilder(app:app2, owner:owner2, tag: tag).make()
 
         expectation = self.expectation(description: "testOverwriteSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000002", thingID: "th.00000002", setting: setting)
@@ -266,7 +266,7 @@ class ThingIFSDKTests: SmallTestBase {
     func testOverwriteSavedInstanceWithOnboard222(){
         let setting = TestSetting()
         
-        let api1 = ThingIFAPIBuilder(app:setting.app, owner:setting.owner, tag: "tag1").build()
+        let api1 = ThingIFAPIBuilder(app:setting.app, owner:setting.owner, tag: "tag1").make()
         
         let expectation = self.expectation(description: "testOverwriteSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
@@ -313,9 +313,9 @@ class ThingIFSDKTests: SmallTestBase {
         let app = setting.app
         let owner = setting.owner
         
-        let api1 = ThingIFAPIBuilder(app:app, owner:owner).build()
-        let api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).build()
-        let api3 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[1]).build()
+        let api1 = ThingIFAPIBuilder(app:app, owner:owner).make()
+        let api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).make()
+        let api3 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[1]).make()
         
         var expectation = self.expectation(description: "testSavedInstanceWithInstallPush")
         setMockResponse4InstallPush("installationID-0001", setting: setting);
@@ -423,9 +423,9 @@ class ThingIFSDKTests: SmallTestBase {
         let target2 = StandaloneThing(thingID: "user-00002", vendorThingID: "vendor-thing-id-002", accessToken: "token-00002")
         let target3 = StandaloneThing(thingID: "user-00003", vendorThingID: "vendor-thing-id-003", accessToken: "token-00003")
         
-        var api1 = ThingIFAPIBuilder(app:app, owner:owner).build()
-        var api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).build()
-        var api3 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[1]).build()
+        var api1 = ThingIFAPIBuilder(app:app, owner:owner).make()
+        var api2 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[0]).make()
+        var api3 = ThingIFAPIBuilder(app:app, owner:owner, tag:tags[1]).make()
         
         api1 = api1.copyWithTarget(target1)
         api2 = api2.copyWithTarget(target2, tag: tags[0])

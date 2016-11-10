@@ -79,69 +79,42 @@ open class AppBuilder: NSObject {
     private let appID:String
     private let appKey:String
     private let hostName:String
-    private var urlSchema:String
-    private var siteName:String
-    private var port:Int32
+    private let urlSchema:String
+    private let siteName:String
+    private let port:Int32
 
     /** Init the Builder.
 
      - Parameter appID: ID of the app.
      - Parameter appKey: Key of the app.
-     - Parameter hostName: Host name to which the app connects
+     - Parameter hostNabuildme: Host name to which the app connects
+     - Parameter urlSchema: URL schema. By default, "https" is
+       used. You can override the URL schema with this parameter.
+     - Parameter siteName: Site name. By default site name is set to
+       "CUSTOM". This site name should match with your Gateway Agent
+       configuration if you interact Gateway Agent with this SDK.
     */
-    public init(appID:String, appKey:String, hostName:String) {
+    public init(
+      appID: String,
+      appKey: String,
+      hostName: String,
+      urlSchema: String = "https",
+      siteName: String = "CUSTOM",
+      port: Int32 = -1)
+    {
         self.appID = appID
         self.appKey = appKey
         self.hostName = hostName
-        self.urlSchema = "https"
-        self.siteName = "CUSTOM"
-        self.port = -1
-    }
-
-    /** Set port number.
-     This method call is optional.
-     By default no port number is used to connect to the cloud.
-
-     - Parameter port: port number. 0 or less than 0 would be ignored.
-     - Returns: AppBuilder instance.
-    */
-    open func setPort(_ port:Int32) -> AppBuilder {
-        self.port=port
-        return self
-    }
-
-    /** Set the API endpoint URL schema
-     This method call is optional.
-     By default "https" is used. You can override the URL schema with this
-     method.
-
-     - Parameter urlSchema: API endpoit URL schema
-     - Returns: AppBuilder instance.
-    */
-    open func setUrlSchema(_ urlSchema:String) -> AppBuilder {
         self.urlSchema = urlSchema
-        return self
-    }
-
-    /** Set site name.
-     This method call is optional.
-     By default site name is set to "CUSTOM".
-     This site name should match with your Gateway Agent configuration
-     if you interact Gateway Agent with this SDK.
-
-     - Parameter siteName: site name.
-     - Returns: AppBuilder instance.
-    */
-    open func setSiteName(_ siteName:String) -> AppBuilder {
         self.siteName = siteName
-        return self
+        self.port = port
     }
 
-    /** Build App instance
+    /** Make App instance
 
      - Returns: App instance
     */
-    open func build() -> App {
+    open func make() -> App {
         var baseURL:String = urlSchema + "://" + hostName
         if (self.port > 0) {
             baseURL = baseURL + ":" + String(port)
