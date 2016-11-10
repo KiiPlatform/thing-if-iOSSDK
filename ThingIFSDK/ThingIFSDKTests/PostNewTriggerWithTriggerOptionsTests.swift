@@ -11,7 +11,7 @@ import XCTest
 
 class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
 
-    fileprivate func createSuccessRequestBody(
+    private func createSuccessRequestBody(
       _ options: TriggerOptions,
       setting: TestSetting) -> Dictionary<String, Any>
     {

@@ -41,9 +41,9 @@ private class NetworkIndicatorController {
 
     static let sharedIndicatorController = NetworkIndicatorController()
 
-    fileprivate var activityCount = 0
+    private var activityCount = 0
     
-    fileprivate var visibilityTimer: Timer?
+    private var visibilityTimer: Timer?
     
     // MARK: Methods
     
@@ -63,7 +63,7 @@ private class NetworkIndicatorController {
         updateIndicatorVisibility()
     }
     
-    fileprivate func updateIndicatorVisibility() {
+    private func updateIndicatorVisibility() {
         if activityCount > 0 {
             showIndicator()
         }
@@ -79,13 +79,13 @@ private class NetworkIndicatorController {
         }
     }
     
-    fileprivate func showIndicator() {
+    private func showIndicator() {
         visibilityTimer?.cancel()
         visibilityTimer = nil
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
-    fileprivate func hideIndicator() {
+    private func hideIndicator() {
         visibilityTimer?.cancel()
         visibilityTimer = nil
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
@@ -96,7 +96,7 @@ private class NetworkIndicatorController {
 class Timer {
     // MARK: Properties
 
-    fileprivate var isCancelled = false
+    private var isCancelled = false
     
     // MARK: Initialization
 

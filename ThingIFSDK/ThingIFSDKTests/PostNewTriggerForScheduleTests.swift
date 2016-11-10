@@ -15,9 +15,9 @@ protocol RequestVerifier: class {
 }
 
 class TriggerRequestVerifier: NSObject, RequestVerifier {
-    fileprivate let expectedHeader: Dictionary<String, String>
-    fileprivate let expectedBody: Dictionary<String, Any>
-    fileprivate let url: String
+    private let expectedHeader: Dictionary<String, String>
+    private let expectedBody: Dictionary<String, Any>
+    private let url: String
     let tag: String
 
     init (expectedHeader: Dictionary<String, String>,

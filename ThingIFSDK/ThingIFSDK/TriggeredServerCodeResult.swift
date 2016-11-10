@@ -115,7 +115,7 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
         }
         return self.succeeded == aResult.succeeded && self.executedAt == aResult.executedAt && self.endpoint == aResult.endpoint
     }
-    fileprivate func isEqualArray(_ arr1:[Any], arr2:[Any]) -> Bool {
+    private func isEqualArray(_ arr1:[Any], arr2:[Any]) -> Bool {
         if arr1.count != arr2.count {
             return false
         }

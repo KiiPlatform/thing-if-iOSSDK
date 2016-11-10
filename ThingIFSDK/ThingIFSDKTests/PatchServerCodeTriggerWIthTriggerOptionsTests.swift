@@ -11,7 +11,7 @@ import XCTest
 
 class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
 
-    fileprivate func getResonseData(
+    private func getResonseData(
       _ triggerID: String,
       serverCode: ServerCode,
       predicate: Predicate,
@@ -30,7 +30,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
         return retval;
     }
 
-    fileprivate func expectedRequestBody(
+    private func expectedRequestBody(
       _ serverCode: ServerCode? = nil,
       predicate: Predicate? = nil,
       options: TriggerOptions? = nil) -> Dictionary<String, Any>

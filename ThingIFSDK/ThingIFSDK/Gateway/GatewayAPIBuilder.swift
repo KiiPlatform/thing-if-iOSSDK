@@ -9,9 +9,9 @@ import Foundation
 
 open class GatewayAPIBuilder {
 
-    fileprivate var tag: String?
-    fileprivate let app: App
-    fileprivate let gatewayAddress: URL
+    private var tag: String?
+    private let app: App
+    private let gatewayAddress: URL
 
     /** Set tag to this GatewayAPI instance.
      tag is used to distinguish storage area of instance.

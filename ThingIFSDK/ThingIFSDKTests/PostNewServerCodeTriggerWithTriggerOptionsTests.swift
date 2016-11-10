@@ -11,7 +11,7 @@ import XCTest
 
 class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
 
-    fileprivate func createSuccessRequestBody(
+    private func createSuccessRequestBody(
       _ serverCode: ServerCode,
       predicate: Predicate,
       options: TriggerOptions?) -> Dictionary<String, Any>

@@ -8,8 +8,8 @@ import Foundation
 /** Class provides API of the ThingIF. */
 open class ThingIFAPI: NSObject, NSCoding {
 
-    fileprivate static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "ThingIFAPI_INSTANCE"
-    fileprivate static func getSharedNSDefaultKey(_ tag : String?) -> String{
+    private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "ThingIFAPI_INSTANCE"
+    private static func getSharedNSDefaultKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
 

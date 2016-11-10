@@ -17,7 +17,7 @@ struct TimeoutObserver: OperationObserver {
 
     static let timeoutKey = "Timeout"
     
-    fileprivate let timeout: TimeInterval
+    private let timeout: TimeInterval
     
     // MARK: Initialization
     

@@ -16,7 +16,7 @@ public protocol Clause: NSCoding {
 
 /** Class represents Equals clause. */
 open class EqualsClause: NSObject, Clause {
-    fileprivate var nsdict = NSMutableDictionary()
+    private var nsdict = NSMutableDictionary()
 
     override init() {
         nsdict.setObject("eq", forKey: "type" as NSCopying)
@@ -75,7 +75,7 @@ open class EqualsClause: NSObject, Clause {
 
 /** Class represents NotEquals clause. */
 open class NotEqualsClause: NSObject, Clause {
-    fileprivate var equalClause: EqualsClause!
+    private var equalClause: EqualsClause!
 
     public init(equalStmt: EqualsClause) {
         equalClause = equalStmt
@@ -127,7 +127,7 @@ open class NotEqualsClause: NSObject, Clause {
 
 /** Class represents Range clause. */
 open class RangeClause: NSObject, Clause {
-    fileprivate var nsdict: NSMutableDictionary = ["type": "range"]
+    private var nsdict: NSMutableDictionary = ["type": "range"]
 
     /** Initialize with Int left hand side value.
     this works as >(greater than) if lower included is false and as >=(greater than or equals) if lower included is true.
@@ -243,7 +243,7 @@ open class RangeClause: NSObject, Clause {
 /** Class represents And clause. */
 open class AndClause: NSObject, Clause {
     /** clauses array of AndClause */
-    open fileprivate(set) var clauses = [Clause]()
+    open private(set) var clauses = [Clause]()
 
     /** Initialize with clause clauses.
     
@@ -294,7 +294,7 @@ open class AndClause: NSObject, Clause {
 /** Class represents Or clause. */
 open class OrClause: NSObject, Clause {
     /** clauses array of OrClause */
-    open fileprivate(set) var clauses = [Clause]()
+    open private(set) var clauses = [Clause]()
 
     /** Initialize with clause clauses.
     
