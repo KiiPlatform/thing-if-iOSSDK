@@ -105,8 +105,10 @@ open class GatewayAPI: NSObject, NSCoding {
                 requestHeaderDict: requestHeaderDict,
                 requestBodyData: requestBodyData,
                 completionHandler: { (response, error) -> Void in
-                    self.accessToken = response?["accessToken"] as? String
-                    self.saveInstance()
+                    if error == nil {
+                        self.accessToken = response?["accessToken"] as? String
+                        self.saveInstance()
+                    }
                     DispatchQueue.main.async {
                         completionHandler(error)
                     }

@@ -135,6 +135,8 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         let username = "dummyUser"
         let password = "dummyPass"
 
+        GatewayAPI.removeAllStoredInstances()
+
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
@@ -182,6 +184,16 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
+            }
+        }
+
+        XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.apiNotStored:
+                // Succeed
+                break
+            default:
+                XCTFail("unknown error")
             }
         }
     }
