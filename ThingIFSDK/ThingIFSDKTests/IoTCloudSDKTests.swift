@@ -565,7 +565,7 @@ class ThingIFSDKTests: SmallTestBase {
         let app = setting.app
         let owner = setting.owner
 
-        let api = ThingIFAPIBuilder(app:app, owner:owner).build()
+        let api = ThingIFAPIBuilder(app:app, owner:owner).make()
 
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
         api.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
@@ -608,7 +608,7 @@ class ThingIFSDKTests: SmallTestBase {
         let owner = setting.owner
         let tagName = "testLoadFromStoredInstanceLowerSDKVersion"
 
-        let api = ThingIFAPIBuilder(app:app, owner:owner, tag:tagName).build()
+        let api = ThingIFAPIBuilder(app:app, owner:owner, tag:tagName).make()
 
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
         api.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
@@ -652,7 +652,7 @@ class ThingIFSDKTests: SmallTestBase {
         let app = setting.app
         let owner = setting.owner
 
-        let api = ThingIFAPIBuilder(app:app, owner:owner).build()
+        let api = ThingIFAPIBuilder(app:app, owner:owner).make()
 
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
         api.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
