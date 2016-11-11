@@ -90,8 +90,8 @@ class OnboardTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            setting.api.onboardWithVendorThingID(
-                vendorThingID,
+            setting.api.onboardWith(
+                vendorThingID: vendorThingID,
                 thingPassword: password,
                 options: options,
                 completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -174,8 +174,8 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboardWithVendorThingID(
-            vendorThingID,
+        setting.api.onboardWith(
+            vendorThingID: vendorThingID,
             thingPassword: password,
             options: options,
             completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -259,8 +259,8 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboardWithVendorThingID(
-            vendorThingID,
+        setting.api.onboardWith(
+            vendorThingID: vendorThingID,
             thingPassword: password,
             options: options,
             completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -344,8 +344,8 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboardWithVendorThingID(
-            vendorThingID,
+        setting.api.onboardWith(
+            vendorThingID: vendorThingID,
             thingPassword: password,
             options: options,
             completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -394,8 +394,8 @@ class OnboardTests: SmallTestBase {
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
 
-            setting.api.onboardWithVendorThingID(
-                vendorThingID,
+            setting.api.onboardWith(
+                vendorThingID: vendorThingID,
                 thingPassword: password,
                 options: options,
                 completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -415,8 +415,8 @@ class OnboardTests: SmallTestBase {
             }
         }
 
-        setting.api.onboardWithVendorThingID(
-            vendorThingID,
+        setting.api.onboardWith(
+            vendorThingID: vendorThingID,
             thingPassword: password,
             options: options,
             completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -491,8 +491,8 @@ class OnboardTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            setting.api.onboardWithThingID(
-                thingID,
+            setting.api.onboardWith(
+                thingID: thingID,
                 thingPassword: password,
                 options: options,
                 completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -568,8 +568,8 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboardWithThingID(
-            thingID,
+        setting.api.onboardWith(
+            thingID: thingID,
             thingPassword: password,
             options: options,
             completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -646,8 +646,8 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboardWithThingID(
-            thingID,
+        setting.api.onboardWith(
+            thingID: thingID,
             thingPassword: password,
             options: options,
             completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -724,8 +724,8 @@ class OnboardTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.onboardWithThingID(
-            thingID,
+        setting.api.onboardWith(
+            thingID: thingID,
             thingPassword: password,
             options: options,
             completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -769,8 +769,8 @@ class OnboardTests: SmallTestBase {
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
 
-            setting.api.onboardWithThingID(
-                thingID,
+            setting.api.onboardWith(
+                thingID: thingID,
                 thingPassword: password,
                 options: options,
                 completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
@@ -790,8 +790,8 @@ class OnboardTests: SmallTestBase {
             }
         }
 
-        setting.api.onboardWithThingID(
-            thingID,
+        setting.api.onboardWith(
+            thingID: thingID,
             thingPassword: password,
             options: options,
             completionHandler: { (target:Target?, error:ThingIFError?) -> Void in

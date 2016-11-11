@@ -8,7 +8,7 @@
 import Foundation
 
 /** Optional parameters of
-`ThingIFAPI.onboardWithVendorThingID(vendorThingID:thingPassword:options:completionHandler:)`.
+`ThingIFAPI.onboardWith(vendorThingID:thingPassword:options:completionHandler:)`.
 */
 open class OnboardWithVendorThingIDOptions {
     open let thingType: String?

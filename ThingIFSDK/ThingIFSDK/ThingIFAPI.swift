@@ -92,7 +92,10 @@ open class ThingIFAPI: NSObject, NSCoding {
     /** On board IoT Cloud with the specified vendor thing ID.
     Specified thing will be owned by owner who consumes this API.
     (Specified on creation of ThingIFAPI instance.)
-    If you are using a gateway, you need to use onboardEndnodeWithGateway to onboard endnode instead.
+
+    If you are using a gateway, you need to use
+    `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
+    to onboard endnode instead.
     
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -128,7 +131,10 @@ open class ThingIFAPI: NSObject, NSCoding {
     /** On board IoT Cloud with the specified vendor thing ID.
      Specified thing will be owned by owner who consumes this API.
      (Specified on creation of ThingIFAPI instance.)
-     If you are using a gateway, you need to use onboardEndnodeWithGateway to onboard endnode instead.
+
+     If you are using a gateway, you need to use
+     `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
+    to onboard endnode instead.
 
      **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -137,8 +143,8 @@ open class ThingIFAPI: NSObject, NSCoding {
     - Parameter options: Optional parameters inside.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
     */
-    open func onboardWithVendorThingID(
-        _ vendorThingID:String,
+    open func onboardWith(
+        vendorThingID:String,
         thingPassword:String,
         options:OnboardWithVendorThingIDOptions? = nil,
         completionHandler: @escaping (Target?, ThingIFError?)-> Void
@@ -162,7 +168,9 @@ open class ThingIFAPI: NSObject, NSCoding {
     (Specified on creation of ThingIFAPI instance.)
     When you're sure that the on board process has been done,
     this method is convenient.
-     If you are using a gateway, you need to use onboardEndnodeWithGateway to onboard endnode instead.
+     If you are using a gateway, you need to use
+    `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
+    to onboard endnode instead.
 
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -190,7 +198,9 @@ open class ThingIFAPI: NSObject, NSCoding {
      (Specified on creation of ThingIFAPI instance.)
      When you're sure that the on board process has been done,
      this method is convenient.
-     If you are using a gateway, you need to use onboardEndnodeWithGateway to onboard endnode instead.
+     If you are using a gateway, you need to use
+    `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
+    to onboard endnode instead.
 
      **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
 
@@ -200,8 +210,8 @@ open class ThingIFAPI: NSObject, NSCoding {
     - Parameter options: Optional parameters inside.
     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
      */
-    open func onboardWithThingID(
-        _ thingID:String,
+    open func onboardWith(
+        thingID:String,
         thingPassword:String,
         options:OnboardWithThingIDOptions? = nil,
         completionHandler: @escaping (Target?, ThingIFError?)-> Void
@@ -225,8 +235,8 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter options: Optional parameters inside.
      - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an end node, an ThingIFError
      */
-    open func onboardEndnodeWithGateway(
-        _ pendingEndnode:PendingEndNode,
+    open func onboard(
+        pendingEndnode:PendingEndNode,
         endnodePassword:String,
         options:OnboardEndnodeWithGatewayOptions? = nil,
         completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
