@@ -89,7 +89,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     (Specified on creation of ThingIFAPI instance.)
 
     If you are using a gateway, you need to use
-    `ThingIFAPI.onboard(pendingEndnode:with:options:completionHandler:)`
+    `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
     to onboard endnode instead.
     
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
@@ -128,7 +128,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      (Specified on creation of ThingIFAPI instance.)
 
      If you are using a gateway, you need to use
-     `ThingIFAPI.onboard(pendingEndnode:with:options:completionHandler:)`
+     `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
     to onboard endnode instead.
 
      **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
@@ -164,7 +164,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     When you're sure that the on board process has been done,
     this method is convenient.
      If you are using a gateway, you need to use
-    `ThingIFAPI.onboard(pendingEndnode:with:options:completionHandler:)`
+    `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
     to onboard endnode instead.
 
     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
@@ -194,7 +194,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      When you're sure that the on board process has been done,
      this method is convenient.
      If you are using a gateway, you need to use
-    `ThingIFAPI.onboard(pendingEndnode:with:options:completionHandler:)`
+    `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
     to onboard endnode instead.
 
      **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
@@ -232,7 +232,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      */
     open func onboard(
         pendingEndnode:PendingEndNode,
-        with endnodePassword:String,
+        endnodePassword:String,
         options:OnboardEndnodeWithGatewayOptions? = nil,
         completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
         ) ->Void
