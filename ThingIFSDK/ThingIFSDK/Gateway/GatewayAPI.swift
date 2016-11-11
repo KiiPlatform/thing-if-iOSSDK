@@ -126,7 +126,7 @@ open class GatewayAPI: NSObject, NSCoding {
 
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is Gateway instance that has thingID asigned by Kii Cloud and 2nd one is an instance of ThingIFError when failed.
      */
-    open func onboardGateway(
+    open func onboard(
         _ completionHandler: @escaping (Gateway?, ThingIFError?)-> Void
         )
     {

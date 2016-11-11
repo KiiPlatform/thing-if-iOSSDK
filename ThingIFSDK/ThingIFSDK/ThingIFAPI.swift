@@ -729,13 +729,13 @@ open class ThingIFAPI: NSObject, NSCoding {
 
     /** Update the Vendor Thing ID of specified Target.
 
-     - Parameter newVendorThingID: New vendor thing id
-     - Parameter newPassword: New password
+     - Parameter vendorThingID: New vendor thing id
+     - Parameter password: New password
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
-    open func updateVendorThingID(
-        _ newVendorThingID: String,
-        newPassword: String,
+    open func update(
+        _ vendorThingID: String,
+        password: String,
         completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
@@ -743,7 +743,7 @@ open class ThingIFAPI: NSObject, NSCoding {
             completionHandler(ThingIFError.targetNotAvailable)
             return;
         }
-        if newVendorThingID.isEmpty || newPassword.isEmpty {
+        if vendorThingID.isEmpty || password.isEmpty {
             completionHandler(ThingIFError.unsupportedError)
             return;
         }
@@ -761,8 +761,8 @@ open class ThingIFAPI: NSObject, NSCoding {
         // genrate body
         let requestBodyDict = NSMutableDictionary(dictionary:
             [
-                "_vendorThingID": newVendorThingID,
-                "_password": newPassword
+                "_vendorThingID": vendorThingID,
+                "_password": password
             ]
         )
 
