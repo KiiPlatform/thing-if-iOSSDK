@@ -203,7 +203,7 @@ open class GatewayAPI: NSObject, NSCoding {
 
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is list of end nodes and 2nd one is an instance of ThingIFError when failed.
      */
-    open func list(
+    open func listOnboardedEndNodes(
         _ completionHandler: @escaping ([EndNode]?, ThingIFError?)-> Void
         )
     {
@@ -251,7 +251,7 @@ open class GatewayAPI: NSObject, NSCoding {
 
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is list of end nodes connected to the gateway but waiting for onboarding and 2nd one is an instance of ThingIFError when failed.
      */
-    open func list(
+    open func listPendingEndNodes(
         _ completionHandler: @escaping ([PendingEndNode]?, ThingIFError?)-> Void
         )
     {
