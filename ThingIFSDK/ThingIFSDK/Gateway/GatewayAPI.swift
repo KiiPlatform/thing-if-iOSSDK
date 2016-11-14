@@ -26,7 +26,8 @@ open class GatewayAPI: NSObject, NSCoding {
         return self.gatewayAddress.absoluteString
     }
 
-    private var accessToken: String?
+    /** Access token of this gate way */
+    open private(set) var accessToken: String?
 
     let operationQueue = OperationQueue()
 
@@ -489,15 +490,6 @@ open class GatewayAPI: NSObject, NSCoding {
     open func isLoggedIn() -> Bool
     {
         return !(self.accessToken?.isEmpty ?? true)
-    }
-
-    /** Get Access Token
-
-     - Returns: Access token
-     */
-    open func getAccessToken() -> String?
-    {
-        return self.accessToken
     }
 
     /** Try to load the instance of GatewayAPI using stored serialized instance.

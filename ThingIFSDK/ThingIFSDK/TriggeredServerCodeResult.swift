@@ -24,16 +24,56 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
     
     /** Whether the invocation succeeded */
     open let succeeded: Bool
-    /** Returned value from server code (JsonObject, JsonArray, String, Number, Boolean or null) */
-    open let returnedValue: Any?
     /** Date of the execution */
     open let executedAt: Date
     /** The endpoint used in the server code invocation */
     open let endpoint: String
     /** Error object of the invocation if any */
     open let error: ServerError?
-    
-    
+
+    /** Returned value from server code (JsonObject, JsonArray, String, Number, Boolean or null) */
+    open let returnedValue: Any?
+
+    /** Returned value from server code casted to String. */
+    open var returnedValueAsString: String? {
+        get {
+            if let str = self.returnedValue as? String {
+                return str
+            } else if let num = self.returnedValue as? NSNumber {
+                return String(describing: num)
+            }
+            return nil
+        }
+    }
+
+    /** Returned value from server code casted to Bool. */
+    open var returnedValueAsBool: Bool? {
+        get {
+            return self.returnedValue as? Bool
+        }
+    }
+
+    /** Returned value from server code casted to NSNumber. */
+    open var returnedValueAsNSNumber: NSNumber? {
+        get {
+            return self.returnedValue as? NSNumber
+        }
+    }
+
+    /** Returned value from server code casted to [String : Any]. */
+    open var returnedValueAsDictionary: Dictionary<String, Any>? {
+        get {
+            return self.returnedValue as? Dictionary<String, Any>
+        }
+    }
+
+    /** Returned value from server code casted to [Any]. */
+    open var returnedValueAsArray: [Any]? {
+        get {
+            return self.returnedValue as? [Any]
+        }
+    }
+
     /** Init TriggeredServerCodeResult with necessary attributes
      
      - Parameter succeeded: Whether the invocation succeeded
@@ -50,31 +90,6 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
         self.error = error
     }
     
-    open func getReturnedValue() -> Any? {
-        return self.returnedValue
-    }
-    open func getReturnedValueAsString() -> String? {
-        if let str = self.returnedValue as? String {
-            return str
-        }
-        if let num = self.returnedValue as? NSNumber {
-            return String(describing: num)
-        }
-        return nil
-    }
-    open func getReturnedValueAsBool() -> Bool? {
-        return self.returnedValue as? Bool
-    }
-    open func getReturnedValueAsNSNumber() -> NSNumber? {
-        return self.returnedValue as? NSNumber
-    }
-    open func getReturnedValueAsDictionary() -> Dictionary<String, Any>? {
-        return self.returnedValue as? Dictionary<String, Any>
-    }
-    open func getReturnedValueAsArray() -> [Any]? {
-        return self.returnedValue as? [Any]
-    }
-
     open override func isEqual(_ object: Any?) -> Bool {
         guard let aResult = object as? TriggeredServerCodeResult else{
             return false
