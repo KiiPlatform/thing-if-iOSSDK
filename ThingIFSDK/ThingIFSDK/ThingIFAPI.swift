@@ -90,45 +90,6 @@ open class ThingIFAPI: NSObject, NSCoding {
     // MARK: - On board methods
 
     /** On board IoT Cloud with the specified vendor thing ID.
-    Specified thing will be owned by owner who consumes this API.
-    (Specified on creation of ThingIFAPI instance.)
-
-    If you are using a gateway, you need to use
-    `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
-    to onboard endnode instead.
-    
-    **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
-
-    - Parameter vendorThingID: Thing ID given by vendor. Must be specified.
-    - Parameter thingPassword: Thing Password given by vendor.
-    Must be specified.
-    - Parameter thingType: Type of the thing given by vendor.
-    If the thing is already registered,
-    this value would be ignored by IoT Cloud.
-    - Parameter thingProperties: Properties of thing.
-    If the thing is already registered, this value would be ignored by
-    IoT Cloud.
-    Refer to the [REST API DOC](http://docs.kii.com/rest/#thing_management-register_a_thing)
-    About the format of this Document.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
-    */
-    open func onboard(
-        _ vendorThingID:String,
-        thingPassword:String,
-        thingType:String?,
-        thingProperties:Dictionary<String, Any>?,
-        completionHandler: @escaping (Target?, ThingIFError?)-> Void
-        ) ->Void
-    {
-        _onboard(true, IDString: vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { (target, error) -> Void in
-            if error == nil {
-                self.saveToUserDefault()
-            }
-            completionHandler(target, error)
-        }
-    }
-    
-    /** On board IoT Cloud with the specified vendor thing ID.
      Specified thing will be owned by owner who consumes this API.
      (Specified on creation of ThingIFAPI instance.)
 
@@ -156,36 +117,6 @@ open class ThingIFAPI: NSObject, NSCoding {
             thingProperties: options?.thingProperties,
             layoutPosition: options?.layoutPosition,
             dataGroupingInterval: options?.dataGroupingInterval) { (target, error) -> Void in
-            if error == nil {
-                self.saveToUserDefault()
-            }
-            completionHandler(target, error)
-        }
-    }
-
-    /** On board IoT Cloud with the specified thing ID.
-    Specified thing will be owned by owner who consumes this API.
-    (Specified on creation of ThingIFAPI instance.)
-    When you're sure that the on board process has been done,
-    this method is convenient.
-     If you are using a gateway, you need to use
-    `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
-    to onboard endnode instead.
-
-    **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
-
-    - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
-    - Parameter thingPassword: Thing Password given by vendor.
-    Must be specified.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
-    */
-    open func onboard(
-        _ thingID:String,
-        thingPassword:String,
-        completionHandler: @escaping (Target?, ThingIFError?)-> Void
-        ) ->Void
-    {
-         _onboard(false, IDString: thingID, thingPassword: thingPassword) { (target, error) -> Void in
             if error == nil {
                 self.saveToUserDefault()
             }
@@ -295,28 +226,6 @@ open class ThingIFAPI: NSObject, NSCoding {
     /** Post new command to IoT Cloud.
     Command will be delivered to specified target and result will be notified
     through push notification.
-    
-    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
-    
-    - Parameter schemaName: Name of the Schema of which the Command is defined.
-    - Parameter schemaVersion: Version of the Schema of which the Command is
-    defined.
-    - Parameter actions: List of Actions to be executed in the Target.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
-    */
-    open func postNewCommand(
-        _ schemaName:String,
-        schemaVersion:Int,
-        actions:[Dictionary<String, Any>],
-        completionHandler: @escaping (Command?, ThingIFError?)-> Void
-        ) -> Void
-    {
-        _postNewCommand(schemaName, schemaVersion: schemaVersion, actions: actions, completionHandler: completionHandler)
-    }
-
-    /** Post new command to IoT Cloud.
-    Command will be delivered to specified target and result will be notified
-    through push notification.
 
     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
 
@@ -412,41 +321,6 @@ open class ThingIFAPI: NSObject, NSCoding {
     }
 
     /** Post new Trigger to IoT Cloud.
-
-    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
-
-    When thing related to this ThingIFAPI instance meets condition
-    described by predicate, A registered command sends to thing
-    related to target.
-
-    `target` property and target argument must be same owner's things.
-
-    - Parameter schemaName: Name of the Schema of which the Command specified in
-    Trigger is defined.
-    - Parameter schemaVersion: Version of the Schema of which the Command
-    specified in Trigger is defined.
-    - Parameter actions: Actions to be executed by the Trigger.
-    - Parameter predicate: Predicate of the Command.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an ThingIFError instance when failed.
-    */
-    open func postNewTrigger(
-        _ schemaName:String,
-        schemaVersion:Int,
-        actions:[Dictionary<String, Any>],
-        predicate:Predicate,
-        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
-        )
-    {
-        _postNewTrigger(
-            TriggeredCommandForm(
-                schemaName: schemaName,
-                schemaVersion: schemaVersion,
-                actions: actions),
-            predicate: predicate,
-            completionHandler: completionHandler);
-    }
-    
-    /** Post new Trigger to IoT Cloud.
      
      **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
      
@@ -525,45 +399,6 @@ open class ThingIFAPI: NSObject, NSCoding {
             completionHandler: completionHandler)
     }
 
-    /** Apply patch to a registered Trigger
-    Modify a registered Trigger with the specified patch.
-
-    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
-
-    - Parameter triggerID: ID of the Trigger to which the patch is applied.
-    - Parameter schemaName: Name of the Schema of which the Command specified in
-    Trigger is defined.
-    - Parameter schemaVersion: Version of the Schema of which the Command
-    specified in Trigger is defined.
-    - Parameter actions: Modified Actions to be applied as patch.
-    - Parameter predicate: Modified Predicate to be applied as patch.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the modified Trigger instance, 2nd one is an ThingIFError instance when failed.
-    */
-    open func patchTrigger(
-        _ triggerID:String,
-        schemaName:String?,
-        schemaVersion:Int?,
-        actions:[Dictionary<String, Any>]?,
-        predicate:Predicate?,
-        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
-        )
-    {
-        let triggeredCommandForm: TriggeredCommandForm?
-        if (schemaName != nil && schemaVersion != nil && actions != nil) {
-            triggeredCommandForm = TriggeredCommandForm(
-                schemaName: schemaName!,
-                schemaVersion: schemaVersion!,
-                actions: actions!)
-        } else {
-            triggeredCommandForm = nil
-        }
-        _patchTrigger(
-            triggerID,
-            triggeredCommandForm: triggeredCommandForm,
-            predicate: predicate,
-            completionHandler: completionHandler)
-    }
-    
     /** Apply patch to a registered Trigger
      Modify a registered Trigger with the specified patch.
      
