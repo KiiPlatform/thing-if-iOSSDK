@@ -57,7 +57,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
             XCTFail("should not throw error")
         }
 
-        api.onboard( { (gateway:Gateway?, error:ThingIFError?) -> Void in
+        api.onboardGateway( { (gateway:Gateway?, error:ThingIFError?) -> Void in
             XCTAssertNil(error)
             XCTAssertNotNil(gateway)
             XCTAssertEqual(thingID, gateway!.thingID)
@@ -77,7 +77,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
         let api:GatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
         let expectation = self.expectation(description: "testNoLoggedInError")
 
-        api.onboard( { (gateway:Gateway?, error:ThingIFError?) -> Void in
+        api.onboardGateway( { (gateway:Gateway?, error:ThingIFError?) -> Void in
             XCTAssertNil(gateway)
             XCTAssertNotNil(error)
             switch error! {
@@ -125,7 +125,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        api.onboard( { (gateway:Gateway?, error:ThingIFError?) -> Void in
+        api.onboardGateway( { (gateway:Gateway?, error:ThingIFError?) -> Void in
             XCTAssertNil(gateway)
             XCTAssertNotNil(error)
             switch error! {
@@ -173,7 +173,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        api.onboard( { (gateway:Gateway?, error:ThingIFError?) -> Void in
+        api.onboardGateway( { (gateway:Gateway?, error:ThingIFError?) -> Void in
             XCTAssertNil(gateway)
             XCTAssertNotNil(error)
             switch error! {
@@ -221,7 +221,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        api.onboard( { (gateway:Gateway?, error:ThingIFError?) -> Void in
+        api.onboardGateway( { (gateway:Gateway?, error:ThingIFError?) -> Void in
             XCTAssertNil(gateway)
             XCTAssertNotNil(error)
             switch error! {
@@ -269,7 +269,7 @@ class OnboardGatewayTests: GatewayAPITestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        api.onboard( { (gateway:Gateway?, error:ThingIFError?) -> Void in
+        api.onboardGateway( { (gateway:Gateway?, error:ThingIFError?) -> Void in
             XCTAssertNil(gateway)
             XCTAssertNotNil(error)
             switch error! {
