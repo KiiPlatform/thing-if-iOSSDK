@@ -62,7 +62,12 @@ class PushUninstallationTests: SmallTestBase {
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            setting.api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
+            setting.api.onboardWith(
+              vendorThingID: vendorThingID,
+              thingPassword: thingPassword,
+              options: OnboardWithVendorThingIDOptions(
+                thingType: thingType,
+                thingProperties: thingProperties)) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.typedID.toString(), "thing:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {

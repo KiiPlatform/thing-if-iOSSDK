@@ -62,7 +62,9 @@ class OnboardingTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             
             iotSession = MockSession.self
-            api.onboard("th.0267251d9d60-1858-5e11-3dc3-00f3f0b5", thingPassword: "dummyPassword") { ( target, error) -> Void in
+            api.onboardWith(
+              thingID: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5",
+              thingPassword: "dummyPassword") { ( target, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -129,7 +131,12 @@ class OnboardingTests: SmallTestBase {
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
+            api.onboardWith(
+              vendorThingID: vendorThingID,
+              thingPassword: thingPassword,
+              options: OnboardWithVendorThingIDOptions(
+                thingType: thingType,
+                thingProperties: thingProperties)) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.typedID.toString(), "thing:\(setting.thingID)")
                     XCTAssertEqual(target!.typedID.toString(), "thing:\(setting.thingID)")
@@ -157,7 +164,9 @@ class OnboardingTests: SmallTestBase {
         let api = setting.api
 
         api._target = setting.target
-        api.onboard("dummyThingID", thingPassword: "dummyPassword") { (target, error) -> Void in
+        api.onboardWith(
+          thingID: "dummyThingID",
+          thingPassword: "dummyPassword") { (target, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -217,7 +226,12 @@ class OnboardingTests: SmallTestBase {
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
+            api.onboardWith(
+              vendorThingID:vendorThingID,
+              thingPassword: thingPassword,
+              options: OnboardWithVendorThingIDOptions(
+                thingType: thingType,
+                thingProperties: thingProperties)) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.typedID.toString(), "thing:\(setting.thingID)")
                     XCTAssertEqual(target!.typedID.toString(), "thing:\(setting.thingID)")

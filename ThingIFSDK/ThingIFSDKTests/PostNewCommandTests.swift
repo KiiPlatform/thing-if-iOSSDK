@@ -88,7 +88,12 @@ class PostNewCommandTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            setting.api.postNewCommand(testcase.schema, schemaVersion: testcase.schemaVersion, actions: testcase.actions, completionHandler: { (command, error) -> Void in
+            setting.api.postNewCommand(
+              CommandForm(
+                schemaName: testcase.schema,
+                schemaVersion: testcase.schemaVersion,
+                actions: testcase.actions),
+              completionHandler: { (command, error) -> Void in
                 if error == nil{
                     XCTAssertNotNil(command, tag)
                     XCTAssertEqual(command!.commandID, expectedCommandID, tag)
@@ -155,7 +160,12 @@ class PostNewCommandTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.postNewCommand("", schemaVersion: setting.schemaVersion, actions: [], completionHandler: { (command, error) -> Void in
+            api.postNewCommand(
+              CommandForm(
+                schemaName: "",
+                schemaVersion: setting.schemaVersion,
+                actions: []),
+              completionHandler: { (command, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -188,7 +198,12 @@ class PostNewCommandTests: SmallTestBase {
         let setting = TestSetting()
         let api = setting.api
 
-        api.postNewCommand("", schemaVersion: setting.schemaVersion, actions: [], completionHandler: { (command, error) -> Void in
+        api.postNewCommand(
+          CommandForm(
+            schemaName: "",
+            schemaVersion: setting.schemaVersion,
+            actions: []),
+          completionHandler: { (command, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {

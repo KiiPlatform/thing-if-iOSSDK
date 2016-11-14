@@ -259,14 +259,15 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         setting.api._target = setting.target
 
         setting.api.postNewTrigger(
-            testCase.parameter.schemaName,
+          TriggeredCommandForm(
+            schemaName: testCase.parameter.schemaName,
             schemaVersion: testCase.parameter.schemaVersion,
-            actions: testCase.parameter.actions,
-            predicate: testCase.parameter.predicate,
-            completionHandler: { (trigger, error) -> Void in
-                testCase.verifier.callbackVerifier.verifier(trigger, error)
-                expectation.fulfill()
-            })
+            actions: testCase.parameter.actions),
+          predicate: testCase.parameter.predicate,
+          completionHandler: { (trigger, error) -> Void in
+              testCase.verifier.callbackVerifier.verifier(trigger, error)
+              expectation.fulfill()
+          })
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout for \(testCase.verifier.requestVerifier.tag)")
