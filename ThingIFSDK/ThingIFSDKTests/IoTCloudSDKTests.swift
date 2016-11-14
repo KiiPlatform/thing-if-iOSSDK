@@ -57,7 +57,11 @@ class ThingIFSDKTests: SmallTestBase {
         
         var expectation = self.expectation(description: "testSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
-        api1.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api1.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -71,7 +75,11 @@ class ThingIFSDKTests: SmallTestBase {
         
         expectation = self.expectation(description: "testSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000002", thingID: "th.00000002", setting: setting)
-        api2.onboard("vendor-0002", thingPassword: "password2", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api2.onboardWith(
+          vendorThingID: "vendor-0002",
+          thingPassword: "password2",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -85,7 +93,11 @@ class ThingIFSDKTests: SmallTestBase {
         
         expectation = self.expectation(description: "testSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000003", thingID: "th.00000003", setting: setting)
-        api3.onboard("vendor-0002", thingPassword: "password2", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api3.onboardWith(
+          vendorThingID: "vendor-0002",
+          thingPassword: "password2",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -139,7 +151,11 @@ class ThingIFSDKTests: SmallTestBase {
         
         var expectation = self.expectation(description: "testSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
-        api1.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api1.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -153,7 +169,11 @@ class ThingIFSDKTests: SmallTestBase {
 
         expectation = self.expectation(description: "testSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000002", thingID: "th.00000002", setting: setting)
-        api2.onboard("vendor-0002", thingPassword: "password2", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api2.onboardWith(
+          vendorThingID: "vendor-0002",
+          thingPassword: "password2",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -167,7 +187,11 @@ class ThingIFSDKTests: SmallTestBase {
 
         expectation = self.expectation(description: "testSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000003", thingID: "th.00000003", setting: setting)
-        api3.onboard("vendor-0002", thingPassword: "password2", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api3.onboardWith(
+          vendorThingID: "vendor-0002",
+          thingPassword: "password2",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -233,7 +257,11 @@ class ThingIFSDKTests: SmallTestBase {
         
         var expectation = self.expectation(description: "testOverwriteSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
-        api1.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api1.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -249,7 +277,11 @@ class ThingIFSDKTests: SmallTestBase {
 
         expectation = self.expectation(description: "testOverwriteSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000002", thingID: "th.00000002", setting: setting)
-        api2.onboard("vendor-0002", thingPassword: "password2", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api2.onboardWith(
+          vendorThingID: "vendor-0002",
+          thingPassword: "password2",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -277,7 +309,11 @@ class ThingIFSDKTests: SmallTestBase {
         
         let expectation = self.expectation(description: "testOverwriteSavedInstanceWithOnboard")
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
-        api1.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api1.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -568,7 +604,11 @@ class ThingIFSDKTests: SmallTestBase {
         let api = ThingIFAPIBuilder(app:app, owner:owner).make()
 
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
-        api.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -611,7 +651,11 @@ class ThingIFSDKTests: SmallTestBase {
         let api = ThingIFAPIBuilder(app:app, owner:owner, tag:tagName).make()
 
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
-        api.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }
@@ -655,7 +699,11 @@ class ThingIFSDKTests: SmallTestBase {
         let api = ThingIFAPIBuilder(app:app, owner:owner).make()
 
         setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
-        api.onboard("vendor-0001", thingPassword: "password1", thingType: "smart-light", thingProperties: nil) { ( target, error) -> Void in
+        api.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions(
+            thingType: "smart-light")) { ( target, error) -> Void in
             if error != nil{
                 XCTFail("should success")
             }

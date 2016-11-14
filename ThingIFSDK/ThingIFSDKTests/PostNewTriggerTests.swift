@@ -99,7 +99,13 @@ class PostNewTriggerTests: SmallTestBase {
                 sharedMockSession.requestVerifier = requestVerifier
                 iotSession = MockSession.self
 
-                setting.api.postNewTrigger(setting.schema, schemaVersion: setting.schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+                setting.api.postNewTrigger(
+                  TriggeredCommandForm(
+                    schemaName: setting.schema,
+                    schemaVersion: setting.schemaVersion,
+                    actions: actions),
+                  predicate: predicate,
+                  completionHandler: { (trigger, error) -> Void in
                     if error == nil{
                         XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
                         XCTAssertEqual(trigger!.targetID, setting.target.typedID, tag)
@@ -218,7 +224,13 @@ class PostNewTriggerTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+            api.postNewTrigger(
+              TriggeredCommandForm(
+                schemaName: schema,
+                schemaVersion: schemaVersion,
+                actions: actions),
+              predicate: predicate,
+              completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -297,7 +309,13 @@ class PostNewTriggerTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+            api.postNewTrigger(
+              TriggeredCommandForm(
+                schemaName: schema,
+                schemaVersion: schemaVersion,
+                actions: actions),
+              predicate: predicate,
+              completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -372,7 +390,13 @@ class PostNewTriggerTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+            api.postNewTrigger(
+              TriggeredCommandForm(
+                schemaName: schema,
+                schemaVersion: schemaVersion,
+                actions: actions),
+              predicate: predicate,
+              completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
@@ -409,7 +433,13 @@ class PostNewTriggerTests: SmallTestBase {
         let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
         let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.conditionFalseToTrue)
 
-        api.postNewTrigger(schema, schemaVersion: schemaVersion, actions: actions, predicate: predicate, completionHandler: { (trigger, error) -> Void in
+        api.postNewTrigger(
+          TriggeredCommandForm(
+            schemaName: schema,
+            schemaVersion: schemaVersion,
+            actions: actions),
+          predicate: predicate,
+          completionHandler: { (trigger, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {

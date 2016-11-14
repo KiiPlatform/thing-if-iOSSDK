@@ -24,9 +24,9 @@ class PatchTriggerTests: SmallTestBase {
         let target: Target
         let issuerID: TypedID
 
-        let schemaName: String?
-        let schemaVersion: Int?
-        let actions: [Dictionary<String, Any>]?
+        let schemaName: String
+        let schemaVersion: Int
+        let actions: [Dictionary<String, Any>]
 
         let predicate: Predicate?
         let expectedStatementDict: Dictionary<String, Any>?
@@ -35,20 +35,10 @@ class PatchTriggerTests: SmallTestBase {
 
         func getExpectedCommandDict() -> Dictionary<String, Any>? {
 
-            if schemaName == nil && schemaVersion == nil && actions == nil {
-                return nil
-            }
-
             var commandDict: Dictionary<String, Any> = ["issuer":issuerID.toString()]
-            if schemaName != nil {
-                commandDict["schema"] = schemaName!
-            }
-            if schemaVersion != nil {
-                commandDict["schemaVersion"] = schemaVersion!
-            }
-            if actions != nil {
-                commandDict["actions"] = actions!
-            }
+            commandDict["schema"] = schemaName
+            commandDict["schemaVersion"] = schemaVersion
+            commandDict["actions"] = actions
             commandDict["target"] = target.typedID.toString()
             return commandDict
         }
@@ -82,13 +72,8 @@ class PatchTriggerTests: SmallTestBase {
             //
             TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.conditionFalseToTrue), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
             TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: StatePredicate(condition: Condition(clause: NotEqualsClause(field: "power", boolValue: true)), triggersWhen: TriggersWhen.conditionFalseToTrue), expectedStatementDict: ["type": "not", "clause": ["type":"eq","field":"power", "value": true]], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: StatePredicate(condition: Condition(clause: RangeClause(field: "color", upperLimitInt: 255, upperIncluded:true)), triggersWhen: TriggersWhen.conditionFalseToTrue), expectedStatementDict: ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
             TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: ScheduleOncePredicate(scheduleAt: Date(timeIntervalSinceNow: 1000)), expectedStatementDict: ["type":"eq","field":"color", "value": 0], expectedTriggersWhenString: "CONDITION_FALSE_TO_TRUE", success: true),
             TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: nil, schemaVersion: schemaVersion, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: nil, actions: expectedActions, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
-            TestCase(target: target, issuerID: owner.typedID, schemaName: schema, schemaVersion: schemaVersion, actions: nil, predicate: nil, expectedStatementDict: nil, expectedTriggersWhenString: nil, success: false),
-            
         ]
         for (index,testCase) in testsCases.enumerated() {
             patchTrigger("testPatchTrigger_\(index)", testcase: testCase)
@@ -167,7 +152,14 @@ class PatchTriggerTests: SmallTestBase {
 
 
         api._target = setting.target
-        api.patchTrigger(expectedTriggerID, schemaName: testcase.schemaName, schemaVersion: testcase.schemaVersion, actions: testcase.actions, predicate: testcase.predicate, completionHandler: { (trigger, error) -> Void in
+        api.patchTrigger(
+          expectedTriggerID,
+          triggeredCommandForm: TriggeredCommandForm(
+            schemaName: testcase.schemaName,
+            schemaVersion: testcase.schemaVersion,
+            actions: testcase.actions),
+          predicate: testcase.predicate,
+          completionHandler: { (trigger, error) -> Void in
             if testcase.success {
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
@@ -207,9 +199,11 @@ class PatchTriggerTests: SmallTestBase {
         let api = setting.api
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let predicate = StatePredicate(condition: Condition(clause: EqualsClause(field: "color", intValue: 0)), triggersWhen: TriggersWhen.conditionFalseToTrue)
 
-        api.patchTrigger(expectedTriggerID, schemaName: nil, schemaVersion: nil, actions: nil, predicate: predicate) { (trigger, error) -> Void in
+        api.patchTrigger(
+          expectedTriggerID,
+          triggeredCommandForm: nil,
+          predicate: nil) { (trigger, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
@@ -217,7 +211,38 @@ class PatchTriggerTests: SmallTestBase {
                 case .targetNotAvailable:
                     break
                 default:
-                    XCTFail("should be TARGET_NOT_AVAILABLE")
+                    XCTFail("should be targetNotAvailable")
+                }
+            }
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    func testPatchTrigger_unsupportedError() {
+        let expectation : XCTestExpectation! = self.expectation(description: "testPatchTrigger_unsupportedError")
+        let setting = TestSetting()
+        let api = setting.api
+
+        api._target = setting.target
+
+        api.patchTrigger(
+          "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
+          triggeredCommandForm: nil,
+          predicate: nil) { (trigger, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                switch error! {
+                case .unsupportedError:
+                    break
+                default:
+                    XCTFail("should be unsupportedError")
                 }
             }
             expectation.fulfill()
