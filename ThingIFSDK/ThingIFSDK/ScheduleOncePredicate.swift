@@ -11,10 +11,8 @@ open class ScheduleOncePredicate: NSObject,Predicate {
     /** Specified schedule. */
     open let scheduleAt: Date
 
-    open func getEventSource() -> EventSource {
-        return EventSource.scheduleOnce
-    }
-    
+    open let eventSource: EventSource = EventSource.scheduleOnce
+
     /** Instantiate new ScheduleOncePredicate.
 
      -Parameter scheduleAt: Specify execution schedule. It must be future date.

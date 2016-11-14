@@ -13,9 +13,8 @@ open class SchedulePredicate: NSObject,Predicate {
     /** Specified schedule. (cron tab format) */
     open let schedule: String
 
-    open func getEventSource() -> EventSource {
-        return EventSource.schedule
-    }
+    open let eventSource: EventSource = EventSource.schedule
+
     /** Instantiate new SchedulePredicate.
 
      -Parameter schedule: Specify schedule. (cron tab format)

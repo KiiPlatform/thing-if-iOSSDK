@@ -13,9 +13,8 @@ open class StatePredicate: NSObject,Predicate {
     open let triggersWhen: TriggersWhen!
     open let condition: Condition!
 
-    open func getEventSource() -> EventSource {
-        return EventSource.states
-    }
+    open let eventSource: EventSource = EventSource.states
+
     /** Initialize StatePredicate with Condition and TriggersWhen
 
      - Parameter condition: Condition of the Trigger.
