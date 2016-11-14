@@ -60,6 +60,6 @@ class GatewayAPINSCodingTests: GatewayAPITestBase {
         XCTAssertEqual(gatewayAPI.app.siteName, decode.app.siteName);
         XCTAssertEqual(gatewayAPI.app.baseURL, decode.app.baseURL);
         XCTAssertEqual(gatewayAPI.gatewayAddress, decode.gatewayAddress);
-        XCTAssertEqual(gatewayAPI.getAccessToken(), decode.getAccessToken());
+        XCTAssertEqual(gatewayAPI.accessToken, decode.accessToken);
     }
 }

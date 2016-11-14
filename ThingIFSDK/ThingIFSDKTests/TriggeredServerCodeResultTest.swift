@@ -57,90 +57,90 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\"}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        XCTAssertNil(result!.getReturnedValue())
+        XCTAssertNil(result!.returnedValue)
         
         // null
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":null}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        XCTAssertTrue(NSNull().isEqual(result!.getReturnedValue()))
+        XCTAssertTrue(NSNull().isEqual(result!.returnedValue))
         
         // String
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":\"1234\"}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        XCTAssertEqual("1234", result?.getReturnedValueAsString())
-        XCTAssertNil(result?.getReturnedValueAsNSNumber())
-        XCTAssertNil(result?.getReturnedValueAsBool())
-        XCTAssertNil(result?.getReturnedValueAsArray())
-        XCTAssertNil(result?.getReturnedValueAsDictionary())
+        XCTAssertEqual("1234", result?.returnedValueAsString)
+        XCTAssertNil(result?.returnedValueAsNSNumber)
+        XCTAssertNil(result?.returnedValueAsBool)
+        XCTAssertNil(result?.returnedValueAsArray)
+        XCTAssertNil(result?.returnedValueAsDictionary)
         
         // Bool
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":true}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        XCTAssertTrue(result!.getReturnedValueAsBool()!)
-        XCTAssertEqual("1", result?.getReturnedValueAsString())
-        XCTAssertEqual(1, result?.getReturnedValueAsNSNumber())
-        XCTAssertNil(result?.getReturnedValueAsArray())
-        XCTAssertNil(result?.getReturnedValueAsDictionary())
+        XCTAssertTrue(result!.returnedValueAsBool!)
+        XCTAssertEqual("1", result?.returnedValueAsString)
+        XCTAssertEqual(1, result?.returnedValueAsNSNumber)
+        XCTAssertNil(result?.returnedValueAsArray)
+        XCTAssertNil(result?.returnedValueAsDictionary)
         
         // Number int
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":1234}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        XCTAssertEqual(1234, result!.getReturnedValueAsNSNumber()!)
-        XCTAssertEqual("1234", result?.getReturnedValueAsString())
-        XCTAssertTrue(result!.getReturnedValueAsBool()!)
-        XCTAssertNil(result?.getReturnedValueAsArray())
-        XCTAssertNil(result?.getReturnedValueAsDictionary())
+        XCTAssertEqual(1234, result!.returnedValueAsNSNumber!)
+        XCTAssertEqual("1234", result?.returnedValueAsString)
+        XCTAssertTrue(result!.returnedValueAsBool!)
+        XCTAssertNil(result?.returnedValueAsArray)
+        XCTAssertNil(result?.returnedValueAsDictionary)
         
         // Number long
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":145553117492300}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        XCTAssertEqual(145553117492300, result!.getReturnedValueAsNSNumber()!)
-        XCTAssertEqual("145553117492300", result?.getReturnedValueAsString())
-        XCTAssertTrue(result!.getReturnedValueAsBool()!)
-        XCTAssertNil(result?.getReturnedValueAsArray())
-        XCTAssertNil(result?.getReturnedValueAsDictionary())
+        XCTAssertEqual(145553117492300, result!.returnedValueAsNSNumber!)
+        XCTAssertEqual("145553117492300", result?.returnedValueAsString)
+        XCTAssertTrue(result!.returnedValueAsBool!)
+        XCTAssertNil(result?.returnedValueAsArray)
+        XCTAssertNil(result?.returnedValueAsDictionary)
 
         // Number double
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":1234.567}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        XCTAssertEqual(1234.567, result!.getReturnedValueAsNSNumber()!)
-        XCTAssertEqual("1234.567", result?.getReturnedValueAsString())
-        XCTAssertTrue(result!.getReturnedValueAsBool()!)
-        XCTAssertNil(result?.getReturnedValueAsArray())
-        XCTAssertNil(result?.getReturnedValueAsDictionary())
+        XCTAssertEqual(1234.567, result!.returnedValueAsNSNumber!)
+        XCTAssertEqual("1234.567", result?.returnedValueAsString)
+        XCTAssertTrue(result!.returnedValueAsBool!)
+        XCTAssertNil(result?.returnedValueAsArray)
+        XCTAssertNil(result?.returnedValueAsDictionary)
         
         // Array
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":[123, true, \"456\"]}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        let array = result!.getReturnedValueAsArray()!
+        let array = result!.returnedValueAsArray!
         XCTAssertEqual(123, array[0] as? NSNumber)
         XCTAssertTrue(array[0] as! Bool)
         XCTAssertEqual("456", array[2] as? String)
-        XCTAssertNil(result?.getReturnedValueAsString())
-        XCTAssertNil(result?.getReturnedValueAsNSNumber())
-        XCTAssertNil(result?.getReturnedValueAsBool())
-        XCTAssertNil(result?.getReturnedValueAsDictionary())
+        XCTAssertNil(result?.returnedValueAsString)
+        XCTAssertNil(result?.returnedValueAsNSNumber)
+        XCTAssertNil(result?.returnedValueAsBool)
+        XCTAssertNil(result?.returnedValueAsDictionary)
         
         // Dictionary
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":{\"f1\":\"aaa\",\"f2\":false,\"f3\":1000,\"f4\":100.05}}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        let dict = result!.getReturnedValueAsDictionary()!
+        let dict = result!.returnedValueAsDictionary!
         XCTAssertEqual("aaa", dict["f1"] as? String)
         XCTAssertFalse(dict["f2"] as! Bool)
         XCTAssertEqual(1000, dict["f3"] as? NSNumber)
         XCTAssertEqual(100.05, dict["f4"] as? NSNumber)
-        XCTAssertNil(result?.getReturnedValueAsString())
-        XCTAssertNil(result?.getReturnedValueAsNSNumber())
-        XCTAssertNil(result?.getReturnedValueAsBool())
-        XCTAssertNil(result?.getReturnedValueAsArray())
+        XCTAssertNil(result?.returnedValueAsString)
+        XCTAssertNil(result?.returnedValueAsNSNumber)
+        XCTAssertNil(result?.returnedValueAsBool)
+        XCTAssertNil(result?.returnedValueAsArray)
     }
     func testIsEqual() {
         let testCases: [[Any]] = [

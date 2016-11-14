@@ -58,7 +58,7 @@ class GatewayAPIStoredInstanceTests: GatewayAPITestBase {
             XCTAssertEqual(api.app.appID, restoreApi!.app.appID)
             XCTAssertEqual(api.app.appKey, restoreApi!.app.appKey)
             XCTAssertEqual(api.gatewayAddress, restoreApi!.gatewayAddress)
-            XCTAssertEqual(api.getAccessToken(), restoreApi!.getAccessToken())
+            XCTAssertEqual(api.accessToken, restoreApi!.accessToken)
         } catch (_) {
             XCTFail("should not throw error")
         }
@@ -103,7 +103,7 @@ class GatewayAPIStoredInstanceTests: GatewayAPITestBase {
             XCTAssertEqual(api.app.appID, restoreApi!.app.appID)
             XCTAssertEqual(api.app.appKey, restoreApi!.app.appKey)
             XCTAssertEqual(api.gatewayAddress, restoreApi!.gatewayAddress)
-            XCTAssertEqual(api.getAccessToken(), restoreApi!.getAccessToken())
+            XCTAssertEqual(api.accessToken, restoreApi!.accessToken)
         } catch (_) {
             XCTFail("should not throw error")
         }
@@ -256,7 +256,7 @@ class GatewayAPIStoredInstanceTests: GatewayAPITestBase {
             XCTAssertEqual(api.app.appID, restoreApi!.app.appID)
             XCTAssertEqual(api.app.appKey, restoreApi!.app.appKey)
             XCTAssertEqual(api.gatewayAddress, restoreApi!.gatewayAddress)
-            XCTAssertEqual(api.getAccessToken(), restoreApi!.getAccessToken())
+            XCTAssertEqual(api.accessToken, restoreApi!.accessToken)
         } catch (_) {
             XCTFail("should not throw error")
         }
