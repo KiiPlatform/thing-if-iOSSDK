@@ -76,9 +76,9 @@ class UpdateVendorThingIDTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.updateVendorThingID(
+        setting.api.update(
             newVendorThingID,
-            newPassword: newPassword,
+            password: newPassword,
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNil(error)
                 expectation.fulfill()
@@ -147,9 +147,9 @@ class UpdateVendorThingIDTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.updateVendorThingID(
+        setting.api.update(
             newVendorThingID,
-            newPassword: newPassword,
+            password: newPassword,
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
@@ -224,9 +224,9 @@ class UpdateVendorThingIDTests: SmallTestBase {
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        setting.api.updateVendorThingID(
+        setting.api.update(
             newVendorThingID,
-            newPassword: newPassword,
+            password: newPassword,
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
@@ -257,9 +257,9 @@ class UpdateVendorThingIDTests: SmallTestBase {
         // perform onboarding
         api._target = target
 
-        setting.api.updateVendorThingID(
+        setting.api.update(
             newVendorThingID,
-            newPassword: newPassword,
+            password: newPassword,
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
@@ -290,9 +290,9 @@ class UpdateVendorThingIDTests: SmallTestBase {
         // perform onboarding
         api._target = target
 
-        setting.api.updateVendorThingID(
+        setting.api.update(
             newVendorThingID,
-            newPassword: newPassword,
+            password: newPassword,
             completionHandler: { (error:ThingIFError?) -> Void in
                 XCTAssertNotNil(error)
                 switch error! {
