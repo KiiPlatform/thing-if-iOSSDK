@@ -124,7 +124,7 @@ open class Trigger: NSObject, NSCoding {
     - Parameter predicate: Predicate instance
     - Parameter command: Command instance
     */
-    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, Any>? = nil) {
+    internal init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, Any>? = nil) {
         self.triggerID = triggerID
         self.targetID = targetID
         self.enabled = enabled
@@ -143,7 +143,7 @@ open class Trigger: NSObject, NSCoding {
      - Parameter predicate: Predicate instance
      - Parameter serverCode: ServerCode instance
      */
-    public init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, serverCode: ServerCode, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, Any>? = nil) {
+    internal init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, serverCode: ServerCode, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, Any>? = nil) {
         self.triggerID = triggerID
         self.targetID = targetID
         self.enabled = enabled

@@ -11,7 +11,7 @@ open class GatewayInformation {
 
     open let vendorThingID: String
 
-    init(vendorThingID: String)
+    internal init(vendorThingID: String)
     {
         self.vendorThingID = vendorThingID
     }

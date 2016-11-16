@@ -82,7 +82,7 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
      - Parameter endpoint: The endpoint used in the server code invocation
      - Parameter error: Error object of the invocation if any
      */
-    public init(succeeded: Bool, returnedValue: Any?, executedAt: Date, endpoint: String, error: ServerError?) {
+    internal init(succeeded: Bool, returnedValue: Any?, executedAt: Date, endpoint: String, error: ServerError?) {
         self.succeeded = succeeded
         self.returnedValue = returnedValue
         self.executedAt = executedAt
