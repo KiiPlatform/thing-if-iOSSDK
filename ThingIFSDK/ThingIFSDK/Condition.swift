@@ -32,8 +32,8 @@ open class Condition : NSObject, NSCoding {
 
      - Returns: a NSDictionary instance
      */
-    open func toNSDictionary() -> NSDictionary {
-        return self.clause.toNSDictionary()
+    open func makeDictionary() -> NSDictionary {
+        return self.clause.makeDictionary()
     }
 
     class func conditionWithNSDict(_ conditionDict: NSDictionary) -> Condition?{

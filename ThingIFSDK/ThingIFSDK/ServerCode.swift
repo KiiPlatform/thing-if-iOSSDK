@@ -47,7 +47,7 @@ open class ServerCode : NSObject, NSCoding {
         self.parameters = parameters
     }
 
-    func toNSDictionary() -> NSDictionary {
+    func makeDictionary() -> NSDictionary {
         let dict = NSMutableDictionary(dictionary: ["endpoint": self.endpoint])
         if self.executorAccessToken != nil {
             dict["executorAccessToken"] = self.executorAccessToken

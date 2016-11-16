@@ -11,7 +11,7 @@ public protocol Clause: NSCoding {
 
     - Returns: a NSDictionary instance.
     */
-    func toNSDictionary() -> NSDictionary
+    func makeDictionary() -> NSDictionary
 }
 
 /** Class represents Equals clause. */
@@ -68,7 +68,7 @@ open class EqualsClause: NSObject, Clause {
 
     - Returns: a NSDictionary instance.
     */
-    open func toNSDictionary() -> NSDictionary {
+    open func makeDictionary() -> NSDictionary {
         return NSDictionary(dictionary: nsdict)
     }
 }
@@ -120,8 +120,8 @@ open class NotEqualsClause: NSObject, Clause {
     
     - Returns: a NSDictionary instance.
     */
-    open func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["type": "not", "clause": equalClause.toNSDictionary()])
+    open func makeDictionary() -> NSDictionary {
+        return NSDictionary(dictionary: ["type": "not", "clause": equalClause.makeDictionary()])
     }
 }
 
@@ -235,7 +235,7 @@ open class RangeClause: NSObject, Clause {
     
     - Returns: a NSDictionary instance.
     */
-    open func toNSDictionary() -> NSDictionary {
+    open func makeDictionary() -> NSDictionary {
         return NSDictionary(dictionary: nsdict)
     }
 }
@@ -282,10 +282,10 @@ open class AndClause: NSObject, Clause {
     
     - Returns: a NSDictionary instance.
     */
-    open func toNSDictionary() -> NSDictionary {
+    open func makeDictionary() -> NSDictionary {
         var clauseDictArray = [NSDictionary]()
         for clause in self.clauses {
-            clauseDictArray.append(clause.toNSDictionary())
+            clauseDictArray.append(clause.makeDictionary())
         }
 
         return NSDictionary(dictionary: ["type": "and", "clauses": clauseDictArray])
@@ -333,10 +333,10 @@ open class OrClause: NSObject, Clause {
     
     - Returns: a NSDictionary instance.
     */
-    open func toNSDictionary() -> NSDictionary {
+    open func makeDictionary() -> NSDictionary {
         var clauseDictArray = [NSDictionary]()
         for clause in self.clauses {
-            clauseDictArray.append(clause.toNSDictionary())
+            clauseDictArray.append(clause.makeDictionary())
         }
         return NSDictionary(dictionary: ["type": "or", "clauses": clauseDictArray])
     }

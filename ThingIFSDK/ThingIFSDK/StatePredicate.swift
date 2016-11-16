@@ -40,8 +40,8 @@ open class StatePredicate: NSObject,Predicate {
 
      - Returns: a NSDictionary instance
      */
-    open func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["eventSource": EventSource.states.rawValue, "triggersWhen": self.triggersWhen.rawValue, "condition": self.condition.toNSDictionary()])
+    open func makeDictionary() -> NSDictionary {
+        return NSDictionary(dictionary: ["eventSource": EventSource.states.rawValue, "triggersWhen": self.triggersWhen.rawValue, "condition": self.condition.makeDictionary()])
     }
 
     class func statePredicateWithNSDict(_ predicateDict: NSDictionary) -> StatePredicate?{

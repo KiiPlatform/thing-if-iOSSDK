@@ -36,7 +36,7 @@ extension ThingIFAPI {
 
         // generate body
         var requestBodyDict: Dictionary<String, Any> = [
-          "predicate": predicate.toNSDictionary(),
+          "predicate": predicate.makeDictionary(),
           "command": commandDict,
           "triggersWhat": TriggersWhat.command.rawValue]
         requestBodyDict["title"] = options?.title
@@ -103,8 +103,8 @@ extension ThingIFAPI {
         
         // generate body
         var requestBodyDict: Dictionary<String, Any> = [
-          "predicate": predicate.toNSDictionary(),
-          "serverCode": serverCode.toNSDictionary(),
+          "predicate": predicate.makeDictionary(),
+          "serverCode": serverCode.makeDictionary(),
           "triggersWhat": TriggersWhat.serverCode.rawValue]
         requestBodyDict["title"] = options?.title
         requestBodyDict["description"] = options?.triggerDescription
@@ -173,7 +173,7 @@ extension ThingIFAPI {
 
         // generate predicate
         if predicate != nil {
-            requestBodyDict["predicate"] = predicate!.toNSDictionary()
+            requestBodyDict["predicate"] = predicate!.makeDictionary()
         }
 
         // generate command
@@ -236,8 +236,8 @@ extension ThingIFAPI {
         var requestBodyDict: Dictionary<String, Any> = [
           "triggersWhat" : TriggersWhat.serverCode.rawValue
         ]
-        requestBodyDict["predicate"] = predicate?.toNSDictionary()
-        requestBodyDict["serverCode"] = serverCode?.toNSDictionary()
+        requestBodyDict["predicate"] = predicate?.makeDictionary()
+        requestBodyDict["serverCode"] = serverCode?.makeDictionary()
         requestBodyDict["title"] = options?.title
         requestBodyDict["description"] = options?.triggerDescription
         requestBodyDict["metadata"] = options?.metadata

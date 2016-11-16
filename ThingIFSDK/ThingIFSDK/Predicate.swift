@@ -16,7 +16,7 @@ public protocol Predicate :  NSCoding {
 
      - Returns: a NSDictionary instance
      */
-    func toNSDictionary() -> NSDictionary
+    func makeDictionary() -> NSDictionary
 
     /** Event source of this predicate.
 
