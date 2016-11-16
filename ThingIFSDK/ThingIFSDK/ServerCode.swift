@@ -47,17 +47,11 @@ open class ServerCode : NSObject, NSCoding {
         self.parameters = parameters
     }
 
-    func makeDictionary() -> NSDictionary {
-        let dict = NSMutableDictionary(dictionary: ["endpoint": self.endpoint])
-        if self.executorAccessToken != nil {
-            dict["executorAccessToken"] = self.executorAccessToken
-        }
-        if self.targetAppID != nil {
-            dict["targetAppID"] = self.targetAppID
-        }
-        if self.parameters != nil {
-            dict["parameters"] = self.parameters
-        }
+    func makeDictionary() -> [ String : Any ] {
+        var dict: [ String : Any ] = ["endpoint": self.endpoint]
+        dict["executorAccessToken"] = self.executorAccessToken
+        dict["targetAppID"] = self.targetAppID
+        dict["parameters"] = self.parameters
         return dict
     }
 

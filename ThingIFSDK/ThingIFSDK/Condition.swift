@@ -32,7 +32,7 @@ open class Condition : NSObject, NSCoding {
 
      - Returns: a NSDictionary instance
      */
-    open func makeDictionary() -> NSDictionary {
+    open func makeDictionary() -> [ String : Any ] {
         return self.clause.makeDictionary()
     }
 

@@ -11,15 +11,15 @@ public protocol Clause: NSCoding {
 
     - Returns: a NSDictionary instance.
     */
-    func makeDictionary() -> NSDictionary
+    func makeDictionary() -> [ String : Any ]
 }
 
 /** Class represents Equals clause. */
 open class EqualsClause: NSObject, Clause {
-    private var nsdict = NSMutableDictionary()
+    private var nsdict: [ String : Any ] = [ : ]
 
     override init() {
-        nsdict.setObject("eq", forKey: "type" as NSCopying)
+        self.nsdict["type"] = "eq"
     }
 
     /** Initialize with String left hand side value.
@@ -29,8 +29,8 @@ open class EqualsClause: NSObject, Clause {
      */
     public convenience init(field:String, stringValue:String) {
         self.init()
-        nsdict.setObject(field, forKey: "field" as NSCopying)
-        nsdict.setObject(stringValue, forKey: "value" as NSCopying)
+        self.nsdict["field"] = field
+        self.nsdict["value"] = stringValue
     }
 
     /** Initialize with Int left hand side value.
@@ -40,8 +40,8 @@ open class EqualsClause: NSObject, Clause {
     */
     public convenience init(field:String, intValue:Int) {
         self.init()
-        nsdict.setObject(field, forKey: "field" as NSCopying)
-        nsdict.setObject(NSNumber(value: intValue as Int), forKey: "value" as NSCopying)
+        self.nsdict["field"] = field
+        self.nsdict["value"] = NSNumber(value: intValue as Int)
     }
 
     /** Initialize with Bool left hand side value.
@@ -51,25 +51,25 @@ open class EqualsClause: NSObject, Clause {
     */
     public convenience init(field:String, boolValue:Bool) {
         self.init()
-        nsdict.setObject(field, forKey: "field" as NSCopying)
-        nsdict.setObject(NSNumber(value: boolValue as Bool), forKey: "value" as NSCopying)
+        self.nsdict["field"] = field
+        self.nsdict["value"] = NSNumber(value: boolValue as Bool)
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
         self.init();
-        nsdict.addEntries(from: aDecoder.decodeObject() as! [AnyHashable: Any])
+        self.nsdict = aDecoder.decodeObject() as! [ String: Any ]
     }
 
     open func encode(with aCoder: NSCoder) {
         aCoder.encodeRootObject(self.nsdict)
     }
 
-    /** Get Clause as NSDictionary instance
+    /** Get Clause as [ String : Any ] instance
 
-    - Returns: a NSDictionary instance.
+    - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: nsdict)
+    open func makeDictionary() -> [ String : Any ] {
+        return self.nsdict as [ String : Any ]
     }
 }
 
@@ -116,18 +116,18 @@ open class NotEqualsClause: NSObject, Clause {
         aCoder.encodeRootObject(equalClause)
     }
 
-    /** Get Clause as NSDictionary instance
+    /** Get Clause as [ String : Any ] instance
     
-    - Returns: a NSDictionary instance.
+    - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["type": "not", "clause": equalClause.makeDictionary()])
+    open func makeDictionary() -> [ String : Any ] {
+        return ["type": "not", "clause": equalClause.makeDictionary()] as [ String : Any ]
     }
 }
 
 /** Class represents Range clause. */
 open class RangeClause: NSObject, Clause {
-    private var nsdict: NSMutableDictionary = ["type": "range"]
+    private var nsdict:[ String : Any ] = ["type": "range"]
 
     /** Initialize with Int left hand side value.
     this works as >(greater than) if lower included is false and as >=(greater than or equals) if lower included is true.
@@ -137,9 +137,9 @@ open class RangeClause: NSObject, Clause {
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
     public init(field:String, lowerLimitInt:Int, lowerIncluded: Bool) {
-        nsdict.setObject(lowerIncluded, forKey: "lowerIncluded" as NSCopying)
-        nsdict.setObject(field, forKey: "field" as NSCopying)
-        nsdict.setObject(NSNumber(value: lowerLimitInt as Int), forKey: "lowerLimit" as NSCopying)
+        self.nsdict["lowerIncluded"] = lowerIncluded
+        self.nsdict["field"] = field
+        self.nsdict["lowerLimit"] = NSNumber(value: lowerLimitInt as Int)
     }
 
     /** Initialize with Double left hand side value.
@@ -150,9 +150,9 @@ open class RangeClause: NSObject, Clause {
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
     public init(field:String, lowerLimitDouble:Double, lowerIncluded: Bool) {
-        nsdict.setObject(lowerIncluded, forKey: "lowerIncluded" as NSCopying)
-        nsdict.setObject(field, forKey: "field" as NSCopying)
-        nsdict.setObject(NSNumber(value: lowerLimitDouble as Double), forKey: "lowerLimit" as NSCopying)
+        self.nsdict["lowerIncluded"] = lowerIncluded
+        self.nsdict["field"] = field
+        self.nsdict["lowerLimit"] = NSNumber(value: lowerLimitDouble as Double)
     }
 
     /** Initialize with Int left hand side value.
@@ -163,9 +163,9 @@ open class RangeClause: NSObject, Clause {
     - Parameter upperIncluded: True provided to include upperLimit
     */
     public init(field:String, upperLimitInt:Int, upperIncluded: Bool) {
-        nsdict.setObject(upperIncluded, forKey: "upperIncluded" as NSCopying)
-        nsdict.setObject(field, forKey: "field" as NSCopying)
-        nsdict.setObject(NSNumber(value: upperLimitInt as Int), forKey: "upperLimit" as NSCopying)
+        self.nsdict["upperIncluded"] = upperIncluded
+        self.nsdict["field"] = field
+        self.nsdict["upperLimit"] = NSNumber(value: upperLimitInt as Int)
     }
 
     /** Initialize with Double left hand side value.
@@ -176,9 +176,9 @@ open class RangeClause: NSObject, Clause {
     - Parameter upperIncluded: True provided to include upperLimit
     */
     public init(field:String, upperLimitDouble:Double, upperIncluded: Bool) {
-        nsdict.setObject(upperIncluded, forKey: "upperIncluded" as NSCopying)
-        nsdict.setObject(field, forKey: "field" as NSCopying)
-        nsdict.setObject(NSNumber(value: upperLimitDouble as Double), forKey: "upperLimit" as NSCopying)
+        self.nsdict["upperIncluded"] = upperIncluded
+        self.nsdict["field"] = field
+        self.nsdict["upperLimit"] = NSNumber(value: upperLimitDouble as Double)
     }
 
     /** Initialize with Range.
@@ -195,11 +195,11 @@ open class RangeClause: NSObject, Clause {
     - Parameter upperIncluded: True provided to include upperLimit
     */
     public init(field:String, lowerLimitInt: Int, lowerIncluded: Bool, upperLimit: Int, upperIncluded: Bool) {
-        nsdict.setObject(lowerIncluded, forKey: "lowerIncluded" as NSCopying)
-        nsdict.setObject(field, forKey: "field" as NSCopying)
-        nsdict.setObject(NSNumber(value: lowerLimitInt as Int), forKey: "lowerLimit" as NSCopying)
-        nsdict.setObject(upperIncluded, forKey: "upperIncluded" as NSCopying)
-        nsdict.setObject(NSNumber(value: upperLimit as Int), forKey: "upperLimit" as NSCopying)
+        self.nsdict["lowerIncluded"] = lowerIncluded
+        self.nsdict["field"] = field
+        self.nsdict["lowerLimit"] = NSNumber(value: lowerLimitInt as Int)
+        self.nsdict["upperIncluded"] = upperIncluded
+        self.nsdict["upperLimit"] = NSNumber(value: upperLimit as Int)
     }
 
     /** Initialize with Range.
@@ -216,27 +216,27 @@ open class RangeClause: NSObject, Clause {
     - Parameter upperIncluded: True provided to include upperLimit
     */
     public init(field:String, lowerLimitDouble: Double, lowerIncluded: Bool, upperLimit: Double, upperIncluded: Bool) {
-        nsdict.setObject(lowerIncluded, forKey: "lowerIncluded" as NSCopying)
-        nsdict.setObject(field, forKey: "field" as NSCopying)
-        nsdict.setObject(NSNumber(value: lowerLimitDouble as Double), forKey: "lowerLimit" as NSCopying)
-        nsdict.setObject(upperIncluded, forKey: "upperIncluded" as NSCopying)
-        nsdict.setObject(NSNumber(value: upperLimit as Double), forKey: "upperLimit" as NSCopying)
+        self.nsdict["lowerIncluded"] = lowerIncluded
+        self.nsdict["field"] = field
+        self.nsdict["lowerLimit"] = NSNumber(value: lowerLimitDouble as Double)
+        self.nsdict["upperIncluded"] = upperIncluded
+        self.nsdict["upperLimit"] = NSNumber(value: upperLimit as Double)
     }
 
     public required init(coder aDecoder: NSCoder) {
-        nsdict.addEntries(from: aDecoder.decodeObject() as! [AnyHashable: Any])
+        self.nsdict = aDecoder.decodeObject() as! [ String: Any ]
     }
 
     open func encode(with aCoder: NSCoder) {
         aCoder.encodeRootObject(nsdict)
     }
 
-    /** Get Clause as NSDictionary instance
+    /** Get Clause as [ String : Any ] instance
     
-    - Returns: a NSDictionary instance.
+    - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: nsdict)
+    open func makeDictionary() -> [ String : Any ] {
+        return self.nsdict as [ String : Any ]
     }
 }
 
@@ -278,17 +278,17 @@ open class AndClause: NSObject, Clause {
         self.clauses.append(clause)
     }
 
-    /** Get Clause as NSDictionary instance
+    /** Get Clause as [ String : Any ] instance
     
-    - Returns: a NSDictionary instance.
+    - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> NSDictionary {
-        var clauseDictArray = [NSDictionary]()
+    open func makeDictionary() -> [ String : Any ] {
+        var clauseDictArray = [[ String : Any ]]()
         for clause in self.clauses {
             clauseDictArray.append(clause.makeDictionary())
         }
 
-        return NSDictionary(dictionary: ["type": "and", "clauses": clauseDictArray])
+        return  ["type": "and", "clauses": clauseDictArray] as [ String : Any ]
     }
 }
 /** Class represents Or clause. */
@@ -329,15 +329,15 @@ open class OrClause: NSObject, Clause {
         self.clauses.append(clause)
     }
 
-    /** Get Clause as NSDictionary instance
+    /** Get Clause as [ String : Any ] instance
     
-    - Returns: a NSDictionary instance.
+    - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> NSDictionary {
-        var clauseDictArray = [NSDictionary]()
+    open func makeDictionary() -> [ String : Any ] {
+        var clauseDictArray = [[ String : Any ]]()
         for clause in self.clauses {
             clauseDictArray.append(clause.makeDictionary())
         }
-        return NSDictionary(dictionary: ["type": "or", "clauses": clauseDictArray])
+        return ["type": "or", "clauses": clauseDictArray] as [ String : Any ]
     }
 }

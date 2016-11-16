@@ -34,12 +34,13 @@ open class ScheduleOncePredicate: NSObject,Predicate {
 
      - Returns: Json object as an instance of NSDictionary
      */
-    open func makeDictionary() -> NSDictionary {
+    open func makeDictionary() -> [ String : Any ] {
 
         let dateNumber = NSNumber(value: Int64(self.scheduleAt.timeIntervalSince1970 * 1000) as Int64)
 
-        return NSDictionary(dictionary: ["eventSource": EventSource.scheduleOnce.rawValue,
-            "scheduleAt":dateNumber])
+        return [
+          "eventSource": EventSource.scheduleOnce.rawValue,
+          "scheduleAt":dateNumber] as [ String : Any ]
 
     }
 }
