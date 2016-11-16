@@ -23,7 +23,16 @@ class TriggerNSCodingTests: SmallTestBase {
         let triggerID = "dummyID";
         let enabled = true;
         let predicate = SchedulePredicate(schedule: "dummySchedule");
-        let command = Command();
+        let command = Command(commandID: "commandID",
+                              targetID: TypedID(type: "thing",
+                                                id: "id"),
+                              issuerID: TypedID(type: "user",
+                                                id: "id"),
+                              schemaName: "schema",
+                              schemaVersion: 1,
+                              actions: [[ "key" : "value" ]],
+                              actionResults: [[ "key" : "value" ]],
+                              commandState: CommandState.sending)
         let title = "dummyTitle"
         let description = "dummyDescription"
         let key = "dummyKey"
