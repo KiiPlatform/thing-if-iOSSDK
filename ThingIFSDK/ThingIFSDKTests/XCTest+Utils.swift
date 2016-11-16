@@ -36,6 +36,15 @@ extension XCTestCase {
                       error_message)
     }
     
+    func verifyDict2(_ expectedDict:Dictionary<String, Any>?, _ actualDict: Dictionary<String, Any>?, _ errorMessage: String? = nil){
+        if expectedDict == nil && actualDict == nil {
+            return
+        }
+        verifyDict(expectedDict!,
+                   actualDict: actualDict,
+                   errorMessage: errorMessage)
+    }
+
     func verifyDict(_ expectedDict:Dictionary<String, Any>, actualDict: Dictionary<String, Any>?, errorMessage: String? = nil){
         guard let actualDict2 = actualDict else {
             XCTFail("actualDict must not be nil")

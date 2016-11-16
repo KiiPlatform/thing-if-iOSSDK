@@ -128,12 +128,10 @@ class PostNewTriggerWithTriggerOptionsTests: SmallTestBase {
                   XCTAssertEqual(actual.targetID, setting.target.typedID,
                                  error_message)
                   XCTAssertEqual(actual.enabled, Bool(true), error_message)
-                  XCTAssertEqual(actual.predicate.toNSDictionary(),
-                                 NSDictionary(
-                                   dictionary:
-                                     [ "eventSource" : "SCHEDULE",
-                                       "schedule" : "1 * * * *" ]),
-                                 error_message)
+                  self.verifyDict2(actual.predicate.makeDictionary(),
+                                   [ "eventSource" : "SCHEDULE",
+                                     "schedule" : "1 * * * *" ],
+                                   error_message)
 
                   let actualcmd = actual.command!
                   XCTAssertEqual(actualcmd.commandID, "", error_message)

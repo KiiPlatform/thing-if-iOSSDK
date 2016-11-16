@@ -40,8 +40,8 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
 
 
-        let expectedPredicateDict = predicate.toNSDictionary()
-        let expectedServerCodeDict = serverCode.toNSDictionary()
+        let expectedPredicateDict = predicate.makeDictionary()
+        let expectedServerCodeDict = serverCode.makeDictionary()
         do {
             // mock response
             let dict = ["triggerID": expectedTriggerID]
@@ -77,7 +77,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
                     XCTAssertEqual(trigger!.enabled, true, tag)
-                    self.verifyNsDict(trigger!.predicate.toNSDictionary(), actualDict: expectedPredicateDict)
+                    self.verifyDict(trigger!.predicate.makeDictionary(), actualDict: expectedPredicateDict)
                     XCTAssertEqual(trigger!.serverCode!.endpoint, expectedEndpoint, tag)
                     XCTAssertEqual(trigger!.serverCode!.executorAccessToken, expectedExecutorAccessToken, tag)
                     XCTAssertEqual(trigger!.serverCode!.targetAppID, expectedTargetAppID, tag)
@@ -125,8 +125,8 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
         
         let serverCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
         
-        let expectedPredicateDict = predicate.toNSDictionary()
-        let expectedServerCodeDict = serverCode.toNSDictionary()
+        let expectedPredicateDict = predicate.makeDictionary()
+        let expectedServerCodeDict = serverCode.makeDictionary()
         do {
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",

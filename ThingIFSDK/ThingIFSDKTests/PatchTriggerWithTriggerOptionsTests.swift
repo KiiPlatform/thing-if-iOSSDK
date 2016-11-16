@@ -171,12 +171,11 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
                                    setting.api.target?.typedID.toString(),
                                    error_message)
                     XCTAssertTrue(tgr.enabled, error_message)
-                    XCTAssertEqual(tgr.predicate.toNSDictionary(),
-                                   NSDictionary(dictionary:
-                                                  [
-                                                    "eventSource" : "SCHEDULE",
-                                                    "schedule" : "1 * * * *"
-                                                  ]))
+                    self.verifyDict2(tgr.predicate.makeDictionary(),
+                                     [
+                                       "eventSource" : "SCHEDULE",
+                                       "schedule" : "1 * * * *"
+                                     ])
                     XCTAssertEqual(tgr.title, "trigger title", error_message)
                     XCTAssertEqual(tgr.triggerDescription,
                                    "trigger description", error_message)

@@ -52,7 +52,7 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertNotNil(decode);
         XCTAssertEqual(decode.triggerID, triggerID);
         XCTAssertEqual(decode.enabled, enabled);
-        XCTAssertEqual(decode.predicate.toNSDictionary(), predicate.toNSDictionary());
+        self.verifyDict2(decode.predicate.makeDictionary(), predicate.makeDictionary());
         XCTAssertEqual(decode.command, command);
         XCTAssertNil(decode.serverCode);
         XCTAssertEqual(decode.title, title);
@@ -90,7 +90,7 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertNotNil(decode);
         XCTAssertEqual(decode.triggerID, triggerID);
         XCTAssertEqual(decode.enabled, enabled);
-        XCTAssertEqual(decode.predicate.toNSDictionary(), predicate.toNSDictionary());
+        self.verifyDict2(decode.predicate.makeDictionary(), predicate.makeDictionary());
         XCTAssertNil(decode.command);
         XCTAssertEqual(decode.serverCode, serverCode);
         XCTAssertNil(decode.title);

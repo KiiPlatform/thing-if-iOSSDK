@@ -38,7 +38,9 @@ open class SchedulePredicate: NSObject,Predicate {
 
      - Returns: Json object as an instance of NSDictionary
      */
-    open func toNSDictionary() -> NSDictionary {
-        return NSDictionary(dictionary: ["eventSource": EventSource.schedule.rawValue, "schedule":self.schedule])
+    open func makeDictionary() -> [ String : Any ] {
+        return [
+          "eventSource": EventSource.schedule.rawValue,
+          "schedule":self.schedule] as [ String : Any ]
     }
 }

@@ -110,7 +110,7 @@ class GetTriggerTests: SmallTestBase {
                         XCTAssertTrue(expectedActionsData == actualActionsData)
 
                         let expectedPredicteData = try JSONSerialization.data(withJSONObject: expectedPredicateDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-                        let actualPredicateDict = trigger!.predicate.toNSDictionary()
+                        let actualPredicateDict = trigger!.predicate.makeDictionary()
                         let actualBodyData = try JSONSerialization.data(withJSONObject: actualPredicateDict, options: JSONSerialization.WritingOptions(rawValue: 0))
                         XCTAssertTrue(expectedPredicteData.count == actualBodyData.count)
                     }catch(_){
@@ -146,7 +146,7 @@ class GetTriggerTests: SmallTestBase {
             expectedParameters["arg3"] = 0.12345
             expectedParameters["arg4"] = false
             let expectedServerCode:ServerCode = ServerCode(endpoint: expectedEndpoint, executorAccessToken: expectedExecutorAccessToken, targetAppID: expectedTargetAppID, parameters: expectedParameters)
-            let serverCodeDict = expectedServerCode.toNSDictionary()
+            let serverCodeDict = expectedServerCode.makeDictionary()
             let eventSource = "STATES"
             let condition: Dictionary<String, Any> = ["type":"eq", "field":"color", "value": 0]
             let expectedPredicateDict: [String : Any] = ["eventSource":eventSource, "triggersWhen":TriggersWhen.conditionFalseToTrue.rawValue, "condition": condition]
@@ -182,7 +182,7 @@ class GetTriggerTests: SmallTestBase {
                     
                     do {
                         let expectedPredicteData = try JSONSerialization.data(withJSONObject: expectedPredicateDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-                        let actualPredicateDict = trigger!.predicate.toNSDictionary()
+                        let actualPredicateDict = trigger!.predicate.makeDictionary()
                         let actualBodyData = try JSONSerialization.data(withJSONObject: actualPredicateDict, options: JSONSerialization.WritingOptions(rawValue: 0))
                         XCTAssertTrue(expectedPredicteData.count == actualBodyData.count)
                     }catch(_){

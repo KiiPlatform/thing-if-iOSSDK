@@ -18,8 +18,8 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
     {
         var retval: Dictionary<String, Any> =
           [
-            "serverCode" : serverCode.toNSDictionary(),
-            "predicate" : predicate.toNSDictionary(),
+            "serverCode" : serverCode.makeDictionary(),
+            "predicate" : predicate.makeDictionary(),
             "triggersWhat": TriggersWhat.serverCode.rawValue
           ]
         if let triggerOptions = options {
@@ -136,12 +136,12 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
                                      setting.target.typedID.toString(),
                                      error_message)
                       XCTAssertEqual(actual.enabled, Bool(true), error_message)
-                      XCTAssertEqual(actual.predicate.toNSDictionary(),
-                                     predicate.toNSDictionary(),
+                      self.verifyDict2(actual.predicate.makeDictionary(),
+                                     predicate.makeDictionary(),
                                      error_message)
                       XCTAssertNil(actual.command, error_message)
-                      XCTAssertEqual(actual.serverCode!.toNSDictionary(),
-                                     serverCode.toNSDictionary(),
+                      self.verifyDict2(actual.serverCode!.makeDictionary(),
+                                     serverCode.makeDictionary(),
                                      error_message)
                       if let expectedOptions = options {
                           XCTAssertEqual(actual.title, expectedOptions.title,
