@@ -9,7 +9,7 @@
 import Foundation
 /** Class represents Condition */
 open class Condition : NSObject, NSCoding {
-    open let clause: Clause!
+    open let clause: Clause
 
     /** Init Condition with Clause
 

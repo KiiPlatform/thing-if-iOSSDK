@@ -10,8 +10,8 @@ import Foundation
 
 /** Class represents StatePredicate */
 open class StatePredicate: NSObject,Predicate {
-    open let triggersWhen: TriggersWhen!
-    open let condition: Condition!
+    open let triggersWhen: TriggersWhen
+    open let condition: Condition
 
     open let eventSource: EventSource = EventSource.states
 
@@ -27,7 +27,7 @@ open class StatePredicate: NSObject,Predicate {
     }
 
     public required init(coder aDecoder: NSCoder) {
-        self.triggersWhen = TriggersWhen(rawValue: aDecoder.decodeObject(forKey: "triggersWhen") as! String);
+        self.triggersWhen = TriggersWhen(rawValue: aDecoder.decodeObject(forKey: "triggersWhen") as! String)!;
         self.condition = aDecoder.decodeObject(forKey: "condition") as! Condition;
     }
 
