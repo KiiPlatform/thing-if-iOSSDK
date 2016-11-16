@@ -7,6 +7,7 @@
 
 import Foundation
 
+/** Represents stand alone thing. */
 open class StandaloneThing: AbstractThing {
 
 }

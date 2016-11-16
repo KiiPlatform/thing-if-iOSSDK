@@ -7,6 +7,7 @@
 
 import Foundation
 
+/** Represents gateway. */
 open class Gateway: AbstractThing {
 
 }

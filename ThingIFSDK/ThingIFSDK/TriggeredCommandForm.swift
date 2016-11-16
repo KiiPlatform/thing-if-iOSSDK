@@ -14,8 +14,8 @@ Form of a command of a trigger.
 This class contains data in order to create or modify `Command` in
 `Trigger` with followings methods:
 
- - `ThingIFAPI.postNewTrigger(triggeredCommandForm:predicate:options:completionHandler:)`
- - `ThingIFAPI.patchTrigger(triggerID:triggeredCommandForm:predicate:options:completionHandler:)`
+ - `ThingIFAPI.postNewTrigger(_:predicate:options:completionHandler:)`
+ - `ThingIFAPI.patchTrigger(_:triggeredCommandForm:predicate:options:completionHandler:)`
 
 Mandatory data are followings:
 

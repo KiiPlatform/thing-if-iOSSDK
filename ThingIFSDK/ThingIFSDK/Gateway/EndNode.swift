@@ -7,6 +7,7 @@
 
 import Foundation
 
+/** Represents end node. */
 open class EndNode: AbstractThing {
 
 }
