@@ -189,9 +189,9 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
                                  error_message)
                   XCTAssertEqual(actual.enabled, Bool(true), error_message)
 
-                  XCTAssertEqual(actual.predicate.toNSDictionary(),
+                  self.verifyDict2(actual.predicate.makeDictionary(),
                                  SchedulePredicate(
-                                   schedule: "1 * * * *").toNSDictionary(),
+                                   schedule: "1 * * * *").makeDictionary(),
                                  error_message)
                   let actualcmd = actual.command!
                   XCTAssertEqual(actualcmd.commandID, "", error_message)

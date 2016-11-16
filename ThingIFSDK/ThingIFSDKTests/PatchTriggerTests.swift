@@ -51,7 +51,7 @@ class PatchTriggerTests: SmallTestBase {
             if predicate == nil {
                 return nil
             }
-            return predicate?.toNSDictionary() as? Dictionary<String, Any>
+            return predicate?.makeDictionary()
         }
     }
 

@@ -28,7 +28,7 @@ class ClauseNSCodingTests: SmallTestBase {
         let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! Clause
 
         XCTAssertNotNil(decode)
-        XCTAssertEqual(decode.toNSDictionary(), clause.toNSDictionary());
+        verifyDict2(decode.makeDictionary(), clause.makeDictionary());
     }
 
     func testNotEqualsClause() {
@@ -41,7 +41,7 @@ class ClauseNSCodingTests: SmallTestBase {
         let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! Clause
 
         XCTAssertNotNil(decode)
-        XCTAssertEqual(decode.toNSDictionary(), clause.toNSDictionary());
+        verifyDict2(decode.makeDictionary(), clause.makeDictionary());
     }
 
     func testRangeClause() {
@@ -54,7 +54,7 @@ class ClauseNSCodingTests: SmallTestBase {
         let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! Clause
 
         XCTAssertNotNil(decode)
-        XCTAssertEqual(decode.toNSDictionary(), clause.toNSDictionary());
+        verifyDict2(decode.makeDictionary(), clause.makeDictionary());
     }
 
     func testAndClause() {
@@ -69,7 +69,7 @@ class ClauseNSCodingTests: SmallTestBase {
         let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! Clause
 
         XCTAssertNotNil(decode)
-        XCTAssertEqual(decode.toNSDictionary(), clause.toNSDictionary());
+        verifyDict2(decode.makeDictionary(), clause.makeDictionary());
     }
 
     func testOrClause() {
@@ -84,6 +84,6 @@ class ClauseNSCodingTests: SmallTestBase {
         let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! Clause
 
         XCTAssertNotNil(decode)
-        XCTAssertEqual(decode.toNSDictionary(), clause.toNSDictionary());
+        verifyDict2(decode.makeDictionary(), clause.makeDictionary());
     }
 }

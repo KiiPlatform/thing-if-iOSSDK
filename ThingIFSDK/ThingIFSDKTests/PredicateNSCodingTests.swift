@@ -45,7 +45,7 @@ class PredicateNSCodingTests: SmallTestBase {
 
         XCTAssertNotNil(decode);
         XCTAssertNotNil(decode.condition);
-        XCTAssertEqual(decode.condition.toNSDictionary(), predicate.condition.toNSDictionary());
+        self.verifyDict2(decode.condition.makeDictionary(), predicate.condition.makeDictionary());
         XCTAssertEqual(decode.triggersWhen, predicate.triggersWhen);
     }
 }

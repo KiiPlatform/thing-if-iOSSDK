@@ -20,8 +20,8 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
         var retval: Dictionary<String, Any> = [
           "triggerID" : triggerID,
           "triggersWhat" : "SERVER_CODE",
-          "serverCode" : serverCode.toNSDictionary(),
-          "predicate" : predicate.toNSDictionary(),
+          "serverCode" : serverCode.makeDictionary(),
+          "predicate" : predicate.makeDictionary(),
           "disabled" : false
         ]
         retval["title"] = options?.title
@@ -38,8 +38,8 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
         var retval: Dictionary<String, Any> = [
           "triggersWhat" : "SERVER_CODE"
         ]
-        retval["serverCode"] = serverCode?.toNSDictionary()
-        retval["predicate"] = predicate?.toNSDictionary()
+        retval["serverCode"] = serverCode?.makeDictionary()
+        retval["predicate"] = predicate?.makeDictionary()
         retval["title"] = options?.title
         retval["description"] = options?.triggerDescription
         retval["metadata"] = options?.metadata
@@ -180,12 +180,12 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
                                  setting.target.typedID.toString(),
                                  error_message)
                   XCTAssertEqual(trigger?.enabled, Bool(true), error_message)
-                  XCTAssertEqual(trigger?.predicate.toNSDictionary(),
-                                 predicate.toNSDictionary(),
+                  self.verifyDict2(trigger?.predicate.makeDictionary(),
+                                 predicate.makeDictionary(),
                                  error_message)
                   XCTAssertNil(trigger?.command, error_message)
-                  XCTAssertEqual(trigger?.serverCode!.toNSDictionary(),
-                                 serverCode.toNSDictionary(),
+                  self.verifyDict2(trigger?.serverCode!.makeDictionary(),
+                                 serverCode.makeDictionary(),
                                  error_message)
                   XCTAssertEqual(trigger?.title, options?.title, error_message)
                   XCTAssertEqual(trigger?.triggerDescription,
@@ -315,11 +315,11 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
               XCTAssertEqual(trigger?.targetID.toString(),
                              setting.target.typedID.toString())
               XCTAssertEqual(trigger?.enabled, Bool(true))
-              XCTAssertEqual(trigger?.predicate.toNSDictionary(),
-                             predicate.toNSDictionary())
+              self.verifyDict2(trigger?.predicate.makeDictionary(),
+                             predicate.makeDictionary())
               XCTAssertNil(trigger?.command)
-              XCTAssertEqual(trigger?.serverCode!.toNSDictionary(),
-                             serverCode.toNSDictionary())
+              self.verifyDict2(trigger?.serverCode!.makeDictionary(),
+                             serverCode.makeDictionary())
               XCTAssertEqual(trigger?.title, options.title)
               XCTAssertEqual(trigger?.triggerDescription,
                              options.triggerDescription)
@@ -444,11 +444,11 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
               XCTAssertEqual(trigger?.targetID.toString(),
                              setting.target.typedID.toString())
               XCTAssertEqual(trigger?.enabled, Bool(true))
-              XCTAssertEqual(trigger?.predicate.toNSDictionary(),
-                             predicate.toNSDictionary())
+              self.verifyDict2(trigger?.predicate.makeDictionary(),
+                             predicate.makeDictionary())
               XCTAssertNil(trigger?.command)
-              XCTAssertEqual(trigger?.serverCode!.toNSDictionary(),
-                             serverCode.toNSDictionary())
+              self.verifyDict2(trigger?.serverCode!.makeDictionary(),
+                             serverCode.makeDictionary())
               XCTAssertEqual(trigger?.title, options.title)
               XCTAssertEqual(trigger?.triggerDescription,
                              options.triggerDescription)

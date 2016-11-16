@@ -30,6 +30,6 @@ class ConditionNSCodingTests: SmallTestBase {
 
         XCTAssertNotNil(decode)
         XCTAssertNotNil(decode.clause)
-        XCTAssertEqual(decode.toNSDictionary(), condition.toNSDictionary());
+        verifyDict2(decode.makeDictionary(), condition.makeDictionary());
     }
 }

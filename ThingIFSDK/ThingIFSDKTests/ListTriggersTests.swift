@@ -107,7 +107,7 @@ class ListTriggersTests: SmallTestBase {
 
                                 // verify predicate
                                 let expectedPredicteData = try JSONSerialization.data(withJSONObject: expectedTriggerStructs[index].getPredicateDict(), options: JSONSerialization.WritingOptions(rawValue: 0))
-                                let actualPredicateDict = trigger.predicate.toNSDictionary()
+                                let actualPredicateDict = trigger.predicate.makeDictionary()
                                 let actualBodyData = try JSONSerialization.data(withJSONObject: actualPredicateDict, options: JSONSerialization.WritingOptions(rawValue: 0))
                                 XCTAssertTrue(expectedPredicteData.count == actualBodyData.count)
                             }catch(_){

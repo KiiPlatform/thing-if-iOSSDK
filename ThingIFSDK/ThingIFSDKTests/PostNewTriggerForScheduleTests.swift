@@ -85,8 +85,8 @@ class TriggerSuccessCallbackVerifier: NSObject, CallbackVerifier {
                            XCTAssertEqual(trigger!.enabled,
                                           self.enabled,
                                           self.tag)
-                           XCTAssertEqual(trigger!.predicate.toNSDictionary(),
-                                          self.predicate.toNSDictionary(),
+                           XCTAssertEqual(trigger!.predicate.makeDictionary() as NSDictionary,
+                                          self.predicate.makeDictionary() as NSDictionary,
                                           self.tag)
                            XCTAssertEqual(trigger!.command!.commandID,
                                           self.commandID,
@@ -206,7 +206,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                                                      "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                                                  ],
                                                expectedBody: [
-                                                   "predicate": predicate.toNSDictionary() as Dictionary,
+                                                   "predicate": predicate.makeDictionary() as Dictionary,
                                                    "command": [
                                                        "actions": actions,
                                                        "schema": setting.schema,
