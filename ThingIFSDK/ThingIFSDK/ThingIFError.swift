@@ -37,5 +37,5 @@ public enum ThingIFError : Error {
     /** when trying to access Gateway but user is not logged in*/
     case userIsNotLoggedIn
     /** whenever request operation is failed. (i.e invalid URL) */
-    case errorRequest(required: NSError)
+    case errorRequest(required: Error)
 }

@@ -197,7 +197,7 @@ class IoTRequestOperation<T>: GroupOperation {
                     completionHandler(nil, nil)
                 }
             }else{
-                completionHandler(nil, ThingIFError.errorRequest(required: errorOptional! as NSError))
+                completionHandler(nil, ThingIFError.errorRequest(required: errorOptional!))
             }
         })
         let taskOperation = URLSessionTaskOperation(task: task)
@@ -250,7 +250,7 @@ class IoTRequestOperation<T>: GroupOperation {
                     completionHandler(serialized, nil)
                 }
             }else{
-                completionHandler(nil, ThingIFError.errorRequest(required: errorOptional as! NSError))
+                completionHandler(nil, ThingIFError.errorRequest(required: errorOptional!))
             }
         })
         let taskOperation = URLSessionTaskOperation(task: task)
