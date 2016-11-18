@@ -88,25 +88,7 @@ open class Command: NSObject, NSCoding {
     /** Metadata of the Command */
     open let metadata: Dictionary<String, Any>?
 
-    public override init() {
-        // TODO: implement it with proper initilizer.
-        self.commandID = ""
-        self.targetID = TypedID(type: "", id: "")
-        self.issuerID = TypedID(type: "", id: "")
-        self.schemaName = ""
-        self.schemaVersion = 0
-        self.actions = []
-        self.actionResults = []
-        self.commandState = CommandState.sending
-        self.firedByTriggerID = nil
-        self.created = nil
-        self.modified = nil
-        self.title = nil
-        self.commandDescription = nil
-        self.metadata = nil
-    }
-
-    init(commandID: String?,
+    internal init(commandID: String?,
          targetID: TypedID,
          issuerID: TypedID,
          schemaName: String,

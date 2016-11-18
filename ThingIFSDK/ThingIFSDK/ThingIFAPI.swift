@@ -77,7 +77,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         self.tag = aDecoder.decodeObject(forKey: "tag") as? String
     }
 
-    init(app:App, owner: Owner, tag : String?=nil) {
+    internal init(app:App, owner: Owner, tag : String?=nil) {
         self.app = app
         self.baseURL = app.baseURL
         self.appID = app.appID

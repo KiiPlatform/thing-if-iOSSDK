@@ -48,7 +48,7 @@ open class GatewayAPI: NSObject, NSCoding {
         self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as? String
     }
 
-    init(app: App, gatewayAddress: URL, tag: String? = nil)
+    internal init(app: App, gatewayAddress: URL, tag: String? = nil)
     {
         self.tag = tag
         self.app = app
