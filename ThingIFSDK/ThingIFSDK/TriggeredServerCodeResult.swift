@@ -53,10 +53,17 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
         }
     }
 
-    /** Returned value from server code casted to NSNumber. */
-    open var returnedValueAsNSNumber: NSNumber? {
+    /** Returned value from server code casted to Int. */
+    open var returnedValueAsInt: Int? {
         get {
-            return self.returnedValue as? NSNumber
+            return self.returnedValue as? Int
+        }
+    }
+
+    /** Returned value from server code casted to Double. */
+    open var returnedValueAsDouble: Double? {
+        get {
+            return self.returnedValue as? Double
         }
     }
 

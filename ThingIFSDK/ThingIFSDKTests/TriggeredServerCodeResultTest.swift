@@ -70,7 +70,8 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         XCTAssertEqual("1234", result?.returnedValueAsString)
-        XCTAssertNil(result?.returnedValueAsNSNumber)
+        XCTAssertNil(result?.returnedValueAsInt)
+        XCTAssertNil(result?.returnedValueAsDouble)
         XCTAssertNil(result?.returnedValueAsBool)
         XCTAssertNil(result?.returnedValueAsArray)
         XCTAssertNil(result?.returnedValueAsDictionary)
@@ -81,7 +82,8 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
         XCTAssertTrue(result!.returnedValueAsBool!)
         XCTAssertEqual("1", result?.returnedValueAsString)
-        XCTAssertEqual(1, result?.returnedValueAsNSNumber)
+        XCTAssertNil(result!.returnedValueAsInt)
+        XCTAssertNil(result!.returnedValueAsDouble)
         XCTAssertNil(result?.returnedValueAsArray)
         XCTAssertNil(result?.returnedValueAsDictionary)
         
@@ -89,7 +91,8 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":1234}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        XCTAssertEqual(1234, result!.returnedValueAsNSNumber!)
+        XCTAssertEqual(1234, result!.returnedValueAsInt!)
+        XCTAssertEqualWithAccuracy(1234.0, result!.returnedValueAsDouble!, accuracy: 0.01)
         XCTAssertEqual("1234", result?.returnedValueAsString)
         XCTAssertTrue(result!.returnedValueAsBool!)
         XCTAssertNil(result?.returnedValueAsArray)
@@ -99,7 +102,8 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":145553117492300}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        XCTAssertEqual(145553117492300, result!.returnedValueAsNSNumber!)
+        XCTAssertEqual(145553117492300, result!.returnedValueAsInt!)
+        XCTAssertEqualWithAccuracy(145553117492300.0 , result!.returnedValueAsDouble!, accuracy: 0.01)
         XCTAssertEqual("145553117492300", result?.returnedValueAsString)
         XCTAssertTrue(result!.returnedValueAsBool!)
         XCTAssertNil(result?.returnedValueAsArray)
@@ -109,7 +113,8 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         testData = "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func\",\"returnedValue\":1234.567}"
         resultDict = try! JSONSerialization.jsonObject(with: testData.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions.allowFragments) as? NSDictionary
         result = TriggeredServerCodeResult.resultWithNSDict(resultDict!)!
-        XCTAssertEqual(1234.567, result!.returnedValueAsNSNumber!)
+        XCTAssertEqual(1234, result!.returnedValueAsInt!)
+        XCTAssertEqualWithAccuracy(1234.567, result!.returnedValueAsDouble!, accuracy: 0.01)
         XCTAssertEqual("1234.567", result?.returnedValueAsString)
         XCTAssertTrue(result!.returnedValueAsBool!)
         XCTAssertNil(result?.returnedValueAsArray)
@@ -124,7 +129,8 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         XCTAssertTrue(array[0] as! Bool)
         XCTAssertEqual("456", array[2] as? String)
         XCTAssertNil(result?.returnedValueAsString)
-        XCTAssertNil(result?.returnedValueAsNSNumber)
+        XCTAssertNil(result?.returnedValueAsInt)
+        XCTAssertNil(result?.returnedValueAsDouble)
         XCTAssertNil(result?.returnedValueAsBool)
         XCTAssertNil(result?.returnedValueAsDictionary)
         
@@ -138,7 +144,8 @@ class TriggeredServerCodeResultTest: SmallTestBase {
         XCTAssertEqual(1000, dict["f3"] as? NSNumber)
         XCTAssertEqual(100.05, dict["f4"] as? NSNumber)
         XCTAssertNil(result?.returnedValueAsString)
-        XCTAssertNil(result?.returnedValueAsNSNumber)
+        XCTAssertNil(result?.returnedValueAsInt)
+        XCTAssertNil(result?.returnedValueAsDouble)
         XCTAssertNil(result?.returnedValueAsBool)
         XCTAssertNil(result?.returnedValueAsArray)
     }
