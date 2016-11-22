@@ -249,7 +249,15 @@ open class AndClause: NSObject, Clause {
     
     - Parameter clauses: Clause instances for AND clauses
     */
-    public init(clauses: Clause...) {
+    public convenience init(clauses: Clause...) {
+        self.init(clauses: clauses)
+    }
+
+    /** Initialize with clause clauses.
+    
+     - Parameter clauses: Clause array for AND clauses
+     */
+    public init(clauses: [Clause]) {
         for clause in clauses {
             self.clauses.append(clause)
         }
@@ -300,7 +308,15 @@ open class OrClause: NSObject, Clause {
     
     - Parameter clauses: Clause instances for OR clauses
     */
-    public init(clauses:Clause...) {
+    public convenience init(clauses:Clause...) {
+        self.init(clauses: clauses)
+    }
+
+    /** Initialize with clause clauses.
+    
+     - Parameter clauses: Clause array for OR clauses
+     */
+    public init(clauses: [Clause]) {
         for clause in clauses {
             self.clauses.append(clause)
         }
