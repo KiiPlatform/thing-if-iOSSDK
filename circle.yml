@@ -31,3 +31,10 @@ test:
       python testScripts/xcodebuildtest.py  --destination "${DESTINATION}"
 
     - cp ThingIFSDK/test-reports/*.xml $CIRCLE_TEST_REPORTS/
+
+deployment:
+  production:
+    tag: /v[0-9]+.*/
+    commands:
+      - bash circleci_scripts/release_doc.sh
+      - cd thing-if-iOSSDK && pod trunk push --verbose
