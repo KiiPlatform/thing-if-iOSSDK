@@ -11,7 +11,7 @@ echo ""
 for host in "${uploadhosts[@]}"; do
   uptarget="$host:$updir"
   echo "Uploading to : $host"
-  rsync -rlptDe "ssh -o StrictHostKeyChecking=no" --chmod=u+rw,g+r,o+r --chmod=Da+x --delete-after ~/thing-if-iOS-Deployment/thing-if-iOSSDK/ThingIFSDK/Documentation/docs/ "$uptarget"
+  rsync -rlptDe "ssh -o StrictHostKeyChecking=no" --chmod=u+rw,g+r,o+r --chmod=Da+x --delete-after ~/thing-if-iOSSDK/ThingIFSDK/Documentation/docs/ "$uptarget"
 
   # check command exit code
   exitCode=$?
