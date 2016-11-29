@@ -37,4 +37,4 @@ deployment:
     tag: /v[0-9]+.*/
     commands:
       - bash circleci_scripts/release_doc.sh
-      - cd thing-if-iOSSDK && pod trunk push --verbose
+      - pod trunk push --verbose
