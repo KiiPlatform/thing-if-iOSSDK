@@ -3,7 +3,7 @@
 declare -a uploadhosts=($DOC_HOST1 $DOC_HOST2)
 
 basedir="/ext/ebs/references/ios/thing-if"
-version=$(agvtool what-version | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
+version=$(cd ThingIFSDK; agvtool what-version | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
 
 updir="$basedir/$version"
 latestdir="$basedir/latest"
