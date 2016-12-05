@@ -12,13 +12,6 @@ dependencies:
     - sudo update_rubygems
 test:
   pre:
-    # This is workaround.
-    # xcinvoke-0.2.1 is not adapt Xcode 8.
-    # xcinvoke-0.2.1 is used from jazzy-0.7.2.
-    # So we need to fix to generate document with this workaround.
-    # ref: https://github.com/segiddins/xcinvoke/issues/6
-    - sed "s/cmd = \[@xcrun_path\] + cmd/cmd = \['xcrun'\] + cmd/g" /opt/rubies/ruby-2.3.1/lib/ruby/gems/2.3.0/gems/xcinvoke-0.2.1/lib/xcinvoke/xcode.rb > xcode.rb
-    - sudo mv xcode.rb /opt/rubies/ruby-2.3.1/lib/ruby/gems/2.3.0/gems/xcinvoke-0.2.1/lib/xcinvoke
     # Build sdk
     - cd ThingIFSDK; make all
     # Copy docs to artifacts
@@ -31,3 +24,10 @@ test:
       python testScripts/xcodebuildtest.py  --destination "${DESTINATION}"
 
     - cp ThingIFSDK/test-reports/*.xml $CIRCLE_TEST_REPORTS/
+
+deployment:
+  production:
+    tag: /^v[0-9]+(\.[0-9]+){0,2}((-.*)?)?$/
+    commands:
+      - bash circleci_scripts/release_doc.sh
+      - pod trunk push --verbose
