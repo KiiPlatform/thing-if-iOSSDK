@@ -324,10 +324,6 @@ open class ThingIFAPI: NSObject, NSCoding {
      
      **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
      
-     - Parameter schemaName: Name of the Schema of which the Command specified in
-     Trigger is defined.
-     - Parameter schemaVersion: Version of the Schema of which the Command
-     specified in Trigger is defined.
      - Parameter serverCode: Server code to be executed by the Trigger.
      - Parameter predicate: Predicate of the Command.
      - Parameter options: Optional data for this trigger.
