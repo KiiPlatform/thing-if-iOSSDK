@@ -1,41 +1,8 @@
 #! bin/bash
 
-declare -a uploadhosts=($DOC_HOST1 $DOC_HOST2)
-
-basedir="/ext/ebs/references/ios/thing-if"
-version=$(cd ThingIFSDK; agvtool what-version | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
-
-updir="$basedir/$version"
-latestdir="$basedir/latest"
-echo ""
-for host in "${uploadhosts[@]}"; do
-  uptarget="$host:$updir"
-  echo "Uploading..."
-  rsync -rlptDe "ssh -o StrictHostKeyChecking=no" --chmod=u+rw,g+r,o+r --chmod=Da+x --delete-after ~/thing-if-iOSSDK/ThingIFSDK/Documentation/docs/ "$uptarget" > /dev/null 2>&1
-
-  # check command exit code
-  exitCode=$?
-  if [ $exitCode -ne 0 ]; then
-    echo "Faild when uploading doc"
-    exit $exitCode
-  fi
-
-  ssh -o StrictHostKeyChecking=no "$host" "rm $latestdir" > /dev/null 2>&1
-  # check command result
-  exitCode=$?
-  if [ $exitCode -ne 0 ]; then
-    echo "Faild when removing older doc"
-    exit $exitCode
-  fi
-
-  ssh -o StrictHostKeyChecking=no "$host" "ln -s $updir $latestdir" > /dev/null 2>&1
-  # check command result
-  exitCode=$?
-  if [ $exitCode -ne 0 ]; then
-    echo "Faild when releasing new doc"
-    exit $exitCode
-  fi
-
-done
-
-echo "All uploads have completed!"
+git clone https://$GH_TOKEN_FOR_HTTPS@github.com/KiiPlatform/thing-if-iOSSDK.git
+cd thing-if-iOSSDK
+git checkout gh-pages && git config user.email 'satoshi.kumano@kii.com' && git config user.name 'satoshi kumano'
+git rm -r --ignore-unmatch api-doc && mkdir -p api-doc
+cp -r ../ThingIFSDK/Documentation/docs/ api-doc
+git add api-doc && git commit -m 'updated doc' && git push origin gh-pages
