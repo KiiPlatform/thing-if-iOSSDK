@@ -12,8 +12,6 @@ open class Command: NSObject, NSCoding {
         aCoder.encode(self.commandID, forKey: "commandID")
         aCoder.encode(self.targetID, forKey: "targetID")
         aCoder.encode(self.issuerID, forKey: "issuerID")
-        aCoder.encode(self.schemaName, forKey: "schemaName")
-        aCoder.encode(self.schemaVersion, forKey: "schemaVersion")
         aCoder.encode(self.actions, forKey: "actions")
         aCoder.encode(self.actionResults, forKey: "actionResults")
         aCoder.encode(self.commandState.rawValue, forKey: "commandState")
@@ -34,12 +32,10 @@ open class Command: NSObject, NSCoding {
         self.commandID = aDecoder.decodeObject(forKey: "commandID") as! String
         self.targetID = aDecoder.decodeObject(forKey: "targetID") as! TypedID
         self.issuerID = aDecoder.decodeObject(forKey: "issuerID") as! TypedID
-        self.schemaName = aDecoder.decodeObject(forKey: "schemaName") as! String
-        self.schemaVersion = aDecoder.decodeInteger(forKey: "schemaVersion")
         self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [Dictionary<String, Any>];
+                as! [(alias: Alias, actions: [String : Any])]
         self.actionResults = aDecoder.decodeObject(forKey: "actionResults")
-                as! [Dictionary<String, Any>];
+                as! [(alias: Alias, actions: [String : Any])]
         self.commandState =
             CommandState(rawValue: aDecoder.decodeInteger(forKey: "commandState"))!;
         self.firedByTriggerID = aDecoder.decodeObject(forKey: "firedByTriggerID") as? String
@@ -65,14 +61,10 @@ open class Command: NSObject, NSCoding {
     open let targetID: TypedID
     /** ID of the issuer of the Command. */
     open let issuerID: TypedID
-    /** Name of the Schema of which this Command is defined. */
-    open let schemaName: String
-    /** Version of the Schema of which this Command is defined. */
-    open let schemaVersion: Int
     /** Actions to be executed. */
-    open let actions: [Dictionary<String, Any>]
+    open let actions: [(alias: Alias, actions: [String : Any])]
     /** Results of the action. */
-    open let actionResults: [Dictionary<String, Any>]
+    open let actionResults: [(alias: Alias, actions: [String : Any])]
     /** State of the Command. */
     open let commandState: CommandState
     /** ID of the trigger which fired this command */
@@ -91,10 +83,8 @@ open class Command: NSObject, NSCoding {
     internal init(commandID: String?,
          targetID: TypedID,
          issuerID: TypedID,
-         schemaName: String,
-         schemaVersion: Int,
-         actions:[Dictionary<String, Any>],
-         actionResults:[Dictionary<String, Any>]?,
+         actions: [(alias: Alias, actions: [String : Any])],
+         actionResults: [(alias: Alias, actions: [String : Any])]?,
          commandState: CommandState?,
          firedByTriggerID: String? = nil,
          created: Date? = nil,
@@ -102,27 +92,13 @@ open class Command: NSObject, NSCoding {
          title: String? = nil,
          commandDescription: String? = nil,
          metadata: Dictionary<String, Any>? = nil) {
-        if commandID != nil {
-            self.commandID = commandID!
-        }else {
-            self.commandID = ""
-        }
+        self.commandID = commandID ?? ""
         self.targetID = targetID
         self.issuerID = issuerID
-        self.schemaName = schemaName
-        self.schemaVersion = schemaVersion
         self.actions = actions
 
-        if actionResults != nil {
-            self.actionResults = actionResults!
-        }else {
-            self.actionResults = []
-        }
-        if commandState != nil {
-            self.commandState = commandState!
-        }else {
-            self.commandState = CommandState.sending
-        }
+        self.actionResults = actionResults ?? []
+        self.commandState = commandState ?? CommandState.sending
         self.firedByTriggerID = firedByTriggerID
         self.created = created
         self.modified = modified
@@ -130,22 +106,21 @@ open class Command: NSObject, NSCoding {
         self.commandDescription = commandDescription
         self.metadata = metadata
     }
-    
+
     open override func isEqual(_ object: Any?) -> Bool {
         guard let aCommand = object as? Command else{
             return false
         }
-        
+
         return self.commandID == aCommand.commandID &&
             self.targetID == aCommand.targetID &&
-            self.issuerID == aCommand.issuerID &&
-            self.schemaName == aCommand.schemaName &&
-            self.schemaVersion == aCommand.schemaVersion
-        
+            self.issuerID == aCommand.issuerID
     }
 
-    class func commandWithNSDictionary(_ nsDict: NSDictionary!) -> Command?{
+    // TODO: We should replace this method with internal initializer.
+    class func commandWithNSDictionary(_ nsDict: NSDictionary!) -> Command? {
 
+        /*
         let commandID = nsDict["commandID"] as? String
         let schemaName = nsDict["schema"] as? String
         // actions array
@@ -201,6 +176,8 @@ open class Command: NSObject, NSCoding {
             modified = Date(timeIntervalSince1970: (modifiedAt.doubleValue)/1000.0)
         }
         return Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState, firedByTriggerID: nsDict["firedByTriggerID"] as? String, created: created, modified: modified, title: nsDict["title"] as? String, commandDescription: nsDict["description"] as? String, metadata: nsDict["metadata"] as? Dictionary<String, Any>)
+        */
+        return nil
     }
 }
 
