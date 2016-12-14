@@ -1,4 +1,4 @@
-# README for developers
+# README for SDK developers
 
 ## Requirement
 - jazzy
@@ -6,14 +6,14 @@
 - nanaimo
 
 ## Installation
-```
+```sh
 [sudo] gem install CFPropertyList
 [sudo] gem install nanaimo
 [sudo] gem install jazzy
 ```
 
 ## Build/ generate doc
-```
+```sh
 make
 ```
 
