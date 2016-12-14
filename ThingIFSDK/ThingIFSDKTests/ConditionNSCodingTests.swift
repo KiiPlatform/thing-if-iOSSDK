@@ -22,14 +22,14 @@ class ConditionNSCodingTests: SmallTestBase {
         let clause = EqualsClause(field: "f", stringValue: "v")
         let condition = Condition(clause: clause)
 
-        let data = NSKeyedArchiver.archivedDataWithRootObject(condition)
+        let data = NSKeyedArchiver.archivedData(withRootObject: condition)
 
         XCTAssertNotNil(data)
 
-        let decode = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Condition
+        let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! Condition
 
         XCTAssertNotNil(decode)
         XCTAssertNotNil(decode.clause)
-        XCTAssertEqual(decode.toNSDictionary(), condition.toNSDictionary());
+        verifyDict2(decode.makeDictionary(), condition.makeDictionary());
     }
 }

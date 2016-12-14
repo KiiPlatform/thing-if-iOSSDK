@@ -8,37 +8,37 @@
 import Foundation
 
 /** Represents Kii Cloud Application */
-public class App: NSObject, NSCoding {
+open class App: NSObject, NSCoding {
     /** ID of the App */
-    public let appID: String
+    open let appID: String
     /** Key of the APP */
-    public let appKey: String
+    open let appKey: String
     /** Host name to which the app connects */
-    public let hostName: String
+    open let hostName: String
     /** Base URL of the apis used by the app */
-    public let baseURL: String
+    open let baseURL: String
     /** Name of the site to which the app belongs */
-    public let siteName: String
+    open let siteName: String
 
     // MARK: NSCoding
     /** Conforms to NSCoding */
     public required convenience init(coder decoder:NSCoder) {
-        let appID:String = decoder.decodeObjectForKey("appID") as! String
-        let appKey:String = decoder.decodeObjectForKey("appKey") as! String
-        let hostName:String = decoder.decodeObjectForKey("hostName") as! String
-        let baseURL:String = decoder.decodeObjectForKey("baseURL") as! String
-        let siteName:String = decoder.decodeObjectForKey("siteName") as! String
+        let appID:String = decoder.decodeObject(forKey: "appID") as! String
+        let appKey:String = decoder.decodeObject(forKey: "appKey") as! String
+        let hostName:String = decoder.decodeObject(forKey: "hostName") as! String
+        let baseURL:String = decoder.decodeObject(forKey: "baseURL") as! String
+        let siteName:String = decoder.decodeObject(forKey: "siteName") as! String
         self.init(appID:appID, appKey:appKey, hostName:hostName,
             baseURL:baseURL, siteName:siteName)
     }
 
     /** Conforms to NSCoding */
-    public func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(self.appID, forKey:"appID")
-        coder.encodeObject(self.appKey, forKey:"appKey")
-        coder.encodeObject(self.hostName, forKey:"hostName")
-        coder.encodeObject(self.baseURL, forKey:"baseURL")
-        coder.encodeObject(self.siteName, forKey:"siteName")
+    open func encode(with coder: NSCoder) {
+        coder.encode(self.appID, forKey:"appID")
+        coder.encode(self.appKey, forKey:"appKey")
+        coder.encode(self.hostName, forKey:"hostName")
+        coder.encode(self.baseURL, forKey:"baseURL")
+        coder.encode(self.siteName, forKey:"siteName")
     }
 
     // MARK: Initializers
@@ -58,7 +58,7 @@ public class App: NSObject, NSCoding {
         self.siteName = site.getName()
     }
 
-    private init(appID:String, appKey:String, hostName:String,
+    fileprivate init(appID:String, appKey:String, hostName:String,
         baseURL:String, siteName:String)
     {
         self.appID = appID
@@ -75,73 +75,46 @@ public class App: NSObject, NSCoding {
  https://developer.kii.com does not need to interact with this Builder.
  Just use App(appID:appKey:site) constructor is fine.
 */
-public class AppBuilder: NSObject {
+open class AppBuilder: NSObject {
     private let appID:String
     private let appKey:String
     private let hostName:String
-    private var urlSchema:String
-    private var siteName:String
-    private var port:Int32
+    private let urlSchema:String
+    private let siteName:String
+    private let port:Int32
 
     /** Init the Builder.
 
      - Parameter appID: ID of the app.
      - Parameter appKey: Key of the app.
-     - Parameter hostName: Host name to which the app connects
+     - Parameter hostNabuildme: Host name to which the app connects
+     - Parameter urlSchema: URL schema. By default, "https" is
+       used. You can override the URL schema with this parameter.
+     - Parameter siteName: Site name. By default site name is set to
+       "CUSTOM". This site name should match with your Gateway Agent
+       configuration if you interact Gateway Agent with this SDK.
     */
-    public init(appID:String, appKey:String, hostName:String) {
+    public init(
+      appID: String,
+      appKey: String,
+      hostName: String,
+      urlSchema: String = "https",
+      siteName: String = "CUSTOM",
+      port: Int32 = -1)
+    {
         self.appID = appID
         self.appKey = appKey
         self.hostName = hostName
-        self.urlSchema = "https"
-        self.siteName = "CUSTOM"
-        self.port = -1
-    }
-
-    /** Set port number.
-     This method call is optional.
-     By default no port number is used to connect to the cloud.
-
-     - Parameter port: port number. 0 or less than 0 would be ignored.
-     - Returns: AppBuilder instance.
-    */
-    public func setPort(port:Int32) -> AppBuilder {
-        self.port=port
-        return self
-    }
-
-    /** Set the API endpoint URL schema
-     This method call is optional.
-     By default "https" is used. You can override the URL schema with this
-     method.
-
-     - Parameter urlSchema: API endpoit URL schema
-     - Returns: AppBuilder instance.
-    */
-    public func setUrlSchema(urlSchema:String) -> AppBuilder {
         self.urlSchema = urlSchema
-        return self
-    }
-
-    /** Set site name.
-     This method call is optional.
-     By default site name is set to "CUSTOM".
-     This site name should match with your Gateway Agent configuration
-     if you interact Gateway Agent with this SDK.
-
-     - Parameter siteName: site name.
-     - Returns: AppBuilder instance.
-    */
-    public func setSiteName(siteName:String) -> AppBuilder {
         self.siteName = siteName
-        return self
+        self.port = port
     }
 
-    /** Build App instance
+    /** Make App instance
 
      - Returns: App instance
     */
-    public func build() -> App {
+    open func make() -> App {
         var baseURL:String = urlSchema + "://" + hostName
         if (self.port > 0) {
             baseURL = baseURL + ":" + String(port)

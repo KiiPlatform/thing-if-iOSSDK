@@ -17,7 +17,7 @@ extension NSNumber {
 
     public func isDouble() -> Bool{
         let numberType = CFNumberGetType(self)
-        if numberType == CFNumberType.Float64Type {
+        if numberType == CFNumberType.float64Type {
             return true
         }else {
             return false
@@ -26,9 +26,9 @@ extension NSNumber {
 
     public func isInt() -> Bool{
         let numberType = CFNumberGetType(self)
-        if numberType == CFNumberType.SInt64Type ||
-            numberType == CFNumberType.SInt16Type ||
-            numberType == CFNumberType.SInt32Type {
+        if numberType == CFNumberType.sInt64Type ||
+            numberType == CFNumberType.sInt16Type ||
+            numberType == CFNumberType.sInt32Type {
             return true
         }else {
             return false

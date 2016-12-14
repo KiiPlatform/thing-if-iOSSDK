@@ -22,11 +22,11 @@ class PredicateNSCodingTests: SmallTestBase {
     func testSchedulePredicate() {
         let predicate = SchedulePredicate(schedule: "test");
 
-        let data = NSKeyedArchiver.archivedDataWithRootObject(predicate);
+        let data = NSKeyedArchiver.archivedData(withRootObject: predicate);
 
         XCTAssertNotNil(data);
 
-        let decode = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! SchedulePredicate;
+        let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! SchedulePredicate;
 
         XCTAssertNotNil(decode);
         XCTAssertEqual(decode.schedule, predicate.schedule);
@@ -35,17 +35,17 @@ class PredicateNSCodingTests: SmallTestBase {
     func testStatePredicate() {
         let predicate = StatePredicate(
                 condition: Condition(clause: EqualsClause(field: "f", stringValue: "v")),
-                triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE);
+                triggersWhen: TriggersWhen.conditionFalseToTrue);
 
-        let data = NSKeyedArchiver.archivedDataWithRootObject(predicate);
+        let data = NSKeyedArchiver.archivedData(withRootObject: predicate);
 
         XCTAssertNotNil(data);
 
-        let decode = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! StatePredicate;
+        let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! StatePredicate;
 
         XCTAssertNotNil(decode);
         XCTAssertNotNil(decode.condition);
-        XCTAssertEqual(decode.condition.toNSDictionary(), predicate.condition.toNSDictionary());
+        self.verifyDict2(decode.condition.makeDictionary(), predicate.condition.makeDictionary());
         XCTAssertEqual(decode.triggersWhen, predicate.triggersWhen);
     }
 }

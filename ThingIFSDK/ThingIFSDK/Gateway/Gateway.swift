@@ -7,6 +7,7 @@
 
 import Foundation
 
-public class Gateway: AbstractThing {
+/** Represents gateway. */
+open class Gateway: AbstractThing {
 
 }

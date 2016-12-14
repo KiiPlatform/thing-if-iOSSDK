@@ -22,11 +22,11 @@ class GetStateTests: SmallTestBase {
         super.tearDown()
     }
 
-    func onboard(setting:TestSetting){
-        let expectation = self.expectationWithDescription("onboardWithVendorThingID")
+    func onboard(_ setting:TestSetting){
+        let expectation = self.expectation(description: "onboardWithVendorThingID")
 
         do{
-            let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1", "key2":"value2"]
+            let thingProperties:Dictionary<String, Any> = ["key1":"value1", "key2":"value2"]
             let thingType = "LED"
             let vendorThingID = "th.abcd-efgh"
             let thingPassword = "dummyPassword"
@@ -34,25 +34,30 @@ class GetStateTests: SmallTestBase {
             // mock response
             let dict = ["accessToken":"BrZ3M9fIqghhqhyiqnxncY6KXEFEZWJaP0894qtzu2E","thingID":"th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"]
 
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
 
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
 
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "POST")
 
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)",  "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
 
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            setting.api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
+            setting.api.onboardWith(
+              vendorThingID: vendorThingID,
+              thingPassword: thingPassword,
+              options: OnboardWithVendorThingIDOptions(
+                thingType: thingType,
+                thingProperties: thingProperties)) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.typedID.toString(), "thing:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
@@ -63,7 +68,7 @@ class GetStateTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -74,30 +79,30 @@ class GetStateTests: SmallTestBase {
         let setting = TestSetting()
 
         self.onboard(setting)
-        let expectation = self.expectationWithDescription("testGetStates_success")
+        let expectation = self.expectation(description: "testGetStates_success")
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "GET")
+            let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/states"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
-            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
+            XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
         }
 
-        let dict : Dictionary<String,AnyObject>? = [
+        let dict : Dictionary<String, Any>? = [
             "power" : true,
             "brightness" : 70,
             "color" : 0
         ]
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict!, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted)
 
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
@@ -117,13 +122,13 @@ class GetStateTests: SmallTestBase {
             }
 
             for (k,v) in dict! {
-                let val : AnyObject = result![k]!
-                XCTAssertTrue(v === val)
+                let val : Any = result![k]!
+                XCTAssertTrue((v as AnyObject).isEqual(val))
             }
 
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -132,25 +137,25 @@ class GetStateTests: SmallTestBase {
     func testGetStates_http_404() {
         let setting = TestSetting()
         self.onboard(setting)
-        let expectation = self.expectationWithDescription("testGetStates_http_404")
+        let expectation = self.expectation(description: "testGetStates_http_404")
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "GET")
+            let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/states"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
-            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
+            XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
         }
 
         let dict = ["errorCode":"TARGET_NOT_FOUND","message":"error message"]
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
 
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
@@ -167,9 +172,9 @@ class GetStateTests: SmallTestBase {
             }else {
 
                 switch error! {
-                case .CONNECTION:
+                case .connection:
                     XCTFail("should not be connection error")
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                     XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
                     XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
@@ -179,7 +184,7 @@ class GetStateTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -189,26 +194,26 @@ class GetStateTests: SmallTestBase {
     func testGetStates_http_401() {
         let setting = TestSetting()
         self.onboard(setting)
-        let expectation = self.expectationWithDescription("testGetStates_http_401")
+        let expectation = self.expectation(description: "testGetStates_http_401")
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "GET")
+            let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/states"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
-            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
+            XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/states")
         }
 
         let dict = ["errorCode":"INVALID_INPUT_DATA","message":"error message"]
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
 
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, httpVersion: nil, headerFields: nil)
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
@@ -225,9 +230,9 @@ class GetStateTests: SmallTestBase {
             }else {
 
                 switch error! {
-                case .CONNECTION:
+                case .connection:
                     XCTFail("should not be connection error")
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
                     XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
                     XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
@@ -237,7 +242,7 @@ class GetStateTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -249,30 +254,30 @@ class GetStateTests: SmallTestBase {
         let setting = TestSetting()
         self.onboard(setting)
         iotSession = MockMultipleSession.self
-        let expectation = self.expectationWithDescription("testGetStates_success")
+        let expectation = self.expectation(description: "testGetStates_success")
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
-            let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(setting.target.typedID.toString())/states"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "GET")
+            let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/states"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "content-type": "application/json"]
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
 
         }
 
-        let dict : Dictionary<String,AnyObject>? = [
+        let dict : Dictionary<String, Any>? = [
             "power" : true,
             "brightness" : 70,
             "color" : 0
         ]
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict!, options: .PrettyPrinted)
-            let errorJson = try NSJSONSerialization.dataWithJSONObject(["errorCode":"INVALID_INPUT_DATA","message":"error message"], options: .PrettyPrinted)
-            let mockResponse1 = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
-            let mockResponse2 = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict!, options: .prettyPrinted)
+            let errorJson = try JSONSerialization.data(withJSONObject: ["errorCode":"INVALID_INPUT_DATA","message":"error message"], options: .prettyPrinted)
+            let mockResponse1 = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
+            let mockResponse2 = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, httpVersion: nil, headerFields: nil)
             iotSession = MockMultipleSession.self
             sharedMockMultipleSession.responsePairs = [
                 ((data: jsonData, urlResponse: mockResponse1, error: nil),requestVerifier),
@@ -295,8 +300,8 @@ class GetStateTests: SmallTestBase {
             }
             
             for (k,v) in dict! {
-                let val : AnyObject = result![k]!
-                XCTAssertTrue(v === val)
+                let val : Any = result![k]!
+                XCTAssertTrue((v as AnyObject).isEqual(val))
             }
         }
 
@@ -306,9 +311,9 @@ class GetStateTests: SmallTestBase {
             }else {
 
                 switch error! {
-                case .CONNECTION:
+                case .connection:
                     XCTFail("should not be connection error")
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
 
                 default:
@@ -317,7 +322,7 @@ class GetStateTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -326,7 +331,7 @@ class GetStateTests: SmallTestBase {
 
     func testGetStates_target_not_available_error() {
         let setting = TestSetting()
-        let expectation = self.expectationWithDescription("testGetStates_target_not_available_error")
+        let expectation = self.expectation(description: "testGetStates_target_not_available_error")
 
         setting.api.getState() { (result, error) -> Void in
 
@@ -337,7 +342,7 @@ class GetStateTests: SmallTestBase {
             }else {
 
                 switch error! {
-                case .TARGET_NOT_AVAILABLE:
+                case .targetNotAvailable:
                     break
                 default:
                     XCTFail("error should be TARGET_NOT_AVAILABLE")
@@ -345,7 +350,7 @@ class GetStateTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

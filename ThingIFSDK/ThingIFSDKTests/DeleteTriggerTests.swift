@@ -21,7 +21,7 @@ class DeleteTriggerTests: SmallTestBase {
     func testDeleteTrigger_success() {
         let setting:TestSetting = TestSetting()
         let api = setting.api
-        let expectation = self.expectationWithDescription("enableTriggerTests")
+        let expectation = self.expectation(description: "enableTriggerTests")
 
         // perform onboarding
         api._target = setting.target
@@ -29,16 +29,16 @@ class DeleteTriggerTests: SmallTestBase {
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
         // verify delete request
-        let deleteRequestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "DELETE")
+        let deleteRequestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "DELETE")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.ownerToken)", "Content-type":"application/json"]
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
-            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
+            XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)")
         }
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 204, httpVersion: nil, headerFields: nil)
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = deleteRequestVerifier
         iotSession = MockSession.self
@@ -52,7 +52,7 @@ class DeleteTriggerTests: SmallTestBase {
             expectation.fulfill()
         }
 
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -64,7 +64,7 @@ class DeleteTriggerTests: SmallTestBase {
         let api = setting.api
         let owner = setting.owner
         let target = setting.target
-        let expectation = self.expectationWithDescription("enableTrigger404Error")
+        let expectation = self.expectation(description: "enableTrigger404Error")
 
         // perform onboarding
         api._target = setting.target
@@ -75,18 +75,18 @@ class DeleteTriggerTests: SmallTestBase {
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",
                 "message" : "Target \(target.typedID.toString()) not found"]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: responsedDict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 404, httpVersion: nil, headerFields: nil)
 
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "DELETE")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "DELETE")
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
-                XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)")
+                XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)")
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -96,9 +96,9 @@ class DeleteTriggerTests: SmallTestBase {
                     XCTFail("should fail")
                 }else {
                     switch error! {
-                    case .CONNECTION:
+                    case .connection:
                         XCTFail("should not be connection error")
-                    case .ERROR_RESPONSE(let actualErrorResponse):
+                    case .errorResponse(let actualErrorResponse):
                         XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
@@ -111,7 +111,7 @@ class DeleteTriggerTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -121,7 +121,7 @@ class DeleteTriggerTests: SmallTestBase {
     func testDeleteTrigger_trigger_not_available_error() {
         let setting:TestSetting = TestSetting()
         let api = setting.api
-        let expectation = self.expectationWithDescription("testDeleteTrigger_trigger_not_available_error")
+        let expectation = self.expectation(description: "testDeleteTrigger_trigger_not_available_error")
 
         let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
@@ -130,7 +130,7 @@ class DeleteTriggerTests: SmallTestBase {
                 XCTFail("should fail")
             }else {
                 switch error! {
-                case .TARGET_NOT_AVAILABLE:
+                case .targetNotAvailable:
                     break
                 default:
                     XCTFail("should be TARGET_NOT_AVAILABLE error")
@@ -139,7 +139,7 @@ class DeleteTriggerTests: SmallTestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

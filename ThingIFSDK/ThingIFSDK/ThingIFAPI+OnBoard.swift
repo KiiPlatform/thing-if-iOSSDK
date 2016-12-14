@@ -10,35 +10,39 @@ import Foundation
 extension ThingIFAPI {
 
     func _onboard(
-        byVendorThingID: Bool,
+        _ byVendorThingID: Bool,
         IDString: String,
         thingPassword:String,
         thingType:String? = nil,
         firmwareVersion:String? = nil,
-        thingProperties:Dictionary<String,AnyObject>? = nil,
+        thingProperties:Dictionary<String, Any>? = nil,
         layoutPosition:LayoutPosition? = nil,
         dataGroupingInterval:DataGroupingInterval? = nil,
-        completionHandler: (Target?, ThingIFError?)-> Void
+        completionHandler: @escaping (Target?, ThingIFError?)-> Void
         ) ->Void {
 
             if self.target != nil {
-                completionHandler(nil, ThingIFError.ALREADY_ONBOARDED)
+                completionHandler(nil, ThingIFError.alreadyOnboarded)
                 return
             }
             
             let requestURL = "\(baseURL)/thing-if/apps/\(appID)/onboardings"
             
             // genrate body
-            let requestBodyDict = NSMutableDictionary(dictionary: ["thingPassword": thingPassword, "owner": owner.typedID.toString()])
+            var requestBodyDict: Dictionary<String, Any> =
+              [
+                "thingPassword": thingPassword,
+                "owner": owner.typedID.toString()
+              ]
             
             // generate header
             var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
             
             if byVendorThingID {
-                requestBodyDict.setObject(IDString, forKey: "vendorThingID")
+                requestBodyDict["vendorThingID"] = IDString
                 requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
-            }else {
-                requestBodyDict.setObject(IDString, forKey: "thingID")
+            } else {
+                requestBodyDict["thingID"] = IDString
                 requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithThingIDByOwner+json"
             }
 
@@ -53,7 +57,7 @@ extension ThingIFAPI {
             requestBodyDict["dataGroupingInterval"] = dataGroupingInterval?.rawValue
 
             do{
-                let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+                let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
                 // do request
                 let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                     
@@ -73,12 +77,12 @@ extension ThingIFAPI {
                         } else {
                             vendorThingID = ""
                         }
-                        if layoutPosition == LayoutPosition.GATEWAY {
+                        if layoutPosition == LayoutPosition.gateway {
                             target = Gateway(
                                     thingID: thingID,
                                     vendorThingID: vendorThingID,
                                     accessToken: accessToken)
-                        } else if layoutPosition == LayoutPosition.ENDNODE {
+                        } else if layoutPosition == LayoutPosition.endnode {
                             target = EndNode(
                                     thingID: thingID,
                                     vendorThingID: vendorThingID,
@@ -93,7 +97,7 @@ extension ThingIFAPI {
                         self._target = target
                     }
                     self.saveToUserDefault()
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completionHandler(target, error)
                     }
                 })
@@ -102,27 +106,27 @@ extension ThingIFAPI {
                 
             }catch(_){
                 kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-                completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+                completionHandler(nil, ThingIFError.jsonParseError)
             }
     }
 
     func _onboardEndnodeWithGateway(
-        pendingEndnode:PendingEndNode,
+        _ pendingEndnode:PendingEndNode,
         endnodePassword:String,
         options:OnboardEndnodeWithGatewayOptions? = nil,
-        completionHandler: (EndNode?, ThingIFError?)-> Void
+        completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
         if self.target == nil || !(self.target is Gateway) {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
         if pendingEndnode.vendorThingID == nil || pendingEndnode.vendorThingID!.isEmpty {
-            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            completionHandler(nil, ThingIFError.unsupportedError)
             return
         }
         if endnodePassword.isEmpty {
-            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
+            completionHandler(nil, ThingIFError.unsupportedError)
             return
         }
 
@@ -155,7 +159,7 @@ extension ThingIFAPI {
         requestBodyDict["dataGroupingInterval"] = options?.dataGroupingInterval?.rawValue
 
         do {
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(
                 HTTPMethod.POST,
@@ -171,7 +175,7 @@ extension ThingIFAPI {
                         let accessToken = response?["accessToken"] as! String
                         endNode = EndNode(thingID: thingID, vendorThingID: pendingEndnode.vendorThingID!, accessToken: accessToken)
                     }
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completionHandler(endNode, error)
                     }
                 }
@@ -180,7 +184,7 @@ extension ThingIFAPI {
             operationQueue.addOperation(operation)
         } catch(_) {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
+            completionHandler(nil, ThingIFError.jsonParseError)
         }
     }
 }

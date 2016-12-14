@@ -5,26 +5,26 @@
 import Foundation
 
 /** Represents Target */
-public class AbstractThing : NSObject, TargetThing {
-    public let typedID: TypedID
-    public let accessToken: String?
-    public var thingID: String {
+open class AbstractThing : NSObject, TargetThing {
+    open let typedID: TypedID
+    open let accessToken: String?
+    open var thingID: String {
         return self.typedID.id
     }
-    public let vendorThingID: String
+    open let vendorThingID: String
 
     // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.typedID, forKey: "typedID")
-        aCoder.encodeObject(self.accessToken, forKey: "accessToken")
-        aCoder.encodeObject(self.vendorThingID, forKey: "vendorThingID")
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.typedID, forKey: "typedID")
+        aCoder.encode(self.accessToken, forKey: "accessToken")
+        aCoder.encode(self.vendorThingID, forKey: "vendorThingID")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        self.typedID = aDecoder.decodeObjectForKey("typedID") as! TypedID
-        self.accessToken = aDecoder.decodeObjectForKey("accessToken") as! String?
-        self.vendorThingID = aDecoder.decodeObjectForKey("vendorThingID") as! String
+        self.typedID = aDecoder.decodeObject(forKey: "typedID") as! TypedID
+        self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as! String?
+        self.vendorThingID = aDecoder.decodeObject(forKey: "vendorThingID") as! String
     }
 
     /** Init
@@ -39,7 +39,7 @@ public class AbstractThing : NSObject, TargetThing {
         self.vendorThingID = vendorThingID
     }
 
-    public override func isEqual(object: AnyObject?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         guard let aTarget = object as? AbstractThing else {
             return false
         }

@@ -21,7 +21,7 @@ class PushUninstallationTests: SmallTestBase {
         super.tearDown()
     }
 
-    func checkSavedIoTAPI(setting:TestSetting){
+    func checkSavedIoTAPI(_ setting:TestSetting){
         do{
             let savedIoTAPI = try ThingIFAPI.loadWithStoredInstance(setting.api.tag)
             XCTAssertNotNil(savedIoTAPI)
@@ -32,11 +32,11 @@ class PushUninstallationTests: SmallTestBase {
         }
     }
 
-    func onboard(setting:TestSetting){
-        let expectation = self.expectationWithDescription("onboardWithVendorThingID")
+    func onboard(_ setting:TestSetting){
+        let expectation = self.expectation(description: "onboardWithVendorThingID")
         
         do{
-            let thingProperties:Dictionary<String, AnyObject> = ["key1":"value1", "key2":"value2"]
+            let thingProperties:Dictionary<String, Any> = ["key1":"value1", "key2":"value2"]
             let thingType = "LED"
             let vendorThingID = "th.abcd-efgh"
             let thingPassword = "dummyPassword"
@@ -44,25 +44,30 @@ class PushUninstallationTests: SmallTestBase {
             // mock response
             let dict = ["accessToken":"BrZ3M9fIqghhqhyiqnxncY6KXEFEZWJaP0894qtzu2E","thingID":"th.0267251d9d60-1858-5e11-3dc3-00f3f0b5"]
             
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
             
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
             
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "POST")
                 
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
                 
             }
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
-            setting.api.onboard(vendorThingID, thingPassword: thingPassword, thingType: thingType, thingProperties: thingProperties) { ( target, error) -> Void in
+            setting.api.onboardWith(
+              vendorThingID: vendorThingID,
+              thingPassword: thingPassword,
+              options: OnboardWithVendorThingIDOptions(
+                thingType: thingType,
+                thingProperties: thingProperties)) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.typedID.toString(), "thing:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")
                 }else {
@@ -73,7 +78,7 @@ class PushUninstallationTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -83,23 +88,23 @@ class PushUninstallationTests: SmallTestBase {
     func testPushUninstallation_success() {
         let setting = TestSetting()
         self.onboard(setting)
-        let expectation = self.expectationWithDescription("testPushUninstallation_success")
+        let expectation = self.expectation(description: "testPushUninstallation_success")
         let installID = "dummyInstallId"
         
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "DELETE")
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "DELETE")
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.api.appID)/installations/\(installID)"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
-            XCTAssertEqual(request.URL?.absoluteString, setting.app.baseURL + "/api/apps/50a62843/installations/\(installID)")
+            XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/api/apps/50a62843/installations/\(installID)")
         }
         
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 204, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 204, httpVersion: nil, headerFields: nil)
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
@@ -109,7 +114,7 @@ class PushUninstallationTests: SmallTestBase {
             XCTAssertNil(setting.api._installationID,"Should be nil")
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -119,26 +124,26 @@ class PushUninstallationTests: SmallTestBase {
     func testPushUninstallation_http_404() {
         let setting = TestSetting()
         self.onboard(setting)
-        let expectation = self.expectationWithDescription("testPushUninstallation_http_404")
+        let expectation = self.expectation(description: "testPushUninstallation_http_404")
         let installID = "dummyInstallId"
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "DELETE")
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "DELETE")
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.api.appID)/installations/\(installID)"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             
         }
         
         let dict = ["errorCode":"INSTALLATION_NOT_FOUND","message":"error message"]
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
             
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 404, httpVersion: nil, headerFields: nil)
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
@@ -155,9 +160,9 @@ class PushUninstallationTests: SmallTestBase {
             }else {
                 
                 switch error! {
-                case .CONNECTION:
+                case .connection:
                     XCTFail("should not be connection error")
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
                     XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
                     XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
@@ -167,7 +172,7 @@ class PushUninstallationTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -177,26 +182,26 @@ class PushUninstallationTests: SmallTestBase {
     func testPushUninstallation_http_401() {
         let setting = TestSetting()
         self.onboard(setting)
-        let expectation = self.expectationWithDescription("testPushUninstallation_http_401")
+        let expectation = self.expectation(description: "testPushUninstallation_http_401")
         let installID = "dummyInstallId"
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "DELETE")
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.api.appID!)/installations/\(installID)"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "DELETE")
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.api.appID)/installations/\(installID)"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)"]
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             
         }
         
         let dict = ["errorCode":"INVALID_INPUT_DATA","message":"error message"]
         do {
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
             
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, HTTPVersion: nil, headerFields: nil)
+            let urlResponse = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 401, httpVersion: nil, headerFields: nil)
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
@@ -213,9 +218,9 @@ class PushUninstallationTests: SmallTestBase {
             }else {
                 
                 switch error! {
-                case .CONNECTION:
+                case .connection:
                     XCTFail("should not be connection error")
-                case .ERROR_RESPONSE(let actualErrorResponse):
+                case .errorResponse(let actualErrorResponse):
                     XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
                     XCTAssertEqual(dict["errorCode"]!, actualErrorResponse.errorCode)
                     XCTAssertEqual(dict["message"]!, actualErrorResponse.errorMessage)
@@ -225,7 +230,7 @@ class PushUninstallationTests: SmallTestBase {
             }
             expectation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

@@ -22,41 +22,41 @@ class GatewayAPILoginTests: GatewayAPITestBase {
 
     func testSuccess()
     {
-        let expectation = self.expectationWithDescription("testSuccess")
+        let expectation = self.expectation(description: "testSuccess")
         let setting = TestSetting()
         let username = "dummyUser"
         let password = "dummyPass"
 
         do {
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "POST")
                 // verify path
                 let expectedPath = "\(setting.app.baseURL)/\(setting.app.siteName)/token"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+                XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let credential = "\(setting.app.appID):\(setting.app.appKey)"
-                let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+                let base64Str = credential.data(using: String.Encoding.utf8)!.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
                 let expectedHeader = [
                     "authorization": "Basic \(base64Str)",
                     "Content-Type": "application/json"
                 ]
                 XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
                 //verify body
-                let expectedBody: Dictionary<String, AnyObject> = [
+                let expectedBody: Dictionary<String, Any> = [
                     "username": username,
                     "password": password];
-                self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+                self.verifyDict(expectedBody, actualData: request.httpBody!)
             }
 
             // mock response
             let dict = ["accessToken": self.ACCESSTOKEN]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -65,13 +65,13 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             XCTFail("should not throw error")
         }
 
-        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
+        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
         gatewayAPI.login(username, password: password, completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNil(error)
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -80,15 +80,15 @@ class GatewayAPILoginTests: GatewayAPITestBase {
 
     func testEmptyUsernameError()
     {
-        let expectation = self.expectationWithDescription("testEmptyUsernameError")
+        let expectation = self.expectation(description: "testEmptyUsernameError")
         let setting = TestSetting()
         let password = "dummyPass"
 
-        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
+        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
         gatewayAPI.login("", password: password, completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .UNSUPPORTED_ERROR:
+            case .unsupportedError:
                 break
             default:
                 XCTFail("unknown error")
@@ -96,7 +96,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -105,15 +105,15 @@ class GatewayAPILoginTests: GatewayAPITestBase {
 
     func testEmptyPasswordError()
     {
-        let expectation = self.expectationWithDescription("testEmptyPasswordError")
+        let expectation = self.expectation(description: "testEmptyPasswordError")
         let setting = TestSetting()
         let username = "dummyUser"
 
-        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
+        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
         gatewayAPI.login(username, password: "", completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .UNSUPPORTED_ERROR:
+            case .unsupportedError:
                 break
             default:
                 XCTFail("unknown error")
@@ -121,7 +121,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -130,48 +130,50 @@ class GatewayAPILoginTests: GatewayAPITestBase {
 
     func test400Error()
     {
-        let expectation = self.expectationWithDescription("test400Error")
+        let expectation = self.expectation(description: "test400Error")
         let setting = TestSetting()
         let username = "dummyUser"
         let password = "dummyPass"
 
+        GatewayAPI.removeAllStoredInstances()
+
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "POST")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
             // verify path
             let expectedPath = "\(setting.app.baseURL)/\(setting.app.siteName)/token"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let credential = "\(setting.app.appID):\(setting.app.appKey)"
-            let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+            let base64Str = credential.data(using: String.Encoding.utf8)!.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
             let expectedHeader = [
                 "authorization": "Basic \(base64Str)",
                 "Content-Type": "application/json"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [
+            let expectedBody: Dictionary<String, Any> = [
                 "username": username,
                 "password": password];
-            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-            statusCode: 400, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+            statusCode: 400, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
+        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
         gatewayAPI.login(username, password: password, completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -179,57 +181,67 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
+            }
+        }
+
+        XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
+            switch error {
+            case ThingIFError.apiNotStored:
+                // Succeed
+                break
+            default:
+                XCTFail("unknown error")
             }
         }
     }
 
     func test401Error()
     {
-        let expectation = self.expectationWithDescription("test401Error")
+        let expectation = self.expectation(description: "test401Error")
         let setting = TestSetting()
         let username = "dummyUser"
         let password = "dummyPass"
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "POST")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
             // verify path
             let expectedPath = "\(setting.app.baseURL)/\(setting.app.siteName)/token"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let credential = "\(setting.app.appID):\(setting.app.appKey)"
-            let base64Str = credential.dataUsingEncoding(NSUTF8StringEncoding)!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+            let base64Str = credential.data(using: String.Encoding.utf8)!.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
             let expectedHeader = [
                 "authorization": "Basic \(base64Str)",
                 "Content-Type": "application/json"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
             //verify body
-            let expectedBody: Dictionary<String, AnyObject> = [
+            let expectedBody: Dictionary<String, Any> = [
                 "username": username,
                 "password": password];
-            self.verifyDict(expectedBody, actualData: request.HTTPBody!)
+            self.verifyDict(expectedBody, actualData: request.httpBody!)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-            statusCode: 401, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+            statusCode: 401, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
-        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
+        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
         gatewayAPI.login(username, password: password, completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNotNil(error)
             switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -237,7 +249,7 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

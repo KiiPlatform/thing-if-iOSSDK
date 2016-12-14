@@ -22,7 +22,7 @@ class GetVendorThingIDTests: SmallTestBase {
 
     func testGetVendorThingIDSuccess()
     {
-        let expectation = self.expectationWithDescription("testGetVendorThingIDSuccess")
+        let expectation = self.expectation(description: "testGetVendorThingIDSuccess")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -32,11 +32,11 @@ class GetVendorThingIDTests: SmallTestBase {
 
         do {
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "GET")
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.appID)/things/\(setting.target.typedID.id)/vendor-thing-id"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+                let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.appID)/things/\(setting.target.typedID.id)/vendor-thing-id"
+                XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let expectedHeader = [
                     "X-kii-appid": setting.appID,
@@ -46,16 +46,16 @@ class GetVendorThingIDTests: SmallTestBase {
                 ]
                 XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
             }
 
             // mock response
             let vendorThingID = "dummyVendorThingID"
             let dict = ["_vendorThingID": vendorThingID]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -70,7 +70,7 @@ class GetVendorThingIDTests: SmallTestBase {
             XCTFail("should not throw error")
         }
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -79,7 +79,7 @@ class GetVendorThingIDTests: SmallTestBase {
 
     func testGetVendorThingID404Error()
     {
-        let expectation = self.expectationWithDescription("testGetVendorThingID404Error")
+        let expectation = self.expectation(description: "testGetVendorThingID404Error")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -88,11 +88,11 @@ class GetVendorThingIDTests: SmallTestBase {
         api._target = target
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(setting.api.baseURL!)/api/apps/\(setting.appID)/things/\(setting.target.typedID.id)/vendor-thing-id"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            let expectedPath = "\(setting.api.baseURL)/api/apps/\(setting.appID)/things/\(setting.target.typedID.id)/vendor-thing-id"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "X-kii-appid": setting.appID,
@@ -102,13 +102,13 @@ class GetVendorThingIDTests: SmallTestBase {
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-            statusCode: 404, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+            statusCode: 404, httpVersion: nil, headerFields: nil)
 
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -118,7 +118,7 @@ class GetVendorThingIDTests: SmallTestBase {
             XCTAssertNil(gotID)
             XCTAssertNotNil(error)
             switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -126,7 +126,7 @@ class GetVendorThingIDTests: SmallTestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

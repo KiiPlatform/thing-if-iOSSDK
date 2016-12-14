@@ -20,7 +20,7 @@ class CommandFormTests: SmallTestBase {
     }
 
     func testInitWithRequiredValue() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -35,14 +35,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyArray(commandForm.actions, actual: actions)
         XCTAssertNil(commandForm.title)
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithTitle() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -58,14 +58,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyArray(commandForm.actions, actual: actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithCommandDescription() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -81,14 +81,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyArray(commandForm.actions, actual: actions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -97,7 +97,7 @@ class CommandFormTests: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
             "key1" : "value1",
             "key2" : "value2"
         ]
@@ -108,13 +108,13 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyArray(commandForm.actions, actual: actions)
         XCTAssertNil(commandForm.title)
         verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testInitWithTitleAndDescription() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -131,14 +131,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyArray(commandForm.actions, actual: actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithTitleAndMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -147,7 +147,7 @@ class CommandFormTests: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
             "key1" : "value1",
             "key2" : "value2"
         ]
@@ -159,14 +159,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyArray(commandForm.actions, actual: actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
         verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testInitWithDescriptionAndMetadata() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -175,7 +175,7 @@ class CommandFormTests: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
             "key1" : "value1",
             "key2" : "value2"
         ]
@@ -187,14 +187,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyArray(commandForm.actions, actual: actions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
         verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testInitWithAllFields() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -203,7 +203,7 @@ class CommandFormTests: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
             "key1" : "value1",
             "key2" : "value2"
         ]
@@ -216,14 +216,14 @@ class CommandFormTests: SmallTestBase {
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.schemaName, "name")
         XCTAssertEqual(commandForm.schemaVersion, 1)
-        XCTAssertEqual(commandForm.actions, actions)
+        verifyArray(commandForm.actions, actual: actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
         verifyDict(commandForm.metadata!, actualDict: metadata)
     }
 
     func testNSCoding() {
-        let actions: [Dictionary<String, AnyObject>] = [
+        let actions: [Dictionary<String, Any>] = [
             [
                 "action1" :
                 [
@@ -232,7 +232,7 @@ class CommandFormTests: SmallTestBase {
                 ]
             ]
         ];
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
             "key1" : "value1",
             "key2" : "value2"
         ]
@@ -244,19 +244,19 @@ class CommandFormTests: SmallTestBase {
                                       metadata: metadata)
         let data: NSMutableData = NSMutableData(capacity: 1024)!;
         let coder: NSKeyedArchiver =
-            NSKeyedArchiver(forWritingWithMutableData: data);
-        original.encodeWithCoder(coder);
+            NSKeyedArchiver(forWritingWith: data);
+        original.encode(with: coder);
         coder.finishEncoding();
 
         let decoder: NSKeyedUnarchiver =
-            NSKeyedUnarchiver(forReadingWithData: data);
+            NSKeyedUnarchiver(forReadingWith: data as Data);
         let deserialized: CommandForm = CommandForm(coder: decoder)!;
         decoder.finishDecoding();
 
         XCTAssertNotNil(deserialized)
         XCTAssertEqual(deserialized.schemaName, "name")
         XCTAssertEqual(deserialized.schemaVersion, 1)
-        XCTAssertEqual(deserialized.actions, actions)
+        verifyArray(deserialized.actions, actual: actions)
         XCTAssertEqual(deserialized.title, "title")
         XCTAssertEqual(deserialized.commandDescription, "description")
         verifyDict(deserialized.metadata!, actualDict: metadata)

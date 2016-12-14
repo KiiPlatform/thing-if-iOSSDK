@@ -7,42 +7,48 @@
 
 import Foundation
 
-public class GatewayAPI: NSObject, NSCoding {
+open class GatewayAPI: NSObject, NSCoding {
 
     private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "GatewayAPI_INSTANCE"
-    private static func getSharedNSDefaultKey(tag : String?) -> String{
+    private static func getStoredInstanceKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
+    private static let SHARED_NSUSERDEFAULT_SDK_VERSION_KEY = "GatewayAPI_VERSION"
+    private static func getStoredSDKVersionKey(_ tag : String?) -> String{
+        return SHARED_NSUSERDEFAULT_SDK_VERSION_KEY + (tag == nil ? "" : "_\(tag)")
+    }
+    private static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
 
-    public let tag: String?
-    public let app: App
-    public let gatewayAddress: NSURL
+    open let tag: String?
+    open let app: App
+    open let gatewayAddress: URL
     private var gatewayAddressString: String {
-        return self.gatewayAddress.absoluteString!
+        return self.gatewayAddress.absoluteString
     }
 
-    private var accessToken: String?
+    /** Access token of this gate way */
+    open private(set) var accessToken: String?
 
     let operationQueue = OperationQueue()
 
     // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder)
+    open func encode(with aCoder: NSCoder)
     {
-        aCoder.encodeObject(self.tag, forKey: "tag")
-        aCoder.encodeObject(self.app, forKey: "app")
-        aCoder.encodeObject(self.gatewayAddress, forKey: "gatewayAddress")
-        aCoder.encodeObject(self.accessToken, forKey: "accessToken")
+        aCoder.encode(self.tag, forKey: "tag")
+        aCoder.encode(self.app, forKey: "app")
+        aCoder.encode(self.gatewayAddress, forKey: "gatewayAddress")
+        aCoder.encode(self.accessToken, forKey: "accessToken")
     }
 
     public required init(coder aDecoder: NSCoder)
     {
-        self.tag = aDecoder.decodeObjectForKey("tag") as? String
-        self.app = aDecoder.decodeObjectForKey("app") as! App
-        self.gatewayAddress = aDecoder.decodeObjectForKey("gatewayAddress") as! NSURL
-        self.accessToken = aDecoder.decodeObjectForKey("accessToken") as? String
+        self.tag = aDecoder.decodeObject(forKey: "tag") as? String
+        self.app = aDecoder.decodeObject(forKey: "app") as! App
+        self.gatewayAddress = aDecoder.decodeObject(forKey: "gatewayAddress") as! URL
+        self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as? String
     }
 
-    init(app: App, gatewayAddress: NSURL, tag: String? = nil)
+    internal init(app: App, gatewayAddress: URL, tag: String? = nil)
     {
         self.tag = tag
         self.app = app
@@ -59,14 +65,14 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter password: Password of the Gateway.
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
-    public func login(
-        username: String,
+    open func login(
+        _ username: String,
         password: String,
-        completionHandler: (ThingIFError?)-> Void
+        completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
         if username.isEmpty || password.isEmpty {
-            completionHandler(ThingIFError.UNSUPPORTED_ERROR)
+            completionHandler(ThingIFError.unsupportedError)
             return
         }
 
@@ -75,8 +81,8 @@ public class GatewayAPI: NSObject, NSCoding {
         // generate header
         let credential = "\(self.app.appID):\(self.app.appKey)"
 
-        let plainData = credential.dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64Str = plainData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.init(rawValue: 0))
+        let plainData = credential.data(using: String.Encoding.utf8)!
+        let base64Str = plainData.base64EncodedString(options: NSData.Base64EncodingOptions.init(rawValue: 0))
 
         let requestHeaderDict:Dictionary<String, String> = [
             "authorization": "Basic " + base64Str,
@@ -92,7 +98,7 @@ public class GatewayAPI: NSObject, NSCoding {
         )
 
         do {
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildNewRequest(
                 HTTPMethod.POST,
@@ -100,9 +106,11 @@ public class GatewayAPI: NSObject, NSCoding {
                 requestHeaderDict: requestHeaderDict,
                 requestBodyData: requestBodyData,
                 completionHandler: { (response, error) -> Void in
-                    self.accessToken = response?["accessToken"] as? String
-                    self.saveInstance()
-                    dispatch_async(dispatch_get_main_queue()) {
+                    if error == nil {
+                        self.accessToken = response?["accessToken"] as? String
+                        self.saveInstance()
+                    }
+                    DispatchQueue.main.async {
                         completionHandler(error)
                     }
                 }
@@ -111,7 +119,7 @@ public class GatewayAPI: NSObject, NSCoding {
             operationQueue.addOperation(operation)
         } catch(_) {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.JSON_PARSE_ERROR)
+            completionHandler(ThingIFError.jsonParseError)
         }
     }
 
@@ -119,12 +127,12 @@ public class GatewayAPI: NSObject, NSCoding {
 
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is Gateway instance that has thingID asigned by Kii Cloud and 2nd one is an instance of ThingIFError when failed.
      */
-    public func onboardGateway(
-        completionHandler: (Gateway?, ThingIFError?)-> Void
+    open func onboardGateway(
+        _ completionHandler: @escaping (Gateway?, ThingIFError?)-> Void
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
+            completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -148,7 +156,7 @@ public class GatewayAPI: NSObject, NSCoding {
                 } else {
                     gateway = nil
                 }
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler(gateway, error)
                 }
             }
@@ -161,12 +169,12 @@ public class GatewayAPI: NSObject, NSCoding {
 
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is Gateway ID and 2nd one is an instance of ThingIFError when failed.
      */
-    public func getGatewayID(
-        completionHandler: (String?, ThingIFError?)-> Void
+    open func getGatewayID(
+        _ completionHandler: @escaping (String?, ThingIFError?)-> Void
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
+            completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -183,7 +191,7 @@ public class GatewayAPI: NSObject, NSCoding {
             requestBodyData: nil,
             completionHandler: { (response, error) -> Void in
                 let thingID = response?["thingID"] as? String
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler(thingID, error)
                 }
             }
@@ -196,12 +204,12 @@ public class GatewayAPI: NSObject, NSCoding {
 
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is list of end nodes and 2nd one is an instance of ThingIFError when failed.
      */
-    public func listOnboardedEndNodes(
-        completionHandler: ([EndNode]?, ThingIFError?)-> Void
+    open func listOnboardedEndNodes(
+        _ completionHandler: @escaping ([EndNode]?, ThingIFError?)-> Void
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
+            completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -227,7 +235,7 @@ public class GatewayAPI: NSObject, NSCoding {
                         }
                     }
                 }
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     if error != nil {
                         completionHandler(nil, error)
                     } else {
@@ -244,12 +252,12 @@ public class GatewayAPI: NSObject, NSCoding {
 
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is list of end nodes connected to the gateway but waiting for onboarding and 2nd one is an instance of ThingIFError when failed.
      */
-    public func listPendingEndNodes(
-        completionHandler: ([PendingEndNode]?, ThingIFError?)-> Void
+    open func listPendingEndNodes(
+        _ completionHandler: @escaping ([PendingEndNode]?, ThingIFError?)-> Void
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
+            completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -273,7 +281,7 @@ public class GatewayAPI: NSObject, NSCoding {
                         }
                     }
                 }
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     if error != nil {
                         completionHandler(nil, error)
                     } else {
@@ -293,18 +301,18 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter endNode: Onboarded EndNode
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
-    public func notifyOnboardingCompletion(
-        endNode: EndNode,
-        completionHandler: (ThingIFError?)-> Void
+    open func notifyOnboardingCompletion(
+        _ endNode: EndNode,
+        completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(ThingIFError.USER_IS_NOT_LOGGED_IN)
+            completionHandler(ThingIFError.userIsNotLoggedIn)
             return;
         }
 
         if endNode.thingID.isEmpty || endNode.vendorThingID.isEmpty {
-            completionHandler(ThingIFError.UNSUPPORTED_ERROR)
+            completionHandler(ThingIFError.unsupportedError)
             return;
         }
 
@@ -322,7 +330,7 @@ public class GatewayAPI: NSObject, NSCoding {
         )
 
         do {
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildNewRequest(
                 HTTPMethod.PUT,
@@ -330,7 +338,7 @@ public class GatewayAPI: NSObject, NSCoding {
                 requestHeaderDict: requestHeaderDict,
                 requestBodyData: requestBodyData,
                 completionHandler: { (response, error) -> Void in
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completionHandler(error)
                     }
                 }
@@ -339,7 +347,7 @@ public class GatewayAPI: NSObject, NSCoding {
             operationQueue.addOperation(operation)
         } catch(_) {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.JSON_PARSE_ERROR)
+            completionHandler(ThingIFError.jsonParseError)
         }
     }
 
@@ -348,12 +356,12 @@ public class GatewayAPI: NSObject, NSCoding {
 
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
-    public func restore(
-        completionHandler: (ThingIFError?)-> Void
+    open func restore(
+        _ completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(ThingIFError.USER_IS_NOT_LOGGED_IN)
+            completionHandler(ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -369,7 +377,7 @@ public class GatewayAPI: NSObject, NSCoding {
             requestHeaderDict: requestHeaderDict,
             requestBodyData: nil,
             completionHandler: { (response, error) -> Void in
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     completionHandler(error)
                 }
             }
@@ -384,19 +392,19 @@ public class GatewayAPI: NSObject, NSCoding {
      - Parameter endNodeVendorThingID: ID of the end-node assigned by End Node vendor.
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
-    public func replaceEndNode(
-        endNodeThingID: String,
+    open func replaceEndNode(
+        _ endNodeThingID: String,
         endNodeVendorThingID: String,
-        completionHandler: (ThingIFError?)-> Void
+        completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(ThingIFError.USER_IS_NOT_LOGGED_IN)
+            completionHandler(ThingIFError.userIsNotLoggedIn)
             return;
         }
 
         if endNodeThingID.isEmpty || endNodeVendorThingID.isEmpty {
-            completionHandler(ThingIFError.UNSUPPORTED_ERROR)
+            completionHandler(ThingIFError.unsupportedError)
             return;
         }
 
@@ -414,7 +422,7 @@ public class GatewayAPI: NSObject, NSCoding {
         )
 
         do {
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
+            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildNewRequest(
                 HTTPMethod.PUT,
@@ -422,7 +430,7 @@ public class GatewayAPI: NSObject, NSCoding {
                 requestHeaderDict: requestHeaderDict,
                 requestBodyData: requestBodyData,
                 completionHandler: { (response, error) -> Void in
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completionHandler(error)
                     }
                 }
@@ -431,7 +439,7 @@ public class GatewayAPI: NSObject, NSCoding {
             operationQueue.addOperation(operation)
         } catch(_) {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.JSON_PARSE_ERROR)
+            completionHandler(ThingIFError.jsonParseError)
         }
     }
 
@@ -440,12 +448,12 @@ public class GatewayAPI: NSObject, NSCoding {
 
      - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is information of the Gateway and 2nd one is an instance of ThingIFError when failed.
      */
-    public func getGatewayInformation(
-        completionHandler: (GatewayInformation?, ThingIFError?)-> Void
+    open func getGatewayInformation(
+        _ completionHandler: @escaping (GatewayInformation?, ThingIFError?)-> Void
         )
     {
         if !self.isLoggedIn() {
-            completionHandler(nil, ThingIFError.USER_IS_NOT_LOGGED_IN)
+            completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
@@ -462,7 +470,7 @@ public class GatewayAPI: NSObject, NSCoding {
             requestBodyData: nil,
             completionHandler: { (response, error) -> Void in
                 let id = response?["vendorThingID"] as? String
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     if id == nil {
                         completionHandler(nil, error)
                     } else {
@@ -479,97 +487,133 @@ public class GatewayAPI: NSObject, NSCoding {
 
      - Returns: true if user is logged in, false otherwise.
      */
-    public func isLoggedIn() -> Bool
+    open func isLoggedIn() -> Bool
     {
         return !(self.accessToken?.isEmpty ?? true)
     }
 
-    /** Get Access Token
-
-     - Returns: Access token
-     */
-    public func getAccessToken() -> String?
-    {
-        return self.accessToken
-    }
-
     /** Try to load the instance of GatewayAPI using stored serialized instance.
+
+     Instance is automatically saved when login method is called and successfully completed.
+
+     If the GatewayAPI instance is build without the tag, all instance is saved in same place
+     and overwritten when the instance is saved.
+
+     If the GatewayAPI instance is build with the tag(optional), tag is used as key to distinguish
+     the storage area to save the instance. This would be useful to saving multiple instance.
+
+     When you catch exceptions, please call login for saving or updating serialized instance.
 
      - Parameter tag: tag of the GatewayAPI instance
      - Returns: GatewayIFAPI instance.
      */
-    public static func loadWithStoredInstance(tag : String? = nil) throws -> GatewayAPI?
+    open static func loadWithStoredInstance(_ tag : String? = nil) throws -> GatewayAPI?
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        let key = GatewayAPI.getSharedNSDefaultKey(tag)
+        let versionKey = GatewayAPI.getStoredSDKVersionKey(tag)
+        let key = GatewayAPI.getStoredInstanceKey(tag)
 
         // try to get iotAPI from NSUserDefaults
 
-        if let dict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
-            if dict.objectForKey(key) != nil {
-                if let data = dict[key] as? NSData {
-                    if let savedAPI = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? GatewayAPI {
+        if let dict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
+            if dict.object(forKey: key) != nil {
+
+                let storedSDKVersion = dict.object(forKey: versionKey) as? String
+                if isLoadable(storedSDKVersion) == false {
+                    throw ThingIFError.apiUnloadable(tag: tag, storedVersion: storedSDKVersion, minimumVersion: MINIMUM_LOADABLE_SDK_VERSION)
+                }
+
+                if let data = dict[key] as? Data {
+                    if let savedAPI = NSKeyedUnarchiver.unarchiveObject(with: data) as? GatewayAPI {
                         return savedAPI
                     } else {
-                        throw ThingIFError.INVALID_STORED_API
+                        throw ThingIFError.invalidStoredApi
                     }
                 } else {
-                    throw ThingIFError.INVALID_STORED_API
+                    throw ThingIFError.invalidStoredApi
                 }
             } else {
-                throw ThingIFError.API_NOT_STORED
+                throw ThingIFError.apiNotStored(tag: tag)
             }
         } else {
-            throw ThingIFError.API_NOT_STORED
+            throw ThingIFError.apiNotStored(tag: tag)
         }
     }
 
     /** Clear all saved instances in the NSUserDefaults.
      */
-    public static func removeAllStoredInstances()
+    open static func removeAllStoredInstances()
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(baseKey)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.removeObject(forKey: baseKey)
+        UserDefaults.standard.synchronize()
     }
 
     /** Remove saved specified instance in the NSUserDefaults.
 
      - Parameter tag: tag of the GatewayAPI instance or nil for default tag
      */
-    public static func removeStoredInstances(tag : String?=nil)
+    open static func removeStoredInstances(_ tag : String?=nil)
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        let key = GatewayAPI.getSharedNSDefaultKey(tag)
-        if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
+        let versionKey = GatewayAPI.getStoredSDKVersionKey(tag)
+        let key = GatewayAPI.getStoredInstanceKey(tag)
+        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
-            dict.removeObjectForKey(key)
-            NSUserDefaults.standardUserDefaults().setObject(dict, forKey: baseKey)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            dict.removeObject(forKey: versionKey)
+            dict.removeObject(forKey: key)
+            UserDefaults.standard.set(dict, forKey: baseKey)
+            UserDefaults.standard.synchronize()
         }
     }
 
     /** Save this instance
      This method use NSUserDefaults. Should not use the key "GatewayAPI_INSTANCE", this key is reserved.
      */
-    public func saveInstance()
+    open func saveInstance()
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
 
-        let key = GatewayAPI.getSharedNSDefaultKey(self.tag)
-        let data = NSKeyedArchiver.archivedDataWithRootObject(self)
+        let versionKey = GatewayAPI.getStoredSDKVersionKey(self.tag)
+        let key = GatewayAPI.getStoredInstanceKey(self.tag)
+        let data = NSKeyedArchiver.archivedData(withRootObject: self)
 
-        if let tempdict = NSUserDefaults.standardUserDefaults().objectForKey(baseKey) as? NSDictionary {
+        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+            dict[versionKey] = SDKVersion.sharedInstance.versionString
             dict[key] = data
-            NSUserDefaults.standardUserDefaults().setObject(dict, forKey: baseKey)
+            UserDefaults.standard.set(dict, forKey: baseKey)
         } else {
-            NSUserDefaults.standardUserDefaults().setObject(NSDictionary(dictionary: [key:data]), forKey: baseKey)
+            UserDefaults.standard.set(NSDictionary(dictionary: [key:data]), forKey: baseKey)
         }
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.synchronize()
     }
 
     private func generateAuthBearerHeader() -> Dictionary<String, String> {
         return [ "authorization": "Bearer \(self.accessToken!)" ]
+    }
+
+    static func isLoadable(_ storedSDKVersion: String?) -> Bool {
+        if storedSDKVersion == nil {
+            return false
+        }
+
+        let actualVersions = storedSDKVersion!.components(separatedBy: ".")
+        if actualVersions.count != 3 {
+            return false
+        }
+
+        let minimumLoadableVersions = MINIMUM_LOADABLE_SDK_VERSION.components(separatedBy: ".")
+        for i in 0..<3 {
+            let actual = Int(actualVersions[i])!
+            let expect = Int(minimumLoadableVersions[i])!
+            if actual < expect {
+                return false
+            } else if actual > expect {
+                break
+            }
+        }
+
+        return true
     }
 }

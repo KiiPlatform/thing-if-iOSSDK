@@ -23,7 +23,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
     func testSuccess()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("testSuccess")
+        let expectation = self.expectation(description: "testSuccess")
         let list = [
             [ "thingID": "thing-0001", "vendorThingID": "abcd-1234" ],
             [ "thingID": "thing-0002", "vendorThingID": "efgh-5678" ],
@@ -32,26 +32,26 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
         
         do {
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "GET")
                 // verify path
-                let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+                let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+                XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let expectedHeader = [
                     "authorization": "Bearer \(self.ACCESSTOKEN)"
                 ]
                 XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
             }
             
             // mock response
             let dict = [ "results": list ]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
             
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -73,7 +73,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             XCTFail("should not throw error")
         }
         
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -83,32 +83,31 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
     func testEmpty()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("testEmpty")
-        let list = [
-        ]
+        let expectation = self.expectation(description: "testEmpty")
+        let list: [String : Any] = [ : ]
         
         do {
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "GET")
                 // verify path
-                let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+                let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+                XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
                 //verify header
                 let expectedHeader = [
                     "authorization": "Bearer \(self.ACCESSTOKEN)"
                 ]
                 XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
             }
             
             // mock response
             let dict = [ "results": list ]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
             
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             sharedMockSession.requestVerifier = requestVerifier
@@ -124,7 +123,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             XCTFail("should not throw error")
         }
         
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -134,14 +133,14 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
     func testNoLoggedInError()
     {
         let setting = TestSetting()
-        let api:GatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
-        let expectation = self.expectationWithDescription("testNoLoggedInError")
+        let api:GatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
+        let expectation = self.expectation(description: "testNoLoggedInError")
         
         api.listOnboardedEndNodes( { (nodes:[EndNode]?, error:ThingIFError?) -> Void in
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
-            case .USER_IS_NOT_LOGGED_IN:
+            case .userIsNotLoggedIn:
                 break
             default:
                 XCTFail("unknown error response")
@@ -149,7 +148,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             expectation.fulfill()
         })
         
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -159,27 +158,27 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
     func test400Error()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test400Error")
+        let expectation = self.expectation(description: "test400Error")
         
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
         }
         
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 400, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
+            statusCode: 400, httpVersion: nil, headerFields: nil)
         
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -189,7 +188,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -197,7 +196,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             expectation.fulfill()
         })
         
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -207,27 +206,27 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
     func test401Error()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test401Error")
+        let expectation = self.expectation(description: "test401Error")
         
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
         }
         
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 401, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
+            statusCode: 401, httpVersion: nil, headerFields: nil)
         
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -237,7 +236,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -245,7 +244,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             expectation.fulfill()
         })
         
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -255,27 +254,27 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
     func test404Error()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test404Error")
+        let expectation = self.expectation(description: "test404Error")
         
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
         }
         
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 404, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
+            statusCode: 404, httpVersion: nil, headerFields: nil)
         
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -285,7 +284,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -293,7 +292,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             expectation.fulfill()
         })
         
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -303,27 +302,27 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
     func test409Error()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test409Error")
+        let expectation = self.expectation(description: "test409Error")
         
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
         }
         
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 409, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
+            statusCode: 409, httpVersion: nil, headerFields: nil)
         
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -333,7 +332,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(409, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -341,7 +340,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             expectation.fulfill()
         })
         
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -351,27 +350,27 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
     func test503Error()
     {
         let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test503Error")
+        let expectation = self.expectation(description: "test503Error")
         
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            let expectedPath = "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/end-nodes/onboarded"
+            XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
             //verify header
             let expectedHeader = [
                 "authorization": "Bearer \(self.ACCESSTOKEN)"
             ]
             XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
             for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
             }
         }
         
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 503, HTTPVersion: nil, headerFields: nil)
+        let urlResponse = HTTPURLResponse(url: URL(string:api.gatewayAddress.absoluteString)!,
+            statusCode: 503, httpVersion: nil, headerFields: nil)
         
         sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
         sharedMockSession.requestVerifier = requestVerifier
@@ -381,7 +380,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             XCTAssertNil(nodes)
             XCTAssertNotNil(error)
             switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
+            case .errorResponse(let actualErrorResponse):
                 XCTAssertEqual(503, actualErrorResponse.httpStatusCode)
             default:
                 XCTFail("unknown error response")
@@ -389,7 +388,7 @@ class ListOnboardedEndNodesTests: GatewayAPITestBase {
             expectation.fulfill()
         })
         
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

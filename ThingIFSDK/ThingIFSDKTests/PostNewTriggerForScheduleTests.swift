@@ -10,18 +10,18 @@ import XCTest
 @testable import ThingIFSDK
 
 protocol RequestVerifier: class {
-    var verifier: ((NSURLRequest) -> Void) { get }
+    var verifier: ((URLRequest) -> Void) { get }
     var tag: String { get }
 }
 
 class TriggerRequestVerifier: NSObject, RequestVerifier {
     private let expectedHeader: Dictionary<String, String>
-    private let expectedBody: Dictionary<String, AnyObject>
+    private let expectedBody: Dictionary<String, Any>
     private let url: String
     let tag: String
 
     init (expectedHeader: Dictionary<String, String>,
-          expectedBody: Dictionary<String, AnyObject>,
+          expectedBody: Dictionary<String, Any>,
           url: String,
           tag: String) {
         self.expectedHeader = expectedHeader
@@ -30,11 +30,11 @@ class TriggerRequestVerifier: NSObject, RequestVerifier {
         self.tag = tag
     }
 
-    var verifier: ((NSURLRequest) -> Void) {
+    var verifier: ((URLRequest) -> Void) {
         get {
             return { (request) in
                        // verify request method.
-                       XCTAssertEqual(request.HTTPMethod, "POST")
+                       XCTAssertEqual(request.httpMethod, "POST")
 
                        let requestHeaders = request.allHTTPHeaderFields!;
                        // verify request header.
@@ -44,17 +44,17 @@ class TriggerRequestVerifier: NSObject, RequestVerifier {
 
                        // verify request body.
                        let actualBody =
-                           try! NSJSONSerialization.JSONObjectWithData(
-                               request.HTTPBody!,
-                               options: .MutableContainers)
-                           as! Dictionary<String, AnyObject>
+                           try! JSONSerialization.jsonObject(
+                               with: request.httpBody!,
+                               options: .mutableContainers)
+                           as! Dictionary<String, Any>
                        XCTAssertEqual(
                            NSDictionary(dictionary: self.expectedBody),
                            NSDictionary(dictionary:actualBody),
                            self.tag)
 
                        // verify URL.
-                       XCTAssertEqual(request.URL!.absoluteString,
+                       XCTAssertEqual(request.url!.absoluteString,
                                       self.url,
                                       self.tag);
                    }
@@ -85,8 +85,8 @@ class TriggerSuccessCallbackVerifier: NSObject, CallbackVerifier {
                            XCTAssertEqual(trigger!.enabled,
                                           self.enabled,
                                           self.tag)
-                           XCTAssertEqual(trigger!.predicate.toNSDictionary(),
-                                          self.predicate.toNSDictionary(),
+                           XCTAssertEqual(trigger!.predicate.makeDictionary() as NSDictionary,
+                                          self.predicate.makeDictionary() as NSDictionary,
                                           self.tag)
                            XCTAssertEqual(trigger!.command!.commandID,
                                           self.commandID,
@@ -117,9 +117,9 @@ class WrongFormatCallbackVerifier: CallbackVerifier {
         get {
             return { (trigger, error) in
                        switch error! {
-                       case .CONNECTION:
+                       case .connection:
                            XCTFail(self.tag + ": should not be connection")
-                       case .ERROR_RESPONSE(let actualErrorResponse):
+                       case .errorResponse(let actualErrorResponse):
                            XCTAssertEqual(400,
                                           actualErrorResponse.httpStatusCode,
                                           self.tag)
@@ -143,7 +143,7 @@ struct Verifier {
 struct Parameter {
     let schemaName: String
     let schemaVersion: Int
-    let actions: [Dictionary<String, AnyObject>]
+    let actions: [Dictionary<String, Any>]
     let predicate: Predicate
 }
 
@@ -156,8 +156,8 @@ struct TestCase {
 class PostNewTriggerForScheduleTests: SmallTestBase {
 
     static func createSuccessTestCase(
-        predicate: Predicate,
-        actions: [Dictionary<String, AnyObject>],
+        _ predicate: Predicate,
+        actions: [Dictionary<String, Any>],
         tag: String,
         setting: TestSetting) -> TestCase
     {
@@ -171,13 +171,13 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                                     commandID:"",
                                     tag: tag),
                 mockResponse: MockResponse(
-                                try! NSJSONSerialization.dataWithJSONObject(
-                                    ["triggerID": "0267251d9d60-1858-5e11-3dc3-00f3f0b5"],
-                                    options: .PrettyPrinted),
-                                urlResponse: NSHTTPURLResponse(
-                                               URL: NSURL(string:setting.app.baseURL)!,
+                                try! JSONSerialization.data(
+                                    withJSONObject: ["triggerID": "0267251d9d60-1858-5e11-3dc3-00f3f0b5"],
+                                    options: .prettyPrinted),
+                                urlResponse: HTTPURLResponse(
+                                               url: URL(string:setting.app.baseURL)!,
                                                statusCode: 201,
-                                               HTTPVersion: nil,
+                                               httpVersion: nil,
                                                headerFields: nil)!,
                                 error: nil),
                 tag: tag,
@@ -185,8 +185,8 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
     }
 
     static func createTestCase(
-        predicate: Predicate,
-        actions: [Dictionary<String, AnyObject>],
+        _ predicate: Predicate,
+        actions: [Dictionary<String, Any>],
         callbackVerifier: CallbackVerifier,
         mockResponse: MockResponse,
         tag: String,
@@ -203,10 +203,10 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                                                expectedHeader: [
                                                      "Authorization": "Bearer \(setting.owner.accessToken)",
                                                      "Content-Type": "application/json",
-                                                     "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                                                     "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                                                  ],
                                                expectedBody: [
-                                                   "predicate": predicate.toNSDictionary() as Dictionary,
+                                                   "predicate": predicate.makeDictionary() as Dictionary,
                                                    "command": [
                                                        "actions": actions,
                                                        "schema": setting.schema,
@@ -223,17 +223,17 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
     }
 
     static func createTestCases(
-            predicates: [Predicate],
+            _ predicates: [Predicate],
             setting: TestSetting) -> [TestCase]
     {
         var retval: [TestCase] = []
-        let actions: [Dictionary<String, AnyObject>] =
+        let actions: [Dictionary<String, Any>] =
             [
                 ["turnPower":["power":true]],
                 ["setBrightness":["bribhtness":90]]
             ]
 
-        for (index, predicate) in predicates.enumerate() {
+        for (index, predicate) in predicates.enumerated() {
             retval.append(PostNewTriggerForScheduleTests.createSuccessTestCase(
                               predicate,
                               actions: actions,
@@ -243,13 +243,13 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         return retval;
     }
 
-    func postNewTrigger(testCase: TestCase, setting: TestSetting) {
+    func postNewTrigger(_ testCase: TestCase, setting: TestSetting) {
         weak var expectation : XCTestExpectation!
         defer {
             expectation = nil
         }
-        expectation = self.expectationWithDescription(
-                          testCase.verifier.requestVerifier.tag)
+        expectation = self.expectation(
+                          description: testCase.verifier.requestVerifier.tag)
 
         sharedMockSession.requestVerifier =
             testCase.verifier.requestVerifier.verifier
@@ -259,15 +259,16 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         setting.api._target = setting.target
 
         setting.api.postNewTrigger(
-            testCase.parameter.schemaName,
+          TriggeredCommandForm(
+            schemaName: testCase.parameter.schemaName,
             schemaVersion: testCase.parameter.schemaVersion,
-            actions: testCase.parameter.actions,
-            predicate: testCase.parameter.predicate,
-            completionHandler: { (trigger, error) -> Void in
-                testCase.verifier.callbackVerifier.verifier(trigger, error)
-                expectation.fulfill()
-            })
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+            actions: testCase.parameter.actions),
+          predicate: testCase.parameter.predicate,
+          completionHandler: { (trigger, error) -> Void in
+              testCase.verifier.callbackVerifier.verifier(trigger, error)
+              expectation.fulfill()
+          })
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout for \(testCase.verifier.requestVerifier.tag)")
             }
@@ -299,7 +300,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         let setting = TestSetting()
 
         let predicate = SchedulePredicate(schedule: "wrong format")
-        let actions: [Dictionary<String, AnyObject>] =
+        let actions: [Dictionary<String, Any>] =
             [
                 ["turnPower":["power":true]],
                 ["setBrightness":["bribhtness":90]]
@@ -312,10 +313,10 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
                 callbackVerifier: WrongFormatCallbackVerifier(tag: "wrong format test"),
                 mockResponse: MockResponse(
                                 nil,
-                                urlResponse:NSHTTPURLResponse(
-                                               URL: NSURL(string: setting.app.baseURL)!,
+                                urlResponse:HTTPURLResponse(
+                                               url: URL(string: setting.app.baseURL)!,
                                                statusCode: 400,
-                                               HTTPVersion: nil,
+                                               httpVersion: nil,
                                                headerFields: nil),
                                 error: nil),
                 tag: "wrong format test",

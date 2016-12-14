@@ -8,14 +8,14 @@
 import Foundation
 
 /** Optional parameters of
-`ThingIFAPI.onboardWithVendorThingID(vendorThingID:thingPassword:options:completionHandler:)`.
+`ThingIFAPI.onboardWith(vendorThingID:thingPassword:options:completionHandler:)`.
 */
-public class OnboardWithVendorThingIDOptions {
-    public let thingType: String?
-    public let firmwareVersion: String?
-    public let thingProperties: Dictionary<String,AnyObject>?
-    public let layoutPosition: LayoutPosition?
-    public let dataGroupingInterval: DataGroupingInterval?
+open class OnboardWithVendorThingIDOptions {
+    open let thingType: String?
+    open let firmwareVersion: String?
+    open let thingProperties: Dictionary<String, Any>?
+    open let layoutPosition: LayoutPosition?
+    open let dataGroupingInterval: DataGroupingInterval?
 
     /** initializer.
 
@@ -27,13 +27,13 @@ public class OnboardWithVendorThingIDOptions {
       You can set both the predefined and custom fields.
       Please read [here](https://docs.kii.com/en/starts/thingifsdk/thingsdk/management/#register-a-thing) for more details.
     - Parameter position: GATEWAY | STANDALONE | ENDNODE.
-    - Parameter interval: INTERVAL_1_MINUTE | INTERVAL_15_MINUTES | INTERVAL_30_MINUTES | INTERVAL_1_HOUR | INTERVAL_12_HOURS.
+    - Parameter interval: interval1Minute | interval15Minutes | interval30Minutes | interval1Hour | interval12Hours.
       Will be used to create the bucket to store the state history when the thing is not using traits.
     */
     public init(
         thingType:String? = nil,
         firmwareVersion:String? = nil,
-        thingProperties:Dictionary<String,AnyObject>? = nil,
+        thingProperties:Dictionary<String, Any>? = nil,
         position: LayoutPosition? = nil,
         interval: DataGroupingInterval? = nil)
     {

@@ -23,12 +23,21 @@ class TriggerNSCodingTests: SmallTestBase {
         let triggerID = "dummyID";
         let enabled = true;
         let predicate = SchedulePredicate(schedule: "dummySchedule");
-        let command = Command();
+        let command = Command(commandID: "commandID",
+                              targetID: TypedID(type: "thing",
+                                                id: "id"),
+                              issuerID: TypedID(type: "user",
+                                                id: "id"),
+                              schemaName: "schema",
+                              schemaVersion: 1,
+                              actions: [[ "key" : "value" ]],
+                              actionResults: [[ "key" : "value" ]],
+                              commandState: CommandState.sending)
         let title = "dummyTitle"
         let description = "dummyDescription"
         let key = "dummyKey"
         let value = "dummyValue"
-        let metadata: Dictionary<String, AnyObject> = [ key : value ]
+        let metadata: Dictionary<String, Any> = [ key : value ]
         let trigger = Trigger(triggerID: triggerID, targetID: TypedID(type: "thing", id: "dummyTargetID"), enabled: enabled, predicate: predicate, command: command, title: title, triggerDescription: description, metadata: metadata);
 
         XCTAssertNotNil(trigger);
@@ -43,16 +52,16 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertEqual(trigger.metadata!.count, metadata.count);
         XCTAssertEqual((trigger.metadata![key] as! String), value);
 
-        let data = NSKeyedArchiver.archivedDataWithRootObject(trigger);
+        let data = NSKeyedArchiver.archivedData(withRootObject: trigger);
 
         XCTAssertNotNil(data);
 
-        let decode = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Trigger;
+        let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! Trigger;
 
         XCTAssertNotNil(decode);
         XCTAssertEqual(decode.triggerID, triggerID);
         XCTAssertEqual(decode.enabled, enabled);
-        XCTAssertEqual(decode.predicate.toNSDictionary(), predicate.toNSDictionary());
+        self.verifyDict2(decode.predicate.makeDictionary(), predicate.makeDictionary());
         XCTAssertEqual(decode.command, command);
         XCTAssertNil(decode.serverCode);
         XCTAssertEqual(decode.title, title);
@@ -66,7 +75,7 @@ class TriggerNSCodingTests: SmallTestBase {
         let enabled = true;
         let predicate = StatePredicate(
             condition: Condition(clause: EqualsClause(field: "f", stringValue: "v")),
-            triggersWhen: TriggersWhen.CONDITION_FALSE_TO_TRUE);
+            triggersWhen: TriggersWhen.conditionFalseToTrue);
         let serverCode = ServerCode(endpoint: "dummyEndPoint", executorAccessToken: "dummyToken", targetAppID: nil, parameters: nil);
         let trigger = Trigger(triggerID: triggerID, targetID: TypedID(type: "thing", id: "dummyTargetID"), enabled: enabled, predicate: predicate, serverCode: serverCode);
 
@@ -81,16 +90,16 @@ class TriggerNSCodingTests: SmallTestBase {
         XCTAssertNil(trigger.triggerDescription);
         XCTAssertNil(trigger.metadata);
 
-        let data = NSKeyedArchiver.archivedDataWithRootObject(trigger);
+        let data = NSKeyedArchiver.archivedData(withRootObject: trigger);
 
         XCTAssertNotNil(data);
 
-        let decode = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! Trigger;
+        let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! Trigger;
 
         XCTAssertNotNil(decode);
         XCTAssertEqual(decode.triggerID, triggerID);
         XCTAssertEqual(decode.enabled, enabled);
-        XCTAssertEqual(decode.predicate.toNSDictionary(), predicate.toNSDictionary());
+        self.verifyDict2(decode.predicate.makeDictionary(), predicate.makeDictionary());
         XCTAssertNil(decode.command);
         XCTAssertEqual(decode.serverCode, serverCode);
         XCTAssertNil(decode.title);

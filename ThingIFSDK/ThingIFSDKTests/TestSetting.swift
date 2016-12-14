@@ -8,20 +8,20 @@
 import UIKit
 @testable import ThingIFSDK
 
-public class TestSetting: NSObject {
+open class TestSetting: NSObject {
 
-    let app:App!
+    let app:App
 
-    let owner:Owner!
-    let ownerID:String!
-    let ownerToken:String!
+    let owner:Owner
+    let ownerID:String
+    let ownerToken:String
 
-    let target:Target!
-    let thingID:String!
+    let target:Target
+    let thingID:String
 
-    let appID:String!
-    let appKey:String!
-    let hostName:String!
+    let appID:String
+    let appKey:String
+    let hostName:String
 
     let api:ThingIFAPI
 
@@ -30,14 +30,14 @@ public class TestSetting: NSObject {
     let thingType:String
 
     public override init() {
-        let b:NSBundle = NSBundle(forClass:TestSetting.self)
-        let path:String = b.pathForResource("testapp", ofType: "plist")!
+        let b:Bundle = Bundle(for:TestSetting.self)
+        let path:String = b.path(forResource: "testapp", ofType: "plist")!
         let dict:NSDictionary = NSDictionary(contentsOfFile: path)!
 
         self.appID = dict["appID"] as! String
         self.appKey = dict["appKey"] as! String
         self.hostName = dict["hostName"] as! String
-        self.app = AppBuilder(appID: appID, appKey: appKey, hostName: hostName).build()
+        self.app = AppBuilder(appID: appID, appKey: appKey, hostName: hostName).make()
 
         self.ownerID = dict["ownerID"] as! String
         self.ownerToken = dict["ownerToken"] as! String
@@ -47,7 +47,7 @@ public class TestSetting: NSObject {
         self.thingID = dict["thingID"] as! String
         self.target = StandaloneThing(thingID: thingID, vendorThingID: ownerID, accessToken: ownerToken)
 
-        self.api = ThingIFAPIBuilder(app: app, owner: owner).build()
+        self.api = ThingIFAPIBuilder(app: app, owner: owner).make()
 
         self.schema = dict["schema"] as! String
         self.schemaVersion = dict["schemaVersion"] as! Int

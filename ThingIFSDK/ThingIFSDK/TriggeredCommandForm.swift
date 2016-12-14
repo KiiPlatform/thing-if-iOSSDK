@@ -14,8 +14,8 @@ Form of a command of a trigger.
 This class contains data in order to create or modify `Command` in
 `Trigger` with followings methods:
 
- - `ThingIFAPI.postNewTrigger(triggeredCommandForm:predicate:options:completionHandler:)`
- - `ThingIFAPI.patchTrigger(triggerID:triggeredCommandForm:predicate:options:completionHandler:)`
+ - `ThingIFAPI.postNewTrigger(_:predicate:options:completionHandler:)`
+ - `ThingIFAPI.patchTrigger(_:triggeredCommandForm:predicate:options:completionHandler:)`
 
 Mandatory data are followings:
 
@@ -30,30 +30,30 @@ Optional data are followings:
   - Description of a schema
   - Meta data of a schema
 */
-public class TriggeredCommandForm: NSObject, NSCoding {
+open class TriggeredCommandForm: NSObject, NSCoding {
 
     // MARK: - Properties
 
     /// Schema name.
-    public let schemaName: String
+    open let schemaName: String
 
     /// Schema version.
-    public let schemaVersion: Int
+    open let schemaVersion: Int
 
     /// List of actions.
-    public let actions: [Dictionary<String, AnyObject>]
+    open let actions: [Dictionary<String, Any>]
 
     /// Target thing ID.
-    public let targetID: TypedID?
+    open let targetID: TypedID?
 
     /// Title of a command.
-    public let title: String?
+    open let title: String?
 
     /// Description of a command.
-    public let commandDescription: String?
+    open let commandDescription: String?
 
     /// Meta data of ad command.
-    public let metadata: Dictionary<String, AnyObject>?
+    open let metadata: Dictionary<String, Any>?
 
 
     // MARK: - Initializing TriggeredCommandForm instance.
@@ -72,11 +72,11 @@ public class TriggeredCommandForm: NSObject, NSCoding {
     */
     public init(schemaName: String,
                 schemaVersion: Int,
-                actions: [Dictionary<String, AnyObject>],
+                actions: [Dictionary<String, Any>],
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
-                metadata: Dictionary<String, AnyObject>? = nil)
+                metadata: Dictionary<String, Any>? = nil)
     {
         self.schemaName = schemaName
         self.schemaVersion = schemaVersion
@@ -117,11 +117,11 @@ public class TriggeredCommandForm: NSObject, NSCoding {
     public init(command: Command,
                 schemaName: String? = nil,
                 schemaVersion: Int? = nil,
-                actions: [Dictionary<String, AnyObject>]? = nil,
+                actions: [Dictionary<String, Any>]? = nil,
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
-                metadata: Dictionary<String, AnyObject>? = nil)
+                metadata: Dictionary<String, Any>? = nil)
     {
         self.schemaName = schemaName != nil ? schemaName! : command.schemaName
         self.schemaVersion =
@@ -135,32 +135,32 @@ public class TriggeredCommandForm: NSObject, NSCoding {
         self.metadata = metadata != nil ? metadata : command.metadata
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.schemaName, forKey: "schemaName")
-        aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
-        aCoder.encodeObject(self.actions, forKey: "actions")
-        aCoder.encodeObject(self.targetID, forKey: "targetID")
-        aCoder.encodeObject(self.title, forKey: "title")
-        aCoder.encodeObject(self.commandDescription,
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.schemaName, forKey: "schemaName")
+        aCoder.encode(self.schemaVersion, forKey: "schemaVersion")
+        aCoder.encode(self.actions, forKey: "actions")
+        aCoder.encode(self.targetID, forKey: "targetID")
+        aCoder.encode(self.title, forKey: "title")
+        aCoder.encode(self.commandDescription,
                 forKey: "commandDescription");
-        aCoder.encodeObject(self.metadata, forKey: "metadata")
+        aCoder.encode(self.metadata, forKey: "metadata")
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        self.schemaName = aDecoder.decodeObjectForKey("schemaName") as! String
-        self.schemaVersion = aDecoder.decodeIntegerForKey("schemaVersion")
-        self.actions = aDecoder.decodeObjectForKey("actions")
-                as! [Dictionary<String, AnyObject>];
-        self.targetID = aDecoder.decodeObjectForKey("targetID") as? TypedID
-        self.title = aDecoder.decodeObjectForKey("title") as? String
+        self.schemaName = aDecoder.decodeObject(forKey: "schemaName") as! String
+        self.schemaVersion = aDecoder.decodeInteger(forKey: "schemaVersion")
+        self.actions = aDecoder.decodeObject(forKey: "actions")
+                as! [Dictionary<String, Any>];
+        self.targetID = aDecoder.decodeObject(forKey: "targetID") as? TypedID
+        self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription =
-            aDecoder.decodeObjectForKey("commandDescription") as? String;
-        self.metadata = aDecoder.decodeObjectForKey("metadata")
-                as? Dictionary<String, AnyObject>;
+            aDecoder.decodeObject(forKey: "commandDescription") as? String;
+        self.metadata = aDecoder.decodeObject(forKey: "metadata")
+                as? Dictionary<String, Any>;
     }
 
-    func toDictionary() -> Dictionary<String, AnyObject> {
-        var retval: Dictionary<String, AnyObject> =
+    func toDictionary() -> Dictionary<String, Any> {
+        var retval: Dictionary<String, Any> =
             [
                 "schema": self.schemaName,
                 "schemaVersion": self.schemaVersion,
@@ -170,8 +170,8 @@ public class TriggeredCommandForm: NSObject, NSCoding {
             retval["target"] = targetID.toString()
         }
         retval["title"] = self.title
-        retval["description"] = self.commandDescription;
-        retval["metadata"] = self.metadata;
+        retval["description"] = self.commandDescription
+        retval["metadata"] = self.metadata
         return retval;
     }
 }

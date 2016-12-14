@@ -7,47 +7,40 @@
 
 import Foundation
 
-public class GatewayAPIBuilder {
+open class GatewayAPIBuilder {
 
-    private var tag: String?
+    private let tag: String?
     private let app: App
-    private let gatewayAddress: NSURL
-
-    /** Set tag to this GatewayAPI instance.
-     tag is used to distinguish storage area of instance.
-     <br>
-     If the api instance is tagged with same string, It will be overwritten.
-     <br>
-     If the api instance is tagged with different string, Different key is used to store the instance.
-     <br>
-     <br>
-     Please refer to {@link GatewayAPI#loadFromStoredInstance(Context, String)} as well.
-
-     - Parameter tag: If null or empty String us passed, it will be ignored.
-     - Returns: builder instance for chaining call.
-     */
-    public func setTag(tag: String?) -> GatewayAPIBuilder
-    {
-        self.tag = tag
-        return self
-    }
+    private let gatewayAddress: URL
 
     /** Initialize builder.
+
+     If you want to store GatewayAPI instance to storage, you need to
+     set tag.
+
+     tag is used to distinguish storage area of instance.  If the api
+     instance is tagged with same string, It will be overwritten.  If
+     the api instance is tagged with different string, Different key
+     is used to store the instance.
+
+     Please refer to `GatewayAPI.loadWithStoredInstance(_:)`
+
      - Parameter app: Kii Cloud Application.
      - Parameter gatewayAddress: address information for the gateway
-     - Parameter tag: tag of the GatewayAPI instance.
+     - Parameter tag: tag of the GatewayAPI instance. If null or empty
+       String is passed, it will be ignored.
      */
-    public init(app:App, address:NSURL, tag:String?=nil)
+    public init(app:App, address:URL, tag:String?=nil)
     {
         self.app = app
         self.gatewayAddress = address
         self.tag = tag
     }
 
-    /** Build GatewayAPI instance.
+    /** Make GatewayAPI instance.
     - Returns: GatewayAPI instance.
     */
-    public func build() -> GatewayAPI
+    open func make() -> GatewayAPI
     {
         let api = GatewayAPI(app: self.app, gatewayAddress: self.gatewayAddress, tag: self.tag)
         return api

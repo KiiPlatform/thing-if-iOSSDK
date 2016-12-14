@@ -39,7 +39,7 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithMetadata() {
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
             "key1" : "value1",
             "key2" : "value2"
         ]
@@ -62,7 +62,7 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithTitleAndMetadata() {
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
             "key1" : "value1",
             "key2" : "value2"
         ]
@@ -76,7 +76,7 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithDescriptionAndMetadata() {
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
             "key1" : "value1",
             "key2" : "value2"
         ]
@@ -89,7 +89,7 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithAllFields() {
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
             "key1" : "value1",
             "key2" : "value2"
         ]
@@ -103,7 +103,7 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testNSCoding() {
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
             "key1" : "value1",
             "key2" : "value2"
         ]
@@ -112,12 +112,12 @@ class TriggerOptionsTests: SmallTestBase {
                                       metadata: metadata)
         let data: NSMutableData = NSMutableData(capacity: 1024)!;
         let coder: NSKeyedArchiver =
-            NSKeyedArchiver(forWritingWithMutableData: data);
-        original.encodeWithCoder(coder);
+            NSKeyedArchiver(forWritingWith: data);
+        original.encode(with: coder);
         coder.finishEncoding();
 
         let decoder: NSKeyedUnarchiver =
-            NSKeyedUnarchiver(forReadingWithData: data);
+            NSKeyedUnarchiver(forReadingWith: data as Data);
         let deserialized: TriggerOptions = TriggerOptions(coder: decoder)!;
         decoder.finishDecoding();
 

@@ -16,13 +16,13 @@ public protocol Predicate :  NSCoding {
 
      - Returns: a NSDictionary instance
      */
-    func toNSDictionary() -> NSDictionary
+    func makeDictionary() -> [ String : Any ]
 
-    /** Get EventSource enum
+    /** Event source of this predicate.
 
-     - Returns: an enumeration instance of the event source.
+     See `EventSource`
      */
-    func getEventSource() -> EventSource
+    var eventSource: EventSource { get }
 }
 
 

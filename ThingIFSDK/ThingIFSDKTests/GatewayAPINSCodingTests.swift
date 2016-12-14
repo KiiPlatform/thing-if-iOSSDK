@@ -22,14 +22,14 @@ class GatewayAPINSCodingTests: GatewayAPITestBase {
 
     func testSuccess()
     {
-        let expectation = self.expectationWithDescription("testSuccess")
+        let expectation = self.expectation(description: "testSuccess")
         let setting = TestSetting()
 
         do {
             let dict = ["accessToken": ACCESSTOKEN]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
+                statusCode: 200, httpVersion: nil, headerFields: nil)
 
             sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
             iotSession = MockSession.self
@@ -37,22 +37,22 @@ class GatewayAPINSCodingTests: GatewayAPITestBase {
             XCTFail("should not throw error")
         }
 
-        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
+        let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
         gatewayAPI.login("dummy", password: "dummy", completionHandler: { (error:ThingIFError?) -> Void in
             XCTAssertNil(error)
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
         }
 
-        let data = NSKeyedArchiver.archivedDataWithRootObject(gatewayAPI);
+        let data = NSKeyedArchiver.archivedData(withRootObject: gatewayAPI);
         XCTAssertNotNil(data);
 
-        let decode = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! GatewayAPI;
+        let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! GatewayAPI;
         XCTAssertNotNil(decode);
 
         XCTAssertEqual(gatewayAPI.app.appID, decode.app.appID);
@@ -60,6 +60,6 @@ class GatewayAPINSCodingTests: GatewayAPITestBase {
         XCTAssertEqual(gatewayAPI.app.siteName, decode.app.siteName);
         XCTAssertEqual(gatewayAPI.app.baseURL, decode.app.baseURL);
         XCTAssertEqual(gatewayAPI.gatewayAddress, decode.gatewayAddress);
-        XCTAssertEqual(gatewayAPI.getAccessToken(), decode.getAccessToken());
+        XCTAssertEqual(gatewayAPI.accessToken, decode.accessToken);
     }
 }

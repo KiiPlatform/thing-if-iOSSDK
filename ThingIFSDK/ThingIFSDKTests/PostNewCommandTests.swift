@@ -21,7 +21,7 @@ class PostNewCommandTests: SmallTestBase {
         let target: Target
         let schema: String
         let schemaVersion: Int
-        let actions: [Dictionary<String, AnyObject>]
+        let actions: [Dictionary<String, Any>]
         let issuerID: TypedID
     }
 
@@ -42,44 +42,44 @@ class PostNewCommandTests: SmallTestBase {
             TestCase(target: target, schema: schema, schemaVersion: schemaVersion, actions: [["turnPower": ["power": true]], ["setBrightness": ["brightness": 100]]], issuerID: owner.typedID)
         ]
 
-        for (index, testcase) in testCases.enumerate() {
+        for (index, testcase) in testCases.enumerated() {
             postCommandSuccess("testPostCommandSuccess_\(index)", testcase: testcase, setting: setting)
         }
     }
 
-    func postCommandSuccess(tag: String, testcase: TestCase, setting:TestSetting) {
+    func postCommandSuccess(_ tag: String, testcase: TestCase, setting:TestSetting) {
 
-        let expectation : XCTestExpectation! = self.expectationWithDescription(tag)
+        let expectation : XCTestExpectation! = self.expectation(description: tag)
         
         do {
             let expectedCommandID = "c6f1b8d0-46ea-11e5-a5eb-06d9d1527620"
 
             // mock response
             let dict = ["commandID": expectedCommandID]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 201, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 201, httpVersion: nil, headerFields: nil)
 
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
 
-                XCTAssertEqual(request.HTTPMethod, "POST")
+                XCTAssertEqual(request.httpMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(testcase.target.typedID.toString())/commands"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal for \(tag)")
+                let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(testcase.target.typedID.toString())/commands"
+                XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal for \(tag)")
 
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key), tag)
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key), tag)
                 }
 
                 //verify body
-                let expectedBody = ["schema": testcase.schema, "schemaVersion": testcase.schemaVersion, "issuer": testcase.issuerID.toString(), "actions": testcase.actions]
+                let expectedBody: [String : Any] = ["schema": testcase.schema, "schemaVersion": testcase.schemaVersion, "issuer": testcase.issuerID.toString(), "actions": testcase.actions]
                 do {
-                    let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                    let actualBodyData = request.HTTPBody
-                    XCTAssertTrue(expectedBodyData.length == actualBodyData!.length, tag)
+                    let expectedBodyData = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                    let actualBodyData = request.httpBody
+                    XCTAssertTrue(expectedBodyData.count == actualBodyData!.count, tag)
                 }catch(_){
                     XCTFail(tag)
                 }
@@ -88,12 +88,17 @@ class PostNewCommandTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            setting.api.postNewCommand(testcase.schema, schemaVersion: testcase.schemaVersion, actions: testcase.actions, completionHandler: { (command, error) -> Void in
+            setting.api.postNewCommand(
+              CommandForm(
+                schemaName: testcase.schema,
+                schemaVersion: testcase.schemaVersion,
+                actions: testcase.actions),
+              completionHandler: { (command, error) -> Void in
                 if error == nil{
                     XCTAssertNotNil(command, tag)
                     XCTAssertEqual(command!.commandID, expectedCommandID, tag)
                     XCTAssertEqual(command!.targetID.toString(), testcase.target.typedID.toString(), tag)
-                    XCTAssertEqual(command!.actions, testcase.actions, tag)
+                    self.verifyArray(command!.actions, actual: testcase.actions, message: tag)
                 }else {
                     XCTFail("should success for \(tag)")
                 }
@@ -103,7 +108,7 @@ class PostNewCommandTests: SmallTestBase {
             XCTFail("should not throw error")
         }
 
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout for \(tag)")
             }
@@ -112,7 +117,7 @@ class PostNewCommandTests: SmallTestBase {
 
     func testPostNewCommand_400_error() {
 
-        let expectation = self.expectationWithDescription("testPostNewCommand_400_error")
+        let expectation = self.expectation(description: "testPostNewCommand_400_error")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -124,29 +129,29 @@ class PostNewCommandTests: SmallTestBase {
             // mock response
             let responsedDict = ["errorCode" : "WRONG_COMMAND",
                 "message" : "Schema is required"]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(responsedDict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:setting.app.baseURL)!, statusCode: 400, HTTPVersion: nil, headerFields: nil)
+            let jsonData = try JSONSerialization.data(withJSONObject: responsedDict, options: .prettyPrinted)
+            let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!, statusCode: 400, httpVersion: nil, headerFields: nil)
 
             // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST")
+            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+                XCTAssertEqual(request.httpMethod, "POST")
 
                 // verify path
-                let expectedPath = "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID!)/targets/\(target.typedID.toString())/commands"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+                let expectedPath = "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(target.typedID.toString())/commands"
+                XCTAssertEqual(request.url!.absoluteString, expectedPath, "Should be equal")
 
                 //verify header
                 let expectedHeader = ["authorization": "Bearer \(setting.owner.accessToken)", "Content-type":"application/json"]
                 for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
+                    XCTAssertEqual(value, request.value(forHTTPHeaderField: key))
                 }
 
                 //verify body
-                let expectedBody = ["schema": "", "schemaVersion": setting.schemaVersion, "issuer": setting.owner.typedID.toString(), "actions": []]
+                let expectedBody: [String : Any] = ["schema": "", "schemaVersion": setting.schemaVersion, "issuer": setting.owner.typedID.toString(), "actions": []]
                 do {
-                    let expectedBodyData = try NSJSONSerialization.dataWithJSONObject(expectedBody, options: NSJSONWritingOptions(rawValue: 0))
-                    let actualBodyData = request.HTTPBody
-                    XCTAssertTrue(expectedBodyData.length == actualBodyData!.length)
+                    let expectedBodyData = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
+                    let actualBodyData = request.httpBody
+                    XCTAssertTrue(expectedBodyData.count == actualBodyData!.count)
                 }catch(_){
                     XCTFail()
                 }
@@ -155,14 +160,19 @@ class PostNewCommandTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api.postNewCommand("", schemaVersion: setting.schemaVersion, actions: [], completionHandler: { (command, error) -> Void in
+            api.postNewCommand(
+              CommandForm(
+                schemaName: "",
+                schemaVersion: setting.schemaVersion,
+                actions: []),
+              completionHandler: { (command, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
                 }else {
                     switch error! {
-                    case .CONNECTION:
+                    case .connection:
                         XCTFail("should not be connection error")
-                    case .ERROR_RESPONSE(let actualErrorResponse):
+                    case .errorResponse(let actualErrorResponse):
                         XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
                         XCTAssertEqual(responsedDict["errorCode"]!, actualErrorResponse.errorCode)
                         XCTAssertEqual(responsedDict["message"]!, actualErrorResponse.errorMessage)
@@ -175,7 +185,7 @@ class PostNewCommandTests: SmallTestBase {
         }catch(let e){
             print(e)
         }
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }
@@ -184,16 +194,21 @@ class PostNewCommandTests: SmallTestBase {
 
     func testPostNewCommand_target_not_available_error() {
 
-        let expectation = self.expectationWithDescription("testPostNewCommand_target_not_available_error")
+        let expectation = self.expectation(description: "testPostNewCommand_target_not_available_error")
         let setting = TestSetting()
         let api = setting.api
 
-        api.postNewCommand("", schemaVersion: setting.schemaVersion, actions: [], completionHandler: { (command, error) -> Void in
+        api.postNewCommand(
+          CommandForm(
+            schemaName: "",
+            schemaVersion: setting.schemaVersion,
+            actions: []),
+          completionHandler: { (command, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
             }else {
                 switch error! {
-                case .TARGET_NOT_AVAILABLE:
+                case .targetNotAvailable:
                     break
                 default:
                     XCTFail("should be TARGET_NOT_AVAILABLE")
@@ -202,7 +217,7 @@ class PostNewCommandTests: SmallTestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
             }

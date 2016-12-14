@@ -29,17 +29,17 @@ public enum LogLevel: Int {
 }
 
 public protocol Logger {
-    func printLog<T>(level : LogLevel,value: T)
+    func printLog<T>(_ level : LogLevel,value: T)
 }
 
 var logLevel : LogLevel = LogLevel.error
 
-public func setKiiLogLevel(level : LogLevel){
+public func setKiiLogLevel(_ level : LogLevel){
     logLevel = level
 }
 
 extension Logger {
-    public func printLog<T>(level : LogLevel,value: T){
+    public func printLog<T>(_ level : LogLevel,value: T){
 
         if logLevel.rawValue > level.rawValue{
             return
@@ -52,7 +52,7 @@ extension Logger {
 }
 
 //default logger is just default implementation for logger
-public class DefaultLogger : Logger {
+open class DefaultLogger : Logger {
 
     required  public init() {
 
@@ -69,25 +69,25 @@ let sharedLog: Logger = {
     return instance
     }()
 
-public func kiiVerboseLog<T>(value: T){
+public func kiiVerboseLog<T>(_ value: T){
     sharedLog.printLog(.verbose, value: value)
 }
 
-public func kiiDebugLog<T>(value: T){
+public func kiiDebugLog<T>(_ value: T){
     sharedLog.printLog(.debug, value: value)
 }
 
-public func kiiInfoLog<T>(value: T){
+public func kiiInfoLog<T>(_ value: T){
     sharedLog.printLog(.info, value: value)
 }
 
-public func kiiWarnLog<T>(value: T){
+public func kiiWarnLog<T>(_ value: T){
     sharedLog.printLog(.warn, value: value)
 }
 
-public func kiiErrorLog<T>(value: T){
+public func kiiErrorLog<T>(_ value: T){
     sharedLog.printLog(.error, value: value)
 }
-public func kiiSevereLog<T>(value: T){
+public func kiiSevereLog<T>(_ value: T){
     sharedLog.printLog(.severe, value: value)
 }

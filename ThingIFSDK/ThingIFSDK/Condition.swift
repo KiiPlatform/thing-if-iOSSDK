@@ -8,8 +8,8 @@
 
 import Foundation
 /** Class represents Condition */
-public class Condition : NSObject, NSCoding {
-    public let clause: Clause!
+open class Condition : NSObject, NSCoding {
+    open let clause: Clause
 
     /** Init Condition with Clause
 
@@ -20,23 +20,23 @@ public class Condition : NSObject, NSCoding {
     }
 
     public required init(coder aDecoder: NSCoder) {
-        self.clause = aDecoder.decodeObjectForKey("clause") as! Clause
+        self.clause = aDecoder.decodeObject(forKey: "clause") as! Clause
         super.init();
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.clause, forKey: "clause")
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.clause, forKey: "clause")
     }
 
     /** Get Condition as NSDictionary instance
 
      - Returns: a NSDictionary instance
      */
-    public func toNSDictionary() -> NSDictionary {
-        return self.clause.toNSDictionary()
+    open func makeDictionary() -> [ String : Any ] {
+        return self.clause.makeDictionary()
     }
 
-    class func conditionWithNSDict(conditionDict: NSDictionary) -> Condition?{
+    class func conditionWithNSDict(_ conditionDict: NSDictionary) -> Condition?{
         if let clause = Condition.clauseWithNSDict(conditionDict) {
             return Condition(clause: clause)
         }else {
@@ -44,15 +44,15 @@ public class Condition : NSObject, NSCoding {
         }
     }
 
-    class func clauseWithNSDict(clauseDict: NSDictionary) -> Clause?{
+    class func clauseWithNSDict(_ clauseDict: NSDictionary) -> Clause?{
         var clause: Clause?
         if let type = clauseDict["type"] as? String {
             switch type {
             case "range":
-                if let upperLimitNumber = clauseDict["upperLimit"] as? NSNumber, lowerLimitNumber = clauseDict["lowerLimit"] as? NSNumber, field = clauseDict["field"] as? String {
-                    if let upperIncluded = clauseDict["upperIncluded"] as? Bool, lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
+                if let upperLimitNumber = clauseDict["upperLimit"] as? NSNumber, let lowerLimitNumber = clauseDict["lowerLimit"] as? NSNumber, let field = clauseDict["field"] as? String {
+                    if let upperIncluded = clauseDict["upperIncluded"] as? Bool, let lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
                         if upperLimitNumber.isInt(){
-                            clause = RangeClause(field: field, lowerLimitInt: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: field, lowerLimitInt: lowerLimitNumber.intValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.intValue, upperIncluded: upperIncluded)
                         }else if upperLimitNumber.isDouble() {
                             clause = RangeClause(field: field, lowerLimitDouble: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded, upperLimit: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
                         }
@@ -61,10 +61,10 @@ public class Condition : NSObject, NSCoding {
                 }
 
                 if let upperLimitNumber = clauseDict["upperLimit"] as? NSNumber,
-                    filed = clauseDict["field"] as? String {
+                    let filed = clauseDict["field"] as? String {
                     if let upperIncluded = clauseDict["upperIncluded"] as? Bool {
                         if upperLimitNumber.isInt(){
-                            clause = RangeClause(field: filed, upperLimitInt: upperLimitNumber.integerValue, upperIncluded: upperIncluded)
+                            clause = RangeClause(field: filed, upperLimitInt: upperLimitNumber.intValue, upperIncluded: upperIncluded)
                         }else if upperLimitNumber.isDouble() {
                             clause = RangeClause(field: filed, upperLimitDouble: upperLimitNumber.doubleValue, upperIncluded: upperIncluded)
                         }
@@ -73,10 +73,10 @@ public class Condition : NSObject, NSCoding {
                 }
 
                 if let lowerLimitNumber = clauseDict["lowerLimit"] as? NSNumber,
-                    filed = clauseDict["field"] as? String {
+                    let filed = clauseDict["field"] as? String {
                     if let lowerIncluded = clauseDict["lowerIncluded"] as? Bool {
                         if lowerLimitNumber.isInt() {
-                            clause = RangeClause(field: filed, lowerLimitInt: lowerLimitNumber.integerValue, lowerIncluded: lowerIncluded)
+                            clause = RangeClause(field: filed, lowerLimitInt: lowerLimitNumber.intValue, lowerIncluded: lowerIncluded)
                         }else if lowerLimitNumber.isDouble() {
                             clause = RangeClause(field: filed, lowerLimitDouble: lowerLimitNumber.doubleValue, lowerIncluded: lowerIncluded)
                         }
@@ -86,7 +86,7 @@ public class Condition : NSObject, NSCoding {
                 break
 
             case "eq":
-                if let field = clauseDict["field"] as? String, value = clauseDict["value"] {
+                if let field = clauseDict["field"] as? String, let value = clauseDict["value"] {
                     if value is String {
                         clause = EqualsClause(field: field, stringValue: value as! String)
                     }else if value is NSNumber {
@@ -94,7 +94,7 @@ public class Condition : NSObject, NSCoding {
                         if numberValue.isBool() {
                             clause = EqualsClause(field: field, boolValue: numberValue.boolValue)
                         }else {
-                            clause = EqualsClause(field: field, intValue: numberValue.integerValue)
+                            clause = EqualsClause(field: field, intValue: numberValue.intValue)
                         }
                     }
                 }

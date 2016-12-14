@@ -12,11 +12,11 @@ import XCTest
 class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
 
     private func createSuccessRequestBody(
-      form: TriggeredCommandForm,
-      setting: TestSetting) -> Dictionary<String, AnyObject>
+      _ form: TriggeredCommandForm,
+      setting: TestSetting) -> Dictionary<String, Any>
     {
         let targetID = form.targetID ?? setting.api.target!.typedID
-        var command: Dictionary<String, AnyObject> = [
+        var command: Dictionary<String, Any> = [
           "schema" : form.schemaName,
           "schemaVersion" : form.schemaVersion,
           "actions" : form.actions,
@@ -30,13 +30,13 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
         return [ "command" : command,
                  "predicate" : [ "eventSource" : "SCHEDULE",
                                  "schedule" : "1 * * * *" ],
-                 "triggersWhat": TriggersWhat.COMMAND.rawValue ]
+                 "triggersWhat": TriggersWhat.command.rawValue ]
     }
 
     func testSuccess () {
-        let actions: [Dictionary<String, AnyObject>] =
+        let actions: [Dictionary<String, Any>] =
             [["actions-key" : "actions-value"]]
-        let command_metadata: Dictionary<String, AnyObject> =
+        let command_metadata: Dictionary<String, Any> =
             ["command_metadata-key" : "command_metadata-value"]
         let targetID = TypedID(type: "THING", id: "thing-id")
 
@@ -133,22 +133,22 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
             defer {
                 expectation = nil
             }
-            expectation = self.expectationWithDescription(error_message)
+            expectation = self.expectation(description: error_message)
 
             sharedMockSession.mockResponse = MockResponse(
-                try! NSJSONSerialization.dataWithJSONObject(
-                    ["triggerID": "triggerID"],
-                    options: .PrettyPrinted),
-                urlResponse: NSHTTPURLResponse(
-                    URL: NSURL(string:setting.app.baseURL)!,
+                try! JSONSerialization.data(
+                    withJSONObject: ["triggerID": "triggerID"],
+                    options: .prettyPrinted),
+                urlResponse: HTTPURLResponse(
+                    url: URL(string:setting.app.baseURL)!,
                     statusCode: 201,
-                    HTTPVersion: nil,
+                    httpVersion: nil,
                     headerFields: nil)!,
                 error: nil)
             sharedMockSession.requestVerifier = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST", error_message)
-                XCTAssertEqual(request.URL!.absoluteString,
-                               "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers",
+                XCTAssertEqual(request.httpMethod, "POST", error_message)
+                XCTAssertEqual(request.url!.absoluteString,
+                               "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers",
                                error_message)
                 let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
@@ -157,17 +157,17 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/json",
-                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                  ],
                   error_message);
 
                 // verify body.
                 XCTAssertEqual(
                   NSDictionary(
-                    dictionary: try! NSJSONSerialization.JSONObjectWithData(
-                      request.HTTPBody!,
-                      options: .MutableContainers)
-                      as! Dictionary<String, AnyObject>),
+                    dictionary: try! JSONSerialization.jsonObject(
+                      with: request.httpBody!,
+                      options: .mutableContainers)
+                      as! Dictionary<String, Any>),
                   NSDictionary(
                     dictionary: self.createSuccessRequestBody(
                       form, setting: setting)),
@@ -189,9 +189,9 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
                                  error_message)
                   XCTAssertEqual(actual.enabled, Bool(true), error_message)
 
-                  XCTAssertEqual(actual.predicate.toNSDictionary(),
+                  self.verifyDict2(actual.predicate.makeDictionary(),
                                  SchedulePredicate(
-                                   schedule: "1 * * * *").toNSDictionary(),
+                                   schedule: "1 * * * *").makeDictionary(),
                                  error_message)
                   let actualcmd = actual.command!
                   XCTAssertEqual(actualcmd.commandID, "", error_message)
@@ -232,7 +232,7 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
                   }
                   expectation.fulfill()
               })
-            self.waitForExpectationsWithTimeout(TEST_TIMEOUT)
+            self.waitForExpectations(timeout: TEST_TIMEOUT)
                 { (error) -> Void in
                     if error != nil {
                         XCTFail("execution timeout for \(error_message)")

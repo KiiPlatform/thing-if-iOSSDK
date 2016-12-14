@@ -12,15 +12,15 @@ import XCTest
 class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
 
     private func createSuccessRequestBody(
-      serverCode: ServerCode,
+      _ serverCode: ServerCode,
       predicate: Predicate,
-      options: TriggerOptions?) -> Dictionary<String, AnyObject>
+      options: TriggerOptions?) -> Dictionary<String, Any>
     {
-        var retval: Dictionary<String, AnyObject> =
+        var retval: Dictionary<String, Any> =
           [
-            "serverCode" : serverCode.toNSDictionary(),
-            "predicate" : predicate.toNSDictionary(),
-            "triggersWhat": TriggersWhat.SERVER_CODE.rawValue
+            "serverCode" : serverCode.makeDictionary(),
+            "predicate" : predicate.makeDictionary(),
+            "triggersWhat": TriggersWhat.serverCode.rawValue
           ]
         if let triggerOptions = options {
             if let title = triggerOptions.title {
@@ -37,7 +37,7 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
     }
 
     func testSuccess() {
-        let metadata: Dictionary<String, AnyObject> = [
+        let metadata: Dictionary<String, Any> = [
           "key" : "value"
         ]
         let optionsArray: [TriggerOptions?] = [
@@ -79,22 +79,22 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
             defer {
                 expectation = nil
             }
-            expectation = self.expectationWithDescription(error_message)
+            expectation = self.expectation(description: error_message)
 
             sharedMockSession.mockResponse = MockResponse(
-              try! NSJSONSerialization.dataWithJSONObject(
-                ["triggerID": "triggerID"],
-                options: .PrettyPrinted),
-              urlResponse: NSHTTPURLResponse(
-                URL: NSURL(string:setting.app.baseURL)!,
+              try! JSONSerialization.data(
+                withJSONObject: ["triggerID": "triggerID"],
+                options: .prettyPrinted),
+              urlResponse: HTTPURLResponse(
+                url: URL(string:setting.app.baseURL)!,
                 statusCode: 201,
-                HTTPVersion: nil,
+                httpVersion: nil,
                 headerFields: nil)!,
               error: nil)
             sharedMockSession.requestVerifier = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "POST", error_message)
-                XCTAssertEqual(request.URL!.absoluteString,
-                               "\(setting.api.baseURL!)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers",
+                XCTAssertEqual(request.httpMethod, "POST", error_message)
+                XCTAssertEqual(request.url!.absoluteString,
+                               "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/triggers",
                                error_message)
                 let requestHeaders = request.allHTTPHeaderFields!;
                 // verify request header.
@@ -103,17 +103,17 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
                   [
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/json",
-                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader!
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader
                   ],
                   error_message);
 
                 // verify body.
                 XCTAssertEqual(
                   NSDictionary(
-                    dictionary: try! NSJSONSerialization.JSONObjectWithData(
-                      request.HTTPBody!,
-                      options: .MutableContainers)
-                      as! Dictionary<String, AnyObject>),
+                    dictionary: try! JSONSerialization.jsonObject(
+                      with: request.httpBody!,
+                      options: .mutableContainers)
+                      as! Dictionary<String, Any>),
                   NSDictionary(
                     dictionary: self.createSuccessRequestBody(
                       serverCode,
@@ -136,12 +136,12 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
                                      setting.target.typedID.toString(),
                                      error_message)
                       XCTAssertEqual(actual.enabled, Bool(true), error_message)
-                      XCTAssertEqual(actual.predicate.toNSDictionary(),
-                                     predicate.toNSDictionary(),
+                      self.verifyDict2(actual.predicate.makeDictionary(),
+                                     predicate.makeDictionary(),
                                      error_message)
                       XCTAssertNil(actual.command, error_message)
-                      XCTAssertEqual(actual.serverCode!.toNSDictionary(),
-                                     serverCode.toNSDictionary(),
+                      self.verifyDict2(actual.serverCode!.makeDictionary(),
+                                     serverCode.makeDictionary(),
                                      error_message)
                       if let expectedOptions = options {
                           XCTAssertEqual(actual.title, expectedOptions.title,
@@ -165,7 +165,7 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
                   }
                   expectation.fulfill()
               })
-            self.waitForExpectationsWithTimeout(TEST_TIMEOUT)
+            self.waitForExpectations(timeout: TEST_TIMEOUT)
             { (error) -> Void in
                 if error != nil {
                     XCTFail("execution timeout for \(error_message)")
