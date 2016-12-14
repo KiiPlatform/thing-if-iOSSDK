@@ -16,28 +16,20 @@ This class contains data in order to create `Command` with
 
 Mandatory data are followings:
 
-  - Schema name
-  - Schema version
-  - List of actions
+  - Array of actions
 
 Optional data are followings:
 
-  - Title of a schema
-  - Description of a schema
-  - Meta data of a schema
+  - Title of a command
+  - Description of a command
+  - Meta data of a command
 */
 open class CommandForm: NSObject, NSCoding {
 
     // MARK: - Properties
 
-    /// Schema name.
-    open let schemaName: String
-
-    /// Schema version.
-    open let schemaVersion: Int
-
-    /// List of actions.
-    open let actions: [Dictionary<String, Any>]
+    /// Array of actions.
+    open let actions: [(alias: Alias, actions: [String : Any])]
 
     /// Title of a command.
     open let title: String?
@@ -46,31 +38,25 @@ open class CommandForm: NSObject, NSCoding {
     open let commandDescription: String?
 
     /// Meta data of ad command.
-    open let metadata: Dictionary<String, Any>?
+    open let metadata: [String : Any]?
 
 
     // MARK: - Initializing CommandForm instance.
     /**
     Initializer of CommandForm instance.
 
-    - Parameter schemaName: Schema name.
-    - Parameter schemaVersion: Schema version.
-    - Parameter actions: List of actions. Must not be empty.
+    - Parameter actions: Array of actions. Must not be empty.
     - Parameter title: Title of a command. This should be equal or
       less than 50 characters.
     - Parameter description: Description of a comand. This should be
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(schemaName: String,
-                schemaVersion: Int,
-                actions: [Dictionary<String, Any>],
+    public init(actions: [(alias: Alias, actions: [String : Any])],
                 title: String? = nil,
                 commandDescription: String? = nil,
-                metadata: Dictionary<String, Any>? = nil)
+                metadata: [String : Any]? = nil)
     {
-        self.schemaName = schemaName
-        self.schemaVersion = schemaVersion
         self.actions = actions
         self.title = title;
         self.commandDescription = commandDescription;
@@ -78,8 +64,6 @@ open class CommandForm: NSObject, NSCoding {
     }
 
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.schemaName, forKey: "schemaName")
-        aCoder.encode(self.schemaVersion, forKey: "schemaVersion")
         aCoder.encode(self.actions, forKey: "actions")
         aCoder.encode(self.title, forKey: "title")
         aCoder.encode(self.commandDescription,
@@ -88,14 +72,12 @@ open class CommandForm: NSObject, NSCoding {
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        self.schemaName = aDecoder.decodeObject(forKey: "schemaName") as! String
-        self.schemaVersion = aDecoder.decodeInteger(forKey: "schemaVersion")
         self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [Dictionary<String, Any>];
+          as! [(alias: Alias, actions: [String : Any])];
         self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription =
             aDecoder.decodeObject(forKey: "commandDescription") as? String;
         self.metadata = aDecoder.decodeObject(forKey: "metadata")
-                as? Dictionary<String, Any>;
+          as? [String :  Any];
     }
 }
