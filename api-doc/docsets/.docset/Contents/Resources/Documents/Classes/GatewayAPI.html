@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GatewayAPI Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/GatewayAPI" class="dashAnchor"></a>
+    <a title="GatewayAPI Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (100% documented)</p>
+        <p class="header-right"><a href="https://github.com/KiiPlatform/thing-if-iOSSDK"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        GatewayAPI Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/AbstractThing.html">AbstractThing</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AndClause.html">AndClause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/App.html">App</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AppBuilder.html">AppBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Command.html">Command</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CommandForm.html">CommandForm</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Condition.html">Condition</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultLogger.html">DefaultLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/s:C10ThingIFSDK7EndNode">EndNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/EqualsClause.html">EqualsClause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/s:C10ThingIFSDK7Gateway">Gateway</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GatewayAPI.html">GatewayAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GatewayAPIBuilder.html">GatewayAPIBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GatewayInformation.html">GatewayInformation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/NotEqualsClause.html">NotEqualsClause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OnboardEndnodeWithGatewayOptions.html">OnboardEndnodeWithGatewayOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OnboardWithThingIDOptions.html">OnboardWithThingIDOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OnboardWithVendorThingIDOptions.html">OnboardWithVendorThingIDOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OrClause.html">OrClause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Owner.html">Owner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PendingEndNode.html">PendingEndNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RangeClause.html">RangeClause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SDKVersion.html">SDKVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ScheduleOncePredicate.html">ScheduleOncePredicate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SchedulePredicate.html">SchedulePredicate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ServerCode.html">ServerCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ServerError.html">ServerError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/s:C10ThingIFSDK15StandaloneThing">StandaloneThing</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StatePredicate.html">StatePredicate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ThingIFAPI.html">ThingIFAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ThingIFAPIBuilder.html">ThingIFAPIBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Trigger.html">Trigger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TriggerOptions.html">TriggerOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TriggeredCommandForm.html">TriggeredCommandForm</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TriggeredServerCodeResult.html">TriggeredServerCodeResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TypedID.html">TypedID</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/CommandState.html">CommandState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DataGroupingInterval.html">DataGroupingInterval</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/EventSource.html">EventSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/LayoutPosition.html">LayoutPosition</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/LogLevel.html">LogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Site.html">Site</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ThingIFError.html">ThingIFError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TriggersWhat.html">TriggersWhat</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TriggersWhen.html">TriggersWhen</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/NSData.html">NSData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSNumber.html">NSNumber</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F10ThingIFSDK11kiiDebugLogurFT5valuex_T_">kiiDebugLog(value:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F10ThingIFSDK11kiiErrorLogurFT5valuex_T_">kiiErrorLog(value:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F10ThingIFSDK10kiiInfoLogurFT5valuex_T_">kiiInfoLog(value:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F10ThingIFSDK12kiiSevereLogurFT5valuex_T_">kiiSevereLog(value:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F10ThingIFSDK13kiiVerboseLogurFT5valuex_T_">kiiVerboseLog(value:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F10ThingIFSDK10kiiWarnLogurFT5valuex_T_">kiiWarnLog(value:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F10ThingIFSDK14setKiiLogLevelFT5levelOS_8LogLevel_T_">setKiiLogLevel(level:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/Clause.html">Clause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Logger.html">Logger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Predicate.html">Predicate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Target.html">Target</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/TargetThing.html">TargetThing</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/ErrorResponse.html">ErrorResponse</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Typealiases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10ThingIFSDK17AlertPresentation">AlertPresentation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10ThingIFSDK14OperationBlock">OperationBlock</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>GatewayAPI</h1>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10ThingIFSDK10GatewayAPI3tagGSqSS_"></a>
+                    <a name="//apple_ref/swift/Property/tag" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10ThingIFSDK10GatewayAPI3tagGSqSS_">tag</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10ThingIFSDK10GatewayAPI3appCS_3App"></a>
+                    <a name="//apple_ref/swift/Property/app" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10ThingIFSDK10GatewayAPI3appCS_3App">app</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10ThingIFSDK10GatewayAPI14gatewayAddressCSo5NSURL"></a>
+                    <a name="//apple_ref/swift/Property/gatewayAddress" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10ThingIFSDK10GatewayAPI14gatewayAddressCSo5NSURL">gatewayAddress</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Implements%20NSCoding%20protocol"></a>
+                <a name="//apple_ref/swift/Section/Implements NSCoding protocol" class="dashAnchor"></a>
+                <a href="#/Implements%20NSCoding%20protocol">
+                  <h3 class="section-name">Implements NSCoding protocol</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI15encodeWithCoderFT6aCoderCSo7NSCoder_T_"></a>
+                    <a name="//apple_ref/swift/Method/encodeWithCoder(aCoder:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI15encodeWithCoderFT6aCoderCSo7NSCoder_T_">encodeWithCoder(aCoder:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPIcFT5coderCSo7NSCoder_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(coder:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPIcFT5coderCSo7NSCoder_S0_">init(coder:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/API%20methods"></a>
+                <a name="//apple_ref/swift/Section/API methods" class="dashAnchor"></a>
+                <a href="#/API%20methods">
+                  <h3 class="section-name">API methods</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI5loginFT8usernameSS8passwordSS17completionHandlerFGSqOS_12ThingIFError_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/login(username:password:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI5loginFT8usernameSS8passwordSS17completionHandlerFGSqOS_12ThingIFError_T__T_">login(username:password:completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Login to the Gateway.
+ Local authentication for the Gateway access.
+ Required prior to call other APIs access to the gateway.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter username: Username of the Gateway.
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter password: Password of the Gateway.
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">login</span><span class="p">(</span>
+        <span class="nv">username</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+        <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+        <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt"><a href="../Enums/ThingIFError.html">ThingIFError</a></span><span class="p">?)</span><span class="o">-&gt;</span> <span class="kt">Void</span>
+        <span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI14onboardGatewayFT17completionHandlerFTGSqCS_7Gateway_GSqOS_12ThingIFError__T__T_"></a>
+                    <a name="//apple_ref/swift/Method/onboardGateway(completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI14onboardGatewayFT17completionHandlerFTGSqCS_7Gateway_GSqOS_12ThingIFError__T__T_">onboardGateway(completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Let the Gateway Onboard.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is Gateway instance that has thingID asigned by Kii Cloud and 2nd one is an instance of ThingIFError when failed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">onboardGateway</span><span class="p">(</span>
+        <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt"><a href="../Classes.html#/s:C10ThingIFSDK7Gateway">Gateway</a></span><span class="p">?,</span> <span class="kt"><a href="../Enums/ThingIFError.html">ThingIFError</a></span><span class="p">?)</span><span class="o">-&gt;</span> <span class="kt">Void</span>
+        <span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI12getGatewayIDFT17completionHandlerFTGSqSS_GSqOS_12ThingIFError__T__T_"></a>
+                    <a name="//apple_ref/swift/Method/getGatewayID(completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI12getGatewayIDFT17completionHandlerFTGSqSS_GSqOS_12ThingIFError__T__T_">getGatewayID(completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get Gateway ID</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is Gateway ID and 2nd one is an instance of ThingIFError when failed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getGatewayID</span><span class="p">(</span>
+        <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt">String</span><span class="p">?,</span> <span class="kt"><a href="../Enums/ThingIFError.html">ThingIFError</a></span><span class="p">?)</span><span class="o">-&gt;</span> <span class="kt">Void</span>
+        <span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI21listOnboardedEndNodesFT17completionHandlerFTGSqGSaCS_7EndNode__GSqOS_12ThingIFError__T__T_"></a>
+                    <a name="//apple_ref/swift/Method/listOnboardedEndNodes(completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI21listOnboardedEndNodesFT17completionHandlerFTGSqGSaCS_7EndNode__GSqOS_12ThingIFError__T__T_">listOnboardedEndNodes(completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>List connected end nodes which has been onboarded.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is list of end nodes and 2nd one is an instance of ThingIFError when failed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">listOnboardedEndNodes</span><span class="p">(</span>
+        <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">([</span><span class="kt"><a href="../Classes.html#/s:C10ThingIFSDK7EndNode">EndNode</a></span><span class="p">]?,</span> <span class="kt"><a href="../Enums/ThingIFError.html">ThingIFError</a></span><span class="p">?)</span><span class="o">-&gt;</span> <span class="kt">Void</span>
+        <span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI19listPendingEndNodesFT17completionHandlerFTGSqGSaCS_14PendingEndNode__GSqOS_12ThingIFError__T__T_"></a>
+                    <a name="//apple_ref/swift/Method/listPendingEndNodes(completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI19listPendingEndNodesFT17completionHandlerFTGSqGSaCS_14PendingEndNode__GSqOS_12ThingIFError__T__T_">listPendingEndNodes(completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>List connected end nodes which has not been onboarded.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is list of end nodes connected to the gateway but waiting for onboarding and 2nd one is an instance of ThingIFError when failed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">listPendingEndNodes</span><span class="p">(</span>
+        <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">([</span><span class="kt"><a href="../Classes/PendingEndNode.html">PendingEndNode</a></span><span class="p">]?,</span> <span class="kt"><a href="../Enums/ThingIFError.html">ThingIFError</a></span><span class="p">?)</span><span class="o">-&gt;</span> <span class="kt">Void</span>
+        <span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI26notifyOnboardingCompletionFT7endNodeCS_7EndNode17completionHandlerFGSqOS_12ThingIFError_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/notifyOnboardingCompletion(endNode:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI26notifyOnboardingCompletionFT7endNodeCS_7EndNode17completionHandlerFGSqOS_12ThingIFError_T__T_">notifyOnboardingCompletion(endNode:completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notify Onboarding completion
+ Call this api when the End Node onboarding is done.
+ After the call succeeded, End Node will be fully connected to Kii Cloud through the Gateway.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter endNode: Onboarded EndNode
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">notifyOnboardingCompletion</span><span class="p">(</span>
+        <span class="nv">endNode</span><span class="p">:</span> <span class="kt"><a href="../Classes.html#/s:C10ThingIFSDK7EndNode">EndNode</a></span><span class="p">,</span>
+        <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt"><a href="../Enums/ThingIFError.html">ThingIFError</a></span><span class="p">?)</span><span class="o">-&gt;</span> <span class="kt">Void</span>
+        <span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI7restoreFT17completionHandlerFGSqOS_12ThingIFError_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/restore(completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI7restoreFT17completionHandlerFGSqOS_12ThingIFError_T__T_">restore(completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Restore the Gateway.
+ This API can be used only for the Gateway App.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">restore</span><span class="p">(</span>
+        <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt"><a href="../Enums/ThingIFError.html">ThingIFError</a></span><span class="p">?)</span><span class="o">-&gt;</span> <span class="kt">Void</span>
+        <span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI14replaceEndNodeFT14endNodeThingIDSS20endNodeVendorThingIDSS17completionHandlerFGSqOS_12ThingIFError_T__T_"></a>
+                    <a name="//apple_ref/swift/Method/replaceEndNode(endNodeThingID:endNodeVendorThingID:completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI14replaceEndNodeFT14endNodeThingIDSS20endNodeVendorThingIDSS17completionHandlerFGSqOS_12ThingIFError_T__T_">replaceEndNode(endNodeThingID:endNodeVendorThingID:completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Replace end-node by new vendorThingID for end node thingID.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter endNodeThingID: ID of the end-node assigned by Kii Cloud.
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter endNodeVendorThingID: ID of the end-node assigned by End Node vendor.
+
+</div>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">replaceEndNode</span><span class="p">(</span>
+        <span class="nv">endNodeThingID</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+        <span class="nv">endNodeVendorThingID</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+        <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt"><a href="../Enums/ThingIFError.html">ThingIFError</a></span><span class="p">?)</span><span class="o">-&gt;</span> <span class="kt">Void</span>
+        <span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI21getGatewayInformationFT17completionHandlerFTGSqCS_18GatewayInformation_GSqOS_12ThingIFError__T__T_"></a>
+                    <a name="//apple_ref/swift/Method/getGatewayInformation(completionHandler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI21getGatewayInformationFT17completionHandlerFTGSqCS_18GatewayInformation_GSqOS_12ThingIFError__T__T_">getGatewayInformation(completionHandler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get information of the Gateway.
+ When the end user replaces the Gateway, Gateway App/End Node App need to obtain the new Gateway’s vendorThingID.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is information of the Gateway and 2nd one is an instance of ThingIFError when failed.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getGatewayInformation</span><span class="p">(</span>
+        <span class="nv">completionHandler</span><span class="p">:</span> <span class="p">(</span><span class="kt"><a href="../Classes/GatewayInformation.html">GatewayInformation</a></span><span class="p">?,</span> <span class="kt"><a href="../Enums/ThingIFError.html">ThingIFError</a></span><span class="p">?)</span><span class="o">-&gt;</span> <span class="kt">Void</span>
+        <span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI10isLoggedInFT_Sb"></a>
+                    <a name="//apple_ref/swift/Method/isLoggedIn()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI10isLoggedInFT_Sb">isLoggedIn()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Check if user is logged in to the Gateway.</p>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    true if user is logged in, false otherwise.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">isLoggedIn</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI14getAccessTokenFT_GSqSS_"></a>
+                    <a name="//apple_ref/swift/Method/getAccessToken()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI14getAccessTokenFT_GSqSS_">getAccessToken()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get Access Token</p>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    Access token
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getAccessToken</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC10ThingIFSDK10GatewayAPI22loadWithStoredInstanceFzT3tagGSqSS__GSqS0__"></a>
+                    <a name="//apple_ref/swift/Method/loadWithStoredInstance(tag:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC10ThingIFSDK10GatewayAPI22loadWithStoredInstanceFzT3tagGSqSS__GSqS0__">loadWithStoredInstance(tag:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Try to load the instance of GatewayAPI using stored serialized instance.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter tag: tag of the GatewayAPI instance
+
+</div>
+
+<div class="aside aside-returns">
+    <p class="aside-title">Returns</p>
+    GatewayIFAPI instance.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">loadWithStoredInstance</span><span class="p">(</span><span class="nv">tag</span> <span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">GatewayAPI</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC10ThingIFSDK10GatewayAPI24removeAllStoredInstancesFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/removeAllStoredInstances()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC10ThingIFSDK10GatewayAPI24removeAllStoredInstancesFT_T_">removeAllStoredInstances()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Clear all saved instances in the NSUserDefaults.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">removeAllStoredInstances</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZFC10ThingIFSDK10GatewayAPI21removeStoredInstancesFT3tagGSqSS__T_"></a>
+                    <a name="//apple_ref/swift/Method/removeStoredInstances(tag:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZFC10ThingIFSDK10GatewayAPI21removeStoredInstancesFT3tagGSqSS__T_">removeStoredInstances(tag:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Remove saved specified instance in the NSUserDefaults.</p>
+
+<div class="aside aside-parameter">
+    <p class="aside-title">Parameter</p>
+    Parameter tag: tag of the GatewayAPI instance or nil for default tag
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">removeStoredInstances</span><span class="p">(</span><span class="nv">tag</span> <span class="p">:</span> <span class="kt">String</span><span class="p">?</span><span class="o">=</span><span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10ThingIFSDK10GatewayAPI12saveInstanceFT_T_"></a>
+                    <a name="//apple_ref/swift/Method/saveInstance()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10ThingIFSDK10GatewayAPI12saveInstanceFT_T_">saveInstance()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Save this instance
+ This method use NSUserDefaults. Should not use the key <q>GatewayAPI_INSTANCE</q>, this key is reserved.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">saveInstance</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2016 <a class="link" href="http://kii.com" target="_blank" rel="external">Kii Corp</a>. All rights reserved. (Last updated: 2016-12-14)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
