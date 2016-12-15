@@ -28,12 +28,12 @@ Optional data are followings:
   - Description of a triggered command
   - Meta data of a triggered command
 */
-open class TriggeredCommandForm: NSObject, NSCoding {
+open class TriggeredCommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
 
     // MARK: - Properties
 
     /// Array of actions.
-    open let actions: [(alias: Alias, actions: [String : Any])]
+    open let actions: [(alias: ConcreteAlias, actions: [String : Any])]
 
     /// Target thing ID.
     open let targetID: TypedID?
@@ -60,7 +60,7 @@ open class TriggeredCommandForm: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(actions: [(alias: Alias, actions: [String : Any])],
+    public init(actions: [(alias: ConcreteAlias, actions: [String : Any])],
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
@@ -96,8 +96,11 @@ open class TriggeredCommandForm: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
+    /*
+     TODO: We consider in order to remove or not this method.
+     Because we may not craete TriggeredCommandForm from Command.
     public init(command: Command,
-                actions: [(alias: Alias, actions: [String : Any])]? = nil,
+                actions: [(alias: ConcreteAlias, actions: [String : Any])]? = nil,
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
@@ -110,6 +113,7 @@ open class TriggeredCommandForm: NSObject, NSCoding {
           commandDescription ?? command.commandDescription
         self.metadata = metadata ?? command.metadata
     }
+    */
 
     open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.actions, forKey: "actions")
@@ -122,7 +126,7 @@ open class TriggeredCommandForm: NSObject, NSCoding {
 
     public required init?(coder aDecoder: NSCoder) {
         self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [(alias: Alias, actions: [String : Any])]
+                as! [(alias: ConcreteAlias, actions: [String : Any])]
         self.targetID = aDecoder.decodeObject(forKey: "targetID") as? TypedID
         self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription =
