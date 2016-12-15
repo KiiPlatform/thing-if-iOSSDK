@@ -19,29 +19,21 @@ This class contains data in order to create or modify `Command` in
 
 Mandatory data are followings:
 
-  - Schema name
-  - Schema version
-  - List of actions
+  - Array of actions
 
 Optional data are followings:
 
   - Target thing id
-  - Title of a schema
-  - Description of a schema
-  - Meta data of a schema
+  - Title of a triggered command
+  - Description of a triggered command
+  - Meta data of a triggered command
 */
-open class TriggeredCommandForm: NSObject, NSCoding {
+open class TriggeredCommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
 
     // MARK: - Properties
 
-    /// Schema name.
-    open let schemaName: String
-
-    /// Schema version.
-    open let schemaVersion: Int
-
-    /// List of actions.
-    open let actions: [Dictionary<String, Any>]
+    /// Array of actions.
+    open let actions: [(alias: ConcreteAlias, actions: [String : Any])]
 
     /// Target thing ID.
     open let targetID: TypedID?
@@ -53,16 +45,14 @@ open class TriggeredCommandForm: NSObject, NSCoding {
     open let commandDescription: String?
 
     /// Meta data of ad command.
-    open let metadata: Dictionary<String, Any>?
+    open let metadata: [String : Any]?
 
 
     // MARK: - Initializing TriggeredCommandForm instance.
     /**
     Initializer of TriggeredCommandForm instance.
 
-    - Parameter schemaName: Schema name.
-    - Parameter schemaVersion: Schema version.
-    - Parameter actions: List of actions. Must not be empty.
+    - Parameter actions: Array of actions. Must not be empty.
     - Parameter targetID: target thing ID.
     - Parameter title: Title of a command. This should be equal or
       less than 50 characters.
@@ -70,16 +60,12 @@ open class TriggeredCommandForm: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(schemaName: String,
-                schemaVersion: Int,
-                actions: [Dictionary<String, Any>],
+    public init(actions: [(alias: ConcreteAlias, actions: [String : Any])],
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
-                metadata: Dictionary<String, Any>? = nil)
+                metadata: [String : Any]? = nil)
     {
-        self.schemaName = schemaName
-        self.schemaVersion = schemaVersion
         self.actions = actions
         self.targetID = targetID
         self.title = title
@@ -92,8 +78,6 @@ open class TriggeredCommandForm: NSObject, NSCoding {
 
     This initializer copies following fields:
 
-    - `Command.schemaName`
-    - `Command.schemaVersion`
     - `Command.actions`
     - `Command.targetID`
     - `Command.title`
@@ -104,9 +88,7 @@ open class TriggeredCommandForm: NSObject, NSCoding {
     value, Optional argument values win against the `Command` values.
 
     - Parameter command: source command of this TriggeredCommandForm.
-    - Parameter schemaName: Schema name.
-    - Parameter schemaVersion: Schema version.
-    - Parameter actions: List of actions. Must not be empty.
+    - Parameter actions: Array of actions. Must not be empty.
     - Parameter targetID: target thing ID.
     - Parameter title: Title of a command. This should be equal or
       less than 50 characters.
@@ -114,30 +96,26 @@ open class TriggeredCommandForm: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
+    /*
+     TODO: We consider in order to remove or not this method.
+     Because we may not craete TriggeredCommandForm from Command.
     public init(command: Command,
-                schemaName: String? = nil,
-                schemaVersion: Int? = nil,
-                actions: [Dictionary<String, Any>]? = nil,
+                actions: [(alias: ConcreteAlias, actions: [String : Any])]? = nil,
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
-                metadata: Dictionary<String, Any>? = nil)
+                metadata: [String : Any]? = nil)
     {
-        self.schemaName = schemaName != nil ? schemaName! : command.schemaName
-        self.schemaVersion =
-             schemaVersion != nil ? schemaVersion! : command.schemaVersion
-        self.actions = actions != nil ? actions! : command.actions
-        self.targetID = targetID != nil ? targetID : command.targetID
-        self.title = title != nil ? title : command.title
+        self.actions = actions ?? command.actions
+        self.targetID = targetID ?? command.targetID
+        self.title = title ?? command.title
         self.commandDescription =
-            commandDescription != nil ? commandDescription :
-                command.commandDescription
-        self.metadata = metadata != nil ? metadata : command.metadata
+          commandDescription ?? command.commandDescription
+        self.metadata = metadata ?? command.metadata
     }
+    */
 
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.schemaName, forKey: "schemaName")
-        aCoder.encode(self.schemaVersion, forKey: "schemaVersion")
         aCoder.encode(self.actions, forKey: "actions")
         aCoder.encode(self.targetID, forKey: "targetID")
         aCoder.encode(self.title, forKey: "title")
@@ -147,28 +125,23 @@ open class TriggeredCommandForm: NSObject, NSCoding {
     }
 
     public required init?(coder aDecoder: NSCoder) {
-        self.schemaName = aDecoder.decodeObject(forKey: "schemaName") as! String
-        self.schemaVersion = aDecoder.decodeInteger(forKey: "schemaVersion")
         self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [Dictionary<String, Any>];
+                as! [(alias: ConcreteAlias, actions: [String : Any])]
         self.targetID = aDecoder.decodeObject(forKey: "targetID") as? TypedID
         self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription =
             aDecoder.decodeObject(forKey: "commandDescription") as? String;
         self.metadata = aDecoder.decodeObject(forKey: "metadata")
-                as? Dictionary<String, Any>;
+                as? [String : Any]
     }
 
     func toDictionary() -> Dictionary<String, Any> {
-        var retval: Dictionary<String, Any> =
+        var retval: [String : Any] =
             [
-                "schema": self.schemaName,
-                "schemaVersion": self.schemaVersion,
                 "actions": self.actions
             ]
-        if let targetID = self.targetID {
-            retval["target"] = targetID.toString()
-        }
+
+        retval["target"] = self.targetID?.toString()
         retval["title"] = self.title
         retval["description"] = self.commandDescription
         retval["metadata"] = self.metadata
