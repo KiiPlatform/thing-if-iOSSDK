@@ -80,7 +80,7 @@ open class Command: NSObject, NSCoding {
     /** Metadata of the Command */
     open let metadata: Dictionary<String, Any>?
 
-    internal init(commandID: String?,
+    internal init(commandID: String,
          targetID: TypedID,
          issuerID: TypedID,
          actions: [(alias: Alias, actions: [String : Any])],
@@ -92,7 +92,7 @@ open class Command: NSObject, NSCoding {
          title: String? = nil,
          commandDescription: String? = nil,
          metadata: Dictionary<String, Any>? = nil) {
-        self.commandID = commandID ?? ""
+        self.commandID = commandID
         self.targetID = targetID
         self.issuerID = issuerID
         self.actions = actions
