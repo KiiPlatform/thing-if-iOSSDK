@@ -24,12 +24,12 @@ Optional data are followings:
   - Description of a command
   - Meta data of a command
 */
-open class CommandForm: NSObject, NSCoding {
+open class CommandForm<A: Alias>: NSObject, NSCoding {
 
     // MARK: - Properties
 
     /// Array of actions.
-    open let actions: [(alias: Alias, actions: [String : Any])]
+    open let actions: [(alias: A, actions: [String : Any])]
 
     /// Title of a command.
     open let title: String?
@@ -52,7 +52,7 @@ open class CommandForm: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(actions: [(alias: Alias, actions: [String : Any])],
+    public init(actions: [(alias: A, actions: [String : Any])],
                 title: String? = nil,
                 commandDescription: String? = nil,
                 metadata: [String : Any]? = nil)
@@ -73,7 +73,7 @@ open class CommandForm: NSObject, NSCoding {
 
     public required init?(coder aDecoder: NSCoder) {
         self.actions = aDecoder.decodeObject(forKey: "actions")
-          as! [(alias: Alias, actions: [String : Any])];
+          as! [(alias: A, actions: [String : Any])];
         self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription =
             aDecoder.decodeObject(forKey: "commandDescription") as? String;
