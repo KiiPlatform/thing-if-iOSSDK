@@ -5,17 +5,31 @@
 import Foundation
 
 /** Protocole of the Clause must be conformed to. */
-public protocol Clause: NSCoding {
+open class Clause<ConcreteAlias: Alias>: NSObject, NSCoding {
+
+    fileprivate override init() {
+        // nothing to do.
+    }
 
     /** Get Clause as NSDictionary instance
 
     - Returns: a NSDictionary instance.
     */
-    func makeDictionary() -> [ String : Any ]
+    open func makeDictionary() -> [ String : Any ] {
+        return [ : ]
+    }
+
+    public required convenience init(coder aDecoder: NSCoder) {
+        // nothing to do.
+    }
+
+    open func encode(with aCoder: NSCoder) {
+        // nothing to do.
+    }
 }
 
 /** Class represents Equals clause. */
-open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
+open class EqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     private let alias: ConcreteAlias
     private let field: String
@@ -75,7 +89,7 @@ open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
                   aDecoder.decodeObject(forKey: "value") as AnyObject)
     }
 
-    open func encode(with aCoder: NSCoder) {
+    open override func encode(with aCoder: NSCoder) {
         aCoder.encode(self.alias, forKey: "alias")
         aCoder.encode(self.field, forKey: "field")
         if self.value is Int {
@@ -91,7 +105,7 @@ open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
+    open override func makeDictionary() -> [ String : Any ] {
         var retval: [String : Any] = [
           "type" : "eq",
           "field" : self.field,
@@ -103,7 +117,7 @@ open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 }
 
 /** Class represents NotEquals clause. */
-open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
+open class NotEqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     private let equalClause: EqualsClause<ConcreteAlias>
 
     public init(_ equalClause: EqualsClause<ConcreteAlias>) {
@@ -156,7 +170,7 @@ open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
         self.init(aDecoder.decodeObject() as! EqualsClause)
     }
 
-    open func encode(with aCoder: NSCoder) {
+    open override func encode(with aCoder: NSCoder) {
         aCoder.encode(self.equalClause)
     }
 
@@ -164,7 +178,7 @@ open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
+    open override func makeDictionary() -> [ String : Any ] {
         return [
           "type": "not",
           "clause": equalClause.makeDictionary()
@@ -173,7 +187,7 @@ open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 }
 
 /** Class represents Range clause. */
-open class RangeClause<ConcreteAlias: Alias>: NSObject, Clause {
+open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     private let alias: ConcreteAlias
     private let field: String
     private let lower: (included: Bool, limit: AnyObject)?
@@ -352,12 +366,16 @@ open class RangeClause<ConcreteAlias: Alias>: NSObject, Clause {
         if let dict = aDecoder.decodeObject(forKey: "lower")
              as? [String : Any] {
             lower = (dict["included"] as! Bool, dict["limit"] as AnyObject)
+        } else {
+            lower = nil
         }
 
         let upper: (included: Bool, limit: AnyObject)?
         if let dict = aDecoder.decodeObject(forKey: "upper")
              as? [String : Any] {
             upper = (dict["included"] as! Bool, dict["limit"] as AnyObject)
+        } else {
+            upper = nil
         }
 
         self.init(
@@ -367,7 +385,7 @@ open class RangeClause<ConcreteAlias: Alias>: NSObject, Clause {
           upper: upper)
     }
 
-    open func encode(with aCoder: NSCoder) {
+    open override func encode(with aCoder: NSCoder) {
         aCoder.encode(self.alias, forKey: "alias")
         aCoder.encode(self.field, forKey: "field")
         if let lower = self.lower {
@@ -390,7 +408,7 @@ open class RangeClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
+    open override func makeDictionary() -> [ String : Any ] {
         var retval = [
           "type" : "range",
           "field" : self.field
@@ -410,15 +428,15 @@ open class RangeClause<ConcreteAlias: Alias>: NSObject, Clause {
 }
 
 /** Class represents And clause. */
-open class AndClause: NSObject, Clause {
+open class AndClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     /** clauses array of AndClause */
-    open private(set) var clauses = [Clause]()
+    open private(set) var clauses = [Clause<ConcreteAlias>]()
 
     /** Initialize with clause clauses.
     
     - Parameter clauses: Clause instances for AND clauses
     */
-    public convenience init(clauses: Clause...) {
+    public convenience init(clauses: Clause<ConcreteAlias>...) {
         self.init(clauses: clauses)
     }
 
@@ -426,7 +444,7 @@ open class AndClause: NSObject, Clause {
     
      - Parameter clauses: Clause array for AND clauses
      */
-    public init(clauses: [Clause]) {
+    public init(clauses: [Clause<ConcreteAlias>]) {
         for clause in clauses {
             self.clauses.append(clause)
         }
@@ -439,7 +457,7 @@ open class AndClause: NSObject, Clause {
         }
     }
 
-    open func encode(with aCoder: NSCoder) {
+    open override func encode(with aCoder: NSCoder) {
         let array = NSMutableArray()
         for c in self.clauses {
             array.add(c)
@@ -451,7 +469,7 @@ open class AndClause: NSObject, Clause {
     
     - Parameter clause: Clause instances to add
     */
-    open func add(_ clause: Clause) {
+    open func add(_ clause: Clause<ConcreteAlias>) {
         self.clauses.append(clause)
     }
 
@@ -459,7 +477,7 @@ open class AndClause: NSObject, Clause {
     
     - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
+    open override func makeDictionary() -> [ String : Any ] {
         var clauseDictArray = [[ String : Any ]]()
         for clause in self.clauses {
             clauseDictArray.append(clause.makeDictionary())
@@ -469,15 +487,15 @@ open class AndClause: NSObject, Clause {
     }
 }
 /** Class represents Or clause. */
-open class OrClause: NSObject, Clause {
+open class OrClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     /** clauses array of OrClause */
-    open private(set) var clauses = [Clause]()
+    open private(set) var clauses = [Clause<ConcreteAlias>]()
 
     /** Initialize with clause clauses.
     
     - Parameter clauses: Clause instances for OR clauses
     */
-    public convenience init(clauses:Clause...) {
+    public convenience init(clauses:Clause<ConcreteAlias>...) {
         self.init(clauses: clauses)
     }
 
@@ -485,7 +503,7 @@ open class OrClause: NSObject, Clause {
     
      - Parameter clauses: Clause array for OR clauses
      */
-    public init(clauses: [Clause]) {
+    public init(clauses: [Clause<ConcreteAlias>]) {
         for clause in clauses {
             self.clauses.append(clause)
         }
@@ -498,7 +516,7 @@ open class OrClause: NSObject, Clause {
         }
     }
 
-    open func encode(with aCoder: NSCoder) {
+    open override func encode(with aCoder: NSCoder) {
         let array = NSMutableArray()
         for c in self.clauses {
             array.add(c)
@@ -510,7 +528,7 @@ open class OrClause: NSObject, Clause {
     
     - Parameter clause: Clause instances to add
     */
-    open func add(_ clause: Clause) {
+    open func add(_ clause: Clause<ConcreteAlias>) {
         self.clauses.append(clause)
     }
 
@@ -518,7 +536,7 @@ open class OrClause: NSObject, Clause {
     
     - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
+    open override func makeDictionary() -> [ String : Any ] {
         var clauseDictArray = [[ String : Any ]]()
         for clause in self.clauses {
             clauseDictArray.append(clause.makeDictionary())
