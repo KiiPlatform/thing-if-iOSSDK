@@ -13,6 +13,8 @@ import Foundation
  */
 public protocol Alias: NSCoding {
 
+    func makeDictionary() -> [String : Any]
+
 }
 
 /**
@@ -41,6 +43,10 @@ open class TraitAlias: NSObject, Alias {
     open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.name)
     }
+
+    open func makeDictionary() -> [String : Any] {
+        return [ "alias" : self.name ]
+    }
 }
 
 /**
@@ -57,5 +63,9 @@ open class NonTraitAlias: NSObject, Alias {
     }
 
     open func encode(with aCoder: NSCoder) {
+    }
+
+    open func makeDictionary() -> [String : Any] {
+        return [ : ]
     }
 }
