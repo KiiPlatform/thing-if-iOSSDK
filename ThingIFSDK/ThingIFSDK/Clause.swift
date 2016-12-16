@@ -15,53 +15,73 @@ public protocol Clause: NSCoding {
 }
 
 /** Class represents Equals clause. */
-open class EqualsClause: NSObject, Clause {
-    private var nsdict: [ String : Any ] = [ : ]
+open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
-    override init() {
-        self.nsdict["type"] = "eq"
+    private let alias: ConcreteAlias
+    private let field: String
+    private let value: AnyObject
+
+    private init(_ alias: ConcreteAlias, _ field: String, _ value: AnyObject) {
+        self.alias = alias
+        self.field = field
+        self.value = value
     }
 
     /** Initialize with String left hand side value.
 
     - Parameter field: Name of the field to be compared.
-    - Parameter string: Left hand side value to be compared.
+    - Parameter value: Left hand side value to be compared.
      */
-    public convenience init(field:String, stringValue:String) {
-        self.init()
-        self.nsdict["field"] = field
-        self.nsdict["value"] = stringValue
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field: String,
+      _ value: Int)
+    {
+        self.init(alias, field, value as AnyObject)
     }
 
     /** Initialize with Int left hand side value.
 
     - Parameter field: Name of the field to be compared.
-    - Parameter integer: Left hand side value to be compared.
+    - Parameter value: Left hand side value to be compared.
     */
-    public convenience init(field:String, intValue:Int) {
-        self.init()
-        self.nsdict["field"] = field
-        self.nsdict["value"] = NSNumber(value: intValue as Int)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field: String,
+      _ value: String)
+    {
+        self.init(alias, field, value as AnyObject)
     }
 
     /** Initialize with Bool left hand side value.
 
     - Parameter field: Name of the field to be compared.
-    - Parameter bool: Left hand side value to be compared.
+    - Parameter value: Left hand side value to be compared.
     */
-    public convenience init(field:String, boolValue:Bool) {
-        self.init()
-        self.nsdict["field"] = field
-        self.nsdict["value"] = NSNumber(value: boolValue as Bool)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field: String,
+      _ value: Bool)
+    {
+        self.init(alias, field, value as AnyObject)
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
-        self.init();
-        self.nsdict = aDecoder.decodeObject() as! [ String: Any ]
+        self.init(aDecoder.decodeObject(forKey: "alias") as! ConcreteAlias,
+                  aDecoder.decodeObject(forKey: "field") as! String,
+                  aDecoder.decodeObject(forKey: "value") as AnyObject)
     }
 
     open func encode(with aCoder: NSCoder) {
-        aCoder.encodeRootObject(self.nsdict)
+        aCoder.encode(self.alias, forKey: "alias")
+        aCoder.encode(self.field, forKey: "field")
+        if self.value is Int {
+            aCoder.encode(self.value as! Int, forKey: "value")
+        } else if self.value is String {
+            aCoder.encode(self.value as! String, forKey: "value")
+        } else if self.value is Bool {
+            aCoder.encode(self.value as! Bool, forKey: "value")
+        }
     }
 
     /** Get Clause as [ String : Any ] instance
@@ -69,59 +89,80 @@ open class EqualsClause: NSObject, Clause {
     - Returns: a [ String : Any ] instance.
     */
     open func makeDictionary() -> [ String : Any ] {
-        return self.nsdict as [ String : Any ]
+        var retval: [String : Any] = [
+          "type" : "eq",
+          "field" : self.field,
+          "value" : self.value
+        ]
+        self.alias.makeDictionary().forEach { (k, v) in retval[k] = v}
+        return retval
     }
 }
 
 /** Class represents NotEquals clause. */
-open class NotEqualsClause: NSObject, Clause {
-    private var equalClause: EqualsClause!
+open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
+    private let equalClause: EqualsClause<ConcreteAlias>
 
-    public init(equalStmt: EqualsClause) {
-        equalClause = equalStmt
+    public init(_ equalClause: EqualsClause<ConcreteAlias>) {
+        self.equalClause = equalClause
     }
 
     /** Initialize with String left hand side value.
-    
+
     - Parameter field: Name of the field to be compared.
-    - Parameter string: Left hand side value to be compared.
+    - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, stringValue:String) {
-        equalClause = EqualsClause(field: field, stringValue: stringValue)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field: String,
+      _ value: String)
+    {
+        self.init(EqualsClause(alias, field, value))
     }
 
     /** Initialize with Int left hand side value.
-    
+
     - Parameter field: Name of the field to be compared.
-    - Parameter integer: Left hand side value to be compared.
+    - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, intValue:Int) {
-        equalClause = EqualsClause(field: field, intValue: intValue)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field: String,
+      _ value: Int)
+    {
+        self.init(EqualsClause(alias, field, value))
     }
 
     /** Initialize with Bool left hand side value.
-    
+
     - Parameter field: Name of the field to be compared.
-    - Parameter bool: Left hand side value to be compared.
+    - Parameter value: Left hand side value to be compared.
     */
-    public init(field:String, boolValue:Bool) {
-        equalClause = EqualsClause(field: field, boolValue: boolValue)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field: String,
+      _ value: Bool)
+    {
+        self.init(EqualsClause(alias, field, value))
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        equalClause = aDecoder.decodeObject() as! EqualsClause
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init(aDecoder.decodeObject() as! EqualsClause)
     }
 
     open func encode(with aCoder: NSCoder) {
-        aCoder.encodeRootObject(equalClause)
+        aCoder.encode(self.equalClause)
     }
 
     /** Get Clause as [ String : Any ] instance
-    
+
     - Returns: a [ String : Any ] instance.
     */
     open func makeDictionary() -> [ String : Any ] {
-        return ["type": "not", "clause": equalClause.makeDictionary()] as [ String : Any ]
+        return [
+          "type": "not",
+          "clause": equalClause.makeDictionary()
+        ] as [ String : Any ]
     }
 }
 
