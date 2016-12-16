@@ -246,7 +246,11 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
         self.init(
           alias,
           field,
-          lower: (included: lowerIncluded, limit: lowerLimitDouble as AnyObject))
+          lower: (
+            included: lowerIncluded,
+            limit: lowerLimitDouble as AnyObject
+          )
+        )
     }
 
     /** Initialize with Int left hand side value.
@@ -290,7 +294,11 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
         self.init(
           alias,
           field,
-          upper: (included: upperIncluded, limit: upperLimitDouble as AnyObject))
+          upper: (
+            included: upperIncluded,
+            limit: upperLimitDouble as AnyObject
+          )
+        )
     }
 
     /** Initialize with Range.
@@ -357,8 +365,15 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
         self.init(
           alias,
           field,
-          lower: (included: lowerIncluded, limit: lowerLimitDouble as AnyObject),
-          upper: (included: upperIncluded, limit: upperLimitDouble as AnyObject))
+          lower: (
+            included: lowerIncluded,
+            limit: lowerLimitDouble as AnyObject
+          ),
+          upper: (
+            included: upperIncluded,
+            limit: upperLimitDouble as AnyObject
+          )
+        )
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
