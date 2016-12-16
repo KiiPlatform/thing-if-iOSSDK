@@ -4,7 +4,11 @@
 //
 import Foundation
 
-/** Protocole of the Clause must be conformed to. */
+/** Base class of any clauses class.
+
+ Developers can not instantiate this class directly. Developers use
+ sub classes of this class
+ */
 open class Clause<ConcreteAlias: Alias>: NSObject, NSCoding {
 
     fileprivate override init() {
