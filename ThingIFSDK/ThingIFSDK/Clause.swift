@@ -4,18 +4,36 @@
 //
 import Foundation
 
-/** Protocole of the Clause must be conformed to. */
-public protocol Clause: NSCoding {
+/** Base class of any clauses class.
+
+ Developers can not instantiate this class directly. Developers use
+ sub classes of this class
+ */
+open class Clause<ConcreteAlias: Alias>: NSObject, NSCoding {
+
+    fileprivate override init() {
+        // nothing to do.
+    }
 
     /** Get Clause as NSDictionary instance
 
     - Returns: a NSDictionary instance.
     */
-    func makeDictionary() -> [ String : Any ]
+    open func makeDictionary() -> [ String : Any ] {
+        return [ : ]
+    }
+
+    public required convenience init(coder aDecoder: NSCoder) {
+        // nothing to do.
+    }
+
+    open func encode(with aCoder: NSCoder) {
+        // nothing to do.
+    }
 }
 
 /** Class represents Equals clause. */
-open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
+open class EqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     private let alias: ConcreteAlias
     private let field: String
@@ -29,6 +47,7 @@ open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     /** Initialize with String left hand side value.
 
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
      */
@@ -42,6 +61,7 @@ open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     /** Initialize with Int left hand side value.
 
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
@@ -55,6 +75,7 @@ open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     /** Initialize with Bool left hand side value.
 
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
@@ -72,7 +93,7 @@ open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
                   aDecoder.decodeObject(forKey: "value") as AnyObject)
     }
 
-    open func encode(with aCoder: NSCoder) {
+    open override func encode(with aCoder: NSCoder) {
         aCoder.encode(self.alias, forKey: "alias")
         aCoder.encode(self.field, forKey: "field")
         if self.value is Int {
@@ -88,7 +109,7 @@ open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
+    open override func makeDictionary() -> [ String : Any ] {
         var retval: [String : Any] = [
           "type" : "eq",
           "field" : self.field,
@@ -100,7 +121,7 @@ open class EqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 }
 
 /** Class represents NotEquals clause. */
-open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
+open class NotEqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     private let equalClause: EqualsClause<ConcreteAlias>
 
     public init(_ equalClause: EqualsClause<ConcreteAlias>) {
@@ -109,6 +130,7 @@ open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     /** Initialize with String left hand side value.
 
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
@@ -122,6 +144,7 @@ open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     /** Initialize with Int left hand side value.
 
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
@@ -135,6 +158,7 @@ open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     /** Initialize with Bool left hand side value.
 
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter value: Left hand side value to be compared.
     */
@@ -150,7 +174,7 @@ open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
         self.init(aDecoder.decodeObject() as! EqualsClause)
     }
 
-    open func encode(with aCoder: NSCoder) {
+    open override func encode(with aCoder: NSCoder) {
         aCoder.encode(self.equalClause)
     }
 
@@ -158,7 +182,7 @@ open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 
     - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
+    open override func makeDictionary() -> [ String : Any ] {
         return [
           "type": "not",
           "clause": equalClause.makeDictionary()
@@ -167,234 +191,353 @@ open class NotEqualsClause<ConcreteAlias: Alias>: NSObject, Clause {
 }
 
 /** Class represents Range clause. */
-open class RangeClause: NSObject, Clause {
-    private var nsdict:[ String : Any ] = ["type": "range"]
+open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
+    private let alias: ConcreteAlias
+    private let field: String
+    private let lower: (included: Bool, limit: AnyObject)?
+    private let upper: (included: Bool, limit: AnyObject)?
+
+    private init(
+      _ alias: ConcreteAlias,
+      _ field: String,
+      lower: (included: Bool, limit: AnyObject)? = nil,
+      upper: (included: Bool, limit: AnyObject)? = nil)
+    {
+        self.alias = alias
+        self.field = field
+        self.lower = lower
+        self.upper = upper
+    }
 
     /** Initialize with Int left hand side value.
-    this works as >(greater than) if lower included is false and as >=(greater than or equals) if lower included is true.
-    
+
+    This works as >(greater than) if lower included is false and as
+    >=(greater than or equals) if lower included is true.
+
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter lowerLimitInt: Int lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
-    public init(field:String, lowerLimitInt:Int, lowerIncluded: Bool) {
-        self.nsdict["lowerIncluded"] = lowerIncluded
-        self.nsdict["field"] = field
-        self.nsdict["lowerLimit"] = NSNumber(value: lowerLimitInt as Int)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field:String,
+      lowerLimitInt:Int,
+      lowerIncluded: Bool)
+    {
+        self.init(
+          alias,
+          field,
+          lower: (included: lowerIncluded, limit: lowerLimitInt as AnyObject))
     }
 
     /** Initialize with Double left hand side value.
-    this works as >(greater than) if lower included is false and as >=(greater than or equals) if lower included is true.
-    
+
+    This works as >(greater than) if lower included is false and as
+    >=(greater than or equals) if lower included is true.
+
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter lowerLimitDouble: Double lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
-    public init(field:String, lowerLimitDouble:Double, lowerIncluded: Bool) {
-        self.nsdict["lowerIncluded"] = lowerIncluded
-        self.nsdict["field"] = field
-        self.nsdict["lowerLimit"] = NSNumber(value: lowerLimitDouble as Double)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field:String,
+      lowerLimitDouble:Double,
+      lowerIncluded: Bool)
+    {
+        self.init(
+          alias,
+          field,
+          lower: (
+            included: lowerIncluded,
+            limit: lowerLimitDouble as AnyObject
+          )
+        )
     }
 
     /** Initialize with Int left hand side value.
-    this works as <(less than) if upper included is false and as <=(less than or equals) if upper included is true.    
-    
+
+    This works as <(less than) if upper included is false and as
+    <=(less than or equals) if upper included is true.
+
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter upperLimitInt: Int upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    public init(field:String, upperLimitInt:Int, upperIncluded: Bool) {
-        self.nsdict["upperIncluded"] = upperIncluded
-        self.nsdict["field"] = field
-        self.nsdict["upperLimit"] = NSNumber(value: upperLimitInt as Int)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field:String,
+      upperLimitInt:Int,
+      upperIncluded: Bool)
+    {
+        self.init(
+          alias,
+          field,
+          upper: (included: upperIncluded, limit: upperLimitInt as AnyObject))
     }
 
     /** Initialize with Double left hand side value.
-    this works as <(less than) if upper included is false and as <=(less than or equals) if upper included is true.
-    
+
+    This works as <(less than) if upper included is false and as
+    <=(less than or equals) if upper included is true.
+
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter upperLimitDouble: Double upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    public init(field:String, upperLimitDouble:Double, upperIncluded: Bool) {
-        self.nsdict["upperIncluded"] = upperIncluded
-        self.nsdict["field"] = field
-        self.nsdict["upperLimit"] = NSNumber(value: upperLimitDouble as Double)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field:String,
+      upperLimitDouble:Double,
+      upperIncluded: Bool)
+    {
+        self.init(
+          alias,
+          field,
+          upper: (
+            included: upperIncluded,
+            limit: upperLimitDouble as AnyObject
+          )
+        )
     }
 
     /** Initialize with Range.
-    this works in the following cases:
-    - ">(greater than) and <(less than)" if lower included is false and upper included is false.
-    - ">=(greater than or equals) and <(less than)" if lower included is true and upper included is false.
-    - ">(greater than) and <=(less than and equals)" if lower included is false and upper included is true.
-    - ">=(greater than and equals) and <=(less than and equals)" if lower included is true and upper included is true.
-    
+
+    This works in the following cases:
+    - ">(greater than) and <(less than)" if lower included is false
+      and upper included is false.
+    - ">=(greater than or equals) and <(less than)" if lower included
+      is true and upper included is false.
+    - ">(greater than) and <=(less than and equals)" if lower included
+      is false and upper included is true.
+    - ">=(greater than and equals) and <=(less than and equals)" if
+      lower included is true and upper included is true.
+
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter lowerLimitInt: Int lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     - Parameter upperLimit: Int upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    public init(field:String, lowerLimitInt: Int, lowerIncluded: Bool, upperLimit: Int, upperIncluded: Bool) {
-        self.nsdict["lowerIncluded"] = lowerIncluded
-        self.nsdict["field"] = field
-        self.nsdict["lowerLimit"] = NSNumber(value: lowerLimitInt as Int)
-        self.nsdict["upperIncluded"] = upperIncluded
-        self.nsdict["upperLimit"] = NSNumber(value: upperLimit as Int)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field:String,
+      lowerLimitInt: Int,
+      lowerIncluded: Bool,
+      upperLimitInt: Int,
+      upperIncluded: Bool)
+    {
+        self.init(
+          alias,
+          field,
+          lower: (included: lowerIncluded, limit: lowerLimitInt as AnyObject),
+          upper: (included: upperIncluded, limit: upperLimitInt as AnyObject))
     }
 
     /** Initialize with Range.
-    this works in the following cases: 
-    - ">(greater than) and <(less than)" if lower included is false and upper included is false.
-    - ">=(greater than or equals) and <(less than)" if lower included is true and upper included is false.
-    - ">(greater than) and <=(less than and equals)" if lower included is false and upper included is true. 
-    - ">=(greater than and equals) and <=(less than and equals)" if lower included is true and upper included is true.
-    
+
+    This works in the following cases:
+    - ">(greater than) and <(less than)" if lower included is false
+      and upper included is false.
+    - ">=(greater than or equals) and <(less than)" if lower included
+      is true and upper included is false.
+    - ">(greater than) and <=(less than and equals)" if lower included
+      is false and upper included is true.
+    - ">=(greater than and equals) and <=(less than and equals)" if
+      lower included is true and upper included is true.
+
+    - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
     - Parameter lowerLimitDouble: Double lower limit value.
     - Parameter lowerIncluded: True provided to include lowerLimit
     - Parameter upperLimit: Double upper limit value.
     - Parameter upperIncluded: True provided to include upperLimit
     */
-    public init(field:String, lowerLimitDouble: Double, lowerIncluded: Bool, upperLimit: Double, upperIncluded: Bool) {
-        self.nsdict["lowerIncluded"] = lowerIncluded
-        self.nsdict["field"] = field
-        self.nsdict["lowerLimit"] = NSNumber(value: lowerLimitDouble as Double)
-        self.nsdict["upperIncluded"] = upperIncluded
-        self.nsdict["upperLimit"] = NSNumber(value: upperLimit as Double)
+    public convenience init(
+      _ alias: ConcreteAlias,
+      _ field:String,
+      lowerLimitDouble: Double,
+      lowerIncluded: Bool,
+      upperLimitDouble: Double,
+      upperIncluded: Bool)
+    {
+        self.init(
+          alias,
+          field,
+          lower: (
+            included: lowerIncluded,
+            limit: lowerLimitDouble as AnyObject
+          ),
+          upper: (
+            included: upperIncluded,
+            limit: upperLimitDouble as AnyObject
+          )
+        )
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        self.nsdict = aDecoder.decodeObject() as! [ String: Any ]
+    public required convenience init(coder aDecoder: NSCoder) {
+        let lower: (included: Bool, limit: AnyObject)?
+        if let dict = aDecoder.decodeObject(forKey: "lower")
+             as? [String : Any] {
+            lower = (dict["included"] as! Bool, dict["limit"] as AnyObject)
+        } else {
+            lower = nil
+        }
+
+        let upper: (included: Bool, limit: AnyObject)?
+        if let dict = aDecoder.decodeObject(forKey: "upper")
+             as? [String : Any] {
+            upper = (dict["included"] as! Bool, dict["limit"] as AnyObject)
+        } else {
+            upper = nil
+        }
+
+        self.init(
+          aDecoder.decodeObject(forKey: "alias") as! ConcreteAlias,
+          aDecoder.decodeObject(forKey: "field") as! String,
+          lower: lower,
+          upper: upper)
     }
 
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encodeRootObject(nsdict)
+    open override func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.alias, forKey: "alias")
+        aCoder.encode(self.field, forKey: "field")
+        if let lower = self.lower {
+            aCoder.encode(
+              [
+                "included" : lower.included,
+                "limit" : lower.limit
+              ] as [String : Any], forKey: "lower")
+        }
+        if let upper = self.upper {
+            aCoder.encode(
+              [
+                "included" : upper.included,
+                "limit" : upper.limit
+              ] as [String : Any], forKey: "upper")
+        }
     }
 
     /** Get Clause as [ String : Any ] instance
-    
+
     - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
-        return self.nsdict as [ String : Any ]
+    open override func makeDictionary() -> [ String : Any ] {
+        var retval = [
+          "type" : "range",
+          "field" : self.field
+        ] as [String : Any]
+
+        if let lower = self.lower {
+            retval["lowerLimit"] = lower.limit as Any
+            retval["lowerIncluded"] = lower.included
+        }
+        if let upper = self.upper {
+            retval["upperLimit"] = upper.limit as Any
+            retval["upperIncluded"] = upper.included
+        }
+        self.alias.makeDictionary().forEach { (k, v) in retval[k] = v}
+        return retval
     }
 }
 
 /** Class represents And clause. */
-open class AndClause: NSObject, Clause {
+open class AndClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     /** clauses array of AndClause */
-    open private(set) var clauses = [Clause]()
+    open private(set) var clauses = [Clause<ConcreteAlias>]()
 
     /** Initialize with clause clauses.
-    
+
     - Parameter clauses: Clause instances for AND clauses
     */
-    public convenience init(clauses: Clause...) {
-        self.init(clauses: clauses)
+    public convenience init(_ clauses: Clause<ConcreteAlias>...) {
+        self.init(clauses)
     }
 
     /** Initialize with clause clauses.
-    
+
      - Parameter clauses: Clause array for AND clauses
      */
-    public init(clauses: [Clause]) {
-        for clause in clauses {
-            self.clauses.append(clause)
-        }
+    public init(_ clauses: [Clause<ConcreteAlias>]) {
+        self.clauses = clauses
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        let array = aDecoder.decodeObject() as! NSArray
-        for clause in array as [AnyObject] {
-            self.clauses.append(clause as! Clause)
-        }
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init(aDecoder.decodeObject() as! [Clause<ConcreteAlias>])
     }
 
-    open func encode(with aCoder: NSCoder) {
-        let array = NSMutableArray()
-        for c in self.clauses {
-            array.add(c)
-        }
-        aCoder.encode(array)
+    open override func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.clauses)
     }
 
     /** Add clause to AndClause
-    
+
     - Parameter clause: Clause instances to add
     */
-    open func add(_ clause: Clause) {
+    open func add(_ clause: Clause<ConcreteAlias>) {
         self.clauses.append(clause)
     }
 
     /** Get Clause as [ String : Any ] instance
-    
+
     - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
-        var clauseDictArray = [[ String : Any ]]()
-        for clause in self.clauses {
-            clauseDictArray.append(clause.makeDictionary())
-        }
-
-        return  ["type": "and", "clauses": clauseDictArray] as [ String : Any ]
+    open override func makeDictionary() -> [ String : Any ] {
+        var array: [[String : Any]] = []
+        self.clauses.forEach { clause in array.append(clause.makeDictionary()) }
+        return ["type": "or", "clauses": array] as [ String : Any ]
     }
 }
+
 /** Class represents Or clause. */
-open class OrClause: NSObject, Clause {
+open class OrClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     /** clauses array of OrClause */
-    open private(set) var clauses = [Clause]()
+    open private(set) var clauses = [Clause<ConcreteAlias>]()
 
     /** Initialize with clause clauses.
-    
+
     - Parameter clauses: Clause instances for OR clauses
     */
-    public convenience init(clauses:Clause...) {
-        self.init(clauses: clauses)
+    public convenience init(_ clauses: Clause<ConcreteAlias>...) {
+        self.init(clauses)
     }
 
     /** Initialize with clause clauses.
-    
+
      - Parameter clauses: Clause array for OR clauses
      */
-    public init(clauses: [Clause]) {
-        for clause in clauses {
-            self.clauses.append(clause)
-        }
+    public init(_ clauses: [Clause<ConcreteAlias>]) {
+        self.clauses = clauses
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        let array = aDecoder.decodeObject() as! NSArray
-        for clause in array as [AnyObject] {
-            self.clauses.append(clause as! Clause)
-        }
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init(aDecoder.decodeObject() as! [Clause<ConcreteAlias>])
     }
 
-    open func encode(with aCoder: NSCoder) {
-        let array = NSMutableArray()
-        for c in self.clauses {
-            array.add(c)
-        }
-        aCoder.encode(array)
+    open override func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.clauses)
     }
 
     /** Add clause to OrClause
-    
+
     - Parameter clause: Clause instances to add
     */
-    open func add(_ clause: Clause) {
+    open func add(_ clause: Clause<ConcreteAlias>) {
         self.clauses.append(clause)
     }
 
     /** Get Clause as [ String : Any ] instance
-    
+
     - Returns: a [ String : Any ] instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
-        var clauseDictArray = [[ String : Any ]]()
-        for clause in self.clauses {
-            clauseDictArray.append(clause.makeDictionary())
-        }
-        return ["type": "or", "clauses": clauseDictArray] as [ String : Any ]
+    open override func makeDictionary() -> [ String : Any ] {
+        var array: [[String : Any]] = []
+        self.clauses.forEach { clause in array.append(clause.makeDictionary()) }
+        return ["type": "or", "clauses": array] as [ String : Any ]
     }
 }
