@@ -448,40 +448,31 @@ open class AndClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     open private(set) var clauses = [Clause<ConcreteAlias>]()
 
     /** Initialize with clause clauses.
-    
+
     - Parameter clauses: Clause instances for AND clauses
     */
-    public convenience init(clauses: Clause<ConcreteAlias>...) {
-        self.init(clauses: clauses)
+    public convenience init(_ clauses: Clause<ConcreteAlias>...) {
+        self.init(clauses)
     }
 
     /** Initialize with clause clauses.
-    
+
      - Parameter clauses: Clause array for AND clauses
      */
-    public init(clauses: [Clause<ConcreteAlias>]) {
-        for clause in clauses {
-            self.clauses.append(clause)
-        }
+    public init(_ clauses: [Clause<ConcreteAlias>]) {
+        self.clauses = clauses
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        let array = aDecoder.decodeObject() as! NSArray
-        for clause in array as [AnyObject] {
-            self.clauses.append(clause as! Clause)
-        }
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init(aDecoder.decodeObject() as! [Clause<ConcreteAlias>])
     }
 
     open override func encode(with aCoder: NSCoder) {
-        let array = NSMutableArray()
-        for c in self.clauses {
-            array.add(c)
-        }
-        aCoder.encode(array)
+        aCoder.encode(self.clauses)
     }
 
     /** Add clause to AndClause
-    
+
     - Parameter clause: Clause instances to add
     */
     open func add(_ clause: Clause<ConcreteAlias>) {
@@ -489,58 +480,47 @@ open class AndClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     }
 
     /** Get Clause as [ String : Any ] instance
-    
+
     - Returns: a [ String : Any ] instance.
     */
     open override func makeDictionary() -> [ String : Any ] {
-        var clauseDictArray = [[ String : Any ]]()
-        for clause in self.clauses {
-            clauseDictArray.append(clause.makeDictionary())
-        }
-
-        return  ["type": "and", "clauses": clauseDictArray] as [ String : Any ]
+        var array: [[String : Any]] = []
+        self.clauses.forEach { clause in array.append(clause.makeDictionary()) }
+        return ["type": "or", "clauses": array] as [ String : Any ]
     }
 }
+
 /** Class represents Or clause. */
 open class OrClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     /** clauses array of OrClause */
     open private(set) var clauses = [Clause<ConcreteAlias>]()
 
     /** Initialize with clause clauses.
-    
+
     - Parameter clauses: Clause instances for OR clauses
     */
-    public convenience init(clauses:Clause<ConcreteAlias>...) {
-        self.init(clauses: clauses)
+    public convenience init(_ clauses: Clause<ConcreteAlias>...) {
+        self.init(clauses)
     }
 
     /** Initialize with clause clauses.
-    
+
      - Parameter clauses: Clause array for OR clauses
      */
-    public init(clauses: [Clause<ConcreteAlias>]) {
-        for clause in clauses {
-            self.clauses.append(clause)
-        }
+    public init(_ clauses: [Clause<ConcreteAlias>]) {
+        self.clauses = clauses
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        let array = aDecoder.decodeObject() as! NSArray
-        for clause in array as [AnyObject] {
-            self.clauses.append(clause as! Clause)
-        }
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init(aDecoder.decodeObject() as! [Clause<ConcreteAlias>])
     }
 
     open override func encode(with aCoder: NSCoder) {
-        let array = NSMutableArray()
-        for c in self.clauses {
-            array.add(c)
-        }
-        aCoder.encode(array)
+        aCoder.encode(self.clauses)
     }
 
     /** Add clause to OrClause
-    
+
     - Parameter clause: Clause instances to add
     */
     open func add(_ clause: Clause<ConcreteAlias>) {
@@ -548,14 +528,12 @@ open class OrClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     }
 
     /** Get Clause as [ String : Any ] instance
-    
+
     - Returns: a [ String : Any ] instance.
     */
     open override func makeDictionary() -> [ String : Any ] {
-        var clauseDictArray = [[ String : Any ]]()
-        for clause in self.clauses {
-            clauseDictArray.append(clause.makeDictionary())
-        }
-        return ["type": "or", "clauses": clauseDictArray] as [ String : Any ]
+        var array: [[String : Any]] = []
+        self.clauses.forEach { clause in array.append(clause.makeDictionary()) }
+        return ["type": "or", "clauses": array] as [ String : Any ]
     }
 }
