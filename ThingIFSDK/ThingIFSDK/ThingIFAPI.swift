@@ -522,7 +522,7 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
     }
 
 
-    // MARK: - Get the state of specified target
+    // MARK: - Thing information methods
 
     /** Get the state of specified target.
 
@@ -636,6 +636,24 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
             completionHandler(ThingIFError.jsonParseError)
         }
+    }
+
+    /** Check firmware version for thing type.
+
+     - Parameter thingType: thing type to check firmware version.
+     - Parameter firmwareVersion: firmwareVersion to be checked.
+     - completionHandler: A closure to be executed once on checking
+       has finished The closure takes 2 argument. First one is
+       existence of firmware version. If true, firmware version for
+       the thing type exists. If false, not exist. Second one is
+       ThingIFError.
+     */
+    open func check(
+      _ thingType: String,
+      _ firmwareVersion: String,
+      _ completionHandler: @escaping (Bool?, ThingIFError?) -> Void) -> Void
+    {
+        // TODO: implement me.
     }
 
     // MARK: - Copy with new target instance
