@@ -584,7 +584,7 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
     open func update(
-        _ vendorThingID: String,
+        vendorThingID: String,
         password: String,
         completionHandler: @escaping (ThingIFError?)-> Void
         )
@@ -642,9 +642,9 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
 
      - Parameter thingType: thing type to check firmware version.
      - Parameter firmwareVersion: firmwareVersion to be checked.
-     - completionHandler: A closure to be executed once on checking
-       has finished The closure takes 2 argument. First one is
-       existence of firmware version. If true, firmware version for
+     - Parameter completionHandler: A closure to be executed once on
+       checking has finished The closure takes 2 arguments. First one
+       is existence of firmware version. If true, firmware version for
        the thing type exists. If false, not exist. Second one is
        ThingIFError.
      */
@@ -652,6 +652,66 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
       _ thingType: String,
       _ firmwareVersion: String,
       _ completionHandler: @escaping (Bool?, ThingIFError?) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    /** Update firmware version.
+
+     This method updates firmware version for `target` thing.
+
+     - Parameter firmwareVersion: firmwareVersion to be updated.
+     - Parameter completionHandler: A closure to be executed once on
+       checking has finished The closure takes 1 argument. The
+       argument is ThingIFError.
+     */
+    open func update(
+      firmwareVersion: String,
+      completionHandler: @escaping (ThingIFError?)-> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    /** Get firmeware version.
+
+     This method gets firmware version for `target` thing.
+
+     - Parameter completionHandler: A closure to be executed once on
+       checking has finished The closure takes 2 arguments. First one
+       is firmware version. Second one is ThingIFError.
+     */
+    open func getFirmewareVerson(
+      completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    /** Update thing type.
+
+     This method updates thing type for `target` thing.
+
+     - Parameter firmwareVersion: firmwareVersion to be updated.
+     - Parameter completionHandler: A closure to be executed once on
+       checking has finished The closure takes 1 argument. The
+       argument is ThingIFError.
+     */
+    open func update(
+      thingType: String,
+      completionHandler: @escaping (ThingIFError?)-> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    /** Get firmeware version.
+
+     This method gets thing type for `target` thing.
+
+     - Parameter completionHandler: A closure to be executed once on
+       checking has finished The closure takes 2 arguments. First one
+       is thing type. Second one is ThingIFError.
+     */
+    open func getThingType(
+      completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
     {
         // TODO: implement me.
     }
