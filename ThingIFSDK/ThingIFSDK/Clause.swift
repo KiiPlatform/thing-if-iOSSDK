@@ -23,12 +23,12 @@ open class Clause<ConcreteAlias: Alias>: NSObject, NSCoding {
         return [ : ]
     }
 
-    public required convenience init(coder aDecoder: NSCoder) {
-        // nothing to do.
+    public required init(coder aDecoder: NSCoder) {
+        fatalError("Developers must not use this method.")
     }
 
     open func encode(with aCoder: NSCoder) {
-        // nothing to do.
+        fatalError("Developers must not use this method.")
     }
 }
 
@@ -43,6 +43,7 @@ open class EqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
         self.alias = alias
         self.field = field
         self.value = value
+        super.init()
     }
 
     /** Initialize with String left hand side value.
@@ -126,6 +127,7 @@ open class NotEqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     public init(_ equalClause: EqualsClause<ConcreteAlias>) {
         self.equalClause = equalClause
+        super.init()
     }
 
     /** Initialize with String left hand side value.
@@ -207,6 +209,7 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
         self.field = field
         self.lower = lower
         self.upper = upper
+        super.init()
     }
 
     /** Initialize with Int left hand side value.
@@ -465,6 +468,7 @@ open class AndClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
      */
     public init(_ clauses: [Clause<ConcreteAlias>]) {
         self.clauses = clauses
+        super.init()
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
@@ -501,18 +505,19 @@ open class OrClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     /** Initialize with clause clauses.
 
-    - Parameter clauses: Clause instances for OR clauses
-    */
-    public convenience init(_ clauses: Clause<ConcreteAlias>...) {
-        self.init(clauses)
-    }
-
-    /** Initialize with clause clauses.
-
      - Parameter clauses: Clause array for OR clauses
      */
     public init(_ clauses: [Clause<ConcreteAlias>]) {
         self.clauses = clauses
+        super.init()
+    }
+
+    /** Initialize with clause clauses.
+
+    - Parameter clauses: Clause instances for OR clauses
+    */
+    public convenience init(_ clauses: Clause<ConcreteAlias>...) {
+        self.init(clauses)
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
