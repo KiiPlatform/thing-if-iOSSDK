@@ -11,11 +11,13 @@ import Foundation
 extension ThingIFAPI {
 
     func _postNewTrigger(
-        _ triggeredCommandForm: TriggeredCommandForm,
+        _ triggeredCommandForm: TriggeredCommandForm<ConcreteAlias>,
         predicate: Predicate,
         options: TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?)-> Void)
     {
+        fatalError("must be implemented.")
+        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
@@ -83,6 +85,7 @@ extension ThingIFAPI {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
             completionHandler(nil, ThingIFError.jsonParseError)
         }
+        */
     }
     func _postNewTrigger(
         _ serverCode:ServerCode,
@@ -143,11 +146,13 @@ extension ThingIFAPI {
 
     func _patchTrigger(
         _ triggerID: String,
-        triggeredCommandForm: TriggeredCommandForm? = nil,
+        triggeredCommandForm: TriggeredCommandForm<ConcreteAlias>? = nil,
         predicate: Predicate? = nil,
         options: TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
     {
+        fatalError("must be implemented")
+        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
@@ -207,6 +212,7 @@ extension ThingIFAPI {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
             completionHandler(nil, ThingIFError.jsonParseError)
         }
+        */
     }
 
     func _patchTrigger(

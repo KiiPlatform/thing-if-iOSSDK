@@ -20,6 +20,8 @@ extension ThingIFAPI {
         completionHandler: @escaping (Command?, ThingIFError?)-> Void
         ) -> Void
     {
+        fatalError("must be implemented.")
+        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
@@ -63,6 +65,7 @@ extension ThingIFAPI {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
             completionHandler(nil, ThingIFError.jsonParseError)
         }
+        */
     }
 
     func _getCommand(

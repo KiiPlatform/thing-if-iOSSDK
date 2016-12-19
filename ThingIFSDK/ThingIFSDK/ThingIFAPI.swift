@@ -6,17 +6,33 @@
 import Foundation
 
 /** Class provides API of the ThingIF. */
-open class ThingIFAPI: NSObject, NSCoding {
+open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
 
-    private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "ThingIFAPI_INSTANCE"
+    private class var SHARED_NSUSERDEFAULT_KEY_INSTANCE: String {
+        get {
+            return "ThingIFAPI_INSTANCE"
+        }
+    }
+
     private static func getStoredInstanceKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag!)")
     }
-    private static let SHARED_NSUSERDEFAULT_SDK_VERSION_KEY = "ThingIFAPI_VERSION"
+
+    private static var SHARED_NSUSERDEFAULT_SDK_VERSION_KEY: String {
+        get {
+            return "ThingIFAPI_VERSION"
+        }
+    }
+
     private static func getStoredSDKVersionKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_SDK_VERSION_KEY + (tag == nil ? "" : "_\(tag!)")
     }
-    private static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
+
+    private static var MINIMUM_LOADABLE_SDK_VERSION: String {
+        get {
+            return "1.0.0"
+        }
+    }
 
     /** Tag of the ThingIFAPI instance */
     open let tag : String?
@@ -233,8 +249,10 @@ open class ThingIFAPI: NSObject, NSCoding {
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
     */
     open func postNewCommand(
-        _ commandForm: CommandForm,
+        _ commandForm: CommandForm<ConcreteAlias>,
         completionHandler: @escaping (Command?, ThingIFError?) -> Void) -> Void {
+        fatalError("must be implemented.")
+        /*
         _postNewCommand(commandForm.schemaName,
                         schemaVersion: commandForm.schemaVersion,
                         actions: commandForm.actions,
@@ -242,6 +260,7 @@ open class ThingIFAPI: NSObject, NSCoding {
                         description: commandForm.commandDescription,
                         metadata: commandForm.metadata,
                         completionHandler: completionHandler);
+         */
     }
 
     /** Get specified command
@@ -309,7 +328,7 @@ open class ThingIFAPI: NSObject, NSCoding {
       failed.
     */
     open func postNewTrigger(
-        _ triggeredCommandForm:TriggeredCommandForm,
+        _ triggeredCommandForm:TriggeredCommandForm<ConcreteAlias>,
         predicate:Predicate,
         options:TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
@@ -382,7 +401,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     */
     open func patchTrigger(
         _ triggerID:String,
-        triggeredCommandForm:TriggeredCommandForm? = nil,
+        triggeredCommandForm:TriggeredCommandForm<ConcreteAlias>? = nil,
         predicate:Predicate? = nil,
         options:TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
