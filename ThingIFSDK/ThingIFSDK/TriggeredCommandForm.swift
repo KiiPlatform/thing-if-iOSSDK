@@ -116,7 +116,16 @@ open class TriggeredCommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
     */
 
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.actions, forKey: "actions")
+        var dictArray: [[String : Any]] = []
+        self.actions.forEach {
+            action in dictArray.append(
+                        [
+                          "alias" : action.alias,
+                          "actions" : action.actions
+                        ]
+                      )
+        }
+        aCoder.encode(dictArray, forKey: "actions")
         aCoder.encode(self.targetID, forKey: "targetID")
         aCoder.encode(self.title, forKey: "title")
         aCoder.encode(self.commandDescription,
@@ -124,15 +133,26 @@ open class TriggeredCommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
         aCoder.encode(self.metadata, forKey: "metadata")
     }
 
-    public required init?(coder aDecoder: NSCoder) {
-        self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [(alias: ConcreteAlias, actions: [String : Any])]
-        self.targetID = aDecoder.decodeObject(forKey: "targetID") as? TypedID
-        self.title = aDecoder.decodeObject(forKey: "title") as? String
-        self.commandDescription =
-            aDecoder.decodeObject(forKey: "commandDescription") as? String;
-        self.metadata = aDecoder.decodeObject(forKey: "metadata")
-                as? [String : Any]
+    public required convenience init?(coder aDecoder: NSCoder) {
+        var actions: [(alias: ConcreteAlias, actions: [String : Any])] = []
+        (aDecoder.decodeObject(forKey: "actions")
+           as! [[String : Any]]).forEach {
+            dict in actions.append(
+                      (
+                        alias: dict["alias"] as! ConcreteAlias,
+                        actions: dict["actions"] as! [String : Any]
+                      )
+                    )
+        }
+
+        self.init(
+          actions: actions,
+          targetID: aDecoder.decodeObject(forKey: "targetID") as? TypedID,
+          title: aDecoder.decodeObject(forKey: "title") as? String,
+          commandDescription: aDecoder.decodeObject(
+            forKey: "commandDescription") as? String,
+          metadata: aDecoder.decodeObject(forKey: "metadata") as? [String : Any]
+        )
     }
 
     func toDictionary() -> Dictionary<String, Any> {
