@@ -68,7 +68,8 @@ open class Trigger: NSObject, NSCoding {
                 if let eventSource = EventSource(rawValue: eventSourceString){
                     switch eventSource {
                     case EventSource.states:
-                        predicate = StatePredicate.statePredicateWithNSDict(predicateDict)
+                        fatalError("We should reimplement this.")
+                        // predicate = StatePredicate.statePredicateWithNSDict(predicateDict)
                         break
                     case EventSource.schedule:
                         predicate = SchedulePredicate(schedule:  predicateDict["schedule"] as! String)
