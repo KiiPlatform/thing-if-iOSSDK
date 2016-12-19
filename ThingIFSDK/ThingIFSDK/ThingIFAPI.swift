@@ -645,7 +645,7 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
      - completionHandler: A closure to be executed once on checking
        has finished The closure takes 2 argument. First one is
        existence of firmware version. If true, firmware version for
-       the thing type exists. if false, not exist. Second one is
+       the thing type exists. If false, not exist. Second one is
        ThingIFError.
      */
     open func check(
