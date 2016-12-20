@@ -522,21 +522,52 @@ open class ThingIFAPI<ConcreteAlias: Alias & Hashable>: NSObject, NSCoding {
     }
 
 
-    // MARK: - Thing information methods
+    // MARK: - Getting thing state methods
 
     /** Get the state of specified target.
 
-    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
 
-    - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of ThingIFError when failed.
+     - Parameter completionHandler: A closure to be executed once get
+       state has finished. The closure takes 2 arguments: 1st one is
+       Dictionary that represent Target State and 2nd one is an
+       instance of ThingIFError when failed.
     */
     open func getState(
-        _ completionHandler: @escaping (Dictionary<String, Any>?,  ThingIFError?)-> Void
-        )
+      _ completionHandler:@escaping ([ConcreteAlias : [String : Any]]?,
+                                     ThingIFError?)-> Void) -> Void
     {
-        _getState(completionHandler)
-        
+        fatalError("TODO: We must reimplement this method.")
+        // _getState(completionHandler)
     }
+
+    /** Get the state of specified target by trait.
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     You can not use this method if You chose non trait verson.
+
+     - Parameter alias: alias of trait.
+     - Parameter completionHandler: A closure to be executed once get
+       state has finished. The closure takes 2 arguments: 1st one is
+       Dictionary that represent Target State and 2nd one is an
+       instance of ThingIFError when failed.
+     */
+    open func getState(
+      _ alias: ConcreteAlias,
+      _ completionHandler:@escaping ([ConcreteAlias : [String : Any]]?,
+                                     ThingIFError?)-> Void) -> Void
+    {
+        fatalError("TODO: We must reimplement this method.")
+    }
+
+    // MARK: - Thing information methods
 
     /** Get the Vendor Thing ID of specified Target.
      
