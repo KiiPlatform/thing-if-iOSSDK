@@ -36,6 +36,12 @@ open class TraitAlias: NSObject, Alias {
         self.name = name
     }
 
+    open override var hashValue: Int {
+        get {
+            return self.name.hashValue
+        }
+    }
+
     public required convenience init(coder aDecoder: NSCoder) {
         self.init(aDecoder.decodeObject() as! String)
     }
@@ -47,6 +53,14 @@ open class TraitAlias: NSObject, Alias {
     open func makeDictionary() -> [String : Any] {
         return [ "alias" : self.name ]
     }
+}
+
+func ==(left: TraitAlias, right: TraitAlias) -> Bool {
+    return left.name == right.name
+}
+
+func !=(left: TraitAlias, right: TraitAlias) -> Bool {
+    return left.name != right.name
 }
 
 /**
@@ -68,4 +82,19 @@ open class NonTraitAlias: NSObject, Alias {
     open func makeDictionary() -> [String : Any] {
         return [ : ]
     }
+
+    open override var hashValue: Int {
+        get {
+            return 1
+        }
+    }
+
+}
+
+func ==(left: NonTraitAlias, right: NonTraitAlias) -> Bool {
+    return true
+}
+
+func !=(left: NonTraitAlias, right: NonTraitAlias) -> Bool {
+    return false
 }
