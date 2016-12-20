@@ -662,7 +662,7 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
 
      - Parameter firmwareVersion: firmwareVersion to be updated.
      - Parameter completionHandler: A closure to be executed once on
-       checking has finished The closure takes 1 argument. The
+       updating has finished The closure takes 1 argument. The
        argument is ThingIFError.
      */
     open func update(
@@ -677,7 +677,7 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
      This method gets firmware version for `target` thing.
 
      - Parameter completionHandler: A closure to be executed once on
-       checking has finished The closure takes 2 arguments. First one
+       getting has finished The closure takes 2 arguments. First one
        is firmware version. Second one is ThingIFError.
      */
     open func getFirmewareVerson(
@@ -692,7 +692,7 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
 
      - Parameter thingType: thing type to be updated.
      - Parameter completionHandler: A closure to be executed once on
-       checking has finished The closure takes 1 argument. The
+       updating has finished The closure takes 1 argument. The
        argument is ThingIFError.
      */
     open func update(
@@ -707,7 +707,7 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
      This method gets thing type for `target` thing.
 
      - Parameter completionHandler: A closure to be executed once on
-       checking has finished The closure takes 2 arguments. First one
+       getting has finished The closure takes 2 arguments. First one
        is thing type. Second one is ThingIFError.
      */
     open func getThingType(
