@@ -690,7 +690,7 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
 
      This method updates thing type for `target` thing.
 
-     - Parameter firmwareVersion: firmwareVersion to be updated.
+     - Parameter thingType: thing type to be updated.
      - Parameter completionHandler: A closure to be executed once on
        checking has finished The closure takes 1 argument. The
        argument is ThingIFError.
@@ -702,7 +702,7 @@ open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
         // TODO: implement me.
     }
 
-    /** Get firmeware version.
+    /** Get thing type.
 
      This method gets thing type for `target` thing.
 
