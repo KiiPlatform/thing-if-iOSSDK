@@ -6,7 +6,7 @@
 import Foundation
 
 /** Class provides API of the ThingIF. */
-open class ThingIFAPI<ConcreteAlias: Alias>: NSObject, NSCoding {
+open class ThingIFAPI<ConcreteAlias: Alias & Hashable>: NSObject, NSCoding {
 
     private static var SHARED_NSUSERDEFAULT_KEY_INSTANCE: String {
         get {

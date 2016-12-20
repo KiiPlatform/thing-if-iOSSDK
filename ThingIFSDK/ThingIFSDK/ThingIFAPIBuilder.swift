@@ -6,7 +6,7 @@
 import Foundation
 
 /** Builder class of ThingIFAPI */
-open class ThingIFAPIBuilder<ConcreteAlias: Alias> {
+open class ThingIFAPIBuilder<ConcreteAlias: Alias & Hashable> {
 
     var app: App
     var owner: Owner
