@@ -73,7 +73,7 @@ class GetStateTests: SmallTestBase {
                 XCTFail("execution timeout")
             }
         }
-        setting.api._installationID = "dummyInstallationID"
+        setting.api.installationID = "dummyInstallationID"
     }
     func testGetStates_success() {
         let setting = TestSetting()
@@ -112,7 +112,7 @@ class GetStateTests: SmallTestBase {
             return;
         }
 
-        setting.api._target = setting.target
+        setting.api.target = setting.target
         setting.api.getState() { (result, error) -> Void in
 
             XCTAssertNotNil(result,"should not nil")
@@ -165,7 +165,7 @@ class GetStateTests: SmallTestBase {
             return;
         }
 
-        setting.api._target = setting.target
+        setting.api.target = setting.target
         setting.api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
@@ -223,7 +223,7 @@ class GetStateTests: SmallTestBase {
             return;
         }
 
-        setting.api._target = setting.target
+        setting.api.target = setting.target
         setting.api.getState() { (result, error) -> Void in
             if error == nil{
                 XCTFail("should fail")
@@ -290,7 +290,7 @@ class GetStateTests: SmallTestBase {
             return;
         }
 
-        setting.api._target = setting.target
+        setting.api.target = setting.target
         setting.api.getState() { (result, error) -> Void in
 
             XCTAssertNotNil(result,"should not nil")

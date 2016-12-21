@@ -163,7 +163,7 @@ class OnboardingTests: SmallTestBase {
         let setting = TestSetting()
         let api = setting.api
 
-        api._target = setting.target
+        api.target = setting.target
         api.onboardWith(
           thingID: "dummyThingID",
           thingPassword: "dummyPassword") { (target, error) -> Void in

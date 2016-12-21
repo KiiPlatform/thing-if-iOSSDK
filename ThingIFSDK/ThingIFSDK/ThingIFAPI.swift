@@ -33,26 +33,15 @@ open class ThingIFAPI: NSObject, NSCoding {
     /** owner of target */
     open let owner: Owner
 
-    var _installationID:String?
-    var _target: Target?
-
     /** Get installationID if the push is already installed.
     null will be returned if the push installation has not been done.
 
     - Returns: Installation ID used in IoT Cloud.
     */
-    open var installationID: String? {
-        get {
-            return _installationID
-        }
-    }
+    open internal(set) var installationID: String?
 
     /** target */
-    open var target: Target? {
-        get {
-            return _target
-        }
-    }
+    open internal(set) var target: Target?
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
@@ -61,8 +50,8 @@ open class ThingIFAPI: NSObject, NSCoding {
         aCoder.encode(self.appID, forKey: "appID")
         aCoder.encode(self.appKey, forKey: "appKey")
         aCoder.encode(self.owner, forKey: "owner")
-        aCoder.encode(self._installationID, forKey: "_installationID")
-        aCoder.encode(self._target, forKey: "_target")
+        aCoder.encode(self.installationID, forKey: "_installationID")
+        aCoder.encode(self.target, forKey: "_target")
         aCoder.encode(self.tag, forKey: "tag")
     }
 
@@ -72,8 +61,8 @@ open class ThingIFAPI: NSObject, NSCoding {
         self.appID = aDecoder.decodeObject(forKey: "appID") as! String
         self.appKey = aDecoder.decodeObject(forKey: "appKey") as! String
         self.owner = aDecoder.decodeObject(forKey: "owner") as! Owner
-        self._installationID = aDecoder.decodeObject(forKey: "_installationID") as? String
-        self._target = aDecoder.decodeObject(forKey: "_target") as? Target
+        self.installationID = aDecoder.decodeObject(forKey: "_installationID") as? String
+        self.target = aDecoder.decodeObject(forKey: "_target") as? Target
         self.tag = aDecoder.decodeObject(forKey: "tag") as? String
     }
 
@@ -631,8 +620,8 @@ open class ThingIFAPI: NSObject, NSCoding {
 
         let newIotapi = ThingIFAPI(app: self.app, owner: self.owner, tag: tag)
 
-        newIotapi._target = newTarget
-        newIotapi._installationID = self._installationID
+        newIotapi.target = newTarget
+        newIotapi.installationID = self.installationID
         newIotapi.saveToUserDefault()
         return newIotapi
     }

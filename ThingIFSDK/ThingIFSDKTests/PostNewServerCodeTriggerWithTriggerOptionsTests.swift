@@ -62,7 +62,7 @@ class PostNewServerCodeTriggerWithTriggerOptionsTests: SmallTestBase {
         ]
 
         let setting = TestSetting()
-        setting.api._target = setting.target
+        setting.api.target = setting.target
         let serverCode =  ServerCode(endpoint: "my_function",
                                      executorAccessToken: "executorAccessToken",
                                      targetAppID: "targetAppID",

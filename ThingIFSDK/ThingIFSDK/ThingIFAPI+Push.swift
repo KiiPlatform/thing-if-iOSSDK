@@ -35,11 +35,11 @@ extension ThingIFAPI {
             let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
                 
                 if let installationID = response?["installationID"] as? String{
-                    self._installationID = installationID
+                    self.installationID = installationID
                 }
                 self.saveToUserDefault()
                 DispatchQueue.main.async {
-                    completionHandler(self._installationID, error)
+                    completionHandler(self.installationID, error)
                 }
             })
             let operation = IoTRequestOperation(request: request)
@@ -59,7 +59,7 @@ extension ThingIFAPI {
         completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
-        let idParam = installationID != nil ? installationID : self._installationID
+        let idParam = installationID != nil ? installationID : self.installationID
         let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(idParam!)"
         
         // generate header
@@ -68,7 +68,7 @@ extension ThingIFAPI {
         let request = buildDefaultRequest(.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
             
             if error == nil{
-                self._installationID = nil
+                self.installationID = nil
             }
             self.saveToUserDefault()
             DispatchQueue.main.async {
