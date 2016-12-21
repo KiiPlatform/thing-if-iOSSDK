@@ -256,7 +256,7 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         sharedMockSession.mockResponse = testCase.mockResponse
         iotSession = MockSession.self
 
-        setting.api._target = setting.target
+        setting.api.target = setting.target
 
         setting.api.postNewTrigger(
           TriggeredCommandForm(

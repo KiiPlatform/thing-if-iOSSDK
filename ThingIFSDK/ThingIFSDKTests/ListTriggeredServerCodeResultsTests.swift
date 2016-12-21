@@ -60,7 +60,7 @@ class ListTriggeredServerCodeResultsTests: SmallTestBase {
                 ((data: resJson2, urlResponse: urlResponse2, error: nil), requestVerifier2)
             ]
 
-            api._target = setting.target
+            api.target = setting.target
             api.listTriggeredServerCodeResults(triggerID, bestEffortLimit: 0, paginationKey: nil) { (results, paginationKey, error) -> Void in
                 XCTAssertNil(error)
                 XCTAssertEqual(2, results!.count)

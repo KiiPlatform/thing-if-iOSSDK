@@ -121,7 +121,7 @@ class PatchTriggerWithTriggeredCommandFormTest: SmallTestBase {
         ]
 
         let setting = TestSetting()
-        setting.api._target = setting.target
+        setting.api.target = setting.target
 
         for form_index in 0..<forms.count {
             let form: TriggeredCommandForm = forms[form_index]

@@ -72,7 +72,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
-            api._target = setting.target
+            api.target = setting.target
             api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
@@ -157,7 +157,7 @@ class PostNewServerCodeTriggerTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
-            api._target = setting.target
+            api.target = setting.target
             api.postNewTrigger(serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")

@@ -131,7 +131,7 @@ class PostNewTriggerTests: SmallTestBase {
         let api = setting.api
         let target = setting.target
         // perform onboarding
-        api._target = target
+        api.target = target
 
         let orClauseClause = ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]] as [String : Any]
         let andClauseClause = ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]] as [String : Any]
@@ -182,7 +182,7 @@ class PostNewTriggerTests: SmallTestBase {
         let schemaVersion = setting.schemaVersion
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         do{
             let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
@@ -267,7 +267,7 @@ class PostNewTriggerTests: SmallTestBase {
         let schemaVersion = setting.schemaVersion
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         do{
             let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]
@@ -352,7 +352,7 @@ class PostNewTriggerTests: SmallTestBase {
         let schemaVersion = setting.schemaVersion
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         do{
             let actions: [Dictionary<String, Any>] = [["turnPower":["power":true]],["setBrightness":["bribhtness":90]]]

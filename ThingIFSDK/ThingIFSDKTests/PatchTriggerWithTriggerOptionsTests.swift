@@ -61,7 +61,7 @@ class PatchTriggerWithTriggerOptionsTests: SmallTestBase {
         ]
 
         let setting = TestSetting()
-        setting.api._target = setting.target
+        setting.api.target = setting.target
 
         for options_index in 0..<optionsArray.count {
             let options: TriggerOptions = optionsArray[options_index]
