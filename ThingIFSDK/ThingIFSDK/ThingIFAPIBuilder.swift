@@ -34,7 +34,7 @@ open class ThingIFAPIBuilder<ConcreteAlias: Alias & Hashable> {
           app: self.app,
           owner: self.owner,
           tag: self.tag)
-        thingIFAPI._target = self.target
+        thingIFAPI.target = self.target
         return thingIFAPI
     }
 }

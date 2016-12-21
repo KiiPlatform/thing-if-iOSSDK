@@ -26,7 +26,7 @@ class EnableTriggerTests: SmallTestBase {
         let expectation = self.expectation(description: "enableTriggerTests")
 
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
@@ -135,7 +135,7 @@ class EnableTriggerTests: SmallTestBase {
             ((data: jsonData!, urlResponse: mockResponse2, error: nil),getRequestVerifier)
         ]
         
-        api._target = setting.target
+        api.target = setting.target
         api.enableTrigger(expectedTriggerID, enable: false) { (trigger, error) -> Void in
             if error == nil{
                 XCTAssertEqual(trigger!.triggerID, expectedTriggerID)
@@ -160,7 +160,7 @@ class EnableTriggerTests: SmallTestBase {
         let setting = TestSetting()
         let api = setting.api
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         do{
             let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"

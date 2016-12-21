@@ -94,7 +94,7 @@ extension ThingIFAPI {
                                     accessToken: accessToken)
                         }
 
-                        self._target = target
+                        self.target = target
                     }
                     self.saveToUserDefault()
                     DispatchQueue.main.async {

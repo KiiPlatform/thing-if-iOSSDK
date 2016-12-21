@@ -72,7 +72,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
         ]
 
         let setting = TestSetting()
-        setting.api._target = setting.target
+        setting.api.target = setting.target
         let serverCode =  ServerCode(endpoint: "my_function",
                                      executorAccessToken: "executorAccessToken",
                                      targetAppID: "targetAppID",
@@ -225,7 +225,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
         let predicate = SchedulePredicate(schedule: "1 * * * *")
 
         let setting = TestSetting()
-        setting.api._target = setting.target
+        setting.api.target = setting.target
 
 
         weak var expectation : XCTestExpectation!
@@ -354,7 +354,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
         let predicate = SchedulePredicate(schedule: "1 * * * *")
 
         let setting = TestSetting()
-        setting.api._target = setting.target
+        setting.api.target = setting.target
 
         weak var expectation : XCTestExpectation!
         defer {
@@ -471,7 +471,7 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
 
     func testNoOptionalArgument() {
         let setting = TestSetting()
-        setting.api._target = setting.target
+        setting.api.target = setting.target
         var executed: Bool = false;
 
         setting.api.patchTrigger(

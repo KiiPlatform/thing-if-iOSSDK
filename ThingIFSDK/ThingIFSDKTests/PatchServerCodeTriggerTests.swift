@@ -86,7 +86,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
                 ((data: jsonData4Get, urlResponse: urlResponse4Get, error: nil),getRequestVerifier)
             ]
             
-            api._target = setting.target
+            api.target = setting.target
             api.patchTrigger(expectedTriggerID, serverCode: serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(trigger!.triggerID, expectedTriggerID, tag)
@@ -170,7 +170,7 @@ class PatchServerCodeTriggerTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
-            api._target = setting.target
+            api.target = setting.target
             api.patchTrigger(triggerID, serverCode:serverCode, predicate: predicate, completionHandler: { (trigger, error) -> Void in
                 if error == nil{
                     XCTFail("should fail")
