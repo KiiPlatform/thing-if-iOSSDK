@@ -30,7 +30,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
         let newPassword = "dummyPassword"
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -101,7 +101,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
         let newPassword = "dummyPassword"
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -178,7 +178,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
         let newPassword = "dummyPassword"
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -255,7 +255,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
         let newPassword = "dummyPassword"
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         setting.api.update(
             newVendorThingID,
@@ -288,7 +288,7 @@ class UpdateVendorThingIDTests: SmallTestBase {
         let newPassword = ""
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         setting.api.update(
             newVendorThingID,

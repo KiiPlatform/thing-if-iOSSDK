@@ -64,7 +64,7 @@ class ListCommandsTests: SmallTestBase {
         let commandIDPrifex = "0267251d9d60-1858-5e11-3dc3-00f3f0b"
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         let testcases = [
             // test cases request without best effort and paginationKey
@@ -144,7 +144,7 @@ class ListCommandsTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
 
-            api._target = setting.target
+            api.target = setting.target
             api.listCommands(testcase.bestEffortLimit, paginationKey: testcase.paginationKey, completionHandler: { (commands, nextPaginationKey, error) -> Void in
                 if(error != nil) {
                     XCTFail("should success")
@@ -197,7 +197,7 @@ class ListCommandsTests: SmallTestBase {
         let owner = setting.owner
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         do{
             // mock response

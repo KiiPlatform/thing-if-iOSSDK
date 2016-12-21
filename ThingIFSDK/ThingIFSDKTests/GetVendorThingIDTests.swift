@@ -28,7 +28,7 @@ class GetVendorThingIDTests: SmallTestBase {
         let target = setting.target
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         do {
             // verify request
@@ -85,7 +85,7 @@ class GetVendorThingIDTests: SmallTestBase {
         let target = setting.target
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in

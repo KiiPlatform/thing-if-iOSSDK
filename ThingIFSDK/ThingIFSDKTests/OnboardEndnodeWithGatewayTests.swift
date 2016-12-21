@@ -33,7 +33,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         ]
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         do {
             // verify request
@@ -128,7 +128,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         ]
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -218,7 +218,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         ]
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -308,7 +308,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         ]
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -436,7 +436,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         ]
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         let src: Dictionary<String, Any> = [
             "thingProperties": thingProperties
@@ -477,7 +477,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         ]
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         let src = [
             "vendorThingID": "",
@@ -519,7 +519,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         ]
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         let src = [
             "vendorThingID": vendorThingID,
@@ -562,7 +562,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.interval1Minute)
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         do {
             // verify request
@@ -660,7 +660,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.interval15Minutes)
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -753,7 +753,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.interval30Minutes)
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -846,7 +846,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         let options = OnboardEndnodeWithGatewayOptions(interval: DataGroupingInterval.interval1Hour)
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         // verify request
         let requestVerifier: ((URLRequest) -> Void) = {(request) in
@@ -977,7 +977,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         ]
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         let src: Dictionary<String, Any> = [
             "thingProperties": thingProperties
@@ -1019,7 +1019,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         ]
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         let src = [
             "vendorThingID": "",
@@ -1062,7 +1062,7 @@ class OnboardEndnodeWithGatewayThingIDTests: SmallTestBase {
         ]
 
         // perform onboarding
-        setting.api._target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
+        setting.api.target = Gateway(thingID: gatewayThingID, vendorThingID: vendorThingID)
 
         let src = [
             "vendorThingID": vendorThingID,

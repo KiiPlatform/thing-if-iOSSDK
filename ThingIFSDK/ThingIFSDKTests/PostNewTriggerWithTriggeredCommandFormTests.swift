@@ -123,7 +123,7 @@ class PostNewTriggerWithTriggeredCommandFormTests: SmallTestBase {
         ]
 
         let setting = TestSetting()
-        setting.api._target = setting.target
+        setting.api.target = setting.target
 
         for index in 0..<forms.count {
             let form = forms[index]

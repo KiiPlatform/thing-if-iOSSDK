@@ -37,7 +37,7 @@ class ListTriggersTests: SmallTestBase {
         let triggerIDPrifex = "0267251d9d60-1858-5e11-3dc3-00f3f0b"
 
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         var expectedTriggerStructs: [ExpectedTriggerStruct] = [
             ExpectedTriggerStruct(statement: ["type":"eq","field":"color", "value": 0], triggerID: "\(triggerIDPrifex)1", triggersWhenString: "CONDITION_TRUE", enabled: true),
@@ -136,7 +136,7 @@ class ListTriggersTests: SmallTestBase {
         let api = setting.api
 
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         do{
             let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"

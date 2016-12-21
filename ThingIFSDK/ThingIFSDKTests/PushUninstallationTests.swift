@@ -83,7 +83,7 @@ class PushUninstallationTests: SmallTestBase {
                 XCTFail("execution timeout")
             }
         }
-        setting.api._installationID = "dummyInstallationID"
+        setting.api.installationID = "dummyInstallationID"
     }
     func testPushUninstallation_success() {
         let setting = TestSetting()
@@ -111,7 +111,7 @@ class PushUninstallationTests: SmallTestBase {
         
         setting.api.uninstallPush(installID) { (error) -> Void in
             XCTAssertTrue(error==nil,"should not error")
-            XCTAssertNil(setting.api._installationID,"Should be nil")
+            XCTAssertNil(setting.api.installationID,"Should be nil")
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
