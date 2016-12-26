@@ -739,6 +739,34 @@ open class ThingIFAPI<ConcreteAlias: Alias & Hashable>: NSObject, NSCoding {
         // TODO: implement me.
     }
 
+    // MARK: Qeury state history.
+    open func query(
+      _ alias: TraitAlias,
+      clause: QueryClause? = nil,
+      firmwareVersion: String? = nil,
+      bestEffortLimit: Int? = nil,
+      nextPaginationKey: String? = nil,
+      completionHandler: @escaping (
+        (result: [TraitAlias : [[String : Any]]], paginationKey: String)?,
+        ThingIFError?) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    open func query(
+      _ alias: TraitAlias,
+      _ range: (from: Date, to: Date),
+      clause: QueryClause? = nil,
+      firmwareVersion: String? = nil,
+      completionHandler: @escaping (
+        (result: [
+           (range: (from: Date, to: Data),
+            objects: [[String : Any]])]?,
+         ThingIFError?)) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
     // MARK: - Copy with new target instance
 
     /** Get new instance with new target
