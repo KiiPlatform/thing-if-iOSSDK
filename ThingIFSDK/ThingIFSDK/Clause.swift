@@ -9,37 +9,24 @@ import Foundation
  Developers can not instantiate this class directly. Developers use
  sub classes of this class
  */
-open class Clause<ConcreteAlias: Alias>: NSObject, NSCoding {
-
-    fileprivate override init() {
-        // nothing to do.
-    }
+public protocol Clause: NSCoding {
 
     /** Get Clause as NSDictionary instance
 
     - Returns: a NSDictionary instance.
     */
-    open func makeDictionary() -> [ String : Any ] {
-        return [ : ]
-    }
+    func makeDictionary() -> [ String : Any ]
 
-    public required init(coder aDecoder: NSCoder) {
-        fatalError("Developers must not use this method.")
-    }
-
-    open func encode(with aCoder: NSCoder) {
-        fatalError("Developers must not use this method.")
-    }
 }
 
 /** Class represents Equals clause. */
-open class EqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
+open class EqualsClause: NSObject, Clause {
 
-    private let alias: ConcreteAlias
+    private let alias: String
     private let field: String
     private let value: AnyObject
 
-    private init(_ alias: ConcreteAlias, _ field: String, _ value: AnyObject) {
+    private init(_ alias: String, _ field: String, _ value: AnyObject) {
         self.alias = alias
         self.field = field
         self.value = value
@@ -50,51 +37,51 @@ open class EqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter intValue: Left hand side value to be compared.
      */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field: String,
-      _ value: Int)
+      intValue: Int)
     {
-        self.init(alias, field, value as AnyObject)
+        self.init(alias, field, intValue as AnyObject)
     }
 
     /** Initialize with Int left hand side value.
 
     - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter stringValue: Left hand side value to be compared.
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field: String,
-      _ value: String)
+      stringValue: String)
     {
-        self.init(alias, field, value as AnyObject)
+        self.init(alias, field, stringValue as AnyObject)
     }
 
     /** Initialize with Bool left hand side value.
 
     - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter boolValue: Left hand side value to be compared.
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field: String,
-      _ value: Bool)
+      boolValue: Bool)
     {
-        self.init(alias, field, value as AnyObject)
+        self.init(alias, field, boolValue as AnyObject)
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject(forKey: "alias") as! ConcreteAlias,
+        self.init(aDecoder.decodeObject(forKey: "alias") as! String,
                   aDecoder.decodeObject(forKey: "field") as! String,
                   aDecoder.decodeObject(forKey: "value") as AnyObject)
     }
 
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.alias, forKey: "alias")
         aCoder.encode(self.field, forKey: "field")
         if self.value is Int {
@@ -110,22 +97,21 @@ open class EqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     - Returns: a [ String : Any ] instance.
     */
-    open override func makeDictionary() -> [ String : Any ] {
-        var retval: [String : Any] = [
+    open func makeDictionary() -> [ String : Any ] {
+        return [
+          "alias" : self.alias,
           "type" : "eq",
           "field" : self.field,
           "value" : self.value
-        ]
-        self.alias.makeDictionary().forEach { (k, v) in retval[k] = v}
-        return retval
+        ] as [String : Any]
     }
 }
 
 /** Class represents NotEquals clause. */
-open class NotEqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
-    private let equalClause: EqualsClause<ConcreteAlias>
+open class NotEqualsClause: NSObject, Clause {
+    private let equalClause: EqualsClause
 
-    public init(_ equalClause: EqualsClause<ConcreteAlias>) {
+    public init(_ equalClause: EqualsClause) {
         self.equalClause = equalClause
         super.init()
     }
@@ -134,49 +120,49 @@ open class NotEqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter stringValue: Left hand side value to be compared.
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field: String,
-      _ value: String)
+      stringValue: String)
     {
-        self.init(EqualsClause(alias, field, value))
+        self.init(EqualsClause(alias, field, stringValue: stringValue))
     }
 
     /** Initialize with Int left hand side value.
 
     - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter intValue: Left hand side value to be compared.
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field: String,
-      _ value: Int)
+      intValue: Int)
     {
-        self.init(EqualsClause(alias, field, value))
+        self.init(EqualsClause(alias, field, intValue: intValue))
     }
 
     /** Initialize with Bool left hand side value.
 
     - Parameter alias: Alias of trait.
     - Parameter field: Name of the field to be compared.
-    - Parameter value: Left hand side value to be compared.
+    - Parameter boolValue: Left hand side value to be compared.
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field: String,
-      _ value: Bool)
+      boolValue: Bool)
     {
-        self.init(EqualsClause(alias, field, value))
+        self.init(EqualsClause(alias, field, boolValue: boolValue))
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
         self.init(aDecoder.decodeObject() as! EqualsClause)
     }
 
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.equalClause)
     }
 
@@ -184,7 +170,7 @@ open class NotEqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     - Returns: a [ String : Any ] instance.
     */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         return [
           "type": "not",
           "clause": equalClause.makeDictionary()
@@ -193,14 +179,14 @@ open class NotEqualsClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 }
 
 /** Class represents Range clause. */
-open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
-    private let alias: ConcreteAlias
+open class RangeClause: NSObject, Clause {
+    private let alias: String
     private let field: String
     private let lower: (included: Bool, limit: AnyObject)?
     private let upper: (included: Bool, limit: AnyObject)?
 
     private init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field: String,
       lower: (included: Bool, limit: AnyObject)? = nil,
       upper: (included: Bool, limit: AnyObject)? = nil)
@@ -223,7 +209,7 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field:String,
       lowerLimitInt:Int,
       lowerIncluded: Bool)
@@ -245,7 +231,7 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     - Parameter lowerIncluded: True provided to include lowerLimit
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field:String,
       lowerLimitDouble:Double,
       lowerIncluded: Bool)
@@ -271,7 +257,7 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     - Parameter upperIncluded: True provided to include upperLimit
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field:String,
       upperLimitInt:Int,
       upperIncluded: Bool)
@@ -293,7 +279,7 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     - Parameter upperIncluded: True provided to include upperLimit
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field:String,
       upperLimitDouble:Double,
       upperIncluded: Bool)
@@ -328,7 +314,7 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     - Parameter upperIncluded: True provided to include upperLimit
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field:String,
       lowerLimitInt: Int,
       lowerIncluded: Bool,
@@ -362,7 +348,7 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
     - Parameter upperIncluded: True provided to include upperLimit
     */
     public convenience init(
-      _ alias: ConcreteAlias,
+      _ alias: String,
       _ field:String,
       lowerLimitDouble: Double,
       lowerIncluded: Bool,
@@ -401,13 +387,13 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
         }
 
         self.init(
-          aDecoder.decodeObject(forKey: "alias") as! ConcreteAlias,
+          aDecoder.decodeObject(forKey: "alias") as! String,
           aDecoder.decodeObject(forKey: "field") as! String,
           lower: lower,
           upper: upper)
     }
 
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.alias, forKey: "alias")
         aCoder.encode(self.field, forKey: "field")
         if let lower = self.lower {
@@ -430,8 +416,9 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     - Returns: a [ String : Any ] instance.
     */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         var retval = [
+          "alias" : self.alias,
           "type" : "range",
           "field" : self.field
         ] as [String : Any]
@@ -444,21 +431,20 @@ open class RangeClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
             retval["upperLimit"] = upper.limit as Any
             retval["upperIncluded"] = upper.included
         }
-        self.alias.makeDictionary().forEach { (k, v) in retval[k] = v}
         return retval
     }
 }
 
 /** Class represents And clause. */
-open class AndClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
+open class AndClause: NSObject, Clause {
     /** clauses array of AndClause */
-    open private(set) var clauses = [Clause<ConcreteAlias>]()
+    open private(set) var clauses = [Clause]()
 
     /** Initialize with clause clauses.
 
     - Parameter clauses: Clause instances for AND clauses
     */
-    public convenience init(_ clauses: Clause<ConcreteAlias>...) {
+    public convenience init(_ clauses: Clause...) {
         self.init(clauses)
     }
 
@@ -466,16 +452,16 @@ open class AndClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
      - Parameter clauses: Clause array for AND clauses
      */
-    public init(_ clauses: [Clause<ConcreteAlias>]) {
+    public init(_ clauses: [Clause]) {
         self.clauses = clauses
         super.init()
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! [Clause<ConcreteAlias>])
+        self.init(aDecoder.decodeObject() as! [Clause])
     }
 
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.clauses)
     }
 
@@ -483,7 +469,7 @@ open class AndClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     - Parameter clause: Clause instances to add
     */
-    open func add(_ clause: Clause<ConcreteAlias>) {
+    open func add(_ clause: Clause) {
         self.clauses.append(clause)
     }
 
@@ -491,23 +477,23 @@ open class AndClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     - Returns: a [ String : Any ] instance.
     */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         var array: [[String : Any]] = []
         self.clauses.forEach { clause in array.append(clause.makeDictionary()) }
-        return ["type": "or", "clauses": array] as [ String : Any ]
+        return ["type": "and", "clauses": array] as [ String : Any ]
     }
 }
 
 /** Class represents Or clause. */
-open class OrClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
+open class OrClause: NSObject, Clause {
     /** clauses array of OrClause */
-    open private(set) var clauses = [Clause<ConcreteAlias>]()
+    open private(set) var clauses = [Clause]()
 
     /** Initialize with clause clauses.
 
      - Parameter clauses: Clause array for OR clauses
      */
-    public init(_ clauses: [Clause<ConcreteAlias>]) {
+    public init(_ clauses: [Clause]) {
         self.clauses = clauses
         super.init()
     }
@@ -516,15 +502,15 @@ open class OrClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     - Parameter clauses: Clause instances for OR clauses
     */
-    public convenience init(_ clauses: Clause<ConcreteAlias>...) {
+    public convenience init(_ clauses: Clause...) {
         self.init(clauses)
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! [Clause<ConcreteAlias>])
+        self.init(aDecoder.decodeObject() as! [Clause])
     }
 
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.clauses)
     }
 
@@ -532,7 +518,7 @@ open class OrClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     - Parameter clause: Clause instances to add
     */
-    open func add(_ clause: Clause<ConcreteAlias>) {
+    open func add(_ clause: Clause) {
         self.clauses.append(clause)
     }
 
@@ -540,7 +526,7 @@ open class OrClause<ConcreteAlias: Alias>: Clause<ConcreteAlias> {
 
     - Returns: a [ String : Any ] instance.
     */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         var array: [[String : Any]] = []
         self.clauses.forEach { clause in array.append(clause.makeDictionary()) }
         return ["type": "or", "clauses": array] as [ String : Any ]

@@ -9,9 +9,9 @@
 import Foundation
 
 /** Class represents StatePredicate */
-open class StatePredicate<ConcreteAlias: Alias>: NSObject,Predicate {
+open class StatePredicate: NSObject,Predicate {
     open let triggersWhen: TriggersWhen
-    open let condition: Condition<ConcreteAlias>
+    open let condition: Condition
 
     open let eventSource: EventSource = EventSource.states
 
@@ -21,7 +21,7 @@ open class StatePredicate<ConcreteAlias: Alias>: NSObject,Predicate {
      - Parameter triggersWhen: Specify TriggersWhen.
      */
     public init(
-      _ condition:Condition<ConcreteAlias>,
+      _ condition:Condition,
       _ triggersWhen:TriggersWhen)
     {
         self.triggersWhen = triggersWhen
@@ -32,7 +32,7 @@ open class StatePredicate<ConcreteAlias: Alias>: NSObject,Predicate {
     public required convenience init(coder aDecoder: NSCoder) {
         self.init(
           aDecoder.decodeObject(forKey: "condition")
-            as! Condition<ConcreteAlias>,
+            as! Condition,
           TriggersWhen(
             rawValue: aDecoder.decodeObject(forKey: "triggersWhen")
               as! String)!

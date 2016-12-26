@@ -11,7 +11,7 @@ import Foundation
 extension ThingIFAPI {
 
     func _postNewTrigger(
-        _ triggeredCommandForm: TriggeredCommandForm<ConcreteAlias>,
+        _ triggeredCommandForm: TriggeredCommandForm,
         predicate: Predicate,
         options: TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?)-> Void)
@@ -146,7 +146,7 @@ extension ThingIFAPI {
 
     func _patchTrigger(
         _ triggerID: String,
-        triggeredCommandForm: TriggeredCommandForm<ConcreteAlias>? = nil,
+        triggeredCommandForm: TriggeredCommandForm? = nil,
         predicate: Predicate? = nil,
         options: TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
