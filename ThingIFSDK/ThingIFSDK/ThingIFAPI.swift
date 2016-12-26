@@ -526,7 +526,7 @@ open class ThingIFAPI: NSObject, NSCoding {
        instance of ThingIFError when failed.
     */
     open func getState(
-      _ completionHandler:@escaping ([ConcreteAlias : [String : Any]]?,
+      _ completionHandler:@escaping ([String : [String : Any]]?,
                                      ThingIFError?)-> Void) -> Void
     {
         fatalError("TODO: We must reimplement this method.")
@@ -549,13 +549,10 @@ open class ThingIFAPI: NSObject, NSCoding {
        instance of ThingIFError when failed.
      */
     open func getState(
-      _ alias: TraitAlias,
+      _ alias: String,
       _ completionHandler:@escaping ([String : Any]?,
                                      ThingIFError?)-> Void) -> Void
     {
-        if !(ConcreteAlias.self is TraitAlias.Type) {
-            fatalError("TODO: Developers can not use this method in non trait.")
-        }
         fatalError("TODO: We must reimplement this method.")
     }
 
