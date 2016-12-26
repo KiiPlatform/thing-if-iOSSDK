@@ -33,9 +33,9 @@ open class Command: NSObject, NSCoding {
         self.targetID = aDecoder.decodeObject(forKey: "targetID") as! TypedID
         self.issuerID = aDecoder.decodeObject(forKey: "issuerID") as! TypedID
         self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [(alias: Alias, actions: [String : Any])]
+                as! [(alias: String, actions: [String : Any])]
         self.actionResults = aDecoder.decodeObject(forKey: "actionResults")
-                as! [(alias: Alias, actions: [String : Any])]
+                as! [(alias: String, actions: [String : Any])]
         self.commandState =
             CommandState(rawValue: aDecoder.decodeInteger(forKey: "commandState"))!;
         self.firedByTriggerID = aDecoder.decodeObject(forKey: "firedByTriggerID") as? String
@@ -62,9 +62,9 @@ open class Command: NSObject, NSCoding {
     /** ID of the issuer of the Command. */
     open let issuerID: TypedID
     /** Actions to be executed. */
-    open let actions: [(alias: Alias, actions: [String : Any])]
+    open let actions: [(alias: String, actions: [String : Any])]
     /** Results of the action. */
-    open let actionResults: [(alias: Alias, actions: [String : Any])]
+    open let actionResults: [(alias: String, actions: [String : Any])]
     /** State of the Command. */
     open let commandState: CommandState
     /** ID of the trigger which fired this command */
@@ -83,8 +83,8 @@ open class Command: NSObject, NSCoding {
     internal init(commandID: String,
          targetID: TypedID,
          issuerID: TypedID,
-         actions: [(alias: Alias, actions: [String : Any])],
-         actionResults: [(alias: Alias, actions: [String : Any])]?,
+         actions: [(alias: String, actions: [String : Any])],
+         actionResults: [(alias: String, actions: [String : Any])]?,
          commandState: CommandState?,
          firedByTriggerID: String? = nil,
          created: Date? = nil,
