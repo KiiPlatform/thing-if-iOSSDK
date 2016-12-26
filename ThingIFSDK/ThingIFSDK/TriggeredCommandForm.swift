@@ -28,12 +28,12 @@ Optional data are followings:
   - Description of a triggered command
   - Meta data of a triggered command
 */
-open class TriggeredCommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
+open class TriggeredCommandForm: NSObject, NSCoding {
 
     // MARK: - Properties
 
     /// Array of actions.
-    open let actions: [(alias: ConcreteAlias, actions: [String : Any])]
+    open let actions: [(alias: String, actions: [String : Any])]
 
     /// Target thing ID.
     open let targetID: TypedID?
@@ -60,7 +60,7 @@ open class TriggeredCommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(actions: [(alias: ConcreteAlias, actions: [String : Any])],
+    public init(actions: [(alias: String, actions: [String : Any])],
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
@@ -100,7 +100,7 @@ open class TriggeredCommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
      TODO: We consider in order to remove or not this method.
      Because we may not craete TriggeredCommandForm from Command.
     public init(command: Command,
-                actions: [(alias: ConcreteAlias, actions: [String : Any])]? = nil,
+                actions: [(alias: String, actions: [String : Any])]? = nil,
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
@@ -134,12 +134,12 @@ open class TriggeredCommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        var actions: [(alias: ConcreteAlias, actions: [String : Any])] = []
+        var actions: [(alias: String, actions: [String : Any])] = []
         (aDecoder.decodeObject(forKey: "actions")
            as! [[String : Any]]).forEach {
             dict in actions.append(
                       (
-                        alias: dict["alias"] as! ConcreteAlias,
+                        alias: dict["alias"] as! String,
                         actions: dict["actions"] as! [String : Any]
                       )
                     )
