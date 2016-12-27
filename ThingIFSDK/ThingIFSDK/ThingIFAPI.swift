@@ -738,20 +738,20 @@ open class ThingIFAPI: NSObject, NSCoding {
 
     // MARK: Qeury state history.
     open func query(
-      _ alias: TraitAlias,
+      _ alias: String,
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       bestEffortLimit: Int? = nil,
       nextPaginationKey: String? = nil,
       completionHandler: @escaping (
-        (result: [TraitAlias : [[String : Any]]], paginationKey: String)?,
+        (result: [String : [[String : Any]]], paginationKey: String)?,
         ThingIFError?) -> Void) -> Void
     {
         // TODO: implement me.
     }
 
     open func query(
-      _ alias: TraitAlias,
+      _ alias: String,
       _ range: (from: Date, to: Date),
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
