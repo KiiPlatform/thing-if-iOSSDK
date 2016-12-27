@@ -6,7 +6,7 @@
 import Foundation
 
 /** Class provides API of the ThingIF. */
-open class ThingIFAPI<ConcreteAlias: Alias & Hashable>: NSObject, NSCoding {
+open class ThingIFAPI: NSObject, NSCoding {
 
     private static var SHARED_NSUSERDEFAULT_KEY_INSTANCE: String {
         get {
@@ -238,7 +238,7 @@ open class ThingIFAPI<ConcreteAlias: Alias & Hashable>: NSObject, NSCoding {
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
     */
     open func postNewCommand(
-        _ commandForm: CommandForm<ConcreteAlias>,
+        _ commandForm: CommandForm,
         completionHandler: @escaping (Command?, ThingIFError?) -> Void) -> Void {
         fatalError("must be implemented.")
         /*
@@ -317,7 +317,7 @@ open class ThingIFAPI<ConcreteAlias: Alias & Hashable>: NSObject, NSCoding {
       failed.
     */
     open func postNewTrigger(
-        _ triggeredCommandForm:TriggeredCommandForm<ConcreteAlias>,
+        _ triggeredCommandForm:TriggeredCommandForm,
         predicate:Predicate,
         options:TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
@@ -390,7 +390,7 @@ open class ThingIFAPI<ConcreteAlias: Alias & Hashable>: NSObject, NSCoding {
     */
     open func patchTrigger(
         _ triggerID:String,
-        triggeredCommandForm:TriggeredCommandForm<ConcreteAlias>? = nil,
+        triggeredCommandForm:TriggeredCommandForm? = nil,
         predicate:Predicate? = nil,
         options:TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
@@ -526,7 +526,7 @@ open class ThingIFAPI<ConcreteAlias: Alias & Hashable>: NSObject, NSCoding {
        instance of ThingIFError when failed.
     */
     open func getState(
-      _ completionHandler:@escaping ([ConcreteAlias : [String : Any]]?,
+      _ completionHandler:@escaping ([String : [String : Any]]?,
                                      ThingIFError?)-> Void) -> Void
     {
         fatalError("TODO: We must reimplement this method.")
@@ -549,13 +549,10 @@ open class ThingIFAPI<ConcreteAlias: Alias & Hashable>: NSObject, NSCoding {
        instance of ThingIFError when failed.
      */
     open func getState(
-      _ alias: TraitAlias,
+      _ alias: String,
       _ completionHandler:@escaping ([String : Any]?,
                                      ThingIFError?)-> Void) -> Void
     {
-        if !(ConcreteAlias.self is TraitAlias.Type) {
-            fatalError("TODO: Developers can not use this method in non trait.")
-        }
         fatalError("TODO: We must reimplement this method.")
     }
 

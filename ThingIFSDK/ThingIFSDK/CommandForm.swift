@@ -24,12 +24,12 @@ Optional data are followings:
   - Description of a command
   - Meta data of a command
 */
-open class CommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
+open class CommandForm: NSObject, NSCoding {
 
     // MARK: - Properties
 
     /// Array of actions.
-    open let actions: [(alias: ConcreteAlias, actions: [String : Any])]
+    open let actions: [(alias: String, actions: [String : Any])]
 
     /// Title of a command.
     open let title: String?
@@ -52,7 +52,7 @@ open class CommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(actions: [(alias: ConcreteAlias, actions: [String : Any])],
+    public init(actions: [(alias: String, actions: [String : Any])],
                 title: String? = nil,
                 commandDescription: String? = nil,
                 metadata: [String : Any]? = nil)
@@ -81,12 +81,12 @@ open class CommandForm<ConcreteAlias: Alias>: NSObject, NSCoding {
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        var actions: [(alias: ConcreteAlias, actions: [String : Any])] = []
+        var actions: [(alias: String, actions: [String : Any])] = []
         (aDecoder.decodeObject(forKey: "actions")
            as! [[String : Any]]).forEach {
             dict in actions.append(
                       (
-                        alias: dict["alias"] as! ConcreteAlias,
+                        alias: dict["alias"] as! String,
                         actions: dict["actions"] as! [String : Any]
                       )
                     )

@@ -6,7 +6,7 @@
 import Foundation
 
 /** Builder class of ThingIFAPI */
-open class ThingIFAPIBuilder<ConcreteAlias: Alias & Hashable> {
+open class ThingIFAPIBuilder {
 
     var app: App
     var owner: Owner
@@ -29,8 +29,8 @@ open class ThingIFAPIBuilder<ConcreteAlias: Alias & Hashable> {
     /** Make ThingIFAPI instance.
     - Returns: ThingIFAPI instance.
      */
-    open func make() -> ThingIFAPI<ConcreteAlias> {
-        let thingIFAPI = ThingIFAPI<ConcreteAlias>(
+    open func make() -> ThingIFAPI {
+        let thingIFAPI = ThingIFAPI(
           app: self.app,
           owner: self.owner,
           tag: self.tag)
