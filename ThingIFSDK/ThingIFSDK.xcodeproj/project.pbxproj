@@ -117,6 +117,9 @@
 		B6323D2D1DA78BC70012D6A1 /* PatchServerCodeTriggerWIthTriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6323D2C1DA78BC70012D6A1 /* PatchServerCodeTriggerWIthTriggerOptionsTests.swift */; };
 		B63FC8AE1CEEDBFF0042C747 /* ThingIFSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */; };
 		B63FC8B51CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */; };
+		B66321301E12325400F914A6 /* QueryClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = B663212F1E12325400F914A6 /* QueryClause.swift */; };
+		B66321321E1232DB00F914A6 /* Aggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66321311E1232DB00F914A6 /* Aggregation.swift */; };
+		B66321341E1233CD00F914A6 /* CountFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66321331E1233CD00F914A6 /* CountFieldType.swift */; };
 		B6651A221CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */; };
 		B66BDDA91DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66BDDA81DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift */; };
 		B66BDDAB1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66BDDAA1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift */; };
@@ -270,6 +273,9 @@
 		B63FC8A91CEEDBFF0042C747 /* ThingIFSDKLargeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThingIFSDKLargeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B63FC8AD1CEEDBFF0042C747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerForSchedulePredicateTests.swift; sourceTree = "<group>"; };
+		B663212F1E12325400F914A6 /* QueryClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryClause.swift; sourceTree = "<group>"; };
+		B66321311E1232DB00F914A6 /* Aggregation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Aggregation.swift; sourceTree = "<group>"; };
+		B66321331E1233CD00F914A6 /* CountFieldType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountFieldType.swift; sourceTree = "<group>"; };
 		B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewCommandWithCommandFormTests.swift; sourceTree = "<group>"; };
 		B66BDDA81DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchTriggerWithTriggerOptionsTests.swift; sourceTree = "<group>"; };
 		B66BDDAA1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerWithTriggerOptionsTests.swift; sourceTree = "<group>"; };
@@ -392,6 +398,9 @@
 				229039D91D473FFB00B9D0B7 /* OnboardEndnodeWithGatewayOptions.swift */,
 				B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */,
 				B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */,
+				B663212F1E12325400F914A6 /* QueryClause.swift */,
+				B66321311E1232DB00F914A6 /* Aggregation.swift */,
+				B66321331E1233CD00F914A6 /* CountFieldType.swift */,
 			);
 			path = ThingIFSDK;
 			sourceTree = "<group>";
@@ -688,6 +697,7 @@
 				229039DA1D473FFB00B9D0B7 /* OnboardEndnodeWithGatewayOptions.swift in Sources */,
 				7D36B66F1BD4D03100D9B821 /* IoTRequestOperation.swift in Sources */,
 				D5521C761CCDFE7600037C9F /* ServerCode.swift in Sources */,
+				B66321341E1233CD00F914A6 /* CountFieldType.swift in Sources */,
 				A56B0A431C5B43B100E653EF /* TriggeredServerCodeResult.swift in Sources */,
 				7D36B6891BD4D03100D9B821 /* Trigger.swift in Sources */,
 				D5521C741CCDFDA200037C9F /* Predicate.swift in Sources */,
@@ -703,11 +713,13 @@
 				747EB4BA1C858BFC00E30C31 /* SDKVersion.swift in Sources */,
 				7D36B67D1BD4D03100D9B821 /* NSOperation+Operations.swift in Sources */,
 				7D36B6821BD4D03100D9B821 /* OperationQueue.swift in Sources */,
+				B66321301E12325400F914A6 /* QueryClause.swift in Sources */,
 				7D36B6801BD4D03100D9B821 /* OperationErrors.swift in Sources */,
 				D5636AFB1CE1E9E000760564 /* ScheduleOncePredicate.swift in Sources */,
 				7D36B68B1BD4D03100D9B821 /* Logger.swift in Sources */,
 				7D36B6C01BD4D43700D9B821 /* ThingIFAPIBuilder.swift in Sources */,
 				B6AC4A1A1D991CE1001A80DE /* TriggeredCommandForm.swift in Sources */,
+				B66321321E1232DB00F914A6 /* Aggregation.swift in Sources */,
 				7D36B6BC1BD4D43700D9B821 /* ThingIFAPI+GetState.swift in Sources */,
 				7D36B6BD1BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift in Sources */,
 				226402201CD1E96300E30967 /* Gateway.swift in Sources */,

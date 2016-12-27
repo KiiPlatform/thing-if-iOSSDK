@@ -764,6 +764,45 @@ open class ThingIFAPI: NSObject, NSCoding {
         // TODO: implement me.
     }
 
+    open func count(
+      _ alias: String,
+      _ range: (from: Date, to: Date),
+      _ field: (name: String, type: CountFieldType),
+      clause: QueryClause? = nil,
+      firmeware: String? = nil,
+      completionHandler: @escaping (
+        (result:
+           (count: Int,
+            range: (from: Date, to: Date),
+            queryDescription: String
+           )?,
+         ThingIFError?)
+      ) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    open func aggregate<ReturnedValue>(
+      _ alias: String,
+      _ range: (from: Date, to: Date),
+      _ function: Aggregation.FunctionType,
+      _ field: (name: String, type: Aggregation.FieldType),
+      clause: QueryClause? = nil,
+      firmeware: String? = nil,
+      completionHandler: @escaping(
+        (result:
+           (
+             value: ReturnedValue,
+             range: (from: Date, to: Date),
+             objects: [[String : Any]],
+             queryDescription: String
+           )?,
+         ThingIFError?)
+      ) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
     // MARK: - Copy with new target instance
 
     /** Get new instance with new target
