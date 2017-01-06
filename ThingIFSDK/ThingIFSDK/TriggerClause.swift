@@ -9,9 +9,9 @@ import Foundation
  Developers can not instantiate this class directly. Developers use
  sub classes of this class
  */
-public protocol Clause: NSCoding {
+public protocol TriggerClause: NSCoding {
 
-    /** Get Clause as NSDictionary instance
+    /** Get TriggerClause as NSDictionary instance
 
     - Returns: a NSDictionary instance.
     */
@@ -20,7 +20,7 @@ public protocol Clause: NSCoding {
 }
 
 /** Class represents Equals clause. */
-open class EqualsClause: NSObject, Clause {
+open class EqualsTriggerClause: NSObject, TriggerClause {
 
     private let alias: String
     private let field: String
@@ -93,7 +93,7 @@ open class EqualsClause: NSObject, Clause {
         }
     }
 
-    /** Get Clause as [ String : Any ] instance
+    /** Get TriggerClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -108,10 +108,10 @@ open class EqualsClause: NSObject, Clause {
 }
 
 /** Class represents NotEquals clause. */
-open class NotEqualsClause: NSObject, Clause {
-    private let equalClause: EqualsClause
+open class NotEqualsTriggerClause: NSObject, TriggerClause {
+    private let equalClause: EqualsTriggerClause
 
-    public init(_ equalClause: EqualsClause) {
+    public init(_ equalClause: EqualsTriggerClause) {
         self.equalClause = equalClause
         super.init()
     }
@@ -127,7 +127,7 @@ open class NotEqualsClause: NSObject, Clause {
       _ field: String,
       stringValue: String)
     {
-        self.init(EqualsClause(alias, field, stringValue: stringValue))
+        self.init(EqualsTriggerClause(alias, field, stringValue: stringValue))
     }
 
     /** Initialize with Int left hand side value.
@@ -141,7 +141,7 @@ open class NotEqualsClause: NSObject, Clause {
       _ field: String,
       intValue: Int)
     {
-        self.init(EqualsClause(alias, field, intValue: intValue))
+        self.init(EqualsTriggerClause(alias, field, intValue: intValue))
     }
 
     /** Initialize with Bool left hand side value.
@@ -155,18 +155,18 @@ open class NotEqualsClause: NSObject, Clause {
       _ field: String,
       boolValue: Bool)
     {
-        self.init(EqualsClause(alias, field, boolValue: boolValue))
+        self.init(EqualsTriggerClause(alias, field, boolValue: boolValue))
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! EqualsClause)
+        self.init(aDecoder.decodeObject() as! EqualsTriggerClause)
     }
 
     open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.equalClause)
     }
 
-    /** Get Clause as [ String : Any ] instance
+    /** Get TriggerClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -179,7 +179,7 @@ open class NotEqualsClause: NSObject, Clause {
 }
 
 /** Class represents Range clause. */
-open class RangeClause: NSObject, Clause {
+open class RangeTriggerClause: NSObject, TriggerClause {
     private let alias: String
     private let field: String
     private let lower: (included: Bool, limit: AnyObject)?
@@ -412,7 +412,7 @@ open class RangeClause: NSObject, Clause {
         }
     }
 
-    /** Get Clause as [ String : Any ] instance
+    /** Get TriggerClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -436,44 +436,44 @@ open class RangeClause: NSObject, Clause {
 }
 
 /** Class represents And clause. */
-open class AndClause: NSObject, Clause {
-    /** clauses array of AndClause */
-    open private(set) var clauses = [Clause]()
+open class AndTriggerClause: NSObject, TriggerClause {
+    /** clauses array of AndTriggerClause */
+    open private(set) var clauses = [TriggerClause]()
 
     /** Initialize with clause clauses.
 
-    - Parameter clauses: Clause instances for AND clauses
+    - Parameter clauses: TriggerClause instances for AND clauses
     */
-    public convenience init(_ clauses: Clause...) {
+    public convenience init(_ clauses: TriggerClause...) {
         self.init(clauses)
     }
 
     /** Initialize with clause clauses.
 
-     - Parameter clauses: Clause array for AND clauses
+     - Parameter clauses: TriggerClause array for AND clauses
      */
-    public init(_ clauses: [Clause]) {
+    public init(_ clauses: [TriggerClause]) {
         self.clauses = clauses
         super.init()
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! [Clause])
+        self.init(aDecoder.decodeObject() as! [TriggerClause])
     }
 
     open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.clauses)
     }
 
-    /** Add clause to AndClause
+    /** Add clause to AndTriggerClause
 
-    - Parameter clause: Clause instances to add
+    - Parameter clause: TriggerClause instances to add
     */
-    open func add(_ clause: Clause) {
+    open func add(_ clause: TriggerClause) {
         self.clauses.append(clause)
     }
 
-    /** Get Clause as [ String : Any ] instance
+    /** Get TriggerClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -485,44 +485,44 @@ open class AndClause: NSObject, Clause {
 }
 
 /** Class represents Or clause. */
-open class OrClause: NSObject, Clause {
-    /** clauses array of OrClause */
-    open private(set) var clauses = [Clause]()
+open class OrTriggerClause: NSObject, TriggerClause {
+    /** clauses array of OrTriggerClause */
+    open private(set) var clauses = [TriggerClause]()
 
     /** Initialize with clause clauses.
 
-     - Parameter clauses: Clause array for OR clauses
+     - Parameter clauses: TriggerClause array for OR clauses
      */
-    public init(_ clauses: [Clause]) {
+    public init(_ clauses: [TriggerClause]) {
         self.clauses = clauses
         super.init()
     }
 
     /** Initialize with clause clauses.
 
-    - Parameter clauses: Clause instances for OR clauses
+    - Parameter clauses: TriggerClause instances for OR clauses
     */
-    public convenience init(_ clauses: Clause...) {
+    public convenience init(_ clauses: TriggerClause...) {
         self.init(clauses)
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! [Clause])
+        self.init(aDecoder.decodeObject() as! [TriggerClause])
     }
 
     open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.clauses)
     }
 
-    /** Add clause to OrClause
+    /** Add clause to OrTriggerClause
 
-    - Parameter clause: Clause instances to add
+    - Parameter clause: TriggerClause instances to add
     */
-    open func add(_ clause: Clause) {
+    open func add(_ clause: TriggerClause) {
         self.clauses.append(clause)
     }
 
-    /** Get Clause as [ String : Any ] instance
+    /** Get TriggerClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
