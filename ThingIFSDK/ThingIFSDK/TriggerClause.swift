@@ -4,7 +4,7 @@
 //
 import Foundation
 
-/** Base class of any clauses class.
+/** Base class of any trigger clauses class.
 
  Developers can not instantiate this class directly. Developers use
  sub classes of this class
