@@ -87,7 +87,7 @@ open class EqualsQueryClause: NSObject, QueryClause {
         }
     }
 
-    /** Get QueryClause as [ String : Any ] instance
+    /** Get EqualsQueryClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -153,7 +153,7 @@ open class NotEqualsQueryClause: NSObject, QueryClause {
         aCoder.encode(self.equalClause)
     }
 
-    /** Get QueryClause as [ String : Any ] instance
+    /** Get NotEqualsQueryClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -376,7 +376,7 @@ open class RangeQueryClause: NSObject, QueryClause {
         }
     }
 
-    /** Get QueryClause as [ String : Any ] instance
+    /** Get RangeQueryClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -436,7 +436,7 @@ open class AndQueryClause: NSObject, QueryClause {
         self.clauses.append(clause)
     }
 
-    /** Get QueryClause as [ String : Any ] instance
+    /** Get AndQueryClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -485,7 +485,7 @@ open class OrQueryClause: NSObject, QueryClause {
         self.clauses.append(clause)
     }
 
-    /** Get QueryClause as [ String : Any ] instance
+    /** Get OrQueryClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */

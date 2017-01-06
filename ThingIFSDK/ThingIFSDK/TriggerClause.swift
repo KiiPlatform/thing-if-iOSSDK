@@ -93,7 +93,7 @@ open class EqualsTriggerClause: NSObject, TriggerClause {
         }
     }
 
-    /** Get TriggerClause as [ String : Any ] instance
+    /** Get EqualsTriggerClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -166,7 +166,7 @@ open class NotEqualsTriggerClause: NSObject, TriggerClause {
         aCoder.encode(self.equalClause)
     }
 
-    /** Get TriggerClause as [ String : Any ] instance
+    /** Get NotEqualsTriggerClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -412,7 +412,7 @@ open class RangeTriggerClause: NSObject, TriggerClause {
         }
     }
 
-    /** Get TriggerClause as [ String : Any ] instance
+    /** Get RangeTriggerClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -473,7 +473,7 @@ open class AndTriggerClause: NSObject, TriggerClause {
         self.clauses.append(clause)
     }
 
-    /** Get TriggerClause as [ String : Any ] instance
+    /** Get AndTriggerClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
@@ -522,7 +522,7 @@ open class OrTriggerClause: NSObject, TriggerClause {
         self.clauses.append(clause)
     }
 
-    /** Get TriggerClause as [ String : Any ] instance
+    /** Get OrTriggerClause as [ String : Any ] instance
 
     - Returns: a [ String : Any ] instance.
     */
