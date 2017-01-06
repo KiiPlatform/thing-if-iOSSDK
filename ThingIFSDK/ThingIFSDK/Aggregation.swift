@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Aggregation {
+open class Aggregation {
     public enum FunctionType {
         case max
         case sum
