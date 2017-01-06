@@ -1,5 +1,5 @@
 //
-//  Clause.swift
+//  TriggerClause.swift
 //  ThingIFSDK
 //
 import Foundation
