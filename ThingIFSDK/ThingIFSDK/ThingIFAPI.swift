@@ -840,7 +840,7 @@ open class ThingIFAPI: NSObject, NSCoding {
           (
             value: ReturnedValue,
             range: (from: Date, to: Date),
-            objects: [[String : Any]],
+            objects: [[String : Any]]
           )
         ]?,
         ThingIFError?
