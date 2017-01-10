@@ -749,14 +749,15 @@ open class ThingIFAPI: NSObject, NSCoding {
        element. Specifying this value in next call in the argument
        results continue to get the results from the next page.
      - Parameter completionHandler: A closure to be executed once
-       finished. The closure takes 2 arguments: 1st one is a tuple of
-       objects array and pagination key. The object array represents
-       objects to be queried. Pagination key represents information to
-       retrieve further page. You can use pagination key to retrieve
-       next page by setting nextPaginationKey. If there is not objects
-       to be queried, objects array becomes empty. if there is no
-       further page, pagination key becomes nil. 2nd one is an
-       instance of ThingIFError when failed.
+       finished. The closure takes 2 arguments:
+       - 1st one is a tuple of objects array and pagination key.
+         - The object array represents objects to be queried. If there
+           is not objects to be queried, objects array is empty.
+         - The pagination key represents information to retrieve
+           further page. You can use pagination key to retrieve next
+           page by setting nextPaginationKey. if there is no further
+           page, pagination key is nil.
+       - 2nd one is an instance of ThingIFError when failed.
      */
     open func query(
       _ alias: String,
@@ -779,13 +780,14 @@ open class ThingIFAPI: NSObject, NSCoding {
        query all history states.
      - Parameter firmwareVersion: target firmware version to query.
      - Parameter completionHandler: A closure to be executed once
-       finished. The closure takes 2 arguments: 1st one is an array of
-       a tuple. The tuple have a time range and an objects array. The
-       time range represents a range which a developer specifies with
-       `DataGroupingInterval`. The object array represents objects to
-       be queried. If there is no objects in a time range, objects
-       array becomes empty. 2nd one is an instance of ThingIFError
-       when failed.
+       finished. The closure takes 2 arguments:
+       - 1st one is an array of tuples. The tuple have a time range
+         and an objects array.
+         - The time range represents a range which a developer
+           specifies with `DataGroupingInterval`.
+         - The object array represents objects to be queried. If there
+           is no objects in a time range, objects array becomes empty.
+       - 2nd one is an instance of ThingIFError when failed.
      */
     open func query(
       _ alias: String,
@@ -808,11 +810,13 @@ open class ThingIFAPI: NSObject, NSCoding {
        query all history states.
      - Parameter firmwareVersion: target firmware version to query.
      - Parameter completionHandler: A closure to be executed once
-       finished. The closure takes 2 arguments: 1st one is an array of
-       a tuple. The tuple have a count and range. The count represents
-       number of matched items. The time range represents a range
-       which a developer specifies with `DataGroupingInterval`.
-       2nd one is an instance of ThingIFError when failed.
+       finished. The closure takes 2 arguments:
+       - 1st one is an array of a tuple. The tuple have a count and
+         range.
+         - The count represents number of matched items.
+         - The time range represents a range which a developer
+           specifies with `DataGroupingInterval`.
+       - 2nd one is an instance of ThingIFError when failed.
      */
     open func count(
       _ alias: String,
