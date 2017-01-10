@@ -1,5 +1,5 @@
 //
-//  CountingTarget.swift
+//  CountedField.swift
 //  ThingIFSDK
 //
 //  Created on 2017/01/06.
@@ -9,12 +9,12 @@
 import Foundation
 
 /**
- A class to specify counting target.
+ A class to specify counted field.
 
  This class contains data in order to count with
 `ThingIFAPI.count(_:_:_:clause:firmwareVersion:completionHandler:)`.
  */
-open class CountingTarget: NSObject, NSCoding {
+open class CountedField: NSObject, NSCoding {
 
     // MARK: - Enumerations
 
@@ -35,7 +35,7 @@ open class CountingTarget: NSObject, NSCoding {
     let type: FieldType
 
     // MARK: - Initializing TriggeredCommandForm instance.
-    /** Initializer of `CountingTarget` instance.
+    /** Initializer of `CountedField` instance.
 
      - Parameter name: Name of a field to be aggregated.
      - Parameter type: Type of a field to be aggregated.
