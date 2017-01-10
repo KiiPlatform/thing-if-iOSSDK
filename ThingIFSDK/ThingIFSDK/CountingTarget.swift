@@ -28,17 +28,17 @@ open class CountingTarget: NSObject, NSCoding {
         case array = "ARRAY"
     }
 
-    /** A field name to be counted. */
+    /** Name of a field to be counted. */
     let name: String
 
-    /** A field type to be counted. */
+    /** Type of a field to be counted. */
     let type: FieldType
 
     // MARK: - Initializing TriggeredCommandForm instance.
     /** Initializer of `CountingTarget` instance.
 
-     - Parameter name: a field name to be aggregated.
-     - Parameter type: a field type to be aggregated.
+     - Parameter name: Name of a field to be aggregated.
+     - Parameter type: Type of a field to be aggregated.
      */
     public init(_ name: String, _ type: FieldType) {
         self.name = name

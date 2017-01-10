@@ -741,8 +741,8 @@ open class ThingIFAPI: NSObject, NSCoding {
     /** Query history states with trait alias.
 
      - Parameter alias: Target trait alias to query.
-     - Parameter clause: Clause to narrow down history states. if nil,
-       query all history states.
+     - Parameter clause: QueryClause to narrow down history states. if
+       nil, query all history states.
      - Parameter firmwareVersion: Target firmware version to query.
      - Parameter nextPaginationKey: If there is further page to be
        retrieved, this API returns paginationKey in 2nd
@@ -776,8 +776,8 @@ open class ThingIFAPI: NSObject, NSCoding {
 
      - Parameter alias: Target trait alias to query.
      - Parameter range: Time range to query
-     - Parameter clause: clause to narrow down history states. if nil,
-       query all history states.
+     - Parameter clause: QueryClause to narrow down history states. if
+       nil, query all history states.
      - Parameter firmwareVersion: target firmware version to query.
      - Parameter completionHandler: A closure to be executed once
        finished. The closure takes 2 arguments:
@@ -806,8 +806,8 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter alias: Target trait alias to query.
      - Parameter range: Time range to query
      - Parameter target: A target to count.
-     - Parameter clause: clause to narrow down history states. if nil,
-       query all history states.
+     - Parameter clause: QueryClause to narrow down history states. if
+       nil, query all history states.
      - Parameter firmwareVersion: target firmware version to query.
      - Parameter completionHandler: A closure to be executed once
        finished. The closure takes 2 arguments:
@@ -837,8 +837,8 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter alias: Target trait alias to query.
      - Parameter range: Time range to query
      - Parameter aggregation: aggregation information
-     - Parameter clause: clause to narrow down history states. if nil,
-       query all history states.
+     - Parameter clause: QueryClause to narrow down history states. if
+       nil, query all history states.
      - Parameter firmwareVersion: target firmware version to query.
      - Parameter completionHandler: A closure to be executed once
        finished. The closure takes 2 arguments:

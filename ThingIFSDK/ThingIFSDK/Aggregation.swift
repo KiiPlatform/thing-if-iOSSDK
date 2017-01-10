@@ -46,10 +46,10 @@ open class Aggregation: NSObject, NSCoding {
 
     // MARK: - Properties
 
-    /** A field name to be aggregated. */
+    /** Name of a field to be aggregated. */
     open let name: String
 
-    /** A field type to be aggregated. */
+    /** Type of a field to be aggregated. */
     open let type: FieldType
 
     /** A function applied to aggregated fields. */
@@ -58,9 +58,9 @@ open class Aggregation: NSObject, NSCoding {
     // MARK: - Initializing TriggeredCommandForm instance.
     /** Initializer of `Aggregation` instance.
 
-     - Parameter name: a field name to be aggregated.
-     - Parameter type: a field type to be aggregated.
-     - Parameter function: a function applied to aggregated fields.
+     - Parameter name: Name of a field to be aggregated.
+     - Parameter type: Type of a field to be aggregated.
+     - Parameter function: A function applied to aggregated fields.
      */
     public init(_ name: String, _ type: FieldType, _ function: Function) {
         self.name = name
