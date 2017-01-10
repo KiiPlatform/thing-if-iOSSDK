@@ -737,6 +737,28 @@ open class ThingIFAPI: NSObject, NSCoding {
     }
 
     // MARK: Qeury state history.
+
+    /** Query history states with trait alias.
+
+     - Parameter alias: Target trait alias to query.
+     - Parameter clause: QueryClause to narrow down history states. if
+       nil, query all history states.
+     - Parameter firmwareVersion: Target firmware version to query.
+     - Parameter nextPaginationKey: If there is further page to be
+       retrieved, this API returns paginationKey in 2nd
+       element. Specifying this value in next call in the argument
+       results continue to get the results from the next page.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments:
+       - 1st one is a tuple of objects array and pagination key.
+         - The object array represents objects to be queried. If there
+           is not objects to be queried, objects array is empty.
+         - The pagination key represents information to retrieve
+           further page. You can use pagination key to retrieve next
+           page by setting nextPaginationKey. if there is no further
+           page, pagination key is nil.
+       - 2nd one is an instance of ThingIFError when failed.
+     */
     open func query(
       _ alias: String,
       clause: QueryClause? = nil,
@@ -744,65 +766,112 @@ open class ThingIFAPI: NSObject, NSCoding {
       bestEffortLimit: Int? = nil,
       nextPaginationKey: String? = nil,
       completionHandler: @escaping (
-        (result: [String : [[String : Any]]], paginationKey: String)?,
+        (objects: [[String : Any]], paginationKey: String?)?,
         ThingIFError?) -> Void) -> Void
     {
         // TODO: implement me.
     }
 
+    /** Group history state
+
+     - Parameter alias: Target trait alias to query.
+     - Parameter range: Time range to query
+     - Parameter clause: QueryClause to narrow down history states. if
+       nil, query all history states.
+     - Parameter firmwareVersion: target firmware version to query.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments:
+       - 1st one is an array of tuples. The tuple have a time range
+         and an objects array.
+         - The time range represents a range which a developer
+           specifies with `DataGroupingInterval`.
+         - The object array represents objects to be queried. If there
+           is no objects in a time range, objects array becomes empty.
+       - 2nd one is an instance of ThingIFError when failed.
+     */
     open func query(
       _ alias: String,
       _ range: (from: Date, to: Date),
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping (
-        (result: [
-           (range: (from: Date, to: Data),
-            objects: [[String : Any]])]?,
-         ThingIFError?)) -> Void) -> Void
+        [(range: (from: Date, to: Data), objects: [[String : Any]])]?,
+        ThingIFError?) -> Void) -> Void
     {
         // TODO: implement me.
     }
 
+    /** Count query of history states
+
+     - Parameter alias: Target trait alias to query.
+     - Parameter range: Time range to query
+     - Parameter target: A target to count.
+     - Parameter clause: QueryClause to narrow down history states. if
+       nil, query all history states.
+     - Parameter firmwareVersion: target firmware version to query.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments:
+       - 1st one is an array of a tuple. The tuple have a count and
+         range.
+         - The count represents number of matched items.
+         - The time range represents a range which a developer
+           specifies with `DataGroupingInterval`.
+       - 2nd one is an instance of ThingIFError when failed.
+     */
     open func count(
       _ alias: String,
       _ range: (from: Date, to: Date),
-      _ field: (name: String, type: CountFieldType),
+      _ target: CountingTarget,
       clause: QueryClause? = nil,
-      firmewareVersion: String? = nil,
+      firmwareVersion: String? = nil,
       completionHandler: @escaping (
-        (result:
-           [
-             (
-               count: Int,
-               range: (from: Date, to: Date),
-               queryDescription: String
-             )
-           ]?,
-         ThingIFError?)
+        [(count: Int, range: (from: Date, to: Date))]?,
+        ThingIFError?
       ) -> Void) -> Void
     {
         // TODO: implement me.
     }
 
+    /** Aggregate history states
+
+     - Parameter alias: Target trait alias to query.
+     - Parameter range: Time range to query
+     - Parameter aggregation: aggregation information
+     - Parameter clause: QueryClause to narrow down history states. if
+       nil, query all history states.
+     - Parameter firmwareVersion: target firmware version to query.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments:
+       - 1st one is an array of a tuple. The tuple have a value, a
+         range and objects array.
+         - value denotes a value calculated with
+           `Aggregation.Function`. `Aggregation.FieldType` determines
+           a type of value. If you specify
+           `Aggregation.FieldType.integer`, you should choice Intger
+           as ReturnedValue, If you specify
+           `Aggregation.FieldType.decimal`, you should choice Float or
+           Double as ReturnedValue.
+         - range denotes a time range which a developer specifies with
+           `DataGroupingInterval`.
+         - objects array denotes objects to be queried. If there is no
+           objects in a time range, objects array is empty.
+       - 2nd one is an instance of ThingIFError when failed.
+     */
     open func aggregate<ReturnedValue>(
       _ alias: String,
       _ range: (from: Date, to: Date),
-      _ function: Aggregation.FunctionType,
-      _ field: (name: String, type: Aggregation.FieldType),
+      _ aggregation: Aggregation,
       clause: QueryClause? = nil,
-      firmewareVersion: String? = nil,
+      firmwareVersion: String? = nil,
       completionHandler: @escaping(
-        (result:
-           [
-             (
-               value: ReturnedValue,
-               range: (from: Date, to: Date),
-               objects: [[String : Any]],
-               queryDescription: String
-             )
-           ]?,
-         ThingIFError?)
+        [
+          (
+            value: ReturnedValue,
+            range: (from: Date, to: Date),
+            objects: [[String : Any]]
+          )
+        ]?,
+        ThingIFError?
       ) -> Void) -> Void
     {
         // TODO: implement me.

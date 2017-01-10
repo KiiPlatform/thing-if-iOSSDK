@@ -119,7 +119,6 @@
 		B63FC8B51CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */; };
 		B66321301E12325400F914A6 /* QueryClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = B663212F1E12325400F914A6 /* QueryClause.swift */; };
 		B66321321E1232DB00F914A6 /* Aggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66321311E1232DB00F914A6 /* Aggregation.swift */; };
-		B66321341E1233CD00F914A6 /* CountFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66321331E1233CD00F914A6 /* CountFieldType.swift */; };
 		B6651A221CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */; };
 		B66BDDA91DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66BDDA81DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift */; };
 		B66BDDAB1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66BDDAA1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift */; };
@@ -131,6 +130,7 @@
 		B683A31B1CBB807A00742570 /* CommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683A31A1CBB807A00742570 /* CommandFormTests.swift */; };
 		B68D7BE11CF8242900D69149 /* LargeTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68D7BE01CF8242900D69149 /* LargeTestBase.swift */; };
 		B699E9D11CFC3E8100EBBC39 /* TypedIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B699E9D01CFC3E8100EBBC39 /* TypedIDTests.swift */; };
+		B6A8AFD91E1F8D430033909E /* CountedField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A8AFD81E1F8D430033909E /* CountedField.swift */; };
 		B6AC4A1A1D991CE1001A80DE /* TriggeredCommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */; };
 		B6AC4A1C1D991DF2001A80DE /* TriggerOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */; };
 		B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */; };
@@ -275,7 +275,6 @@
 		B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerForSchedulePredicateTests.swift; sourceTree = "<group>"; };
 		B663212F1E12325400F914A6 /* QueryClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryClause.swift; sourceTree = "<group>"; };
 		B66321311E1232DB00F914A6 /* Aggregation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Aggregation.swift; sourceTree = "<group>"; };
-		B66321331E1233CD00F914A6 /* CountFieldType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountFieldType.swift; sourceTree = "<group>"; };
 		B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewCommandWithCommandFormTests.swift; sourceTree = "<group>"; };
 		B66BDDA81DB9CA770085CA35 /* PatchTriggerWithTriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchTriggerWithTriggerOptionsTests.swift; sourceTree = "<group>"; };
 		B66BDDAA1DB9F3470085CA35 /* PostNewTriggerWithTriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerWithTriggerOptionsTests.swift; sourceTree = "<group>"; };
@@ -287,6 +286,7 @@
 		B683A31A1CBB807A00742570 /* CommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandFormTests.swift; sourceTree = "<group>"; };
 		B68D7BE01CF8242900D69149 /* LargeTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeTestBase.swift; sourceTree = "<group>"; };
 		B699E9D01CFC3E8100EBBC39 /* TypedIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedIDTests.swift; sourceTree = "<group>"; };
+		B6A8AFD81E1F8D430033909E /* CountedField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountedField.swift; sourceTree = "<group>"; };
 		B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredCommandForm.swift; sourceTree = "<group>"; };
 		B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerOptions.swift; sourceTree = "<group>"; };
 		B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandForm.swift; sourceTree = "<group>"; };
@@ -400,7 +400,7 @@
 				B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */,
 				B663212F1E12325400F914A6 /* QueryClause.swift */,
 				B66321311E1232DB00F914A6 /* Aggregation.swift */,
-				B66321331E1233CD00F914A6 /* CountFieldType.swift */,
+				B6A8AFD81E1F8D430033909E /* CountedField.swift */,
 			);
 			path = ThingIFSDK;
 			sourceTree = "<group>";
@@ -691,13 +691,13 @@
 				7D36B6731BD4D03100D9B821 /* BlockOperation.swift in Sources */,
 				B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */,
 				225E43381CC5FF55003A3C4B /* GatewayInformation.swift in Sources */,
+				B6A8AFD91E1F8D430033909E /* CountedField.swift in Sources */,
 				226EA0CF1CD0D1A9002C1821 /* Target.swift in Sources */,
 				2264021E1CD1E67B00E30967 /* EndNode.swift in Sources */,
 				7D36B6811BD4D03100D9B821 /* OperationObserver.swift in Sources */,
 				229039DA1D473FFB00B9D0B7 /* OnboardEndnodeWithGatewayOptions.swift in Sources */,
 				7D36B66F1BD4D03100D9B821 /* IoTRequestOperation.swift in Sources */,
 				D5521C761CCDFE7600037C9F /* ServerCode.swift in Sources */,
-				B66321341E1233CD00F914A6 /* CountFieldType.swift in Sources */,
 				A56B0A431C5B43B100E653EF /* TriggeredServerCodeResult.swift in Sources */,
 				7D36B6891BD4D03100D9B821 /* Trigger.swift in Sources */,
 				D5521C741CCDFDA200037C9F /* Predicate.swift in Sources */,
