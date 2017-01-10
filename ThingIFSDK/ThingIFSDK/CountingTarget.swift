@@ -8,8 +8,17 @@
 
 import Foundation
 
+/**
+ A class to specify counting target.
+
+ This class contains data in order to count with
+`ThingIFAPI.count(_:_:_:clause:firmwareVersion:completionHandler:)`.
+ */
 open class CountingTarget: NSObject, NSCoding {
 
+    // MARK: - Enumerations
+
+    /** Field types to count. */
     public enum FieldType: String {
         // TODO: we must check what type server can accept.
         case integer = "INTEGER"
@@ -19,10 +28,18 @@ open class CountingTarget: NSObject, NSCoding {
         case array = "ARRAY"
     }
 
-
+    /** A field name to be counted. */
     let name: String
+
+    /** A field type to be counted. */
     let type: FieldType
 
+    // MARK: - Initializing TriggeredCommandForm instance.
+    /** Initializer of `CountingTarget` instance.
+
+     - Parameter name: a field name to be aggregated.
+     - Parameter type: a field type to be aggregated.
+     */
     public init(_ name: String, _ type: FieldType) {
         self.name = name
         self.type = type

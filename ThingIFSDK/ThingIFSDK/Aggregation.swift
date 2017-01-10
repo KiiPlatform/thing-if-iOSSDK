@@ -18,7 +18,7 @@ open class Aggregation: NSObject, NSCoding {
 
     // MARK: - Enumerations
 
-    /** Function used aggregation. */
+    /** Functions used aggregation. */
     public enum Function: String {
 
         /** A function to calculate max of a field of queried objects. */
@@ -34,7 +34,7 @@ open class Aggregation: NSObject, NSCoding {
         case mean
     }
 
-    /** A field type to aggregate. */
+    /** Field types to aggregate. */
     public enum FieldType: String {
 
         /** A enumeration element to denote integer type. */
@@ -46,13 +46,13 @@ open class Aggregation: NSObject, NSCoding {
 
     // MARK: - Properties
 
-    /** a field name to be aggregated. */
+    /** A field name to be aggregated. */
     open let name: String
 
-    /** a field type to be aggregated. */
+    /** A field type to be aggregated. */
     open let type: FieldType
 
-    /** a function applied to aggregated fields. */
+    /** A function applied to aggregated fields. */
     open let function: Function
 
     // MARK: - Initializing TriggeredCommandForm instance.
