@@ -743,7 +743,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter alias: Target trait alias to query.
      - Parameter clause: Clause to narrow down history states. if nil,
        query all history states.
-     - Parameters firmwareVersion: Target firmware version to query.
+     - Parameter firmwareVersion: Target firmware version to query.
      - Parameter nextPaginationKey: If there is further page to be
        retrieved, this API returns paginationKey in 2nd
        element. Specifying this value in next call in the argument
@@ -777,7 +777,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter range: Time range to query
      - Parameter clause: clause to narrow down history states. if nil,
        query all history states.
-     - Parameters firmwareVersion: target firmware version to query.
+     - Parameter firmwareVersion: target firmware version to query.
      - Parameter completionHandler: A closure to be executed once
        finished. The closure takes 2 arguments: 1st one is an array of
        a tuple. The tuple have a time range and an objects array. The
@@ -806,7 +806,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter target: A target to count.
      - Parameter clause: clause to narrow down history states. if nil,
        query all history states.
-     - Parameters firmwareVersion: target firmware version to query.
+     - Parameter firmwareVersion: target firmware version to query.
      - Parameter completionHandler: A closure to be executed once
        finished. The closure takes 2 arguments: 1st one is an array of
        a tuple. The tuple have a count and range. The count represents
@@ -819,7 +819,7 @@ open class ThingIFAPI: NSObject, NSCoding {
       _ range: (from: Date, to: Date),
       _ target: CountingTarget,
       clause: QueryClause? = nil,
-      firmewareVersion: String? = nil,
+      firmwareVersion: String? = nil,
       completionHandler: @escaping (
         [(count: Int, range: (from: Date, to: Date))]?,
         ThingIFError?
@@ -828,12 +828,37 @@ open class ThingIFAPI: NSObject, NSCoding {
         // TODO: implement me.
     }
 
+    /** Aggregate history states
+
+     - Parameter alias: Target trait alias to query.
+     - Parameter range: Time range to query
+     - Parameter aggregation: aggregation information
+     - Parameter clause: clause to narrow down history states. if nil,
+       query all history states.
+     - Parameter firmwareVersion: target firmware version to query.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments:
+       - 1st one is an array of a tuple. The tuple have a value, a
+         range and objects array.
+         - value denotes a value calculated with
+           `Aggregation.Function`. `Aggregation.FieldType` determines
+           a type of value. If you specify
+           `Aggregation.FieldType.integer`, you should choice Intger
+           as ReturnedValue, If you specify
+           `Aggregation.FieldType.decimal`, you should choice Float or
+           Double as ReturnedValue.
+         - range denotes a time range which a developer specifies with
+           `DataGroupingInterval`.
+         - objects array denotes objects to be queried. If there is no
+           objects in a time range, objects array is empty.
+       - 2nd one is an instance of ThingIFError when failed.
+     */
     open func aggregate<ReturnedValue>(
       _ alias: String,
       _ range: (from: Date, to: Date),
       _ aggregation: Aggregation,
       clause: QueryClause? = nil,
-      firmewareVersion: String? = nil,
+      firmwareVersion: String? = nil,
       completionHandler: @escaping(
         [
           (
