@@ -805,7 +805,7 @@ open class ThingIFAPI: NSObject, NSCoding {
 
      - Parameter alias: Target trait alias to query.
      - Parameter range: Time range to query
-     - Parameter target: A target to count.
+     - Parameter field: A field to count.
      - Parameter clause: QueryClause to narrow down history states. if
        nil, query all history states.
      - Parameter firmwareVersion: target firmware version to query.
@@ -821,7 +821,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func count(
       _ alias: String,
       _ range: (from: Date, to: Date),
-      _ target: CountingTarget,
+      _ field: CountedField,
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping (
