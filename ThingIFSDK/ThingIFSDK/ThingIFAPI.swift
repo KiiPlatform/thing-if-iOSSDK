@@ -787,7 +787,9 @@ open class ThingIFAPI: NSObject, NSCoding {
 
      - Parameter alias: Target trait alias to query.
      - Parameter range: Time range to query
-     - Parameter field: A field to count.
+     - Parameter field: A tuple representing a field to count.
+       - name is a name of the counted field.
+       - type is a type of the field.
      - Parameter clause: Clause to narrow down history states. if
        nil, query all history states.
      - Parameter firmwareVersion: target firmware version to query.
@@ -803,7 +805,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func count(
       _ alias: String,
       range: (from: Date, to: Date),
-      field: CountedField,
+      field: (name: String, type: FieldType),
       clause: Clause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping (
@@ -818,7 +820,10 @@ open class ThingIFAPI: NSObject, NSCoding {
 
      - Parameter alias: Target trait alias to query.
      - Parameter range: Time range to query
-     - Parameter aggregation: aggregation information
+     - Parameter aggregation: A tuple representing aggregation.
+       - name is a name of a filed to aggregate.
+       - type is a type of a filed to aggregate.
+       - function is a function applied to aggregated fields
      - Parameter clause: Clause to narrow down history states. if
        nil, query all history states.
      - Parameter firmwareVersion: target firmware version to query.
@@ -827,12 +832,8 @@ open class ThingIFAPI: NSObject, NSCoding {
        - 1st one is an array of a tuple. The tuple have a value, a
          range and objects array.
          - value denotes a value calculated with
-           `Aggregation.Function`. `Aggregation.FieldType` determines
-           a type of value. If you specify
-           `Aggregation.FieldType.integer`, you should choice Intger
-           as AggregatedValueType, If you specify
-           `Aggregation.FieldType.decimal`, you should choice Float or
-           Double as AggregatedValueType.
+           `Aggregation.Function`. Developers choice suitable type as
+           AggregatedValueType.
          - range denotes a time range which a developer specifies with
            `DataGroupingInterval`.
          - objects array denotes objects to be queried. If there is no
@@ -842,7 +843,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func aggregate<AggregatedValueType>(
       _ alias: String,
       range: (from: Date, to: Date),
-      aggregation: Aggregation,
+      aggregation: (name: String, type: FieldType, function: Function),
       clause: Clause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping(
