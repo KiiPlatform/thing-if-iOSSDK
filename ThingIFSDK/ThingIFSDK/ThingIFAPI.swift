@@ -550,8 +550,8 @@ open class ThingIFAPI: NSObject, NSCoding {
      */
     open func getState(
       _ alias: String,
-      _ completionHandler:@escaping ([String : Any]?,
-                                     ThingIFError?)-> Void) -> Void
+      completionHandler:@escaping ([String : Any]?,
+                                   ThingIFError?)-> Void) -> Void
     {
         fatalError("TODO: We must reimplement this method.")
     }
@@ -683,7 +683,7 @@ open class ThingIFAPI: NSObject, NSCoding {
        is firmware version. Second one is ThingIFError.
      */
     open func getFirmewareVerson(
-      completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
+      _ completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
     {
         // TODO: implement me.
     }
@@ -713,7 +713,7 @@ open class ThingIFAPI: NSObject, NSCoding {
        is thing type. Second one is ThingIFError.
      */
     open func getThingType(
-      completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
+      _ completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
     {
         // TODO: implement me.
     }
@@ -773,7 +773,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      */
     open func query(
       _ alias: String,
-      _ range: (from: Date, to: Date),
+      range: (from: Date, to: Date),
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping (
@@ -802,8 +802,8 @@ open class ThingIFAPI: NSObject, NSCoding {
      */
     open func count(
       _ alias: String,
-      _ range: (from: Date, to: Date),
-      _ field: CountedField,
+      range: (from: Date, to: Date),
+      field: CountedField,
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping (
@@ -841,8 +841,8 @@ open class ThingIFAPI: NSObject, NSCoding {
      */
     open func aggregate<ReturnedValue>(
       _ alias: String,
-      _ range: (from: Date, to: Date),
-      _ aggregation: Aggregation,
+      range: (from: Date, to: Date),
+      aggregation: Aggregation,
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping(

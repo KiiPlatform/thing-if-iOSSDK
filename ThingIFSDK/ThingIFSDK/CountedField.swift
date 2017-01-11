@@ -40,7 +40,7 @@ open class CountedField: NSObject, NSCoding {
      - Parameter name: Name of a field to be aggregated.
      - Parameter type: Type of a field to be aggregated.
      */
-    public init(_ name: String, _ type: FieldType) {
+    public init(_ name: String, type: FieldType) {
         self.name = name
         self.type = type
     }
@@ -48,7 +48,7 @@ open class CountedField: NSObject, NSCoding {
     public required convenience init?(coder aDecoder: NSCoder) {
         self.init(
           aDecoder.decodeObject(forKey: "name") as! String,
-          FieldType(
+          type: FieldType(
             rawValue: aDecoder.decodeObject(forKey: "type") as! String)!)
     }
 

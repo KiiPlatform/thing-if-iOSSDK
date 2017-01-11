@@ -62,7 +62,7 @@ open class Aggregation: NSObject, NSCoding {
      - Parameter type: Type of a field to be aggregated.
      - Parameter function: A function applied to aggregated fields.
      */
-    public init(_ name: String, _ type: FieldType, _ function: Function) {
+    public init(_ name: String, type: FieldType, function: Function) {
         self.name = name
         self.type = type
         self.function = function
@@ -71,9 +71,9 @@ open class Aggregation: NSObject, NSCoding {
     public required convenience init?(coder aDecoder: NSCoder) {
         self.init(
           aDecoder.decodeObject(forKey: "name") as! String,
-          FieldType(
+          type: FieldType(
             rawValue: aDecoder.decodeObject(forKey: "type") as! String)!,
-          Function(
+          function: Function(
             rawValue: aDecoder.decodeObject(forKey: "function") as!String)!)
     }
 
