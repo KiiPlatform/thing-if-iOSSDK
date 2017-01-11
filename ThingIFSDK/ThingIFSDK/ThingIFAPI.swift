@@ -723,7 +723,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     /** Query history states with trait alias.
 
      - Parameter alias: Target trait alias to query.
-     - Parameter clause: QueryClause to narrow down history states. if
+     - Parameter clause: Clause to narrow down history states. if
        nil, query all history states.
      - Parameter firmwareVersion: Target firmware version to query.
      - Parameter nextPaginationKey: If there is further page to be
@@ -743,7 +743,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      */
     open func query(
       _ alias: String,
-      clause: QueryClause? = nil,
+      clause: Clause? = nil,
       firmwareVersion: String? = nil,
       bestEffortLimit: Int? = nil,
       nextPaginationKey: String? = nil,
@@ -758,7 +758,7 @@ open class ThingIFAPI: NSObject, NSCoding {
 
      - Parameter alias: Target trait alias to query.
      - Parameter range: Time range to query
-     - Parameter clause: QueryClause to narrow down history states. if
+     - Parameter clause: Clause to narrow down history states. if
        nil, query all history states.
      - Parameter firmwareVersion: target firmware version to query.
      - Parameter completionHandler: A closure to be executed once
@@ -774,7 +774,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func query(
       _ alias: String,
       range: (from: Date, to: Date),
-      clause: QueryClause? = nil,
+      clause: Clause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping (
         [(range: (from: Date, to: Data), objects: [[String : Any]])]?,
@@ -788,7 +788,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter alias: Target trait alias to query.
      - Parameter range: Time range to query
      - Parameter field: A field to count.
-     - Parameter clause: QueryClause to narrow down history states. if
+     - Parameter clause: Clause to narrow down history states. if
        nil, query all history states.
      - Parameter firmwareVersion: target firmware version to query.
      - Parameter completionHandler: A closure to be executed once
@@ -804,7 +804,7 @@ open class ThingIFAPI: NSObject, NSCoding {
       _ alias: String,
       range: (from: Date, to: Date),
       field: CountedField,
-      clause: QueryClause? = nil,
+      clause: Clause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping (
         [(count: Int, range: (from: Date, to: Date))]?,
@@ -819,7 +819,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter alias: Target trait alias to query.
      - Parameter range: Time range to query
      - Parameter aggregation: aggregation information
-     - Parameter clause: QueryClause to narrow down history states. if
+     - Parameter clause: Clause to narrow down history states. if
        nil, query all history states.
      - Parameter firmwareVersion: target firmware version to query.
      - Parameter completionHandler: A closure to be executed once
@@ -843,7 +843,7 @@ open class ThingIFAPI: NSObject, NSCoding {
       _ alias: String,
       range: (from: Date, to: Date),
       aggregation: Aggregation,
-      clause: QueryClause? = nil,
+      clause: Clause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping(
         [

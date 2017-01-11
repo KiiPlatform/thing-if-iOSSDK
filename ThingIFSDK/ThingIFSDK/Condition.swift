@@ -9,18 +9,18 @@
 import Foundation
 /** Class represents Condition */
 open class Condition : NSObject, NSCoding {
-    open let clause: TriggerClause
+    open let clause: Clause
 
     /** Init Condition with Clause
 
      - Parameter clause: Clause instance
      */
-    public init(_ clause: TriggerClause) {
+    public init(_ clause: Clause) {
         self.clause = clause
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! TriggerClause);
+        self.init(aDecoder.decodeObject() as! Clause);
     }
 
     open func encode(with aCoder: NSCoder) {
