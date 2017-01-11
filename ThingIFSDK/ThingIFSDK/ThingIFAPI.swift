@@ -830,16 +830,16 @@ open class ThingIFAPI: NSObject, NSCoding {
            `Aggregation.Function`. `Aggregation.FieldType` determines
            a type of value. If you specify
            `Aggregation.FieldType.integer`, you should choice Intger
-           as ReturnedValue, If you specify
+           as AggregatedValueType, If you specify
            `Aggregation.FieldType.decimal`, you should choice Float or
-           Double as ReturnedValue.
+           Double as AggregatedValueType.
          - range denotes a time range which a developer specifies with
            `DataGroupingInterval`.
          - objects array denotes objects to be queried. If there is no
            objects in a time range, objects array is empty.
        - 2nd one is an instance of ThingIFError when failed.
      */
-    open func aggregate<ReturnedValue>(
+    open func aggregate<AggregatedValueType>(
       _ alias: String,
       range: (from: Date, to: Date),
       aggregation: Aggregation,
@@ -848,7 +848,7 @@ open class ThingIFAPI: NSObject, NSCoding {
       completionHandler: @escaping(
         [
           (
-            value: ReturnedValue,
+            value: AggregatedValueType,
             range: (from: Date, to: Date),
             objects: [[String : Any]]
           )
