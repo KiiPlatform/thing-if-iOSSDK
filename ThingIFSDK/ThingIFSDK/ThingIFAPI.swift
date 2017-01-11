@@ -658,24 +658,6 @@ open class ThingIFAPI: NSObject, NSCoding {
         }
     }
 
-    /** Check firmware version for thing type.
-
-     - Parameter thingType: thing type to check firmware version.
-     - Parameter firmwareVersion: firmwareVersion to be checked.
-     - Parameter completionHandler: A closure to be executed once on
-       checking has finished The closure takes 2 arguments. First one
-       is existence of firmware version. If true, firmware version for
-       the thing type exists. If false, not exist. Second one is
-       ThingIFError.
-     */
-    open func check(
-      _ thingType: String,
-      _ firmwareVersion: String,
-      _ completionHandler: @escaping (Bool?, ThingIFError?) -> Void) -> Void
-    {
-        // TODO: implement me.
-    }
-
     /** Update firmware version.
 
      This method updates firmware version for `target` thing.
