@@ -801,11 +801,10 @@ open class ThingIFAPI: NSObject, NSCoding {
          - value denotes a value calculated with
            `Function`. Developers choose suitable type as
            AggregatedValueType. In every case, AggregatedValueType is
-           Integer, Float or Double. In almost every cases, developers
-           would choose Float or Double for `Function.max`,
-           `Function.sum`, `Function.min`, and
-           `Function.mean`. Developers would choose Integer for
-           `Function.count` too.
+           Integer, Float or Double. You would choose Integer, Float or Double for `Function.max`,
+           `Function.sum`, `Function.min`
+           `Function.mean` depending on the expected result precision.
+           You would choose Integer for `Function.count` always.
          - range denotes a time range which a developer specifies with
            `DataGroupingInterval`.
          - objects array denotes objects to be queried. If there is no
