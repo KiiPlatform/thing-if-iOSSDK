@@ -783,39 +783,6 @@ open class ThingIFAPI: NSObject, NSCoding {
         // TODO: implement me.
     }
 
-    /** Count query of history states
-
-     - Parameter alias: Target trait alias to query.
-     - Parameter range: Time range to query
-     - Parameter field: A tuple representing a field to count.
-       - name is a name of the counted field.
-       - type is a type of the field.
-     - Parameter clause: Clause to narrow down history states. if
-       nil, query all history states.
-     - Parameter firmwareVersion: target firmware version to query.
-     - Parameter completionHandler: A closure to be executed once
-       finished. The closure takes 2 arguments:
-       - 1st one is an array of a tuple. The tuple have a count and
-         range.
-         - The count represents number of matched items.
-         - The time range represents a range which a developer
-           specifies with `DataGroupingInterval`.
-       - 2nd one is an instance of ThingIFError when failed.
-     */
-    open func count(
-      _ alias: String,
-      range: (from: Date, to: Date),
-      field: (name: String, type: FieldType),
-      clause: Clause? = nil,
-      firmwareVersion: String? = nil,
-      completionHandler: @escaping (
-        [(count: Int, range: (from: Date, to: Date))]?,
-        ThingIFError?
-      ) -> Void) -> Void
-    {
-        // TODO: implement me.
-    }
-
     /** Aggregate history states
 
      - Parameter alias: Target trait alias to query.
@@ -832,8 +799,13 @@ open class ThingIFAPI: NSObject, NSCoding {
        - 1st one is an array of a tuple. The tuple have a value, a
          range and objects array.
          - value denotes a value calculated with
-           `Aggregation.Function`. Developers choice suitable type as
-           AggregatedValueType.
+           `Function`. Developers choose suitable type as
+           AggregatedValueType. In every case, AggregatedValueType is
+           Integer, Float or Double. In almost every cases, developers
+           would choose Float or Double for `Function.max`,
+           `Function.sum`, `Function.min`, and
+           `Function.mean`. Developers would choose Integer for
+           `Function.count` too.
          - range denotes a time range which a developer specifies with
            `DataGroupingInterval`.
          - objects array denotes objects to be queried. If there is no

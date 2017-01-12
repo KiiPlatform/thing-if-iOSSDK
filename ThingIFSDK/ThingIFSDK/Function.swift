@@ -22,5 +22,9 @@ public enum Function: String {
 
     /** A function to calculate mean of a field of queried objects. */
     case mean
+
+    /** A function to count queried objects. */
+    case count
+
 }
 
