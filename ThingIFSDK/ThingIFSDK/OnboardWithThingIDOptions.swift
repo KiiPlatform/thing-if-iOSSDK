@@ -20,7 +20,10 @@ open class OnboardWithThingIDOptions {
     - Parameter interval: interval1Minute | interval15Minutes | interval30Minutes | interval1Hour | interval12Hours.
      Will be used to create the bucket to store the state history when the thing is not using traits.
     */
-    public init(position: LayoutPosition? = nil, interval: DataGroupingInterval? = nil) {
+    public init(
+      _ position: LayoutPosition? = nil,
+      interval: DataGroupingInterval? = nil)
+    {
         self.layoutPosition = position
         self.dataGroupingInterval = interval
     }
