@@ -34,7 +34,7 @@ open class AbstractThing : NSObject, TargetThing {
     - Parameter accessToken: Access token of the target, can nil.
     */
     public init(thingID: String, vendorThingID : String, accessToken: String? = nil) {
-        self.typedID = TypedID(type: "THING", id: thingID)
+        self.typedID = TypedID("THING", id: thingID)
         self.accessToken = accessToken
         self.vendorThingID = vendorThingID
     }

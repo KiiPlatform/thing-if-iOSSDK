@@ -52,7 +52,7 @@ open class CommandForm: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(actions: [(alias: String, actions: [String : Any])],
+    public init(_ actions: [(alias: String, actions: [String : Any])],
                 title: String? = nil,
                 commandDescription: String? = nil,
                 metadata: [String : Any]? = nil)
@@ -92,7 +92,7 @@ open class CommandForm: NSObject, NSCoding {
                     )
         }
         self.init(
-          actions: actions,
+          actions,
           title: aDecoder.decodeObject(forKey: "title") as? String,
           commandDescription: aDecoder.decodeObject(
             forKey: "commandDescription") as? String,

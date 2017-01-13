@@ -30,7 +30,7 @@ open class Owner: NSObject, NSCoding {
     - Parameter typedID: ID of the Owner.
     - Parameter accessToken: Access Token of the Owner.
      */
-    public init(typedID: TypedID, accessToken: String) {
+    public init(_ typedID: TypedID, accessToken: String) {
         self.typedID = typedID
         self.accessToken = accessToken
     }
