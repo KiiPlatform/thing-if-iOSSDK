@@ -27,7 +27,6 @@
 		225A591C1C8ED0EE0042B007 /* ConditionNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225A591B1C8ED0EE0042B007 /* ConditionNSCodingTests.swift */; };
 		225A591E1C8ED8440042B007 /* ClauseNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225A591D1C8ED8440042B007 /* ClauseNSCodingTests.swift */; };
 		225E43381CC5FF55003A3C4B /* GatewayInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E43371CC5FF55003A3C4B /* GatewayInformation.swift */; };
-		225E433A1CC606E6003A3C4B /* GatewayAPIBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E43391CC606E6003A3C4B /* GatewayAPIBuilder.swift */; };
 		2264021C1CD1DD8000E30967 /* StandaloneThing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2264021B1CD1DD8000E30967 /* StandaloneThing.swift */; };
 		2264021E1CD1E67B00E30967 /* EndNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2264021D1CD1E67B00E30967 /* EndNode.swift */; };
 		226402201CD1E96300E30967 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2264021F1CD1E96300E30967 /* Gateway.swift */; };
@@ -176,7 +175,6 @@
 		225A591B1C8ED0EE0042B007 /* ConditionNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConditionNSCodingTests.swift; sourceTree = "<group>"; };
 		225A591D1C8ED8440042B007 /* ClauseNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClauseNSCodingTests.swift; sourceTree = "<group>"; };
 		225E43371CC5FF55003A3C4B /* GatewayInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayInformation.swift; sourceTree = "<group>"; };
-		225E43391CC606E6003A3C4B /* GatewayAPIBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPIBuilder.swift; sourceTree = "<group>"; };
 		2264021B1CD1DD8000E30967 /* StandaloneThing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandaloneThing.swift; sourceTree = "<group>"; };
 		2264021D1CD1E67B00E30967 /* EndNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndNode.swift; sourceTree = "<group>"; };
 		2264021F1CD1E96300E30967 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
@@ -322,7 +320,6 @@
 				2264021D1CD1E67B00E30967 /* EndNode.swift */,
 				2264021F1CD1E96300E30967 /* Gateway.swift */,
 				22E486331CC4E1C000269A1E /* GatewayAPI.swift */,
-				225E43391CC606E6003A3C4B /* GatewayAPIBuilder.swift */,
 				225E43371CC5FF55003A3C4B /* GatewayInformation.swift */,
 				226EA0CC1CD0CCFD002C1821 /* PendingEndNode.swift */,
 			);
@@ -670,7 +667,6 @@
 				747196CF1D016EEC006B0937 /* Condition.swift in Sources */,
 				7D36B6631BD4D03100D9B821 /* Clause.swift in Sources */,
 				D5636AFD1CE1EAFC00760564 /* StatePredicate.swift in Sources */,
-				225E433A1CC606E6003A3C4B /* GatewayAPIBuilder.swift in Sources */,
 				7D36B6761BD4D03100D9B821 /* ExclusivityController.swift in Sources */,
 				2264021C1CD1DD8000E30967 /* StandaloneThing.swift in Sources */,
 				7D36B6C41BD4D9DD00D9B821 /* ThingIFError.swift in Sources */,
