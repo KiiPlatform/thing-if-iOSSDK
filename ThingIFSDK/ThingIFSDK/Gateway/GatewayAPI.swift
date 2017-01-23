@@ -48,7 +48,24 @@ open class GatewayAPI: NSObject, NSCoding {
         self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as? String
     }
 
-    internal init(app: App, gatewayAddress: URL, tag: String? = nil)
+    /** Initialize GatewayAPI.
+
+     If you want to store GatewayAPI instance to storage, you need to
+     set tag.
+
+     tag is used to distinguish storage area of instance.  If the api
+     instance is tagged with same string, It will be overwritten.  If
+     the api instance is tagged with different string, Different key
+     is used to store the instance.
+
+     Please refer to `GatewayAPI.loadWithStoredInstance(_:)`
+
+     - Parameter app: Kii Cloud Application.
+     - Parameter gatewayAddress: address information for the gateway
+     - Parameter tag: tag of the GatewayAPI instance. If null or empty
+       String is passed, it will be ignored.
+     */
+    public init(app: App, gatewayAddress: URL, tag: String? = nil)
     {
         self.tag = tag
         self.app = app

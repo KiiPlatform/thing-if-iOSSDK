@@ -67,23 +67,8 @@ open class App: NSObject, NSCoding {
         self.baseURL = baseURL
         self.siteName = siteName
     }
-}
 
-/** App Builder provides fine grained controll over createing App instance.
- Private/ Dedicated Kii Cloud users will use it.
- Public Kii Cloud user who uses apps created on
- https://developer.kii.com does not need to interact with this Builder.
- Just use App(appID:appKey:site) constructor is fine.
-*/
-open class AppBuilder: NSObject {
-    private let appID:String
-    private let appKey:String
-    private let hostName:String
-    private let urlSchema:String
-    private let siteName:String
-    private let port:Int32
-
-    /** Init the Builder.
+    /** Init app with appID, appKey, hostName, baseURL, siteName and port.
 
      - Parameter appID: ID of the app.
      - Parameter appKey: Key of the app.
@@ -93,8 +78,9 @@ open class AppBuilder: NSObject {
      - Parameter siteName: Site name. By default site name is set to
        "CUSTOM". This site name should match with your Gateway Agent
        configuration if you interact Gateway Agent with this SDK.
+     - Parameter port: port number.
     */
-    public init(
+    public convenience init(
       appID: String,
       appKey: String,
       hostName: String,
@@ -102,25 +88,12 @@ open class AppBuilder: NSObject {
       siteName: String = "CUSTOM",
       port: Int32 = -1)
     {
-        self.appID = appID
-        self.appKey = appKey
-        self.hostName = hostName
-        self.urlSchema = urlSchema
-        self.siteName = siteName
-        self.port = port
-    }
-
-    /** Make App instance
-
-     - Returns: App instance
-    */
-    open func make() -> App {
         var baseURL:String = urlSchema + "://" + hostName
-        if (self.port > 0) {
+        if (port > 0) {
             baseURL = baseURL + ":" + String(port)
         }
-        return App(appID: self.appID, appKey: self.appKey,
-            hostName: self.hostName, baseURL: baseURL, siteName: self.siteName)
+        self.init(appID: appID, appKey: appKey,
+             hostName: hostName, baseURL: baseURL, siteName: siteName)
     }
 
 }

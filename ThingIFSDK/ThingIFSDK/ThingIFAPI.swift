@@ -82,12 +82,25 @@ open class ThingIFAPI: NSObject, NSCoding {
         self.tag = aDecoder.decodeObject(forKey: "tag") as? String
     }
 
-    internal init(app:App, owner: Owner, tag : String?=nil) {
+    /** Initialize `ThingIFAPI` instance.
+
+     - Parameter app: Kii Cloud Application.
+     - Parameter owner: Owner who consumes ThingIFAPI.
+     - Parameter target: target of the ThingIFAPI instance.
+     - Parameter tag: tag of the ThingIFAPI instance.
+     */
+    public init(
+      _ app:App,
+      owner: Owner,
+      target: Target? = nil,
+      tag : String? = nil)
+    {
         self.app = app
         self.baseURL = app.baseURL
         self.appID = app.appID
         self.appKey = app.appKey
         self.owner = owner
+        self.target = target
         self.tag = tag
         super.init()
     }
@@ -801,11 +814,10 @@ open class ThingIFAPI: NSObject, NSCoding {
          - value denotes a value calculated with
            `Function`. Developers choose suitable type as
            AggregatedValueType. In every case, AggregatedValueType is
-           Integer, Float or Double. In almost every cases, developers
-           would choose Float or Double for `Function.max`,
-           `Function.sum`, `Function.min`, and
-           `Function.mean`. Developers would choose Integer for
-           `Function.count` too.
+           Integer, Float or Double. You would choose Integer, Float or Double for `Function.max`,
+           `Function.sum`, `Function.min`
+           `Function.mean` depending on the expected result precision.
+           You would choose Integer for `Function.count` always.
          - range denotes a time range which a developer specifies with
            `DataGroupingInterval`.
          - objects array denotes objects to be queried. If there is no
@@ -842,9 +854,11 @@ open class ThingIFAPI: NSObject, NSCoding {
     */
     open func copyWithTarget(_ newTarget: Target, tag : String? = nil) -> ThingIFAPI {
 
-        let newIotapi = ThingIFAPI(app: self.app, owner: self.owner, tag: tag)
+        let newIotapi = ThingIFAPI(self.app,
+                                   owner: self.owner,
+                                   target: newTarget,
+                                   tag: tag)
 
-        newIotapi.target = newTarget
         newIotapi.installationID = self.installationID
         newIotapi.saveToUserDefault()
         return newIotapi
