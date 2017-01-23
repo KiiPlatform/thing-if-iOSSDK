@@ -27,7 +27,6 @@
 		225A591C1C8ED0EE0042B007 /* ConditionNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225A591B1C8ED0EE0042B007 /* ConditionNSCodingTests.swift */; };
 		225A591E1C8ED8440042B007 /* ClauseNSCodingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225A591D1C8ED8440042B007 /* ClauseNSCodingTests.swift */; };
 		225E43381CC5FF55003A3C4B /* GatewayInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E43371CC5FF55003A3C4B /* GatewayInformation.swift */; };
-		225E433A1CC606E6003A3C4B /* GatewayAPIBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E43391CC606E6003A3C4B /* GatewayAPIBuilder.swift */; };
 		2264021C1CD1DD8000E30967 /* StandaloneThing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2264021B1CD1DD8000E30967 /* StandaloneThing.swift */; };
 		2264021E1CD1E67B00E30967 /* EndNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2264021D1CD1E67B00E30967 /* EndNode.swift */; };
 		226402201CD1E96300E30967 /* Gateway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2264021F1CD1E96300E30967 /* Gateway.swift */; };
@@ -101,7 +100,6 @@
 		7D36B6BD1BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B61BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift */; };
 		7D36B6BE1BD4D43700D9B821 /* ThingIFAPI+Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B71BD4D43700D9B821 /* ThingIFAPI+Push.swift */; };
 		7D36B6BF1BD4D43700D9B821 /* ThingIFAPI+Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B81BD4D43700D9B821 /* ThingIFAPI+Trigger.swift */; };
-		7D36B6C01BD4D43700D9B821 /* ThingIFAPIBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */; };
 		7D36B6C21BD4D51D00D9B821 /* ThingIFSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7D36B6C41BD4D9DD00D9B821 /* ThingIFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */; };
 		A50A1C091C6B1C35001EB310 /* testapp.plist in Resources */ = {isa = PBXBuildFile; fileRef = 743800F91C2930C9005D8458 /* testapp.plist */; };
@@ -179,7 +177,6 @@
 		225A591B1C8ED0EE0042B007 /* ConditionNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConditionNSCodingTests.swift; sourceTree = "<group>"; };
 		225A591D1C8ED8440042B007 /* ClauseNSCodingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClauseNSCodingTests.swift; sourceTree = "<group>"; };
 		225E43371CC5FF55003A3C4B /* GatewayInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayInformation.swift; sourceTree = "<group>"; };
-		225E43391CC606E6003A3C4B /* GatewayAPIBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPIBuilder.swift; sourceTree = "<group>"; };
 		2264021B1CD1DD8000E30967 /* StandaloneThing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandaloneThing.swift; sourceTree = "<group>"; };
 		2264021D1CD1E67B00E30967 /* EndNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndNode.swift; sourceTree = "<group>"; };
 		2264021F1CD1E96300E30967 /* Gateway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gateway.swift; sourceTree = "<group>"; };
@@ -254,7 +251,6 @@
 		7D36B6B61BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+OnBoard.swift"; sourceTree = "<group>"; };
 		7D36B6B71BD4D43700D9B821 /* ThingIFAPI+Push.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+Push.swift"; sourceTree = "<group>"; };
 		7D36B6B81BD4D43700D9B821 /* ThingIFAPI+Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+Trigger.swift"; sourceTree = "<group>"; };
-		7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIBuilder.swift; sourceTree = "<group>"; };
 		7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThingIFSDK.h; sourceTree = "<group>"; };
 		7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFError.swift; sourceTree = "<group>"; };
 		7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThingIFSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -328,7 +324,6 @@
 				2264021D1CD1E67B00E30967 /* EndNode.swift */,
 				2264021F1CD1E96300E30967 /* Gateway.swift */,
 				22E486331CC4E1C000269A1E /* GatewayAPI.swift */,
-				225E43391CC606E6003A3C4B /* GatewayAPIBuilder.swift */,
 				225E43371CC5FF55003A3C4B /* GatewayInformation.swift */,
 				226EA0CC1CD0CCFD002C1821 /* PendingEndNode.swift */,
 			);
@@ -367,7 +362,6 @@
 				7D36B6B61BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift */,
 				7D36B6B71BD4D43700D9B821 /* ThingIFAPI+Push.swift */,
 				7D36B6B81BD4D43700D9B821 /* ThingIFAPI+Trigger.swift */,
-				7D36B6B91BD4D43700D9B821 /* ThingIFAPIBuilder.swift */,
 				7D36B6371BD4D03100D9B821 /* Clause.swift */,
 				7D36B6381BD4D03100D9B821 /* Command.swift */,
 				B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */,
@@ -679,7 +673,6 @@
 				747196CF1D016EEC006B0937 /* Condition.swift in Sources */,
 				7D36B6631BD4D03100D9B821 /* Clause.swift in Sources */,
 				D5636AFD1CE1EAFC00760564 /* StatePredicate.swift in Sources */,
-				225E433A1CC606E6003A3C4B /* GatewayAPIBuilder.swift in Sources */,
 				7D36B6761BD4D03100D9B821 /* ExclusivityController.swift in Sources */,
 				2264021C1CD1DD8000E30967 /* StandaloneThing.swift in Sources */,
 				7D36B6C41BD4D9DD00D9B821 /* ThingIFError.swift in Sources */,
@@ -712,7 +705,6 @@
 				7D36B6801BD4D03100D9B821 /* OperationErrors.swift in Sources */,
 				D5636AFB1CE1E9E000760564 /* ScheduleOncePredicate.swift in Sources */,
 				7D36B68B1BD4D03100D9B821 /* Logger.swift in Sources */,
-				7D36B6C01BD4D43700D9B821 /* ThingIFAPIBuilder.swift in Sources */,
 				B6AC4A1A1D991CE1001A80DE /* TriggeredCommandForm.swift in Sources */,
 				B63F7C491E260CF100D720E5 /* Function.swift in Sources */,
 				7D36B6BC1BD4D43700D9B821 /* ThingIFAPI+GetState.swift in Sources */,

@@ -82,12 +82,25 @@ open class ThingIFAPI: NSObject, NSCoding {
         self.tag = aDecoder.decodeObject(forKey: "tag") as? String
     }
 
-    internal init(app:App, owner: Owner, tag : String?=nil) {
+    /** Initialize `ThingIFAPI` instance.
+
+     - Parameter app: Kii Cloud Application.
+     - Parameter owner: Owner who consumes ThingIFAPI.
+     - Parameter target: target of the ThingIFAPI instance.
+     - Parameter tag: tag of the ThingIFAPI instance.
+     */
+    public init(
+      _ app:App,
+      owner: Owner,
+      target: Target? = nil,
+      tag : String? = nil)
+    {
         self.app = app
         self.baseURL = app.baseURL
         self.appID = app.appID
         self.appKey = app.appKey
         self.owner = owner
+        self.target = target
         self.tag = tag
         super.init()
     }
@@ -841,9 +854,11 @@ open class ThingIFAPI: NSObject, NSCoding {
     */
     open func copyWithTarget(_ newTarget: Target, tag : String? = nil) -> ThingIFAPI {
 
-        let newIotapi = ThingIFAPI(app: self.app, owner: self.owner, tag: tag)
+        let newIotapi = ThingIFAPI(self.app,
+                                   owner: self.owner,
+                                   target: newTarget,
+                                   tag: tag)
 
-        newIotapi.target = newTarget
         newIotapi.installationID = self.installationID
         newIotapi.saveToUserDefault()
         return newIotapi
