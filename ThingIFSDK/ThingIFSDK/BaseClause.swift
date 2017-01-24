@@ -8,37 +8,37 @@
 
 import Foundation
 
-/** Protocol for any clauses class. */
-public protocol BaseClause: NSCoding {
+/** Base protocol for all clause classes. */
+public protocol BaseClause: class, NSCoding {
 
     /** Get Clause as Dictionary instance
 
-    - Returns: a Dictionary instance.
-    */
+     - Returns: a Dictionary instance.
+     */
     func makeDictionary() -> [ String : Any ]
 
 }
 
-/** Protocol for equals clause class */
+/** Protocol for Equals clause classes */
 public protocol BaseEquals: BaseClause {
 
     /** Name of a field. */
     var field: String { get }
     /** Value of a field. */
-    var value: Any { get }
+    var value: AnyObject { get }
 }
 
-/** Protocol for not equals clause class */
+/** Protocol for Not Equals clause classes */
 public protocol BaseNotEquals: BaseClause {
 
     /** Type of a contained instance */
     associatedtype EqualClauseType: BaseEquals
 
-    /** Contained equals clause object. */
+    /** Contained Equals clause instance. */
     var equals: EqualClauseType { get }
 }
 
-/** Protocol for range clause. */
+/** Protocol for Range clause classes. */
 public protocol BaseRange: BaseClause {
 
     /** Name of a field. */
@@ -49,7 +49,7 @@ public protocol BaseRange: BaseClause {
     var upper: (limit: AnyObject, included: Bool)? { get }
 }
 
-/** Protocol for and clause. */
+/** Protocol for And clause classes. */
 public protocol BaseAnd: BaseClause {
 
     /** Type of contained instances */
@@ -59,11 +59,11 @@ public protocol BaseAnd: BaseClause {
     var clauses: [ClausesType] { get }
 
     /** Add a clause. */
-    func add(_ clause: ClausesType) -> Void
+    func add(_ clause: ClausesType) -> Self
 }
 
 
-/** Protocol for or clause. */
+/** Protocol for Or clause classes. */
 public protocol BaseOr: BaseClause {
 
     /** Type of contained instances */
@@ -73,5 +73,5 @@ public protocol BaseOr: BaseClause {
     var clauses: [ClausesType] { get }
 
     /** Add a clause. */
-    func add(_ clause: ClausesType) -> Void
+    func add(_ clause: ClausesType) -> Self
 }
