@@ -756,7 +756,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      */
     open func query(
       _ alias: String,
-      clause: Clause? = nil,
+      clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       bestEffortLimit: Int? = nil,
       nextPaginationKey: String? = nil,
@@ -787,7 +787,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func query(
       _ alias: String,
       range: (from: Date, to: Date),
-      clause: Clause? = nil,
+      clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping (
         [(range: (from: Date, to: Data), objects: [[String : Any]])]?,
@@ -828,7 +828,7 @@ open class ThingIFAPI: NSObject, NSCoding {
       _ alias: String,
       range: (from: Date, to: Date),
       aggregation: (name: String, type: FieldType, function: Function),
-      clause: Clause? = nil,
+      clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping(
         [
