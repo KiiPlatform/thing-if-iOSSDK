@@ -51,10 +51,9 @@ open class QueryClause: NSObject, BaseClause {
 open class EqualsClauseInQuery: QueryClause, BaseEquals {
 
     /** Name of a field. */
-    public let field: String
-
+    open let field: String
     /** Value of a field. */
-    public let value: AnyObject
+    open let value: AnyObject
 
     private init(_ field: String, value: AnyObject) {
         self.field = field
@@ -67,10 +66,7 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter intValue: Left hand side value to be compared.
      */
-    public convenience init(
-      _ field: String,
-      intValue: Int)
-    {
+    public convenience init(_ field: String, intValue: Int) {
         self.init(field, value: intValue as AnyObject)
     }
 
@@ -79,10 +75,7 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter stringValue: Left hand side value to be compared.
      */
-    public convenience init(
-      _ field: String,
-      stringValue: String)
-    {
+    public convenience init(_ field: String, stringValue: String) {
         self.init(field, value: stringValue as AnyObject)
     }
 
@@ -91,10 +84,7 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter boolValue: Left hand side value to be compared.
      */
-    public convenience init(
-      _ field: String,
-      boolValue: Bool)
-    {
+    public convenience init(_ field: String, boolValue: Bool) {
         self.init(field, value: boolValue as AnyObject)
     }
 
