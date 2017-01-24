@@ -44,9 +44,9 @@ public protocol BaseRange: BaseClause {
     /** Name of a field. */
     var field: String { get }
     /** lower limit for an instance. */
-    var lower: (limit: AnyObject, included: Bool)? { get }
+    var lower: (limit: NSNumber, included: Bool)? { get }
     /** upper limit for an instance. */
-    var upper: (limit: AnyObject, included: Bool)? { get }
+    var upper: (limit: NSNumber, included: Bool)? { get }
 }
 
 /** Protocol for And clause classes. */

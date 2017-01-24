@@ -155,15 +155,15 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
     /** Name of a field. */
     open let field: String
     /** lower limit for an instance. */
-    open let lower: (limit: AnyObject, included: Bool)?
+    open let lower: (limit: NSNumber, included: Bool)?
     /** upper limit for an instance. */
-    open let upper: (limit: AnyObject, included: Bool)?
+    open let upper: (limit: NSNumber, included: Bool)?
 
     private init(
       _ alias: String,
       field: String,
-      lower: (limit: AnyObject, included: Bool)? = nil,
-      upper: (limit: AnyObject, included: Bool)? = nil)
+      lower: (limit: NSNumber, included: Bool)? = nil,
+      upper: (limit: NSNumber, included: Bool)? = nil)
     {
         self.alias = alias
         self.field = field
@@ -191,8 +191,8 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
     open static func range(
       _ alias: String,
        field: String,
-      lower: (limit: AnyObject, included: Bool),
-      upper: (limit: AnyObject, included: Bool)) -> RangeClauseInTrigger
+      lower: (limit: NSNumber, included: Bool),
+      upper: (limit: NSNumber, included: Bool)) -> RangeClauseInTrigger
     {
         fatalError("TODO: implement me.")
     }
@@ -208,7 +208,7 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
     open static func greaterThan(
       _ alias: String,
        field: String,
-      limit: AnyObject) -> RangeClauseInTrigger
+      limit: NSNumber) -> RangeClauseInTrigger
     {
         fatalError("TODO: implement me.")
     }
@@ -225,7 +225,7 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
     open static func greaterThanOrEqualTo(
       _ alias: String,
        field: String,
-      limit: AnyObject) -> RangeClauseInTrigger
+      limit: NSNumber) -> RangeClauseInTrigger
     {
         fatalError("TODO: implement me.")
     }
@@ -241,7 +241,7 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
     open static func lessThan(
       _ alias: String,
        field: String,
-      limit: AnyObject) -> RangeClauseInTrigger
+      limit: NSNumber) -> RangeClauseInTrigger
     {
         fatalError("TODO: implement me.")
     }
@@ -257,7 +257,7 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
     open static func lessThanOrEqualTo(
       _ alias: String,
        field: String,
-      limit: AnyObject) -> RangeClauseInTrigger
+      limit: NSNumber) -> RangeClauseInTrigger
     {
         fatalError("TODO: implement me.")
     }

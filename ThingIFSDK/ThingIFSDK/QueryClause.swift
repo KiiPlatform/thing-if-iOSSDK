@@ -146,14 +146,14 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
     /** Name of a field. */
     open let field: String
     /** lower limit for an instance. */
-    open let lower: (limit: AnyObject, included: Bool)?
+    open let lower: (limit: NSNumber, included: Bool)?
     /** upper limit for an instance. */
-    open let upper: (limit: AnyObject, included: Bool)?
+    open let upper: (limit: NSNumber, included: Bool)?
 
     private init(
       _ field: String,
-      lower: (limit: AnyObject, included: Bool)? = nil,
-      upper: (limit: AnyObject, included: Bool)? = nil)
+      lower: (limit: NSNumber, included: Bool)? = nil,
+      upper: (limit: NSNumber, included: Bool)? = nil)
     {
         self.field = field
         self.lower = lower
@@ -178,8 +178,8 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
      */
     open static func range(
       _ field: String,
-      lower: (limit: AnyObject, included: Bool),
-      upper: (limit: AnyObject, included: Bool)) -> RangeClauseInQuery
+      lower: (limit: NSNumber, included: Bool),
+      upper: (limit: NSNumber, included: Bool)) -> RangeClauseInQuery
     {
         fatalError("TODO: implement me.")
     }
@@ -193,7 +193,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
      */
     open static func greaterThan(
       _ field: String,
-      limit: AnyObject) -> RangeClauseInQuery
+      limit: NSNumber) -> RangeClauseInQuery
     {
         fatalError("TODO: implement me.")
     }
@@ -208,7 +208,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
      */
     open static func greaterThanOrEqualTo(
       _ field: String,
-      limit: AnyObject) -> RangeClauseInQuery
+      limit: NSNumber) -> RangeClauseInQuery
     {
         fatalError("TODO: implement me.")
     }
@@ -222,7 +222,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
      */
     open static func lessThan(
       _ field: String,
-      limit: AnyObject) -> RangeClauseInQuery
+      limit: NSNumber) -> RangeClauseInQuery
     {
         fatalError("TODO: implement me.")
     }
@@ -237,7 +237,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
      */
     open static func lessThanOrEqualTo(
       _ field: String,
-      limit: AnyObject) -> RangeClauseInQuery
+      limit: NSNumber) -> RangeClauseInQuery
     {
         fatalError("TODO: implement me.")
     }
