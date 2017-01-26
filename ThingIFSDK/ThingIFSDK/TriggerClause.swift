@@ -8,47 +8,13 @@
 
 import Foundation
 
-/** Base class for trigger clause classes.
+/** Base protocol for trigger clause classes. */
+public protocol TriggerClause: BaseClause {
 
- This is abstract class. Developers does not need to directly use this
- class.
- */
-open class TriggerClause: NSObject, BaseClause {
-
-    fileprivate override init() {
-    }
-
-    /** This is an abstract method.
-
-     If developers directly use this method, This method causes a
-     fatal error.
-     */
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("This is abstract class. you must not use this method.")
-    }
-
-    /** This is an abstract method.
-
-     If developers directly use this method, This method causes a
-     fatal error.
-     */
-    public func encode(with aCoder: NSCoder) {
-        fatalError("This is abstract class. you must not use this method.")
-    }
-
-    /** This is an abstract method.
-
-     If developers directly use this method, This method causes a
-     fatal error.
-     */
-    open func makeDictionary() -> [String : Any] {
-        fatalError("This is abstract class. you must not use this method.")
-    }
 }
 
 /** Class represents Equals clause for trigger methods. */
-open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
+open class  EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
 
     /** Alias of this clause. */
     open let alias: String
@@ -99,7 +65,7 @@ open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
 
      - Returns: A Dictionary instance.
      */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         fatalError("TODO: implement me.")
     }
 
@@ -109,14 +75,14 @@ open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
     }
 
     /** Encoder confirming `NSCoding`. */
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         fatalError("TODO: implement me.")
     }
 
 }
 
 /** Class represents Not Equals clause for trigger methods.  */
-open class NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
+open class  NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInTrigger
 
     /** Contained Equals clause instance. */
@@ -131,7 +97,7 @@ open class NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
 
      - Returns: A Dictionary instance.
      */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         fatalError("TODO: implement me.")
     }
 
@@ -141,14 +107,14 @@ open class NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
     }
 
     /** Encoder confirming `NSCoding`. */
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         fatalError("TODO: implement me.")
     }
 
 }
 
 /** Class represents Range clause for trigger methods. */
-open class RangeClauseInTrigger: TriggerClause, BaseRange {
+open class  RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
 
     /** Alias of this clause. */
     open let alias: String
@@ -266,7 +232,7 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
 
      - Returns: A Dictionary instance.
      */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         fatalError("TODO: implement me.")
     }
 
@@ -276,7 +242,7 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
     }
 
     /** Encoder confirming `NSCoding`. */
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         fatalError("TODO: implement me.")
     }
 
@@ -284,7 +250,7 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
 
 
 /** Class represents And clause for trigger methods. */
-open class AndClauseInTrigger: TriggerClause, BaseAnd {
+open class  AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
     public typealias ClausesType = TriggerClause
 
     /** Clauses conjuncted with And. */
@@ -313,7 +279,7 @@ open class AndClauseInTrigger: TriggerClause, BaseAnd {
     }
 
     /** Encoder confirming `NSCoding`. */
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         fatalError("TODO: implement me.")
     }
 
@@ -329,14 +295,14 @@ open class AndClauseInTrigger: TriggerClause, BaseAnd {
 
      - Returns: A Dictionary instance.
      */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         fatalError("TODO: implement me.")
     }
 
 }
 
 /** Class represents Or clause for trigger methods. */
-open class OrClauseInTrigger: TriggerClause, BaseOr {
+open class  OrClauseInTrigger: NSObject, TriggerClause, BaseOr {
     public typealias ClausesType = TriggerClause
 
     /** Clauses conjuncted with Or. */
@@ -365,7 +331,7 @@ open class OrClauseInTrigger: TriggerClause, BaseOr {
     }
 
     /** Encoder confirming `NSCoding`. */
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         fatalError("TODO: implement me.")
     }
 
@@ -381,7 +347,7 @@ open class OrClauseInTrigger: TriggerClause, BaseOr {
 
      - Returns: A Dictionary instance.
      */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         fatalError("TODO: implement me.")
     }
 

@@ -8,47 +8,13 @@
 
 import Foundation
 
-/** Base class for query clause classes.
+/** Base protocol for query clause classes. */
+public protocol QueryClause: BaseClause {
 
- This is abstract class. Developers does not need to directly use this
- class.
- */
-open class QueryClause: NSObject, BaseClause {
-
-    fileprivate override init() {
-    }
-
-    /** This is an abstract method.
-
-     If developers directly use this method, This method causes a
-     fatal error.
-     */
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("This is abstract class. you must not use this method.")
-    }
-
-    /** This is an abstract method.
-
-     If developers directly use this method, This method causes a
-     fatal error.
-     */
-    public func encode(with aCoder: NSCoder) {
-        fatalError("This is abstract class. you must not use this method.")
-    }
-
-    /** This is an abstract method.
-
-     If developers directly use this method, This method causes a
-     fatal error.
-     */
-    open func makeDictionary() -> [String : Any] {
-        fatalError("This is abstract class. you must not use this method.")
-    }
 }
 
 /** Class represents Equals clause for query methods. */
-open class EqualsClauseInQuery: QueryClause, BaseEquals {
+open class EqualsClauseInQuery: NSObject, QueryClause, BaseEquals {
 
     /** Name of a field. */
     open let field: String
@@ -92,7 +58,7 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
 
      - Returns: A Dictionary instance.
      */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         fatalError("TODO: implement me.")
     }
 
@@ -102,14 +68,14 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
     }
 
     /** Encoder confirming `NSCoding`. */
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         fatalError("TODO: implement me.")
     }
 
 }
 
 /** Class represents Not Equals clause for query methods.  */
-open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
+open class  NotEqualsClauseInQuery: NSObject, QueryClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInQuery
 
     /** Contained Equals clause instance. */
@@ -124,7 +90,7 @@ open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
 
      - Returns: A Dictionary instance.
      */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         fatalError("TODO: implement me.")
     }
 
@@ -134,14 +100,14 @@ open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
     }
 
     /** Encoder confirming `NSCoding`. */
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         fatalError("TODO: implement me.")
     }
 
 }
 
 /** Class represents Range clause for query methods. */
-open class RangeClauseInQuery: QueryClause, BaseRange {
+open class  RangeClauseInQuery: NSObject, QueryClause, BaseRange {
 
     /** Name of a field. */
     open let field: String
@@ -246,7 +212,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
 
      - Returns: A Dictionary instance.
      */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         fatalError("TODO: implement me.")
     }
 
@@ -256,7 +222,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
     }
 
     /** Encoder confirming `NSCoding`. */
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         fatalError("TODO: implement me.")
     }
 
@@ -264,7 +230,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
 
 
 /** Class represents And clause for query methods. */
-open class AndClauseInQuery: QueryClause, BaseAnd {
+open class  AndClauseInQuery: NSObject, QueryClause, BaseAnd {
     public typealias ClausesType = QueryClause
 
     /** Clauses conjuncted with And. */
@@ -293,7 +259,7 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
     }
 
     /** Encoder confirming `NSCoding`. */
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         fatalError("TODO: implement me.")
     }
 
@@ -309,14 +275,14 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
      - Returns: A Dictionary instance.
      */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         fatalError("TODO: implement me.")
     }
 
 }
 
 /** Class represents Or clause for query methods. */
-open class OrClauseInQuery: QueryClause, BaseOr {
+open class  OrClauseInQuery: NSObject, QueryClause, BaseOr {
     public typealias ClausesType = QueryClause
 
     /** Clauses conjuncted with Or. */
@@ -345,7 +311,7 @@ open class OrClauseInQuery: QueryClause, BaseOr {
     }
 
     /** Encoder confirming `NSCoding`. */
-    open override func encode(with aCoder: NSCoder) {
+    open func encode(with aCoder: NSCoder) {
         fatalError("TODO: implement me.")
     }
 
@@ -361,7 +327,7 @@ open class OrClauseInQuery: QueryClause, BaseOr {
 
      - Returns: A Dictionary instance.
      */
-    open override func makeDictionary() -> [ String : Any ] {
+    open func makeDictionary() -> [ String : Any ] {
         fatalError("TODO: implement me.")
     }
 
