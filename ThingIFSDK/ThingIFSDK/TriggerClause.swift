@@ -14,7 +14,7 @@ public protocol TriggerClause: BaseClause {
 }
 
 /** Class represents Equals clause for trigger methods. */
-open class  EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
+open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
 
     /** Alias of this clause. */
     open let alias: String
@@ -82,7 +82,7 @@ open class  EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
 }
 
 /** Class represents Not Equals clause for trigger methods.  */
-open class  NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
+open class NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInTrigger
 
     /** Contained Equals clause instance. */
@@ -114,7 +114,7 @@ open class  NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
 }
 
 /** Class represents Range clause for trigger methods. */
-open class  RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
+open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
 
     /** Alias of this clause. */
     open let alias: String
@@ -250,7 +250,7 @@ open class  RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
 
 
 /** Class represents And clause for trigger methods. */
-open class  AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
+open class AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
     public typealias ClausesType = TriggerClause
 
     /** Clauses conjuncted with And. */
@@ -302,7 +302,7 @@ open class  AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
 }
 
 /** Class represents Or clause for trigger methods. */
-open class  OrClauseInTrigger: NSObject, TriggerClause, BaseOr {
+open class OrClauseInTrigger: NSObject, TriggerClause, BaseOr {
     public typealias ClausesType = TriggerClause
 
     /** Clauses conjuncted with Or. */

@@ -75,7 +75,7 @@ open class EqualsClauseInQuery: NSObject, QueryClause, BaseEquals {
 }
 
 /** Class represents Not Equals clause for query methods.  */
-open class  NotEqualsClauseInQuery: NSObject, QueryClause, BaseNotEquals {
+open class NotEqualsClauseInQuery: NSObject, QueryClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInQuery
 
     /** Contained Equals clause instance. */
@@ -107,7 +107,7 @@ open class  NotEqualsClauseInQuery: NSObject, QueryClause, BaseNotEquals {
 }
 
 /** Class represents Range clause for query methods. */
-open class  RangeClauseInQuery: NSObject, QueryClause, BaseRange {
+open class RangeClauseInQuery: NSObject, QueryClause, BaseRange {
 
     /** Name of a field. */
     open let field: String
@@ -230,7 +230,7 @@ open class  RangeClauseInQuery: NSObject, QueryClause, BaseRange {
 
 
 /** Class represents And clause for query methods. */
-open class  AndClauseInQuery: NSObject, QueryClause, BaseAnd {
+open class AndClauseInQuery: NSObject, QueryClause, BaseAnd {
     public typealias ClausesType = QueryClause
 
     /** Clauses conjuncted with And. */
@@ -282,7 +282,7 @@ open class  AndClauseInQuery: NSObject, QueryClause, BaseAnd {
 }
 
 /** Class represents Or clause for query methods. */
-open class  OrClauseInQuery: NSObject, QueryClause, BaseOr {
+open class OrClauseInQuery: NSObject, QueryClause, BaseOr {
     public typealias ClausesType = QueryClause
 
     /** Clauses conjuncted with Or. */
