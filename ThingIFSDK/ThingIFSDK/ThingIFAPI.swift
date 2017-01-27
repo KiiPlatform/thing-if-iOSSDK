@@ -827,7 +827,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     open func aggregate<AggregatedValueType>(
       _ alias: String,
       range: (from: Date, to: Date),
-      aggregation: (name: String, type: FieldType, function: Function),
+      aggregation: Aggregation,
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping(
