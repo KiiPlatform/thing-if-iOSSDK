@@ -12,13 +12,13 @@ open class ActionResult: NSCoding {
 
     open let succeeded: Bool
     open let actionName: String
-    open let data: [String : Any]?
+    open let data: Any?
     open let errorMessage: String?
 
     internal init(
       _ succeeded: Bool,
       actionName: String,
-      data: [String : Any]?,
+      data: Any?,
       errorMessage: String?)
     {
         fatalError("TODO: implement me.")
