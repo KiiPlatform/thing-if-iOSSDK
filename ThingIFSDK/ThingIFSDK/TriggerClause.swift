@@ -14,7 +14,7 @@ public protocol TriggerClause: BaseClause {
 }
 
 /** Class represents Equals clause for trigger methods. */
-open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
+open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
 
     /** Alias of this clause. */
     open let alias: String
@@ -27,7 +27,6 @@ open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
         self.alias = alias
         self.field = field
         self.value = value
-        super.init()
     }
 
     /** Initialize with String left hand side value.
@@ -82,7 +81,7 @@ open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
 }
 
 /** Class represents Not Equals clause for trigger methods.  */
-open class NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
+open class NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInTrigger
 
     /** Contained Equals clause instance. */
@@ -90,7 +89,6 @@ open class NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
 
     public init(_ equals: EqualsClauseInTrigger) {
         self.equals = equals
-        super.init()
     }
 
     /** Get Not Equals clause for trigger as a Dictionary instance
@@ -114,7 +112,7 @@ open class NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
 }
 
 /** Class represents Range clause for trigger methods. */
-open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
+open class RangeClauseInTrigger: TriggerClause, BaseRange {
 
     /** Alias of this clause. */
     open let alias: String
@@ -135,7 +133,6 @@ open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
         self.field = field
         self.lower = lower
         self.upper = upper
-        super.init()
     }
 
     /** Create Range clause for trigger having lower and upper limit.
@@ -250,7 +247,7 @@ open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
 
 
 /** Class represents And clause for trigger methods. */
-open class AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
+open class AndClauseInTrigger: TriggerClause, BaseAnd {
     public typealias ClausesType = TriggerClause
 
     /** Clauses conjuncted with And. */
@@ -262,7 +259,6 @@ open class AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
      */
     public init(_ clauses: [TriggerClause]) {
         self.clauses = clauses
-        super.init()
     }
 
     /** Initialize with clauses.
@@ -302,7 +298,7 @@ open class AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
 }
 
 /** Class represents Or clause for trigger methods. */
-open class OrClauseInTrigger: NSObject, TriggerClause, BaseOr {
+open class OrClauseInTrigger: TriggerClause, BaseOr {
     public typealias ClausesType = TriggerClause
 
     /** Clauses conjuncted with Or. */
@@ -314,7 +310,6 @@ open class OrClauseInTrigger: NSObject, TriggerClause, BaseOr {
      */
     public init(_ clauses: [TriggerClause]) {
         self.clauses = clauses
-        super.init()
     }
 
     /** Initialize with clauses.
