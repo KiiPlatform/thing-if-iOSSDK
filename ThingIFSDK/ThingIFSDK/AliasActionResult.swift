@@ -8,9 +8,12 @@
 
 import Foundation
 
+/** Result of action for an alias. */
 open class AliasActionResult: NSCoding {
 
+    /** Name of an alias. */
     open let alias: String
+    /** Results of actions for an alias. */
     open let results: [ActionResult]
 
     internal init(_ alias: String, results: [ActionResult]) {

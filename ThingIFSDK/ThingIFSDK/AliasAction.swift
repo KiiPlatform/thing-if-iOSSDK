@@ -8,9 +8,12 @@
 
 import Foundation
 
+/** Action with an alias. */
 open class AliasAction: NSCoding {
 
+    /** Name of an alias. */
     open let alias: String
+    /** Action of this alias. */
     open let action: [String : Any]
 
     public init(_ alias: String, action: [String : Any]) {
