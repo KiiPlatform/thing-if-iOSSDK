@@ -7,7 +7,7 @@
 //
 
 import Foundation
-open class ServerCode : NSObject, NSCoding {
+open class ServerCode : NSCoding {
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.endpoint, forKey: "endpoint")

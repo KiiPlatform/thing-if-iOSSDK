@@ -6,7 +6,7 @@
 import Foundation
 
 /** Class provides API of the ThingIF. */
-open class ThingIFAPI: NSObject, NSCoding {
+open class ThingIFAPI: NSCoding {
 
     private static var SHARED_NSUSERDEFAULT_KEY_INSTANCE: String {
         get {
@@ -102,7 +102,6 @@ open class ThingIFAPI: NSObject, NSCoding {
         self.owner = owner
         self.target = target
         self.tag = tag
-        super.init()
     }
 
     // MARK: - On board methods
@@ -987,7 +986,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         return true
     }
 
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let anAPI = object as? ThingIFAPI else{
             return false
         }
@@ -999,6 +998,10 @@ open class ThingIFAPI: NSObject, NSCoding {
             self.target?.typedID == anAPI.target?.typedID &&
             self.installationID == anAPI.installationID &&
             self.tag == anAPI.tag
+    }
+
+    public static func == (left: ThingIFAPI, right: ThingIFAPI) -> Bool {
+        return left.isEqual(right)
     }
 
     

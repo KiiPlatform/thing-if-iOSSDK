@@ -17,7 +17,7 @@ This class contains optional data in order to create and modify
  - `ThingIFAPI.postNewTrigger(_:predicate:options:completionHandler:)`
  - `ThingIFAPI.patchTrigger(_:triggeredCommandForm:predicate:options:completionHandler:)`
 */
-open class TriggerOptions: NSObject, NSCoding {
+open class TriggerOptions: NSCoding {
 
     /// Title of a command.
     open let title: String?

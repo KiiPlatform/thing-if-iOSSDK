@@ -5,7 +5,7 @@
 import Foundation
 
 /** Class represents Command */
-open class Command: NSObject, NSCoding {
+open class Command: Equatable, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
@@ -107,7 +107,7 @@ open class Command: NSObject, NSCoding {
         self.metadata = metadata
     }
 
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let aCommand = object as? Command else{
             return false
         }
@@ -115,6 +115,10 @@ open class Command: NSObject, NSCoding {
         return self.commandID == aCommand.commandID &&
             self.targetID == aCommand.targetID &&
             self.issuerID == aCommand.issuerID
+    }
+
+    public static func == (left: Command, right: Command) -> Bool {
+        return left.isEqual(right)
     }
 
     // TODO: We should replace this method with internal initializer.

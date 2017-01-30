@@ -5,7 +5,7 @@
 import Foundation
 
 /** Represents entity type and its ID. */
-open class TypedID : NSObject, NSCoding {
+open class TypedID : Equatable, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
@@ -43,10 +43,14 @@ open class TypedID : NSObject, NSCoding {
         return "\(type):\(id)"
     }
 
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let aType = object as? TypedID else{
             return false
         }
         return (self.type == aType.type) && (self.id == aType.id)
+    }
+
+    public static func == (left: TypedID, right: TypedID) {
+        return left.isEqual(right)
     }
 }

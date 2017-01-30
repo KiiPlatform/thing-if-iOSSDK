@@ -8,7 +8,7 @@
 import Foundation
 
 /** Represents Kii Cloud Application */
-open class App: NSObject, NSCoding {
+open class App: NSCoding {
     /** ID of the App */
     open let appID: String
     /** Key of the APP */

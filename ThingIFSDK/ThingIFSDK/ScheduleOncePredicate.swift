@@ -7,7 +7,7 @@
 //
 
 /** Class represents ScheduleOncePredicate. */
-open class ScheduleOncePredicate: NSObject,Predicate {
+open class ScheduleOncePredicate: Predicate {
     /** Specified schedule. */
     open let scheduleAt: Date
 
@@ -19,7 +19,6 @@ open class ScheduleOncePredicate: NSObject,Predicate {
      */
     public init(scheduleAt: Date) {
         self.scheduleAt = scheduleAt
-        super.init()
     }
 
     public required init(coder aDecoder: NSCoder) {

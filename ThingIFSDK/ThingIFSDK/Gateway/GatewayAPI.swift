@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class GatewayAPI: NSObject, NSCoding {
+open class GatewayAPI: NSCoding {
 
     private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "GatewayAPI_INSTANCE"
     private static func getStoredInstanceKey(_ tag : String?) -> String{

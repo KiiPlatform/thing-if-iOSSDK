@@ -24,7 +24,7 @@ Optional data are followings:
   - Description of a command
   - Meta data of a command
 */
-open class CommandForm: NSObject, NSCoding {
+open class CommandForm: NSCoding {
 
     // MARK: - Properties
 

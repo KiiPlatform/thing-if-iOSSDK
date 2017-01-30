@@ -5,7 +5,7 @@
 import Foundation
 
 /** Represents Target */
-open class AbstractThing : NSObject, TargetThing {
+open class AbstractThing : Equatable, TargetThing {
     open let typedID: TypedID
     open let accessToken: String?
     open var thingID: String {
@@ -39,10 +39,14 @@ open class AbstractThing : NSObject, TargetThing {
         self.vendorThingID = vendorThingID
     }
 
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let aTarget = object as? AbstractThing else {
             return false
         }
         return self.typedID == aTarget.typedID && self.accessToken == aTarget.accessToken
+    }
+
+    public static func == (left: AbstractThing, right: AbstractThing) -> Bool{
+        return left.isEqual(right);
     }
 }

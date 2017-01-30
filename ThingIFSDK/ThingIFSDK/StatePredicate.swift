@@ -9,7 +9,7 @@
 import Foundation
 
 /** Class represents StatePredicate */
-open class StatePredicate: NSObject,Predicate {
+open class StatePredicate: Predicate {
     open let triggersWhen: TriggersWhen
     open let condition: Condition
 
@@ -26,7 +26,6 @@ open class StatePredicate: NSObject,Predicate {
     {
         self.triggersWhen = triggersWhen
         self.condition = condition
-        super.init();
     }
 
     public required convenience init(coder aDecoder: NSCoder) {
