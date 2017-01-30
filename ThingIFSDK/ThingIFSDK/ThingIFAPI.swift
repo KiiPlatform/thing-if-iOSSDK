@@ -59,6 +59,13 @@ open class ThingIFAPI: Equatable, NSCoding {
     /** target */
     open internal(set) var target: Target?
 
+    /** Checks whether on boarding is done. */
+    open var onboarded: Bool {
+        get {
+            fatalError("TODO: implement me.")
+        }
+    }
+
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.app, forKey: "app")
@@ -537,7 +544,7 @@ open class ThingIFAPI: Equatable, NSCoding {
        Dictionary that represent Target State and 2nd one is an
        instance of ThingIFError when failed.
     */
-    open func getState(
+    open func getTargetState(
       _ completionHandler:@escaping ([String : [String : Any]]?,
                                      ThingIFError?)-> Void) -> Void
     {
@@ -560,7 +567,7 @@ open class ThingIFAPI: Equatable, NSCoding {
        Dictionary that represent Target State and 2nd one is an
        instance of ThingIFError when failed.
      */
-    open func getState(
+    open func getTargetState(
       _ alias: String,
       completionHandler:@escaping ([String : Any]?,
                                    ThingIFError?)-> Void) -> Void

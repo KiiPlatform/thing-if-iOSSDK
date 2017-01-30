@@ -12,14 +12,14 @@ import Foundation
 open class AggregatedResult<AggregatedValueType>: NSCoding {
 
     /** Returned value to be aggregated. */
-    open let value: AggregatedValueValue
+    open let value: AggregatedValueType
     /** Time range of an aggregated result. */
     open let timeRange: TimeRange
     /** Aggregated objectes. */
     open let aggregatedObjects: [HistoryState]
 
     internal init(
-      _ value: AggregatedValueValue,
+      _ value: AggregatedValueType,
       timeRange: TimeRange,
       aggregatedObjects: [HistoryState])
     {
