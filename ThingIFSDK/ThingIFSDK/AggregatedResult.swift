@@ -8,6 +8,7 @@
 
 import Foundation
 
+/** Aggregated result. */
 open class AggregatedResult<AggregatedValueValue>: NSCoding {
 
     /** Returned value to be aggregated. */

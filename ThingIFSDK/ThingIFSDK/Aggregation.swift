@@ -8,6 +8,7 @@
 
 import Foundation
 
+/** Aggregation. */
 open class Aggregation: NSCoding {
 
     /** Field types to count. */

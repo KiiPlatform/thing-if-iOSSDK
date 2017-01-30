@@ -8,6 +8,7 @@
 
 import Foundation
 
+/** Time range. */
 open class TimeRange: NSCoding {
 
     /** Start point of a time range. Inclusive. */
