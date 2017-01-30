@@ -9,7 +9,7 @@
 import Foundation
 
 /** Aggregated result. */
-open class AggregatedResult<AggregatedValueValue>: NSCoding {
+open class AggregatedResult<AggregatedValueType>: NSCoding {
 
     /** Returned value to be aggregated. */
     open let value: AggregatedValueValue
