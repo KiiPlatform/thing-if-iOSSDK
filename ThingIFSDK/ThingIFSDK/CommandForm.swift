@@ -73,7 +73,7 @@ open class CommandForm: NSCoding {
 
     public required convenience init?(coder aDecoder: NSCoder) {
         self.init(
-          actions:aDecoder.decodeObject(forKey: "title") as! [AliasAction],
+          aDecoder.decodeObject(forKey: "title") as! [AliasAction],
           title: aDecoder.decodeObject(forKey: "title") as? String,
           commandDescription: aDecoder.decodeObject(
             forKey: "commandDescription") as? String,

@@ -28,7 +28,7 @@ open class App: NSCoding {
         let hostName:String = decoder.decodeObject(forKey: "hostName") as! String
         let baseURL:String = decoder.decodeObject(forKey: "baseURL") as! String
         let siteName:String = decoder.decodeObject(forKey: "siteName") as! String
-        self.init(appID:appID, appKey:appKey, hostName:hostName,
+        self.init(appID, appKey:appKey, hostName:hostName,
             baseURL:baseURL, siteName:siteName)
     }
 
@@ -92,7 +92,7 @@ open class App: NSCoding {
         if (port > 0) {
             baseURL = baseURL + ":" + String(port)
         }
-        self.init(appID: appID, appKey: appKey,
+        self.init(appID, appKey: appKey,
              hostName: hostName, baseURL: baseURL, siteName: siteName)
     }
 
