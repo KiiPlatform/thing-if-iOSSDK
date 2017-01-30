@@ -132,6 +132,7 @@
 		B6A047211E3EE8F100D85A1E /* AggregatedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047201E3EE8F100D85A1E /* AggregatedResult.swift */; };
 		B6A047231E3EEE5C00D85A1E /* TimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047221E3EEE5C00D85A1E /* TimeRange.swift */; };
 		B6A047251E3EEFA200D85A1E /* HistoryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047241E3EEFA200D85A1E /* HistoryState.swift */; };
+		B6A047271E3EF3BB00D85A1E /* HistoryStatesQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047261E3EF3BB00D85A1E /* HistoryStatesQuery.swift */; };
 		B6ABF9761E372F0300981AC4 /* TriggerClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ABF9751E372F0300981AC4 /* TriggerClause.swift */; };
 		B6AC4A1A1D991CE1001A80DE /* TriggeredCommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */; };
 		B6AC4A1C1D991DF2001A80DE /* TriggerOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */; };
@@ -292,6 +293,7 @@
 		B6A047201E3EE8F100D85A1E /* AggregatedResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AggregatedResult.swift; sourceTree = "<group>"; };
 		B6A047221E3EEE5C00D85A1E /* TimeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRange.swift; sourceTree = "<group>"; };
 		B6A047241E3EEFA200D85A1E /* HistoryState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryState.swift; sourceTree = "<group>"; };
+		B6A047261E3EF3BB00D85A1E /* HistoryStatesQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryStatesQuery.swift; sourceTree = "<group>"; };
 		B6ABF9751E372F0300981AC4 /* TriggerClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerClause.swift; sourceTree = "<group>"; };
 		B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredCommandForm.swift; sourceTree = "<group>"; };
 		B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerOptions.swift; sourceTree = "<group>"; };
@@ -413,6 +415,7 @@
 				B6A047201E3EE8F100D85A1E /* AggregatedResult.swift */,
 				B6A047221E3EEE5C00D85A1E /* TimeRange.swift */,
 				B6A047241E3EEFA200D85A1E /* HistoryState.swift */,
+				B6A047261E3EF3BB00D85A1E /* HistoryStatesQuery.swift */,
 			);
 			path = ThingIFSDK;
 			sourceTree = "<group>";
@@ -744,6 +747,7 @@
 				226EA0CD1CD0CCFD002C1821 /* PendingEndNode.swift in Sources */,
 				7D36B6BF1BD4D43700D9B821 /* ThingIFAPI+Trigger.swift in Sources */,
 				22E486341CC4E1C000269A1E /* GatewayAPI.swift in Sources */,
+				B6A047271E3EF3BB00D85A1E /* HistoryStatesQuery.swift in Sources */,
 				7D36B6BE1BD4D43700D9B821 /* ThingIFAPI+Push.swift in Sources */,
 				7D36B6851BD4D03100D9B821 /* URLSessionTaskOperation.swift in Sources */,
 				7D36B6791BD4D03100D9B821 /* NegatedCondition.swift in Sources */,
