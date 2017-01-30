@@ -28,7 +28,7 @@ Optional data are followings:
   - Description of a triggered command
   - Meta data of a triggered command
 */
-open class TriggeredCommandForm: NSObject, NSCoding {
+open class TriggeredCommandForm: NSCoding {
 
     // MARK: - Properties
 

@@ -8,7 +8,7 @@
 
 import Foundation
 /** Class represents Condition */
-open class Condition : NSObject, NSCoding {
+open class Condition : NSCoding {
     open let clause: TriggerClause
 
     /** Init Condition with Clause

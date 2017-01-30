@@ -6,7 +6,7 @@
 import Foundation
 
 /** Class represents Trigger */
-open class Trigger: NSObject, NSCoding {
+open class Trigger: Equatable, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
@@ -156,7 +156,7 @@ open class Trigger: NSObject, NSCoding {
         self.metadata = metadata
     }
 
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let aTrigger = object as? Trigger else{
             return false
         }
@@ -164,6 +164,10 @@ open class Trigger: NSObject, NSCoding {
         return self.enabled == aTrigger.enabled &&
             self.command == aTrigger.command &&
             self.serverCode == aTrigger.serverCode
+    }
+
+    public static func == (left: Trigger, right: Trigger) -> Bool {
+        return left.isEqual(right)
     }
 
 }
