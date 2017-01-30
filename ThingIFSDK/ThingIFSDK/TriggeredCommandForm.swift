@@ -60,7 +60,7 @@ open class TriggeredCommandForm: NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(actions: [AliasAction],
+    public init(_actions: [AliasAction],
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,

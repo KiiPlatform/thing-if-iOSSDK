@@ -17,7 +17,7 @@ open class ScheduleOncePredicate: Predicate {
 
      -Parameter scheduleAt: Specify execution schedule. It must be future date.
      */
-    public init(scheduleAt: Date) {
+    public init(_ scheduleAt: Date) {
         self.scheduleAt = scheduleAt
     }
 

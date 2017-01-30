@@ -31,7 +31,7 @@ open class OnboardWithVendorThingIDOptions {
       Will be used to create the bucket to store the state history when the thing is not using traits.
     */
     public init(
-        thingType:String? = nil,
+        _ thingType:String? = nil,
         firmwareVersion:String? = nil,
         thingProperties:Dictionary<String, Any>? = nil,
         position: LayoutPosition? = nil,

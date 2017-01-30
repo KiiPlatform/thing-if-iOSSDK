@@ -38,7 +38,7 @@ open class TriggerOptions: NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(title: String? = nil,
+    public init(_ title: String? = nil,
                 triggerDescription: String? = nil,
                 metadata: Dictionary<String, Any>? = nil)
     {

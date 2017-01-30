@@ -19,7 +19,7 @@ open class SchedulePredicate: Predicate {
 
      -Parameter schedule: Specify schedule. (cron tab format)
      */
-    public init(schedule: String) {
+    public init(_ schedule: String) {
         self.schedule = schedule
     }
 

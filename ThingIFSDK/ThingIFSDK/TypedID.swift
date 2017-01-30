@@ -34,7 +34,7 @@ open class TypedID : Equatable, NSCoding {
       given string are converted to lower case.
     - Parameter id: ID of the entity.
      */
-    public init(type:String, id:String) {
+    public init(_ type:String, id:String) {
         self.type = type.lowercased()
         self.id = id
     }

@@ -52,7 +52,7 @@ open class CommandForm: NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(actions: [AliasAction],
+    public init(_ actions: [AliasAction],
                 title: String? = nil,
                 commandDescription: String? = nil,
                 metadata: [String : Any]? = nil)

@@ -22,7 +22,7 @@ open class StatePredicate: Predicate {
      */
     public init(
       _ condition:Condition,
-      _ triggersWhen:TriggersWhen)
+      triggersWhen:TriggersWhen)
     {
         self.triggersWhen = triggersWhen
         self.condition = condition
@@ -32,7 +32,7 @@ open class StatePredicate: Predicate {
         self.init(
           aDecoder.decodeObject(forKey: "condition")
             as! Condition,
-          TriggersWhen(
+          triggersWhen: TriggersWhen(
             rawValue: aDecoder.decodeObject(forKey: "triggersWhen")
               as! String)!
         )

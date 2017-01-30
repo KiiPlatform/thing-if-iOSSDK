@@ -191,7 +191,7 @@ open class ThingIFAPI: Equatable, NSCoding {
      - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an end node, an ThingIFError
      */
     open func onboard(
-        pendingEndnode:PendingEndNode,
+        _ pendingEndnode:PendingEndNode,
         endnodePassword:String,
         options:OnboardEndnodeWithGatewayOptions? = nil,
         completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
@@ -303,8 +303,8 @@ open class ThingIFAPI: Equatable, NSCoding {
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Commands if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
      */
     open func listCommands(
-        _ bestEffortLimit:Int?,
-        paginationKey:String?,
+        _ bestEffortLimit: Int? = nil,
+        paginationKey: String? = nil,
         completionHandler: @escaping ([Command]?, String?, ThingIFError?)-> Void
         )
     {
@@ -496,8 +496,8 @@ open class ThingIFAPI: Equatable, NSCoding {
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Triggers instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
     */
     open func listTriggers(
-        _ bestEffortLimit:Int?,
-        paginationKey:String?,
+        _ bestEffortLimit:Int? = nil,
+        paginationKey:String? = nil,
         completionHandler: @escaping (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
         )
     {
@@ -521,8 +521,8 @@ open class ThingIFAPI: Equatable, NSCoding {
      */
     open func listTriggeredServerCodeResults(
         _ triggerID:String,
-        bestEffortLimit:Int?,
-        paginationKey:String?,
+        bestEffortLimit:Int? = nil,
+        paginationKey:String? = nil,
         completionHandler: @escaping (_ results:[TriggeredServerCodeResult]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
         )
     {
