@@ -134,6 +134,7 @@
 		B6A047251E3EEFA200D85A1E /* HistoryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047241E3EEFA200D85A1E /* HistoryState.swift */; };
 		B6A047271E3EF3BB00D85A1E /* HistoryStatesQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047261E3EF3BB00D85A1E /* HistoryStatesQuery.swift */; };
 		B6A047291E3EFD6500D85A1E /* GroupedHistoryStatesQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047281E3EFD6500D85A1E /* GroupedHistoryStatesQuery.swift */; };
+		B6A0472B1E3F048700D85A1E /* GroupedHistoryStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0472A1E3F048700D85A1E /* GroupedHistoryStates.swift */; };
 		B6ABF9761E372F0300981AC4 /* TriggerClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ABF9751E372F0300981AC4 /* TriggerClause.swift */; };
 		B6AC4A1A1D991CE1001A80DE /* TriggeredCommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */; };
 		B6AC4A1C1D991DF2001A80DE /* TriggerOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */; };
@@ -296,6 +297,7 @@
 		B6A047241E3EEFA200D85A1E /* HistoryState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryState.swift; sourceTree = "<group>"; };
 		B6A047261E3EF3BB00D85A1E /* HistoryStatesQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryStatesQuery.swift; sourceTree = "<group>"; };
 		B6A047281E3EFD6500D85A1E /* GroupedHistoryStatesQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedHistoryStatesQuery.swift; sourceTree = "<group>"; };
+		B6A0472A1E3F048700D85A1E /* GroupedHistoryStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedHistoryStates.swift; sourceTree = "<group>"; };
 		B6ABF9751E372F0300981AC4 /* TriggerClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerClause.swift; sourceTree = "<group>"; };
 		B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredCommandForm.swift; sourceTree = "<group>"; };
 		B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerOptions.swift; sourceTree = "<group>"; };
@@ -419,6 +421,7 @@
 				B6A047241E3EEFA200D85A1E /* HistoryState.swift */,
 				B6A047261E3EF3BB00D85A1E /* HistoryStatesQuery.swift */,
 				B6A047281E3EFD6500D85A1E /* GroupedHistoryStatesQuery.swift */,
+				B6A0472A1E3F048700D85A1E /* GroupedHistoryStates.swift */,
 			);
 			path = ThingIFSDK;
 			sourceTree = "<group>";
@@ -697,6 +700,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6A0472B1E3F048700D85A1E /* GroupedHistoryStates.swift in Sources */,
 				747196CF1D016EEC006B0937 /* Condition.swift in Sources */,
 				D5636AFD1CE1EAFC00760564 /* StatePredicate.swift in Sources */,
 				7D36B6761BD4D03100D9B821 /* ExclusivityController.swift in Sources */,
