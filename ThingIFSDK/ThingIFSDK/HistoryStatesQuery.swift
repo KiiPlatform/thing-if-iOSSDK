@@ -8,7 +8,7 @@
 
 import Foundation
 
-/** Query to retrieve states of history. */
+/** Query to retrieve history of states. */
 open class HistoryStatesQuery: NSCoding {
 
     /** Alias to be queried history. */

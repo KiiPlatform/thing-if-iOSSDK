@@ -8,6 +8,7 @@
 
 import Foundation
 
+/** History of state. */
 open class HistoryState: NSCoding {
 
     /** State of a target thing. */
