@@ -50,7 +50,7 @@ open class App: NSCoding {
      - Parameter appKey: Key of the app.
      - Parameter site: Location of the app.
     */
-    public init(appID:String, appKey:String, site:Site) {
+    public init(_ appID:String, appKey:String, site:Site) {
         self.appID = appID
         self.appKey = appKey
         self.hostName = site.getHostName()
@@ -58,7 +58,7 @@ open class App: NSCoding {
         self.siteName = site.getName()
     }
 
-    fileprivate init(appID:String, appKey:String, hostName:String,
+    fileprivate init(_ appID:String, appKey:String, hostName:String,
         baseURL:String, siteName:String)
     {
         self.appID = appID
@@ -81,7 +81,7 @@ open class App: NSCoding {
      - Parameter port: port number.
     */
     public convenience init(
-      appID: String,
+      _ appID: String,
       appKey: String,
       hostName: String,
       urlSchema: String = "https",
