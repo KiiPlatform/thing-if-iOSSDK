@@ -112,8 +112,6 @@
 		B6323D291DA6271B0012D6A1 /* PatchTriggerWithTriggeredCommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6323D281DA6271B0012D6A1 /* PatchTriggerWithTriggeredCommandFormTests.swift */; };
 		B6323D2B1DA7572E0012D6A1 /* PostNewServerCodeTriggerWithTriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6323D2A1DA7572E0012D6A1 /* PostNewServerCodeTriggerWithTriggerOptionsTests.swift */; };
 		B6323D2D1DA78BC70012D6A1 /* PatchServerCodeTriggerWIthTriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6323D2C1DA78BC70012D6A1 /* PatchServerCodeTriggerWIthTriggerOptionsTests.swift */; };
-		B63F7C471E260CDF00D720E5 /* FieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63F7C461E260CDF00D720E5 /* FieldType.swift */; };
-		B63F7C491E260CF100D720E5 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63F7C481E260CF100D720E5 /* Function.swift */; };
 		B63FC8AE1CEEDBFF0042C747 /* ThingIFSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */; };
 		B63FC8B51CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */; };
 		B6651A221CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6651A211CBBA6CE00221AAE /* PostNewCommandWithCommandFormTests.swift */; };
@@ -127,6 +125,16 @@
 		B683A31B1CBB807A00742570 /* CommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B683A31A1CBB807A00742570 /* CommandFormTests.swift */; };
 		B68D7BE11CF8242900D69149 /* LargeTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68D7BE01CF8242900D69149 /* LargeTestBase.swift */; };
 		B699E9D11CFC3E8100EBBC39 /* TypedIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B699E9D01CFC3E8100EBBC39 /* TypedIDTests.swift */; };
+		B6A047161E3B379200D85A1E /* AliasAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047151E3B379200D85A1E /* AliasAction.swift */; };
+		B6A047181E3B38C000D85A1E /* AliasActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047171E3B38C000D85A1E /* AliasActionResult.swift */; };
+		B6A0471B1E3B3DC000D85A1E /* ActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0471A1E3B3DC000D85A1E /* ActionResult.swift */; };
+		B6A0471F1E3B45A400D85A1E /* Aggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0471E1E3B45A400D85A1E /* Aggregation.swift */; };
+		B6A047211E3EE8F100D85A1E /* AggregatedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047201E3EE8F100D85A1E /* AggregatedResult.swift */; };
+		B6A047231E3EEE5C00D85A1E /* TimeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047221E3EEE5C00D85A1E /* TimeRange.swift */; };
+		B6A047251E3EEFA200D85A1E /* HistoryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047241E3EEFA200D85A1E /* HistoryState.swift */; };
+		B6A047271E3EF3BB00D85A1E /* HistoryStatesQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047261E3EF3BB00D85A1E /* HistoryStatesQuery.swift */; };
+		B6A047291E3EFD6500D85A1E /* GroupedHistoryStatesQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047281E3EFD6500D85A1E /* GroupedHistoryStatesQuery.swift */; };
+		B6A0472B1E3F048700D85A1E /* GroupedHistoryStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0472A1E3F048700D85A1E /* GroupedHistoryStates.swift */; };
 		B6ABF9761E372F0300981AC4 /* TriggerClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6ABF9751E372F0300981AC4 /* TriggerClause.swift */; };
 		B6AC4A1A1D991CE1001A80DE /* TriggeredCommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */; };
 		B6AC4A1C1D991DF2001A80DE /* TriggerOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */; };
@@ -266,8 +274,6 @@
 		B6323D281DA6271B0012D6A1 /* PatchTriggerWithTriggeredCommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchTriggerWithTriggeredCommandFormTests.swift; sourceTree = "<group>"; };
 		B6323D2A1DA7572E0012D6A1 /* PostNewServerCodeTriggerWithTriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewServerCodeTriggerWithTriggerOptionsTests.swift; sourceTree = "<group>"; };
 		B6323D2C1DA78BC70012D6A1 /* PatchServerCodeTriggerWIthTriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchServerCodeTriggerWIthTriggerOptionsTests.swift; sourceTree = "<group>"; };
-		B63F7C461E260CDF00D720E5 /* FieldType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FieldType.swift; sourceTree = "<group>"; };
-		B63F7C481E260CF100D720E5 /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		B63FC8A91CEEDBFF0042C747 /* ThingIFSDKLargeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThingIFSDKLargeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B63FC8AD1CEEDBFF0042C747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerForSchedulePredicateTests.swift; sourceTree = "<group>"; };
@@ -282,6 +288,16 @@
 		B683A31A1CBB807A00742570 /* CommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandFormTests.swift; sourceTree = "<group>"; };
 		B68D7BE01CF8242900D69149 /* LargeTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeTestBase.swift; sourceTree = "<group>"; };
 		B699E9D01CFC3E8100EBBC39 /* TypedIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedIDTests.swift; sourceTree = "<group>"; };
+		B6A047151E3B379200D85A1E /* AliasAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AliasAction.swift; sourceTree = "<group>"; };
+		B6A047171E3B38C000D85A1E /* AliasActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AliasActionResult.swift; sourceTree = "<group>"; };
+		B6A0471A1E3B3DC000D85A1E /* ActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionResult.swift; sourceTree = "<group>"; };
+		B6A0471E1E3B45A400D85A1E /* Aggregation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Aggregation.swift; sourceTree = "<group>"; };
+		B6A047201E3EE8F100D85A1E /* AggregatedResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AggregatedResult.swift; sourceTree = "<group>"; };
+		B6A047221E3EEE5C00D85A1E /* TimeRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeRange.swift; sourceTree = "<group>"; };
+		B6A047241E3EEFA200D85A1E /* HistoryState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryState.swift; sourceTree = "<group>"; };
+		B6A047261E3EF3BB00D85A1E /* HistoryStatesQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryStatesQuery.swift; sourceTree = "<group>"; };
+		B6A047281E3EFD6500D85A1E /* GroupedHistoryStatesQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedHistoryStatesQuery.swift; sourceTree = "<group>"; };
+		B6A0472A1E3F048700D85A1E /* GroupedHistoryStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedHistoryStates.swift; sourceTree = "<group>"; };
 		B6ABF9751E372F0300981AC4 /* TriggerClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerClause.swift; sourceTree = "<group>"; };
 		B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredCommandForm.swift; sourceTree = "<group>"; };
 		B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerOptions.swift; sourceTree = "<group>"; };
@@ -393,11 +409,19 @@
 				229039D91D473FFB00B9D0B7 /* OnboardEndnodeWithGatewayOptions.swift */,
 				B6AC4A191D991CE1001A80DE /* TriggeredCommandForm.swift */,
 				B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */,
-				B63F7C461E260CDF00D720E5 /* FieldType.swift */,
-				B63F7C481E260CF100D720E5 /* Function.swift */,
 				B6F64E161E35E24100824B4A /* BaseClause.swift */,
 				B6F64E1A1E35EA1C00824B4A /* QueryClause.swift */,
 				B6ABF9751E372F0300981AC4 /* TriggerClause.swift */,
+				B6A047151E3B379200D85A1E /* AliasAction.swift */,
+				B6A047171E3B38C000D85A1E /* AliasActionResult.swift */,
+				B6A0471A1E3B3DC000D85A1E /* ActionResult.swift */,
+				B6A0471E1E3B45A400D85A1E /* Aggregation.swift */,
+				B6A047201E3EE8F100D85A1E /* AggregatedResult.swift */,
+				B6A047221E3EEE5C00D85A1E /* TimeRange.swift */,
+				B6A047241E3EEFA200D85A1E /* HistoryState.swift */,
+				B6A047261E3EF3BB00D85A1E /* HistoryStatesQuery.swift */,
+				B6A047281E3EFD6500D85A1E /* GroupedHistoryStatesQuery.swift */,
+				B6A0472A1E3F048700D85A1E /* GroupedHistoryStates.swift */,
 			);
 			path = ThingIFSDK;
 			sourceTree = "<group>";
@@ -676,12 +700,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6A0472B1E3F048700D85A1E /* GroupedHistoryStates.swift in Sources */,
 				747196CF1D016EEC006B0937 /* Condition.swift in Sources */,
 				D5636AFD1CE1EAFC00760564 /* StatePredicate.swift in Sources */,
 				7D36B6761BD4D03100D9B821 /* ExclusivityController.swift in Sources */,
 				2264021C1CD1DD8000E30967 /* StandaloneThing.swift in Sources */,
 				7D36B6C41BD4D9DD00D9B821 /* ThingIFError.swift in Sources */,
 				7D36B6721BD4D03100D9B821 /* BlockObserver.swift in Sources */,
+				B6A047231E3EEE5C00D85A1E /* TimeRange.swift in Sources */,
 				7D36B67C1BD4D03100D9B821 /* NSLock+Operations.swift in Sources */,
 				7D36B6731BD4D03100D9B821 /* BlockOperation.swift in Sources */,
 				B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */,
@@ -705,18 +731,21 @@
 				7D36B67A1BD4D03100D9B821 /* NoCancelledDependencies.swift in Sources */,
 				D5636AFF1CE1EB4200760564 /* SchedulePredicate.swift in Sources */,
 				224051F81D40D2360001BF4E /* LayoutPosition.swift in Sources */,
+				B6A047291E3EFD6500D85A1E /* GroupedHistoryStatesQuery.swift in Sources */,
 				7419C2B81C27D10100F964FB /* App.swift in Sources */,
 				747EB4BA1C858BFC00E30C31 /* SDKVersion.swift in Sources */,
+				B6A047251E3EEFA200D85A1E /* HistoryState.swift in Sources */,
 				7D36B67D1BD4D03100D9B821 /* NSOperation+Operations.swift in Sources */,
+				B6A047161E3B379200D85A1E /* AliasAction.swift in Sources */,
 				7D36B6821BD4D03100D9B821 /* OperationQueue.swift in Sources */,
 				7D36B6801BD4D03100D9B821 /* OperationErrors.swift in Sources */,
 				D5636AFB1CE1E9E000760564 /* ScheduleOncePredicate.swift in Sources */,
 				7D36B68B1BD4D03100D9B821 /* Logger.swift in Sources */,
 				B6AC4A1A1D991CE1001A80DE /* TriggeredCommandForm.swift in Sources */,
-				B63F7C491E260CF100D720E5 /* Function.swift in Sources */,
 				7D36B6BC1BD4D43700D9B821 /* ThingIFAPI+GetState.swift in Sources */,
 				7D36B6BD1BD4D43700D9B821 /* ThingIFAPI+OnBoard.swift in Sources */,
 				226402201CD1E96300E30967 /* Gateway.swift in Sources */,
+				B6A047181E3B38C000D85A1E /* AliasActionResult.swift in Sources */,
 				7D36B6871BD4D03100D9B821 /* Site.swift in Sources */,
 				7D36B6781BD4D03100D9B821 /* MutuallyExclusive.swift in Sources */,
 				7D36B6BA1BD4D43700D9B821 /* ThingIFAPI.swift in Sources */,
@@ -726,18 +755,21 @@
 				226EA0CD1CD0CCFD002C1821 /* PendingEndNode.swift in Sources */,
 				7D36B6BF1BD4D43700D9B821 /* ThingIFAPI+Trigger.swift in Sources */,
 				22E486341CC4E1C000269A1E /* GatewayAPI.swift in Sources */,
+				B6A047271E3EF3BB00D85A1E /* HistoryStatesQuery.swift in Sources */,
 				7D36B6BE1BD4D43700D9B821 /* ThingIFAPI+Push.swift in Sources */,
 				7D36B6851BD4D03100D9B821 /* URLSessionTaskOperation.swift in Sources */,
 				7D36B6791BD4D03100D9B821 /* NegatedCondition.swift in Sources */,
 				B6AC4A1C1D991DF2001A80DE /* TriggerOptions.swift in Sources */,
+				B6A0471B1E3B3DC000D85A1E /* ActionResult.swift in Sources */,
 				7D36B68A1BD4D03100D9B821 /* TypedID.swift in Sources */,
 				7D36B6BB1BD4D43700D9B821 /* ThingIFAPI+Command.swift in Sources */,
 				220FEACE1D3F7E450019A77E /* DataGroupingInterval.swift in Sources */,
 				7D36B67E1BD4D03100D9B821 /* Operation.swift in Sources */,
-				B63F7C471E260CDF00D720E5 /* FieldType.swift in Sources */,
 				7D36B6881BD4D03100D9B821 /* AbstractThing.swift in Sources */,
 				224051FC1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift in Sources */,
 				7D36B6831BD4D03100D9B821 /* ReachabilityCondition.swift in Sources */,
+				B6A047211E3EE8F100D85A1E /* AggregatedResult.swift in Sources */,
+				B6A0471F1E3B45A400D85A1E /* Aggregation.swift in Sources */,
 				B6ABF9761E372F0300981AC4 /* TriggerClause.swift in Sources */,
 				7D36B6741BD4D03100D9B821 /* DelayOperation.swift in Sources */,
 				7D36B6861BD4D03100D9B821 /* Owner.swift in Sources */,

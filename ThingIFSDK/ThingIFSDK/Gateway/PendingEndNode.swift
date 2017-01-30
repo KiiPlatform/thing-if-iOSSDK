@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class PendingEndNode: NSObject, NSCoding {
+open class PendingEndNode: NSCoding {
     let KEY_VENDORTHINGID = "vendorThingID"
     let KEY_THINGPROPERTIES = "thingProperties"
 

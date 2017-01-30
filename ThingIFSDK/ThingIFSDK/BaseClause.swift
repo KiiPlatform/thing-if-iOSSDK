@@ -53,7 +53,7 @@ public protocol BaseRange: BaseClause {
 public protocol BaseAnd: BaseClause {
 
     /** Type of contained instances */
-    associatedtype ClausesType: BaseClause
+    associatedtype ClausesType
 
     /** Contained clauses. */
     var clauses: [ClausesType] { get }
@@ -67,7 +67,7 @@ public protocol BaseAnd: BaseClause {
 public protocol BaseOr: BaseClause {
 
     /** Type of contained instances */
-    associatedtype ClausesType: BaseClause
+    associatedtype ClausesType
 
     /** Contained clauses. */
     var clauses: [ClausesType] { get }

@@ -6,7 +6,7 @@
 import Foundation
 
 /** Class provides API of the ThingIF. */
-open class ThingIFAPI: NSObject, NSCoding {
+open class ThingIFAPI: Equatable, NSCoding {
 
     private static var SHARED_NSUSERDEFAULT_KEY_INSTANCE: String {
         get {
@@ -59,6 +59,13 @@ open class ThingIFAPI: NSObject, NSCoding {
     /** target */
     open internal(set) var target: Target?
 
+    /** Checks whether on boarding is done. */
+    open var onboarded: Bool {
+        get {
+            fatalError("TODO: implement me.")
+        }
+    }
+
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.app, forKey: "app")
@@ -102,7 +109,6 @@ open class ThingIFAPI: NSObject, NSCoding {
         self.owner = owner
         self.target = target
         self.tag = tag
-        super.init()
     }
 
     // MARK: - On board methods
@@ -538,7 +544,7 @@ open class ThingIFAPI: NSObject, NSCoding {
        Dictionary that represent Target State and 2nd one is an
        instance of ThingIFError when failed.
     */
-    open func getState(
+    open func getTargetState(
       _ completionHandler:@escaping ([String : [String : Any]]?,
                                      ThingIFError?)-> Void) -> Void
     {
@@ -561,7 +567,7 @@ open class ThingIFAPI: NSObject, NSCoding {
        Dictionary that represent Target State and 2nd one is an
        instance of ThingIFError when failed.
      */
-    open func getState(
+    open func getTargetState(
       _ alias: String,
       completionHandler:@escaping ([String : Any]?,
                                    ThingIFError?)-> Void) -> Void
@@ -735,111 +741,60 @@ open class ThingIFAPI: NSObject, NSCoding {
 
     /** Query history states with trait alias.
 
-     - Parameter alias: Target trait alias to query.
-     - Parameter clause: Clause to narrow down history states. if
-       nil, query all history states.
-     - Parameter firmwareVersion: Target firmware version to query.
-     - Parameter nextPaginationKey: If there is further page to be
-       retrieved, this API returns paginationKey in 2nd
-       element. Specifying this value in next call in the argument
-       results continue to get the results from the next page.
+     - Parameter query: Instance of `HistoryStatesQuery`. If nil or
+       omitted, query all history states
      - Parameter completionHandler: A closure to be executed once
-       finished. The closure takes 2 arguments:
-       - 1st one is a tuple of objects array and pagination key.
-         - The object array represents objects to be queried. If there
-           is not objects to be queried, objects array is empty.
-         - The pagination key represents information to retrieve
-           further page. You can use pagination key to retrieve next
-           page by setting nextPaginationKey. if there is no further
-           page, pagination key is nil.
-       - 2nd one is an instance of ThingIFError when failed.
+       finished. The closure takes 3 arguments:
+       - 1st one is array of history states. If there is no objects to
+         be queried, the array is empty.
+       - 2nd one is a pagination key. It represents information to
+         retrieve further page. You can use pagination key to retrieve
+         next page by setting nextPaginationKey. if there is no
+         further page, pagination key is nil.
+       - 3rd one is an instance of ThingIFError when failed.
      */
     open func query(
-      _ alias: String,
-      clause: QueryClause? = nil,
-      firmwareVersion: String? = nil,
-      bestEffortLimit: Int? = nil,
-      nextPaginationKey: String? = nil,
+      _ query: HistoryStatesQuery? = nil,
       completionHandler: @escaping (
-        (objects: [[String : Any]], paginationKey: String?)?,
-        ThingIFError?) -> Void) -> Void
+        [HistoryState]?, String?, ThingIFError?) -> Void) -> Void
     {
         // TODO: implement me.
     }
 
     /** Group history state
 
-     - Parameter alias: Target trait alias to query.
-     - Parameter range: Time range to query
-     - Parameter clause: Clause to narrow down history states. if
-       nil, query all history states.
-     - Parameter firmwareVersion: target firmware version to query.
+     - Parameter query: `GroupedHistoryStatesQuery` instance.timeRange
+       in query should less than 60 data grouping intervals.
      - Parameter completionHandler: A closure to be executed once
        finished. The closure takes 2 arguments:
-       - 1st one is an array of tuples. The tuple have a time range
-         and an objects array.
-         - The time range represents a range which a developer
-           specifies with `DataGroupingInterval`.
-         - The object array represents objects to be queried. If there
-           is no objects in a time range, objects array becomes empty.
+       - 1st one is `GroupedHistoryStates` array.
        - 2nd one is an instance of ThingIFError when failed.
      */
     open func query(
-      _ alias: String,
-      range: (from: Date, to: Date),
-      clause: QueryClause? = nil,
-      firmwareVersion: String? = nil,
+      _ query: GroupedHistoryStatesQuery,
       completionHandler: @escaping (
-        [(range: (from: Date, to: Data), objects: [[String : Any]])]?,
-        ThingIFError?) -> Void) -> Void
+        [GroupedHistoryStates]?, ThingIFError?) -> Void) -> Void
     {
         // TODO: implement me.
     }
 
     /** Aggregate history states
 
-     - Parameter alias: Target trait alias to query.
-     - Parameter range: Time range to query
-     - Parameter aggregation: A tuple representing aggregation.
-       - name is a name of a filed to aggregate.
-       - type is a type of a filed to aggregate.
-       - function is a function applied to aggregated fields
-     - Parameter clause: Clause to narrow down history states. if
-       nil, query all history states.
-     - Parameter firmwareVersion: target firmware version to query.
+     - Parameter query: `GroupedHistoryStatesQuery`
+       instance. timeRange in query should less than 60 data grouping
+       intervals.
+     - Parameter aggregation: `Aggregation` instance.
      - Parameter completionHandler: A closure to be executed once
        finished. The closure takes 2 arguments:
-       - 1st one is an array of a tuple. The tuple have a value, a
-         range and objects array.
-         - value denotes a value calculated with
-           `Function`. Developers choose suitable type as
-           AggregatedValueType. In every case, AggregatedValueType is
-           Integer, Float or Double. You would choose Integer, Float or Double for `Function.max`,
-           `Function.sum`, `Function.min`
-           `Function.mean` depending on the expected result precision.
-           You would choose Integer for `Function.count` always.
-         - range denotes a time range which a developer specifies with
-           `DataGroupingInterval`.
-         - objects array denotes objects to be queried. If there is no
-           objects in a time range, objects array is empty.
+       - 1st one is an `AggregatedResult` array.
        - 2nd one is an instance of ThingIFError when failed.
      */
     open func aggregate<AggregatedValueType>(
-      _ alias: String,
-      range: (from: Date, to: Date),
-      aggregation: (name: String, type: FieldType, function: Function),
-      clause: QueryClause? = nil,
-      firmwareVersion: String? = nil,
+      _ query: GroupedHistoryStatesQuery,
+      aggregation: Aggregation,
       completionHandler: @escaping(
-        [
-          (
-            value: AggregatedValueType,
-            range: (from: Date, to: Date),
-            objects: [[String : Any]]
-          )
-        ]?,
-        ThingIFError?
-      ) -> Void) -> Void
+        [AggregatedResult<AggregatedValueType>]?,
+        ThingIFError?) -> Void) -> Void
     {
         // TODO: implement me.
     }
@@ -987,7 +942,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         return true
     }
 
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let anAPI = object as? ThingIFAPI else{
             return false
         }
@@ -999,6 +954,10 @@ open class ThingIFAPI: NSObject, NSCoding {
             self.target?.typedID == anAPI.target?.typedID &&
             self.installationID == anAPI.installationID &&
             self.tag == anAPI.tag
+    }
+
+    public static func == (left: ThingIFAPI, right: ThingIFAPI) -> Bool {
+        return left.isEqual(right)
     }
 
     
