@@ -9,7 +9,7 @@ open class TypedID : Equatable, NSCoding {
 
     public enum Types: String {
         /** User type. */
-        case use = "user"
+        case user = "user"
         /** Group type. */
         case group = "group"
         /** Thing type. */
