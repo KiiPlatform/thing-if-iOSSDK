@@ -537,7 +537,7 @@ open class ThingIFAPI: Equatable, NSCoding {
        Dictionary that represent Target State and 2nd one is an
        instance of ThingIFError when failed.
     */
-    open func getState(
+    open func getTargetState(
       _ completionHandler:@escaping ([String : [String : Any]]?,
                                      ThingIFError?)-> Void) -> Void
     {
@@ -560,7 +560,7 @@ open class ThingIFAPI: Equatable, NSCoding {
        Dictionary that represent Target State and 2nd one is an
        instance of ThingIFError when failed.
      */
-    open func getState(
+    open func getTargetState(
       _ alias: String,
       completionHandler:@escaping ([String : Any]?,
                                    ThingIFError?)-> Void) -> Void
