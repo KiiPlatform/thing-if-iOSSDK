@@ -10,9 +10,9 @@ import Foundation
 
 open class TimeRange: NSCoding {
 
-    /** Start point of a time range. */
+    /** Start point of a time range. Inclusive. */
     open let from: Date
-    /** End point of a time range. */
+    /** End point of a time range. Inclusive. */
     open let to: Date
 
     internal init(_ from: Date, to: Date) {
