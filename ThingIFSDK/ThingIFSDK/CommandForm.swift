@@ -29,7 +29,7 @@ open class CommandForm: NSObject, NSCoding {
     // MARK: - Properties
 
     /// Array of actions.
-    open let actions: [(alias: String, actions: [String : Any])]
+    open let actions: [AliasAction]
 
     /// Title of a command.
     open let title: String?
@@ -52,7 +52,7 @@ open class CommandForm: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(actions: [(alias: String, actions: [String : Any])],
+    public init(actions: [AliasAction],
                 title: String? = nil,
                 commandDescription: String? = nil,
                 metadata: [String : Any]? = nil)
@@ -64,16 +64,7 @@ open class CommandForm: NSObject, NSCoding {
     }
 
     open func encode(with aCoder: NSCoder) {
-        var dictArray: [[String : Any]] = []
-        self.actions.forEach {
-            action in dictArray.append(
-                        [
-                          "alias" : action.alias,
-                          "actions" : action.actions
-                        ]
-                      )
-        }
-        aCoder.encode(dictArray, forKey: "actions")
+        aCoder.encode(self.actions, forKey: "actions")
         aCoder.encode(self.title, forKey: "title")
         aCoder.encode(self.commandDescription,
                 forKey: "commandDescription");
@@ -81,18 +72,8 @@ open class CommandForm: NSObject, NSCoding {
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        var actions: [(alias: String, actions: [String : Any])] = []
-        (aDecoder.decodeObject(forKey: "actions")
-           as! [[String : Any]]).forEach {
-            dict in actions.append(
-                      (
-                        alias: dict["alias"] as! String,
-                        actions: dict["actions"] as! [String : Any]
-                      )
-                    )
-        }
         self.init(
-          actions: actions,
+          actions:aDecoder.decodeObject(forKey: "title") as! [AliasAction],
           title: aDecoder.decodeObject(forKey: "title") as? String,
           commandDescription: aDecoder.decodeObject(
             forKey: "commandDescription") as? String,

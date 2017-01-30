@@ -33,7 +33,7 @@ open class TriggeredCommandForm: NSObject, NSCoding {
     // MARK: - Properties
 
     /// Array of actions.
-    open let actions: [(alias: String, actions: [String : Any])]
+    open let actions: [AliasAction]
 
     /// Target thing ID.
     open let targetID: TypedID?
@@ -60,7 +60,7 @@ open class TriggeredCommandForm: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(actions: [(alias: String, actions: [String : Any])],
+    public init(actions: [AliasAction],
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
@@ -100,7 +100,7 @@ open class TriggeredCommandForm: NSObject, NSCoding {
      TODO: We consider in order to remove or not this method.
      Because we may not craete TriggeredCommandForm from Command.
     public init(command: Command,
-                actions: [(alias: String, actions: [String : Any])]? = nil,
+                actions: [AliasAction]? = nil,
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
@@ -116,16 +116,7 @@ open class TriggeredCommandForm: NSObject, NSCoding {
     */
 
     open func encode(with aCoder: NSCoder) {
-        var dictArray: [[String : Any]] = []
-        self.actions.forEach {
-            action in dictArray.append(
-                        [
-                          "alias" : action.alias,
-                          "actions" : action.actions
-                        ]
-                      )
-        }
-        aCoder.encode(dictArray, forKey: "actions")
+        aCoder.encode(self.actions, forKey: "actions")
         aCoder.encode(self.targetID, forKey: "targetID")
         aCoder.encode(self.title, forKey: "title")
         aCoder.encode(self.commandDescription,
@@ -134,19 +125,8 @@ open class TriggeredCommandForm: NSObject, NSCoding {
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        var actions: [(alias: String, actions: [String : Any])] = []
-        (aDecoder.decodeObject(forKey: "actions")
-           as! [[String : Any]]).forEach {
-            dict in actions.append(
-                      (
-                        alias: dict["alias"] as! String,
-                        actions: dict["actions"] as! [String : Any]
-                      )
-                    )
-        }
-
         self.init(
-          actions: actions,
+          actions: aDecoder.decodeObject(forKey: "actions") as! [AliasAction],
           targetID: aDecoder.decodeObject(forKey: "targetID") as? TypedID,
           title: aDecoder.decodeObject(forKey: "title") as? String,
           commandDescription: aDecoder.decodeObject(
