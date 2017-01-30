@@ -831,15 +831,8 @@ open class ThingIFAPI: NSObject, NSCoding {
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil,
       completionHandler: @escaping(
-        [
-          (
-            value: AggregatedValueType,
-            range: (from: Date, to: Date),
-            objects: [[String : Any]]
-          )
-        ]?,
-        ThingIFError?
-      ) -> Void) -> Void
+        [AggregatedResult<AggregatedValueType>]?,
+        ThingIFError?) -> Void) -> Void
     {
         // TODO: implement me.
     }
