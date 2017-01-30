@@ -138,7 +138,7 @@ open class TriggeredServerCodeResult: Equatable, NSCoding {
         return self.succeeded == aResult.succeeded && self.executedAt == aResult.executedAt && self.endpoint == aResult.endpoint
     }
 
-    public static func == (left: TriggeredServerCodeResult, right: TriggeredServerCodeResult) {
+    public static func == (left: TriggeredServerCodeResult, right: TriggeredServerCodeResult) -> Bool {
         return left.isEqual(right);
     }
     private func isEqualArray(_ arr1:[Any], arr2:[Any]) -> Bool {

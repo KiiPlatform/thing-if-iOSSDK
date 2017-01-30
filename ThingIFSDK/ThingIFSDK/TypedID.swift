@@ -50,7 +50,7 @@ open class TypedID : Equatable, NSCoding {
         return (self.type == aType.type) && (self.id == aType.id)
     }
 
-    public static func == (left: TypedID, right: TypedID) {
+    public static func == (left: TypedID, right: TypedID) -> Bool {
         return left.isEqual(right)
     }
 }

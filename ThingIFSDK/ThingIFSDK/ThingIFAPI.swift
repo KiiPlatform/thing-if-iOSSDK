@@ -6,7 +6,7 @@
 import Foundation
 
 /** Class provides API of the ThingIF. */
-open class ThingIFAPI: NSCoding {
+open class ThingIFAPI: Equatable, NSCoding {
 
     private static var SHARED_NSUSERDEFAULT_KEY_INSTANCE: String {
         get {

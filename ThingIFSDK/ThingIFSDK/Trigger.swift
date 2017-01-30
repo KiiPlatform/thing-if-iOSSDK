@@ -156,7 +156,7 @@ open class Trigger: Equatable, NSCoding {
         self.metadata = metadata
     }
 
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let aTrigger = object as? Trigger else{
             return false
         }
