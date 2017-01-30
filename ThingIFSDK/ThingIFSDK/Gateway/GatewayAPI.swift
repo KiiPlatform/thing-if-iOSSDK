@@ -169,7 +169,7 @@ open class GatewayAPI: NSCoding {
                 if response != nil {
                     let thingID = response!["thingID"] as? String
                     let vendorThingID = response!["vendorThingID"] as? String
-                    gateway = Gateway(thingID: thingID!, vendorThingID: vendorThingID!)
+                    gateway = Gateway(thingID!, vendorThingID: vendorThingID!)
                 } else {
                     gateway = nil
                 }
@@ -248,7 +248,7 @@ open class GatewayAPI: NSCoding {
                         for endNode in endNodeArray {
                             let thingID = endNode["thingID"] as? String
                             let vendorThingID = endNode["vendorThingID"] as? String
-                            endNodes.append(EndNode(thingID: thingID!, vendorThingID: vendorThingID!))
+                            endNodes.append(EndNode(thingID!, vendorThingID: vendorThingID!))
                         }
                     }
                 }
