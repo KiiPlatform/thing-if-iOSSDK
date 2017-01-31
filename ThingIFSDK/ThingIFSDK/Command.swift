@@ -107,6 +107,15 @@ open class Command: Equatable, NSCoding {
         self.metadata = metadata
     }
 
+    /** Get actions associated with an alias.
+
+     - Parameter alias: Alias to get action.
+     - Returns Array of `AliasAction`.
+     */
+    open func getAction(_ alias: String) -> [AliasAction] {
+        fatalError("TODO: implement me.")
+    }
+
     open func isEqual(_ object: Any?) -> Bool {
         guard let aCommand = object as? Command else{
             return false
