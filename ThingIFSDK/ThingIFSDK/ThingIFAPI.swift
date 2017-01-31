@@ -45,7 +45,7 @@ open class ThingIFAPI: Equatable, NSCoding {
     /** The application key found in your Kii developer console */
     open let appKey: String
     /** Kii Cloud Application */
-    open let app: App
+    open let app: KiiApp
     /** owner of target */
     open let owner: Owner
 
@@ -79,7 +79,7 @@ open class ThingIFAPI: Equatable, NSCoding {
     }
 
     public required init(coder aDecoder: NSCoder){
-        self.app = aDecoder.decodeObject(forKey: "app") as! App
+        self.app = aDecoder.decodeObject(forKey: "app") as! KiiApp
         self.baseURL = aDecoder.decodeObject(forKey: "baseURL") as! String
         self.appID = aDecoder.decodeObject(forKey: "appID") as! String
         self.appKey = aDecoder.decodeObject(forKey: "appKey") as! String
@@ -97,7 +97,7 @@ open class ThingIFAPI: Equatable, NSCoding {
      - Parameter tag: tag of the ThingIFAPI instance.
      */
     public init(
-      _ app:App,
+      _ app: KiiApp,
       owner: Owner,
       target: Target? = nil,
       tag : String? = nil)

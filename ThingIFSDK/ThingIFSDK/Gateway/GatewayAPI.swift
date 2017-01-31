@@ -20,7 +20,7 @@ open class GatewayAPI: NSCoding {
     private static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
 
     open let tag: String?
-    open let app: App
+    open let app: KiiApp
     open let gatewayAddress: URL
     private var gatewayAddressString: String {
         return self.gatewayAddress.absoluteString
@@ -43,7 +43,7 @@ open class GatewayAPI: NSCoding {
     public required init(coder aDecoder: NSCoder)
     {
         self.tag = aDecoder.decodeObject(forKey: "tag") as? String
-        self.app = aDecoder.decodeObject(forKey: "app") as! App
+        self.app = aDecoder.decodeObject(forKey: "app") as! KiiApp
         self.gatewayAddress = aDecoder.decodeObject(forKey: "gatewayAddress") as! URL
         self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as? String
     }
@@ -65,7 +65,7 @@ open class GatewayAPI: NSCoding {
      - Parameter tag: tag of the GatewayAPI instance. If null or empty
        String is passed, it will be ignored.
      */
-    public init(app: App, gatewayAddress: URL, tag: String? = nil)
+    public init(app: KiiApp, gatewayAddress: URL, tag: String? = nil)
     {
         self.tag = tag
         self.app = app

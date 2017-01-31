@@ -1,14 +1,14 @@
 //
-//  App.swift
+//  KiiApp.swift
 //  ThingIFSDK
 //
-//  Copyright © 2015 Kii. All rights reserved.
+//  Copyright 2015 Kii. All rights reserved.
 //
 
 import Foundation
 
 /** Represents Kii Cloud Application */
-open class App: NSCoding {
+open class KiiApp: NSCoding {
     /** ID of the App */
     open let appID: String
     /** Key of the APP */
