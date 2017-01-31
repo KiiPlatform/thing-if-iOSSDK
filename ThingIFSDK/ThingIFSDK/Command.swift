@@ -116,6 +116,19 @@ open class Command: Equatable, NSCoding {
         fatalError("TODO: implement me.")
     }
 
+    /** Get action results associated with an alias and actio name.
+
+     - Parameter alias: Alias to get action result.
+     - Parameter alias: Action name to get action result.
+     - Returns Array of `AliasAction`.
+     */
+    open func getActionResult(
+      _ alias: String,
+      actionName: String) -> [AliasActionResult]
+    {
+        fatalError("TODO: implement me.")
+    }
+
     open func isEqual(_ object: Any?) -> Bool {
         guard let aCommand = object as? Command else{
             return false
