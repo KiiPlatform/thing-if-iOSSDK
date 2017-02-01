@@ -58,7 +58,7 @@ open class Aggregation: NSCoding {
     let function: FunctionType
 
 
-    public init(_ field: String, fieldType: FieldType, function: FunctionType) {
+    public init(_ function: FunctionType, field: String, fieldType: FieldType) {
         fatalError("TODO: implement me.")
     }
 
