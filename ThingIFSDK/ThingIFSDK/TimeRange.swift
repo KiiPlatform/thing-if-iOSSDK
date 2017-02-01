@@ -16,7 +16,12 @@ open class TimeRange: NSCoding {
     /** End point of a time range. Inclusive. */
     open let to: Date
 
-    internal init(_ from: Date, to: Date) {
+    /** Initialize with form date and to date.
+
+     - Parameter form: Start point of time range. Inclusive
+     - Parameter to: End point of time range. Inclusive
+     */
+    public init(_ from: Date, to: Date) {
         fatalError("TODO: implement me.")
     }
 
