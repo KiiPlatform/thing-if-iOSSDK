@@ -118,44 +118,54 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
     open let alias: String
     /** Name of a field. */
     open let field: String
-    /** lower limit for an instance. */
-    open let lower: (limit: NSNumber, included: Bool)?
-    /** upper limit for an instance. */
-    open let upper: (limit: NSNumber, included: Bool)?
+    /** Lower limit for an instance. */
+    open let lowerLimit: NSNumber?
+    /** Include or not lower limit. */
+    open let lowerIncluded: Bool?
+    /** Upper limit for an instance. */
+    open let upperLimit: NSNumber?
+    /** Include or not upper limit. */
+    open let upperIncluded: Bool?
 
     private init(
       _ alias: String,
       field: String,
-      lower: (limit: NSNumber, included: Bool)? = nil,
-      upper: (limit: NSNumber, included: Bool)? = nil)
+      lowerLimit: NSNumber? = nil,
+      lowerIncluded: Bool? = nil,
+      upperLimit: NSNumber? = nil,
+      upperIncluded: Bool? = nil)
     {
         self.alias = alias
         self.field = field
-        self.lower = lower
-        self.upper = upper
+        self.lowerLimit = lowerLimit
+        self.lowerIncluded = lowerIncluded
+        self.upperLimit = upperLimit
+        self.upperIncluded = upperIncluded
     }
 
     /** Create Range clause for trigger having lower and upper limit.
 
      - Parameter alias: Alias of this clause
      - Parameter field: Name of the field to be compared.
-     - Parameter lower: lower limit
-       - limit: Limit value. The type must be integer, double or
-         float.
-       - included: Includes limit value or not. If true, limit value
-         is included. If false, limit value is not included
-     - Parameter upper: upper limit
-       - limit: Limit value. The type must be integer, double or
-         float.
-       - included: Includes limit value or not. If true, limit value
-         is included. If false, limit value is not included
+     - Parameter lowerLimit: Lower limit value. The type must be
+       integer, double or float.
+     - Parameter lowerIncluded: Includes lower limit value or not. If
+       true, limit value is included. If false, limit value is not
+       included
+     - Parameter upperLimit: Upper limit value. The type must be
+       integer, double or float.
+     - Parameter upperIncluded: Includes upper limit value or not. If
+       true, limit value is included. If false, limit value is not
+       included
      - Returns: An instance of `RangeClauseInTrigger`.
      */
     open static func range(
       _ alias: String,
-       field: String,
-      lower: (limit: NSNumber, included: Bool),
-      upper: (limit: NSNumber, included: Bool)) -> RangeClauseInTrigger
+      field: String,
+      lowerLimit: NSNumber,
+      lowerIncluded: Bool,
+      upperLimit: NSNumber,
+      upperIncluded: Bool) -> RangeClauseInTrigger
     {
         fatalError("TODO: implement me.")
     }
