@@ -33,8 +33,8 @@ open class AbstractThing : Equatable, TargetThing {
     - Parameter vendorThingID: ID of vendor thing
     - Parameter accessToken: Access token of the target, can nil.
     */
-    public init(thingID: String, vendorThingID : String, accessToken: String? = nil) {
-        self.typedID = TypedID("THING", id: thingID)
+    public init(_ thingID: String, vendorThingID : String, accessToken: String? = nil) {
+        self.typedID = TypedID(TypedID.Types.thing, id: thingID)
         self.accessToken = accessToken
         self.vendorThingID = vendorThingID
     }

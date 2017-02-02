@@ -43,10 +43,14 @@ public protocol BaseRange: BaseClause {
 
     /** Name of a field. */
     var field: String { get }
-    /** lower limit for an instance. */
-    var lower: (limit: NSNumber, included: Bool)? { get }
-    /** upper limit for an instance. */
-    var upper: (limit: NSNumber, included: Bool)? { get }
+    /** Lower limit for an instance. */
+    var lowerLimit: NSNumber? { get }
+    /** Include or not lower limit. */
+    var lowerIncluded: Bool? { get }
+    /** Upper limit for an instance. */
+    var upperLimit: NSNumber? { get }
+    /** Include or not upper limit. */
+    var upperIncluded: Bool? { get }
 }
 
 /** Protocol for And clause classes. */

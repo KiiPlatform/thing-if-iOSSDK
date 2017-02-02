@@ -20,7 +20,7 @@ open class GatewayAPI: NSCoding {
     private static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
 
     open let tag: String?
-    open let app: App
+    open let app: KiiApp
     open let gatewayAddress: URL
     private var gatewayAddressString: String {
         return self.gatewayAddress.absoluteString
@@ -43,7 +43,7 @@ open class GatewayAPI: NSCoding {
     public required init(coder aDecoder: NSCoder)
     {
         self.tag = aDecoder.decodeObject(forKey: "tag") as? String
-        self.app = aDecoder.decodeObject(forKey: "app") as! App
+        self.app = aDecoder.decodeObject(forKey: "app") as! KiiApp
         self.gatewayAddress = aDecoder.decodeObject(forKey: "gatewayAddress") as! URL
         self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as? String
     }
@@ -65,7 +65,7 @@ open class GatewayAPI: NSCoding {
      - Parameter tag: tag of the GatewayAPI instance. If null or empty
        String is passed, it will be ignored.
      */
-    public init(app: App, gatewayAddress: URL, tag: String? = nil)
+    public init(app: KiiApp, gatewayAddress: URL, tag: String? = nil)
     {
         self.tag = tag
         self.app = app
@@ -169,7 +169,7 @@ open class GatewayAPI: NSCoding {
                 if response != nil {
                     let thingID = response!["thingID"] as? String
                     let vendorThingID = response!["vendorThingID"] as? String
-                    gateway = Gateway(thingID: thingID!, vendorThingID: vendorThingID!)
+                    gateway = Gateway(thingID!, vendorThingID: vendorThingID!)
                 } else {
                     gateway = nil
                 }
@@ -248,7 +248,7 @@ open class GatewayAPI: NSCoding {
                         for endNode in endNodeArray {
                             let thingID = endNode["thingID"] as? String
                             let vendorThingID = endNode["vendorThingID"] as? String
-                            endNodes.append(EndNode(thingID: thingID!, vendorThingID: vendorThingID!))
+                            endNodes.append(EndNode(thingID!, vendorThingID: vendorThingID!))
                         }
                     }
                 }

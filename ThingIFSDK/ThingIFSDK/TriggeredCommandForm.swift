@@ -60,7 +60,7 @@ open class TriggeredCommandForm: NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(_actions: [AliasAction],
+    public init(_ actions: [AliasAction],
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
@@ -126,7 +126,7 @@ open class TriggeredCommandForm: NSCoding {
 
     public required convenience init?(coder aDecoder: NSCoder) {
         self.init(
-          actions: aDecoder.decodeObject(forKey: "actions") as! [AliasAction],
+          aDecoder.decodeObject(forKey: "actions") as! [AliasAction],
           targetID: aDecoder.decodeObject(forKey: "targetID") as? TypedID,
           title: aDecoder.decodeObject(forKey: "title") as? String,
           commandDescription: aDecoder.decodeObject(
