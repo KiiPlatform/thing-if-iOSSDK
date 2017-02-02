@@ -38,4 +38,6 @@ public enum ThingIFError : Error {
     case userIsNotLoggedIn
     /** whenever request operation is failed. (i.e invalid URL) */
     case errorRequest(required: Error)
+    /** when methods or functions receive invalid argument. */
+    invalidArgument(message: String)
 }
