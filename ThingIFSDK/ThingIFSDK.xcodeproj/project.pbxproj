@@ -69,6 +69,11 @@
 		B68D7BE11CF8242900D69149 /* LargeTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68D7BE01CF8242900D69149 /* LargeTestBase.swift */; };
 		B69E284F1E42EF0E00328291 /* ThingIFSDKTests2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69E284E1E42EF0E00328291 /* ThingIFSDKTests2.swift */; };
 		B69E28511E42EF0E00328291 /* ThingIFSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */; };
+		B69E28581E4301CE00328291 /* AggregationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69E28571E4301CE00328291 /* AggregationTests.swift */; };
+		B69E285A1E43189000328291 /* SmallTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69E28591E43189000328291 /* SmallTestBase.swift */; };
+		B69E285D1E4318DA00328291 /* testapp.plist in Resources */ = {isa = PBXBuildFile; fileRef = B69E285B1E4318DA00328291 /* testapp.plist */; };
+		B69E285E1E4318DA00328291 /* XCTest+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69E285C1E4318DA00328291 /* XCTest+Utils.swift */; };
+		B69E28601E431BE600328291 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69E285F1E431BE600328291 /* TestHelpers.swift */; };
 		B6A047161E3B379200D85A1E /* AliasAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047151E3B379200D85A1E /* AliasAction.swift */; };
 		B6A047181E3B38C000D85A1E /* AliasActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047171E3B38C000D85A1E /* AliasActionResult.swift */; };
 		B6A0471B1E3B3DC000D85A1E /* ActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0471A1E3B3DC000D85A1E /* ActionResult.swift */; };
@@ -183,6 +188,11 @@
 		B69E284C1E42EF0E00328291 /* ThingIFSDKTests2.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThingIFSDKTests2.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B69E284E1E42EF0E00328291 /* ThingIFSDKTests2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThingIFSDKTests2.swift; sourceTree = "<group>"; };
 		B69E28501E42EF0E00328291 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B69E28571E4301CE00328291 /* AggregationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AggregationTests.swift; sourceTree = "<group>"; };
+		B69E28591E43189000328291 /* SmallTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallTestBase.swift; sourceTree = "<group>"; };
+		B69E285B1E4318DA00328291 /* testapp.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = testapp.plist; sourceTree = "<group>"; };
+		B69E285C1E4318DA00328291 /* XCTest+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTest+Utils.swift"; sourceTree = "<group>"; };
+		B69E285F1E431BE600328291 /* TestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		B6A047151E3B379200D85A1E /* AliasAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AliasAction.swift; sourceTree = "<group>"; };
 		B6A047171E3B38C000D85A1E /* AliasActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AliasActionResult.swift; sourceTree = "<group>"; };
 		B6A0471A1E3B3DC000D85A1E /* ActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionResult.swift; sourceTree = "<group>"; };
@@ -388,8 +398,13 @@
 		B69E284D1E42EF0E00328291 /* ThingIFSDKTests2 */ = {
 			isa = PBXGroup;
 			children = (
+				B69E285F1E431BE600328291 /* TestHelpers.swift */,
+				B69E285B1E4318DA00328291 /* testapp.plist */,
+				B69E285C1E4318DA00328291 /* XCTest+Utils.swift */,
+				B69E28591E43189000328291 /* SmallTestBase.swift */,
 				B69E284E1E42EF0E00328291 /* ThingIFSDKTests2.swift */,
 				B69E28501E42EF0E00328291 /* Info.plist */,
+				B69E28571E4301CE00328291 /* AggregationTests.swift */,
 			);
 			path = ThingIFSDKTests2;
 			sourceTree = "<group>";
@@ -565,6 +580,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B69E285D1E4318DA00328291 /* testapp.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -674,6 +690,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B69E285E1E4318DA00328291 /* XCTest+Utils.swift in Sources */,
+				B69E28601E431BE600328291 /* TestHelpers.swift in Sources */,
+				B69E285A1E43189000328291 /* SmallTestBase.swift in Sources */,
+				B69E28581E4301CE00328291 /* AggregationTests.swift in Sources */,
 				B69E284F1E42EF0E00328291 /* ThingIFSDKTests2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -971,6 +991,7 @@
 				B69E28561E42EF0E00328291 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
