@@ -79,7 +79,9 @@ open class Aggregation: NSCoding {
      - Parameter function: Type of aggregation function.
      - Parameter field: Name of a field to be aggregated.
      - Parameter: fieldType type of a field to be aggregated.
-     - Returns: An instance of `Aggregation`. Returns nil in following cases:
+     - Returns: An instance of `Aggregation`.
+     - Throws: 'ThingIFError.invalidArgument` if function and
+       fieldType matches following cases:
        - Function type is `Aggregation.FunctionType.max` and field
          type not is `Aggregation.FieldType.integer` or
          `Aggregation.FieldType.decimal`
@@ -96,7 +98,7 @@ open class Aggregation: NSCoding {
     public static func makeAggregation(
       _ function: FunctionType,
       field: String,
-      fieldType: FieldType) -> Aggregation?
+      fieldType: FieldType) throws -> Aggregation
     {
         return Aggregation(function, field: field, fieldType: fieldType)
     }
@@ -118,13 +120,14 @@ open class Aggregation: NSCoding {
 
      - Parameter field: Name of a field to be aggregated.
      - Parameter: fieldType type of a field to be aggregated.
-     - Returns: An instance of `Aggregation` for mean. If field type
-       not is `Aggregation.FieldType.integer` or
+     - Returns: An instance of `Aggregation` for mean.
+     - Throws: 'ThingIFError.invalidArgument.` If field type not is
+       `Aggregation.FieldType.integer` or
        `Aggregation.FieldType.decimal`
      */
     public static func makeMeanAggregation(
       _ field: String,
-      fieldType: FieldType) -> Aggregation?
+      fieldType: FieldType) throws -> Aggregation
     {
         return Aggregation(.mean, field: field, fieldType: fieldType)
     }
@@ -133,13 +136,14 @@ open class Aggregation: NSCoding {
 
      - Parameter field: Name of a field to be aggregated.
      - Parameter: fieldType type of a field to be aggregated.
-     - Returns: An instance of `Aggregation` for max. If field type
-       not is `Aggregation.FieldType.integer` or
+     - Returns: An instance of `Aggregation` for max.
+     - Throws: 'ThingIFError.invalidArgument.` If field type not is
+       `Aggregation.FieldType.integer` or
        `Aggregation.FieldType.decimal`
      */
     public static func makeMaxAggregation(
       _ field: String,
-      fieldType: FieldType) -> Aggregation?
+      fieldType: FieldType) throws -> Aggregation
     {
         return Aggregation(.max, field: field, fieldType: fieldType)
     }
@@ -148,13 +152,14 @@ open class Aggregation: NSCoding {
 
      - Parameter field: Name of a field to be aggregated.
      - Parameter: fieldType type of a field to be aggregated.
-     - Returns: An instance of `Aggregation` for min. If field type
-       not is `Aggregation.FieldType.integer` or
+     - Returns: An instance of `Aggregation` for min.
+     - Throws: 'ThingIFError.invalidArgument.` If field type not is
+       `Aggregation.FieldType.integer` or
        `Aggregation.FieldType.decimal`
      */
     public static func makeMinAggregation(
       _ field: String,
-      fieldType: FieldType) -> Aggregation?
+      fieldType: FieldType) throws -> Aggregation
     {
         return Aggregation(.min, field: field, fieldType: fieldType)
     }
@@ -163,13 +168,14 @@ open class Aggregation: NSCoding {
 
      - Parameter field: Name of a field to be aggregated.
      - Parameter: fieldType type of a field to be aggregated.
-     - Returns: An instance of `Aggregation` for sum. If field type
-       not is `Aggregation.FieldType.integer` or
+     - Returns: An instance of `Aggregation` for sum.
+     - Throws: 'ThingIFError.invalidArgument.` If field type not is
+       `Aggregation.FieldType.integer` or
        `Aggregation.FieldType.decimal`
      */
     public static func makeSumAggregation(
       _ field: String,
-      fieldType: FieldType) -> Aggregation?
+      fieldType: FieldType) throws -> Aggregation
     {
         return Aggregation(.sum, field: field, fieldType: fieldType)
     }
