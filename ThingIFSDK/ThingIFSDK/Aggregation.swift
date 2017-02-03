@@ -58,17 +58,11 @@ open class Aggregation: NSCoding {
     let function: FunctionType
 
 
-    private init?(
+    private init(
       _ function: FunctionType,
       field: String,
       fieldType: FieldType)
     {
-        if function == .max || function == .sum || function == .min ||
-             function == .mean {
-            if fieldType != .integer && fieldType != .decimal {
-                return nil
-            }
-        }
         self.function = function
         self.field = field
         self.fieldType = fieldType
@@ -100,6 +94,15 @@ open class Aggregation: NSCoding {
       field: String,
       fieldType: FieldType) throws -> Aggregation
     {
+        if function == .max || function == .sum || function == .min ||
+             function == .mean {
+            if fieldType != .integer && fieldType != .decimal {
+                throw ThingIFError.invalidArgument(
+                  message: function.rawValue + " can not use " +
+                    fieldType.rawValue)
+            }
+        }
+
         return Aggregation(function, field: field, fieldType: fieldType)
     }
 
@@ -113,7 +116,7 @@ open class Aggregation: NSCoding {
       _ field: String,
       fieldType: FieldType) -> Aggregation
     {
-        return Aggregation(.count, field: field, fieldType: fieldType)!
+        return try! makeAggregation(.count, field: field, fieldType: fieldType)
     }
 
     /** Make mean aggregation.
@@ -129,7 +132,7 @@ open class Aggregation: NSCoding {
       _ field: String,
       fieldType: FieldType) throws -> Aggregation
     {
-        return Aggregation(.mean, field: field, fieldType: fieldType)
+        return try makeAggregation(.mean, field: field, fieldType: fieldType)
     }
 
     /** Make max aggregation.
@@ -145,7 +148,7 @@ open class Aggregation: NSCoding {
       _ field: String,
       fieldType: FieldType) throws -> Aggregation
     {
-        return Aggregation(.max, field: field, fieldType: fieldType)
+        return try makeAggregation(.max, field: field, fieldType: fieldType)
     }
 
     /** Make min aggregation.
@@ -161,7 +164,7 @@ open class Aggregation: NSCoding {
       _ field: String,
       fieldType: FieldType) throws -> Aggregation
     {
-        return Aggregation(.min, field: field, fieldType: fieldType)
+        return try makeAggregation(.min, field: field, fieldType: fieldType)
     }
 
     /** Make sum aggregation.
@@ -177,7 +180,7 @@ open class Aggregation: NSCoding {
       _ field: String,
       fieldType: FieldType) throws -> Aggregation
     {
-        return Aggregation(.sum, field: field, fieldType: fieldType)
+        return try makeAggregation(.sum, field: field, fieldType: fieldType)
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {

@@ -95,16 +95,10 @@ class AggregationTests: SmallTestBase {
           ]
 
         for (input, expected) in testList {
-            let actualOpt = Aggregation.makeMaxAggregation(
+            let actual = try! Aggregation.makeMaxAggregation(
               input.field,
               fieldType: input.fieldType)
 
-            XCTAssertNotNil(
-              actualOpt,
-              "field: " + input.field +
-                ", fieldType: " + input.fieldType.rawValue)
-
-            let actual = actualOpt!
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, Aggregation.FunctionType.max)
@@ -139,13 +133,22 @@ class AggregationTests: SmallTestBase {
           ]
 
         for input in testList {
-            let actual = Aggregation.makeMaxAggregation(
-              input.field,
-              fieldType: input.fieldType)
-
-            XCTAssertNil(
-              actual,
-              "field: " + input.field + ", type: " + input.fieldType.rawValue)
+            do {
+                let _ = try Aggregation.makeMaxAggregation(
+                  input.field,
+                  fieldType: input.fieldType)
+            } catch ThingIFError.invalidArgument(let message) {
+                XCTAssertEqual(
+                  Aggregation.FunctionType.max.rawValue +
+                    " can not use " + input.fieldType.rawValue,
+                  message)
+                continue
+            } catch {
+                XCTFail("Unexpected error: " + input.field + ", " +
+                          input.fieldType.rawValue)
+            }
+            XCTFail("Error not thrown: " + input.field + ", " +
+                      input.fieldType.rawValue)
         }
     }
 
@@ -168,16 +171,10 @@ class AggregationTests: SmallTestBase {
           ]
 
         for (input, expected) in testList {
-            let actualOpt = Aggregation.makeMinAggregation(
+            let actual = try! Aggregation.makeMinAggregation(
               input.field,
               fieldType: input.fieldType)
 
-            XCTAssertNotNil(
-              actualOpt,
-              "field: " + input.field +
-                ", fieldType: " + input.fieldType.rawValue)
-
-            let actual = actualOpt!
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, Aggregation.FunctionType.min)
@@ -212,13 +209,22 @@ class AggregationTests: SmallTestBase {
           ]
 
         for input in testList {
-            let actual = Aggregation.makeMinAggregation(
-              input.field,
-              fieldType: input.fieldType)
-
-            XCTAssertNil(
-              actual,
-              "field: " + input.field + ", type: " + input.fieldType.rawValue)
+            do {
+                let _ = try Aggregation.makeMinAggregation(
+                  input.field,
+                  fieldType: input.fieldType)
+            } catch ThingIFError.invalidArgument(let message) {
+                XCTAssertEqual(
+                  Aggregation.FunctionType.min.rawValue +
+                    " can not use " + input.fieldType.rawValue,
+                  message)
+                continue
+            } catch {
+                XCTFail("Unexpected error: " + input.field + ", " +
+                          input.fieldType.rawValue)
+            }
+            XCTFail("Error not thrown: " + input.field + ", " +
+                      input.fieldType.rawValue)
         }
     }
 
@@ -241,16 +247,10 @@ class AggregationTests: SmallTestBase {
           ]
 
         for (input, expected) in testList {
-            let actualOpt = Aggregation.makeSumAggregation(
+            let actual = try! Aggregation.makeSumAggregation(
               input.field,
               fieldType: input.fieldType)
 
-            XCTAssertNotNil(
-              actualOpt,
-              "field: " + input.field +
-                ", fieldType: " + input.fieldType.rawValue)
-
-            let actual = actualOpt!
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, Aggregation.FunctionType.sum)
@@ -285,13 +285,22 @@ class AggregationTests: SmallTestBase {
           ]
 
         for input in testList {
-            let actual = Aggregation.makeSumAggregation(
-              input.field,
-              fieldType: input.fieldType)
-
-            XCTAssertNil(
-              actual,
-              "field: " + input.field + ", type: " + input.fieldType.rawValue)
+            do {
+                let _ = try Aggregation.makeSumAggregation(
+                  input.field,
+                  fieldType: input.fieldType)
+            } catch ThingIFError.invalidArgument(let message) {
+                XCTAssertEqual(
+                  Aggregation.FunctionType.sum.rawValue +
+                    " can not use " + input.fieldType.rawValue,
+                  message)
+                continue
+            } catch {
+                XCTFail("Unexpected error: " + input.field + ", " +
+                          input.fieldType.rawValue)
+            }
+            XCTFail("Error not thrown: " + input.field + ", " +
+                      input.fieldType.rawValue)
         }
     }
 
@@ -314,16 +323,10 @@ class AggregationTests: SmallTestBase {
           ]
 
         for (input, expected) in testList {
-            let actualOpt = Aggregation.makeMeanAggregation(
+            let actual = try! Aggregation.makeMeanAggregation(
               input.field,
               fieldType: input.fieldType)
 
-            XCTAssertNotNil(
-              actualOpt,
-              "field: " + input.field +
-                ", fieldType: " + input.fieldType.rawValue)
-
-            let actual = actualOpt!
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, Aggregation.FunctionType.mean)
@@ -358,13 +361,22 @@ class AggregationTests: SmallTestBase {
           ]
 
         for input in testList {
-            let actual = Aggregation.makeMeanAggregation(
-              input.field,
-              fieldType: input.fieldType)
-
-            XCTAssertNil(
-              actual,
-              "field: " + input.field + ", type: " + input.fieldType.rawValue)
+            do {
+                let _ = try Aggregation.makeMeanAggregation(
+                  input.field,
+                  fieldType: input.fieldType)
+            } catch ThingIFError.invalidArgument(let message) {
+                XCTAssertEqual(
+                  Aggregation.FunctionType.mean.rawValue +
+                    " can not use " + input.fieldType.rawValue,
+                  message)
+                continue
+            } catch {
+                XCTFail("Unexpected error: " + input.field + ", " +
+                          input.fieldType.rawValue)
+            }
+            XCTFail("Error not thrown: " + input.field + ", " +
+                      input.fieldType.rawValue)
         }
     }
 
@@ -437,18 +449,11 @@ class AggregationTests: SmallTestBase {
         ]
 
         for (input, expected) in testList {
-            let actualOpt = Aggregation.makeAggregation(
+            let actual = try! Aggregation.makeAggregation(
               input.function,
               field: input.field,
               fieldType: input.fieldType)
 
-            XCTAssertNotNil(
-              actualOpt,
-              "function: " + input.function.rawValue +
-                ", field: " + input.field +
-                ", fieldType: " + input.fieldType.rawValue)
-
-            let actual = actualOpt!
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, expected.function)
@@ -495,16 +500,22 @@ class AggregationTests: SmallTestBase {
         ]
 
         for input in testList {
-            let actual = Aggregation.makeAggregation(
-              input.function,
-              field: input.field,
-              fieldType: input.fieldType)
-
-            XCTAssertNil(
-              actual,
-              "function: " + input.function.rawValue +
-                ", field: " + input.field +
-                ", type: " + input.fieldType.rawValue)
+            do {
+                let _ = try Aggregation.makeAggregation(
+                  input.function,
+                  field: input.field,
+                  fieldType: input.fieldType)
+            } catch ThingIFError.invalidArgument(let message) {
+                XCTAssertEqual(
+                  input.function.rawValue + " can not use " +
+                    input.fieldType.rawValue, message)
+                continue
+            } catch {
+                XCTFail("Unexpected error: " + input.function.rawValue + ", " +
+                          input.field + ", " + input.fieldType.rawValue)
+            }
+            XCTFail("Error not thrown: " + input.function.rawValue + ", " + 
+                      input.field + ", " + input.fieldType.rawValue)
         }
     }
 }
