@@ -89,6 +89,7 @@
 		B6C33F0F1E4977C700DF2BF5 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F0A1E4977C700DF2BF5 /* TestHelpers.swift */; };
 		B6C33F101E4977C700DF2BF5 /* XCTest+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F0B1E4977C700DF2BF5 /* XCTest+Utils.swift */; };
 		B6C33F121E49A10A00DF2BF5 /* EqualClauseInQueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F111E49A10A00DF2BF5 /* EqualClauseInQueryTests.swift */; };
+		B6C33F141E49ABB300DF2BF5 /* NotEqualsClauseInQueryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F131E49ABB300DF2BF5 /* NotEqualsClauseInQueryTests.swift */; };
 		B6F64E171E35E24100824B4A /* BaseClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F64E161E35E24100824B4A /* BaseClause.swift */; };
 		B6F64E1B1E35EA1C00824B4A /* QueryClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F64E1A1E35EA1C00824B4A /* QueryClause.swift */; };
 		B6F9F2BD1CB22A4C009A990F /* CommandForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */; };
@@ -202,6 +203,7 @@
 		B6C33F0A1E4977C700DF2BF5 /* TestHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		B6C33F0B1E4977C700DF2BF5 /* XCTest+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTest+Utils.swift"; sourceTree = "<group>"; };
 		B6C33F111E49A10A00DF2BF5 /* EqualClauseInQueryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqualClauseInQueryTests.swift; sourceTree = "<group>"; };
+		B6C33F131E49ABB300DF2BF5 /* NotEqualsClauseInQueryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotEqualsClauseInQueryTests.swift; sourceTree = "<group>"; };
 		B6F64E161E35E24100824B4A /* BaseClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseClause.swift; sourceTree = "<group>"; };
 		B6F64E1A1E35EA1C00824B4A /* QueryClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryClause.swift; sourceTree = "<group>"; };
 		B6F9F2BC1CB22A4C009A990F /* CommandForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandForm.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 				B6C33F001E49770B00DF2BF5 /* Info.plist */,
 				2262F14A1E49899300080DF6 /* ActionResultTests.swift */,
 				B6C33F111E49A10A00DF2BF5 /* EqualClauseInQueryTests.swift */,
+				B6C33F131E49ABB300DF2BF5 /* NotEqualsClauseInQueryTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -651,6 +654,7 @@
 				2262F14B1E49899300080DF6 /* ActionResultTests.swift in Sources */,
 				B6C33F121E49A10A00DF2BF5 /* EqualClauseInQueryTests.swift in Sources */,
 				B6C33F0F1E4977C700DF2BF5 /* TestHelpers.swift in Sources */,
+				B6C33F141E49ABB300DF2BF5 /* NotEqualsClauseInQueryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

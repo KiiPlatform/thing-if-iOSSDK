@@ -12,6 +12,80 @@ import XCTest
 
 extension XCTestCase {
 
+    func ThingIFTestEqualAny(
+      _ expected:  Any?,
+      _ actual: Any?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        if expected == nil && expected == nil {
+            return
+        } else if expected == nil || actual == nil {
+            let errorMessage = message ?? "One is nil, the other is not nil."
+            XCTFail(
+              "file=\(file), line=\(line): \(errorMessage)")
+            return
+        }
+
+        if expected is String && actual is String {
+            XCTAssertEqual(
+              expected as! String,
+              actual as! String,
+              message ?? "",
+              file: file,
+              line: line)
+            return
+        } else if expected is Int && actual is Int {
+            XCTAssertEqual(
+              expected as! Int,
+              actual as! Int,
+              message ?? "",
+              file: file,
+              line: line)
+            return
+        } else if expected is Bool && actual is Bool {
+            XCTAssertEqual(
+              expected as! Bool,
+              actual as! Bool,
+              message ?? "",
+              file: file,
+              line: line)
+            return
+        } else {
+            let errorMessage = message ?? "Types are different."
+            XCTFail(
+              "file=\(file), line=\(line): \(errorMessage)")
+            return
+        }
+    }
+
+    func ThingIFTestEqualDictionary(
+      _ expected: [String : Any]?,
+      _ actual: [String : Any]?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        if expected == nil && expected == nil {
+            return
+        } else if expected == nil || actual == nil {
+            let errorMessage = message ?? "One is nil, the other is not nil."
+            XCTFail(
+              "file=\(file), line=\(line): \(errorMessage)")
+            return
+        }
+
+        if !NSDictionary(dictionary: expected!).isEqual(to: actual!) {
+            let errorMessage = (message ?? "") +
+              ", expected= " + expected!.description +
+              ", actual= " + actual!.description
+            XCTFail(
+              "file=\(file), line=\(line): \(errorMessage)")
+            return
+        }
+    }
+
     func verifyArray(_ expected: [Any]?,
                      actual: [Any]?,
                      message: String? = nil)
