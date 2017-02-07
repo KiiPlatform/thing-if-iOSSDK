@@ -16,6 +16,11 @@ open class AliasAction: NSCoding {
     /** Action of this alias. */
     open let action: [String : Any]
 
+    /** Initializer of AliasAction instance.
+
+     - Parameter alias: Name of an alias.
+     - Parameter action: Action of this alias.
+     */
     public init(_ alias: String, action: [String : Any]) {
         self.alias = alias
         self.action = action
