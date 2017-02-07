@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7DD44DEB1BD4B88A00AE0249"
+               BlueprintIdentifier = "B6C33EFB1E49770B00DF2BF5"
                BuildableName = "ThingIFSDKTests.xctest"
                BlueprintName = "ThingIFSDKTests"
                ReferencedContainer = "container:ThingIFSDK.xcodeproj">
