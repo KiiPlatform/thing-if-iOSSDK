@@ -19,7 +19,7 @@ open class AliasAction: NSCoding {
     /** Initializer of AliasAction instance.
 
      - Parameter alias: Name of an alias.
-     - Parameter action: Action of this alias.
+     - Parameter action: Action of this alias. This should be able to convert to JSON.
      */
     public init(_ alias: String, action: [String : Any]) {
         self.alias = alias
