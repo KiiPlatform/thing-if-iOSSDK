@@ -63,7 +63,9 @@ open class Aggregation: NSCoding {
       field: String,
       fieldType: FieldType)
     {
-        fatalError("TODO: implement me.")
+        self.function = function
+        self.field = field
+        self.fieldType = fieldType
     }
 
     /** Make aggregation.
@@ -71,7 +73,9 @@ open class Aggregation: NSCoding {
      - Parameter function: Type of aggregation function.
      - Parameter field: Name of a field to be aggregated.
      - Parameter: fieldType type of a field to be aggregated.
-     - Returns: An instance of `Aggregation`. Returns nil in following cases:
+     - Returns: An instance of `Aggregation`.
+     - Throws: 'ThingIFError.invalidArgument` if function and
+       fieldType matches following cases:
        - Function type is `Aggregation.FunctionType.max` and field
          type not is `Aggregation.FieldType.integer` or
          `Aggregation.FieldType.decimal`
@@ -88,9 +92,18 @@ open class Aggregation: NSCoding {
     public static func makeAggregation(
       _ function: FunctionType,
       field: String,
-      fieldType: FieldType) -> Self?
+      fieldType: FieldType) throws -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        if function == .max || function == .sum || function == .min ||
+             function == .mean {
+            if fieldType != .integer && fieldType != .decimal {
+                throw ThingIFError.invalidArgument(
+                  message: function.rawValue + " can not use " +
+                    fieldType.rawValue)
+            }
+        }
+
+        return Aggregation(function, field: field, fieldType: fieldType)
     }
 
     /** Make aggregation.
@@ -101,77 +114,88 @@ open class Aggregation: NSCoding {
      */
     public static func makeCountAggregation(
       _ field: String,
-      fieldType: FieldType) -> Self
+      fieldType: FieldType) -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        return try! makeAggregation(.count, field: field, fieldType: fieldType)
     }
 
     /** Make mean aggregation.
 
      - Parameter field: Name of a field to be aggregated.
      - Parameter: fieldType type of a field to be aggregated.
-     - Returns: An instance of `Aggregation` for mean. If field type
-       not is `Aggregation.FieldType.integer` or
+     - Returns: An instance of `Aggregation` for mean.
+     - Throws: 'ThingIFError.invalidArgument.` If field type not is
+       `Aggregation.FieldType.integer` or
        `Aggregation.FieldType.decimal`
      */
     public static func makeMeanAggregation(
       _ field: String,
-      fieldType: FieldType) -> Self?
+      fieldType: FieldType) throws -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        return try makeAggregation(.mean, field: field, fieldType: fieldType)
     }
 
     /** Make max aggregation.
 
      - Parameter field: Name of a field to be aggregated.
      - Parameter: fieldType type of a field to be aggregated.
-     - Returns: An instance of `Aggregation` for max. If field type
-       not is `Aggregation.FieldType.integer` or
+     - Returns: An instance of `Aggregation` for max.
+     - Throws: 'ThingIFError.invalidArgument.` If field type not is
+       `Aggregation.FieldType.integer` or
        `Aggregation.FieldType.decimal`
      */
     public static func makeMaxAggregation(
       _ field: String,
-      fieldType: FieldType) -> Self?
+      fieldType: FieldType) throws -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        return try makeAggregation(.max, field: field, fieldType: fieldType)
     }
 
     /** Make min aggregation.
 
      - Parameter field: Name of a field to be aggregated.
      - Parameter: fieldType type of a field to be aggregated.
-     - Returns: An instance of `Aggregation` for min. If field type
-       not is `Aggregation.FieldType.integer` or
+     - Returns: An instance of `Aggregation` for min.
+     - Throws: 'ThingIFError.invalidArgument.` If field type not is
+       `Aggregation.FieldType.integer` or
        `Aggregation.FieldType.decimal`
      */
     public static func makeMinAggregation(
       _ field: String,
-      fieldType: FieldType) -> Self?
+      fieldType: FieldType) throws -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        return try makeAggregation(.min, field: field, fieldType: fieldType)
     }
 
     /** Make sum aggregation.
 
      - Parameter field: Name of a field to be aggregated.
      - Parameter: fieldType type of a field to be aggregated.
-     - Returns: An instance of `Aggregation` for sum. If field type
-       not is `Aggregation.FieldType.integer` or
+     - Returns: An instance of `Aggregation` for sum.
+     - Throws: 'ThingIFError.invalidArgument.` If field type not is
+       `Aggregation.FieldType.integer` or
        `Aggregation.FieldType.decimal`
      */
     public static func makeSumAggregation(
       _ field: String,
-      fieldType: FieldType) -> Self?
+      fieldType: FieldType) throws -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        return try makeAggregation(.sum, field: field, fieldType: fieldType)
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(
+          FunctionType(
+            rawValue: aDecoder.decodeObject(forKey: "function") as! String)!,
+          field: aDecoder.decodeObject(forKey: "field") as! String,
+          fieldType: FieldType(
+            rawValue: aDecoder.decodeObject(forKey: "fieldType") as! String)!)
     }
 
     public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.function.rawValue, forKey: "function")
+        aCoder.encode(self.field, forKey: "field")
+        aCoder.encode(self.fieldType.rawValue, forKey: "fieldType")
     }
 
 }
