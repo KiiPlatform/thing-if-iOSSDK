@@ -67,7 +67,6 @@
 		B63FC8B51CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */; };
 		B673C0051CF81CEC00AEF519 /* TestSetting.plist in Resources */ = {isa = PBXBuildFile; fileRef = B673C0041CF81CEC00AEF519 /* TestSetting.plist */; };
 		B68D7BE11CF8242900D69149 /* LargeTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68D7BE01CF8242900D69149 /* LargeTestBase.swift */; };
-		B69E28511E42EF0E00328291 /* ThingIFSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */; };
 		B6A047161E3B379200D85A1E /* AliasAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047151E3B379200D85A1E /* AliasAction.swift */; };
 		B6A047181E3B38C000D85A1E /* AliasActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047171E3B38C000D85A1E /* AliasActionResult.swift */; };
 		B6A0471B1E3B3DC000D85A1E /* ActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0471A1E3B3DC000D85A1E /* ActionResult.swift */; };
@@ -100,13 +99,6 @@
 
 /* Begin PBXContainerItemProxy section */
 		B63FC8AF1CEEDBFF0042C747 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 7417A2FA1B65CF8400D116A5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7DD44DB91BD4B7CD00AE0249;
-			remoteInfo = ThingIFSDK;
-		};
-		B69E28521E42EF0E00328291 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7417A2FA1B65CF8400D116A5 /* Project object */;
 			proxyType = 1;
@@ -185,7 +177,6 @@
 		B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerForSchedulePredicateTests.swift; sourceTree = "<group>"; };
 		B673C0041CF81CEC00AEF519 /* TestSetting.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TestSetting.plist; sourceTree = "<group>"; };
 		B68D7BE01CF8242900D69149 /* LargeTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeTestBase.swift; sourceTree = "<group>"; };
-		B69E284C1E42EF0E00328291 /* ThingIFSDKTests2.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThingIFSDKTests2.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6A047151E3B379200D85A1E /* AliasAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AliasAction.swift; sourceTree = "<group>"; };
 		B6A047171E3B38C000D85A1E /* AliasActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AliasActionResult.swift; sourceTree = "<group>"; };
 		B6A0471A1E3B3DC000D85A1E /* ActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionResult.swift; sourceTree = "<group>"; };
@@ -233,14 +224,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B69E28491E42EF0E00328291 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B69E28511E42EF0E00328291 /* ThingIFSDK.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B6C33EF91E49770B00DF2BF5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -279,7 +262,6 @@
 			children = (
 				7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */,
 				B63FC8A91CEEDBFF0042C747 /* ThingIFSDKLargeTests.xctest */,
-				B69E284C1E42EF0E00328291 /* ThingIFSDKTests2.xctest */,
 				B6C33EFC1E49770B00DF2BF5 /* ThingIFSDKTests.xctest */,
 			);
 			name = Products;
@@ -472,24 +454,6 @@
 			productReference = B63FC8A91CEEDBFF0042C747 /* ThingIFSDKLargeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		B69E284B1E42EF0E00328291 /* ThingIFSDKTests2 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B69E28541E42EF0E00328291 /* Build configuration list for PBXNativeTarget "ThingIFSDKTests2" */;
-			buildPhases = (
-				B69E28481E42EF0E00328291 /* Sources */,
-				B69E28491E42EF0E00328291 /* Frameworks */,
-				B69E284A1E42EF0E00328291 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				B69E28531E42EF0E00328291 /* PBXTargetDependency */,
-			);
-			name = ThingIFSDKTests2;
-			productName = ThingIFSDKTests2;
-			productReference = B69E284C1E42EF0E00328291 /* ThingIFSDKTests2.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		B6C33EFB1E49770B00DF2BF5 /* ThingIFSDKTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B6C33F041E49770B00DF2BF5 /* Build configuration list for PBXNativeTarget "ThingIFSDKTests" */;
@@ -525,10 +489,6 @@
 						CreatedOnToolsVersion = 7.2.1;
 						LastSwiftMigration = 0800;
 					};
-					B69E284B1E42EF0E00328291 = {
-						CreatedOnToolsVersion = 8.2.1;
-						ProvisioningStyle = Automatic;
-					};
 					B6C33EFB1E49770B00DF2BF5 = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
@@ -550,7 +510,6 @@
 			targets = (
 				7DD44DB91BD4B7CD00AE0249 /* ThingIFSDK */,
 				B63FC8A81CEEDBFF0042C747 /* ThingIFSDKLargeTests */,
-				B69E284B1E42EF0E00328291 /* ThingIFSDKTests2 */,
 				B6C33EFB1E49770B00DF2BF5 /* ThingIFSDKTests */,
 			);
 		};
@@ -569,13 +528,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B673C0051CF81CEC00AEF519 /* TestSetting.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B69E284A1E42EF0E00328291 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -682,13 +634,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B69E28481E42EF0E00328291 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		B6C33EF81E49770B00DF2BF5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -708,11 +653,6 @@
 			isa = PBXTargetDependency;
 			target = 7DD44DB91BD4B7CD00AE0249 /* ThingIFSDK */;
 			targetProxy = B63FC8AF1CEEDBFF0042C747 /* PBXContainerItemProxy */;
-		};
-		B69E28531E42EF0E00328291 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 7DD44DB91BD4B7CD00AE0249 /* ThingIFSDK */;
-			targetProxy = B69E28521E42EF0E00328291 /* PBXContainerItemProxy */;
 		};
 		B6C33F031E49770B00DF2BF5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -885,41 +825,6 @@
 			};
 			name = Release;
 		};
-		B69E28551E42EF0E00328291 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				INFOPLIST_FILE = ThingIFSDKTests2/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kii.ThingIFSDKTests2;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		B69E28561E42EF0E00328291 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				INFOPLIST_FILE = ThingIFSDKTests2/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.kii.ThingIFSDKTests2;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
 		B6C33F051E49770B00DF2BF5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -981,15 +886,6 @@
 			buildConfigurations = (
 				B63FC8B11CEEDBFF0042C747 /* Debug */,
 				B63FC8B21CEEDBFF0042C747 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		B69E28541E42EF0E00328291 /* Build configuration list for PBXNativeTarget "ThingIFSDKTests2" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B69E28551E42EF0E00328291 /* Debug */,
-				B69E28561E42EF0E00328291 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
