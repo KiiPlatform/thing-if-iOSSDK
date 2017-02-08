@@ -58,17 +58,25 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        return [
+          "type" : "eq",
+          "field" : self.field,
+          "value" : self.value
+        ] as [String : Any]
+    }
+
+    fileprivate convenience init(_ dict: [String : Any]) {
+        self.init(dict["field"] as! String, value: dict["value"] as AnyObject)
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject() as! [String : Any])
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encodeRootObject(self.makeDictionary())
     }
 
 }
@@ -89,17 +97,21 @@ open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        return [
+          "type" : "not",
+          "clause" : self.equals.makeDictionary()
+        ] as [String : Any]
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(
+          EqualsClauseInQuery(aDecoder.decodeObject() as! [String : Any]))
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.equals.encode(with: aCoder)
     }
 
 }
@@ -107,29 +119,48 @@ open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
 /** Class represents Range clause for query methods. */
 open class RangeClauseInQuery: QueryClause, BaseRange {
 
+    private let lower: (limit: NSNumber, included: Bool)?
+    private let upper: (limit: NSNumber, included: Bool)?
+
     /** Name of a field. */
     open let field: String
+
     /** Lower limit for an instance. */
-    open let lowerLimit: NSNumber?
+    open var lowerLimit: NSNumber? {
+        get {
+            return self.lower?.limit
+        }
+    }
+
     /** Include or not lower limit. */
-    open let lowerIncluded: Bool?
+    open var lowerIncluded: Bool? {
+        get {
+            return self.lower?.included
+        }
+    }
+
     /** Upper limit for an instance. */
-    open let upperLimit: NSNumber?
+    open var upperLimit: NSNumber? {
+        get {
+            return self.upper?.limit
+        }
+    }
+
     /** Include or not upper limit. */
-    open let upperIncluded: Bool?
+    open var upperIncluded: Bool? {
+        get {
+            return self.upper?.included
+        }
+    }
 
     private init(
       _ field: String,
-      lowerLimit: NSNumber? = nil,
-      lowerIncluded: Bool? = nil,
-      upperLimit: NSNumber? = nil,
-      upperIncluded: Bool? = nil)
+      lower: (limit: NSNumber, included: Bool)? = nil,
+      upper: (limit: NSNumber, included: Bool)? = nil)
     {
         self.field = field
-        self.lowerLimit = lowerLimit
-        self.lowerIncluded = lowerIncluded
-        self.upperLimit = upperLimit
-        self.upperIncluded = upperIncluded
+        self.lower = lower
+        self.upper = upper
     }
 
     /** Create Range clause for query having lower and upper limit.
@@ -154,7 +185,10 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
       upperLimit: NSNumber,
       upperIncluded: Bool) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(
+          field,
+          lower: (lowerLimit, lowerIncluded),
+          upper: (upperLimit, upperIncluded))
     }
 
     /** Create Range clause for query which denotes greater than.
@@ -168,7 +202,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, lower: (limit, false))
     }
 
     /** Create Range clause for query which denotes greater than or
@@ -183,7 +217,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, lower: (limit, true))
     }
 
     /** Create Range clause for query which denotes less than.
@@ -197,7 +231,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, upper: (limit, false))
     }
 
     /** Create Range clause for query which denotes less than or
@@ -212,7 +246,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, upper: (limit, true))
     }
 
     /** Get Range clause for query as a Dictionary instance
@@ -220,17 +254,46 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var retval: [String : Any] = ["type": "range", "field": self.field]
+        retval["upperLimit"] = self.upper?.limit
+        retval["upperIncluded"] = self.upper?.included
+        retval["lowerLimit"] = self.lower?.limit
+        retval["lowerIncluded"] = self.lower?.included
+        return retval
+    }
+
+    private static func toRangeTuple(
+      _ dictOpt: [String : Any]?) -> (limit: NSNumber, included: Bool)?
+    {
+        if let dict = dictOpt {
+            return (dict["limit"] as! NSNumber, dict["included"] as! Bool)
+        }
+        return nil
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(
+          aDecoder.decodeObject(forKey: "field") as! String,
+          lower: RangeClauseInQuery.toRangeTuple(
+            aDecoder.decodeObject(forKey: "lower") as? [String : Any]),
+          upper: RangeClauseInQuery.toRangeTuple(
+            aDecoder.decodeObject(forKey: "upper") as? [String : Any]))
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.field, forKey: "field")
+        if let lower = self.lower {
+            let dict: [String : Any] =
+              ["limit": lower.limit, "included": lower.included]
+            aCoder.encode(dict, forKey: "lower")
+        }
+        if let upper = self.upper {
+            let dict: [String : Any] =
+              ["limit": upper.limit, "included": upper.included]
+            aCoder.encode(dict, forKey: "upper")
+        }
     }
 
 }
