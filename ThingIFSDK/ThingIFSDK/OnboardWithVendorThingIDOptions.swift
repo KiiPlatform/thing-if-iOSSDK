@@ -15,7 +15,6 @@ open class OnboardWithVendorThingIDOptions {
     open let firmwareVersion: String?
     open let thingProperties: Dictionary<String, Any>?
     open let layoutPosition: LayoutPosition?
-    open let dataGroupingInterval: DataGroupingInterval?
 
     /** initializer.
 
@@ -27,20 +26,16 @@ open class OnboardWithVendorThingIDOptions {
       You can set both the predefined and custom fields.
       Please read [here](https://docs.kii.com/en/starts/thingifsdk/thingsdk/management/#register-a-thing) for more details.
     - Parameter position: GATEWAY | STANDALONE | ENDNODE.
-    - Parameter interval: interval1Minute | interval15Minutes | interval30Minutes | interval1Hour | interval12Hours.
-      Will be used to create the bucket to store the state history when the thing is not using traits.
     */
     public init(
         _ thingType:String? = nil,
         firmwareVersion:String? = nil,
         thingProperties:Dictionary<String, Any>? = nil,
-        position: LayoutPosition? = nil,
-        interval: DataGroupingInterval? = nil)
+        position: LayoutPosition? = nil)
     {
         self.thingType = thingType
         self.firmwareVersion = firmwareVersion
         self.thingProperties = thingProperties
         self.layoutPosition = position
-        self.dataGroupingInterval = interval
     }
 }

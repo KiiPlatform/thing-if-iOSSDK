@@ -135,6 +135,8 @@ open class ThingIFAPI: Equatable, NSCoding {
         completionHandler: @escaping (Target?, ThingIFError?)-> Void
         ) ->Void
     {
+        fatalError("TODO: implement me.")
+        /*
         _onboard(true, IDString: vendorThingID, thingPassword: thingPassword,
             thingType: options?.thingType,
             firmwareVersion: options?.firmwareVersion,
@@ -146,6 +148,7 @@ open class ThingIFAPI: Equatable, NSCoding {
             }
             completionHandler(target, error)
         }
+        */
     }
 
     /** On board IoT Cloud with the specified thing ID.
@@ -172,6 +175,8 @@ open class ThingIFAPI: Equatable, NSCoding {
         completionHandler: @escaping (Target?, ThingIFError?)-> Void
         ) ->Void
     {
+        fatalError("TODO: implement me.")
+        /*
         _onboard(false, IDString: thingID, thingPassword: thingPassword,
             layoutPosition: options?.layoutPosition,
             dataGroupingInterval: options?.dataGroupingInterval) { (target, error) -> Void in
@@ -180,6 +185,7 @@ open class ThingIFAPI: Equatable, NSCoding {
             }
             completionHandler(target, error)
         }
+        */
     }
 
     /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
@@ -193,14 +199,16 @@ open class ThingIFAPI: Equatable, NSCoding {
     open func onboard(
         _ pendingEndnode:PendingEndNode,
         endnodePassword:String,
-        options:OnboardEndnodeWithGatewayOptions? = nil,
         completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
+        fatalError("TODO: implement me.")
+        /*
         _onboardEndnodeWithGateway(pendingEndnode,
             endnodePassword: endnodePassword,
             options: options,
             completionHandler: completionHandler)
+        */
     }
 
     // MARK: - Push notification methods
