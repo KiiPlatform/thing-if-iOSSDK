@@ -48,8 +48,8 @@ class NotEqualsClauseInQueryTests: SmallTestBase {
         for (input, expected) in testCases {
             let actual = NotEqualsClauseInQuery(input)
             XCTAssertEqual(expected.field, actual.equals.field)
-            ThingIFTestEqualAny(expected.value, actual.equals.value)
-            ThingIFTestEqualDictionary(
+            assertEqualsAny(expected.value, actual.equals.value)
+            assertEqualsDictionary(
               [
                 "type": "not",
                 "clause": [
@@ -70,8 +70,8 @@ class NotEqualsClauseInQueryTests: SmallTestBase {
             decoder.finishDecoding();
 
             XCTAssertEqual(actual.equals.field, deserialized.equals.field)
-            ThingIFTestEqualAny(actual.equals.value, deserialized.equals.value)
-            ThingIFTestEqualDictionary(
+            assertEqualsAny(actual.equals.value, deserialized.equals.value)
+            assertEqualsDictionary(
               actual.makeDictionary(),
               deserialized.makeDictionary())
 

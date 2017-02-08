@@ -12,7 +12,7 @@ import XCTest
 
 extension XCTestCase {
 
-    func ThingIFTestEqualAny(
+    func assertEqualsAny(
       _ expected:  Any?,
       _ actual: Any?,
       _ message: String? = nil,
@@ -60,7 +60,7 @@ extension XCTestCase {
         }
     }
 
-    func ThingIFTestEqualDictionary(
+    func assertEqualsDictionary(
       _ expected: [String : Any]?,
       _ actual: [String : Any]?,
       _ message: String? = nil,
