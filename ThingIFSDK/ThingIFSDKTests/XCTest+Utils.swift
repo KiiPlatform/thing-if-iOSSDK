@@ -12,6 +12,33 @@ import XCTest
 
 extension XCTestCase {
 
+    func assertEqualsWithAccuracyOrNil<T: FloatingPoint>(
+      _ expected:  T?,
+      _ actual: T?,
+      accuracy: T,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        if expected == nil && actual == nil {
+            return
+        } else if expected == nil || actual == nil {
+            let errorMessage = message ?? "One is nil, the other is not nil."
+            XCTFail(
+              "file=\(file), line=\(line): \(errorMessage)")
+            return
+        }
+
+        XCTAssertEqualWithAccuracy(
+          expected!,
+          actual!,
+          accuracy: accuracy,
+          message ?? "",
+          file: file,
+          line: line)
+    }
+
+
     func assertEqualsAny(
       _ expected:  Any?,
       _ actual: Any?,
