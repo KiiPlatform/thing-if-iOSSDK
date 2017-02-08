@@ -19,7 +19,7 @@ extension XCTestCase {
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
-        if expected == nil && expected == nil {
+        if expected == nil && actual == nil {
             return
         } else if expected == nil || actual == nil {
             let errorMessage = message ?? "One is nil, the other is not nil."
@@ -67,7 +67,7 @@ extension XCTestCase {
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
-        if expected == nil && expected == nil {
+        if expected == nil && actual == nil {
             return
         } else if expected == nil || actual == nil {
             let errorMessage = message ?? "One is nil, the other is not nil."
