@@ -65,10 +65,13 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
         ] as [String : Any]
     }
 
+    fileprivate convenience init(_ dict: [String : Any]) {
+        self.init(dict["field"] as! String, value: dict["value"] as AnyObject)
+    }
+
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        let dict = aDecoder.decodeObject() as! [String : Any]
-        self.init(dict["field"] as! String, value: dict["value"] as AnyObject)
+        self.init(aDecoder.decodeObject() as! [String : Any])
     }
 
     /** Encoder confirming `NSCoding`. */
@@ -94,17 +97,21 @@ open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        return [
+          "type" : "not",
+          "clause" : self.equals.makeDictionary()
+        ] as [String : Any]
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(
+          EqualsClauseInQuery(aDecoder.decodeObject() as! [String : Any]))
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.equals.encode(with: aCoder)
     }
 
 }
