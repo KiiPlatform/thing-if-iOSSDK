@@ -111,17 +111,37 @@ open class NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        return [
+          "type" : "not",
+          "clause" : self.equals.makeDictionary()
+        ] as [String : Any]
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
+            return nil
+        }
+        self.init(dict)
+    }
+
+    fileprivate convenience init?(_ dict: [String : Any]) {
+        if dict["type"] as? String != "not" {
+            return nil
+        }
+
+        if let equals = EqualsClauseInTrigger(
+             dict["clause"] as! [String : Any])
+        {
+            self.init(equals)
+        } else {
+            return nil
+        }
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.makeDictionary())
     }
 
 }
