@@ -65,17 +65,32 @@ open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        return [
+          "type" : "eq",
+          "alias" : self.alias,
+          "field" : self.field,
+          "value" : self.value
+        ] as [String : Any]
+    }
+
+    fileprivate convenience init?(_ dict: [String : Any]) {
+        if dict["type"] as? String != "eq" {
+            return nil
+        }
+        self.init(
+          dict["alias"] as! String,
+          field: dict["field"] as! String,
+          value: dict["value"] as AnyObject)
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject() as! [String : Any])
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.makeDictionary())
     }
 
 }
