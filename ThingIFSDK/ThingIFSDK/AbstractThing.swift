@@ -15,14 +15,15 @@ open class AbstractThing : Equatable, TargetThing {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.typedID, forKey: "typedID")
+        aCoder.encode(self.thingID, forKey: "thingID")
         aCoder.encode(self.accessToken, forKey: "accessToken")
         aCoder.encode(self.vendorThingID, forKey: "vendorThingID")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        self.typedID = aDecoder.decodeObject(forKey: "typedID") as! TypedID
+        let thingID = aDecoder.decodeObject(forKey: "thingID") as! String
+        self.typedID = TypedID(TypedID.Types.thing, id: thingID)
         self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as! String?
         self.vendorThingID = aDecoder.decodeObject(forKey: "vendorThingID") as! String
     }
