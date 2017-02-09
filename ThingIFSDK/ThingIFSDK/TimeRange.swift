@@ -22,15 +22,18 @@ open class TimeRange: NSCoding {
      - Parameter to: End point of time range. Inclusive
      */
     public init(_ from: Date, to: Date) {
-        fatalError("TODO: implement me.")
+        self.from = from
+        self.to = to
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject(forKey: "from") as! Date,
+            to: aDecoder.decodeObject(forKey: "to") as! Date)
     }
 
     public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.from, forKey: "from")
+        aCoder.encode(self.to, forKey: "to")
     }
 
 }
