@@ -8,6 +8,33 @@
 
 import Foundation
 
+private func makeQueryClauseArray(
+  _ dictionaries: [[String : Any]]) -> [QueryClause]
+{
+    var retval: [QueryClause] = []
+    for dict in dictionaries {
+        let clause: QueryClause
+        switch dict["type"] as! String {
+            case "eq":
+                clause = EqualsClauseInQuery(dict)!
+            case "not":
+                clause = NotEqualsClauseInQuery(dict)!
+            case "range":
+                clause = RangeClauseInQuery(dict)!
+            case "and":
+                clause = AndClauseInQuery(
+                  makeQueryClauseArray(dict["clauses"] as! [[String : Any]]))
+            case "or":
+                clause = OrClauseInQuery(
+                  makeQueryClauseArray(dict["clauses"] as! [[String : Any]]))
+            default:
+                fatalError("unknown clause type.")
+        }
+        retval.append(clause)
+    }
+    return retval
+}
+
 /** Base protocol for query clause classes. */
 public protocol QueryClause: BaseClause {
 
@@ -108,7 +135,13 @@ open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        let dict = aDecoder.decodeObject() as! [String : Any]
+        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
+            return nil
+        }
+        self.init(dict)
+    }
+
+    fileprivate convenience init?(_ dict: [String : Any]) {
         if dict["type"] as? String != "not" {
             return nil
         }
@@ -285,7 +318,10 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
         guard let dict = aDecoder.decodeObject() as? [String : Any] else {
             return nil
         }
+        self.init(dict)
+    }
 
+    fileprivate convenience init?(_ dict: [String : Any]) {
         if dict["type"] as? String != "range" {
             return nil
         }
@@ -331,12 +367,18 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
+            return nil
+        }
+        if dict["type"] as? String != "and" {
+            return nil
+        }
+        self.init(makeQueryClauseArray(dict["clauses"] as! [[String : Any ]]))
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.makeDictionary())
     }
 
     /** Add a clause to And clauses.
