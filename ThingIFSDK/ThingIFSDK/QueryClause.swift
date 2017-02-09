@@ -8,6 +8,33 @@
 
 import Foundation
 
+private func makeQueryClauseArray(
+  _ dictionaries: [[String : Any]]) -> [QueryClause]
+{
+    var retval: [QueryClause] = []
+    for dict in dictionaries {
+        let clause: QueryClause
+        switch dict["type"] as! String {
+            case "eq":
+                clause = EqualsClauseInQuery(dict)!
+            case "not":
+                clause = NotEqualsClauseInQuery(dict)!
+            case "range":
+                clause = RangeClauseInQuery(dict)!
+            case "and":
+                clause = AndClauseInQuery(
+                  makeQueryClauseArray(dict["clauses"] as! [[String : Any]]))
+            case "or":
+                clause = OrClauseInQuery(
+                  makeQueryClauseArray(dict["clauses"] as! [[String : Any]]))
+            default:
+                fatalError("unknown clause type.")
+        }
+        retval.append(clause)
+    }
+    return retval
+}
+
 /** Base protocol for query clause classes. */
 public protocol QueryClause: BaseClause {
 
@@ -65,7 +92,10 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
         ] as [String : Any]
     }
 
-    fileprivate convenience init(_ dict: [String : Any]) {
+    fileprivate convenience init?(_ dict: [String : Any]) {
+        if dict["type"] as? String != "eq" {
+            return nil
+        }
         self.init(dict["field"] as! String, value: dict["value"] as AnyObject)
     }
 
@@ -76,7 +106,7 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encodeRootObject(self.makeDictionary())
+        aCoder.encode(self.makeDictionary())
     }
 
 }
@@ -105,13 +135,27 @@ open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(
-          EqualsClauseInQuery(aDecoder.decodeObject() as! [String : Any]))
+        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
+            return nil
+        }
+        self.init(dict)
+    }
+
+    fileprivate convenience init?(_ dict: [String : Any]) {
+        if dict["type"] as? String != "not" {
+            return nil
+        }
+
+        if let equals = EqualsClauseInQuery(dict["clause"] as! [String : Any]) {
+            self.init(equals)
+        } else {
+            return nil
+        }
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        self.equals.encode(with: aCoder)
+        aCoder.encode(self.makeDictionary())
     }
 
 }
@@ -262,38 +306,38 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
         return retval
     }
 
-    private static func toRangeTuple(
-      _ dictOpt: [String : Any]?) -> (limit: NSNumber, included: Bool)?
+    private static func makeLimitTuple(
+      _ limit: NSNumber?,
+      included: Bool?) -> (limit: NSNumber, included: Bool)?
     {
-        if let dict = dictOpt {
-            return (dict["limit"] as! NSNumber, dict["included"] as! Bool)
-        }
-        return nil
+        return limit == nil || included == nil ? nil : (limit!, included!)
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
+        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
+            return nil
+        }
+        self.init(dict)
+    }
+
+    fileprivate convenience init?(_ dict: [String : Any]) {
+        if dict["type"] as? String != "range" {
+            return nil
+        }
         self.init(
-          aDecoder.decodeObject(forKey: "field") as! String,
-          lower: RangeClauseInQuery.toRangeTuple(
-            aDecoder.decodeObject(forKey: "lower") as? [String : Any]),
-          upper: RangeClauseInQuery.toRangeTuple(
-            aDecoder.decodeObject(forKey: "upper") as? [String : Any]))
+          dict["field"] as! String,
+          lower: RangeClauseInQuery.makeLimitTuple(
+            dict["lowerLimit"] as? NSNumber,
+            included: dict["lowerIncluded"] as? Bool),
+          upper: RangeClauseInQuery.makeLimitTuple(
+            dict["upperLimit"] as? NSNumber,
+            included: dict["upperIncluded"] as? Bool))
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.field, forKey: "field")
-        if let lower = self.lower {
-            let dict: [String : Any] =
-              ["limit": lower.limit, "included": lower.included]
-            aCoder.encode(dict, forKey: "lower")
-        }
-        if let upper = self.upper {
-            let dict: [String : Any] =
-              ["limit": upper.limit, "included": upper.included]
-            aCoder.encode(dict, forKey: "upper")
-        }
+        aCoder.encode(self.makeDictionary())
     }
 
 }
@@ -301,7 +345,6 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
 
 /** Class represents And clause for query methods. */
 open class AndClauseInQuery: QueryClause, BaseAnd {
-    public typealias ClausesType = QueryClause
 
     /** Clauses conjuncted with And. */
     open internal(set) var clauses: [QueryClause]
@@ -324,20 +367,28 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
+            return nil
+        }
+        if dict["type"] as? String != "and" {
+            return nil
+        }
+        self.init(makeQueryClauseArray(dict["clauses"] as! [[String : Any ]]))
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.makeDictionary())
     }
 
     /** Add a clause to And clauses.
 
      - Parameter clause: Clause to be added to and clauses.
      */
+    @discardableResult
     open func add(_ clause: QueryClause) -> Self {
-        fatalError("TODO: implement me.")
+        self.clauses.append(clause)
+        return self
     }
 
     /** Get And clause for query as a Dictionary instance
@@ -345,14 +396,15 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var clauses: [[String : Any]] = []
+        self.clauses.forEach { clauses.append($0.makeDictionary()) }
+        return ["type": "and", "clauses": clauses] as [String : Any]
     }
 
 }
 
 /** Class represents Or clause for query methods. */
 open class OrClauseInQuery: QueryClause, BaseOr {
-    public typealias ClausesType = QueryClause
 
     /** Clauses conjuncted with Or. */
     open internal(set) var clauses: [QueryClause]
@@ -375,20 +427,28 @@ open class OrClauseInQuery: QueryClause, BaseOr {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
+            return nil
+        }
+        if dict["type"] as? String != "or" {
+            return nil
+        }
+        self.init(makeQueryClauseArray(dict["clauses"] as! [[String : Any ]]))
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.makeDictionary())
     }
 
     /** Add a clause to Or clauses.
 
      - Parameter clause: Clause to be added to or clauses.
      */
+    @discardableResult
     open func add(_ clause: QueryClause) -> Self {
-        fatalError("TODO: implement me.")
+        self.clauses.append(clause)
+        return self
     }
 
     /** Get Or clause for query as a Dictionary instance
@@ -396,7 +456,9 @@ open class OrClauseInQuery: QueryClause, BaseOr {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var clauses: [[String : Any]] = []
+        self.clauses.forEach { clauses.append($0.makeDictionary()) }
+        return ["type": "or", "clauses": clauses] as [String : Any]
     }
 
 }
