@@ -385,6 +385,7 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
      - Parameter clause: Clause to be added to and clauses.
      */
+    @discardableResult
     open func add(_ clause: QueryClause) -> Self {
         self.clauses.append(clause)
         return self
@@ -404,7 +405,6 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
 /** Class represents Or clause for query methods. */
 open class OrClauseInQuery: QueryClause, BaseOr {
-    public typealias ClausesType = QueryClause
 
     /** Clauses conjuncted with Or. */
     open internal(set) var clauses: [QueryClause]
@@ -427,20 +427,28 @@ open class OrClauseInQuery: QueryClause, BaseOr {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
+            return nil
+        }
+        if dict["type"] as? String != "or" {
+            return nil
+        }
+        self.init(makeQueryClauseArray(dict["clauses"] as! [[String : Any ]]))
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.makeDictionary())
     }
 
     /** Add a clause to Or clauses.
 
      - Parameter clause: Clause to be added to or clauses.
      */
+    @discardableResult
     open func add(_ clause: QueryClause) -> Self {
-        fatalError("TODO: implement me.")
+        self.clauses.append(clause)
+        return self
     }
 
     /** Get Or clause for query as a Dictionary instance
@@ -448,7 +456,9 @@ open class OrClauseInQuery: QueryClause, BaseOr {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var clauses: [[String : Any]] = []
+        self.clauses.forEach { clauses.append($0.makeDictionary()) }
+        return ["type": "or", "clauses": clauses] as [String : Any]
     }
 
 }
