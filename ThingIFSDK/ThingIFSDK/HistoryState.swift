@@ -17,15 +17,18 @@ open class HistoryState: NSCoding {
     open let createdAt: Date
 
     internal init(_ state: [String: Any], createdAt: Date) {
-        fatalError("TODO: implement me.")
+        self.state = state
+        self.createdAt = createdAt
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject(forKey: "state") as! [String : Any],
+            createdAt: aDecoder.decodeObject(forKey: "createdAt") as! Date)
     }
 
     public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.state, forKey: "state")
+        aCoder.encode(self.createdAt, forKey: "createdAt")
     }
 
 }
