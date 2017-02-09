@@ -301,7 +301,6 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
 
 /** Class represents And clause for query methods. */
 open class AndClauseInQuery: QueryClause, BaseAnd {
-    public typealias ClausesType = QueryClause
 
     /** Clauses conjuncted with And. */
     open internal(set) var clauses: [QueryClause]
@@ -337,7 +336,8 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
      - Parameter clause: Clause to be added to and clauses.
      */
     open func add(_ clause: QueryClause) -> Self {
-        fatalError("TODO: implement me.")
+        self.clauses.append(clause)
+        return self
     }
 
     /** Get And clause for query as a Dictionary instance
@@ -345,7 +345,9 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var clauses: [[String : Any]] = []
+        self.clauses.forEach { clauses.append($0.makeDictionary()) }
+        return ["type": "and", "clauses": clauses] as [String : Any]
     }
 
 }
