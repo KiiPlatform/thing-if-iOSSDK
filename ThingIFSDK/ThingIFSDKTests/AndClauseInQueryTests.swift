@@ -317,8 +317,8 @@ class AndClauseInQueryTests: SmallTestBase {
         XCTAssertEqual(3, actual.clauses.count)
 
         actual.add(
-          OrClauseInQuery(EqualsClauseInQuery("f", stringValue: "str"))).add(
-          AndClauseInQuery(EqualsClauseInQuery("f", stringValue: "str")))
+          AndClauseInQuery(EqualsClauseInQuery("f", stringValue: "str"))).add(
+          OrClauseInQuery(EqualsClauseInQuery("f", stringValue: "str")))
 
         XCTAssertEqual(5, actual.clauses.count)
         assertEqualsDictionary(
