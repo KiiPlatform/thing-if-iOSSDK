@@ -60,10 +60,14 @@ class TypedIDTests: SmallTestBase {
 
     func testIsEqual() {
         let target = TypedID(TypedID.Types.thing, id: "dummy")
-        let anotherOne = TypedID(TypedID.Types.thing, id: "dummy")
-        let other = TypedID(TypedID.Types.user, id: "dummy")
+        let sameOne = TypedID(TypedID.Types.thing, id: "dummy")
+        let differentOne = TypedID(TypedID.Types.user, id: "dummy")
 
-        XCTAssertTrue(target.isEqual(anotherOne))
-        XCTAssertFalse(target.isEqual(other))
+        XCTAssertTrue(target.isEqual(target))
+        XCTAssertTrue(target == target)
+        XCTAssertTrue(target.isEqual(sameOne))
+        XCTAssertTrue(target == sameOne)
+        XCTAssertFalse(target.isEqual(differentOne))
+        XCTAssertFalse(target == differentOne)
     }
 }

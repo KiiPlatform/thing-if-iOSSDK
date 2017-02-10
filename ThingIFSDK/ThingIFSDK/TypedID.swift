@@ -24,9 +24,9 @@ open class TypedID : Equatable, NSCoding {
     }
 
     // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
-        self.type = Types(rawValue: aDecoder.decodeObject(forKey: "type") as! String)!
-        self.id = aDecoder.decodeObject(forKey: "id") as! String
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init(Types(rawValue: aDecoder.decodeObject(forKey: "type") as! String)!,
+            id: aDecoder.decodeObject(forKey: "id") as! String)
     }
 
     /** Type of the ID*/
