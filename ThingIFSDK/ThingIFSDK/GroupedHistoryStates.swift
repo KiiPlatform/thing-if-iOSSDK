@@ -17,15 +17,18 @@ open class GroupedHistoryStates: NSCoding {
     open let objects: [HistoryState]
 
     internal init(_ timeRange: TimeRange, objects: [HistoryState]) {
-        fatalError("TODO: implement me.")
+        self.timeRange = timeRange
+        self.objects = objects
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeNSCodingObject(forKey: "timeRange"),
+            objects: aDecoder.decodeNSCodingArray(forKey: "objects")!)
     }
 
     public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encodeNSCodingObject(self.timeRange, forKey: "timeRange")
+        aCoder.encodeNSCodingArray(self.objects, forKey: "objects")
     }
 
 }
