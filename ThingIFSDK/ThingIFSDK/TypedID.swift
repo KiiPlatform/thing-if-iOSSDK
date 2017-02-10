@@ -19,12 +19,14 @@ open class TypedID : Equatable, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.*/")
+        aCoder.encode(self.type.rawValue, forKey: "type")
+        aCoder.encode(self.id, forKey: "id")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.*/")
+        self.type = Types(rawValue: aDecoder.decodeObject(forKey: "type") as! String)!
+        self.id = aDecoder.decodeObject(forKey: "id") as! String
     }
 
     /** Type of the ID*/
