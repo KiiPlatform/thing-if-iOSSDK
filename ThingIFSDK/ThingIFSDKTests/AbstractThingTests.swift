@@ -45,16 +45,16 @@ class AbstractThingTests: SmallTestBase {
 
     func testIsEqual() {
         let target = AbstractThing("dummyThing", vendorThingID: "dummyVendor", accessToken: "dummyToken")
-        let anotherOne = AbstractThing("dummyThing", vendorThingID: "dummyVendor2", accessToken: "dummyToken")
-        let other = AbstractThing("otherThing", vendorThingID: "dummyVendor", accessToken: "otherToken")
+        let sameOne = AbstractThing("dummyThing", vendorThingID: "dummyVendor2", accessToken: "dummyToken")
+        let differentOne = AbstractThing("otherThing", vendorThingID: "dummyVendor", accessToken: "otherToken")
 
         XCTAssertTrue(target.isEqual(target))
         XCTAssertTrue(target == target)
         XCTAssertFalse(target.isEqual({}))
-        XCTAssertTrue(target.isEqual(anotherOne))
-        XCTAssertTrue(target == anotherOne)
-        XCTAssertFalse(target.isEqual(other))
-        XCTAssertFalse(target == other)
+        XCTAssertTrue(target.isEqual(sameOne))
+        XCTAssertTrue(target == sameOne)
+        XCTAssertFalse(target.isEqual(differentOne))
+        XCTAssertFalse(target == differentOne)
     }
 
     func testCodingMinValues() {
