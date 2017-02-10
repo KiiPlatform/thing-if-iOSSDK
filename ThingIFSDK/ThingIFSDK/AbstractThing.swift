@@ -15,15 +15,14 @@ open class AbstractThing : Equatable, TargetThing {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.thingID, forKey: "thingID")
+        aCoder.encodeNSCodingObject(self.typedID, forKey: "typedID")
         aCoder.encode(self.accessToken, forKey: "accessToken")
         aCoder.encode(self.vendorThingID, forKey: "vendorThingID")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        let thingID = aDecoder.decodeObject(forKey: "thingID") as! String
-        self.typedID = TypedID(TypedID.Types.thing, id: thingID)
+        self.typedID = aDecoder.decodeNSCodingObject(forKey: "typedID")
         self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as! String?
         self.vendorThingID = aDecoder.decodeObject(forKey: "vendorThingID") as! String
     }
@@ -34,7 +33,7 @@ open class AbstractThing : Equatable, TargetThing {
     - Parameter vendorThingID: ID of vendor thing
     - Parameter accessToken: Access token of the target, can nil.
     */
-    public init(_ thingID: String, vendorThingID : String, accessToken: String? = nil) {
+    internal init(_ thingID: String, vendorThingID : String, accessToken: String? = nil) {
         self.typedID = TypedID(TypedID.Types.thing, id: thingID)
         self.accessToken = accessToken
         self.vendorThingID = vendorThingID
