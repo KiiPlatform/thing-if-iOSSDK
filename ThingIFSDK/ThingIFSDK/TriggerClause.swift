@@ -8,6 +8,33 @@
 
 import Foundation
 
+private func makeTriggerClauseArray(
+  _ dictionaries: [[String : Any]]) -> [TriggerClause]
+{
+    var retval: [TriggerClause] = []
+    for dict in dictionaries {
+        let clause: TriggerClause
+        switch dict["type"] as! String {
+            case "eq":
+                clause = EqualsClauseInTrigger(dict)!
+            case "not":
+                clause = NotEqualsClauseInTrigger(dict)!
+            case "range":
+                clause = RangeClauseInTrigger(dict)!
+            case "and":
+                clause = AndClauseInTrigger(
+                  makeTriggerClauseArray(dict["clauses"] as! [[String : Any]]))
+            case "or":
+                clause = OrClauseInTrigger(
+                  makeTriggerClauseArray(dict["clauses"] as! [[String : Any]]))
+            default:
+                fatalError("unknown clause type.")
+        }
+        retval.append(clause)
+    }
+    return retval
+}
+
 /** Base protocol for trigger clause classes. */
 public protocol TriggerClause: BaseClause {
 
@@ -352,10 +379,8 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
 
 }
 
-
 /** Class represents And clause for trigger methods. */
 open class AndClauseInTrigger: TriggerClause, BaseAnd {
-    public typealias ClausesType = TriggerClause
 
     /** Clauses conjuncted with And. */
     open internal(set) var clauses: [TriggerClause]
@@ -378,20 +403,28 @@ open class AndClauseInTrigger: TriggerClause, BaseAnd {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
+            return nil
+        }
+        if dict["type"] as? String != "and" {
+            return nil
+        }
+        self.init(makeTriggerClauseArray(dict["clauses"] as! [[String : Any ]]))
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.makeDictionary())
     }
 
     /** Add a clause to And clauses.
 
      - Parameter clause: Clause to be added to and clauses.
      */
+    @discardableResult
     open func add(_ clause: TriggerClause) -> Self {
-        fatalError("TODO: implement me.")
+        self.clauses.append(clause)
+        return self
     }
 
     /** Get And clause for trigger as a Dictionary instance
@@ -399,14 +432,15 @@ open class AndClauseInTrigger: TriggerClause, BaseAnd {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var clauses: [[String : Any]] = []
+        self.clauses.forEach { clauses.append($0.makeDictionary()) }
+        return ["type": "and", "clauses": clauses] as [String : Any]
     }
 
 }
 
 /** Class represents Or clause for trigger methods. */
 open class OrClauseInTrigger: TriggerClause, BaseOr {
-    public typealias ClausesType = TriggerClause
 
     /** Clauses conjuncted with Or. */
     open internal(set) var clauses: [TriggerClause]
@@ -429,20 +463,28 @@ open class OrClauseInTrigger: TriggerClause, BaseOr {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
+            return nil
+        }
+        if dict["type"] as? String != "or" {
+            return nil
+        }
+        self.init(makeTriggerClauseArray(dict["clauses"] as! [[String : Any ]]))
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.makeDictionary())
     }
 
     /** Add a clause to Or clauses.
 
      - Parameter clause: Clause to be added to or clauses.
      */
+    @discardableResult
     open func add(_ clause: TriggerClause) -> Self {
-        fatalError("TODO: implement me.")
+        self.clauses.append(clause)
+        return self
     }
 
     /** Get Or clause for trigger as a Dictionary instance
@@ -450,7 +492,9 @@ open class OrClauseInTrigger: TriggerClause, BaseOr {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var clauses: [[String : Any]] = []
+        self.clauses.forEach { clauses.append($0.makeDictionary()) }
+        return ["type": "or", "clauses": clauses] as [String : Any]
     }
 
 }
