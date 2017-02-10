@@ -98,7 +98,7 @@ class RangeClauseInQueryTests: SmallTestBase {
 
             var dict: [String: Any] = [
               "type": "range",
-              "field": "f"
+              "field": expected.field
             ]
             dict["lowerLimit"] = expected.lower?.limit
             dict["lowerIncluded"] = expected.lower?.included
@@ -210,7 +210,7 @@ class RangeClauseInQueryTests: SmallTestBase {
 
             var dict: [String: Any] = [
               "type": "range",
-              "field": "f"
+              "field": expected.field
             ]
             dict["lowerLimit"] = expected.lower?.limit
             dict["lowerIncluded"] = expected.lower?.included

@@ -8,6 +8,13 @@
 
 import Foundation
 
+internal func makeLimitTuple(
+  _ limit: NSNumber?,
+  included: Bool?) -> (limit: NSNumber, included: Bool)?
+{
+    return limit == nil || included == nil ? nil : (limit!, included!)
+}
+
 private func makeQueryClauseArray(
   _ dictionaries: [[String : Any]]) -> [QueryClause]
 {
@@ -306,13 +313,6 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
         return retval
     }
 
-    private static func makeLimitTuple(
-      _ limit: NSNumber?,
-      included: Bool?) -> (limit: NSNumber, included: Bool)?
-    {
-        return limit == nil || included == nil ? nil : (limit!, included!)
-    }
-
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
         guard let dict = aDecoder.decodeObject() as? [String : Any] else {
@@ -327,10 +327,10 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
         }
         self.init(
           dict["field"] as! String,
-          lower: RangeClauseInQuery.makeLimitTuple(
+          lower: makeLimitTuple(
             dict["lowerLimit"] as? NSNumber,
             included: dict["lowerIncluded"] as? Bool),
-          upper: RangeClauseInQuery.makeLimitTuple(
+          upper: makeLimitTuple(
             dict["upperLimit"] as? NSNumber,
             included: dict["upperIncluded"] as? Bool))
     }
