@@ -9,7 +9,7 @@
 import Foundation
 
 /** Aggregation. */
-open class Aggregation: NSCoding {
+open class Aggregation: NSObject, NSCoding {
 
     /** Field types to count. */
     public enum FieldType: String {

@@ -39,30 +39,6 @@ class AggregatedResultTests: SmallTestBase {
           ["key1": "value1"],
           actual.aggregatedObjects[0].state)
         XCTAssertEqual(createdAt, actual.aggregatedObjects[0].createdAt)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-          NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = AggregatedResult<Int>(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.value, deserialized.value)
-        XCTAssertEqual(actual.timeRange.from, deserialized.timeRange.from)
-        XCTAssertEqual(actual.timeRange.to, deserialized.timeRange.to)
-        XCTAssertEqual(
-          actual.aggregatedObjects.count,
-          deserialized.aggregatedObjects.count)
-        assertEqualsDictionary(
-          actual.aggregatedObjects[0].state,
-          deserialized.aggregatedObjects[0].state)
-        XCTAssertEqual(
-          actual.aggregatedObjects[0].createdAt,
-          deserialized.aggregatedObjects[0].createdAt)
     }
 
     func testDouble() {
@@ -85,29 +61,5 @@ class AggregatedResultTests: SmallTestBase {
           ["key1": "value1"],
           actual.aggregatedObjects[0].state)
         XCTAssertEqual(createdAt, actual.aggregatedObjects[0].createdAt)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-          NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = AggregatedResult<Double>(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.value, deserialized.value)
-        XCTAssertEqual(actual.timeRange.from, deserialized.timeRange.from)
-        XCTAssertEqual(actual.timeRange.to, deserialized.timeRange.to)
-        XCTAssertEqual(
-          actual.aggregatedObjects.count,
-          deserialized.aggregatedObjects.count)
-        assertEqualsDictionary(
-          actual.aggregatedObjects[0].state,
-          deserialized.aggregatedObjects[0].state)
-        XCTAssertEqual(
-          actual.aggregatedObjects[0].createdAt,
-          deserialized.aggregatedObjects[0].createdAt)
     }
 }

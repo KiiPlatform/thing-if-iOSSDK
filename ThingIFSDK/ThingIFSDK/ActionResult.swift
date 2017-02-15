@@ -9,7 +9,7 @@
 import Foundation
 
 /** Result of an action. */
-open class ActionResult: NSCoding {
+open class ActionResult: NSObject, NSCoding {
 
     /** Action is succeeded or not. */
     open let succeeded: Bool

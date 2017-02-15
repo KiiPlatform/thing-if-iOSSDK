@@ -9,7 +9,7 @@
 import Foundation
 
 /** Aggregated result. */
-open class AggregatedResult<AggregatedValueType>: NSCoding {
+open class AggregatedResult<AggregatedValueType> {
 
     /** Returned value to be aggregated. */
     open let value: AggregatedValueType
@@ -26,19 +26,6 @@ open class AggregatedResult<AggregatedValueType>: NSCoding {
         self.value = value
         self.timeRange = timeRange
         self.aggregatedObjects = aggregatedObjects
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(
-          aDecoder.decodeObject(forKey: "value") as! AggregatedValueType,
-          timeRange: aDecoder.decodeNSCodingObject(forKey: "range")!,
-          aggregatedObjects: aDecoder.decodeNSCodingArray(forKey: "objects")!)
-    }
-
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.value, forKey: "value")
-        aCoder.encodeNSCodingObject(self.timeRange, forKey: "range")
-        aCoder.encodeNSCodingArray(self.aggregatedObjects, forKey: "objects")
     }
 
 }
