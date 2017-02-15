@@ -23,15 +23,22 @@ open class AggregatedResult<AggregatedValueType>: NSCoding {
       timeRange: TimeRange,
       aggregatedObjects: [HistoryState])
     {
-        fatalError("TODO: implement me.")
+        self.value = value
+        self.timeRange = timeRange
+        self.aggregatedObjects = aggregatedObjects
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(
+          aDecoder.decodeObject(forKey: "value") as! AggregatedValueType,
+          timeRange: aDecoder.decodeNSCodingObject(forKey: "range")!,
+          aggregatedObjects: aDecoder.decodeNSCodingArray(forKey: "objects")!)
     }
 
     public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.value, forKey: "value")
+        aCoder.encodeNSCodingObject(self.timeRange, forKey: "range")
+        aCoder.encodeNSCodingArray(self.aggregatedObjects, forKey: "objects")
     }
 
 }
