@@ -780,6 +780,10 @@ open class ThingIFAPI: Equatable, NSCoding {
 
     /** Aggregate history states
 
+     `AggregatedValueType` represents calcuated value with
+     `Aggregation.Functions`. The value is numerical so developers use
+     `Int` or `Double` and so on as `AggregatedValueType`.
+
      - Parameter query: `GroupedHistoryStatesQuery`
        instance. timeRange in query should less than 60 data grouping
        intervals.
