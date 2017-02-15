@@ -792,9 +792,6 @@ open class ThingIFAPI: Equatable, NSCoding {
      - If the function is `Aggregation.FunctionType.count`, the type
        must be `Int`.
 
-     The value is numerical so developers use `Int` or `Double` and so
-     on as `AggregatedValueType`.
-
      - Parameter query: `GroupedHistoryStatesQuery`
        instance. timeRange in query should less than 60 data grouping
        intervals.
