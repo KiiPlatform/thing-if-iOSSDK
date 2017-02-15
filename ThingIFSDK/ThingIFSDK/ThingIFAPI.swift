@@ -785,7 +785,7 @@ open class ThingIFAPI: Equatable, NSCoding {
 
      - If the function is `Aggregation.FunctionType.max`,
        `Aggregation.FunctionType.min` or
-       `Aggregation.FunctionType.sum`, tye type may be same as type of
+       `Aggregation.FunctionType.sum`, the type may be same as type of
        field represented by `Aggregation.FieldType`.
      - If the function is `Aggregation.FunctionType.mean`, the type
        may be `Double`.
