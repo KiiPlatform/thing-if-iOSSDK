@@ -5,7 +5,7 @@
 import Foundation
 
 /** Represents Target */
-open class AbstractThing : Equatable, TargetThing {
+open class AbstractThing : NSObject, TargetThing {
     open let typedID: TypedID
     open let accessToken: String?
     open var thingID: String {
@@ -15,14 +15,14 @@ open class AbstractThing : Equatable, TargetThing {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
-        aCoder.encodeNSCodingObject(self.typedID, forKey: "typedID")
+        aCoder.encode(self.typedID, forKey: "typedID")
         aCoder.encode(self.accessToken, forKey: "accessToken")
         aCoder.encode(self.vendorThingID, forKey: "vendorThingID")
     }
 
     // MARK: - Implements NSCoding protocol
     public required init(coder aDecoder: NSCoder) {
-        self.typedID = aDecoder.decodeNSCodingObject(forKey: "typedID")
+        self.typedID = aDecoder.decodeObject(forKey: "typedID") as! TypedID
         self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as! String?
         self.vendorThingID = aDecoder.decodeObject(forKey: "vendorThingID") as! String
     }
@@ -39,7 +39,7 @@ open class AbstractThing : Equatable, TargetThing {
         self.vendorThingID = vendorThingID
     }
 
-    open func isEqual(_ object: Any?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         guard let aTarget = object as? AbstractThing else {
             return false
         }

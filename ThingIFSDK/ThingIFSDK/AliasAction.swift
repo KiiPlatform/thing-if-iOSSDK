@@ -9,7 +9,7 @@
 import Foundation
 
 /** Action with an alias. */
-open class AliasAction: NSCoding {
+open class AliasAction: NSObject, NSCoding {
 
     /** Name of an alias. */
     open let alias: String
