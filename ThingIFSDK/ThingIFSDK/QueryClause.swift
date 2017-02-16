@@ -8,13 +8,6 @@
 
 import Foundation
 
-internal func makeLimitTuple(
-  _ limit: NSNumber?,
-  included: Bool?) -> (limit: NSNumber, included: Bool)?
-{
-    return limit == nil || included == nil ? nil : (limit!, included!)
-}
-
 /** Base protocol for query clause classes. */
 public protocol QueryClause: BaseClause {
 

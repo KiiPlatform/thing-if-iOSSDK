@@ -8,40 +8,13 @@
 
 import Foundation
 
-private func makeTriggerClauseArray(
-  _ dictionaries: [[String : Any]]) -> [TriggerClause]
-{
-    var retval: [TriggerClause] = []
-    for dict in dictionaries {
-        let clause: TriggerClause
-        switch dict["type"] as! String {
-            case "eq":
-                clause = EqualsClauseInTrigger(dict)!
-            case "not":
-                clause = NotEqualsClauseInTrigger(dict)!
-            case "range":
-                clause = RangeClauseInTrigger(dict)!
-            case "and":
-                clause = AndClauseInTrigger(
-                  makeTriggerClauseArray(dict["clauses"] as! [[String : Any]]))
-            case "or":
-                clause = OrClauseInTrigger(
-                  makeTriggerClauseArray(dict["clauses"] as! [[String : Any]]))
-            default:
-                fatalError("unknown clause type.")
-        }
-        retval.append(clause)
-    }
-    return retval
-}
-
 /** Base protocol for trigger clause classes. */
 public protocol TriggerClause: BaseClause {
 
 }
 
 /** Class represents Equals clause for trigger methods. */
-open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
+open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
 
     /** Alias of this clause. */
     open let alias: String
@@ -100,30 +73,25 @@ open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
         ] as [String : Any]
     }
 
-    fileprivate convenience init?(_ dict: [String : Any]) {
-        if dict["type"] as? String != "eq" {
-            return nil
-        }
-        self.init(
-          dict["alias"] as! String,
-          field: dict["field"] as! String,
-          value: dict["value"] as AnyObject)
-    }
-
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! [String : Any])
+        self.init(
+          aDecoder.decodeObject(forKey: "alias") as! String,
+          field: aDecoder.decodeObject(forKey: "field") as! String,
+          value: aDecoder.decodeObject(forKey: "value") as AnyObject)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.makeDictionary())
+        aCoder.encode(self.alias, forKey: "alias")
+        aCoder.encode(self.field, forKey: "field")
+        aCoder.encode(self.value, forKey: "value")
     }
 
 }
 
 /** Class represents Not Equals clause for trigger methods.  */
-open class NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
+open class NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInTrigger
 
     /** Contained Equals clause instance. */
@@ -146,35 +114,18 @@ open class NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
-            return nil
-        }
-        self.init(dict)
-    }
-
-    fileprivate convenience init?(_ dict: [String : Any]) {
-        if dict["type"] as? String != "not" {
-            return nil
-        }
-
-        if let equals = EqualsClauseInTrigger(
-             dict["clause"] as! [String : Any])
-        {
-            self.init(equals)
-        } else {
-            return nil
-        }
+        self.init(aDecoder.decodeObject() as! EqualsClauseInTrigger)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.makeDictionary())
+        aCoder.encode(self.equals)
     }
 
 }
 
 /** Class represents Range clause for trigger methods. */
-open class RangeClauseInTrigger: TriggerClause, BaseRange {
+open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
 
     private let lower: (limit: NSNumber, included: Bool)?
     private let upper: (limit: NSNumber, included: Bool)?
@@ -351,36 +302,41 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
-            return nil
-        }
-        self.init(dict)
-    }
+        let lower = aDecoder.decodeObject(forKey: "lower") as? [String : Any]
+        let upper = aDecoder.decodeObject(forKey: "upper") as? [String : Any]
 
-    fileprivate convenience init?(_ dict: [String : Any]) {
-        if dict["type"] as? String != "range" {
-            return nil
+        if lower == nil && upper == nil {
+            fatalError("unexpected case.")
         }
         self.init(
-          dict["alias"] as! String,
-          field: dict["field"] as! String,
-          lower: makeLimitTuple(
-            dict["lowerLimit"] as? NSNumber,
-            included: dict["lowerIncluded"] as? Bool),
-          upper: makeLimitTuple(
-            dict["upperLimit"] as? NSNumber,
-            included: dict["upperIncluded"] as? Bool))
+          aDecoder.decodeObject(forKey: "alias") as! String,
+          field: aDecoder.decodeObject(forKey: "field") as! String,
+          lower: lower != nil ?
+            (lower!["limit"] as! NSNumber, lower!["included"] as! Bool) : nil,
+          upper: upper != nil ?
+            (upper!["limit"] as! NSNumber, upper!["included"] as! Bool) : nil)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.makeDictionary())
+        aCoder.encode(self.alias, forKey: "alias")
+        aCoder.encode(self.field, forKey: "field")
+        if let lower = self.lower {
+            aCoder.encode(
+              ["limit": lower.limit, "included": lower.included],
+              forKey: "lower")
+        }
+        if let upper = self.upper {
+            aCoder.encode(
+              ["limit": upper.limit, "included": upper.included],
+              forKey: "upper")
+        }
     }
 
 }
 
 /** Class represents And clause for trigger methods. */
-open class AndClauseInTrigger: TriggerClause, BaseAnd {
+open class AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
 
     /** Clauses conjuncted with And. */
     open internal(set) var clauses: [TriggerClause]
@@ -403,18 +359,12 @@ open class AndClauseInTrigger: TriggerClause, BaseAnd {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
-            return nil
-        }
-        if dict["type"] as? String != "and" {
-            return nil
-        }
-        self.init(makeTriggerClauseArray(dict["clauses"] as! [[String : Any ]]))
+        self.init(aDecoder.decodeObject() as! [TriggerClause])
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.makeDictionary())
+        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to And clauses.
@@ -440,7 +390,7 @@ open class AndClauseInTrigger: TriggerClause, BaseAnd {
 }
 
 /** Class represents Or clause for trigger methods. */
-open class OrClauseInTrigger: TriggerClause, BaseOr {
+open class OrClauseInTrigger: NSObject, TriggerClause, BaseOr {
 
     /** Clauses conjuncted with Or. */
     open internal(set) var clauses: [TriggerClause]
@@ -463,18 +413,12 @@ open class OrClauseInTrigger: TriggerClause, BaseOr {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
-            return nil
-        }
-        if dict["type"] as? String != "or" {
-            return nil
-        }
-        self.init(makeTriggerClauseArray(dict["clauses"] as! [[String : Any ]]))
+        self.init(aDecoder.decodeObject() as! [TriggerClause])
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.makeDictionary())
+        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to Or clauses.
