@@ -12,6 +12,34 @@ import XCTest
 
 extension XCTestCase {
 
+    private func assertEqualsWrapper<T : Equatable>(
+      _ expected: T?,
+      _ actual: T?,
+      _ message: String? = nil,
+      file: StaticString = #file,
+      line: UInt = #line)
+    {
+        if message == nil {
+            XCTAssertEqual(expected, actual, file: file, line: line)
+        } else {
+            XCTAssertEqual(expected, actual, message!, file: file, line: line)
+        }
+    }
+
+    private func assertEqualsWrapper<T : Equatable>(
+      _ expected: T,
+      _ actual: T,
+      _ message: String? = nil,
+      file: StaticString = #file,
+      line: UInt = #line)
+    {
+        if message == nil {
+            XCTAssertEqual(expected, actual, file: file, line: line)
+        } else {
+            XCTAssertEqual(expected, actual, message!, file: file, line: line)
+        }
+    }
+
     func assertEqualsTimeRange(
       _ expected: TimeRange?,
       _ actual: TimeRange?,
@@ -28,16 +56,16 @@ extension XCTestCase {
             return
         }
 
-        XCTAssertEqual(
+        assertEqualsWrapper(
           expected?.from,
           actual?.from,
-          message ?? "",
+          message,
           file: file,
           line: line)
-        XCTAssertEqual(
+        assertEqualsWrapper(
           expected?.to,
           actual?.to,
-          message ?? "",
+          message,
           file: file,
           line: line)
     }
@@ -114,10 +142,10 @@ extension XCTestCase {
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
-        XCTAssertEqual(
+        assertEqualsWrapper(
           expected.field,
           actual.field,
-          message ?? "",
+          message,
           file: file,
           line: line)
         assertEqualsAny(
@@ -150,34 +178,34 @@ extension XCTestCase {
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
-        XCTAssertEqual(
+        assertEqualsWrapper(
           expected.field,
           actual.field,
-          message ?? "",
+          message,
           file: file,
           line: line)
-        XCTAssertEqual(
+        assertEqualsWrapper(
           expected.lowerLimit,
           actual.lowerLimit,
-          message ?? "",
+          message,
           file: file,
           line: line)
-        XCTAssertEqual(
+        assertEqualsWrapper(
           expected.lowerIncluded,
           actual.lowerIncluded,
-          message ?? "",
+          message,
           file: file,
           line: line)
-        XCTAssertEqual(
+        assertEqualsWrapper(
           expected.upperLimit,
           actual.upperLimit,
-          message ?? "",
+          message,
           file: file,
           line: line)
-        XCTAssertEqual(
+        assertEqualsWrapper(
           expected.upperIncluded,
           actual.upperIncluded,
-          message ?? "",
+          message,
           file: file,
           line: line)
     }
@@ -219,10 +247,10 @@ extension XCTestCase {
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
-        XCTAssertEqual(
+        assertEqualsWrapper(
           expected.count,
           actual.count,
-          message ?? "",
+          message,
           file: file,
           line: line)
         for (index, exp) in expected.enumerated() {
@@ -252,13 +280,22 @@ extension XCTestCase {
             return
         }
 
-        XCTAssertEqualWithAccuracy(
-          expected!,
-          actual!,
-          accuracy: accuracy,
-          message ?? "",
-          file: file,
-          line: line)
+        if message == nil {
+            XCTAssertEqualWithAccuracy(
+              expected!,
+              actual!,
+              accuracy: accuracy,
+              file: file,
+              line: line)
+        } else {
+            XCTAssertEqualWithAccuracy(
+              expected!,
+              actual!,
+              accuracy: accuracy,
+              message!,
+              file: file,
+              line: line)
+        }
     }
 
 
@@ -279,26 +316,26 @@ extension XCTestCase {
         }
 
         if expected is String && actual is String {
-            XCTAssertEqual(
+            assertEqualsWrapper(
               expected as! String,
               actual as! String,
-              message ?? "",
+              message,
               file: file,
               line: line)
             return
         } else if expected is Int && actual is Int {
-            XCTAssertEqual(
+            assertEqualsWrapper(
               expected as! Int,
               actual as! Int,
-              message ?? "",
+              message,
               file: file,
               line: line)
             return
         } else if expected is Bool && actual is Bool {
-            XCTAssertEqual(
+            assertEqualsWrapper(
               expected as! Bool,
               actual as! Bool,
-              message ?? "",
+              message,
               file: file,
               line: line)
             return
