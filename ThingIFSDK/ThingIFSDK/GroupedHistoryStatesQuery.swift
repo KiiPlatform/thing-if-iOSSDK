@@ -9,7 +9,7 @@
 import Foundation
 
 /** Query to retrieve grouped states of history. */
-open class GroupedHistoryStatesQuery: NSCoding {
+open class GroupedHistoryStatesQuery: NSObject, NSCoding {
 
     /** Alias of a query. */
     open let alias: String
