@@ -36,15 +36,26 @@ open class GroupedHistoryStatesQuery: NSCoding {
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil)
     {
-        fatalError("TODO: implement me.")
+        self.alias = alias
+        self.timeRange = timeRange
+        self.clause = clause
+        self.firmwareVersion = firmwareVersion
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(
+          aDecoder.decodeObject(forKey: "alias") as! String,
+          timeRange: aDecoder.decodeObject(forKey: "timeRange") as! TimeRange,
+          clause: aDecoder.decodeObject(forKey: "clause") as? QueryClause,
+          firmwareVersion: aDecoder.decodeObject(
+            forKey: "firmwareVersion") as? String)
     }
 
     public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.alias, forKey: "alias")
+        aCoder.encode(self.timeRange, forKey: "timeRange")
+        aCoder.encode(self.clause, forKey: "clause")
+        aCoder.encode(self.firmwareVersion, forKey: "firmwareVersion")
     }
 
 }
