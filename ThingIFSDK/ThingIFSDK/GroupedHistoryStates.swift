@@ -9,7 +9,7 @@
 import Foundation
 
 /** Grouped history states. */
-open class GroupedHistoryStates: NSCoding {
+open class GroupedHistoryStates: NSObject, NSCoding {
 
     /** Time range of this states. */
     open let timeRange: TimeRange
@@ -17,15 +17,19 @@ open class GroupedHistoryStates: NSCoding {
     open let objects: [HistoryState]
 
     internal init(_ timeRange: TimeRange, objects: [HistoryState]) {
-        fatalError("TODO: implement me.")
+        self.timeRange = timeRange
+        self.objects = objects
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(
+          aDecoder.decodeObject(forKey: "timeRange") as! TimeRange,
+          objects: aDecoder.decodeObject(forKey: "objects") as! [HistoryState])
     }
 
     public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.timeRange, forKey: "timeRange")
+        aCoder.encode(self.objects, forKey: "objects")
     }
 
 }
