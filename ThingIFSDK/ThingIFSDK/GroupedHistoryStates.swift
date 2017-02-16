@@ -9,7 +9,7 @@
 import Foundation
 
 /** Grouped history states. */
-open class GroupedHistoryStates: NSCoding {
+open class GroupedHistoryStates: NSObject, NSCoding {
 
     /** Time range of this states. */
     open let timeRange: TimeRange
@@ -22,13 +22,14 @@ open class GroupedHistoryStates: NSCoding {
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeNSCodingObject(forKey: "timeRange"),
-            objects: aDecoder.decodeNSCodingArray(forKey: "objects")!)
+        self.init(
+          aDecoder.decodeObject(forKey: "timeRange") as! TimeRange,
+          objects: aDecoder.decodeObject(forKey: "objects") as! [HistoryState])
     }
 
     public func encode(with aCoder: NSCoder) {
-        aCoder.encodeNSCodingObject(self.timeRange, forKey: "timeRange")
-        aCoder.encodeNSCodingArray(self.objects, forKey: "objects")
+        aCoder.encode(self.timeRange, forKey: "timeRange")
+        aCoder.encode(self.objects, forKey: "objects")
     }
 
 }
