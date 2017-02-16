@@ -9,7 +9,7 @@
 import Foundation
 
 /** History of state. */
-open class HistoryState: NSCoding {
+open class HistoryState: NSObject, NSCoding {
 
     /** State of a target thing. */
     open let state: [String : Any]

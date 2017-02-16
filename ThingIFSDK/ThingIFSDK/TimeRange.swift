@@ -9,7 +9,7 @@
 import Foundation
 
 /** Time range. */
-open class TimeRange: NSCoding {
+open class TimeRange: NSObject, NSCoding {
 
     /** Start point of a time range. Inclusive. */
     open let from: Date

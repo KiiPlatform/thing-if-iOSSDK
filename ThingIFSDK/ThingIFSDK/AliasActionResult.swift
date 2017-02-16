@@ -9,7 +9,7 @@
 import Foundation
 
 /** Result of action for an alias. */
-open class AliasActionResult: NSCoding {
+open class AliasActionResult: NSObject, NSCoding {
 
     /** Name of an alias. */
     open let alias: String
@@ -24,11 +24,11 @@ open class AliasActionResult: NSCoding {
     public required convenience init?(coder aDecoder: NSCoder) {
         self.init(
           aDecoder.decodeObject(forKey: "alias") as! String,
-          results: aDecoder.decodeNSCodingArray(forKey: "results")!)
+          results: aDecoder.decodeObject(forKey: "results") as! [ActionResult])
     }
 
     public func encode(with aCoder: NSCoder) {
         aCoder.encode(self.alias, forKey: "alias")
-        aCoder.encodeNSCodingArray(self.results, forKey: "results")
+        aCoder.encode(self.results, forKey: "results")
     }
 }
