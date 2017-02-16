@@ -8,47 +8,13 @@
 
 import Foundation
 
-internal func makeLimitTuple(
-  _ limit: NSNumber?,
-  included: Bool?) -> (limit: NSNumber, included: Bool)?
-{
-    return limit == nil || included == nil ? nil : (limit!, included!)
-}
-
-private func makeQueryClauseArray(
-  _ dictionaries: [[String : Any]]) -> [QueryClause]
-{
-    var retval: [QueryClause] = []
-    for dict in dictionaries {
-        let clause: QueryClause
-        switch dict["type"] as! String {
-            case "eq":
-                clause = EqualsClauseInQuery(dict)!
-            case "not":
-                clause = NotEqualsClauseInQuery(dict)!
-            case "range":
-                clause = RangeClauseInQuery(dict)!
-            case "and":
-                clause = AndClauseInQuery(
-                  makeQueryClauseArray(dict["clauses"] as! [[String : Any]]))
-            case "or":
-                clause = OrClauseInQuery(
-                  makeQueryClauseArray(dict["clauses"] as! [[String : Any]]))
-            default:
-                fatalError("unknown clause type.")
-        }
-        retval.append(clause)
-    }
-    return retval
-}
-
 /** Base protocol for query clause classes. */
 public protocol QueryClause: BaseClause {
 
 }
 
 /** Class represents Equals clause for query methods. */
-open class EqualsClauseInQuery: QueryClause, BaseEquals {
+open class EqualsClauseInQuery: NSObject, QueryClause, BaseEquals {
 
     /** Name of a field. */
     open let field: String
@@ -99,32 +65,32 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
         ] as [String : Any]
     }
 
-    fileprivate convenience init?(_ dict: [String : Any]) {
-        if dict["type"] as? String != "eq" {
-            return nil
-        }
-        self.init(dict["field"] as! String, value: dict["value"] as AnyObject)
-    }
-
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! [String : Any])
+        self.init(
+          aDecoder.decodeObject(forKey: "field") as! String,
+          value: aDecoder.decodeObject(forKey: "value") as AnyObject)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.makeDictionary())
+        aCoder.encode(self.field, forKey: "field")
+        aCoder.encode(self.value, forKey: "value")
     }
 
 }
 
 /** Class represents Not Equals clause for query methods.  */
-open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
+open class NotEqualsClauseInQuery: NSObject, QueryClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInQuery
 
     /** Contained Equals clause instance. */
     open let equals: EqualsClauseInQuery
 
+    /** Initialize with `EqualsClauseInQuery`.
+
+     - Parameter equals: equals clause.
+     */
     public init(_ equals: EqualsClauseInQuery) {
         self.equals = equals
     }
@@ -142,33 +108,18 @@ open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
-            return nil
-        }
-        self.init(dict)
-    }
-
-    fileprivate convenience init?(_ dict: [String : Any]) {
-        if dict["type"] as? String != "not" {
-            return nil
-        }
-
-        if let equals = EqualsClauseInQuery(dict["clause"] as! [String : Any]) {
-            self.init(equals)
-        } else {
-            return nil
-        }
+        self.init(aDecoder.decodeObject() as! EqualsClauseInQuery)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.makeDictionary())
+        aCoder.encode(self.equals)
     }
 
 }
 
 /** Class represents Range clause for query methods. */
-open class RangeClauseInQuery: QueryClause, BaseRange {
+open class RangeClauseInQuery: NSObject, QueryClause, BaseRange {
 
     private let lower: (limit: NSNumber, included: Bool)?
     private let upper: (limit: NSNumber, included: Bool)?
@@ -315,36 +266,40 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
-            return nil
-        }
-        self.init(dict)
-    }
+        let lower = aDecoder.decodeObject(forKey: "lower") as? [String : Any]
+        let upper = aDecoder.decodeObject(forKey: "upper") as? [String : Any]
 
-    fileprivate convenience init?(_ dict: [String : Any]) {
-        if dict["type"] as? String != "range" {
-            return nil
+        if lower == nil && upper == nil {
+            fatalError("unexpected case.")
         }
         self.init(
-          dict["field"] as! String,
-          lower: makeLimitTuple(
-            dict["lowerLimit"] as? NSNumber,
-            included: dict["lowerIncluded"] as? Bool),
-          upper: makeLimitTuple(
-            dict["upperLimit"] as? NSNumber,
-            included: dict["upperIncluded"] as? Bool))
+          aDecoder.decodeObject(forKey: "field") as! String,
+          lower: lower != nil ?
+            (lower!["limit"] as! NSNumber, lower!["included"] as! Bool) : nil,
+          upper: upper != nil ?
+            (upper!["limit"] as! NSNumber, upper!["included"] as! Bool) : nil)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.makeDictionary())
+        aCoder.encode(self.field, forKey: "field")
+        if let lower = self.lower {
+            aCoder.encode(
+              ["limit": lower.limit, "included": lower.included],
+              forKey: "lower")
+        }
+        if let upper = self.upper {
+            aCoder.encode(
+              ["limit": upper.limit, "included": upper.included],
+              forKey: "upper")
+        }
     }
 
 }
 
 
 /** Class represents And clause for query methods. */
-open class AndClauseInQuery: QueryClause, BaseAnd {
+open class AndClauseInQuery: NSObject, QueryClause, BaseAnd {
 
     /** Clauses conjuncted with And. */
     open internal(set) var clauses: [QueryClause]
@@ -367,18 +322,12 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
-            return nil
-        }
-        if dict["type"] as? String != "and" {
-            return nil
-        }
-        self.init(makeQueryClauseArray(dict["clauses"] as! [[String : Any ]]))
+        self.init(aDecoder.decodeObject() as! [QueryClause])
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.makeDictionary())
+        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to And clauses.
@@ -404,7 +353,7 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 }
 
 /** Class represents Or clause for query methods. */
-open class OrClauseInQuery: QueryClause, BaseOr {
+open class OrClauseInQuery: NSObject, QueryClause, BaseOr {
 
     /** Clauses conjuncted with Or. */
     open internal(set) var clauses: [QueryClause]
@@ -427,18 +376,12 @@ open class OrClauseInQuery: QueryClause, BaseOr {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        guard let dict = aDecoder.decodeObject() as? [String : Any] else {
-            return nil
-        }
-        if dict["type"] as? String != "or" {
-            return nil
-        }
-        self.init(makeQueryClauseArray(dict["clauses"] as! [[String : Any ]]))
+        self.init(aDecoder.decodeObject() as! [QueryClause])
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.makeDictionary())
+        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to Or clauses.
