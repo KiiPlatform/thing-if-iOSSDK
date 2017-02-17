@@ -9,6 +9,7 @@
 import Foundation
 extension ThingIFAPI {
 
+    /*
     func _onboard(
         _ byVendorThingID: Bool,
         IDString: String,
@@ -187,4 +188,5 @@ extension ThingIFAPI {
             completionHandler(nil, ThingIFError.jsonParseError)
         }
     }
+    */
 }
