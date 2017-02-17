@@ -9,7 +9,7 @@
 import Foundation
 
 /** Result of an action. */
-open class ActionResult: NSCoding {
+open class ActionResult: NSObject, NSCoding {
 
     /** Action is succeeded or not. */
     open let succeeded: Bool
@@ -26,15 +26,24 @@ open class ActionResult: NSCoding {
       data: Any?,
       errorMessage: String?)
     {
-        fatalError("TODO: implement me.")
+        self.succeeded = succeeded
+        self.actionName = actionName
+        self.data = data
+        self.errorMessage = errorMessage
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeBool(forKey: "succeeded"),
+            actionName: aDecoder.decodeObject(forKey: "actionName") as! String,
+            data: aDecoder.decodeObject(forKey: "data"),
+            errorMessage: aDecoder.decodeObject(forKey: "errorMessage") as? String)
     }
 
     public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.succeeded, forKey: "succeeded")
+        aCoder.encode(self.actionName, forKey: "actionName")
+        aCoder.encode(self.data, forKey: "data")
+        aCoder.encode(self.errorMessage, forKey: "errorMessage")
     }
 
 }

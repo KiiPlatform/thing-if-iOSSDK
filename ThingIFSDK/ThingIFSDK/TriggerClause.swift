@@ -14,7 +14,7 @@ public protocol TriggerClause: BaseClause {
 }
 
 /** Class represents Equals clause for trigger methods. */
-open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
+open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
 
     /** Alias of this clause. */
     open let alias: String
@@ -65,23 +65,33 @@ open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        return [
+          "type" : "eq",
+          "alias" : self.alias,
+          "field" : self.field,
+          "value" : self.value
+        ] as [String : Any]
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(
+          aDecoder.decodeObject(forKey: "alias") as! String,
+          field: aDecoder.decodeObject(forKey: "field") as! String,
+          value: aDecoder.decodeObject(forKey: "value") as AnyObject)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.alias, forKey: "alias")
+        aCoder.encode(self.field, forKey: "field")
+        aCoder.encode(self.value, forKey: "value")
     }
 
 }
 
 /** Class represents Not Equals clause for trigger methods.  */
-open class NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
+open class NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInTrigger
 
     /** Contained Equals clause instance. */
@@ -96,51 +106,73 @@ open class NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        return [
+          "type" : "not",
+          "clause" : self.equals.makeDictionary()
+        ] as [String : Any]
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject() as! EqualsClauseInTrigger)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.equals)
     }
 
 }
 
 /** Class represents Range clause for trigger methods. */
-open class RangeClauseInTrigger: TriggerClause, BaseRange {
+open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
+
+    private let lower: (limit: NSNumber, included: Bool)?
+    private let upper: (limit: NSNumber, included: Bool)?
 
     /** Alias of this clause. */
     open let alias: String
     /** Name of a field. */
     open let field: String
+
     /** Lower limit for an instance. */
-    open let lowerLimit: NSNumber?
+    open var lowerLimit: NSNumber? {
+        get {
+            return self.lower?.limit
+        }
+    }
+
     /** Include or not lower limit. */
-    open let lowerIncluded: Bool?
+    open var lowerIncluded: Bool? {
+        get {
+            return self.lower?.included
+        }
+    }
+
     /** Upper limit for an instance. */
-    open let upperLimit: NSNumber?
+    open var upperLimit: NSNumber? {
+        get {
+            return self.upper?.limit
+        }
+    }
+
     /** Include or not upper limit. */
-    open let upperIncluded: Bool?
+    open var upperIncluded: Bool? {
+        get {
+            return self.upper?.included
+        }
+    }
 
     private init(
       _ alias: String,
       field: String,
-      lowerLimit: NSNumber? = nil,
-      lowerIncluded: Bool? = nil,
-      upperLimit: NSNumber? = nil,
-      upperIncluded: Bool? = nil)
+      lower: (limit: NSNumber, included: Bool)? = nil,
+      upper: (limit: NSNumber, included: Bool)? = nil)
     {
         self.alias = alias
         self.field = field
-        self.lowerLimit = lowerLimit
-        self.lowerIncluded = lowerIncluded
-        self.upperLimit = upperLimit
-        self.upperIncluded = upperIncluded
+        self.lower = lower
+        self.upper = upper
     }
 
     /** Create Range clause for trigger having lower and upper limit.
@@ -167,7 +199,11 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
       upperLimit: NSNumber,
       upperIncluded: Bool) -> RangeClauseInTrigger
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInTrigger(
+          alias,
+          field: field,
+          lower: (lowerLimit, lowerIncluded),
+          upper: (upperLimit, upperIncluded))
     }
 
     /** Create Range clause for trigger which denotes greater than.
@@ -183,7 +219,10 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInTrigger(
+          alias,
+          field: field,
+          lower: (limit, false))
     }
 
     /** Create Range clause for trigger which denotes greater than or
@@ -200,7 +239,10 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInTrigger(
+          alias,
+          field: field,
+          lower: (limit, true))
     }
 
     /** Create Range clause for trigger which denotes less than.
@@ -216,7 +258,10 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInTrigger(
+          alias,
+          field: field,
+          upper: (limit, false))
     }
 
     /** Create Range clause for trigger which denotes less than or
@@ -232,7 +277,10 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInTrigger(
+          alias,
+          field: field,
+          upper: (limit, true))
     }
 
     /** Get Range clause for trigger as a Dictionary instance
@@ -240,25 +288,55 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var retval: [String : Any] = [
+          "type": "range",
+          "alias": alias,
+          "field": self.field
+        ]
+        retval["upperLimit"] = self.upper?.limit
+        retval["upperIncluded"] = self.upper?.included
+        retval["lowerLimit"] = self.lower?.limit
+        retval["lowerIncluded"] = self.lower?.included
+        return retval
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        let lower = aDecoder.decodeObject(forKey: "lower") as? [String : Any]
+        let upper = aDecoder.decodeObject(forKey: "upper") as? [String : Any]
+
+        if lower == nil && upper == nil {
+            fatalError("unexpected case.")
+        }
+        self.init(
+          aDecoder.decodeObject(forKey: "alias") as! String,
+          field: aDecoder.decodeObject(forKey: "field") as! String,
+          lower: lower != nil ?
+            (lower!["limit"] as! NSNumber, lower!["included"] as! Bool) : nil,
+          upper: upper != nil ?
+            (upper!["limit"] as! NSNumber, upper!["included"] as! Bool) : nil)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.alias, forKey: "alias")
+        aCoder.encode(self.field, forKey: "field")
+        if let lower = self.lower {
+            aCoder.encode(
+              ["limit": lower.limit, "included": lower.included],
+              forKey: "lower")
+        }
+        if let upper = self.upper {
+            aCoder.encode(
+              ["limit": upper.limit, "included": upper.included],
+              forKey: "upper")
+        }
     }
 
 }
 
-
 /** Class represents And clause for trigger methods. */
-open class AndClauseInTrigger: TriggerClause, BaseAnd {
-    public typealias ClausesType = TriggerClause
+open class AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
 
     /** Clauses conjuncted with And. */
     open internal(set) var clauses: [TriggerClause]
@@ -281,20 +359,22 @@ open class AndClauseInTrigger: TriggerClause, BaseAnd {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject() as! [TriggerClause])
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to And clauses.
 
      - Parameter clause: Clause to be added to and clauses.
      */
+    @discardableResult
     open func add(_ clause: TriggerClause) -> Self {
-        fatalError("TODO: implement me.")
+        self.clauses.append(clause)
+        return self
     }
 
     /** Get And clause for trigger as a Dictionary instance
@@ -302,14 +382,15 @@ open class AndClauseInTrigger: TriggerClause, BaseAnd {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var clauses: [[String : Any]] = []
+        self.clauses.forEach { clauses.append($0.makeDictionary()) }
+        return ["type": "and", "clauses": clauses] as [String : Any]
     }
 
 }
 
 /** Class represents Or clause for trigger methods. */
-open class OrClauseInTrigger: TriggerClause, BaseOr {
-    public typealias ClausesType = TriggerClause
+open class OrClauseInTrigger: NSObject, TriggerClause, BaseOr {
 
     /** Clauses conjuncted with Or. */
     open internal(set) var clauses: [TriggerClause]
@@ -332,20 +413,22 @@ open class OrClauseInTrigger: TriggerClause, BaseOr {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject() as! [TriggerClause])
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to Or clauses.
 
      - Parameter clause: Clause to be added to or clauses.
      */
+    @discardableResult
     open func add(_ clause: TriggerClause) -> Self {
-        fatalError("TODO: implement me.")
+        self.clauses.append(clause)
+        return self
     }
 
     /** Get Or clause for trigger as a Dictionary instance
@@ -353,7 +436,9 @@ open class OrClauseInTrigger: TriggerClause, BaseOr {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var clauses: [[String : Any]] = []
+        self.clauses.forEach { clauses.append($0.makeDictionary()) }
+        return ["type": "or", "clauses": clauses] as [String : Any]
     }
 
 }

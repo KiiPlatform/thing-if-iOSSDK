@@ -5,7 +5,7 @@
 import Foundation
 
 /** Represents Target */
-open class AbstractThing : Equatable, TargetThing {
+open class AbstractThing : NSObject, TargetThing {
     open let typedID: TypedID
     open let accessToken: String?
     open var thingID: String {
@@ -33,13 +33,13 @@ open class AbstractThing : Equatable, TargetThing {
     - Parameter vendorThingID: ID of vendor thing
     - Parameter accessToken: Access token of the target, can nil.
     */
-    public init(_ thingID: String, vendorThingID : String, accessToken: String? = nil) {
+    internal init(_ thingID: String, vendorThingID : String, accessToken: String? = nil) {
         self.typedID = TypedID(TypedID.Types.thing, id: thingID)
         self.accessToken = accessToken
         self.vendorThingID = vendorThingID
     }
 
-    open func isEqual(_ object: Any?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         guard let aTarget = object as? AbstractThing else {
             return false
         }

@@ -9,7 +9,7 @@
 import Foundation
 
 /** Aggregated result. */
-open class AggregatedResult<AggregatedValueType>: NSCoding {
+open class AggregatedResult<AggregatedValueType> {
 
     /** Returned value to be aggregated. */
     open let value: AggregatedValueType
@@ -23,15 +23,9 @@ open class AggregatedResult<AggregatedValueType>: NSCoding {
       timeRange: TimeRange,
       aggregatedObjects: [HistoryState])
     {
-        fatalError("TODO: implement me.")
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
-
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.value = value
+        self.timeRange = timeRange
+        self.aggregatedObjects = aggregatedObjects
     }
 
 }

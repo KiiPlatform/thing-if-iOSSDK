@@ -14,7 +14,7 @@ public protocol QueryClause: BaseClause {
 }
 
 /** Class represents Equals clause for query methods. */
-open class EqualsClauseInQuery: QueryClause, BaseEquals {
+open class EqualsClauseInQuery: NSObject, QueryClause, BaseEquals {
 
     /** Name of a field. */
     open let field: String
@@ -58,28 +58,39 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        return [
+          "type" : "eq",
+          "field" : self.field,
+          "value" : self.value
+        ] as [String : Any]
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(
+          aDecoder.decodeObject(forKey: "field") as! String,
+          value: aDecoder.decodeObject(forKey: "value") as AnyObject)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.field, forKey: "field")
+        aCoder.encode(self.value, forKey: "value")
     }
 
 }
 
 /** Class represents Not Equals clause for query methods.  */
-open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
+open class NotEqualsClauseInQuery: NSObject, QueryClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInQuery
 
     /** Contained Equals clause instance. */
     open let equals: EqualsClauseInQuery
 
+    /** Initialize with `EqualsClauseInQuery`.
+
+     - Parameter equals: equals clause.
+     */
     public init(_ equals: EqualsClauseInQuery) {
         self.equals = equals
     }
@@ -89,47 +100,69 @@ open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        return [
+          "type" : "not",
+          "clause" : self.equals.makeDictionary()
+        ] as [String : Any]
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject() as! EqualsClauseInQuery)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.equals)
     }
 
 }
 
 /** Class represents Range clause for query methods. */
-open class RangeClauseInQuery: QueryClause, BaseRange {
+open class RangeClauseInQuery: NSObject, QueryClause, BaseRange {
+
+    private let lower: (limit: NSNumber, included: Bool)?
+    private let upper: (limit: NSNumber, included: Bool)?
 
     /** Name of a field. */
     open let field: String
+
     /** Lower limit for an instance. */
-    open let lowerLimit: NSNumber?
+    open var lowerLimit: NSNumber? {
+        get {
+            return self.lower?.limit
+        }
+    }
+
     /** Include or not lower limit. */
-    open let lowerIncluded: Bool?
+    open var lowerIncluded: Bool? {
+        get {
+            return self.lower?.included
+        }
+    }
+
     /** Upper limit for an instance. */
-    open let upperLimit: NSNumber?
+    open var upperLimit: NSNumber? {
+        get {
+            return self.upper?.limit
+        }
+    }
+
     /** Include or not upper limit. */
-    open let upperIncluded: Bool?
+    open var upperIncluded: Bool? {
+        get {
+            return self.upper?.included
+        }
+    }
 
     private init(
       _ field: String,
-      lowerLimit: NSNumber? = nil,
-      lowerIncluded: Bool? = nil,
-      upperLimit: NSNumber? = nil,
-      upperIncluded: Bool? = nil)
+      lower: (limit: NSNumber, included: Bool)? = nil,
+      upper: (limit: NSNumber, included: Bool)? = nil)
     {
         self.field = field
-        self.lowerLimit = lowerLimit
-        self.lowerIncluded = lowerIncluded
-        self.upperLimit = upperLimit
-        self.upperIncluded = upperIncluded
+        self.lower = lower
+        self.upper = upper
     }
 
     /** Create Range clause for query having lower and upper limit.
@@ -154,7 +187,10 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
       upperLimit: NSNumber,
       upperIncluded: Bool) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(
+          field,
+          lower: (lowerLimit, lowerIncluded),
+          upper: (upperLimit, upperIncluded))
     }
 
     /** Create Range clause for query which denotes greater than.
@@ -168,7 +204,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, lower: (limit, false))
     }
 
     /** Create Range clause for query which denotes greater than or
@@ -183,7 +219,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, lower: (limit, true))
     }
 
     /** Create Range clause for query which denotes less than.
@@ -197,7 +233,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, upper: (limit, false))
     }
 
     /** Create Range clause for query which denotes less than or
@@ -212,7 +248,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, upper: (limit, true))
     }
 
     /** Get Range clause for query as a Dictionary instance
@@ -220,25 +256,50 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var retval: [String : Any] = ["type": "range", "field": self.field]
+        retval["upperLimit"] = self.upper?.limit
+        retval["upperIncluded"] = self.upper?.included
+        retval["lowerLimit"] = self.lower?.limit
+        retval["lowerIncluded"] = self.lower?.included
+        return retval
     }
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        let lower = aDecoder.decodeObject(forKey: "lower") as? [String : Any]
+        let upper = aDecoder.decodeObject(forKey: "upper") as? [String : Any]
+
+        if lower == nil && upper == nil {
+            fatalError("unexpected case.")
+        }
+        self.init(
+          aDecoder.decodeObject(forKey: "field") as! String,
+          lower: lower != nil ?
+            (lower!["limit"] as! NSNumber, lower!["included"] as! Bool) : nil,
+          upper: upper != nil ?
+            (upper!["limit"] as! NSNumber, upper!["included"] as! Bool) : nil)
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.field, forKey: "field")
+        if let lower = self.lower {
+            aCoder.encode(
+              ["limit": lower.limit, "included": lower.included],
+              forKey: "lower")
+        }
+        if let upper = self.upper {
+            aCoder.encode(
+              ["limit": upper.limit, "included": upper.included],
+              forKey: "upper")
+        }
     }
 
 }
 
 
 /** Class represents And clause for query methods. */
-open class AndClauseInQuery: QueryClause, BaseAnd {
-    public typealias ClausesType = QueryClause
+open class AndClauseInQuery: NSObject, QueryClause, BaseAnd {
 
     /** Clauses conjuncted with And. */
     open internal(set) var clauses: [QueryClause]
@@ -261,20 +322,22 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject() as! [QueryClause])
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to And clauses.
 
      - Parameter clause: Clause to be added to and clauses.
      */
+    @discardableResult
     open func add(_ clause: QueryClause) -> Self {
-        fatalError("TODO: implement me.")
+        self.clauses.append(clause)
+        return self
     }
 
     /** Get And clause for query as a Dictionary instance
@@ -282,14 +345,15 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var clauses: [[String : Any]] = []
+        self.clauses.forEach { clauses.append($0.makeDictionary()) }
+        return ["type": "and", "clauses": clauses] as [String : Any]
     }
 
 }
 
 /** Class represents Or clause for query methods. */
-open class OrClauseInQuery: QueryClause, BaseOr {
-    public typealias ClausesType = QueryClause
+open class OrClauseInQuery: NSObject, QueryClause, BaseOr {
 
     /** Clauses conjuncted with Or. */
     open internal(set) var clauses: [QueryClause]
@@ -312,20 +376,22 @@ open class OrClauseInQuery: QueryClause, BaseOr {
 
     /** Decoder confirming `NSCoding`. */
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject() as! [QueryClause])
     }
 
     /** Encoder confirming `NSCoding`. */
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to Or clauses.
 
      - Parameter clause: Clause to be added to or clauses.
      */
+    @discardableResult
     open func add(_ clause: QueryClause) -> Self {
-        fatalError("TODO: implement me.")
+        self.clauses.append(clause)
+        return self
     }
 
     /** Get Or clause for query as a Dictionary instance
@@ -333,7 +399,9 @@ open class OrClauseInQuery: QueryClause, BaseOr {
      - Returns: A Dictionary instance.
      */
     open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+        var clauses: [[String : Any]] = []
+        self.clauses.forEach { clauses.append($0.makeDictionary()) }
+        return ["type": "or", "clauses": clauses] as [String : Any]
     }
 
 }

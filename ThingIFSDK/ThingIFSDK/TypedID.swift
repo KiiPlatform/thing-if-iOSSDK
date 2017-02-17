@@ -5,7 +5,7 @@
 import Foundation
 
 /** Represents entity type and its ID. */
-open class TypedID : Equatable, NSCoding {
+open class TypedID : NSObject, NSCoding {
 
     public enum Types: String {
         /** User type. */
@@ -19,12 +19,15 @@ open class TypedID : Equatable, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.*/")
+        aCoder.encode(self.type.rawValue, forKey: "type")
+        aCoder.encode(self.id, forKey: "id")
     }
 
     // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.*/")
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init(
+          Types(rawValue: aDecoder.decodeObject(forKey: "type") as! String)!,
+          id: aDecoder.decodeObject(forKey: "id") as! String)
     }
 
     /** Type of the ID*/
@@ -46,7 +49,7 @@ open class TypedID : Equatable, NSCoding {
         return "\(type):\(id)"
     }
 
-    open func isEqual(_ object: Any?) -> Bool {
+    open override func isEqual(_ object: Any?) -> Bool {
         guard let aType = object as? TypedID else{
             return false
         }

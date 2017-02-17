@@ -9,22 +9,30 @@
 import Foundation
 
 /** Action with an alias. */
-open class AliasAction: NSCoding {
+open class AliasAction: NSObject, NSCoding {
 
     /** Name of an alias. */
     open let alias: String
     /** Action of this alias. */
     open let action: [String : Any]
 
+    /** Initializer of AliasAction instance.
+
+     - Parameter alias: Name of an alias.
+     - Parameter action: Action of this alias. This should be able to convert to JSON.
+     */
     public init(_ alias: String, action: [String : Any]) {
-        fatalError("TODO: implement me.")
+        self.alias = alias
+        self.action = action
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(aDecoder.decodeObject(forKey: "alias") as! String,
+            action: aDecoder.decodeObject(forKey: "action") as! [String : Any])
     }
 
     public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.alias, forKey: "alias")
+        aCoder.encode(self.action, forKey: "action")
     }
 }

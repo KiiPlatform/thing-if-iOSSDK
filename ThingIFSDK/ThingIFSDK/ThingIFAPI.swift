@@ -788,6 +788,18 @@ open class ThingIFAPI: Equatable, NSCoding {
 
     /** Aggregate history states
 
+     `AggregatedValueType` represents type of calcuated value with
+     `Aggregation.FunctionType`.
+
+     - If the function is `Aggregation.FunctionType.max`,
+       `Aggregation.FunctionType.min` or
+       `Aggregation.FunctionType.sum`, the type may be same as type of
+       field represented by `Aggregation.FieldType`.
+     - If the function is `Aggregation.FunctionType.mean`, the type
+       may be `Double`.
+     - If the function is `Aggregation.FunctionType.count`, the type
+       must be `Int`.
+
      - Parameter query: `GroupedHistoryStatesQuery`
        instance. timeRange in query should less than 60 data grouping
        intervals.

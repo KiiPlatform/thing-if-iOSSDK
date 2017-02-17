@@ -9,7 +9,7 @@
 import Foundation
 
 /** Result of action for an alias. */
-open class AliasActionResult: NSCoding {
+open class AliasActionResult: NSObject, NSCoding {
 
     /** Name of an alias. */
     open let alias: String
@@ -17,14 +17,18 @@ open class AliasActionResult: NSCoding {
     open let results: [ActionResult]
 
     internal init(_ alias: String, results: [ActionResult]) {
-        fatalError("TODO: implement me.")
+        self.alias = alias
+        self.results = results
     }
 
     public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        self.init(
+          aDecoder.decodeObject(forKey: "alias") as! String,
+          results: aDecoder.decodeObject(forKey: "results") as! [ActionResult])
     }
 
     public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        aCoder.encode(self.alias, forKey: "alias")
+        aCoder.encode(self.results, forKey: "results")
     }
 }
