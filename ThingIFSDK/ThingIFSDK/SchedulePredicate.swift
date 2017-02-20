@@ -9,7 +9,7 @@
 import Foundation
 
 /** Class represents SchedulePredicate. */
-open class SchedulePredicate: Predicate {
+open class SchedulePredicate: NSObject, Predicate {
     /** Specified schedule. (cron tab format) */
     open let schedule: String
 
