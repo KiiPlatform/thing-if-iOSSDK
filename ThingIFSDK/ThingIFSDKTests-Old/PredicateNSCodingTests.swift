@@ -19,19 +19,6 @@ class PredicateNSCodingTests: SmallTestBase {
         super.tearDown()
     }
 
-    func testSchedulePredicate() {
-        let predicate = SchedulePredicate(schedule: "test");
-
-        let data = NSKeyedArchiver.archivedData(withRootObject: predicate);
-
-        XCTAssertNotNil(data);
-
-        let decode = NSKeyedUnarchiver.unarchiveObject(with: data) as! SchedulePredicate;
-
-        XCTAssertNotNil(decode);
-        XCTAssertEqual(decode.schedule, predicate.schedule);
-    }
-
     func testStatePredicate() {
         let predicate = StatePredicate(
                 condition: Condition(clause: EqualsClause(field: "f", stringValue: "v")),

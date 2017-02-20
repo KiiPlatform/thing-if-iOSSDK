@@ -9,7 +9,7 @@
 import Foundation
 
 /** Protocol represents Predicate */
-public protocol Predicate :  NSCoding {
+public protocol Predicate: class, NSCoding {
 
 
     /** Get Predicate as NSDictionary instance
