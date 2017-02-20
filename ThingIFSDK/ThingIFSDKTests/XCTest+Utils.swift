@@ -12,7 +12,7 @@ import XCTest
 
 extension XCTestCase {
 
-    private func assertEqualsWrapper<T : Equatable>(
+    internal func assertEqualsWrapper<T : Equatable>(
       _ expected: T?,
       _ actual: T?,
       _ message: String? = nil,
@@ -26,7 +26,7 @@ extension XCTestCase {
         }
     }
 
-    private func assertEqualsWrapper<T : Equatable>(
+    internal func assertEqualsWrapper<T : Equatable>(
       _ expected: T,
       _ actual: T,
       _ message: String? = nil,

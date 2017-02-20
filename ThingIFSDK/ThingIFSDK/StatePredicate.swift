@@ -48,10 +48,13 @@ open class StatePredicate: Predicate {
      - Returns: a NSDictionary instance
      */
     open func makeDictionary() -> [ String : Any ]  {
+        fatalError("TODO: implmenet me.")
+        /*
         return [
           "eventSource": EventSource.states.rawValue,
           "triggersWhen": self.triggersWhen.rawValue,
           "condition": self.condition.makeDictionary()] as [ String : Any ]
+        */
     }
 
     /*
