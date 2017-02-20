@@ -3,11 +3,11 @@
 //  ThingIFSDK
 //
 //  Created by syahRiza on 5/10/16.
-//  Copyright © 2016 Kii. All rights reserved.
+//  Copyright (c) 2016 Kii. All rights reserved.
 //
 
 /** Class represents ScheduleOncePredicate. */
-open class ScheduleOncePredicate: Predicate {
+open class ScheduleOncePredicate: NSObject, Predicate {
     /** Specified schedule. */
     open let scheduleAt: Date
 
