@@ -9,7 +9,7 @@
 import Foundation
 
 /** Query to retrieve history of states. */
-open class HistoryStatesQuery: NSCoding {
+open class HistoryStatesQuery {
 
     /** Alias to be queried history. */
     open let alias: String
@@ -43,14 +43,11 @@ open class HistoryStatesQuery: NSCoding {
       bestEffortLimit: Int? = nil,
       nextPaginationKey: String? = nil)
     {
-        fatalError("TODO: implement me.")
+        self.alias = alias
+        self.clause = clause
+        self.firmwareVersion = firmwareVersion
+        self.bestEffortLimit = bestEffortLimit
+        self.nextPaginationKey = nextPaginationKey
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
-
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
 }
