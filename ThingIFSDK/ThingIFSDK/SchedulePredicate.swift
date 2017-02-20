@@ -23,7 +23,7 @@ open class SchedulePredicate: NSObject, Predicate {
         self.schedule = schedule
     }
 
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         self.schedule = aDecoder.decodeObject(forKey: "schedule") as! String;
 
     }

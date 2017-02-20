@@ -21,7 +21,7 @@ open class ScheduleOncePredicate: NSObject, Predicate {
         self.scheduleAt = scheduleAt
     }
 
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         self.scheduleAt = aDecoder.decodeObject(forKey: "scheduleAt") as! Date
     }
 
