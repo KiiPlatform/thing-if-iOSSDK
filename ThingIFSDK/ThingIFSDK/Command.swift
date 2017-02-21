@@ -5,7 +5,7 @@
 import Foundation
 
 /** Class represents Command */
-open class Command: NSObject, NSCoding {
+open class Command: Equatable, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
@@ -33,9 +33,9 @@ open class Command: NSObject, NSCoding {
         self.targetID = aDecoder.decodeObject(forKey: "targetID") as! TypedID
         self.issuerID = aDecoder.decodeObject(forKey: "issuerID") as! TypedID
         self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [(alias: String, actions: [String : Any])]
+                as! [AliasAction]
         self.actionResults = aDecoder.decodeObject(forKey: "actionResults")
-                as! [(alias: String, actions: [String : Any])]
+                as! [AliasActionResult]
         self.commandState =
             CommandState(rawValue: aDecoder.decodeInteger(forKey: "commandState"))!;
         self.firedByTriggerID = aDecoder.decodeObject(forKey: "firedByTriggerID") as? String
@@ -62,9 +62,9 @@ open class Command: NSObject, NSCoding {
     /** ID of the issuer of the Command. */
     open let issuerID: TypedID
     /** Actions to be executed. */
-    open let actions: [(alias: String, actions: [String : Any])]
+    open let actions: [AliasAction]
     /** Results of the action. */
-    open let actionResults: [(alias: String, actions: [String : Any])]
+    open let actionResults: [AliasActionResult]
     /** State of the Command. */
     open let commandState: CommandState
     /** ID of the trigger which fired this command */
@@ -83,8 +83,8 @@ open class Command: NSObject, NSCoding {
     internal init(commandID: String,
          targetID: TypedID,
          issuerID: TypedID,
-         actions: [(alias: String, actions: [String : Any])],
-         actionResults: [(alias: String, actions: [String : Any])]?,
+         actions: [AliasAction],
+         actionResults: [AliasActionResult]?,
          commandState: CommandState?,
          firedByTriggerID: String? = nil,
          created: Date? = nil,
@@ -107,7 +107,29 @@ open class Command: NSObject, NSCoding {
         self.metadata = metadata
     }
 
-    open override func isEqual(_ object: Any?) -> Bool {
+    /** Get actions associated with an alias.
+
+     - Parameter alias: Alias to get action.
+     - Returns Array of `AliasAction`.
+     */
+    open func getAction(_ alias: String) -> [AliasAction] {
+        fatalError("TODO: implement me.")
+    }
+
+    /** Get action results associated with an alias and actio name.
+
+     - Parameter alias: Alias to get action result.
+     - Parameter alias: Action name to get action result.
+     - Returns Array of `AliasAction`.
+     */
+    open func getActionResult(
+      _ alias: String,
+      actionName: String) -> [AliasActionResult]
+    {
+        fatalError("TODO: implement me.")
+    }
+
+    open func isEqual(_ object: Any?) -> Bool {
         guard let aCommand = object as? Command else{
             return false
         }
@@ -115,6 +137,10 @@ open class Command: NSObject, NSCoding {
         return self.commandID == aCommand.commandID &&
             self.targetID == aCommand.targetID &&
             self.issuerID == aCommand.issuerID
+    }
+
+    public static func == (left: Command, right: Command) -> Bool {
+        return left.isEqual(right)
     }
 
     // TODO: We should replace this method with internal initializer.

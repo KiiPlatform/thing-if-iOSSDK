@@ -9,7 +9,7 @@
 import Foundation
 
 /** Class represents SchedulePredicate. */
-open class SchedulePredicate: NSObject,Predicate {
+open class SchedulePredicate: Predicate {
     /** Specified schedule. (cron tab format) */
     open let schedule: String
 
@@ -19,10 +19,8 @@ open class SchedulePredicate: NSObject,Predicate {
 
      -Parameter schedule: Specify schedule. (cron tab format)
      */
-    public init(schedule: String) {
+    public init(_ schedule: String) {
         self.schedule = schedule
-
-        super.init()
     }
 
     public required init(coder aDecoder: NSCoder) {

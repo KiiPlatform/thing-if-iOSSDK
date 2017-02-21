@@ -6,7 +6,7 @@
 import Foundation
 
 /** Class provides API of the ThingIF. */
-open class ThingIFAPI: NSObject, NSCoding {
+open class ThingIFAPI: Equatable, NSCoding {
 
     private static var SHARED_NSUSERDEFAULT_KEY_INSTANCE: String {
         get {
@@ -45,7 +45,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     /** The application key found in your Kii developer console */
     open let appKey: String
     /** Kii Cloud Application */
-    open let app: App
+    open let app: KiiApp
     /** owner of target */
     open let owner: Owner
 
@@ -58,6 +58,13 @@ open class ThingIFAPI: NSObject, NSCoding {
 
     /** target */
     open internal(set) var target: Target?
+
+    /** Checks whether on boarding is done. */
+    open var onboarded: Bool {
+        get {
+            fatalError("TODO: implement me.")
+        }
+    }
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
@@ -72,7 +79,7 @@ open class ThingIFAPI: NSObject, NSCoding {
     }
 
     public required init(coder aDecoder: NSCoder){
-        self.app = aDecoder.decodeObject(forKey: "app") as! App
+        self.app = aDecoder.decodeObject(forKey: "app") as! KiiApp
         self.baseURL = aDecoder.decodeObject(forKey: "baseURL") as! String
         self.appID = aDecoder.decodeObject(forKey: "appID") as! String
         self.appKey = aDecoder.decodeObject(forKey: "appKey") as! String
@@ -90,7 +97,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter tag: tag of the ThingIFAPI instance.
      */
     public init(
-      _ app:App,
+      _ app: KiiApp,
       owner: Owner,
       target: Target? = nil,
       tag : String? = nil)
@@ -102,7 +109,6 @@ open class ThingIFAPI: NSObject, NSCoding {
         self.owner = owner
         self.target = target
         self.tag = tag
-        super.init()
     }
 
     // MARK: - On board methods
@@ -129,6 +135,8 @@ open class ThingIFAPI: NSObject, NSCoding {
         completionHandler: @escaping (Target?, ThingIFError?)-> Void
         ) ->Void
     {
+        fatalError("TODO: implement me.")
+        /*
         _onboard(true, IDString: vendorThingID, thingPassword: thingPassword,
             thingType: options?.thingType,
             firmwareVersion: options?.firmwareVersion,
@@ -140,6 +148,7 @@ open class ThingIFAPI: NSObject, NSCoding {
             }
             completionHandler(target, error)
         }
+        */
     }
 
     /** On board IoT Cloud with the specified thing ID.
@@ -166,6 +175,8 @@ open class ThingIFAPI: NSObject, NSCoding {
         completionHandler: @escaping (Target?, ThingIFError?)-> Void
         ) ->Void
     {
+        fatalError("TODO: implement me.")
+        /*
         _onboard(false, IDString: thingID, thingPassword: thingPassword,
             layoutPosition: options?.layoutPosition,
             dataGroupingInterval: options?.dataGroupingInterval) { (target, error) -> Void in
@@ -174,6 +185,7 @@ open class ThingIFAPI: NSObject, NSCoding {
             }
             completionHandler(target, error)
         }
+        */
     }
 
     /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
@@ -185,16 +197,18 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an end node, an ThingIFError
      */
     open func onboard(
-        pendingEndnode:PendingEndNode,
+        _ pendingEndnode:PendingEndNode,
         endnodePassword:String,
-        options:OnboardEndnodeWithGatewayOptions? = nil,
         completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
+        fatalError("TODO: implement me.")
+        /*
         _onboardEndnodeWithGateway(pendingEndnode,
             endnodePassword: endnodePassword,
             options: options,
             completionHandler: completionHandler)
+        */
     }
 
     // MARK: - Push notification methods
@@ -297,8 +311,8 @@ open class ThingIFAPI: NSObject, NSCoding {
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Commands if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
      */
     open func listCommands(
-        _ bestEffortLimit:Int?,
-        paginationKey:String?,
+        _ bestEffortLimit: Int? = nil,
+        paginationKey: String? = nil,
         completionHandler: @escaping ([Command]?, String?, ThingIFError?)-> Void
         )
     {
@@ -490,8 +504,8 @@ open class ThingIFAPI: NSObject, NSCoding {
     - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Triggers instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
     */
     open func listTriggers(
-        _ bestEffortLimit:Int?,
-        paginationKey:String?,
+        _ bestEffortLimit:Int? = nil,
+        paginationKey:String? = nil,
         completionHandler: @escaping (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
         )
     {
@@ -515,8 +529,8 @@ open class ThingIFAPI: NSObject, NSCoding {
      */
     open func listTriggeredServerCodeResults(
         _ triggerID:String,
-        bestEffortLimit:Int?,
-        paginationKey:String?,
+        bestEffortLimit:Int? = nil,
+        paginationKey:String? = nil,
         completionHandler: @escaping (_ results:[TriggeredServerCodeResult]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
         )
     {
@@ -524,21 +538,52 @@ open class ThingIFAPI: NSObject, NSCoding {
     }
 
 
-    // MARK: - Get the state of specified target
+    // MARK: - Getting thing state methods
 
     /** Get the state of specified target.
 
-    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
 
-    - Parameter completionHandler: A closure to be executed once get state has finished. The closure takes 2 arguments: 1st one is Dictionary that represent Target State and 2nd one is an instance of ThingIFError when failed.
+     - Parameter completionHandler: A closure to be executed once get
+       state has finished. The closure takes 2 arguments: 1st one is
+       Dictionary that represent Target State and 2nd one is an
+       instance of ThingIFError when failed.
     */
-    open func getState(
-        _ completionHandler: @escaping (Dictionary<String, Any>?,  ThingIFError?)-> Void
-        )
+    open func getTargetState(
+      _ completionHandler:@escaping ([String : [String : Any]]?,
+                                     ThingIFError?)-> Void) -> Void
     {
-        _getState(completionHandler)
-        
+        fatalError("TODO: We must reimplement this method.")
+        // _getState(completionHandler)
     }
+
+    /** Get the state of specified target by trait.
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     You can not use this method if You chose non trait verson.
+
+     - Parameter alias: alias of trait.
+     - Parameter completionHandler: A closure to be executed once get
+       state has finished. The closure takes 2 arguments: 1st one is
+       Dictionary that represent Target State and 2nd one is an
+       instance of ThingIFError when failed.
+     */
+    open func getTargetState(
+      _ alias: String,
+      completionHandler:@escaping ([String : Any]?,
+                                   ThingIFError?)-> Void) -> Void
+    {
+        fatalError("TODO: We must reimplement this method.")
+    }
+
+    // MARK: - Thing information methods
 
     /** Get the Vendor Thing ID of specified Target.
      
@@ -586,7 +631,7 @@ open class ThingIFAPI: NSObject, NSCoding {
      - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
      */
     open func update(
-        _ vendorThingID: String,
+        vendorThingID: String,
         password: String,
         completionHandler: @escaping (ThingIFError?)-> Void
         )
@@ -638,6 +683,128 @@ open class ThingIFAPI: NSObject, NSCoding {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
             completionHandler(ThingIFError.jsonParseError)
         }
+    }
+
+    /** Update firmware version.
+
+     This method updates firmware version for `target` thing.
+
+     - Parameter firmwareVersion: firmwareVersion to be updated.
+     - Parameter completionHandler: A closure to be executed once on
+       updating has finished The closure takes 1 argument. The
+       argument is ThingIFError.
+     */
+    open func update(
+      firmwareVersion: String,
+      completionHandler: @escaping (ThingIFError?)-> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    /** Get firmeware version.
+
+     This method gets firmware version for `target` thing.
+
+     - Parameter completionHandler: A closure to be executed once on
+       getting has finished The closure takes 2 arguments. First one
+       is firmware version. Second one is ThingIFError.
+     */
+    open func getFirmewareVerson(
+      _ completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    /** Update thing type.
+
+     This method updates thing type for `target` thing.
+
+     - Parameter thingType: thing type to be updated.
+     - Parameter completionHandler: A closure to be executed once on
+       updating has finished The closure takes 1 argument. The
+       argument is ThingIFError.
+     */
+    open func update(
+      thingType: String,
+      completionHandler: @escaping (ThingIFError?)-> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    /** Get thing type.
+
+     This method gets thing type for `target` thing.
+
+     - Parameter completionHandler: A closure to be executed once on
+       getting has finished The closure takes 2 arguments. First one
+       is thing type. Second one is ThingIFError.
+     */
+    open func getThingType(
+      _ completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    // MARK: Qeury state history.
+
+    /** Query history states with trait alias.
+
+     - Parameter query: Instance of `HistoryStatesQuery`. If nil or
+       omitted, query all history states
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 3 arguments:
+       - 1st one is array of history states. If there is no objects to
+         be queried, the array is empty.
+       - 2nd one is a pagination key. It represents information to
+         retrieve further page. You can use pagination key to retrieve
+         next page by setting nextPaginationKey. if there is no
+         further page, pagination key is nil.
+       - 3rd one is an instance of ThingIFError when failed.
+     */
+    open func query(
+      _ query: HistoryStatesQuery? = nil,
+      completionHandler: @escaping (
+        [HistoryState]?, String?, ThingIFError?) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    /** Group history state
+
+     - Parameter query: `GroupedHistoryStatesQuery` instance.timeRange
+       in query should less than 60 data grouping intervals.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments:
+       - 1st one is `GroupedHistoryStates` array.
+       - 2nd one is an instance of ThingIFError when failed.
+     */
+    open func query(
+      _ query: GroupedHistoryStatesQuery,
+      completionHandler: @escaping (
+        [GroupedHistoryStates]?, ThingIFError?) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
+    /** Aggregate history states
+
+     - Parameter query: `GroupedHistoryStatesQuery`
+       instance. timeRange in query should less than 60 data grouping
+       intervals.
+     - Parameter aggregation: `Aggregation` instance.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments:
+       - 1st one is an `AggregatedResult` array.
+       - 2nd one is an instance of ThingIFError when failed.
+     */
+    open func aggregate<AggregatedValueType>(
+      _ query: GroupedHistoryStatesQuery,
+      aggregation: Aggregation,
+      completionHandler: @escaping(
+        [AggregatedResult<AggregatedValueType>]?,
+        ThingIFError?) -> Void) -> Void
+    {
+        // TODO: implement me.
     }
 
     // MARK: - Copy with new target instance
@@ -783,7 +950,7 @@ open class ThingIFAPI: NSObject, NSCoding {
         return true
     }
 
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let anAPI = object as? ThingIFAPI else{
             return false
         }
@@ -795,6 +962,10 @@ open class ThingIFAPI: NSObject, NSCoding {
             self.target?.typedID == anAPI.target?.typedID &&
             self.installationID == anAPI.installationID &&
             self.tag == anAPI.tag
+    }
+
+    public static func == (left: ThingIFAPI, right: ThingIFAPI) -> Bool {
+        return left.isEqual(right)
     }
 
     
