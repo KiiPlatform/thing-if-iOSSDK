@@ -13,7 +13,7 @@ import Foundation
 open class OnboardWithVendorThingIDOptions {
     open let thingType: String?
     open let firmwareVersion: String?
-    open let thingProperties: Dictionary<String, Any>?
+    open let thingProperties: [String : Any]?
     open let layoutPosition: LayoutPosition?
 
     /** initializer.
@@ -22,9 +22,11 @@ open class OnboardWithVendorThingIDOptions {
       If the thing is already registered,
       this value would be ignored by IoT Cloud.
     - Parameter firmwareVersion: Firmware version of the thing.
-    - Parameter thingProperties: The properties of the thing.
-      You can set both the predefined and custom fields.
-      Please read [here](https://docs.kii.com/en/starts/thingifsdk/thingsdk/management/#register-a-thing) for more details.
+    - Parameter thingProperties: The properties of the thing.  You can
+      set both the predefined and custom fields. thingProperties must
+      be JSON compatible. Please read
+      [here](https://docs.kii.com/en/starts/thingifsdk/thingsdk/management/#register-a-thing)
+      for more details.
     - Parameter position: GATEWAY | STANDALONE | ENDNODE.
     */
     public init(
