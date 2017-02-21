@@ -13,6 +13,25 @@ public protocol TriggerClause: BaseClause {
 
 }
 
+internal extension TriggerClause {
+
+    internal func makeDictionary() -> [String : Any] {
+        if type(of: self) === EqualsClauseInTrigger.self {
+            return (self as! EqualsClauseInTrigger).makeDictionary()
+        } else if type(of: self) === NotEqualsClauseInTrigger.self {
+            return (self as! NotEqualsClauseInTrigger).makeDictionary()
+        } else if type(of: self) === RangeClauseInTrigger.self {
+            return (self as! RangeClauseInTrigger).makeDictionary()
+        } else if type(of: self) === AndClauseInTrigger.self {
+            return (self as! AndClauseInTrigger).makeDictionary()
+        } else if type(of: self) === OrClauseInTrigger.self {
+            return (self as! OrClauseInTrigger).makeDictionary()
+        } else {
+            fatalError("unexpected class")
+        }
+    }
+}
+
 /** Class represents Equals clause for trigger methods. */
 open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
 
@@ -64,7 +83,7 @@ open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         return [
           "type" : "eq",
           "alias" : self.alias,
@@ -105,7 +124,7 @@ open class NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         return [
           "type" : "not",
           "clause" : self.equals.makeDictionary()
@@ -287,7 +306,7 @@ open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         var retval: [String : Any] = [
           "type": "range",
           "alias": alias,
@@ -381,7 +400,7 @@ open class AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         var clauses: [[String : Any]] = []
         self.clauses.forEach { clauses.append($0.makeDictionary()) }
         return ["type": "and", "clauses": clauses] as [String : Any]
@@ -435,7 +454,7 @@ open class OrClauseInTrigger: NSObject, TriggerClause, BaseOr {
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         var clauses: [[String : Any]] = []
         self.clauses.forEach { clauses.append($0.makeDictionary()) }
         return ["type": "or", "clauses": clauses] as [String : Any]
