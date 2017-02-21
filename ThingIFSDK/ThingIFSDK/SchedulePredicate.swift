@@ -32,13 +32,4 @@ open class SchedulePredicate: NSObject, Predicate {
         aCoder.encode(self.schedule, forKey: "schedule");
     }
 
-    /** Get Json object of SchedulePredicate instance
-
-     - Returns: Json object as an instance of NSDictionary
-     */
-    open func makeDictionary() -> [ String : Any ] {
-        return [
-          "eventSource": EventSource.schedule.rawValue,
-          "schedule":self.schedule] as [ String : Any ]
-    }
 }
