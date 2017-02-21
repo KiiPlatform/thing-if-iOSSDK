@@ -5,8 +5,8 @@ iOS SDK for Kii Thing Interaction Framework.
 # Requirements
 
 - iOS 8.0+
-- Xcode 7.0+
-- swift 2.0+
+- Xcode 8.0+
+- swift 3.0+
 
 # Installation
 thing-if iOSSDK only provides dynamic framework, which are only available on iOS 8+
