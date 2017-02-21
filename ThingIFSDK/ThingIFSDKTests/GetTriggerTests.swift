@@ -23,7 +23,7 @@ class GetTriggerTests: SmallTestBase {
         let api = setting.api
 
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         let simpleStatementsToTest = [
             ["type":"eq","field":"color", "value": 0],
@@ -56,7 +56,7 @@ class GetTriggerTests: SmallTestBase {
         let setting = TestSetting()
         let api = setting.api
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         let triggersWhensToTest = ["CONDITION_TRUE", "CONDITION_FALSE_TO_TRUE", "CONDITION_CHANGED"]
         for triggersWhen in triggersWhensToTest {
@@ -170,7 +170,7 @@ class GetTriggerTests: SmallTestBase {
             sharedMockSession.requestVerifier = requestVerifier
             iotSession = MockSession.self
             
-            api._target = setting.target
+            api.target = setting.target
             api.getTrigger(expectedTriggerID, completionHandler: { (trigger, error) -> Void in
                 if(error != nil) {
                     XCTFail("should success")
@@ -208,7 +208,7 @@ class GetTriggerTests: SmallTestBase {
         let api = setting.api
 
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         do{
             let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"

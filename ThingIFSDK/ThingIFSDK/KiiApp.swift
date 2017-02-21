@@ -1,14 +1,14 @@
 //
-//  App.swift
+//  KiiApp.swift
 //  ThingIFSDK
 //
-//  Copyright © 2015 Kii. All rights reserved.
+//  Copyright 2015 Kii. All rights reserved.
 //
 
 import Foundation
 
 /** Represents Kii Cloud Application */
-open class App: NSObject, NSCoding {
+open class KiiApp: NSCoding {
     /** ID of the App */
     open let appID: String
     /** Key of the APP */
@@ -28,7 +28,7 @@ open class App: NSObject, NSCoding {
         let hostName:String = decoder.decodeObject(forKey: "hostName") as! String
         let baseURL:String = decoder.decodeObject(forKey: "baseURL") as! String
         let siteName:String = decoder.decodeObject(forKey: "siteName") as! String
-        self.init(appID:appID, appKey:appKey, hostName:hostName,
+        self.init(appID, appKey:appKey, hostName:hostName,
             baseURL:baseURL, siteName:siteName)
     }
 
@@ -50,7 +50,7 @@ open class App: NSObject, NSCoding {
      - Parameter appKey: Key of the app.
      - Parameter site: Location of the app.
     */
-    public init(appID:String, appKey:String, site:Site) {
+    public init(_ appID:String, appKey:String, site:Site) {
         self.appID = appID
         self.appKey = appKey
         self.hostName = site.getHostName()
@@ -58,7 +58,7 @@ open class App: NSObject, NSCoding {
         self.siteName = site.getName()
     }
 
-    fileprivate init(appID:String, appKey:String, hostName:String,
+    fileprivate init(_ appID:String, appKey:String, hostName:String,
         baseURL:String, siteName:String)
     {
         self.appID = appID
@@ -67,23 +67,8 @@ open class App: NSObject, NSCoding {
         self.baseURL = baseURL
         self.siteName = siteName
     }
-}
 
-/** App Builder provides fine grained controll over createing App instance.
- Private/ Dedicated Kii Cloud users will use it.
- Public Kii Cloud user who uses apps created on
- https://developer.kii.com does not need to interact with this Builder.
- Just use App(appID:appKey:site) constructor is fine.
-*/
-open class AppBuilder: NSObject {
-    private let appID:String
-    private let appKey:String
-    private let hostName:String
-    private let urlSchema:String
-    private let siteName:String
-    private let port:Int32
-
-    /** Init the Builder.
+    /** Init app with appID, appKey, hostName, baseURL, siteName and port.
 
      - Parameter appID: ID of the app.
      - Parameter appKey: Key of the app.
@@ -93,34 +78,22 @@ open class AppBuilder: NSObject {
      - Parameter siteName: Site name. By default site name is set to
        "CUSTOM". This site name should match with your Gateway Agent
        configuration if you interact Gateway Agent with this SDK.
+     - Parameter port: port number.
     */
-    public init(
-      appID: String,
+    public convenience init(
+      _ appID: String,
       appKey: String,
       hostName: String,
       urlSchema: String = "https",
       siteName: String = "CUSTOM",
       port: Int32 = -1)
     {
-        self.appID = appID
-        self.appKey = appKey
-        self.hostName = hostName
-        self.urlSchema = urlSchema
-        self.siteName = siteName
-        self.port = port
-    }
-
-    /** Make App instance
-
-     - Returns: App instance
-    */
-    open func make() -> App {
         var baseURL:String = urlSchema + "://" + hostName
-        if (self.port > 0) {
+        if (port > 0) {
             baseURL = baseURL + ":" + String(port)
         }
-        return App(appID: self.appID, appKey: self.appKey,
-            hostName: self.hostName, baseURL: baseURL, siteName: self.siteName)
+        self.init(appID, appKey: appKey,
+             hostName: hostName, baseURL: baseURL, siteName: siteName)
     }
 
 }

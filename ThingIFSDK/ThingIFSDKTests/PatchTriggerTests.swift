@@ -66,7 +66,7 @@ class PatchTriggerTests: SmallTestBase {
         let schemaVersion = setting.schemaVersion
 
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         let testsCases: [TestCase] = [
             //
@@ -151,7 +151,7 @@ class PatchTriggerTests: SmallTestBase {
         }
 
 
-        api._target = setting.target
+        api.target = setting.target
         api.patchTrigger(
           expectedTriggerID,
           triggeredCommandForm: TriggeredCommandForm(
@@ -229,7 +229,7 @@ class PatchTriggerTests: SmallTestBase {
         let setting = TestSetting()
         let api = setting.api
 
-        api._target = setting.target
+        api.target = setting.target
 
         api.patchTrigger(
           "0267251d9d60-1858-5e11-3dc3-00f3f0b5",

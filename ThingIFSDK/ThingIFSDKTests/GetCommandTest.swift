@@ -36,7 +36,7 @@ class GetCommandTests: SmallTestBase {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         let testcases = [
             TestCase(target: setting.target, schema: setting.schema, schemaVersion: setting.schemaVersion, actions: [["turnPower":["power": true]]], issuerIDString: "\(setting.owner.typedID.type):\(setting.owner.typedID.id)", targetIDString: "\(setting.target.typedID.type):\(setting.target.typedID.id)", actionResults: [["turnPower":["power": true]]], commandState: CommandState.incomplete, commandStateString: "INCOMPLETE", firedByTriggerID:"trigger-0001", created:Date(timeIntervalSince1970:1456377631.467), modified:Date(timeIntervalSince1970:1456377633.467)),
@@ -145,7 +145,7 @@ class GetCommandTests: SmallTestBase {
             let commandID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
             // perform onboarding
-            api._target = setting.target
+            api.target = setting.target
 
             // mock response
             let responsedDict = ["errorCode" : "TARGET_NOT_FOUND",

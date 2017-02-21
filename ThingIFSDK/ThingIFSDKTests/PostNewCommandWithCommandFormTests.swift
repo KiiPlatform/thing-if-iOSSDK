@@ -37,7 +37,7 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
         let owner = setting.owner
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         let testCases = [
             TestCase(target: target,
@@ -212,7 +212,7 @@ class PostNewCommandWithCommandFormTests: SmallTestBase {
         let target = setting.target
 
         // perform onboarding
-        api._target = target
+        api.target = target
 
         do{
             // mock response

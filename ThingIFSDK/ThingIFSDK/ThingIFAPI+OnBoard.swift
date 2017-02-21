@@ -9,6 +9,7 @@
 import Foundation
 extension ThingIFAPI {
 
+    /*
     func _onboard(
         _ byVendorThingID: Bool,
         IDString: String,
@@ -79,22 +80,22 @@ extension ThingIFAPI {
                         }
                         if layoutPosition == LayoutPosition.gateway {
                             target = Gateway(
-                                    thingID: thingID,
+                                    thingID,
                                     vendorThingID: vendorThingID,
                                     accessToken: accessToken)
                         } else if layoutPosition == LayoutPosition.endnode {
                             target = EndNode(
-                                    thingID: thingID,
+                                    thingID,
                                     vendorThingID: vendorThingID,
                                     accessToken: accessToken)
                         } else {
                             target = StandaloneThing(
-                                    thingID: thingID,
+                                    thingID,
                                     vendorThingID: vendorThingID,
                                     accessToken: accessToken)
                         }
 
-                        self._target = target
+                        self.target = target
                     }
                     self.saveToUserDefault()
                     DispatchQueue.main.async {
@@ -173,7 +174,7 @@ extension ThingIFAPI {
                     } else {
                         let thingID = response?["endNodeThingID"] as! String
                         let accessToken = response?["accessToken"] as! String
-                        endNode = EndNode(thingID: thingID, vendorThingID: pendingEndnode.vendorThingID!, accessToken: accessToken)
+                        endNode = EndNode(thingID, vendorThingID: pendingEndnode.vendorThingID!, accessToken: accessToken)
                     }
                     DispatchQueue.main.async {
                         completionHandler(endNode, error)
@@ -187,4 +188,5 @@ extension ThingIFAPI {
             completionHandler(nil, ThingIFError.jsonParseError)
         }
     }
+    */
 }

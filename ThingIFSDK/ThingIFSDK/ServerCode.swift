@@ -7,7 +7,7 @@
 //
 
 import Foundation
-open class ServerCode : NSObject, NSCoding {
+open class ServerCode : Equatable, NSCoding {
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.endpoint, forKey: "endpoint")
@@ -55,7 +55,7 @@ open class ServerCode : NSObject, NSCoding {
         return dict
     }
 
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let aServerCode = object as? ServerCode else{
             return false
         }
@@ -70,6 +70,10 @@ open class ServerCode : NSObject, NSCoding {
             self.targetAppID == aServerCode.targetAppID &&
             NSDictionary(dictionary: self.parameters!).isEqual(to: aServerCode.parameters!)
 
+    }
+
+    public static func == (left: ServerCode, right: ServerCode) -> Bool {
+        return left.isEqual(right)
     }
 
     class func serverCodeWithNSDictionary(_ nsDict: NSDictionary!) -> ServerCode?{

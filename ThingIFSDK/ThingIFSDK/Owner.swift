@@ -6,7 +6,7 @@
 import Foundation
 
 /** Represents Owner */
-open class Owner: NSObject, NSCoding {
+open class Owner: Equatable, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
@@ -30,17 +30,20 @@ open class Owner: NSObject, NSCoding {
     - Parameter typedID: ID of the Owner.
     - Parameter accessToken: Access Token of the Owner.
      */
-    public init(typedID: TypedID, accessToken: String) {
+    public init(_ typedID: TypedID, accessToken: String) {
         self.typedID = typedID
         self.accessToken = accessToken
     }
     
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let anOwner = object as? Owner else{
             return false
         }
         
         return self.typedID == anOwner.typedID && self.accessToken == anOwner.accessToken
-        
+    }
+
+    public static func == (left: Owner, right: Owner) -> Bool {
+        return left.isEqual(right);
     }
 }

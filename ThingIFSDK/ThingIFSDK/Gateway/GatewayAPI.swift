@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class GatewayAPI: NSObject, NSCoding {
+open class GatewayAPI: NSCoding {
 
     private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "GatewayAPI_INSTANCE"
     private static func getStoredInstanceKey(_ tag : String?) -> String{
@@ -20,7 +20,7 @@ open class GatewayAPI: NSObject, NSCoding {
     private static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
 
     open let tag: String?
-    open let app: App
+    open let app: KiiApp
     open let gatewayAddress: URL
     private var gatewayAddressString: String {
         return self.gatewayAddress.absoluteString
@@ -43,12 +43,29 @@ open class GatewayAPI: NSObject, NSCoding {
     public required init(coder aDecoder: NSCoder)
     {
         self.tag = aDecoder.decodeObject(forKey: "tag") as? String
-        self.app = aDecoder.decodeObject(forKey: "app") as! App
+        self.app = aDecoder.decodeObject(forKey: "app") as! KiiApp
         self.gatewayAddress = aDecoder.decodeObject(forKey: "gatewayAddress") as! URL
         self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as? String
     }
 
-    internal init(app: App, gatewayAddress: URL, tag: String? = nil)
+    /** Initialize GatewayAPI.
+
+     If you want to store GatewayAPI instance to storage, you need to
+     set tag.
+
+     tag is used to distinguish storage area of instance.  If the api
+     instance is tagged with same string, It will be overwritten.  If
+     the api instance is tagged with different string, Different key
+     is used to store the instance.
+
+     Please refer to `GatewayAPI.loadWithStoredInstance(_:)`
+
+     - Parameter app: Kii Cloud Application.
+     - Parameter gatewayAddress: address information for the gateway
+     - Parameter tag: tag of the GatewayAPI instance. If null or empty
+       String is passed, it will be ignored.
+     */
+    public init(app: KiiApp, gatewayAddress: URL, tag: String? = nil)
     {
         self.tag = tag
         self.app = app
@@ -152,7 +169,7 @@ open class GatewayAPI: NSObject, NSCoding {
                 if response != nil {
                     let thingID = response!["thingID"] as? String
                     let vendorThingID = response!["vendorThingID"] as? String
-                    gateway = Gateway(thingID: thingID!, vendorThingID: vendorThingID!)
+                    gateway = Gateway(thingID!, vendorThingID: vendorThingID!)
                 } else {
                     gateway = nil
                 }
@@ -231,7 +248,7 @@ open class GatewayAPI: NSObject, NSCoding {
                         for endNode in endNodeArray {
                             let thingID = endNode["thingID"] as? String
                             let vendorThingID = endNode["vendorThingID"] as? String
-                            endNodes.append(EndNode(thingID: thingID!, vendorThingID: vendorThingID!))
+                            endNodes.append(EndNode(thingID!, vendorThingID: vendorThingID!))
                         }
                     }
                 }

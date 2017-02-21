@@ -24,7 +24,7 @@ class DeleteTriggerTests: SmallTestBase {
         let expectation = self.expectation(description: "enableTriggerTests")
 
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
@@ -67,7 +67,7 @@ class DeleteTriggerTests: SmallTestBase {
         let expectation = self.expectation(description: "enableTrigger404Error")
 
         // perform onboarding
-        api._target = setting.target
+        api.target = setting.target
 
         do{
             let triggerID = "triggerID"

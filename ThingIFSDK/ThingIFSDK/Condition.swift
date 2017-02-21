@@ -8,24 +8,23 @@
 
 import Foundation
 /** Class represents Condition */
-open class Condition : NSObject, NSCoding {
-    open let clause: Clause
+open class Condition : NSCoding {
+    open let clause: TriggerClause
 
     /** Init Condition with Clause
 
      - Parameter clause: Clause instance
      */
-    public init(clause:Clause) {
+    public init(_ clause: TriggerClause) {
         self.clause = clause
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        self.clause = aDecoder.decodeObject(forKey: "clause") as! Clause
-        super.init();
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init(aDecoder.decodeObject() as! TriggerClause);
     }
 
     open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.clause, forKey: "clause")
+        aCoder.encode(self.clause)
     }
 
     /** Get Condition as NSDictionary instance
@@ -35,6 +34,10 @@ open class Condition : NSObject, NSCoding {
     open func makeDictionary() -> [ String : Any ] {
         return self.clause.makeDictionary()
     }
+
+    /*
+     TODO: We should change 2 methods below to initializer. We will do
+     that in another PR.
 
     class func conditionWithNSDict(_ conditionDict: NSDictionary) -> Condition?{
         if let clause = Condition.clauseWithNSDict(conditionDict) {
@@ -134,4 +137,5 @@ open class Condition : NSObject, NSCoding {
         }
         return clause
     }
+    */
 }

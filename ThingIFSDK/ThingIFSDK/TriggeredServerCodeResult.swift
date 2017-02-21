@@ -1,7 +1,7 @@
 import Foundation
 
 /** Class represents result of server code trigged by trigger */
-open class TriggeredServerCodeResult: NSObject, NSCoding {
+open class TriggeredServerCodeResult: Equatable, NSCoding {
     
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
@@ -97,7 +97,7 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
         self.error = error
     }
     
-    open override func isEqual(_ object: Any?) -> Bool {
+    open func isEqual(_ object: Any?) -> Bool {
         guard let aResult = object as? TriggeredServerCodeResult else{
             return false
         }
@@ -136,6 +136,10 @@ open class TriggeredServerCodeResult: NSObject, NSCoding {
             return false
         }
         return self.succeeded == aResult.succeeded && self.executedAt == aResult.executedAt && self.endpoint == aResult.endpoint
+    }
+
+    public static func == (left: TriggeredServerCodeResult, right: TriggeredServerCodeResult) -> Bool {
+        return left.isEqual(right);
     }
     private func isEqualArray(_ arr1:[Any], arr2:[Any]) -> Bool {
         if arr1.count != arr2.count {

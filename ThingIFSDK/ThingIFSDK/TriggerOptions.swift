@@ -17,7 +17,7 @@ This class contains optional data in order to create and modify
  - `ThingIFAPI.postNewTrigger(_:predicate:options:completionHandler:)`
  - `ThingIFAPI.patchTrigger(_:triggeredCommandForm:predicate:options:completionHandler:)`
 */
-open class TriggerOptions: NSObject, NSCoding {
+open class TriggerOptions: NSCoding {
 
     /// Title of a command.
     open let title: String?
@@ -38,7 +38,7 @@ open class TriggerOptions: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(title: String? = nil,
+    public init(_ title: String? = nil,
                 triggerDescription: String? = nil,
                 metadata: Dictionary<String, Any>? = nil)
     {

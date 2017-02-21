@@ -9,7 +9,7 @@
 import Foundation
 
 /** Class represents StatePredicate */
-open class StatePredicate: NSObject,Predicate {
+open class StatePredicate: Predicate {
     open let triggersWhen: TriggersWhen
     open let condition: Condition
 
@@ -20,15 +20,22 @@ open class StatePredicate: NSObject,Predicate {
      - Parameter condition: Condition of the Trigger.
      - Parameter triggersWhen: Specify TriggersWhen.
      */
-    public init(condition:Condition, triggersWhen:TriggersWhen) {
+    public init(
+      _ condition:Condition,
+      triggersWhen:TriggersWhen)
+    {
         self.triggersWhen = triggersWhen
         self.condition = condition
-        super.init();
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        self.triggersWhen = TriggersWhen(rawValue: aDecoder.decodeObject(forKey: "triggersWhen") as! String)!;
-        self.condition = aDecoder.decodeObject(forKey: "condition") as! Condition;
+    public required convenience init(coder aDecoder: NSCoder) {
+        self.init(
+          aDecoder.decodeObject(forKey: "condition")
+            as! Condition,
+          triggersWhen: TriggersWhen(
+            rawValue: aDecoder.decodeObject(forKey: "triggersWhen")
+              as! String)!
+        )
     }
 
     open func encode(with aCoder: NSCoder) {
@@ -47,6 +54,10 @@ open class StatePredicate: NSObject,Predicate {
           "condition": self.condition.makeDictionary()] as [ String : Any ]
     }
 
+    /*
+     TODO: We should change a method below to initializer. We will do
+     that in another PR.
+
     class func statePredicateWithNSDict(_ predicateDict: NSDictionary) -> StatePredicate?{
         var triggersWhen: TriggersWhen?
         var condition: Condition?
@@ -64,4 +75,5 @@ open class StatePredicate: NSObject,Predicate {
             return nil
         }
     }
+    */
 }
