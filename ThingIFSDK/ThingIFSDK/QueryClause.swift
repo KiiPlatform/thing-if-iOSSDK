@@ -13,6 +13,25 @@ public protocol QueryClause: BaseClause {
 
 }
 
+internal extension QueryClause {
+
+    internal func makeDictionary() -> [String : Any] {
+        if type(of: self) === EqualsClauseInQuery.self {
+            return (self as! EqualsClauseInQuery).makeDictionary()
+        } else if type(of: self) === NotEqualsClauseInQuery.self {
+            return (self as! NotEqualsClauseInQuery).makeDictionary()
+        } else if type(of: self) === RangeClauseInQuery.self {
+            return (self as! RangeClauseInQuery).makeDictionary()
+        } else if type(of: self) === AndClauseInQuery.self {
+            return (self as! AndClauseInQuery).makeDictionary()
+        } else if type(of: self) === OrClauseInQuery.self {
+            return (self as! OrClauseInQuery).makeDictionary()
+        } else {
+            fatalError("unexpected class")
+        }
+    }
+}
+
 /** Class represents Equals clause for query methods. */
 open class EqualsClauseInQuery: NSObject, QueryClause, BaseEquals {
 
@@ -57,7 +76,7 @@ open class EqualsClauseInQuery: NSObject, QueryClause, BaseEquals {
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         return [
           "type" : "eq",
           "field" : self.field,
@@ -99,7 +118,7 @@ open class NotEqualsClauseInQuery: NSObject, QueryClause, BaseNotEquals {
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         return [
           "type" : "not",
           "clause" : self.equals.makeDictionary()
@@ -255,7 +274,7 @@ open class RangeClauseInQuery: NSObject, QueryClause, BaseRange {
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         var retval: [String : Any] = ["type": "range", "field": self.field]
         retval["upperLimit"] = self.upper?.limit
         retval["upperIncluded"] = self.upper?.included
@@ -344,7 +363,7 @@ open class AndClauseInQuery: NSObject, QueryClause, BaseAnd {
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         var clauses: [[String : Any]] = []
         self.clauses.forEach { clauses.append($0.makeDictionary()) }
         return ["type": "and", "clauses": clauses] as [String : Any]
@@ -398,7 +417,7 @@ open class OrClauseInQuery: NSObject, QueryClause, BaseOr {
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         var clauses: [[String : Any]] = []
         self.clauses.forEach { clauses.append($0.makeDictionary()) }
         return ["type": "or", "clauses": clauses] as [String : Any]

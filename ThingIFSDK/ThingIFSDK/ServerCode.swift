@@ -47,7 +47,7 @@ open class ServerCode : Equatable, NSCoding {
         self.parameters = parameters
     }
 
-    func makeDictionary() -> [ String : Any ] {
+    internal func makeDictionary() -> [ String : Any ] {
         var dict: [ String : Any ] = ["endpoint": self.endpoint]
         dict["executorAccessToken"] = self.executorAccessToken
         dict["targetAppID"] = self.targetAppID

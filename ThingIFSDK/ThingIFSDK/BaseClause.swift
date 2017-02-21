@@ -11,12 +11,6 @@ import Foundation
 /** Base protocol for all clause classes. */
 public protocol BaseClause: class, NSCoding {
 
-    /** Get Clause as Dictionary instance
-
-     - Returns: a Dictionary instance.
-     */
-    func makeDictionary() -> [ String : Any ]
-
 }
 
 /** Protocol for Equals clause classes */
