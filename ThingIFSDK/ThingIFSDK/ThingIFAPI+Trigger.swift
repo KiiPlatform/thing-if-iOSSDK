@@ -94,6 +94,8 @@ extension ThingIFAPI {
         completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
+        fatalError("TODO: implement me.")
+        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
@@ -142,6 +144,7 @@ extension ThingIFAPI {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
             completionHandler(nil, ThingIFError.jsonParseError)
         }
+        */
     }
 
     func _patchTrigger(
@@ -223,6 +226,8 @@ extension ThingIFAPI {
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void
         )
     {
+        fatalError("TODO: implement me.")
+        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
@@ -269,6 +274,7 @@ extension ThingIFAPI {
             kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
             completionHandler(nil, ThingIFError.jsonParseError)
         }
+        */
     }
     
     func _enableTrigger(

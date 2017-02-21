@@ -95,6 +95,7 @@
 		B6C2DB4D1E5AC962008DBA83 /* SchedulePredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C2DB4C1E5AC962008DBA83 /* SchedulePredicateTests.swift */; };
 		B6C2DB4F1E5ACDFB008DBA83 /* ConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C2DB4E1E5ACDFB008DBA83 /* ConditionTests.swift */; };
 		B6C2DB511E5AD9ED008DBA83 /* XCTest+TriggerClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C2DB501E5AD9ED008DBA83 /* XCTest+TriggerClause.swift */; };
+		B6C2DB531E5BF129008DBA83 /* StatePredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C2DB521E5BF129008DBA83 /* StatePredicateTests.swift */; };
 		B6C33EFF1E49770B00DF2BF5 /* ThingIFSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33EFE1E49770B00DF2BF5 /* ThingIFSDKTests.swift */; };
 		B6C33F011E49770B00DF2BF5 /* ThingIFSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */; };
 		B6C33F0C1E4977C700DF2BF5 /* AggregationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F071E4977C700DF2BF5 /* AggregationTests.swift */; };
@@ -228,6 +229,7 @@
 		B6C2DB4C1E5AC962008DBA83 /* SchedulePredicateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SchedulePredicateTests.swift; sourceTree = "<group>"; };
 		B6C2DB4E1E5ACDFB008DBA83 /* ConditionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConditionTests.swift; sourceTree = "<group>"; };
 		B6C2DB501E5AD9ED008DBA83 /* XCTest+TriggerClause.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTest+TriggerClause.swift"; sourceTree = "<group>"; };
+		B6C2DB521E5BF129008DBA83 /* StatePredicateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatePredicateTests.swift; sourceTree = "<group>"; };
 		B6C33EFC1E49770B00DF2BF5 /* ThingIFSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThingIFSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6C33EFE1E49770B00DF2BF5 /* ThingIFSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThingIFSDKTests.swift; sourceTree = "<group>"; };
 		B6C33F001E49770B00DF2BF5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -458,6 +460,7 @@
 				B6C2DB4C1E5AC962008DBA83 /* SchedulePredicateTests.swift */,
 				B6C2DB4E1E5ACDFB008DBA83 /* ConditionTests.swift */,
 				B6C2DB501E5AD9ED008DBA83 /* XCTest+TriggerClause.swift */,
+				B6C2DB521E5BF129008DBA83 /* StatePredicateTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -711,6 +714,7 @@
 				22EA81DA1E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift in Sources */,
 				B6C33F0D1E4977C700DF2BF5 /* SmallTestBase.swift in Sources */,
 				B6C2DAFD1E4D9428008DBA83 /* OrClauseInTriggerTests.swift in Sources */,
+				B6C2DB531E5BF129008DBA83 /* StatePredicateTests.swift in Sources */,
 				B6C33F1C1E4C5D2100DF2BF5 /* EqualsClauseInTriggerTests.swift in Sources */,
 				2262F14F1E49C3E200080DF6 /* AliasActionResultTests.swift in Sources */,
 				B6C33F0C1E4977C700DF2BF5 /* AggregationTests.swift in Sources */,

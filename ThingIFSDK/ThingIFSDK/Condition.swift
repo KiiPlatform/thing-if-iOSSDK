@@ -27,4 +27,8 @@ open class Condition : NSObject, NSCoding {
         aCoder.encode(self.clause)
     }
 
+    internal func makeDictionary() -> [ String : Any ] {
+        return ["condition" : self.clause.makeDictionary()] as [String : Any]
+    }
+
 }
