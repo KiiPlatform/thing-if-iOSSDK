@@ -61,7 +61,7 @@ class TypedIDTests: SmallTestBase {
     func testEqualAndHash() {
         let target = TypedID(TypedID.Types.thing, id: "dummy")
 
-        XCTAssertTrue(  target.isEqual(target))
+        XCTAssertTrue(target.isEqual(target))
         XCTAssertTrue(target == target)
         XCTAssertEqual(target.hashValue, target.hash)
 
