@@ -35,6 +35,23 @@ open class TypedID : NSObject, NSCoding {
     /** ID of the entity. */
     open let id:String
 
+    /** Hash value for `TypedID` instance. */
+    open override var hashValue: Int {
+        get {
+            return self.toString().hashValue
+        }
+    }
+
+    /** hash value override `NSObject.hash`.
+
+     This value is same as 'TypedID.hashValue'.
+     */
+    open override var hash: Int {
+        get {
+            return self.hashValue
+        }
+    }
+
     /** Ininitialize TypedID with type and id.
 
     - Parameter type: Type of the entity.
@@ -45,18 +62,27 @@ open class TypedID : NSObject, NSCoding {
         self.id = id
     }
 
-    func toString() -> String {
+    internal func toString() -> String {
         return "\(type):\(id)"
     }
 
+    /** Check whether object equals to this instance or not.
+
+     - Parameter object: object to be checked.
+     - Returns: true if object equals to this instance otherwise false.
+     */
     open override func isEqual(_ object: Any?) -> Bool {
         guard let aType = object as? TypedID else{
             return false
         }
-        return (self.type == aType.type) && (self.id == aType.id)
+        return self == aType
     }
 
-    public static func == (left: TypedID, right: TypedID) -> Bool {
-        return left.isEqual(right)
+    /** Compare two `TypedID` instance is same or not.
+
+     - Returns: true if two instance is same otherwise false.
+     */
+    static open func == (left: TypedID, right: TypedID) -> Bool {
+        return left.id == right.id && left.type == right.type
     }
 }
