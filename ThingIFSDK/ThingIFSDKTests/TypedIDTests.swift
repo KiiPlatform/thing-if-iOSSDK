@@ -58,16 +58,25 @@ class TypedIDTests: SmallTestBase {
         XCTAssertEqual(userType.toString(), "user:userID")
     }
 
-    func testIsEqual() {
+    func testEqualAndHash() {
         let target = TypedID(TypedID.Types.thing, id: "dummy")
-        let sameOne = TypedID(TypedID.Types.thing, id: "dummy")
-        let differentOne = TypedID(TypedID.Types.user, id: "dummy")
 
         XCTAssertTrue(target.isEqual(target))
         XCTAssertTrue(target == target)
+        XCTAssertEqual(target.hashValue, target.hash)
+
+        let sameOne = TypedID(TypedID.Types.thing, id: "dummy")
+
         XCTAssertTrue(target.isEqual(sameOne))
+        XCTAssertTrue(sameOne.isEqual(target))
         XCTAssertTrue(target == sameOne)
+        XCTAssertEqual(target.hashValue, sameOne.hashValue)
+
+        let differentOne = TypedID(TypedID.Types.user, id: "dummy")
+
         XCTAssertFalse(target.isEqual(differentOne))
+        XCTAssertFalse(differentOne.isEqual(target))
         XCTAssertFalse(target == differentOne)
+        XCTAssertNotEqual(target.hashValue, differentOne.hashValue)
     }
 }
