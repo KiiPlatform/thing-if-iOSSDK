@@ -75,14 +75,7 @@ open class TypedID : NSObject, NSCoding {
         guard let aType = object as? TypedID else{
             return false
         }
-        return self == aType
+        return self.id == aType.id && self.type == aType.type
     }
 
-    /** Compare two `TypedID` instance is same or not.
-
-     - Returns: true if two instance is same otherwise false.
-     */
-    static open func == (left: TypedID, right: TypedID) -> Bool {
-        return left.id == right.id && left.type == right.type
-    }
 }
