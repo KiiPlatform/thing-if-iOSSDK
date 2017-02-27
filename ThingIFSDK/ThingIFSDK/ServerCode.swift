@@ -3,7 +3,7 @@
 //  ThingIFSDK
 //
 //  Created by syahRiza on 4/25/16.
-//  Copyright © 2016 Kii. All rights reserved.
+//  Copyright 2016 Kii. All rights reserved.
 //
 
 import Foundation
@@ -17,7 +17,7 @@ open class ServerCode : NSObject, NSCoding {
     }
 
     // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         self.endpoint = aDecoder.decodeObject(forKey: "endpoint") as! String
         self.executorAccessToken = aDecoder.decodeObject(forKey: "executorAccessToken") as? String
         self.targetAppID = aDecoder.decodeObject(forKey: "targetAppID") as? String
@@ -41,7 +41,7 @@ open class ServerCode : NSObject, NSCoding {
      - Parameter parameters: Parameters to pass to the servercode function
      */
     internal init(
-      endpoint: String,
+      _ endpoint: String,
       executorAccessToken: String? = nil,
       targetAppID: String? = nil,
       parameters: [String : Any]? = nil)
