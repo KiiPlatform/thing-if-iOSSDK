@@ -33,7 +33,7 @@ internal extension QueryClause {
 }
 
 /** Class represents Equals clause for query methods. */
-open class EqualsClauseInQuery: NSObject, QueryClause, BaseEquals {
+open class EqualsClauseInQuery: QueryClause, BaseEquals {
 
     /** Name of a field. */
     open let field: String
@@ -84,23 +84,10 @@ open class EqualsClauseInQuery: NSObject, QueryClause, BaseEquals {
         ] as [String : Any]
     }
 
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(
-          aDecoder.decodeObject(forKey: "field") as! String,
-          value: aDecoder.decodeObject(forKey: "value") as AnyObject)
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.field, forKey: "field")
-        aCoder.encode(self.value, forKey: "value")
-    }
-
 }
 
 /** Class represents Not Equals clause for query methods.  */
-open class NotEqualsClauseInQuery: NSObject, QueryClause, BaseNotEquals {
+open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInQuery
 
     /** Contained Equals clause instance. */
@@ -125,20 +112,10 @@ open class NotEqualsClauseInQuery: NSObject, QueryClause, BaseNotEquals {
         ] as [String : Any]
     }
 
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! EqualsClauseInQuery)
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.equals)
-    }
-
 }
 
 /** Class represents Range clause for query methods. */
-open class RangeClauseInQuery: NSObject, QueryClause, BaseRange {
+open class RangeClauseInQuery: QueryClause, BaseRange {
 
     private let lower: (limit: NSNumber, included: Bool)?
     private let upper: (limit: NSNumber, included: Bool)?
@@ -283,42 +260,11 @@ open class RangeClauseInQuery: NSObject, QueryClause, BaseRange {
         return retval
     }
 
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        let lower = aDecoder.decodeObject(forKey: "lower") as? [String : Any]
-        let upper = aDecoder.decodeObject(forKey: "upper") as? [String : Any]
-
-        if lower == nil && upper == nil {
-            fatalError("unexpected case.")
-        }
-        self.init(
-          aDecoder.decodeObject(forKey: "field") as! String,
-          lower: lower != nil ?
-            (lower!["limit"] as! NSNumber, lower!["included"] as! Bool) : nil,
-          upper: upper != nil ?
-            (upper!["limit"] as! NSNumber, upper!["included"] as! Bool) : nil)
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.field, forKey: "field")
-        if let lower = self.lower {
-            aCoder.encode(
-              ["limit": lower.limit, "included": lower.included],
-              forKey: "lower")
-        }
-        if let upper = self.upper {
-            aCoder.encode(
-              ["limit": upper.limit, "included": upper.included],
-              forKey: "upper")
-        }
-    }
-
 }
 
 
 /** Class represents And clause for query methods. */
-open class AndClauseInQuery: NSObject, QueryClause, BaseAnd {
+open class AndClauseInQuery: QueryClause, BaseAnd {
 
     /** Clauses conjuncted with And. */
     open internal(set) var clauses: [QueryClause]
@@ -337,16 +283,6 @@ open class AndClauseInQuery: NSObject, QueryClause, BaseAnd {
      */
     public convenience init(_ clause: QueryClause...) {
         self.init(clause)
-    }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! [QueryClause])
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to And clauses.
@@ -372,7 +308,7 @@ open class AndClauseInQuery: NSObject, QueryClause, BaseAnd {
 }
 
 /** Class represents Or clause for query methods. */
-open class OrClauseInQuery: NSObject, QueryClause, BaseOr {
+open class OrClauseInQuery: QueryClause, BaseOr {
 
     /** Clauses conjuncted with Or. */
     open internal(set) var clauses: [QueryClause]
@@ -391,16 +327,6 @@ open class OrClauseInQuery: NSObject, QueryClause, BaseOr {
      */
     public convenience init(_ clause: QueryClause...) {
         self.init(clause)
-    }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! [QueryClause])
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to Or clauses.
