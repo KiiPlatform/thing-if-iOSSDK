@@ -113,10 +113,10 @@ open class Command: NSObject, NSCoding {
      - Returns Array of `AliasAction`.
      */
     open func getAction(_ alias: String) -> [AliasAction] {
-        fatalError("TODO: implement me.")
+        return self.actions.filter { $0.alias == alias }
     }
 
-    /** Get action results associated with an alias and actio name.
+    /** Get action results associated with an alias and action name.
 
      - Parameter alias: Alias to get action result.
      - Parameter alias: Action name to get action result.
@@ -124,9 +124,13 @@ open class Command: NSObject, NSCoding {
      */
     open func getActionResult(
       _ alias: String,
-      actionName: String) -> [AliasActionResult]
+      actionName: String) -> [ActionResult]
     {
-        fatalError("TODO: implement me.")
+        var retval: [ActionResult] = []
+        for results in self.actionResults.filter({ $0.alias == alias }) {
+            retval += results.results.filter { $0.actionName == actionName }
+        }
+        return retval
     }
 
 }
