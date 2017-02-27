@@ -35,22 +35,6 @@ class GroupedHistoryStatesQueryTests: SmallTestBase {
         assertEqualsTimeRange(timeRange, actual.timeRange)
         assertEqualsQueryClause(clause, actual.clause)
         XCTAssertEqual("version", actual.firmwareVersion)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-          NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = GroupedHistoryStatesQuery(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.alias, deserialized.alias)
-        assertEqualsTimeRange(actual.timeRange, deserialized.timeRange)
-        assertEqualsQueryClause(actual.clause, deserialized.clause)
-        XCTAssertEqual(actual.firmwareVersion, deserialized.firmwareVersion)
     }
 
     func testOptinalNil() {
@@ -65,21 +49,5 @@ class GroupedHistoryStatesQueryTests: SmallTestBase {
         assertEqualsTimeRange(timeRange, actual.timeRange)
         assertEqualsQueryClause(nil, actual.clause)
         XCTAssertEqual(nil, actual.firmwareVersion)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-          NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = GroupedHistoryStatesQuery(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.alias, deserialized.alias)
-        assertEqualsTimeRange(actual.timeRange, deserialized.timeRange)
-        assertEqualsQueryClause(actual.clause, deserialized.clause)
-        XCTAssertEqual(actual.firmwareVersion, deserialized.firmwareVersion)
     }
 }
