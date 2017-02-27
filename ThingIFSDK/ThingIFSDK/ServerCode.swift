@@ -7,7 +7,7 @@
 //
 
 import Foundation
-open class ServerCode : Equatable, NSCoding {
+open class ServerCode : NSObject, NSCoding {
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
         aCoder.encode(self.endpoint, forKey: "endpoint")
@@ -21,7 +21,7 @@ open class ServerCode : Equatable, NSCoding {
         self.endpoint = aDecoder.decodeObject(forKey: "endpoint") as! String
         self.executorAccessToken = aDecoder.decodeObject(forKey: "executorAccessToken") as? String
         self.targetAppID = aDecoder.decodeObject(forKey: "targetAppID") as? String
-        self.parameters = aDecoder.decodeObject(forKey: "parameters") as? Dictionary<String, Any>
+        self.parameters = aDecoder.decodeObject(forKey: "parameters") as? [String : Any]
     }
 
     /** Endpoint to call on servercode */
@@ -31,7 +31,7 @@ open class ServerCode : Equatable, NSCoding {
     /** If provided, servercode endpoint will be called for this appid. Otherwise same appID of trigger is used */
     open let targetAppID: String?
     /** Parameters to pass to the servercode function */
-    open let parameters: Dictionary<String, Any>?
+    open let parameters: [String : Any]?
 
     /** Init TriggeredServerCodeResult with necessary attributes
 
@@ -40,52 +40,16 @@ open class ServerCode : Equatable, NSCoding {
      - Parameter targetAppID: If provided, servercode endpoint will be called for this appid. Otherwise same appID of trigger is used
      - Parameter parameters: Parameters to pass to the servercode function
      */
-    public init(endpoint: String, executorAccessToken: String?, targetAppID: String?, parameters: Dictionary<String, Any>?) {
+    internal init(
+      endpoint: String,
+      executorAccessToken: String? = nil,
+      targetAppID: String? = nil,
+      parameters: [String : Any]? = nil)
+    {
         self.endpoint = endpoint
         self.executorAccessToken = executorAccessToken
         self.targetAppID = targetAppID
         self.parameters = parameters
     }
 
-    internal func makeDictionary() -> [ String : Any ] {
-        var dict: [ String : Any ] = ["endpoint": self.endpoint]
-        dict["executorAccessToken"] = self.executorAccessToken
-        dict["targetAppID"] = self.targetAppID
-        dict["parameters"] = self.parameters
-        return dict
-    }
-
-    open func isEqual(_ object: Any?) -> Bool {
-        guard let aServerCode = object as? ServerCode else{
-            return false
-        }
-        if self.parameters == nil || aServerCode.parameters == nil {
-            if self.parameters == nil && aServerCode.parameters == nil {
-                return true
-            }
-            return false
-        }
-        return self.endpoint == aServerCode.endpoint &&
-            self.executorAccessToken == aServerCode.executorAccessToken &&
-            self.targetAppID == aServerCode.targetAppID &&
-            NSDictionary(dictionary: self.parameters!).isEqual(to: aServerCode.parameters!)
-
-    }
-
-    public static func == (left: ServerCode, right: ServerCode) -> Bool {
-        return left.isEqual(right)
-    }
-
-    class func serverCodeWithNSDictionary(_ nsDict: NSDictionary!) -> ServerCode?{
-        let endpoint = nsDict["endpoint"] as? String
-        let executorAccessToken = nsDict["executorAccessToken"] as? String
-        let targetAppID = nsDict["targetAppID"] as? String
-        let parameters = nsDict["parameters"] as? Dictionary<String, Any>
-        var serverCode: ServerCode?
-        if (endpoint != nil) {
-            serverCode = ServerCode(endpoint:endpoint!, executorAccessToken:executorAccessToken, targetAppID:targetAppID, parameters:parameters)
-        }
-        return serverCode
-    }
-    
 }
