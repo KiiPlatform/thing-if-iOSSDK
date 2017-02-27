@@ -16,19 +16,15 @@ open class Command: NSObject, NSCoding {
         aCoder.encode(self.actionResults, forKey: "actionResults")
         aCoder.encode(self.commandState.rawValue, forKey: "commandState")
         aCoder.encode(self.firedByTriggerID, forKey: "firedByTriggerID")
-        if let date = self.created {
-            aCoder.encode(date.timeIntervalSince1970, forKey: "created")
-        }
-        if let date = self.modified {
-            aCoder.encode(date.timeIntervalSince1970, forKey: "modified")
-        }
+        aCoder.encode(self.created, forKey: "created")
+        aCoder.encode(self.modified, forKey: "modified")
         aCoder.encode(self.title, forKey: "title")
         aCoder.encode(self.commandDescription, forKey: "commandDescription")
         aCoder.encode(self.metadata, forKey: "metadata")
     }
 
     // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         self.commandID = aDecoder.decodeObject(forKey: "commandID") as! String
         self.targetID = aDecoder.decodeObject(forKey: "targetID") as! TypedID
         self.issuerID = aDecoder.decodeObject(forKey: "issuerID") as! TypedID
@@ -39,16 +35,8 @@ open class Command: NSObject, NSCoding {
         self.commandState =
             CommandState(rawValue: aDecoder.decodeInteger(forKey: "commandState"))!;
         self.firedByTriggerID = aDecoder.decodeObject(forKey: "firedByTriggerID") as? String
-        if aDecoder.containsValue(forKey: "created") {
-            self.created = Date(timeIntervalSince1970: aDecoder.decodeDouble(forKey: "created"))
-        } else {
-            self.created = nil
-        }
-        if aDecoder.containsValue(forKey: "modified") {
-            self.modified = Date(timeIntervalSince1970: aDecoder.decodeDouble(forKey: "modified"))
-        } else {
-            self.modified = nil
-        }
+        self.created = aDecoder.decodeObject(forKey: "created") as? Date
+        self.modified = aDecoder.decodeObject(forKey: "modified") as? Date
         self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription = aDecoder.decodeObject(forKey: "commandDescription") as? String
         self.metadata = aDecoder.decodeObject(forKey: "metadata") as? [String : Any]
@@ -80,12 +68,12 @@ open class Command: NSObject, NSCoding {
     /** Metadata of the Command */
     open let metadata: [String : Any]?
 
-    internal init(commandID: String,
+    internal init(_ commandID: String,
          targetID: TypedID,
          issuerID: TypedID,
          actions: [AliasAction],
-         actionResults: [AliasActionResult]?,
-         commandState: CommandState?,
+         actionResults: [AliasActionResult] = [],
+         commandState: CommandState = .sending,
          firedByTriggerID: String? = nil,
          created: Date? = nil,
          modified: Date? = nil,
@@ -97,8 +85,8 @@ open class Command: NSObject, NSCoding {
         self.issuerID = issuerID
         self.actions = actions
 
-        self.actionResults = actionResults ?? []
-        self.commandState = commandState ?? CommandState.sending
+        self.actionResults = actionResults
+        self.commandState = commandState
         self.firedByTriggerID = firedByTriggerID
         self.created = created
         self.modified = modified
