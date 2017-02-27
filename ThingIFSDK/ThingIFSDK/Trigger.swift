@@ -49,6 +49,8 @@ open class Trigger: Equatable, NSCoding {
     }
 
     class func triggerWithNSDict(_ targetID: TypedID, triggerDict: NSDictionary) -> Trigger?{
+        fatalError("TODO: implement me")
+        /*
         let triggerID = triggerDict["triggerID"] as? String
         let disabled = triggerDict["disabled"] as? Bool
         var predicate: Predicate?
@@ -96,6 +98,7 @@ open class Trigger: Equatable, NSCoding {
         }
         
         return trigger
+        */
     }
 
     /** ID of the Trigger */

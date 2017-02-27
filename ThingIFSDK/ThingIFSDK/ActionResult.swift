@@ -23,8 +23,8 @@ open class ActionResult: NSObject, NSCoding {
     internal init(
       _ succeeded: Bool,
       actionName: String,
-      data: Any?,
-      errorMessage: String?)
+      data: Any? = nil,
+      errorMessage: String? = nil)
     {
         self.succeeded = succeeded
         self.actionName = actionName
