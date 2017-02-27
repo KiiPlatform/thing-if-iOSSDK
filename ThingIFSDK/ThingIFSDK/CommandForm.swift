@@ -24,7 +24,7 @@ Optional data are followings:
   - Description of a command
   - Meta data of a command
 */
-open class CommandForm: NSCoding {
+open class CommandForm {
 
     // MARK: - Properties
 
@@ -63,21 +63,4 @@ open class CommandForm: NSCoding {
         self.metadata = metadata;
     }
 
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.actions, forKey: "actions")
-        aCoder.encode(self.title, forKey: "title")
-        aCoder.encode(self.commandDescription,
-                forKey: "commandDescription");
-        aCoder.encode(self.metadata, forKey: "metadata")
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(
-          aDecoder.decodeObject(forKey: "title") as! [AliasAction],
-          title: aDecoder.decodeObject(forKey: "title") as? String,
-          commandDescription: aDecoder.decodeObject(
-            forKey: "commandDescription") as? String,
-          metadata: aDecoder.decodeObject(
-            forKey: "metadata")as? [String :  Any])
-    }
 }

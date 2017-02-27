@@ -12,6 +12,61 @@ import XCTest
 
 extension XCTestCase {
 
+    internal func assertOnlyOneNil(
+      _ expected: Any?,
+      _ actual: Any?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        if expected == nil && actual == nil {
+            return
+        } else if expected != nil && actual != nil {
+            return
+        }
+        let errorMessage = message ?? "One is nil, the other is not nil."
+        XCTFail("file=\(file), line=\(line): \(errorMessage)")
+    }
+
+    func assertEqualsAliasActionArray(
+      _ expected: [AliasAction]?,
+      _ actual: [AliasAction]?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected,actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.count,
+          actual!.count,
+          message,
+          file: file,
+          line: line)
+        for (index, exp) in expected!.enumerated() {
+            assertEqualsAliasAction(exp, actual![index], message, file, line)
+        }
+    }
+
+    func assertEqualsAliasAction(
+      _ expected: AliasAction?,
+      _ actual: AliasAction?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected, actual, message, file, line)
+
+        if expected == nil && actual == nil {
+            return
+        }
+        XCTAssertEqual(expected!.alias, actual!.alias)
+        assertEqualsDictionary(expected!.action, actual!.action)
+    }
+
     internal func assertEqualsWrapper<T : Equatable>(
       _ expected: T?,
       _ actual: T?,
