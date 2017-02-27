@@ -5,7 +5,7 @@
 import Foundation
 
 /** Class represents Command */
-open class Command: Equatable, NSCoding {
+open class Command: NSObject, NSCoding {
 
     // MARK: - Implements NSCoding protocol
     open func encode(with aCoder: NSCoder) {
@@ -51,7 +51,7 @@ open class Command: Equatable, NSCoding {
         }
         self.title = aDecoder.decodeObject(forKey: "title") as? String
         self.commandDescription = aDecoder.decodeObject(forKey: "commandDescription") as? String
-        self.metadata = aDecoder.decodeObject(forKey: "metadata") as? Dictionary<String, Any>
+        self.metadata = aDecoder.decodeObject(forKey: "metadata") as? [String : Any]
     }
 
 
@@ -78,7 +78,7 @@ open class Command: Equatable, NSCoding {
     /** Description of the Command */
     open let commandDescription: String?
     /** Metadata of the Command */
-    open let metadata: Dictionary<String, Any>?
+    open let metadata: [String : Any]?
 
     internal init(commandID: String,
          targetID: TypedID,
@@ -91,7 +91,7 @@ open class Command: Equatable, NSCoding {
          modified: Date? = nil,
          title: String? = nil,
          commandDescription: String? = nil,
-         metadata: Dictionary<String, Any>? = nil) {
+         metadata: [String : Any]? = nil) {
         self.commandID = commandID
         self.targetID = targetID
         self.issuerID = issuerID
@@ -129,82 +129,6 @@ open class Command: Equatable, NSCoding {
         fatalError("TODO: implement me.")
     }
 
-    open func isEqual(_ object: Any?) -> Bool {
-        guard let aCommand = object as? Command else{
-            return false
-        }
-
-        return self.commandID == aCommand.commandID &&
-            self.targetID == aCommand.targetID &&
-            self.issuerID == aCommand.issuerID
-    }
-
-    public static func == (left: Command, right: Command) -> Bool {
-        return left.isEqual(right)
-    }
-
-    // TODO: We should replace this method with internal initializer.
-    class func commandWithNSDictionary(_ nsDict: NSDictionary!) -> Command? {
-
-        /*
-        let commandID = nsDict["commandID"] as? String
-        let schemaName = nsDict["schema"] as? String
-        // actions array
-        var actionsArray = [Dictionary<String, Any>]()
-        if let actions = nsDict["actions"] as? [NSDictionary] {
-            actionsArray = actions as! [Dictionary<String, Any>]
-        }
-        // actionResult array
-        var actionsResultArray = [Dictionary<String, Any>]()
-        if let actionResults = nsDict["actionResults"] as? [NSDictionary] {
-            actionsResultArray = actionResults as! [Dictionary<String, Any>]
-        }
-        let schemaVersion = nsDict["schemaVersion"] as? Int
-
-        var targetID: TypedID?
-        if let targetString = nsDict["target"] as? String {
-            var targetInfoArray = targetString.components(separatedBy: ":")
-            if targetInfoArray.count == 2 {
-                targetID = TypedID(type: targetInfoArray[0], id: targetInfoArray[1])
-            }
-        }
-
-        var issuerID: TypedID?
-        if let issureString = nsDict["issuer"] as? String {
-            var issuerInfoArray = issureString.components(separatedBy: ":")
-            if issuerInfoArray.count == 2 {
-                issuerID = TypedID(type: issuerInfoArray[0], id: issuerInfoArray[1])
-            }
-        }
-
-        var commandState: CommandState?
-        if let commandStateString = nsDict["commandState"] as? String {
-            switch commandStateString {
-            case "SENDING":
-                commandState = CommandState.sending
-            case "DELIVERED":
-                commandState = CommandState.delivered
-            case "INCOMPLETE":
-                commandState = CommandState.incomplete
-            default:
-                commandState = CommandState.done
-            }
-        }
-        if targetID == nil || issuerID == nil || schemaName == nil || schemaVersion == nil {
-            return nil
-        }
-        var created: Date? = nil
-        if let createdAt = nsDict["createdAt"] as? NSNumber {
-            created = Date(timeIntervalSince1970: (createdAt.doubleValue)/1000.0)
-        }
-        var modified: Date? = nil
-        if let modifiedAt = nsDict["modifiedAt"] as? NSNumber {
-            modified = Date(timeIntervalSince1970: (modifiedAt.doubleValue)/1000.0)
-        }
-        return Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState, firedByTriggerID: nsDict["firedByTriggerID"] as? String, created: created, modified: modified, title: nsDict["title"] as? String, commandDescription: nsDict["description"] as? String, metadata: nsDict["metadata"] as? Dictionary<String, Any>)
-        */
-        return nil
-    }
 }
 
 /** Enum represents state of the Command. */
