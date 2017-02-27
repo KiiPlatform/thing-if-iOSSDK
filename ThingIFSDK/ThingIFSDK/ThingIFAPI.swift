@@ -62,7 +62,7 @@ open class ThingIFAPI: Equatable, NSCoding {
     /** Checks whether on boarding is done. */
     open var onboarded: Bool {
         get {
-            fatalError("TODO: implement me.")
+            return self.target != nil
         }
     }
 
