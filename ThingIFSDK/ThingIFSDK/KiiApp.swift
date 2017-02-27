@@ -8,7 +8,7 @@
 import Foundation
 
 /** Represents Kii Cloud Application */
-open class KiiApp: NSCoding {
+open class KiiApp {
     /** ID of the App */
     open let appID: String
     /** Key of the APP */
@@ -19,27 +19,6 @@ open class KiiApp: NSCoding {
     open let baseURL: String
     /** Name of the site to which the app belongs */
     open let siteName: String
-
-    // MARK: NSCoding
-    /** Conforms to NSCoding */
-    public required convenience init(coder decoder:NSCoder) {
-        let appID:String = decoder.decodeObject(forKey: "appID") as! String
-        let appKey:String = decoder.decodeObject(forKey: "appKey") as! String
-        let hostName:String = decoder.decodeObject(forKey: "hostName") as! String
-        let baseURL:String = decoder.decodeObject(forKey: "baseURL") as! String
-        let siteName:String = decoder.decodeObject(forKey: "siteName") as! String
-        self.init(appID, appKey:appKey, hostName:hostName,
-            baseURL:baseURL, siteName:siteName)
-    }
-
-    /** Conforms to NSCoding */
-    open func encode(with coder: NSCoder) {
-        coder.encode(self.appID, forKey:"appID")
-        coder.encode(self.appKey, forKey:"appKey")
-        coder.encode(self.hostName, forKey:"hostName")
-        coder.encode(self.baseURL, forKey:"baseURL")
-        coder.encode(self.siteName, forKey:"siteName")
-    }
 
     // MARK: Initializers
     /** Init app with appID, appKey and site.
@@ -58,7 +37,7 @@ open class KiiApp: NSCoding {
         self.siteName = site.getName()
     }
 
-    fileprivate init(_ appID:String, appKey:String, hostName:String,
+    private init(_ appID:String, appKey:String, hostName:String,
         baseURL:String, siteName:String)
     {
         self.appID = appID
