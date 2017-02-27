@@ -28,7 +28,7 @@ Optional data are followings:
   - Description of a triggered command
   - Meta data of a triggered command
 */
-open class TriggeredCommandForm: NSCoding {
+open class TriggeredCommandForm {
 
     // MARK: - Properties
 
@@ -114,26 +114,6 @@ open class TriggeredCommandForm: NSCoding {
         self.metadata = metadata ?? command.metadata
     }
     */
-
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.actions, forKey: "actions")
-        aCoder.encode(self.targetID, forKey: "targetID")
-        aCoder.encode(self.title, forKey: "title")
-        aCoder.encode(self.commandDescription,
-                forKey: "commandDescription");
-        aCoder.encode(self.metadata, forKey: "metadata")
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(
-          aDecoder.decodeObject(forKey: "actions") as! [AliasAction],
-          targetID: aDecoder.decodeObject(forKey: "targetID") as? TypedID,
-          title: aDecoder.decodeObject(forKey: "title") as? String,
-          commandDescription: aDecoder.decodeObject(
-            forKey: "commandDescription") as? String,
-          metadata: aDecoder.decodeObject(forKey: "metadata") as? [String : Any]
-        )
-    }
 
     func toDictionary() -> Dictionary<String, Any> {
         var retval: [String : Any] =
