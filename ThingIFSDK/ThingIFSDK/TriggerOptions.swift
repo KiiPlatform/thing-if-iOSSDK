@@ -17,7 +17,7 @@ This class contains optional data in order to create and modify
  - `ThingIFAPI.postNewTrigger(_:predicate:options:completionHandler:)`
  - `ThingIFAPI.patchTrigger(_:triggeredCommandForm:predicate:options:completionHandler:)`
 */
-open class TriggerOptions: NSCoding {
+open class TriggerOptions {
 
     /// Title of a command.
     open let title: String?
@@ -47,18 +47,4 @@ open class TriggerOptions: NSCoding {
         self.metadata = metadata;
     }
 
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.title, forKey: "title")
-        aCoder.encode(self.triggerDescription,
-                forKey: "triggerDescription")
-        aCoder.encode(self.metadata, forKey: "metadata")
-    }
-
-    public required init?(coder aDecoder: NSCoder) {
-        self.title = aDecoder.decodeObject(forKey: "title") as? String
-        self.triggerDescription =
-            aDecoder.decodeObject(forKey: "triggerDescription") as? String
-        self.metadata = aDecoder.decodeObject(forKey: "metadata")
-                as? Dictionary<String, Any>
-    }
 }
