@@ -108,21 +108,6 @@ class AndClauseInQueryTests: SmallTestBase {
               expected,
               actual.makeDictionary(),
               "label \(index)")
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = AndClauseInQuery(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.clauses.count, deserialized.clauses.count)
-            assertEqualsDictionary(
-              actual.makeDictionary(),
-              deserialized.makeDictionary())
         }
     }
 
@@ -290,21 +275,6 @@ class AndClauseInQueryTests: SmallTestBase {
               expected,
               actual.makeDictionary(),
               "label \(index)")
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = AndClauseInQuery(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.clauses.count, deserialized.clauses.count)
-            assertEqualsDictionary(
-              actual.makeDictionary(),
-              deserialized.makeDictionary())
         }
     }
 
@@ -346,21 +316,5 @@ class AndClauseInQueryTests: SmallTestBase {
               ]
             ]
           ], actual.makeDictionary())
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = AndClauseInQuery(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.clauses.count, deserialized.clauses.count)
-        assertEqualsDictionary(
-          actual.makeDictionary(),
-          deserialized.makeDictionary())
-
     }
 }

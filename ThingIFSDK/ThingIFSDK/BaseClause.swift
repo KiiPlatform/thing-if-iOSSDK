@@ -9,7 +9,7 @@
 import Foundation
 
 /** Base protocol for all clause classes. */
-public protocol BaseClause: class, NSCoding {
+public protocol BaseClause: class {
 
 }
 

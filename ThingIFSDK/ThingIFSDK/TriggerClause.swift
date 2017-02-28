@@ -9,7 +9,7 @@
 import Foundation
 
 /** Base protocol for trigger clause classes. */
-public protocol TriggerClause: BaseClause {
+public protocol TriggerClause: NSCoding, BaseClause {
 
 }
 
