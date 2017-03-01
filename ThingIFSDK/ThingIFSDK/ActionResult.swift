@@ -9,18 +9,29 @@
 import Foundation
 
 /** Result of an action. */
-open class ActionResult: NSObject, NSCoding {
+public struct ActionResult {
 
     /** Action is succeeded or not. */
-    open let succeeded: Bool
+    public let succeeded: Bool
     /** Name of an action. */
-    open let actionName: String
+    public let actionName: String
     /** Data returned from thing. */
-    open let data: Any?
+    public let data: Any?
     /** Error message. */
-    open let errorMessage: String?
+    public let errorMessage: String?
 
-    internal init(
+    /** Initialize `ActionResult`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters succeeded: Action is succeeded or not
+     - Parameters actionName: Name of action.
+     - Parameters data: Data returned from thing.
+     - Parameters errorMessage: Error message.
+     */
+    public init(
       _ succeeded: Bool,
       actionName: String,
       data: Any? = nil,
@@ -30,20 +41,6 @@ open class ActionResult: NSObject, NSCoding {
         self.actionName = actionName
         self.data = data
         self.errorMessage = errorMessage
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeBool(forKey: "succeeded"),
-            actionName: aDecoder.decodeObject(forKey: "actionName") as! String,
-            data: aDecoder.decodeObject(forKey: "data"),
-            errorMessage: aDecoder.decodeObject(forKey: "errorMessage") as? String)
-    }
-
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.succeeded, forKey: "succeeded")
-        aCoder.encode(self.actionName, forKey: "actionName")
-        aCoder.encode(self.data, forKey: "data")
-        aCoder.encode(self.errorMessage, forKey: "errorMessage")
     }
 
 }
