@@ -9,7 +9,7 @@
 import Foundation
 
 /** Protocol represents Predicate */
-public protocol Predicate: class, NSCoding {
+public protocol Predicate {
 
 
     /** Event source of this predicate.

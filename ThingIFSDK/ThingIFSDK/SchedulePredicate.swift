@@ -9,11 +9,11 @@
 import Foundation
 
 /** Class represents SchedulePredicate. */
-open class SchedulePredicate: NSObject, Predicate {
+public struct SchedulePredicate: Predicate {
     /** Specified schedule. (cron tab format) */
-    open let schedule: String
+    public let schedule: String
 
-    open let eventSource: EventSource = EventSource.schedule
+    public let eventSource: EventSource = EventSource.schedule
 
     /** Instantiate new SchedulePredicate.
 
@@ -21,15 +21,6 @@ open class SchedulePredicate: NSObject, Predicate {
      */
     public init(_ schedule: String) {
         self.schedule = schedule
-    }
-
-    public required init?(coder aDecoder: NSCoder) {
-        self.schedule = aDecoder.decodeObject(forKey: "schedule") as! String;
-
-    }
-
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.schedule, forKey: "schedule");
     }
 
 }

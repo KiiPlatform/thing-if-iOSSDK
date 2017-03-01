@@ -75,30 +75,6 @@ class StatePredicateTests: SmallTestBase {
               actual.triggersWhen,
               "\(index)")
             XCTAssertEqual(EventSource.states, actual.eventSource, "\(index)")
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver =
-              NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = StatePredicate(coder: decoder)!
-            decoder.finishDecoding();
-
-            assertEqualsTriggerClause(
-              actual.condition.clause,
-              deserialized.condition.clause,
-              "\(index)")
-            XCTAssertEqual(
-              actual.triggersWhen,
-              deserialized.triggersWhen,
-              "\(index)")
-            XCTAssertEqual(
-              actual.eventSource,
-              deserialized.eventSource,
-              "\(index)")
         }
     }
 }

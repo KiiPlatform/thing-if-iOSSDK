@@ -26,19 +26,6 @@ class ScheduleOncePredicateTests: SmallTestBase {
 
         XCTAssertEqual(scheduleAt, actual.scheduleAt)
         XCTAssertEqual(EventSource.scheduleOnce, actual.eventSource)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = ScheduleOncePredicate(coder: decoder)!
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.scheduleAt, deserialized.scheduleAt)
-        XCTAssertEqual(actual.eventSource, deserialized.eventSource)
     }
 }
 
