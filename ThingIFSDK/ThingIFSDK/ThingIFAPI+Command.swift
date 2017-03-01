@@ -73,6 +73,8 @@ extension ThingIFAPI {
         completionHandler: @escaping (Command?, ThingIFError?)-> Void
         )
     {
+        fatalError("TODO: implement me")
+        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
@@ -96,6 +98,7 @@ extension ThingIFAPI {
         
         let operation = IoTRequestOperation(request: request)
         operationQueue.addOperation(operation)
+        */
     }
     
     func _listCommands(
@@ -104,6 +107,8 @@ extension ThingIFAPI {
         completionHandler: @escaping ([Command]?, String?, ThingIFError?)-> Void
         )
     {
+        fatalError("TODO: implement me")
+        /*
         guard let target = self.target else {
             completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
@@ -141,5 +146,6 @@ extension ThingIFAPI {
         
         let operation = IoTRequestOperation(request: request)
         operationQueue.addOperation(operation)
+        */
     }
 }

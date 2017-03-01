@@ -56,23 +56,6 @@ class AggregationTests: SmallTestBase {
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, Aggregation.FunctionType.count)
-
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver =
-              NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized: Aggregation = Aggregation(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.field, deserialized.field)
-            XCTAssertEqual(actual.fieldType, deserialized.fieldType)
-            XCTAssertEqual(actual.function, deserialized.function)
-
         }
     }
 
@@ -102,23 +85,6 @@ class AggregationTests: SmallTestBase {
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, Aggregation.FunctionType.max)
-
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver =
-              NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized: Aggregation = Aggregation(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.field, deserialized.field)
-            XCTAssertEqual(actual.fieldType, deserialized.fieldType)
-            XCTAssertEqual(actual.function, deserialized.function)
-
         }
     }
 
@@ -178,23 +144,6 @@ class AggregationTests: SmallTestBase {
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, Aggregation.FunctionType.min)
-
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver =
-              NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized: Aggregation = Aggregation(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.field, deserialized.field)
-            XCTAssertEqual(actual.fieldType, deserialized.fieldType)
-            XCTAssertEqual(actual.function, deserialized.function)
-
         }
     }
 
@@ -254,23 +203,6 @@ class AggregationTests: SmallTestBase {
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, Aggregation.FunctionType.sum)
-
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver =
-              NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized: Aggregation = Aggregation(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.field, deserialized.field)
-            XCTAssertEqual(actual.fieldType, deserialized.fieldType)
-            XCTAssertEqual(actual.function, deserialized.function)
-
         }
     }
 
@@ -330,23 +262,6 @@ class AggregationTests: SmallTestBase {
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, Aggregation.FunctionType.mean)
-
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver =
-              NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized: Aggregation = Aggregation(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.field, deserialized.field)
-            XCTAssertEqual(actual.fieldType, deserialized.fieldType)
-            XCTAssertEqual(actual.function, deserialized.function)
-
         }
     }
 
@@ -457,23 +372,6 @@ class AggregationTests: SmallTestBase {
             XCTAssertEqual(actual.field, expected.field)
             XCTAssertEqual(actual.fieldType, expected.fieldType)
             XCTAssertEqual(actual.function, expected.function)
-
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver =
-              NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized: Aggregation = Aggregation(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.field, deserialized.field)
-            XCTAssertEqual(actual.fieldType, deserialized.fieldType)
-            XCTAssertEqual(actual.function, deserialized.function)
-
         }
     }
 

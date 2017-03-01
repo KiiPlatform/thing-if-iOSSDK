@@ -12,6 +12,185 @@ import XCTest
 
 extension XCTestCase {
 
+    func assertEqualsAliasActionResultArray(
+      _ expected: [AliasActionResult]?,
+      _ actual: [AliasActionResult]?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected,actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.count,
+          actual!.count,
+          message,
+          file: file,
+          line: line)
+        for (index, exp) in expected!.enumerated() {
+            assertEqualsAliasActionResult(
+              exp,
+              actual![index],
+              message,
+              file,
+              line)
+        }
+    }
+
+    func assertEqualsAliasActionResult(
+      _ expected: AliasActionResult?,
+      _ actual: AliasActionResult?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected, actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.alias,
+          actual!.alias,
+          message,
+          file: file,
+          line: line)
+        assertEqualsActionResultArray(
+          expected!.results,
+          actual!.results,
+          message,
+          file,
+          line)
+    }
+
+    func assertEqualsActionResultArray(
+      _ expected: [ActionResult]?,
+      _ actual: [ActionResult]?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected,actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.count,
+          actual!.count,
+          message,
+          file: file,
+          line: line)
+        for (index, exp) in expected!.enumerated() {
+            assertEqualsActionResult(
+              exp,
+              actual![index],
+              message,
+              file,
+              line)
+        }
+    }
+
+    func assertEqualsActionResult(
+      _ expected: ActionResult?,
+      _ actual: ActionResult?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected, actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.succeeded,
+          actual!.succeeded,
+          message,
+          file: file,
+          line: line)
+        assertEqualsWrapper(
+          expected!.actionName,
+          actual!.actionName,
+          message,
+          file: file,
+          line: line)
+        assertEqualsWrapper(
+          expected!.errorMessage,
+          actual!.errorMessage,
+          message,
+          file: file,
+          line: line)
+    }
+
+    internal func assertOnlyOneNil(
+      _ expected: Any?,
+      _ actual: Any?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        if expected == nil && actual == nil {
+            return
+        } else if expected != nil && actual != nil {
+            return
+        }
+        let errorMessage = message ?? "One is nil, the other is not nil."
+        XCTFail("file=\(file), line=\(line): \(errorMessage)")
+    }
+
+    func assertEqualsAliasActionArray(
+      _ expected: [AliasAction]?,
+      _ actual: [AliasAction]?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected,actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.count,
+          actual!.count,
+          message,
+          file: file,
+          line: line)
+        for (index, exp) in expected!.enumerated() {
+            assertEqualsAliasAction(exp, actual![index], message, file, line)
+        }
+    }
+
+    func assertEqualsAliasAction(
+      _ expected: AliasAction?,
+      _ actual: AliasAction?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected, actual, message, file, line)
+
+        if expected == nil && actual == nil {
+            return
+        }
+        assertEqualsWrapper(
+          expected!.alias,
+          actual!.alias,
+          message,
+          file: file,
+          line: line)
+        assertEqualsDictionary(
+          expected!.action,
+          actual!.action,
+          message,
+          file,
+          line)
+    }
+
     internal func assertEqualsWrapper<T : Equatable>(
       _ expected: T?,
       _ actual: T?,
