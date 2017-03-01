@@ -9,13 +9,16 @@
 import Foundation
 
 /** Action with an alias. */
-open class AliasAction: NSObject, NSCoding {
+public struct AliasAction {
+
+    // MARK: - Properties
 
     /** Name of an alias. */
-    open let alias: String
+    public let alias: String
     /** Action of this alias. */
-    open let action: [String : Any]
+    public let action: [String : Any]
 
+    // MARK: - Initializing CommandForm instance.
     /** Initializer of AliasAction instance.
 
      - Parameter alias: Name of an alias.
@@ -24,15 +27,5 @@ open class AliasAction: NSObject, NSCoding {
     public init(_ alias: String, action: [String : Any]) {
         self.alias = alias
         self.action = action
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject(forKey: "alias") as! String,
-            action: aDecoder.decodeObject(forKey: "action") as! [String : Any])
-    }
-
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.alias, forKey: "alias")
-        aCoder.encode(self.action, forKey: "action")
     }
 }

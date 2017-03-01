@@ -24,21 +24,21 @@ Optional data are followings:
   - Description of a command
   - Meta data of a command
 */
-open class CommandForm {
+public struct CommandForm {
 
     // MARK: - Properties
 
     /// Array of actions.
-    open let actions: [AliasAction]
+    public let actions: [AliasAction]
 
     /// Title of a command.
-    open let title: String?
+    public let title: String?
 
     /// Description of a command.
-    open let commandDescription: String?
+    public let commandDescription: String?
 
     /// Meta data of ad command.
-    open let metadata: [String : Any]?
+    public let metadata: [String : Any]?
 
 
     // MARK: - Initializing CommandForm instance.
