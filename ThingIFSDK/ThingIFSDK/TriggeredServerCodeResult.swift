@@ -70,8 +70,8 @@ public class TriggeredServerCodeResult {
 
      - Parameter succeeded: Whether the invocation succeeded
      - Parameter executedAt: Date of the execution
-     - Parameter returnedValue: Returned value from server code
      - Parameter endpoint: The endpoint used in the server code invocation
+     - Parameter returnedValue: Returned value from server code
      - Parameter error: Error object of the invocation if any
      */
     public init(
