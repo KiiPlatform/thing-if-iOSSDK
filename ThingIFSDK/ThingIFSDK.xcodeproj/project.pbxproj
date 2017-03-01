@@ -334,7 +334,6 @@
 		7D36B6361BD4D03100D9B821 /* ThingIFSDK */ = {
 			isa = PBXGroup;
 			children = (
-				B6BE38951E5FE67C00FD9976 /* ConcreteThing.swift */,
 				22E486321CC4E14700269A1E /* Gateway */,
 				7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */,
 				7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */,
@@ -643,7 +642,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6A0472B1E3F048700D85A1E /* GroupedHistoryStates.swift in Sources */,
-				B6BE38961E5FE67C00FD9976 /* ConcreteThing.swift in Sources */,
 				747196CF1D016EEC006B0937 /* Condition.swift in Sources */,
 				D5636AFD1CE1EAFC00760564 /* StatePredicate.swift in Sources */,
 				7D36B6761BD4D03100D9B821 /* ExclusivityController.swift in Sources */,

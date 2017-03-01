@@ -8,48 +8,16 @@
 import Foundation
 
 /** Represents gateway. */
-open class Gateway: NSObject, TargetThing {
-
-    private let thing: ConcreteThing
+public struct Gateway: TargetThing, Equatable {
 
     /** ID of target to issue REST API. */
-    open var typedID: TypedID {
-        get {
-            return self.thing.typedID
-        }
-    }
+    public let typedID: TypedID
 
     /** Access token. */
-    open var accessToken: String? {
-        get {
-            return self.thing.accessToken
-        }
-    }
+    public let accessToken: String?
 
     /** Vendor thing id. */
-    open var vendorThingID: String {
-        get {
-            return self.thing.vendorThingID
-        }
-    }
-
-    /** hash value override `NSObject.hashValue`. */
-    open override var hashValue: Int {
-        get {
-            return self.thing.hashValue
-        }
-    }
-
-    /** hash value override `NSObject.hash`. */
-    open override var hash: Int {
-        get {
-            return self.hashValue
-        }
-    }
-
-    private init(_ thing: ConcreteThing) {
-        self.thing = thing
-    }
+    public let vendorThingID: String
 
     /** Init
 
@@ -57,48 +25,13 @@ open class Gateway: NSObject, TargetThing {
     - Parameter vendorThingID: ID of vendor thing
     - Parameter accessToken: Access token of the target, can nil.
     */
-    public convenience init(
+    public init(
       _ thingID: String,
       vendorThingID : String,
       accessToken: String? = nil)
     {
-        self.init(
-          ConcreteThing(
-            thingID,
-            vendorThingID: vendorThingID,
-            accessToken: accessToken))
+        self.typedID = TypedID(TypedID.Types.thing, id: thingID)
+        self.accessToken = accessToken
+        self.vendorThingID = vendorThingID
     }
-
-    // MARK: - Implements NSCoding protocol
-    /** Encode `Gateway`.
-
-     - Parameter aCoder: encoder
-     */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.thing)
-    }
-
-    /** Decode `Gateway`.
-
-     - Parameter aDecoder: decoder
-     */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! ConcreteThing)
-    }
-
-
-    /** Check two `Gateway` instance same or not.
-
-     This method overrides `NSObject.isEqual(object:)`.
-
-     - Parameter object: a object to be checked same or not.
-     - Returns: If same true, otherwise false.
-     */
-    open override func isEqual(_ object: Any?) -> Bool {
-        guard let aTarget = object as? Gateway else {
-            return false
-        }
-        return self.thing == aTarget.thing
-    }
-
 }
