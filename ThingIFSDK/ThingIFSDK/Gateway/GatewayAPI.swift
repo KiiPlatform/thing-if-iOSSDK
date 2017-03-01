@@ -491,7 +491,7 @@ open class GatewayAPI: NSCoding {
                     if id == nil {
                         completionHandler(nil, error)
                     } else {
-                        completionHandler(GatewayInformation(vendorThingID: id!), error)
+                        completionHandler(GatewayInformation(id!), error)
                     }
                 }
             }
