@@ -9,12 +9,12 @@
 import Foundation
 
 /** Time range. */
-open class TimeRange: NSObject, NSCoding {
+public struct TimeRange {
 
     /** Start point of a time range. Inclusive. */
-    open let from: Date
+    public let from: Date
     /** End point of a time range. Inclusive. */
-    open let to: Date
+    public let to: Date
 
     /** Initialize with form date and to date.
 
@@ -24,16 +24,6 @@ open class TimeRange: NSObject, NSCoding {
     public init(_ from: Date, to: Date) {
         self.from = from
         self.to = to
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject(forKey: "from") as! Date,
-            to: aDecoder.decodeObject(forKey: "to") as! Date)
-    }
-
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.from, forKey: "from")
-        aCoder.encode(self.to, forKey: "to")
     }
 
 }

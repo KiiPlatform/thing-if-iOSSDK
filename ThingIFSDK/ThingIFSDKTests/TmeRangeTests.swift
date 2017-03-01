@@ -29,25 +29,4 @@ class TimeRangeTests: SmallTestBase {
         XCTAssertEqual(target.to, to)
     }
 
-    func testCoding() {
-        let from = Date(timeIntervalSince1970: 1)
-        let to = Date(timeIntervalSince1970: 100)
-        let original = TimeRange(from, to: to)
-        XCTAssertNotNil(original)
-        XCTAssertEqual(original.from, from)
-        XCTAssertEqual(original.to, to)
-
-        let data = NSMutableData(capacity: 1024)!
-        let coder = NSKeyedArchiver(forWritingWith: data)
-        original.encode(with: coder)
-        coder.finishEncoding()
-
-        let decoder: NSKeyedUnarchiver = NSKeyedUnarchiver(forReadingWith: data as Data);
-        let decoded = TimeRange(coder: decoder);
-        decoder.finishDecoding();
-
-        XCTAssertNotNil(decoded)
-        XCTAssertEqual(decoded!.from, from)
-        XCTAssertEqual(decoded!.to, to)
-    }
 }

@@ -10,8 +10,8 @@ import Foundation
 /** Optional parameters of
 `ThingIFAPI.onboardWith(thingID:thingPassword:options:completionHandler:)`.
 */
-open class OnboardWithThingIDOptions {
-    open let layoutPosition: LayoutPosition?
+public struct OnboardWithThingIDOptions {
+    public let layoutPosition: LayoutPosition?
 
     /** initializer.
 
