@@ -5,7 +5,7 @@
 import Foundation
 
 /** Represents entity type and its ID. */
-open class TypedID : NSObject, NSCoding {
+public struct TypedID: Equatable {
 
     public enum Types: String {
         /** User type. */
@@ -17,38 +17,15 @@ open class TypedID : NSObject, NSCoding {
 
     }
 
-    // MARK: - Implements NSCoding protocol
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.type.rawValue, forKey: "type")
-        aCoder.encode(self.id, forKey: "id")
-    }
-
-    // MARK: - Implements NSCoding protocol
-    public required convenience init(coder aDecoder: NSCoder) {
-        self.init(
-          Types(rawValue: aDecoder.decodeObject(forKey: "type") as! String)!,
-          id: aDecoder.decodeObject(forKey: "id") as! String)
-    }
-
     /** Type of the ID*/
-    open let type:Types
+    public let type: Types
     /** ID of the entity. */
-    open let id:String
+    public let id: String
 
     /** Hash value for `TypedID` instance. */
-    open override var hashValue: Int {
+    public var hashValue: Int {
         get {
             return self.toString().hashValue
-        }
-    }
-
-    /** hash value override `NSObject.hash`.
-
-     This value is same as 'TypedID.hashValue'.
-     */
-    open override var hash: Int {
-        get {
-            return self.hashValue
         }
     }
 
@@ -66,16 +43,17 @@ open class TypedID : NSObject, NSCoding {
         return "\(type):\(id)"
     }
 
-    /** Check whether object equals to this instance or not.
+    /** Returns a Boolean value indicating whether two values are equal.
 
-     - Parameter object: object to be checked.
-     - Returns: true if object equals to this instance otherwise false.
+     Equality is the inverse of inequality. For any values `a` and `b`,
+     `a == b` implies that `a != b` is `false`.
+
+     - Parameters left: A value to compare
+     - Parameters right:  Another value to compare.
+     - Returns: True if left and right is same, otherwise false.
      */
-    open override func isEqual(_ object: Any?) -> Bool {
-        guard let aType = object as? TypedID else{
-            return false
-        }
-        return self.id == aType.id && self.type == aType.type
+    public static func ==(left: TypedID, right: TypedID) -> Bool {
+        return left.id == right.id && left.type == right.type
     }
 
 }
