@@ -31,23 +31,6 @@ class EndNodeTests: SmallTestBase {
         XCTAssertEqual(
           TypedID(TypedID.Types.thing, id: "thingID"),
           actual.typedID)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-          NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = EndNode(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.thingID, deserialized.thingID)
-        XCTAssertEqual(actual.vendorThingID, deserialized.vendorThingID)
-        XCTAssertEqual(actual.accessToken, deserialized.accessToken)
-        XCTAssertEqual(actual.thingID, deserialized.thingID)
-
     }
 
     func testOptionalNil() {
@@ -61,23 +44,6 @@ class EndNodeTests: SmallTestBase {
         XCTAssertEqual(
           TypedID(TypedID.Types.thing, id: "thingID"),
           actual.typedID)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-          NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = EndNode(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.thingID, deserialized.thingID)
-        XCTAssertEqual(actual.vendorThingID, deserialized.vendorThingID)
-        XCTAssertEqual(actual.accessToken, deserialized.accessToken)
-        XCTAssertEqual(actual.thingID, deserialized.thingID)
-
     }
 
     func testEqualAndHash() {
@@ -87,8 +53,6 @@ class EndNodeTests: SmallTestBase {
           accessToken: "accessToken")
 
         XCTAssertTrue(base == base)
-        XCTAssertTrue(base.isEqual(base))
-        XCTAssertEqual(base.hashValue, base.hash)
 
         let same = EndNode(
           "thingID",
@@ -96,8 +60,6 @@ class EndNodeTests: SmallTestBase {
           accessToken: "accessToken")
 
         XCTAssertTrue(base == same)
-        XCTAssertTrue(base.isEqual(same))
-        XCTAssertTrue(same.isEqual(base))
         XCTAssertEqual(base.hashValue, same.hashValue)
 
         let different = EndNode(
@@ -106,30 +68,8 @@ class EndNodeTests: SmallTestBase {
           accessToken: "accessToken")
 
         XCTAssertFalse(base == different)
-        XCTAssertFalse(base.isEqual(different))
-        XCTAssertFalse(different.isEqual(base))
+        XCTAssertTrue(base != different)
         XCTAssertNotEqual(base.hashValue, different.hashValue)
-
-
-        let gateway =  Gateway(
-          "thingID",
-          vendorThingID: "vendorThingID",
-          accessToken: "accessToken")
-
-        XCTAssertFalse(base == gateway)
-        XCTAssertFalse(base.isEqual(gateway))
-        XCTAssertFalse(gateway.isEqual(base))
-        XCTAssertEqual(base.hashValue, gateway.hashValue)
-
-        let standalone =  StandaloneThing(
-          "thingID",
-          vendorThingID: "vendorThingID",
-          accessToken: "accessToken")
-
-        XCTAssertFalse(base == standalone)
-        XCTAssertFalse(base.isEqual(standalone))
-        XCTAssertFalse(standalone.isEqual(base))
-        XCTAssertEqual(base.hashValue, standalone.hashValue)
     }
 
 }
