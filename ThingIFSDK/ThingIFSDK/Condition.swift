@@ -8,8 +8,8 @@
 
 import Foundation
 /** Class represents Condition */
-open class Condition : NSObject, NSCoding {
-    open let clause: TriggerClause
+public struct Condition {
+    public let clause: TriggerClause
 
     /** Init Condition with Clause
 
@@ -17,14 +17,6 @@ open class Condition : NSObject, NSCoding {
      */
     public init(_ clause: TriggerClause) {
         self.clause = clause
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! TriggerClause);
-    }
-
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.clause)
     }
 
 }
