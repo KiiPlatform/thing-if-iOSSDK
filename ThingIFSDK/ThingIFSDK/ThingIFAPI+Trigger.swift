@@ -349,6 +349,8 @@ extension ThingIFAPI {
         completionHandler: @escaping (_ results:[TriggeredServerCodeResult]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
     )
     {
+        fatalError("TODO: Implement me")
+        /*
         guard let target = self.target else {
             completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
@@ -387,6 +389,7 @@ extension ThingIFAPI {
         })
         let operation = IoTRequestOperation(request: request)
         operationQueue.addOperation(operation)
+        */
     }
 
     func _listTriggers(
