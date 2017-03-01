@@ -28,24 +28,24 @@ Optional data are followings:
   - Description of a triggered command
   - Meta data of a triggered command
 */
-open class TriggeredCommandForm {
+public struct TriggeredCommandForm {
 
     // MARK: - Properties
 
     /// Array of actions.
-    open let actions: [AliasAction]
+    public let actions: [AliasAction]
 
     /// Target thing ID.
-    open let targetID: TypedID?
+    public let targetID: TypedID?
 
     /// Title of a command.
-    open let title: String?
+    public let title: String?
 
     /// Description of a command.
-    open let commandDescription: String?
+    public let commandDescription: String?
 
     /// Meta data of ad command.
-    open let metadata: [String : Any]?
+    public let metadata: [String : Any]?
 
 
     // MARK: - Initializing TriggeredCommandForm instance.

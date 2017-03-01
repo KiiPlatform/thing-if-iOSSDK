@@ -1,41 +1,22 @@
 import Foundation
 
 /** Class represents result of server code trigged by trigger */
-open class TriggeredServerCodeResult: Equatable, NSCoding {
-    
-    // MARK: - Implements NSCoding protocol
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.succeeded, forKey: "succeeded")
-        aCoder.encode(self.returnedValue, forKey: "returnedValue")
-        aCoder.encode(self.executedAt.timeIntervalSince1970, forKey: "executedAt")
-        aCoder.encode(self.endpoint, forKey: "endpoint")
-        aCoder.encode(self.error, forKey: "error")
-    }
-    
-    // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
-        self.succeeded = aDecoder.decodeBool(forKey: "succeeded")
-        self.returnedValue = aDecoder.decodeObject(forKey: "returnedValue")
-        self.executedAt = Date(timeIntervalSince1970: aDecoder.decodeDouble(forKey: "executedAt"))
-        self.endpoint = aDecoder.decodeObject(forKey: "endpoint") as! String
-        self.error = aDecoder.decodeObject(forKey: "error") as? ServerError
-        // TODO: add aditional decoder
-    }
-    
+public class TriggeredServerCodeResult {
+
     /** Whether the invocation succeeded */
-    open let succeeded: Bool
+    public let succeeded: Bool
     /** Date of the execution */
-    open let executedAt: Date
+    public let executedAt: Date
     /** The endpoint used in the server code invocation */
-    open let endpoint: String
+    public let endpoint: String
     /** Error object of the invocation if any */
-    open let error: ServerError?
+    public let error: ServerError?
 
     /** Returned value from server code (JsonObject, JsonArray, String, Number, Boolean or null) */
-    open let returnedValue: Any?
+    public let returnedValue: Any?
 
     /** Returned value from server code casted to String. */
-    open var returnedValueAsString: String? {
+    public var returnedValueAsString: String? {
         get {
             if let str = self.returnedValue as? String {
                 return str
@@ -47,152 +28,66 @@ open class TriggeredServerCodeResult: Equatable, NSCoding {
     }
 
     /** Returned value from server code casted to Bool. */
-    open var returnedValueAsBool: Bool? {
+    public var returnedValueAsBool: Bool? {
         get {
             return self.returnedValue as? Bool
         }
     }
 
     /** Returned value from server code casted to Int. */
-    open var returnedValueAsInt: Int? {
+    public var returnedValueAsInt: Int? {
         get {
             return self.returnedValue as? Int
         }
     }
 
     /** Returned value from server code casted to Double. */
-    open var returnedValueAsDouble: Double? {
+    public var returnedValueAsDouble: Double? {
         get {
             return self.returnedValue as? Double
         }
     }
 
     /** Returned value from server code casted to [String : Any]. */
-    open var returnedValueAsDictionary: Dictionary<String, Any>? {
+    public var returnedValueAsDictionary: Dictionary<String, Any>? {
         get {
             return self.returnedValue as? Dictionary<String, Any>
         }
     }
 
     /** Returned value from server code casted to [Any]. */
-    open var returnedValueAsArray: [Any]? {
+    public var returnedValueAsArray: [Any]? {
         get {
             return self.returnedValue as? [Any]
         }
     }
 
-    /** Init TriggeredServerCodeResult with necessary attributes
-     
+    /** Initialize `TriggeredServerCodeResult`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
      - Parameter succeeded: Whether the invocation succeeded
-     - Parameter returnedValue: Returned value from server code
      - Parameter executedAt: Date of the execution
+     - Parameter returnedValue: Returned value from server code
      - Parameter endpoint: The endpoint used in the server code invocation
      - Parameter error: Error object of the invocation if any
      */
-    internal init(succeeded: Bool, returnedValue: Any?, executedAt: Date, endpoint: String, error: ServerError?) {
+    public init(
+      succeeded: Bool,
+      executedAt: Date,
+      endpoint: String,
+      returnedValue: Any? = nil,
+      error: ServerError? = nil)
+    {
         self.succeeded = succeeded
-        self.returnedValue = returnedValue
         self.executedAt = executedAt
+        self.returnedValue = returnedValue
         self.endpoint = endpoint
         self.error = error
     }
-    
-    open func isEqual(_ object: Any?) -> Bool {
-        guard let aResult = object as? TriggeredServerCodeResult else{
-            return false
-        }
-        if self.returnedValue == nil || aResult.returnedValue == nil {
-            if self.returnedValue != nil || aResult.returnedValue != nil {
-                return false
-            }
-        } else {
-            if self.returnedValue! is Dictionary<String, Any> {
-                if !NSDictionary(dictionary: self.returnedValue as! [AnyHashable: Any]).isEqual(to: aResult.returnedValue as! [AnyHashable: Any]) {
-                    return false
-                }
-            } else if self.returnedValue! is [Any] {
-                if !isEqualArray(self.returnedValue as! [Any], arr2: aResult.returnedValue as! [Any]) {
-                    return false
-                }
-            } else if self.returnedValue! is String {
-                if self.returnedValue as! String != aResult.returnedValue as! String {
-                    return false
-                }
-            } else if self.returnedValue! is NSNumber {
-                if self.returnedValue as! NSNumber != aResult.returnedValue as! NSNumber {
-                    return false
-                }
-            } else if self.returnedValue! is Bool {
-                if self.returnedValue as! Bool != aResult.returnedValue as! Bool {
-                    return false
-                }
-            }
-        }
-        if self.error == nil || aResult.error == nil {
-            if self.error != nil || aResult.error != nil {
-                return false
-            }
-        } else if (!self.error!.isEqual(aResult.error!)) {
-            return false
-        }
-        return self.succeeded == aResult.succeeded && self.executedAt == aResult.executedAt && self.endpoint == aResult.endpoint
-    }
 
-    public static func == (left: TriggeredServerCodeResult, right: TriggeredServerCodeResult) -> Bool {
-        return left.isEqual(right);
-    }
-    private func isEqualArray(_ arr1:[Any], arr2:[Any]) -> Bool {
-        if arr1.count != arr2.count {
-            return false
-        }
-        for i in 0 ..< arr1.count {
-            let e1 = arr1[i]
-            let e2 = arr2[i]
-            if e1 is Dictionary<String, Any> {
-                if !NSDictionary(dictionary: e1 as! [AnyHashable: Any]).isEqual(to: e2 as! [AnyHashable: Any]) {
-                    return false
-                }
-            } else if e1 is [Any] {
-                if !isEqualArray(e1 as! [Any], arr2: e2 as! [Any]) {
-                    return false
-                }
-            } else if e1 is String {
-                if e1 as! String != e2 as! String {
-                    return false
-                }
-            } else if e1 is NSNumber {
-                if e1 as! NSNumber != e2 as! NSNumber {
-                    return false
-                }
-            } else if e1 is Bool {
-                if e1 as! Bool != e2 as! Bool {
-                    return false
-                }
-            } else {
-                return false
-            }
-        }
-        return true
-    }
-    
-    class func resultWithNSDict(_ resultDict: NSDictionary) -> TriggeredServerCodeResult?{
-        guard let succeeded = resultDict["succeeded"] as? Bool else{
-            return nil
-        }
-        guard let executedAtStamp = resultDict["executedAt"] as? NSNumber else{
-            return nil
-        }
-        let returnedValue = resultDict["returnedValue"]
-        
-        let error = resultDict["error"] as? Dictionary<String, Any>
-        var serverError: ServerError? = nil
-        if error != nil {
-            serverError = ServerError.errorWithNSDict(error! as NSDictionary)
-        }
-        let executedAt = Date(timeIntervalSince1970: (executedAtStamp.doubleValue)/1000.0)
-        let endpoint = resultDict["endpoint"] as! String
-        return TriggeredServerCodeResult(succeeded:succeeded, returnedValue:returnedValue, executedAt:executedAt, endpoint:endpoint, error:serverError)
-    }
 }
 
 open class ServerError: NSObject, NSCoding {
