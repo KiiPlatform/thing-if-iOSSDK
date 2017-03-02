@@ -8,6 +8,30 @@
 import Foundation
 
 /** Represents gateway. */
-open class Gateway: AbstractThing {
+public struct Gateway: TargetThing, Equatable {
 
+    /** ID of target to issue REST API. */
+    public let typedID: TypedID
+
+    /** Access token. */
+    public let accessToken: String?
+
+    /** Vendor thing id. */
+    public let vendorThingID: String
+
+    /** Init
+
+    - Parameter thingID: ID of thing
+    - Parameter vendorThingID: ID of vendor thing
+    - Parameter accessToken: Access token of the target, can nil.
+    */
+    public init(
+      _ thingID: String,
+      vendorThingID : String,
+      accessToken: String? = nil)
+    {
+        self.typedID = TypedID(TypedID.Types.thing, id: thingID)
+        self.accessToken = accessToken
+        self.vendorThingID = vendorThingID
+    }
 }
