@@ -9,7 +9,7 @@
 import Foundation
 
 /** Aggregation. */
-open class Aggregation {
+public struct Aggregation {
 
     /** Field types to count. */
     public enum FieldType: String {
@@ -51,11 +51,11 @@ open class Aggregation {
     }
 
     /** Name of a target field. */
-    let field: String
+    public let field: String
     /** Field type. */
-    let fieldType: FieldType
+    public let fieldType: FieldType
     /** Function type. */
-    let function: FunctionType
+    public let function: FunctionType
 
 
     private init(
