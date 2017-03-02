@@ -56,33 +56,6 @@ class CommandTests: SmallTestBase {
         XCTAssertEqual("title", actual.title)
         XCTAssertEqual("commandDescription", actual.commandDescription)
         assertEqualsDictionary(metadata, actual.metadata)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-          NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = Command(coder: decoder)!
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.targetID, deserialized.targetID)
-        XCTAssertEqual(actual.issuerID, deserialized.issuerID)
-        assertEqualsAliasActionArray(actual.actions, deserialized.actions)
-        assertEqualsAliasActionResultArray(
-          actual.actionResults,
-          deserialized.actionResults)
-        XCTAssertEqual(actual.commandState, deserialized.commandState)
-        XCTAssertEqual(actual.firedByTriggerID, deserialized.firedByTriggerID)
-        XCTAssertEqual(actual.created, deserialized.created)
-        XCTAssertEqual(actual.modified, deserialized.modified)
-        XCTAssertEqual(actual.title, deserialized.title)
-        XCTAssertEqual(
-          actual.commandDescription,
-          deserialized.commandDescription)
-        assertEqualsDictionary(actual.metadata, deserialized.metadata)
     }
 
     func testOptinalNil() {
@@ -107,33 +80,6 @@ class CommandTests: SmallTestBase {
         XCTAssertNil(actual.title)
         XCTAssertNil(actual.commandDescription)
         XCTAssertNil(actual.metadata)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-          NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = Command(coder: decoder)!
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.targetID, deserialized.targetID)
-        XCTAssertEqual(actual.issuerID, deserialized.issuerID)
-        assertEqualsAliasActionArray(actual.actions, deserialized.actions)
-        assertEqualsAliasActionResultArray(
-          actual.actionResults,
-          deserialized.actionResults)
-        XCTAssertEqual(actual.commandState, deserialized.commandState)
-        XCTAssertEqual(actual.firedByTriggerID, deserialized.firedByTriggerID)
-        XCTAssertEqual(actual.created, deserialized.created)
-        XCTAssertEqual(actual.modified, deserialized.modified)
-        XCTAssertEqual(actual.title, deserialized.title)
-        XCTAssertEqual(
-          actual.commandDescription,
-          deserialized.commandDescription)
-        assertEqualsDictionary(actual.metadata, deserialized.metadata)
     }
 
     func testGetAction() {
