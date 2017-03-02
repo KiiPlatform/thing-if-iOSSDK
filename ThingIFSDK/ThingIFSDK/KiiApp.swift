@@ -8,17 +8,17 @@
 import Foundation
 
 /** Represents Kii Cloud Application */
-open class KiiApp {
+public struct KiiApp {
     /** ID of the App */
-    open let appID: String
+    public let appID: String
     /** Key of the APP */
-    open let appKey: String
+    public let appKey: String
     /** Host name to which the app connects */
-    open let hostName: String
+    public let hostName: String
     /** Base URL of the apis used by the app */
-    open let baseURL: String
+    public let baseURL: String
     /** Name of the site to which the app belongs */
-    open let siteName: String
+    public let siteName: String
 
     // MARK: Initializers
     /** Init app with appID, appKey and site.
@@ -30,15 +30,20 @@ open class KiiApp {
      - Parameter site: Location of the app.
     */
     public init(_ appID:String, appKey:String, site:Site) {
-        self.appID = appID
-        self.appKey = appKey
-        self.hostName = site.getHostName()
-        self.baseURL = site.getBaseUrl()
-        self.siteName = site.getName()
+        self.init(
+          appID,
+          appKey: appKey,
+          hostName: site.getHostName(),
+          baseURL: site.getBaseUrl(),
+          siteName: site.getName())
     }
 
-    private init(_ appID:String, appKey:String, hostName:String,
-        baseURL:String, siteName:String)
+    private init(
+      _ appID: String,
+      appKey: String,
+      hostName: String,
+      baseURL: String,
+      siteName: String)
     {
         self.appID = appID
         self.appKey = appKey
@@ -59,7 +64,7 @@ open class KiiApp {
        configuration if you interact Gateway Agent with this SDK.
      - Parameter port: port number.
     */
-    public convenience init(
+    public init(
       _ appID: String,
       appKey: String,
       hostName: String,
