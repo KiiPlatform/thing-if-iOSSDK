@@ -9,16 +9,16 @@
 import Foundation
 
 /** Query to retrieve grouped states of history. */
-open class GroupedHistoryStatesQuery {
+public struct GroupedHistoryStatesQuery {
 
     /** Alias of a query. */
-    open let alias: String
+    public let alias: String
     /** Time range of a query. */
-    open let timeRange: TimeRange
+    public let timeRange: TimeRange
     /** Query clause. */
-    open let clause: QueryClause?
+    public let clause: QueryClause?
     /** Firmware version of a query. */
-    open let firmwareVersion: String?
+    public let firmwareVersion: String?
 
 
     // MARK: - Initializing GroupedHistoryStatesQuery instance.
