@@ -32,7 +32,7 @@ class GroupedHistoryStatesQueryTests: SmallTestBase {
           firmwareVersion: "version")
 
         XCTAssertEqual("alias", actual.alias)
-        assertEqualsTimeRange(timeRange, actual.timeRange)
+        XCTAssertEqual(timeRange, actual.timeRange)
         assertEqualsQueryClause(clause, actual.clause)
         XCTAssertEqual("version", actual.firmwareVersion)
     }
@@ -46,7 +46,7 @@ class GroupedHistoryStatesQueryTests: SmallTestBase {
           timeRange: timeRange)
 
         XCTAssertEqual("alias", actual.alias)
-        assertEqualsTimeRange(timeRange, actual.timeRange)
+        XCTAssertEqual(timeRange, actual.timeRange)
         assertEqualsQueryClause(nil, actual.clause)
         XCTAssertEqual(nil, actual.firmwareVersion)
     }

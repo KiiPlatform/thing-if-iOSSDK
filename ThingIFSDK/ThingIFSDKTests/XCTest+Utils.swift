@@ -219,36 +219,6 @@ extension XCTestCase {
         }
     }
 
-    func assertEqualsTimeRange(
-      _ expected: TimeRange?,
-      _ actual: TimeRange?,
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        if expected == nil && actual == nil {
-            return
-        } else if expected == nil || actual == nil {
-            let errorMessage = message ?? "One is nil, the other is not nil."
-            XCTFail(
-              "file=\(file), line=\(line): \(errorMessage)")
-            return
-        }
-
-        assertEqualsWrapper(
-          expected?.from,
-          actual?.from,
-          message,
-          file: file,
-          line: line)
-        assertEqualsWrapper(
-          expected?.to,
-          actual?.to,
-          message,
-          file: file,
-          line: line)
-    }
-
     func assertEqualsQueryClause(
       _ expected: QueryClause?,
       _ actual: QueryClause?,
