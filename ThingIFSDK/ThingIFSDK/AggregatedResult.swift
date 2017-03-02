@@ -9,16 +9,26 @@
 import Foundation
 
 /** Aggregated result. */
-open class AggregatedResult<AggregatedValueType> {
+public struct AggregatedResult<AggregatedValueType> {
 
     /** Returned value to be aggregated. */
-    open let value: AggregatedValueType
+    public let value: AggregatedValueType
     /** Time range of an aggregated result. */
-    open let timeRange: TimeRange
+    public let timeRange: TimeRange
     /** Aggregated objectes. */
-    open let aggregatedObjects: [HistoryState]
+    public let aggregatedObjects: [HistoryState]
 
-    internal init(
+    /** Initialize `AggregatedResult`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters value: Returned value to be aggregated.
+     - Parameters timeRange: Time range of an aggregated result.
+     - Parameters aggregatedObjects: Aggregated objectes.
+     */
+    public init(
       _ value: AggregatedValueType,
       timeRange: TimeRange,
       aggregatedObjects: [HistoryState])
