@@ -8,39 +8,27 @@
 
 import Foundation
 
-/** Base protocol for trigger clause classes. */
-public protocol TriggerClause: NSCoding, BaseClause {
+/** Base protocol for trigger clause structs. */
+public protocol TriggerClause: BaseClause {
 
 }
 
 internal extension TriggerClause {
 
     internal func makeDictionary() -> [String : Any] {
-        if type(of: self) === EqualsClauseInTrigger.self {
-            return (self as! EqualsClauseInTrigger).makeDictionary()
-        } else if type(of: self) === NotEqualsClauseInTrigger.self {
-            return (self as! NotEqualsClauseInTrigger).makeDictionary()
-        } else if type(of: self) === RangeClauseInTrigger.self {
-            return (self as! RangeClauseInTrigger).makeDictionary()
-        } else if type(of: self) === AndClauseInTrigger.self {
-            return (self as! AndClauseInTrigger).makeDictionary()
-        } else if type(of: self) === OrClauseInTrigger.self {
-            return (self as! OrClauseInTrigger).makeDictionary()
-        } else {
-            fatalError("unexpected class")
-        }
+        fatalError("should implement makeDictionary()")
     }
 }
 
-/** Class represents Equals clause for trigger methods. */
-open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
+/** Struct represents Equals clause for trigger methods. */
+public struct EqualsClauseInTrigger: TriggerClause, BaseEquals {
 
     /** Alias of this clause. */
-    open let alias: String
+    public let alias: String
     /** Name of a field. */
-    open let field: String
+    public let field: String
     /** Value of a field. */
-    open let value: AnyObject
+    public let value: AnyObject
 
     private init(_ alias: String, field: String, value: AnyObject) {
         self.alias = alias
@@ -53,7 +41,7 @@ open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter intValue: Left hand side value to be compared.
      */
-    public convenience init(_ alias: String, field: String, intValue: Int) {
+    public init(_ alias: String, field: String, intValue: Int) {
         self.init(alias, field: field, value: intValue as AnyObject)
     }
 
@@ -62,7 +50,7 @@ open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter stringValue: Left hand side value to be compared.
      */
-    public convenience init(
+    public init(
       _ alias: String,
       field: String,
       stringValue: String)
@@ -75,7 +63,7 @@ open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter boolValue: Left hand side value to be compared.
      */
-    public convenience init(_ alias: String, field: String, boolValue: Bool) {
+    public init(_ alias: String, field: String, boolValue: Bool) {
         self.init(alias, field: field, value: boolValue as AnyObject)
     }
 
@@ -92,29 +80,14 @@ open class EqualsClauseInTrigger: NSObject, TriggerClause, BaseEquals {
         ] as [String : Any]
     }
 
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(
-          aDecoder.decodeObject(forKey: "alias") as! String,
-          field: aDecoder.decodeObject(forKey: "field") as! String,
-          value: aDecoder.decodeObject(forKey: "value") as AnyObject)
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.alias, forKey: "alias")
-        aCoder.encode(self.field, forKey: "field")
-        aCoder.encode(self.value, forKey: "value")
-    }
-
 }
 
-/** Class represents Not Equals clause for trigger methods.  */
-open class NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
+/** Struct represents Not Equals clause for trigger methods.  */
+public struct NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInTrigger
 
     /** Contained Equals clause instance. */
-    open let equals: EqualsClauseInTrigger
+    public let equals: EqualsClauseInTrigger
 
     public init(_ equals: EqualsClauseInTrigger) {
         self.equals = equals
@@ -131,52 +104,42 @@ open class NotEqualsClauseInTrigger: NSObject, TriggerClause, BaseNotEquals {
         ] as [String : Any]
     }
 
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! EqualsClauseInTrigger)
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.equals)
-    }
-
 }
 
-/** Class represents Range clause for trigger methods. */
-open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
+/** Struct represents Range clause for trigger methods. */
+public struct RangeClauseInTrigger: TriggerClause, BaseRange {
 
     private let lower: (limit: NSNumber, included: Bool)?
     private let upper: (limit: NSNumber, included: Bool)?
 
     /** Alias of this clause. */
-    open let alias: String
+    public let alias: String
     /** Name of a field. */
-    open let field: String
+    public let field: String
 
     /** Lower limit for an instance. */
-    open var lowerLimit: NSNumber? {
+    public var lowerLimit: NSNumber? {
         get {
             return self.lower?.limit
         }
     }
 
     /** Include or not lower limit. */
-    open var lowerIncluded: Bool? {
+    public var lowerIncluded: Bool? {
         get {
             return self.lower?.included
         }
     }
 
     /** Upper limit for an instance. */
-    open var upperLimit: NSNumber? {
+    public var upperLimit: NSNumber? {
         get {
             return self.upper?.limit
         }
     }
 
     /** Include or not upper limit. */
-    open var upperIncluded: Bool? {
+    public var upperIncluded: Bool? {
         get {
             return self.upper?.included
         }
@@ -210,7 +173,7 @@ open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
        included
      - Returns: An instance of `RangeClauseInTrigger`.
      */
-    open static func range(
+    public static func range(
       _ alias: String,
       field: String,
       lowerLimit: NSNumber,
@@ -233,7 +196,7 @@ open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInTrigger`.
      */
-    open static func greaterThan(
+    public static func greaterThan(
       _ alias: String,
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
@@ -253,7 +216,7 @@ open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInTrigger`.
      */
-    open static func greaterThanOrEqualTo(
+    public static func greaterThanOrEqualTo(
       _ alias: String,
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
@@ -272,7 +235,7 @@ open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInTrigger`.
      */
-    open static func lessThan(
+    public static func lessThan(
       _ alias: String,
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
@@ -291,7 +254,7 @@ open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInTrigger`.
      */
-    open static func lessThanOrEqualTo(
+    public static func lessThanOrEqualTo(
       _ alias: String,
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
@@ -319,46 +282,13 @@ open class RangeClauseInTrigger: NSObject, TriggerClause, BaseRange {
         return retval
     }
 
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        let lower = aDecoder.decodeObject(forKey: "lower") as? [String : Any]
-        let upper = aDecoder.decodeObject(forKey: "upper") as? [String : Any]
-
-        if lower == nil && upper == nil {
-            fatalError("unexpected case.")
-        }
-        self.init(
-          aDecoder.decodeObject(forKey: "alias") as! String,
-          field: aDecoder.decodeObject(forKey: "field") as! String,
-          lower: lower != nil ?
-            (lower!["limit"] as! NSNumber, lower!["included"] as! Bool) : nil,
-          upper: upper != nil ?
-            (upper!["limit"] as! NSNumber, upper!["included"] as! Bool) : nil)
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.alias, forKey: "alias")
-        aCoder.encode(self.field, forKey: "field")
-        if let lower = self.lower {
-            aCoder.encode(
-              ["limit": lower.limit, "included": lower.included],
-              forKey: "lower")
-        }
-        if let upper = self.upper {
-            aCoder.encode(
-              ["limit": upper.limit, "included": upper.included],
-              forKey: "upper")
-        }
-    }
-
 }
 
-/** Class represents And clause for trigger methods. */
-open class AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
+/** Struct represents And clause for trigger methods. */
+public struct AndClauseInTrigger: TriggerClause, BaseAnd {
 
     /** Clauses conjuncted with And. */
-    open internal(set) var clauses: [TriggerClause]
+    public internal(set) var clauses: [TriggerClause]
 
     /** Initialize with clauses array.
 
@@ -372,28 +302,16 @@ open class AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
 
      - Parameter clauses: Clause array for And clauses
      */
-    public convenience init(_ clause: TriggerClause...) {
+    public init(_ clause: TriggerClause...) {
         self.init(clause)
-    }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! [TriggerClause])
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to And clauses.
 
      - Parameter clause: Clause to be added to and clauses.
      */
-    @discardableResult
-    open func add(_ clause: TriggerClause) -> Self {
+    public mutating func add(_ clause: TriggerClause) -> Void {
         self.clauses.append(clause)
-        return self
     }
 
     /** Get And clause for trigger as a Dictionary instance
@@ -408,11 +326,11 @@ open class AndClauseInTrigger: NSObject, TriggerClause, BaseAnd {
 
 }
 
-/** Class represents Or clause for trigger methods. */
-open class OrClauseInTrigger: NSObject, TriggerClause, BaseOr {
+/** Struct represents Or clause for trigger methods. */
+public struct OrClauseInTrigger: TriggerClause, BaseOr {
 
     /** Clauses conjuncted with Or. */
-    open internal(set) var clauses: [TriggerClause]
+    public internal(set) var clauses: [TriggerClause]
 
     /** Initialize with clauses array.
 
@@ -426,28 +344,16 @@ open class OrClauseInTrigger: NSObject, TriggerClause, BaseOr {
 
      - Parameter clauses: Clause array for Or clauses
      */
-    public convenience init(_ clause: TriggerClause...) {
+    public init(_ clause: TriggerClause...) {
         self.init(clause)
-    }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject() as! [TriggerClause])
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.clauses)
     }
 
     /** Add a clause to Or clauses.
 
      - Parameter clause: Clause to be added to or clauses.
      */
-    @discardableResult
-    open func add(_ clause: TriggerClause) -> Self {
+    public mutating func add(_ clause: TriggerClause) -> Void {
         self.clauses.append(clause)
-        return self
     }
 
     /** Get Or clause for trigger as a Dictionary instance
