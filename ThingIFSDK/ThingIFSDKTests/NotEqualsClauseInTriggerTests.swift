@@ -64,30 +64,6 @@ class NotEqualsClauseInTriggerTests: SmallTestBase {
                   "value": expected.value
                 ]
               ], actual.makeDictionary(), label)
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = NotEqualsClauseInTrigger(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(
-              actual.equals.field,
-              deserialized.equals.field,
-              label)
-            assertEqualsAny(
-              actual.equals.value,
-              deserialized.equals.value,
-              label)
-            assertEqualsDictionary(
-              actual.makeDictionary(),
-              deserialized.makeDictionary(),
-              label)
-
         }
     }
 

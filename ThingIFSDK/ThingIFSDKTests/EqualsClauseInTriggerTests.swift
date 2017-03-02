@@ -32,19 +32,6 @@ class EqualClauseInTriggerTests: SmallTestBase {
         XCTAssertEqual("alias", actualDict["alias"] as! String)
         XCTAssertEqual("f", actualDict["field"] as! String)
         XCTAssertEqual(1, actualDict["value"] as! Int)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = EqualsClauseInTrigger(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.field, deserialized.field)
-        XCTAssertEqual(actual.value as! Int, deserialized.value as! Int)
     }
 
     func testEqualBoolTrue() {
@@ -60,19 +47,6 @@ class EqualClauseInTriggerTests: SmallTestBase {
         XCTAssertEqual("alias", actualDict["alias"] as! String)
         XCTAssertEqual("f", actualDict["field"] as! String)
         XCTAssertEqual(true, actualDict["value"] as! Bool)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = EqualsClauseInTrigger(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.field, deserialized.field)
-        XCTAssertEqual(actual.value as! Bool, deserialized.value as! Bool)
     }
 
     func testEqualBoolFalse() {
@@ -91,19 +65,6 @@ class EqualClauseInTriggerTests: SmallTestBase {
         XCTAssertEqual("alias", actualDict["alias"] as! String)
         XCTAssertEqual("f", actualDict["field"] as! String)
         XCTAssertEqual(false, actualDict["value"] as! Bool)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = EqualsClauseInTrigger(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.field, deserialized.field)
-        XCTAssertEqual(actual.value as! Bool, deserialized.value as! Bool)
     }
 
     func testEqualString() {
@@ -122,19 +83,6 @@ class EqualClauseInTriggerTests: SmallTestBase {
         XCTAssertEqual("alias", actualDict["alias"] as! String)
         XCTAssertEqual("f", actualDict["field"] as! String)
         XCTAssertEqual("string", actualDict["value"] as! String)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = EqualsClauseInTrigger(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.field, deserialized.field)
-        XCTAssertEqual(actual.value as! String, deserialized.value as! String)
     }
 
 }

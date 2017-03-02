@@ -149,21 +149,6 @@ class AndClauseInTriggerTests: SmallTestBase {
               expected,
               actual.makeDictionary(),
               "label \(index)")
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = AndClauseInTrigger(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.clauses.count, deserialized.clauses.count)
-            assertEqualsDictionary(
-              actual.makeDictionary(),
-              deserialized.makeDictionary())
         }
     }
 
@@ -355,26 +340,11 @@ class AndClauseInTriggerTests: SmallTestBase {
               expected,
               actual.makeDictionary(),
               "label \(index)")
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = AndClauseInTrigger(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.clauses.count, deserialized.clauses.count)
-            assertEqualsDictionary(
-              actual.makeDictionary(),
-              deserialized.makeDictionary())
         }
     }
 
     func testAnd() {
-        let actual = AndClauseInTrigger(
+        var actual = AndClauseInTrigger(
           EqualsClauseInTrigger("alias", field: "f", intValue: 1),
           NotEqualsClauseInTrigger(EqualsClauseInTrigger(
                                      "alias",
@@ -388,7 +358,8 @@ class AndClauseInTriggerTests: SmallTestBase {
           AndClauseInTrigger(EqualsClauseInTrigger(
                                "alias",
                                field: "f",
-                               stringValue: "str"))).add(
+                               stringValue: "str")))
+        actual.add(
           OrClauseInTrigger(EqualsClauseInTrigger(
                               "alias",
                               field: "f",
@@ -427,21 +398,5 @@ class AndClauseInTriggerTests: SmallTestBase {
               ]
             ]
           ], actual.makeDictionary())
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = AndClauseInTrigger(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.clauses.count, deserialized.clauses.count)
-        assertEqualsDictionary(
-          actual.makeDictionary(),
-          deserialized.makeDictionary())
-
     }
 }
