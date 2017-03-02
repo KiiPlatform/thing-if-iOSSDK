@@ -244,19 +244,19 @@ extension XCTestCase {
         }
 
         if type(of: expected!) == EqualsClauseInQuery.self {
-            assertEqualsEqualsClauseInQuery(
-              expected as! EqualsClauseInQuery,
-              actual as! EqualsClauseInQuery,
+            assertEqualsWrapper(
+              expected as? EqualsClauseInQuery,
+              actual as? EqualsClauseInQuery,
               message,
-              file,
-              line)
+              file: file,
+              line: line)
         } else if type(of: expected!) == NotEqualsClauseInQuery.self {
-            assertEqualsNotEqualsClauseInQuery(
-              expected as! NotEqualsClauseInQuery,
-              actual as! NotEqualsClauseInQuery,
+            assertEqualsWrapper(
+              expected as? NotEqualsClauseInQuery,
+              actual as? NotEqualsClauseInQuery,
               message,
-              file,
-              line)
+              file: file,
+              line: line)
         } else if type(of: expected!) == RangeClauseInQuery.self {
             assertEqualsRangeClauseInQuery(
               expected as! RangeClauseInQuery,
@@ -282,42 +282,6 @@ extension XCTestCase {
             XCTFail(
               "unknown type: \(Mirror(reflecting: expected!).subjectType)")
         }
-    }
-
-    private func  assertEqualsEqualsClauseInQuery(
-      _ expected: EqualsClauseInQuery,
-      _ actual: EqualsClauseInQuery,
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        assertEqualsWrapper(
-          expected.field,
-          actual.field,
-          message,
-          file: file,
-          line: line)
-        assertEqualsAny(
-          expected.value,
-          actual.value,
-          message,
-          file,
-          line)
-    }
-
-    private func  assertEqualsNotEqualsClauseInQuery(
-      _ expected: NotEqualsClauseInQuery,
-      _ actual: NotEqualsClauseInQuery,
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        assertEqualsEqualsClauseInQuery(
-          expected.equals,
-          actual.equals,
-          message,
-          file,
-          line)
     }
 
     private func  assertEqualsRangeClauseInQuery(
