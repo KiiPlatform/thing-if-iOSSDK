@@ -102,11 +102,11 @@ class CommandTests: SmallTestBase {
 
         assertEqualsAliasActionArray(
           [actionA, aliasActionsameAliasAsA],
-          actual.getAction("alias"))
+          actual.getAliasAction("alias"))
         assertEqualsAliasActionArray(
           [actionDifferentAliasFromA],
-          actual.getAction("different"))
-        assertEqualsAliasActionArray([], actual.getAction("noalias"))
+          actual.getAliasAction("different"))
+        assertEqualsAliasActionArray([], actual.getAliasAction("noalias"))
     }
 
     func testGetActionResult() {
