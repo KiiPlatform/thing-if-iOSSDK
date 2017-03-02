@@ -15,9 +15,9 @@ public struct Command {
     /** ID of the issuer of the Command. */
     public let issuerID: TypedID
     /** Actions to be executed. */
-    public let actions: [AliasAction]
+    public let aliasActions: [AliasAction]
     /** Results of the action. */
-    public let actionResults: [AliasActionResult]
+    public let aliasActionResults: [AliasActionResult]
     /** State of the Command. */
     public let commandState: CommandState
     /** ID of the trigger which fired this command. */
@@ -40,9 +40,10 @@ public struct Command {
      this method.
 
      - Parameter commandID: ID of the Command.
+     - Parameter issuerID: ID of the issuer of the Command.
      - Parameter targetID: ID of the Command Target.
-     - Parameter actions: Array of actions. Must not be empty.
-     - Parameter actionResults: Results of the action.
+     - Parameter aliasActions: Array of actions. Must not be empty.
+     - Parameter aliasActionResults: Results of the action.
      - Parameter commandState: State of the Command.
      - Parameter firedByTriggerID: ID of the trigger which fired this
        command.
@@ -57,8 +58,8 @@ public struct Command {
     public init(_ commandID: String,
          targetID: TypedID,
          issuerID: TypedID,
-         actions: [AliasAction],
-         actionResults: [AliasActionResult] = [],
+         aliasActions: [AliasAction],
+         aliasActionResults: [AliasActionResult] = [],
          commandState: CommandState = .sending,
          firedByTriggerID: String? = nil,
          created: Date? = nil,
@@ -69,9 +70,9 @@ public struct Command {
         self.commandID = commandID
         self.targetID = targetID
         self.issuerID = issuerID
-        self.actions = actions
+        self.aliasActions = aliasActions
 
-        self.actionResults = actionResults
+        self.aliasActionResults = aliasActionResults
         self.commandState = commandState
         self.firedByTriggerID = firedByTriggerID
         self.created = created
@@ -87,7 +88,7 @@ public struct Command {
      - Returns Array of `AliasAction`.
      */
     public func getAction(_ alias: String) -> [AliasAction] {
-        return self.actions.filter { $0.alias == alias }
+        return self.aliasActions.filter { $0.alias == alias }
     }
 
     /** Get action results associated with an alias and action name.
@@ -101,7 +102,7 @@ public struct Command {
       actionName: String) -> [ActionResult]
     {
         var retval: [ActionResult] = []
-        for results in self.actionResults.filter({ $0.alias == alias }) {
+        for results in self.aliasActionResults.filter({ $0.alias == alias }) {
             retval += results.results.filter { $0.actionName == actionName }
         }
         return retval

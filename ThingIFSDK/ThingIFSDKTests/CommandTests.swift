@@ -21,8 +21,8 @@ class CommandTests: SmallTestBase {
     func testOptinalNonNil() {
         let targetID = TypedID(TypedID.Types.thing, id: "target")
         let issuerID = TypedID(TypedID.Types.thing, id: "issuer")
-        let actions = [AliasAction("alias", action: ["key" : "value"])]
-        let actionResults = [
+        let aliasActions = [AliasAction("alias", action: ["key" : "value"])]
+        let aliasActionResults = [
           AliasActionResult(
             "alias",
             results: [ActionResult(true, actionName: "actionName")])
@@ -35,8 +35,8 @@ class CommandTests: SmallTestBase {
           "commandID",
           targetID: targetID,
           issuerID: issuerID,
-          actions: actions,
-          actionResults: actionResults,
+          aliasActions: aliasActions,
+          aliasActionResults: aliasActionResults,
           commandState: .sending,
           firedByTriggerID: "firedByTriggerID",
           created: created,
@@ -47,8 +47,10 @@ class CommandTests: SmallTestBase {
 
         XCTAssertEqual(targetID, actual.targetID)
         XCTAssertEqual(issuerID, actual.issuerID)
-        assertEqualsAliasActionArray(actions, actual.actions)
-        assertEqualsAliasActionResultArray(actionResults, actual.actionResults)
+        assertEqualsAliasActionArray(aliasActions, actual.aliasActions)
+        assertEqualsAliasActionResultArray(
+          aliasActionResults,
+          actual.aliasActionResults)
         XCTAssertEqual(.sending, actual.commandState)
         XCTAssertEqual("firedByTriggerID", actual.firedByTriggerID)
         XCTAssertEqual(created, actual.created)
@@ -61,18 +63,18 @@ class CommandTests: SmallTestBase {
     func testOptinalNil() {
         let targetID = TypedID(TypedID.Types.thing, id: "target")
         let issuerID = TypedID(TypedID.Types.thing, id: "issuer")
-        let actions = [AliasAction("alias", action: ["key" : "value"])]
+        let aliasActions = [AliasAction("alias", action: ["key" : "value"])]
 
         let actual = Command(
           "commandID",
           targetID: targetID,
           issuerID: issuerID,
-          actions: actions)
+          aliasActions: aliasActions)
 
         XCTAssertEqual(targetID, actual.targetID)
         XCTAssertEqual(issuerID, actual.issuerID)
-        assertEqualsAliasActionArray(actions, actual.actions)
-        assertEqualsAliasActionResultArray([], actual.actionResults)
+        assertEqualsAliasActionArray(aliasActions, actual.aliasActions)
+        assertEqualsAliasActionResultArray([], actual.aliasActionResults)
         XCTAssertEqual(.sending, actual.commandState)
         XCTAssertNil(actual.firedByTriggerID)
         XCTAssertNil(actual.created)
@@ -87,18 +89,19 @@ class CommandTests: SmallTestBase {
         let actionA = AliasAction("alias", action: ["key1" : "value1"])
         let actionDifferentAliasFromA =
           AliasAction("different", action: ["key2" : "value2"])
-        let actionSameAliasAsA =
+        let aliasActionsameAliasAsA =
           AliasAction("alias", action: ["key3" : "value3"])
 
         let actual = Command(
           "commandID",
           targetID: TypedID(TypedID.Types.thing, id: "target"),
           issuerID: TypedID(TypedID.Types.thing, id: "issuer"),
-          actions: [actionA, actionDifferentAliasFromA, actionSameAliasAsA])
+          aliasActions: [actionA, actionDifferentAliasFromA,
+                         aliasActionsameAliasAsA])
 
 
         assertEqualsAliasActionArray(
-          [actionA, actionSameAliasAsA],
+          [actionA, aliasActionsameAliasAsA],
           actual.getAction("alias"))
         assertEqualsAliasActionArray(
           [actionDifferentAliasFromA],
@@ -107,36 +110,36 @@ class CommandTests: SmallTestBase {
     }
 
     func testGetActionResult() {
-        let actionResults1 = ActionResult(true, actionName: "action1")
-        let actionResults2 = ActionResult(true, actionName: "action2")
-        let actionResults3 = ActionResult(true, actionName: "action3")
+        let aliasActionResults1 = ActionResult(true, actionName: "action1")
+        let aliasActionResults2 = ActionResult(true, actionName: "action2")
+        let aliasActionResults3 = ActionResult(true, actionName: "action3")
 
         let aliasActionResultA =
-          AliasActionResult("alias", results: [actionResults1])
+          AliasActionResult("alias", results: [aliasActionResults1])
         let aliasActionResultDifferentAliasFromA =
-           AliasActionResult("different", results: [actionResults2])
+           AliasActionResult("different", results: [aliasActionResults2])
         let aliasActionResultSameAliasAsA =
           AliasActionResult(
             "alias",
-            results: [actionResults1, actionResults3])
+            results: [aliasActionResults1, aliasActionResults3])
 
         let actual = Command(
           "commandID",
           targetID: TypedID(TypedID.Types.thing, id: "target"),
           issuerID: TypedID(TypedID.Types.thing, id: "issuer"),
-          actions: [AliasAction("alias", action: ["key1" : "value1"])],
-          actionResults: [
+          aliasActions: [AliasAction("alias", action: ["key1" : "value1"])],
+          aliasActionResults: [
             aliasActionResultA,
             aliasActionResultDifferentAliasFromA,
             aliasActionResultSameAliasAsA])
         assertEqualsActionResultArray(
-          [actionResults1, actionResults1],
+          [aliasActionResults1, aliasActionResults1],
           actual.getActionResult("alias", actionName: "action1"))
         assertEqualsActionResultArray(
-          [actionResults2],
+          [aliasActionResults2],
           actual.getActionResult("different", actionName: "action2"))
         assertEqualsActionResultArray(
-          [actionResults3],
+          [aliasActionResults3],
           actual.getActionResult("alias", actionName: "action3"))
         assertEqualsActionResultArray(
           [],
