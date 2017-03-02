@@ -10,11 +10,11 @@ import Foundation
 /** Optional parameters of
 `ThingIFAPI.onboardWith(vendorThingID:thingPassword:options:completionHandler:)`.
 */
-open class OnboardWithVendorThingIDOptions {
-    open let thingType: String?
-    open let firmwareVersion: String?
-    open let thingProperties: [String : Any]?
-    open let layoutPosition: LayoutPosition?
+public struct OnboardWithVendorThingIDOptions {
+    public let thingType: String?
+    public let firmwareVersion: String?
+    public let thingProperties: [String : Any]?
+    public let layoutPosition: LayoutPosition?
 
     /** initializer.
 
@@ -30,9 +30,9 @@ open class OnboardWithVendorThingIDOptions {
     - Parameter position: GATEWAY | STANDALONE | ENDNODE.
     */
     public init(
-        _ thingType:String? = nil,
-        firmwareVersion:String? = nil,
-        thingProperties:Dictionary<String, Any>? = nil,
+        _ thingType: String? = nil,
+        firmwareVersion: String? = nil,
+        thingProperties: [String : Any]? = nil,
         position: LayoutPosition? = nil)
     {
         self.thingType = thingType
