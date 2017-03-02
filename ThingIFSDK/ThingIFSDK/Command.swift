@@ -5,74 +5,61 @@
 import Foundation
 
 /** Class represents Command */
-open class Command: NSObject, NSCoding {
+public struct Command {
 
-    // MARK: - Implements NSCoding protocol
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.commandID, forKey: "commandID")
-        aCoder.encode(self.targetID, forKey: "targetID")
-        aCoder.encode(self.issuerID, forKey: "issuerID")
-        aCoder.encode(self.actions, forKey: "actions")
-        aCoder.encode(self.actionResults, forKey: "actionResults")
-        aCoder.encode(self.commandState.rawValue, forKey: "commandState")
-        aCoder.encode(self.firedByTriggerID, forKey: "firedByTriggerID")
-        aCoder.encode(self.created, forKey: "created")
-        aCoder.encode(self.modified, forKey: "modified")
-        aCoder.encode(self.title, forKey: "title")
-        aCoder.encode(self.commandDescription, forKey: "commandDescription")
-        aCoder.encode(self.metadata, forKey: "metadata")
-    }
-
-    // MARK: - Implements NSCoding protocol
-    public required init?(coder aDecoder: NSCoder) {
-        self.commandID = aDecoder.decodeObject(forKey: "commandID") as! String
-        self.targetID = aDecoder.decodeObject(forKey: "targetID") as! TypedID
-        self.issuerID = aDecoder.decodeObject(forKey: "issuerID") as! TypedID
-        self.actions = aDecoder.decodeObject(forKey: "actions")
-                as! [AliasAction]
-        self.actionResults = aDecoder.decodeObject(forKey: "actionResults")
-                as! [AliasActionResult]
-        self.commandState =
-            CommandState(rawValue: aDecoder.decodeInteger(forKey: "commandState"))!;
-        self.firedByTriggerID = aDecoder.decodeObject(forKey: "firedByTriggerID") as? String
-        self.created = aDecoder.decodeObject(forKey: "created") as? Date
-        self.modified = aDecoder.decodeObject(forKey: "modified") as? Date
-        self.title = aDecoder.decodeObject(forKey: "title") as? String
-        self.commandDescription = aDecoder.decodeObject(forKey: "commandDescription") as? String
-        self.metadata = aDecoder.decodeObject(forKey: "metadata") as? [String : Any]
-    }
-
-
+    // MARK: Properties
     /** ID of the Command. */
-    open let commandID: String
+    public let commandID: String
     /** ID of the Command Target. */
-    open let targetID: TypedID
+    public let targetID: TypedID
     /** ID of the issuer of the Command. */
-    open let issuerID: TypedID
+    public let issuerID: TypedID
     /** Actions to be executed. */
-    open let actions: [AliasAction]
+    public let aliasActions: [AliasAction]
     /** Results of the action. */
-    open let actionResults: [AliasActionResult]
+    public let aliasActionResults: [AliasActionResult]
     /** State of the Command. */
-    open let commandState: CommandState
-    /** ID of the trigger which fired this command */
-    open let firedByTriggerID: String?
+    public let commandState: CommandState
+    /** ID of the trigger which fired this command. */
+    public let firedByTriggerID: String?
     /** Creation time of the Command.*/
-    open let created: Date?
+    public let created: Date?
     /** Modification time of the Command. */
-    open let modified: Date?
+    public let modified: Date?
     /** Title of the Command */
-    open let title: String?
+    public let title: String?
     /** Description of the Command */
-    open let commandDescription: String?
+    public let commandDescription: String?
     /** Metadata of the Command */
-    open let metadata: [String : Any]?
+    public let metadata: [String : Any]?
 
-    internal init(_ commandID: String,
+    /** Initialize `Command`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameter commandID: ID of the Command.
+     - Parameter issuerID: ID of the issuer of the Command.
+     - Parameter targetID: ID of the Command Target.
+     - Parameter aliasActions: Array of actions. Must not be empty.
+     - Parameter aliasActionResults: Results of the action.
+     - Parameter commandState: State of the Command.
+     - Parameter firedByTriggerID: ID of the trigger which fired this
+       command.
+     - Parameter created: Creation time of the Command.
+     - Parameter modified: Modification time of the Command.
+     - Parameter title: Title of a command. This should be equal or
+       less than 50 characters.
+     - Parameter commandDescription: Description of a comand. This
+       should be equal or less than 200 characters.
+     - Parameter metadata: Meta data of a command.
+     */
+    public init(_ commandID: String,
          targetID: TypedID,
          issuerID: TypedID,
-         actions: [AliasAction],
-         actionResults: [AliasActionResult] = [],
+         aliasActions: [AliasAction],
+         aliasActionResults: [AliasActionResult] = [],
          commandState: CommandState = .sending,
          firedByTriggerID: String? = nil,
          created: Date? = nil,
@@ -83,9 +70,9 @@ open class Command: NSObject, NSCoding {
         self.commandID = commandID
         self.targetID = targetID
         self.issuerID = issuerID
-        self.actions = actions
+        self.aliasActions = aliasActions
 
-        self.actionResults = actionResults
+        self.aliasActionResults = aliasActionResults
         self.commandState = commandState
         self.firedByTriggerID = firedByTriggerID
         self.created = created
@@ -100,8 +87,8 @@ open class Command: NSObject, NSCoding {
      - Parameter alias: Alias to get action.
      - Returns Array of `AliasAction`.
      */
-    open func getAction(_ alias: String) -> [AliasAction] {
-        return self.actions.filter { $0.alias == alias }
+    public func getAction(_ alias: String) -> [AliasAction] {
+        return self.aliasActions.filter { $0.alias == alias }
     }
 
     /** Get action results associated with an alias and action name.
@@ -110,12 +97,12 @@ open class Command: NSObject, NSCoding {
      - Parameter alias: Action name to get action result.
      - Returns Array of `AliasAction`.
      */
-    open func getActionResult(
+    public func getActionResult(
       _ alias: String,
       actionName: String) -> [ActionResult]
     {
         var retval: [ActionResult] = []
-        for results in self.actionResults.filter({ $0.alias == alias }) {
+        for results in self.aliasActionResults.filter({ $0.alias == alias }) {
             retval += results.results.filter { $0.actionName == actionName }
         }
         return retval
