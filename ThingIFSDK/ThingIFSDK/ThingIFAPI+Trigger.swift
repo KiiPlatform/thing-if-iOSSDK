@@ -398,6 +398,8 @@ extension ThingIFAPI {
         completionHandler: @escaping (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
         )
     {
+        fatalError("TODO: implement me")
+        /*
         guard let target = self.target else {
             completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
@@ -436,6 +438,7 @@ extension ThingIFAPI {
         })
         let operation = IoTRequestOperation(request: request)
         operationQueue.addOperation(operation)
+        */
     }
 
     func _getTrigger(
@@ -443,6 +446,8 @@ extension ThingIFAPI {
         completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
+        fatalError("TODO: implement me")
+        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
@@ -466,5 +471,6 @@ extension ThingIFAPI {
 
         let operation = IoTRequestOperation(request: request)
         operationQueue.addOperation(operation)
+        */
     }
 }

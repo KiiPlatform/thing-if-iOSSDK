@@ -90,49 +90,33 @@ public class TriggeredServerCodeResult {
 
 }
 
-open class ServerError: NSObject, NSCoding {
-    
-    // MARK: - Implements NSCoding protocol
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.errorMessage, forKey: "errorMessage")
-        aCoder.encode(self.errorCode, forKey: "errorCode")
-        aCoder.encode(self.detailMessage, forKey: "detailMessage")
-    }
-    
-    // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
-        self.errorMessage = aDecoder.decodeObject(forKey: "errorMessage") as? String
-        self.errorCode = aDecoder.decodeObject(forKey: "errorCode") as? String
-        self.detailMessage = aDecoder.decodeObject(forKey: "detailMessage") as? String
-    }
-    
-    open let errorMessage: String?
-    open let errorCode: String?
-    open let detailMessage: String?
-    
-    init(errorMessage: String?, errorCode: String?, detailMessage: String?) {
+public struct ServerError {
+
+    /** Error message. */
+    public let errorMessage: String?
+    /** Error code. */
+    public let errorCode: String?
+    /** Detail message. */
+    public let detailMessage: String?
+
+    /** Initialize `ServerError`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameter errorMessage: Error message.
+     - Parameter errorCode: Error can.
+     - Parameter detailMessage: Detail message.
+     */
+    public init(
+      _ errorMessage: String?,
+      errorCode: String?,
+      detailMessage: String?)
+    {
         self.errorMessage = errorMessage
         self.errorCode = errorCode
         self.detailMessage = detailMessage
-    }
-    
-    open override func isEqual(_ object: Any?) -> Bool {
-        guard let aResult = object as? ServerError else{
-            return false
-        }
-        return self.errorMessage == aResult.errorMessage && self.errorCode == aResult.errorCode && self.detailMessage == aResult.detailMessage
-    }
-    
-    class func errorWithNSDict(_ errorDict: NSDictionary) -> ServerError?{
-        let errorMessage = errorDict["errorMessage"] as? String
-        let details = errorDict["details"] as? NSDictionary
-        var errorCode: String?
-        var detailMessage: String?
-        if details != nil {
-            errorCode = details!["errorCode"] as? String
-            detailMessage = details!["message"] as? String
-        }
-        return ServerError(errorMessage: errorMessage, errorCode: errorCode, detailMessage: detailMessage)
     }
 
 }

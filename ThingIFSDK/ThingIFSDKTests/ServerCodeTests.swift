@@ -30,23 +30,6 @@ class ServerCodeTests: SmallTestBase {
         XCTAssertEqual("executorAccessToken", actual.executorAccessToken)
         XCTAssertEqual("targetAppID", actual.targetAppID)
         assertEqualsDictionary(["key" : "value"], actual.parameters)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = ServerCode(coder: decoder)!
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.endpoint, deserialized.endpoint)
-        XCTAssertEqual(
-          actual.executorAccessToken,
-          deserialized.executorAccessToken)
-        XCTAssertEqual(actual.targetAppID, deserialized.targetAppID)
-        assertEqualsDictionary(actual.parameters, deserialized.parameters)
     }
 
     func testOptionalNil() {
@@ -56,23 +39,6 @@ class ServerCodeTests: SmallTestBase {
         XCTAssertNil(actual.executorAccessToken)
         XCTAssertNil(actual.targetAppID)
         XCTAssertNil(actual.parameters)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = ServerCode(coder: decoder)!
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.endpoint, deserialized.endpoint)
-        XCTAssertEqual(
-          actual.executorAccessToken,
-          deserialized.executorAccessToken)
-        XCTAssertEqual(actual.targetAppID, deserialized.targetAppID)
-        assertEqualsDictionary(actual.parameters, deserialized.parameters)
     }
 
 }

@@ -6,37 +6,9 @@
 import Foundation
 
 /** Class represents Trigger */
-open class Trigger: Equatable, NSCoding {
+public struct Trigger {
 
-    // MARK: - Implements NSCoding protocol
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.triggerID, forKey: "triggerID")
-        aCoder.encode(self.targetID, forKey: "targetID")
-        aCoder.encode(self.predicate, forKey: "predicate")
-        aCoder.encode(self.command, forKey: "command")
-        aCoder.encode(self.serverCode, forKey: "serverCode")
-        aCoder.encode(self.enabled, forKey: "enabled")
-        aCoder.encode(self.title, forKey: "title")
-        aCoder.encode(self.triggerDescription, forKey: "triggerDescription")
-        aCoder.encode(self.metadata, forKey: "metadata")
-        
-    }
-
-    // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
-        self.triggerID = aDecoder.decodeObject(forKey: "triggerID") as! String
-        self.targetID = aDecoder.decodeObject(forKey: "targetID") as! TypedID
-        self.enabled = aDecoder.decodeBool(forKey: "enabled")
-        self.predicate = aDecoder.decodeObject(forKey: "predicate") as! Predicate
-        self.command = aDecoder.decodeObject(forKey: "command") as? Command
-        self.serverCode = aDecoder.decodeObject(forKey: "serverCode") as? ServerCode
-        self.title = aDecoder.decodeObject(forKey: "title") as? String
-        self.triggerDescription = aDecoder.decodeObject(forKey: "triggerDescription") as? String
-        self.metadata = aDecoder.decodeObject(forKey: "metadata") as? Dictionary<String, Any>
-        // TODO: add aditional decoder
-    }
-    
-    var triggersWhat: TriggersWhat? {
+    public var triggersWhat: TriggersWhat? {
         get {
             if self.command != nil {
                 return TriggersWhat.command
@@ -48,87 +20,52 @@ open class Trigger: Equatable, NSCoding {
         }
     }
 
-    class func triggerWithNSDict(_ targetID: TypedID, triggerDict: NSDictionary) -> Trigger?{
-        fatalError("TODO: implement me")
-        /*
-        let triggerID = triggerDict["triggerID"] as? String
-        let disabled = triggerDict["disabled"] as? Bool
-        var predicate: Predicate?
-        var command: Command?
-        var serverCode: ServerCode?
-        var trigger: Trigger?
-
-        if let commandDict = triggerDict["command"] as? NSDictionary {
-            command = Command.commandWithNSDictionary(commandDict)
-        }
-        if let serverCodeDict = triggerDict["serverCode"] as? NSDictionary {
-            serverCode = ServerCode.serverCodeWithNSDictionary(serverCodeDict)
-        }
-
-        if let predicateDict = triggerDict["predicate"] as? NSDictionary{
-            if let eventSourceString = predicateDict["eventSource"] as? String{
-                if let eventSource = EventSource(rawValue: eventSourceString){
-                    switch eventSource {
-                    case EventSource.states:
-                        fatalError("We should reimplement this.")
-                        // predicate = StatePredicate.statePredicateWithNSDict(predicateDict)
-                        break
-                    case EventSource.schedule:
-                        predicate = SchedulePredicate(predicateDict["schedule"] as! String)
-                        break
-                    case EventSource.scheduleOnce:
-                        if let scheduleAtMilis = (predicateDict["scheduleAt"] as? NSNumber)?.doubleValue {
-                            predicate = ScheduleOncePredicate(Date(timeIntervalSince1970: scheduleAtMilis/1000))
-                        }
-                        break
-                    }
-                }
-            }
-        }
-
-        let title = triggerDict["title"] as? String
-        let triggerDescription = triggerDict["description"] as? String
-        let metadata = triggerDict["metadata"] as? Dictionary<String, Any>
-
-        if triggerID != nil && predicate != nil && command != nil && disabled != nil{
-            trigger = Trigger(triggerID: triggerID!, targetID: targetID, enabled: !(disabled!), predicate: predicate!, command: command!, title: title, triggerDescription: triggerDescription, metadata: metadata)
-        }
-        if triggerID != nil && predicate != nil && serverCode != nil && disabled != nil{
-            trigger = Trigger(triggerID: triggerID!, targetID: targetID, enabled: !(disabled!), predicate: predicate!, serverCode: serverCode!, title: title, triggerDescription: triggerDescription, metadata: metadata)
-        }
-        
-        return trigger
-        */
-    }
-
     /** ID of the Trigger */
-    open let triggerID: String
+    public let triggerID: String
     /** ID of the Trigger target */
-    open let targetID: TypedID
+    public let targetID: TypedID
     /** Flag indicate whether the Trigger is enabled */
-    open let enabled: Bool
+    public let enabled: Bool
     /** Predicate of the Trigger */
-    open let predicate: Predicate
+    public let predicate: Predicate
     /** Command to be fired */
-    open let command: Command?
+    public let command: Command?
     /** ServerCode to be fired */
-    open let serverCode: ServerCode?
+    public let serverCode: ServerCode?
     /** Title of the Trigger */
-    open let title: String?
+    public let title: String?
     /** Description of the Trigger */
-    open let triggerDescription: String?
+    public let triggerDescription: String?
     /** Metadata of the Trigger */
-    open let metadata: Dictionary<String, Any>?
+    public let metadata: Dictionary<String, Any>?
 
     /** Init Trigger with Command
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
 
     - Parameter triggerID: ID of trigger
     - Parameter targetID: ID of trigger target
     - Parameter enabled: True to enable trigger
     - Parameter predicate: Predicate instance
     - Parameter command: Command instance
+    - Parameter title: Title of a trigger. This should be equal or
+      less than 50 characters.
+    - Parameter triggerDescription: Description of a trigger. This
+      should be equal or less than 200 characters.
+    - Parameter metadata: Meta data of a trigger.
     */
-    internal init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, command: Command, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, Any>? = nil) {
+    public init(
+      _ triggerID: String,
+      targetID: TypedID,
+      enabled: Bool,
+      predicate: Predicate,
+      command: Command,
+      title: String? = nil,
+      triggerDescription: String? = nil,
+      metadata: Dictionary<String, Any>? = nil)
+    {
         self.triggerID = triggerID
         self.targetID = targetID
         self.enabled = enabled
@@ -139,15 +76,34 @@ open class Trigger: Equatable, NSCoding {
         self.triggerDescription = triggerDescription
         self.metadata = metadata
     }
+
     /** Init Trigger with Server code
-     
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
      - Parameter triggerID: ID of trigger
      - Parameter targetID: ID of trigger target
      - Parameter enabled: True to enable trigger
      - Parameter predicate: Predicate instance
      - Parameter serverCode: ServerCode instance
+     - Parameter title: Title of a trigger. This should be equal or
+       less than 50 characters.
+     - Parameter triggerDescription: Description of a trigger. This
+       should be equal or less than 200 characters.
+     - Parameter metadata: Meta data of a trigger.
      */
-    internal init(triggerID: String, targetID: TypedID, enabled: Bool, predicate: Predicate, serverCode: ServerCode, title: String? = nil, triggerDescription: String? = nil, metadata: Dictionary<String, Any>? = nil) {
+    public init(
+      _ triggerID: String,
+      targetID: TypedID,
+      enabled: Bool,
+      predicate: Predicate,
+      serverCode: ServerCode,
+      title: String? = nil,
+      triggerDescription: String? = nil,
+      metadata: Dictionary<String, Any>? = nil)
+    {
         self.triggerID = triggerID
         self.targetID = targetID
         self.enabled = enabled
@@ -157,20 +113,6 @@ open class Trigger: Equatable, NSCoding {
         self.title = title
         self.triggerDescription = triggerDescription
         self.metadata = metadata
-    }
-
-    open func isEqual(_ object: Any?) -> Bool {
-        guard let aTrigger = object as? Trigger else{
-            return false
-        }
-
-        return self.enabled == aTrigger.enabled &&
-            self.command == aTrigger.command &&
-            self.serverCode == aTrigger.serverCode
-    }
-
-    public static func == (left: Trigger, right: Trigger) -> Bool {
-        return left.isEqual(right)
     }
 
 }
