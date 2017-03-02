@@ -122,3 +122,24 @@ extension OrClauseInQuery: Equatable {
     }
 
 }
+
+extension ActionResult: Equatable {
+
+    public static func == (left: ActionResult, right: ActionResult) -> Bool {
+        return left.succeeded == right.succeeded &&
+          left.actionName == right.actionName &&
+          left.errorMessage == right.errorMessage
+    }
+
+}
+
+extension AliasActionResult: Equatable {
+
+    public static func == (
+      left: AliasActionResult,
+      right: AliasActionResult) -> Bool
+    {
+        return left.alias == right.alias && left.results == right.results
+    }
+
+}
