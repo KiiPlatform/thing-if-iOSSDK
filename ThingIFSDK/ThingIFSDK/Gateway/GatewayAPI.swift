@@ -294,7 +294,7 @@ open class GatewayAPI: NSCoding {
                 if response != nil {
                     if let endNodeArray = response!["results"] as? [NSDictionary] {
                         for endNode in endNodeArray {
-                            endNodes.append(PendingEndNode(json: endNode as! Dictionary<String, AnyObject>))
+                            endNodes.append(PendingEndNode(endNode as! Dictionary<String, AnyObject>))
                         }
                     }
                 }
