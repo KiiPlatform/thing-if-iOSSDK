@@ -16,7 +16,19 @@ public protocol QueryClause: BaseClause {
 internal extension QueryClause {
 
     internal func makeDictionary() -> [String : Any] {
-        fatalError("should implement makeDictionary()")
+        if type(of: self) == EqualsClauseInQuery.self {
+            return (self as! EqualsClauseInQuery).makeDictionary()
+        } else if type(of: self) == NotEqualsClauseInQuery.self {
+            return (self as! NotEqualsClauseInQuery).makeDictionary()
+        } else if type(of: self) == RangeClauseInQuery.self {
+            return (self as! RangeClauseInQuery).makeDictionary()
+        } else if type(of: self) == AndClauseInQuery.self {
+            return (self as! AndClauseInQuery).makeDictionary()
+        } else if type(of: self) == OrClauseInQuery.self {
+            return (self as! OrClauseInQuery).makeDictionary()
+        } else {
+            fatalError("unexpected class")
+        }
     }
 }
 

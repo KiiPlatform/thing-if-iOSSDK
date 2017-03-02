@@ -16,7 +16,19 @@ public protocol TriggerClause: BaseClause {
 internal extension TriggerClause {
 
     internal func makeDictionary() -> [String : Any] {
-        fatalError("should implement makeDictionary()")
+        if type(of: self) == EqualsClauseInTrigger.self {
+            return (self as! EqualsClauseInTrigger).makeDictionary()
+        } else if type(of: self) == NotEqualsClauseInTrigger.self {
+            return (self as! NotEqualsClauseInTrigger).makeDictionary()
+        } else if type(of: self) == RangeClauseInTrigger.self {
+            return (self as! RangeClauseInTrigger).makeDictionary()
+        } else if type(of: self) == AndClauseInTrigger.self {
+            return (self as! AndClauseInTrigger).makeDictionary()
+        } else if type(of: self) == OrClauseInTrigger.self {
+            return (self as! OrClauseInTrigger).makeDictionary()
+        } else {
+            fatalError("unexpected class")
+        }
     }
 }
 
