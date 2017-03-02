@@ -279,7 +279,7 @@ class OrClauseInQueryTests: SmallTestBase {
     }
 
     func testOr() {
-        let actual = OrClauseInQuery(
+        var actual = OrClauseInQuery(
           EqualsClauseInQuery("f", intValue: 1),
           NotEqualsClauseInQuery(EqualsClauseInQuery("f", boolValue: true)),
           RangeClauseInQuery.greaterThan("f", limit: 1))
@@ -287,7 +287,8 @@ class OrClauseInQueryTests: SmallTestBase {
         XCTAssertEqual(3, actual.clauses.count)
 
         actual.add(
-          AndClauseInQuery(EqualsClauseInQuery("f", stringValue: "str"))).add(
+          AndClauseInQuery(EqualsClauseInQuery("f", stringValue: "str")))
+        actual.add(
           OrClauseInQuery(EqualsClauseInQuery("f", stringValue: "str")))
 
         XCTAssertEqual(5, actual.clauses.count)

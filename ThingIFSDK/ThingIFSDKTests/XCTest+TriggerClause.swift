@@ -28,7 +28,7 @@ extension XCTestCase {
             return
         }
 
-        if type(of: expected!) !== type(of: actual!) {
+        if type(of: expected!) != type(of: actual!) {
             let errorMessage = message ??
               "Type mismatch: (\(Mirror(reflecting: expected!).subjectType), \(Mirror(reflecting: actual!).subjectType))"
             XCTFail(
@@ -36,35 +36,35 @@ extension XCTestCase {
             return
         }
 
-        if type(of: expected!) === EqualsClauseInTrigger.self {
+        if type(of: expected!) == EqualsClauseInTrigger.self {
             assertEqualsEqualsClauseInTrigger(
               expected as! EqualsClauseInTrigger,
               actual as! EqualsClauseInTrigger,
               message,
               file,
               line)
-        } else if type(of: expected!) === NotEqualsClauseInTrigger.self {
+        } else if type(of: expected!) == NotEqualsClauseInTrigger.self {
             assertEqualsNotEqualsClauseInTrigger(
               expected as! NotEqualsClauseInTrigger,
               actual as! NotEqualsClauseInTrigger,
               message,
               file,
               line)
-        } else if type(of: expected!) === RangeClauseInTrigger.self {
+        } else if type(of: expected!) == RangeClauseInTrigger.self {
             assertEqualsRangeClauseInTrigger(
               expected as! RangeClauseInTrigger,
               actual as! RangeClauseInTrigger,
               message,
               file,
               line)
-        } else if type(of: expected!) === AndClauseInTrigger.self {
+        } else if type(of: expected!) == AndClauseInTrigger.self {
             assertEqualsAndClauseInTrigger(
               expected as! AndClauseInTrigger,
               actual as! AndClauseInTrigger,
               message,
               file,
               line)
-        } else if type(of: expected!) === OrClauseInTrigger.self {
+        } else if type(of: expected!) == OrClauseInTrigger.self {
             assertEqualsOrClauseInTrigger(
               expected as! OrClauseInTrigger,
               actual as! OrClauseInTrigger,

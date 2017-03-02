@@ -265,7 +265,7 @@ extension XCTestCase {
             return
         }
 
-        if type(of: expected!) !== type(of: actual!) {
+        if type(of: expected!) != type(of: actual!) {
             let errorMessage = message ??
               "Type mismatch: (\(Mirror(reflecting: expected!).subjectType), \(Mirror(reflecting: actual!).subjectType))"
             XCTFail(
@@ -273,35 +273,35 @@ extension XCTestCase {
             return
         }
 
-        if type(of: expected!) === EqualsClauseInQuery.self {
+        if type(of: expected!) == EqualsClauseInQuery.self {
             assertEqualsEqualsClauseInQuery(
               expected as! EqualsClauseInQuery,
               actual as! EqualsClauseInQuery,
               message,
               file,
               line)
-        } else if type(of: expected!) === NotEqualsClauseInQuery.self {
+        } else if type(of: expected!) == NotEqualsClauseInQuery.self {
             assertEqualsNotEqualsClauseInQuery(
               expected as! NotEqualsClauseInQuery,
               actual as! NotEqualsClauseInQuery,
               message,
               file,
               line)
-        } else if type(of: expected!) === RangeClauseInQuery.self {
+        } else if type(of: expected!) == RangeClauseInQuery.self {
             assertEqualsRangeClauseInQuery(
               expected as! RangeClauseInQuery,
               actual as! RangeClauseInQuery,
               message,
               file,
               line)
-        } else if type(of: expected!) === AndClauseInQuery.self {
+        } else if type(of: expected!) == AndClauseInQuery.self {
             assertEqualsAndClauseInQuery(
               expected as! AndClauseInQuery,
               actual as! AndClauseInQuery,
               message,
               file,
               line)
-        } else if type(of: expected!) === OrClauseInQuery.self {
+        } else if type(of: expected!) == OrClauseInQuery.self {
             assertEqualsOrClauseInQuery(
               expected as! OrClauseInQuery,
               actual as! OrClauseInQuery,

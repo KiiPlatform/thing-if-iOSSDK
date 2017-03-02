@@ -8,7 +8,7 @@
 
 import Foundation
 
-/** Base protocol for query clause classes. */
+/** Base protocol for query clause struct. */
 public protocol QueryClause: BaseClause {
 
 }
@@ -16,15 +16,15 @@ public protocol QueryClause: BaseClause {
 internal extension QueryClause {
 
     internal func makeDictionary() -> [String : Any] {
-        if type(of: self) === EqualsClauseInQuery.self {
+        if type(of: self) == EqualsClauseInQuery.self {
             return (self as! EqualsClauseInQuery).makeDictionary()
-        } else if type(of: self) === NotEqualsClauseInQuery.self {
+        } else if type(of: self) == NotEqualsClauseInQuery.self {
             return (self as! NotEqualsClauseInQuery).makeDictionary()
-        } else if type(of: self) === RangeClauseInQuery.self {
+        } else if type(of: self) == RangeClauseInQuery.self {
             return (self as! RangeClauseInQuery).makeDictionary()
-        } else if type(of: self) === AndClauseInQuery.self {
+        } else if type(of: self) == AndClauseInQuery.self {
             return (self as! AndClauseInQuery).makeDictionary()
-        } else if type(of: self) === OrClauseInQuery.self {
+        } else if type(of: self) == OrClauseInQuery.self {
             return (self as! OrClauseInQuery).makeDictionary()
         } else {
             fatalError("unexpected class")
@@ -32,13 +32,13 @@ internal extension QueryClause {
     }
 }
 
-/** Class represents Equals clause for query methods. */
-open class EqualsClauseInQuery: QueryClause, BaseEquals {
+/** Struct represents Equals clause for query methods. */
+public struct EqualsClauseInQuery: QueryClause, BaseEquals {
 
     /** Name of a field. */
-    open let field: String
+    public let field: String
     /** Value of a field. */
-    open let value: AnyObject
+    public let value: AnyObject
 
     private init(_ field: String, value: AnyObject) {
         self.field = field
@@ -50,7 +50,7 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter intValue: Left hand side value to be compared.
      */
-    public convenience init(_ field: String, intValue: Int) {
+    public init(_ field: String, intValue: Int) {
         self.init(field, value: intValue as AnyObject)
     }
 
@@ -59,7 +59,7 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter stringValue: Left hand side value to be compared.
      */
-    public convenience init(_ field: String, stringValue: String) {
+    public init(_ field: String, stringValue: String) {
         self.init(field, value: stringValue as AnyObject)
     }
 
@@ -68,7 +68,7 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter boolValue: Left hand side value to be compared.
      */
-    public convenience init(_ field: String, boolValue: Bool) {
+    public init(_ field: String, boolValue: Bool) {
         self.init(field, value: boolValue as AnyObject)
     }
 
@@ -86,12 +86,12 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
 
 }
 
-/** Class represents Not Equals clause for query methods.  */
-open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
+/** Struct represents Not Equals clause for query methods.  */
+public struct NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInQuery
 
     /** Contained Equals clause instance. */
-    open let equals: EqualsClauseInQuery
+    public let equals: EqualsClauseInQuery
 
     /** Initialize with `EqualsClauseInQuery`.
 
@@ -114,38 +114,38 @@ open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
 
 }
 
-/** Class represents Range clause for query methods. */
-open class RangeClauseInQuery: QueryClause, BaseRange {
+/** Struct represents Range clause for query methods. */
+public struct RangeClauseInQuery: QueryClause, BaseRange {
 
     private let lower: (limit: NSNumber, included: Bool)?
     private let upper: (limit: NSNumber, included: Bool)?
 
     /** Name of a field. */
-    open let field: String
+    public let field: String
 
     /** Lower limit for an instance. */
-    open var lowerLimit: NSNumber? {
+    public var lowerLimit: NSNumber? {
         get {
             return self.lower?.limit
         }
     }
 
     /** Include or not lower limit. */
-    open var lowerIncluded: Bool? {
+    public var lowerIncluded: Bool? {
         get {
             return self.lower?.included
         }
     }
 
     /** Upper limit for an instance. */
-    open var upperLimit: NSNumber? {
+    public var upperLimit: NSNumber? {
         get {
             return self.upper?.limit
         }
     }
 
     /** Include or not upper limit. */
-    open var upperIncluded: Bool? {
+    public var upperIncluded: Bool? {
         get {
             return self.upper?.included
         }
@@ -176,7 +176,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
        included
      - Returns: An instance of `RangeClauseInQuery`.
      */
-    open static func range(
+    public static func range(
       _ field: String,
       lowerLimit: NSNumber,
       lowerIncluded: Bool,
@@ -196,7 +196,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInQuery`.
      */
-    open static func greaterThan(
+    public static func greaterThan(
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
@@ -211,7 +211,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInQuery`.
      */
-    open static func greaterThanOrEqualTo(
+    public static func greaterThanOrEqualTo(
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
@@ -225,7 +225,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInQuery`.
      */
-    open static func lessThan(
+    public static func lessThan(
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
@@ -240,7 +240,7 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInQuery`.
      */
-    open static func lessThanOrEqualTo(
+    public static func lessThanOrEqualTo(
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
@@ -263,11 +263,11 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
 }
 
 
-/** Class represents And clause for query methods. */
-open class AndClauseInQuery: QueryClause, BaseAnd {
+/** Struct represents And clause for query methods. */
+public struct AndClauseInQuery: QueryClause, BaseAnd {
 
     /** Clauses conjuncted with And. */
-    open internal(set) var clauses: [QueryClause]
+    public internal(set) var clauses: [QueryClause]
 
     /** Initialize with clauses array.
 
@@ -281,7 +281,7 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
      - Parameter clauses: Clause array for And clauses
      */
-    public convenience init(_ clause: QueryClause...) {
+    public init(_ clause: QueryClause...) {
         self.init(clause)
     }
 
@@ -289,10 +289,8 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
      - Parameter clause: Clause to be added to and clauses.
      */
-    @discardableResult
-    open func add(_ clause: QueryClause) -> Self {
+    public mutating func add(_ clause: QueryClause) -> Void {
         self.clauses.append(clause)
-        return self
     }
 
     /** Get And clause for query as a Dictionary instance
@@ -307,11 +305,11 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
 }
 
-/** Class represents Or clause for query methods. */
-open class OrClauseInQuery: QueryClause, BaseOr {
+/** Struct represents Or clause for query methods. */
+public struct OrClauseInQuery: QueryClause, BaseOr {
 
     /** Clauses conjuncted with Or. */
-    open internal(set) var clauses: [QueryClause]
+    public internal(set) var clauses: [QueryClause]
 
     /** Initialize with clauses array.
 
@@ -325,7 +323,7 @@ open class OrClauseInQuery: QueryClause, BaseOr {
 
      - Parameter clauses: Clause array for Or clauses
      */
-    public convenience init(_ clause: QueryClause...) {
+    public init(_ clause: QueryClause...) {
         self.init(clause)
     }
 
@@ -333,10 +331,8 @@ open class OrClauseInQuery: QueryClause, BaseOr {
 
      - Parameter clause: Clause to be added to or clauses.
      */
-    @discardableResult
-    open func add(_ clause: QueryClause) -> Self {
+    public mutating func add(_ clause: QueryClause) -> Void {
         self.clauses.append(clause)
-        return self
     }
 
     /** Get Or clause for query as a Dictionary instance

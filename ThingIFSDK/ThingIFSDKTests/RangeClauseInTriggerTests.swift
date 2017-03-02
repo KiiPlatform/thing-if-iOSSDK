@@ -126,29 +126,6 @@ class RangeClauseInTriggerTests: SmallTestBase {
             dict["upperLimit"] = expected.upper?.limit
             dict["upperIncluded"] = expected.upper?.included
             assertEqualsDictionary(dict, actual.makeDictionary(), label)
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = RangeClauseInTrigger(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.alias, deserialized.alias, label)
-            XCTAssertEqual(actual.field, deserialized.field, label)
-            XCTAssertEqual(actual.lowerLimit, deserialized.lowerLimit, label)
-            XCTAssertEqual(
-              actual.lowerIncluded,
-              deserialized.lowerIncluded,
-              label)
-            XCTAssertEqual(actual.upperLimit, deserialized.upperLimit, label)
-            XCTAssertEqual(
-              actual.upperIncluded,
-              deserialized.upperIncluded,
-              label)
         }
 
     }
@@ -269,34 +246,6 @@ class RangeClauseInTriggerTests: SmallTestBase {
             dict["upperLimit"] = expected.upper?.limit
             dict["upperIncluded"] = expected.upper?.included
             assertEqualsDictionary(dict, actual.makeDictionary(), label)
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = RangeClauseInTrigger(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.alias, deserialized.alias, label)
-            XCTAssertEqual(actual.field, deserialized.field, label)
-            assertEqualsWithAccuracyOrNil(
-              actual.lowerLimit as? Double,
-              deserialized.lowerLimit as? Double,
-              accuracy: 0.001, label)
-            XCTAssertEqual(actual.lowerIncluded,
-                           deserialized.lowerIncluded,
-                           label)
-            assertEqualsWithAccuracyOrNil(
-              actual.upperLimit as? Double,
-              deserialized.upperLimit as? Double,
-              accuracy: 0.001, label)
-            XCTAssertEqual(
-              actual.upperIncluded,
-              deserialized.upperIncluded,
-              label)
         }
 
     }
