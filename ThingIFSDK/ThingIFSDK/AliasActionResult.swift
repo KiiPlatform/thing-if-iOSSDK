@@ -16,7 +16,16 @@ public struct AliasActionResult {
     /** Results of actions for an alias. */
     public let results: [ActionResult]
 
-    internal init(_ alias: String, results: [ActionResult]) {
+    /** Initialize `AliasActionResult`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters alias: Name of an alias.
+     - Parameters results: Results of actions for an alias.
+     */
+    public init(_ alias: String, results: [ActionResult]) {
         self.alias = alias
         self.results = results
     }
