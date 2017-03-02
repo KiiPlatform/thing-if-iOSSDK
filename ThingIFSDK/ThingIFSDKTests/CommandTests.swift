@@ -47,7 +47,7 @@ class CommandTests: SmallTestBase {
 
         XCTAssertEqual(targetID, actual.targetID)
         XCTAssertEqual(issuerID, actual.issuerID)
-        assertEqualsAliasActionArray(aliasActions, actual.aliasActions)
+        XCTAssertEqual(aliasActions, actual.aliasActions)
         XCTAssertEqual(aliasActionResults, actual.aliasActionResults)
         XCTAssertEqual(.sending, actual.commandState)
         XCTAssertEqual("firedByTriggerID", actual.firedByTriggerID)
@@ -71,7 +71,7 @@ class CommandTests: SmallTestBase {
 
         XCTAssertEqual(targetID, actual.targetID)
         XCTAssertEqual(issuerID, actual.issuerID)
-        assertEqualsAliasActionArray(aliasActions, actual.aliasActions)
+        XCTAssertEqual(aliasActions, actual.aliasActions)
         XCTAssertEqual([], actual.aliasActionResults)
         XCTAssertEqual(.sending, actual.commandState)
         XCTAssertNil(actual.firedByTriggerID)
@@ -98,13 +98,13 @@ class CommandTests: SmallTestBase {
                          aliasActionsameAliasAsA])
 
 
-        assertEqualsAliasActionArray(
+        XCTAssertEqual(
           [actionA, aliasActionsameAliasAsA],
           actual.getAliasAction("alias"))
-        assertEqualsAliasActionArray(
+        XCTAssertEqual(
           [actionDifferentAliasFromA],
           actual.getAliasAction("different"))
-        assertEqualsAliasActionArray([], actual.getAliasAction("noalias"))
+        XCTAssertEqual([], actual.getAliasAction("noalias"))
     }
 
     func testGetActionResult() {

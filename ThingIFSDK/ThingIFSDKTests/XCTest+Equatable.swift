@@ -143,3 +143,13 @@ extension AliasActionResult: Equatable {
     }
 
 }
+
+extension AliasAction: Equatable {
+
+    public static func == (left: AliasAction, right: AliasAction) -> Bool {
+        return left.alias == right.alias &&
+          NSDictionary(dictionary: left.action) ==
+            NSDictionary(dictionary: right.action)
+    }
+
+}
