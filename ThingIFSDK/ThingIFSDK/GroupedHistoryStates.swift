@@ -9,27 +9,25 @@
 import Foundation
 
 /** Grouped history states. */
-open class GroupedHistoryStates: NSObject, NSCoding {
+public struct GroupedHistoryStates {
 
     /** Time range of this states. */
-    open let timeRange: TimeRange
+    public let timeRange: TimeRange
     /** Result objects. */
-    open let objects: [HistoryState]
+    public let objects: [HistoryState]
 
-    internal init(_ timeRange: TimeRange, objects: [HistoryState]) {
+    /** Initialize `GroupedHistoryStates`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters timeRange: Time range of this states.
+     - Parameters objects: Result objects.
+     */
+    public init(_ timeRange: TimeRange, objects: [HistoryState]) {
         self.timeRange = timeRange
         self.objects = objects
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(
-          aDecoder.decodeObject(forKey: "timeRange") as! TimeRange,
-          objects: aDecoder.decodeObject(forKey: "objects") as! [HistoryState])
-    }
-
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.timeRange, forKey: "timeRange")
-        aCoder.encode(self.objects, forKey: "objects")
     }
 
 }
