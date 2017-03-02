@@ -25,7 +25,7 @@ class AliasActionResultTests: SmallTestBase {
 
         XCTAssertNotNil(target)
         XCTAssertEqual(target.alias, "dummy")
-        verifyArray(results, actual: target.results)
+        assertEqualsActionResultArray(results, target.results)
     }
 
 }
