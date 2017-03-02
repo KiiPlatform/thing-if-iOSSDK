@@ -16,6 +16,27 @@ extension TimeRange: Equatable {
     }
 }
 
+internal func == (left: QueryClause, right: QueryClause) -> Bool {
+    if left is EqualsClauseInQuery && right is EqualsClauseInQuery {
+        return left as! EqualsClauseInQuery == right as! EqualsClauseInQuery
+    } else if left is NotEqualsClauseInQuery &&
+                right is NotEqualsClauseInQuery {
+        return left as! NotEqualsClauseInQuery ==
+          right as! NotEqualsClauseInQuery
+    } else if left is RangeClauseInQuery && right is RangeClauseInQuery {
+        return left as! RangeClauseInQuery == right as! RangeClauseInQuery
+    } else if left is AndClauseInQuery && right is AndClauseInQuery {
+        return left as! AndClauseInQuery == right as! AndClauseInQuery
+    } else if left is OrClauseInQuery && right is OrClauseInQuery {
+        return left as! OrClauseInQuery == right as! OrClauseInQuery
+    }
+    return false
+}
+
+internal func != (left: QueryClause, right: QueryClause) -> Bool {
+    return !(left == right)
+}
+
 extension EqualsClauseInQuery: Equatable {
 
     public static func == (
@@ -45,6 +66,59 @@ extension NotEqualsClauseInQuery: Equatable {
       right: NotEqualsClauseInQuery) -> Bool
     {
         return left.equals == right.equals
+    }
+
+}
+
+extension RangeClauseInQuery: Equatable {
+
+    public static func == (
+      left: RangeClauseInQuery,
+      right: RangeClauseInQuery) -> Bool
+    {
+        return left.field == right.field &&
+          left.lowerLimit == right.lowerLimit &&
+          left.lowerIncluded == right.lowerIncluded &&
+          left.upperLimit == right.upperLimit &&
+          left.upperIncluded == right.upperIncluded
+    }
+
+}
+
+fileprivate func isEqualClauseArray(
+  _ left: [QueryClause],
+  _ right: [QueryClause]) -> Bool
+{
+    if left.count != right.count {
+        return false
+    }
+
+    for (index, leftClause) in left.enumerated() {
+        if leftClause != right[index] {
+            return false
+        }
+    }
+    return true
+}
+
+extension AndClauseInQuery: Equatable {
+
+    public static func == (
+      left: AndClauseInQuery,
+      right: AndClauseInQuery) -> Bool
+    {
+        return isEqualClauseArray(left.clauses, right.clauses)
+    }
+
+}
+
+extension OrClauseInQuery: Equatable {
+
+    public static func == (
+      left: OrClauseInQuery,
+      right: OrClauseInQuery) -> Bool
+    {
+        return isEqualClauseArray(left.clauses, right.clauses)
     }
 
 }

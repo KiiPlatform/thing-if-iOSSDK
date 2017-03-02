@@ -258,121 +258,29 @@ extension XCTestCase {
               file: file,
               line: line)
         } else if type(of: expected!) == RangeClauseInQuery.self {
-            assertEqualsRangeClauseInQuery(
-              expected as! RangeClauseInQuery,
-              actual as! RangeClauseInQuery,
+            assertEqualsWrapper(
+              expected as? RangeClauseInQuery,
+              actual as? RangeClauseInQuery,
               message,
-              file,
-              line)
+              file: file,
+              line: line)
         } else if type(of: expected!) == AndClauseInQuery.self {
-            assertEqualsAndClauseInQuery(
-              expected as! AndClauseInQuery,
-              actual as! AndClauseInQuery,
+            assertEqualsWrapper(
+              expected as? AndClauseInQuery,
+              actual as? AndClauseInQuery,
               message,
-              file,
-              line)
+              file: file,
+              line: line)
         } else if type(of: expected!) == OrClauseInQuery.self {
-            assertEqualsOrClauseInQuery(
-              expected as! OrClauseInQuery,
-              actual as! OrClauseInQuery,
+            assertEqualsWrapper(
+              expected as? OrClauseInQuery,
+              actual as? OrClauseInQuery,
               message,
-              file,
-              line)
+              file: file,
+              line: line)
         } else {
             XCTFail(
               "unknown type: \(Mirror(reflecting: expected!).subjectType)")
-        }
-    }
-
-    private func  assertEqualsRangeClauseInQuery(
-      _ expected: RangeClauseInQuery,
-      _ actual: RangeClauseInQuery,
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        assertEqualsWrapper(
-          expected.field,
-          actual.field,
-          message,
-          file: file,
-          line: line)
-        assertEqualsWrapper(
-          expected.lowerLimit,
-          actual.lowerLimit,
-          message,
-          file: file,
-          line: line)
-        assertEqualsWrapper(
-          expected.lowerIncluded,
-          actual.lowerIncluded,
-          message,
-          file: file,
-          line: line)
-        assertEqualsWrapper(
-          expected.upperLimit,
-          actual.upperLimit,
-          message,
-          file: file,
-          line: line)
-        assertEqualsWrapper(
-          expected.upperIncluded,
-          actual.upperIncluded,
-          message,
-          file: file,
-          line: line)
-    }
-
-    private func  assertEqualsAndClauseInQuery(
-      _ expected: AndClauseInQuery,
-      _ actual: AndClauseInQuery,
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        assertEqualsQueryClauseArray(
-          expected.clauses,
-          actual.clauses,
-          message,
-          file,
-          line)
-    }
-
-    private func  assertEqualsOrClauseInQuery(
-      _ expected: OrClauseInQuery,
-      _ actual: OrClauseInQuery,
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        assertEqualsQueryClauseArray(
-          expected.clauses,
-          actual.clauses,
-          message,
-          file,
-          line)
-    }
-
-    private func  assertEqualsQueryClauseArray(
-      _ expected: [QueryClause],
-      _ actual: [QueryClause],
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        assertEqualsWrapper(
-          expected.count,
-          actual.count,
-          message,
-          file: file,
-          line: line)
-        for (index, exp) in expected.enumerated() {
-            assertEqualsQueryClause(
-              exp,
-              actual[index],
-              message ?? "index=\(index)",
-              file,
-              line)
         }
     }
 
@@ -410,7 +318,6 @@ extension XCTestCase {
               line: line)
         }
     }
-
 
     func assertEqualsAny(
       _ expected:  Any?,
