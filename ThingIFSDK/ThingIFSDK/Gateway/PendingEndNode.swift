@@ -7,33 +7,38 @@
 
 import Foundation
 
-open class PendingEndNode: NSCoding {
-    let KEY_VENDORTHINGID = "vendorThingID"
-    let KEY_THINGPROPERTIES = "thingProperties"
+public struct PendingEndNode {
+    private static let KEY_VENDORTHINGID = "vendorThingID"
+    private static let KEY_THINGPROPERTIES = "thingProperties"
 
-    open let vendorThingID: String?
-    open let thingProperties: Dictionary<String, Any>?
-
-    open var thingType: String? {
+    /** Vendor thing ID. */
+    public let vendorThingID: String?
+    /** Thing properties. */
+    public let thingProperties: [String : Any]?
+    /** Thing type. */
+    public var thingType: String? {
         return self.thingProperties?["_thingType"] as? String
     }
 
-    // MARK: - Implements NSCoding protocol
-    open func encode(with aCoder: NSCoder)
-    {
-        aCoder.encode(self.vendorThingID, forKey: KEY_VENDORTHINGID)
-        aCoder.encode(self.thingProperties, forKey: KEY_THINGPROPERTIES)
+    /** Initialize `ActionResult`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters vendorThingID: Vendor thing ID.
+     - Parameters thingProperties: Thing properties.
+     */
+    public init(_ vendorThingID: String?, thingProperties: [String : Any]?) {
+        self.vendorThingID = vendorThingID
+        self.thingProperties = thingProperties
     }
 
-    public required init(coder aDecoder: NSCoder)
+    internal init(_ json: [String : Any])
     {
-        self.vendorThingID = aDecoder.decodeObject(forKey: KEY_VENDORTHINGID) as? String
-        self.thingProperties = aDecoder.decodeObject(forKey: KEY_THINGPROPERTIES) as? Dictionary<String, Any>
-    }
-
-    init(json: Dictionary<String, Any>)
-    {
-        self.vendorThingID = json[KEY_VENDORTHINGID] as? String
-        self.thingProperties = json[KEY_THINGPROPERTIES] as? Dictionary<String, Any>
+        self.init(
+          json[PendingEndNode.KEY_VENDORTHINGID] as? String,
+          thingProperties: json[PendingEndNode.KEY_THINGPROPERTIES]
+            as? [String : Any])
     }
 }
