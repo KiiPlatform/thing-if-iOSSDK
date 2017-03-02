@@ -50,11 +50,11 @@ public struct Trigger {
     - Parameter enabled: True to enable trigger
     - Parameter predicate: Predicate instance
     - Parameter command: Command instance
-    - Parameter title: Title of a command. This should be equal or
+    - Parameter title: Title of a trigger. This should be equal or
       less than 50 characters.
-    - Parameter triggerDescription: Description of a comand. This should be
-      equal or less than 200 characters.
-    - Parameter metadata: Meta data of a command.
+    - Parameter triggerDescription: Description of a trigger. This
+      should be equal or less than 200 characters.
+    - Parameter metadata: Meta data of a trigger.
     */
     public init(
       _ triggerID: String,
@@ -88,11 +88,11 @@ public struct Trigger {
      - Parameter enabled: True to enable trigger
      - Parameter predicate: Predicate instance
      - Parameter serverCode: ServerCode instance
-     - Parameter title: Title of a command. This should be equal or
+     - Parameter title: Title of a trigger. This should be equal or
        less than 50 characters.
-     - Parameter triggerDescription: Description of a comand. This should be
-       equal or less than 200 characters.
-     - Parameter metadata: Meta data of a command.
+     - Parameter triggerDescription: Description of a trigger. This
+       should be equal or less than 200 characters.
+     - Parameter metadata: Meta data of a trigger.
      */
     public init(
       _ triggerID: String,
