@@ -12,6 +12,185 @@ import XCTest
 
 extension XCTestCase {
 
+    func assertEqualsAliasActionResultArray(
+      _ expected: [AliasActionResult]?,
+      _ actual: [AliasActionResult]?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected,actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.count,
+          actual!.count,
+          message,
+          file: file,
+          line: line)
+        for (index, exp) in expected!.enumerated() {
+            assertEqualsAliasActionResult(
+              exp,
+              actual![index],
+              message,
+              file,
+              line)
+        }
+    }
+
+    func assertEqualsAliasActionResult(
+      _ expected: AliasActionResult?,
+      _ actual: AliasActionResult?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected, actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.alias,
+          actual!.alias,
+          message,
+          file: file,
+          line: line)
+        assertEqualsActionResultArray(
+          expected!.results,
+          actual!.results,
+          message,
+          file,
+          line)
+    }
+
+    func assertEqualsActionResultArray(
+      _ expected: [ActionResult]?,
+      _ actual: [ActionResult]?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected,actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.count,
+          actual!.count,
+          message,
+          file: file,
+          line: line)
+        for (index, exp) in expected!.enumerated() {
+            assertEqualsActionResult(
+              exp,
+              actual![index],
+              message,
+              file,
+              line)
+        }
+    }
+
+    func assertEqualsActionResult(
+      _ expected: ActionResult?,
+      _ actual: ActionResult?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected, actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.succeeded,
+          actual!.succeeded,
+          message,
+          file: file,
+          line: line)
+        assertEqualsWrapper(
+          expected!.actionName,
+          actual!.actionName,
+          message,
+          file: file,
+          line: line)
+        assertEqualsWrapper(
+          expected!.errorMessage,
+          actual!.errorMessage,
+          message,
+          file: file,
+          line: line)
+    }
+
+    internal func assertOnlyOneNil(
+      _ expected: Any?,
+      _ actual: Any?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        if expected == nil && actual == nil {
+            return
+        } else if expected != nil && actual != nil {
+            return
+        }
+        let errorMessage = message ?? "One is nil, the other is not nil."
+        XCTFail("file=\(file), line=\(line): \(errorMessage)")
+    }
+
+    func assertEqualsAliasActionArray(
+      _ expected: [AliasAction]?,
+      _ actual: [AliasAction]?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected,actual, message, file, line)
+        if expected == nil && actual == nil {
+            return
+        }
+
+        assertEqualsWrapper(
+          expected!.count,
+          actual!.count,
+          message,
+          file: file,
+          line: line)
+        for (index, exp) in expected!.enumerated() {
+            assertEqualsAliasAction(exp, actual![index], message, file, line)
+        }
+    }
+
+    func assertEqualsAliasAction(
+      _ expected: AliasAction?,
+      _ actual: AliasAction?,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        assertOnlyOneNil(expected, actual, message, file, line)
+
+        if expected == nil && actual == nil {
+            return
+        }
+        assertEqualsWrapper(
+          expected!.alias,
+          actual!.alias,
+          message,
+          file: file,
+          line: line)
+        assertEqualsDictionary(
+          expected!.action,
+          actual!.action,
+          message,
+          file,
+          line)
+    }
+
     internal func assertEqualsWrapper<T : Equatable>(
       _ expected: T?,
       _ actual: T?,
@@ -86,7 +265,7 @@ extension XCTestCase {
             return
         }
 
-        if type(of: expected!) !== type(of: actual!) {
+        if type(of: expected!) != type(of: actual!) {
             let errorMessage = message ??
               "Type mismatch: (\(Mirror(reflecting: expected!).subjectType), \(Mirror(reflecting: actual!).subjectType))"
             XCTFail(
@@ -94,35 +273,35 @@ extension XCTestCase {
             return
         }
 
-        if type(of: expected!) === EqualsClauseInQuery.self {
+        if type(of: expected!) == EqualsClauseInQuery.self {
             assertEqualsEqualsClauseInQuery(
               expected as! EqualsClauseInQuery,
               actual as! EqualsClauseInQuery,
               message,
               file,
               line)
-        } else if type(of: expected!) === NotEqualsClauseInQuery.self {
+        } else if type(of: expected!) == NotEqualsClauseInQuery.self {
             assertEqualsNotEqualsClauseInQuery(
               expected as! NotEqualsClauseInQuery,
               actual as! NotEqualsClauseInQuery,
               message,
               file,
               line)
-        } else if type(of: expected!) === RangeClauseInQuery.self {
+        } else if type(of: expected!) == RangeClauseInQuery.self {
             assertEqualsRangeClauseInQuery(
               expected as! RangeClauseInQuery,
               actual as! RangeClauseInQuery,
               message,
               file,
               line)
-        } else if type(of: expected!) === AndClauseInQuery.self {
+        } else if type(of: expected!) == AndClauseInQuery.self {
             assertEqualsAndClauseInQuery(
               expected as! AndClauseInQuery,
               actual as! AndClauseInQuery,
               message,
               file,
               line)
-        } else if type(of: expected!) === OrClauseInQuery.self {
+        } else if type(of: expected!) == OrClauseInQuery.self {
             assertEqualsOrClauseInQuery(
               expected as! OrClauseInQuery,
               actual as! OrClauseInQuery,

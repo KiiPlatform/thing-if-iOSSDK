@@ -7,11 +7,21 @@
 
 import Foundation
 
-open class GatewayInformation {
+/** Gateway inforamtion. */
+public struct GatewayInformation {
 
-    open let vendorThingID: String
+    /* Vendor thing ID.*/
+    public let vendorThingID: String
 
-    internal init(vendorThingID: String)
+    /** Initialize `GatewayInformation`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters vendorThingID: Vendor thing ID.
+     */
+    public init(_ vendorThingID: String)
     {
         self.vendorThingID = vendorThingID
     }

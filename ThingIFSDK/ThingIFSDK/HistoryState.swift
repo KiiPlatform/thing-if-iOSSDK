@@ -9,26 +9,25 @@
 import Foundation
 
 /** History of state. */
-open class HistoryState: NSObject, NSCoding {
+public struct HistoryState {
 
     /** State of a target thing. */
-    open let state: [String : Any]
+    public let state: [String : Any]
     /** Creation time of a state. */
-    open let createdAt: Date
+    public let createdAt: Date
 
-    internal init(_ state: [String: Any], createdAt: Date) {
+    /** Initialize `HistoryState`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters state: State of a target thing.
+     - Parameters createdAt: Creation time of a state.
+     */
+    public init(_ state: [String: Any], createdAt: Date) {
         self.state = state
         self.createdAt = createdAt
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(aDecoder.decodeObject(forKey: "state") as! [String : Any],
-            createdAt: aDecoder.decodeObject(forKey: "createdAt") as! Date)
-    }
-
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.state, forKey: "state")
-        aCoder.encode(self.createdAt, forKey: "createdAt")
     }
 
 }

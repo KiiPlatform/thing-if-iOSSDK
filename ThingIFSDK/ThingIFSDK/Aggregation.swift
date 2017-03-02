@@ -9,7 +9,7 @@
 import Foundation
 
 /** Aggregation. */
-open class Aggregation: NSObject, NSCoding {
+public struct Aggregation {
 
     /** Field types to count. */
     public enum FieldType: String {
@@ -51,11 +51,11 @@ open class Aggregation: NSObject, NSCoding {
     }
 
     /** Name of a target field. */
-    let field: String
+    public let field: String
     /** Field type. */
-    let fieldType: FieldType
+    public let fieldType: FieldType
     /** Function type. */
-    let function: FunctionType
+    public let function: FunctionType
 
 
     private init(
@@ -181,21 +181,6 @@ open class Aggregation: NSObject, NSCoding {
       fieldType: FieldType) throws -> Aggregation
     {
         return try makeAggregation(.sum, field: field, fieldType: fieldType)
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(
-          FunctionType(
-            rawValue: aDecoder.decodeObject(forKey: "function") as! String)!,
-          field: aDecoder.decodeObject(forKey: "field") as! String,
-          fieldType: FieldType(
-            rawValue: aDecoder.decodeObject(forKey: "fieldType") as! String)!)
-    }
-
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.function.rawValue, forKey: "function")
-        aCoder.encode(self.field, forKey: "field")
-        aCoder.encode(self.fieldType.rawValue, forKey: "fieldType")
     }
 
 }

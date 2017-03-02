@@ -9,16 +9,16 @@
 import Foundation
 
 /** Query to retrieve grouped states of history. */
-open class GroupedHistoryStatesQuery: NSObject, NSCoding {
+public struct GroupedHistoryStatesQuery {
 
     /** Alias of a query. */
-    open let alias: String
+    public let alias: String
     /** Time range of a query. */
-    open let timeRange: TimeRange
+    public let timeRange: TimeRange
     /** Query clause. */
-    open let clause: QueryClause?
+    public let clause: QueryClause?
     /** Firmware version of a query. */
-    open let firmwareVersion: String?
+    public let firmwareVersion: String?
 
 
     // MARK: - Initializing GroupedHistoryStatesQuery instance.
@@ -40,22 +40,6 @@ open class GroupedHistoryStatesQuery: NSObject, NSCoding {
         self.timeRange = timeRange
         self.clause = clause
         self.firmwareVersion = firmwareVersion
-    }
-
-    public required convenience init?(coder aDecoder: NSCoder) {
-        self.init(
-          aDecoder.decodeObject(forKey: "alias") as! String,
-          timeRange: aDecoder.decodeObject(forKey: "timeRange") as! TimeRange,
-          clause: aDecoder.decodeObject(forKey: "clause") as? QueryClause,
-          firmwareVersion: aDecoder.decodeObject(
-            forKey: "firmwareVersion") as? String)
-    }
-
-    public func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.alias, forKey: "alias")
-        aCoder.encode(self.timeRange, forKey: "timeRange")
-        aCoder.encode(self.clause, forKey: "clause")
-        aCoder.encode(self.firmwareVersion, forKey: "firmwareVersion")
     }
 
 }

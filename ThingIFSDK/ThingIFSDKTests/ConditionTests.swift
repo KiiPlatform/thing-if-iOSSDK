@@ -25,18 +25,5 @@ class ConditionTests: SmallTestBase {
         let actual = Condition(clause)
 
         assertEqualsTriggerClause(clause, actual.clause)
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-          NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = Condition(coder: decoder)!;
-        decoder.finishDecoding();
-
-        assertEqualsTriggerClause(actual.clause, deserialized.clause)
     }
 }

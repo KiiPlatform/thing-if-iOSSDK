@@ -17,16 +17,17 @@ This class contains optional data in order to create and modify
  - `ThingIFAPI.postNewTrigger(_:predicate:options:completionHandler:)`
  - `ThingIFAPI.patchTrigger(_:triggeredCommandForm:predicate:options:completionHandler:)`
 */
-open class TriggerOptions: NSCoding {
+public struct TriggerOptions {
 
+    // MARK: - Properties
     /// Title of a command.
-    open let title: String?
+    public let title: String?
 
     /// Description of a trigger.
-    open let triggerDescription: String?
+    public let triggerDescription: String?
 
     /// Meta data of a trigger.
-    open let metadata: Dictionary<String, Any>?
+    public let metadata: [String : Any]?
 
     // MARK: - Initializing TriggerOptions instance.
     /**
@@ -40,25 +41,11 @@ open class TriggerOptions: NSCoding {
     */
     public init(_ title: String? = nil,
                 triggerDescription: String? = nil,
-                metadata: Dictionary<String, Any>? = nil)
+                metadata: [String : Any]? = nil)
     {
         self.title = title
         self.triggerDescription = triggerDescription;
         self.metadata = metadata;
     }
 
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.title, forKey: "title")
-        aCoder.encode(self.triggerDescription,
-                forKey: "triggerDescription")
-        aCoder.encode(self.metadata, forKey: "metadata")
-    }
-
-    public required init?(coder aDecoder: NSCoder) {
-        self.title = aDecoder.decodeObject(forKey: "title") as? String
-        self.triggerDescription =
-            aDecoder.decodeObject(forKey: "triggerDescription") as? String
-        self.metadata = aDecoder.decodeObject(forKey: "metadata")
-                as? Dictionary<String, Any>
-    }
 }

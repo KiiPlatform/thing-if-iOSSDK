@@ -9,18 +9,18 @@
 import Foundation
 
 /** Query to retrieve history of states. */
-open class HistoryStatesQuery {
+public struct HistoryStatesQuery {
 
     /** Alias to be queried history. */
-    open let alias: String
+    public let alias: String
     /** Query clause. */
-    open let clause: QueryClause?
+    public let clause: QueryClause?
     /** firmware version. */
-    open let firmwareVersion: String?
+    public let firmwareVersion: String?
     /** Best effor limit to retrieve results. */
-    open let bestEffortLimit: Int?
+    public let bestEffortLimit: Int?
     /** Key to specify next page. */
-    open let nextPaginationKey: String?
+    public let nextPaginationKey: String?
 
     // MARK: - Initializing HistoryStatesQuery instance.
     /** Initializer of HistoryStatesQuery

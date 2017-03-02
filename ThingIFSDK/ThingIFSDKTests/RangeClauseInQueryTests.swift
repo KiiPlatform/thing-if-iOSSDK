@@ -105,22 +105,6 @@ class RangeClauseInQueryTests: SmallTestBase {
             dict["upperLimit"] = expected.upper?.limit
             dict["upperIncluded"] = expected.upper?.included
             assertEqualsDictionary(dict, actual.makeDictionary())
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = RangeClauseInQuery(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.field, deserialized.field)
-            XCTAssertEqual(actual.lowerLimit, deserialized.lowerLimit)
-            XCTAssertEqual(actual.lowerIncluded, deserialized.lowerIncluded)
-            XCTAssertEqual(actual.upperLimit, deserialized.upperLimit)
-            XCTAssertEqual(actual.upperIncluded, deserialized.upperIncluded)
         }
 
     }
@@ -217,28 +201,6 @@ class RangeClauseInQueryTests: SmallTestBase {
             dict["upperLimit"] = expected.upper?.limit
             dict["upperIncluded"] = expected.upper?.included
             assertEqualsDictionary(dict, actual.makeDictionary())
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = RangeClauseInQuery(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.field, deserialized.field)
-            assertEqualsWithAccuracyOrNil(
-              actual.lowerLimit as? Double,
-              deserialized.lowerLimit as? Double,
-              accuracy: 0.001)
-            XCTAssertEqual(actual.lowerIncluded, deserialized.lowerIncluded)
-            assertEqualsWithAccuracyOrNil(
-              actual.upperLimit as? Double,
-              deserialized.upperLimit as? Double,
-              accuracy: 0.001)
-            XCTAssertEqual(actual.upperIncluded, deserialized.upperIncluded)
         }
 
     }

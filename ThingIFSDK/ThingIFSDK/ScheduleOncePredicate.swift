@@ -7,11 +7,11 @@
 //
 
 /** Class represents ScheduleOncePredicate. */
-open class ScheduleOncePredicate: NSObject, Predicate {
+public struct ScheduleOncePredicate: Predicate {
     /** Specified schedule. */
-    open let scheduleAt: Date
+    public let scheduleAt: Date
 
-    open let eventSource: EventSource = EventSource.scheduleOnce
+    public let eventSource: EventSource = EventSource.scheduleOnce
 
     /** Instantiate new ScheduleOncePredicate.
 
@@ -21,13 +21,4 @@ open class ScheduleOncePredicate: NSObject, Predicate {
         self.scheduleAt = scheduleAt
     }
 
-    public required init?(coder aDecoder: NSCoder) {
-        self.scheduleAt = aDecoder.decodeObject(forKey: "scheduleAt") as! Date
-    }
-
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.scheduleAt, forKey: "scheduleAt")
-    }
-
 }
-

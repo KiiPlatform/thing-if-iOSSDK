@@ -27,27 +27,6 @@ class TypedIDTests: SmallTestBase {
         XCTAssertEqual(target.id, "dummy")
     }
 
-    func testCoding() {
-        let original = TypedID(TypedID.Types.thing, id: "dummy")
-
-        XCTAssertNotNil(original)
-        XCTAssertEqual(original.type, TypedID.Types.thing)
-        XCTAssertEqual(original.id, "dummy")
-
-        let data = NSMutableData(capacity: 1024)!
-        let coder = NSKeyedArchiver(forWritingWith: data)
-        original.encode(with: coder)
-        coder.finishEncoding()
-
-        let decoder: NSKeyedUnarchiver = NSKeyedUnarchiver(forReadingWith: data as Data);
-        let decoded = TypedID(coder: decoder);
-        decoder.finishDecoding();
-
-        XCTAssertNotNil(decoded)
-        XCTAssertEqual(decoded.type, original.type)
-        XCTAssertEqual(decoded.id, original.id)
-    }
-
     func testToString() {
         let thingType = TypedID(TypedID.Types.thing, id: "thingID")
         let groupType = TypedID(TypedID.Types.group, id: "groupID")
@@ -61,22 +40,19 @@ class TypedIDTests: SmallTestBase {
     func testEqualAndHash() {
         let target = TypedID(TypedID.Types.thing, id: "dummy")
 
-        XCTAssertTrue(target.isEqual(target))
         XCTAssertTrue(target == target)
-        XCTAssertEqual(target.hashValue, target.hash)
 
         let sameOne = TypedID(TypedID.Types.thing, id: "dummy")
 
-        XCTAssertTrue(target.isEqual(sameOne))
-        XCTAssertTrue(sameOne.isEqual(target))
         XCTAssertTrue(target == sameOne)
         XCTAssertEqual(target.hashValue, sameOne.hashValue)
 
         let differentOne = TypedID(TypedID.Types.user, id: "dummy")
 
-        XCTAssertFalse(target.isEqual(differentOne))
-        XCTAssertFalse(differentOne.isEqual(target))
         XCTAssertFalse(target == differentOne)
+        XCTAssertFalse(differentOne == target)
+        XCTAssertTrue(target != differentOne)
+        XCTAssertTrue(differentOne != target)
         XCTAssertNotEqual(target.hashValue, differentOne.hashValue)
     }
 }

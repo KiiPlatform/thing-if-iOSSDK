@@ -58,23 +58,6 @@ class NotEqualsClauseInQueryTests: SmallTestBase {
                   "value": expected.value
                 ]
               ], actual.makeDictionary())
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = NotEqualsClauseInQuery(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.equals.field, deserialized.equals.field)
-            assertEqualsAny(actual.equals.value, deserialized.equals.value)
-            assertEqualsDictionary(
-              actual.makeDictionary(),
-              deserialized.makeDictionary())
-
         }
     }
 

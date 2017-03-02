@@ -108,21 +108,6 @@ class OrClauseInQueryTests: SmallTestBase {
               expected,
               actual.makeDictionary(),
               "label \(index)")
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = OrClauseInQuery(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.clauses.count, deserialized.clauses.count)
-            assertEqualsDictionary(
-              actual.makeDictionary(),
-              deserialized.makeDictionary())
         }
     }
 
@@ -290,26 +275,11 @@ class OrClauseInQueryTests: SmallTestBase {
               expected,
               actual.makeDictionary(),
               "label \(index)")
-
-            let data: NSMutableData = NSMutableData(capacity: 1024)!;
-            let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-            actual.encode(with: coder);
-            coder.finishEncoding();
-
-            let decoder: NSKeyedUnarchiver =
-              NSKeyedUnarchiver(forReadingWith: data as Data);
-            let deserialized = OrClauseInQuery(coder: decoder)!;
-            decoder.finishDecoding();
-
-            XCTAssertEqual(actual.clauses.count, deserialized.clauses.count)
-            assertEqualsDictionary(
-              actual.makeDictionary(),
-              deserialized.makeDictionary())
         }
     }
 
     func testOr() {
-        let actual = OrClauseInQuery(
+        var actual = OrClauseInQuery(
           EqualsClauseInQuery("f", intValue: 1),
           NotEqualsClauseInQuery(EqualsClauseInQuery("f", boolValue: true)),
           RangeClauseInQuery.greaterThan("f", limit: 1))
@@ -317,7 +287,8 @@ class OrClauseInQueryTests: SmallTestBase {
         XCTAssertEqual(3, actual.clauses.count)
 
         actual.add(
-          AndClauseInQuery(EqualsClauseInQuery("f", stringValue: "str"))).add(
+          AndClauseInQuery(EqualsClauseInQuery("f", stringValue: "str")))
+        actual.add(
           OrClauseInQuery(EqualsClauseInQuery("f", stringValue: "str")))
 
         XCTAssertEqual(5, actual.clauses.count)
@@ -346,21 +317,5 @@ class OrClauseInQueryTests: SmallTestBase {
               ]
             ]
           ], actual.makeDictionary())
-
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver = NSKeyedArchiver(forWritingWith: data);
-        actual.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-          NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized = OrClauseInQuery(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertEqual(actual.clauses.count, deserialized.clauses.count)
-        assertEqualsDictionary(
-          actual.makeDictionary(),
-          deserialized.makeDictionary())
-
     }
 }
