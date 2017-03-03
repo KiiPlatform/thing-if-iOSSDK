@@ -13,25 +13,6 @@ public protocol QueryClause: BaseClause {
 
 }
 
-internal extension QueryClause {
-
-    internal func makeDictionary() -> [String : Any] {
-        if type(of: self) == EqualsClauseInQuery.self {
-            return (self as! EqualsClauseInQuery).makeDictionary()
-        } else if type(of: self) == NotEqualsClauseInQuery.self {
-            return (self as! NotEqualsClauseInQuery).makeDictionary()
-        } else if type(of: self) == RangeClauseInQuery.self {
-            return (self as! RangeClauseInQuery).makeDictionary()
-        } else if type(of: self) == AndClauseInQuery.self {
-            return (self as! AndClauseInQuery).makeDictionary()
-        } else if type(of: self) == OrClauseInQuery.self {
-            return (self as! OrClauseInQuery).makeDictionary()
-        } else {
-            fatalError("unexpected class")
-        }
-    }
-}
-
 /** Struct represents Equals clause for query methods. */
 public struct EqualsClauseInQuery: QueryClause, BaseEquals {
 
@@ -71,7 +52,9 @@ public struct EqualsClauseInQuery: QueryClause, BaseEquals {
     public init(_ field: String, boolValue: Bool) {
         self.init(field, value: boolValue as AnyObject)
     }
+}
 
+extension EqualsClauseInQuery: Dictionarable {
     /** Get Equals clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -100,7 +83,9 @@ public struct NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
     public init(_ equals: EqualsClauseInQuery) {
         self.equals = equals
     }
+}
 
+extension NotEqualsClauseInQuery: Dictionarable {
     /** Get Not Equals clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -246,20 +231,21 @@ public struct RangeClauseInQuery: QueryClause, BaseRange {
     {
         return RangeClauseInQuery(field, upper: (limit, true))
     }
+}
 
+extension RangeClauseInQuery: Dictionarable {
     /** Get Range clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
     internal func makeDictionary() -> [ String : Any ] {
         var retval: [String : Any] = ["type": "range", "field": self.field]
-        retval["upperLimit"] = self.upper?.limit
-        retval["upperIncluded"] = self.upper?.included
-        retval["lowerLimit"] = self.lower?.limit
-        retval["lowerIncluded"] = self.lower?.included
+        retval["upperLimit"] = self.upperLimit
+        retval["upperIncluded"] = self.upperIncluded
+        retval["lowerLimit"] = self.lowerLimit
+        retval["lowerIncluded"] = self.lowerIncluded
         return retval
     }
-
 }
 
 
@@ -292,15 +278,19 @@ public struct AndClauseInQuery: QueryClause, BaseAnd {
     public mutating func add(_ clause: QueryClause) -> Void {
         self.clauses.append(clause)
     }
+}
 
+extension AndClauseInQuery: Dictionarable {
     /** Get And clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
     internal func makeDictionary() -> [ String : Any ] {
-        var clauses: [[String : Any]] = []
-        self.clauses.forEach { clauses.append($0.makeDictionary()) }
-        return ["type": "and", "clauses": clauses] as [String : Any]
+        return [
+          "type": "and",
+          "clauses":
+            self.clauses.map {($0 as! Dictionarable).makeDictionary()}
+        ] as [String : Any]
     }
 
 }
@@ -334,15 +324,19 @@ public struct OrClauseInQuery: QueryClause, BaseOr {
     public mutating func add(_ clause: QueryClause) -> Void {
         self.clauses.append(clause)
     }
+}
 
+extension OrClauseInQuery: Dictionarable {
     /** Get Or clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
     internal func makeDictionary() -> [ String : Any ] {
-        var clauses: [[String : Any]] = []
-        self.clauses.forEach { clauses.append($0.makeDictionary()) }
-        return ["type": "or", "clauses": clauses] as [String : Any]
+        return [
+          "type": "or",
+          "clauses":
+            self.clauses.map {($0 as! Dictionarable).makeDictionary()}
+        ] as [String : Any]
     }
 
 }
@@ -353,4 +347,11 @@ public struct OrClauseInQuery: QueryClause, BaseOr {
  */
 public struct AllClause: QueryClause {
 
+}
+
+extension AllClause: Dictionarable {
+
+    internal func makeDictionary() -> [String : Any]{
+        return ["type": "all"]
+    }
 }
