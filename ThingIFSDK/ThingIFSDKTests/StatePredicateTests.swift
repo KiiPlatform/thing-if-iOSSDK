@@ -66,9 +66,9 @@ class StatePredicateTests: SmallTestBase {
         for (index, testCase) in testCases.enumerated() {
             let (expected, actual) = testCase
 
-            assertEqualsTriggerClause(
-              expected.clause,
-              actual.condition.clause,
+            XCTAssertEqual(
+              expected.clause as! EqualsClauseInTrigger,
+              actual.condition.clause as! EqualsClauseInTrigger,
               "\(index)")
             XCTAssertEqual(
               expected.triggersWhen,

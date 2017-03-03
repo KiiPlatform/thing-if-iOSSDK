@@ -153,3 +153,111 @@ extension AliasAction: Equatable {
     }
 
 }
+
+internal func == (left: TriggerClause, right: TriggerClause) -> Bool {
+    if left is EqualsClauseInTrigger && right is EqualsClauseInTrigger {
+        return left as! EqualsClauseInTrigger == right as! EqualsClauseInTrigger
+    } else if left is NotEqualsClauseInTrigger &&
+                right is NotEqualsClauseInTrigger {
+        return left as! NotEqualsClauseInTrigger ==
+          right as! NotEqualsClauseInTrigger
+    } else if left is RangeClauseInTrigger && right is RangeClauseInTrigger {
+        return left as! RangeClauseInTrigger == right as! RangeClauseInTrigger
+    } else if left is AndClauseInTrigger && right is AndClauseInTrigger {
+        return left as! AndClauseInTrigger == right as! AndClauseInTrigger
+    } else if left is OrClauseInTrigger && right is OrClauseInTrigger {
+        return left as! OrClauseInTrigger == right as! OrClauseInTrigger
+    }
+    return false
+}
+
+internal func != (left: TriggerClause, right: TriggerClause) -> Bool {
+    return !(left == right)
+}
+
+extension EqualsClauseInTrigger: Equatable {
+
+    public static func == (
+      left: EqualsClauseInTrigger,
+      right: EqualsClauseInTrigger) -> Bool
+    {
+        if left.field != right.field || left.alias != right.alias {
+            return false
+        }
+
+        if left.value is String && right.value is String {
+            return left.value as! String == right.value as! String
+        } else if left.value is Int && right.value is Int {
+            return left.value as! Int ==  right.value as! Int
+        } else if left.value is Bool && right.value is Bool {
+            return left.value as! Bool ==  right.value as! Bool
+        }
+        return false
+    }
+
+}
+
+extension NotEqualsClauseInTrigger: Equatable {
+
+    public static func == (
+      left: NotEqualsClauseInTrigger,
+      right: NotEqualsClauseInTrigger) -> Bool
+    {
+        return left.equals == right.equals
+    }
+
+}
+
+extension RangeClauseInTrigger: Equatable {
+
+    public static func == (
+      left: RangeClauseInTrigger,
+      right: RangeClauseInTrigger) -> Bool
+    {
+        return left.alias == right.alias &&
+          left.field == right.field &&
+          left.lowerLimit == right.lowerLimit &&
+          left.lowerIncluded == right.lowerIncluded &&
+          left.upperLimit == right.upperLimit &&
+          left.upperIncluded == right.upperIncluded
+    }
+
+}
+
+fileprivate func isEqualClauseArray(
+  _ left: [TriggerClause],
+  _ right: [TriggerClause]) -> Bool
+{
+    if left.count != right.count {
+        return false
+    }
+
+    for (index, leftClause) in left.enumerated() {
+        if leftClause != right[index] {
+            return false
+        }
+    }
+    return true
+}
+
+extension AndClauseInTrigger: Equatable {
+
+    public static func == (
+      left: AndClauseInTrigger,
+      right: AndClauseInTrigger) -> Bool
+    {
+        return isEqualClauseArray(left.clauses, right.clauses)
+    }
+
+}
+
+extension OrClauseInTrigger: Equatable {
+
+    public static func == (
+      left: OrClauseInTrigger,
+      right: OrClauseInTrigger) -> Bool
+    {
+        return isEqualClauseArray(left.clauses, right.clauses)
+    }
+
+}
