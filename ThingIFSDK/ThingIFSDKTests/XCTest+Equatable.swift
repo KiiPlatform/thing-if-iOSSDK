@@ -123,6 +123,14 @@ extension OrClauseInQuery: Equatable {
 
 }
 
+extension AllClause: Equatable {
+
+    public static func == (left: AllClause, right: AllClause) -> Bool {
+        return true
+    }
+
+}
+
 func isSameAny(_ left: Any?, _ right: Any?) -> Bool {
     if left == nil && right == nil {
         return true
