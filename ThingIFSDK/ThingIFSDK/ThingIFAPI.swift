@@ -6,7 +6,7 @@
 import Foundation
 
 /** Class provides API of the ThingIF. */
-open class ThingIFAPI: Equatable, NSCoding {
+open class ThingIFAPI: Equatable {
 
     private static var SHARED_NSUSERDEFAULT_KEY_INSTANCE: String {
         get {
@@ -64,29 +64,6 @@ open class ThingIFAPI: Equatable, NSCoding {
         get {
             fatalError("TODO: implement me.")
         }
-    }
-
-    // MARK: - Implements NSCoding protocol
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.app, forKey: "app")
-        aCoder.encode(self.baseURL, forKey: "baseURL")
-        aCoder.encode(self.appID, forKey: "appID")
-        aCoder.encode(self.appKey, forKey: "appKey")
-        aCoder.encode(self.owner, forKey: "owner")
-        aCoder.encode(self.installationID, forKey: "_installationID")
-        aCoder.encode(self.target, forKey: "_target")
-        aCoder.encode(self.tag, forKey: "tag")
-    }
-
-    public required init(coder aDecoder: NSCoder){
-        self.app = aDecoder.decodeObject(forKey: "app") as! KiiApp
-        self.baseURL = aDecoder.decodeObject(forKey: "baseURL") as! String
-        self.appID = aDecoder.decodeObject(forKey: "appID") as! String
-        self.appKey = aDecoder.decodeObject(forKey: "appKey") as! String
-        self.owner = aDecoder.decodeObject(forKey: "owner") as! Owner
-        self.installationID = aDecoder.decodeObject(forKey: "_installationID") as? String
-        self.target = aDecoder.decodeObject(forKey: "_target") as? Target
-        self.tag = aDecoder.decodeObject(forKey: "tag") as? String
     }
 
     /** Initialize `ThingIFAPI` instance.
@@ -962,23 +939,14 @@ open class ThingIFAPI: Equatable, NSCoding {
         return true
     }
 
-    open func isEqual(_ object: Any?) -> Bool {
-        guard let anAPI = object as? ThingIFAPI else{
-            return false
-        }
-
-        return self.appID == anAPI.appID &&
-            self.appKey == anAPI.appKey &&
-            self.baseURL == anAPI.baseURL &&
-            self.target?.accessToken == anAPI.target?.accessToken &&
-            self.target?.typedID == anAPI.target?.typedID &&
-            self.installationID == anAPI.installationID &&
-            self.tag == anAPI.tag
-    }
-
     public static func == (left: ThingIFAPI, right: ThingIFAPI) -> Bool {
-        return left.isEqual(right)
+        return left.appID == right.appID &&
+          left.appKey == right.appKey &&
+          left.baseURL == right.baseURL &&
+          left.target?.accessToken == right.target?.accessToken &&
+          left.target?.typedID == right.target?.typedID &&
+          left.installationID == right.installationID &&
+          left.tag == right.tag
     }
 
-    
 }

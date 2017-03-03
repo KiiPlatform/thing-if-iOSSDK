@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class GatewayAPI: NSCoding {
+open class GatewayAPI {
 
     private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "GatewayAPI_INSTANCE"
     private static func getStoredInstanceKey(_ tag : String?) -> String{
@@ -30,23 +30,6 @@ open class GatewayAPI: NSCoding {
     open private(set) var accessToken: String?
 
     let operationQueue = OperationQueue()
-
-    // MARK: - Implements NSCoding protocol
-    open func encode(with aCoder: NSCoder)
-    {
-        aCoder.encode(self.tag, forKey: "tag")
-        aCoder.encode(self.app, forKey: "app")
-        aCoder.encode(self.gatewayAddress, forKey: "gatewayAddress")
-        aCoder.encode(self.accessToken, forKey: "accessToken")
-    }
-
-    public required init(coder aDecoder: NSCoder)
-    {
-        self.tag = aDecoder.decodeObject(forKey: "tag") as? String
-        self.app = aDecoder.decodeObject(forKey: "app") as! KiiApp
-        self.gatewayAddress = aDecoder.decodeObject(forKey: "gatewayAddress") as! URL
-        self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as? String
-    }
 
     /** Initialize GatewayAPI.
 
