@@ -346,3 +346,11 @@ public struct OrClauseInQuery: QueryClause, BaseOr {
     }
 
 }
+
+/** Struct represents All clause for query methods.
+
+ If you want to get all history state, you can use this clause.
+ */
+public struct AllClause: QueryClause {
+
+}
