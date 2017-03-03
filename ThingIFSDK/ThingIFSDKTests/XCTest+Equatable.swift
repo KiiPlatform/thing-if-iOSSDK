@@ -123,12 +123,41 @@ extension OrClauseInQuery: Equatable {
 
 }
 
+func isSameAny(_ left: Any?, _ right: Any?) -> Bool {
+    if left == nil && right == nil {
+        return true
+    } else if left == nil || right == nil {
+        return false
+    }
+
+    if type(of: left) != type(of: right) {
+        return false
+    }
+
+    if left is String {
+        return left as! String == right as! String
+    } else if left is Int {
+        return left as! Int == right as! Int
+    } else if left is Double {
+        return left as! Double == right as! Double
+    } else if left is Bool {
+        return left as! Bool == right as! Bool
+    } else if left is [String : Any] {
+        return NSDictionary(dictionary: left as! [String : Any]) ==
+          NSDictionary(dictionary: right as! [String : Any])
+    } else if left is [Any] {
+        return NSArray(array: left as! [Any]) == NSArray(array: right as! [Any])
+    }
+    fatalError("You need to add equality check.")
+}
+
 extension ActionResult: Equatable {
 
     public static func == (left: ActionResult, right: ActionResult) -> Bool {
         return left.succeeded == right.succeeded &&
           left.actionName == right.actionName &&
-          left.errorMessage == right.errorMessage
+          left.errorMessage == right.errorMessage &&
+          isSameAny(left.data, right.data)
     }
 
 }
