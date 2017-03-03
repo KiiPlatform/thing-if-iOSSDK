@@ -13,25 +13,6 @@ public protocol TriggerClause: BaseClause {
 
 }
 
-internal extension TriggerClause {
-
-    internal func makeDictionary() -> [String : Any] {
-        if type(of: self) == EqualsClauseInTrigger.self {
-            return (self as! EqualsClauseInTrigger).makeDictionary()
-        } else if type(of: self) == NotEqualsClauseInTrigger.self {
-            return (self as! NotEqualsClauseInTrigger).makeDictionary()
-        } else if type(of: self) == RangeClauseInTrigger.self {
-            return (self as! RangeClauseInTrigger).makeDictionary()
-        } else if type(of: self) == AndClauseInTrigger.self {
-            return (self as! AndClauseInTrigger).makeDictionary()
-        } else if type(of: self) == OrClauseInTrigger.self {
-            return (self as! OrClauseInTrigger).makeDictionary()
-        } else {
-            fatalError("unexpected class")
-        }
-    }
-}
-
 /** Struct represents Equals clause for trigger methods. */
 public struct EqualsClauseInTrigger: TriggerClause, BaseEquals {
 
@@ -78,7 +59,9 @@ public struct EqualsClauseInTrigger: TriggerClause, BaseEquals {
     public init(_ alias: String, field: String, boolValue: Bool) {
         self.init(alias, field: field, value: boolValue as AnyObject)
     }
+}
 
+extension EqualsClauseInTrigger: Dictionarable {
     /** Get Equals clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -104,7 +87,9 @@ public struct NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
     public init(_ equals: EqualsClauseInTrigger) {
         self.equals = equals
     }
+}
 
+extension NotEqualsClauseInTrigger: Dictionarable {
     /** Get Not Equals clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -276,7 +261,9 @@ public struct RangeClauseInTrigger: TriggerClause, BaseRange {
           field: field,
           upper: (limit, true))
     }
+}
 
+extension RangeClauseInTrigger: Dictionarable {
     /** Get Range clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -287,10 +274,10 @@ public struct RangeClauseInTrigger: TriggerClause, BaseRange {
           "alias": alias,
           "field": self.field
         ]
-        retval["upperLimit"] = self.upper?.limit
-        retval["upperIncluded"] = self.upper?.included
-        retval["lowerLimit"] = self.lower?.limit
-        retval["lowerIncluded"] = self.lower?.included
+        retval["upperLimit"] = self.upperLimit
+        retval["upperIncluded"] = self.upperIncluded
+        retval["lowerLimit"] = self.lowerLimit
+        retval["lowerIncluded"] = self.lowerIncluded
         return retval
     }
 
@@ -325,15 +312,19 @@ public struct AndClauseInTrigger: TriggerClause, BaseAnd {
     public mutating func add(_ clause: TriggerClause) -> Void {
         self.clauses.append(clause)
     }
+}
 
+extension AndClauseInTrigger: Dictionarable {
     /** Get And clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
     internal func makeDictionary() -> [ String : Any ] {
-        var clauses: [[String : Any]] = []
-        self.clauses.forEach { clauses.append($0.makeDictionary()) }
-        return ["type": "and", "clauses": clauses] as [String : Any]
+        return [
+          "type": "and",
+          "clauses":
+            self.clauses.map {($0 as! Dictionarable).makeDictionary()}
+        ] as [String : Any]
     }
 
 }
@@ -367,15 +358,19 @@ public struct OrClauseInTrigger: TriggerClause, BaseOr {
     public mutating func add(_ clause: TriggerClause) -> Void {
         self.clauses.append(clause)
     }
+}
 
+extension OrClauseInTrigger: Dictionarable {
     /** Get Or clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
     internal func makeDictionary() -> [ String : Any ] {
-        var clauses: [[String : Any]] = []
-        self.clauses.forEach { clauses.append($0.makeDictionary()) }
-        return ["type": "or", "clauses": clauses] as [String : Any]
+        return [
+          "type": "or",
+          "clauses":
+            self.clauses.map {($0 as! Dictionarable).makeDictionary()}
+        ] as [String : Any]
     }
 
 }
