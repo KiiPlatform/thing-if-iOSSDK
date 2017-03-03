@@ -280,22 +280,24 @@ class AndClauseInQueryTests: SmallTestBase {
 
     func testAnd() {
         var actual = AndClauseInQuery(
+          AllClause(),
           EqualsClauseInQuery("f", intValue: 1),
           NotEqualsClauseInQuery(EqualsClauseInQuery("f", boolValue: true)),
           RangeClauseInQuery.greaterThan("f", limit: 1))
 
-        XCTAssertEqual(3, actual.clauses.count)
+        XCTAssertEqual(4, actual.clauses.count)
 
         actual.add(
           AndClauseInQuery(EqualsClauseInQuery("f", stringValue: "str")))
         actual.add(
           OrClauseInQuery(EqualsClauseInQuery("f", stringValue: "str")))
 
-        XCTAssertEqual(5, actual.clauses.count)
+        XCTAssertEqual(6, actual.clauses.count)
         assertEqualsDictionary(
           [
             "type": "and",
             "clauses": [
+              ["type": "all"],
               ["type": "eq", "field": "f", "value": 1],
               [
                 "type": "not",

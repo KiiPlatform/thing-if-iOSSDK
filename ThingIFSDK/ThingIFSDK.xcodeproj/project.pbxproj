@@ -86,6 +86,7 @@
 		B6AC4A1C1D991DF2001A80DE /* TriggerOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */; };
 		B6AFD02C1E680D9C0066B4AD /* XCTest+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD02B1E680D9C0066B4AD /* XCTest+Equatable.swift */; };
 		B6AFD0311E69542B0066B4AD /* Dictionarable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD0301E69542B0066B4AD /* Dictionarable.swift */; };
+		B6AFD0331E695A4A0066B4AD /* AllClauseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD0321E695A4A0066B4AD /* AllClauseTests.swift */; };
 		B6B0A67A1E63EAA100133788 /* CommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0A6791E63EAA100133788 /* CommandTests.swift */; };
 		B6B0A67E1E640D1000133788 /* KiiAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0A67D1E640D1000133788 /* KiiAppTests.swift */; };
 		B6B0A6801E64170600133788 /* ServerCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0A67F1E64170600133788 /* ServerCodeTests.swift */; };
@@ -228,6 +229,7 @@
 		B6AC4A1B1D991DF2001A80DE /* TriggerOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerOptions.swift; sourceTree = "<group>"; };
 		B6AFD02B1E680D9C0066B4AD /* XCTest+Equatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTest+Equatable.swift"; sourceTree = "<group>"; };
 		B6AFD0301E69542B0066B4AD /* Dictionarable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionarable.swift; sourceTree = "<group>"; };
+		B6AFD0321E695A4A0066B4AD /* AllClauseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllClauseTests.swift; sourceTree = "<group>"; };
 		B6B0A6791E63EAA100133788 /* CommandTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandTests.swift; sourceTree = "<group>"; };
 		B6B0A67D1E640D1000133788 /* KiiAppTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiiAppTests.swift; sourceTree = "<group>"; };
 		B6B0A67F1E64170600133788 /* ServerCodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerCodeTests.swift; sourceTree = "<group>"; };
@@ -485,6 +487,7 @@
 				B6B0A67D1E640D1000133788 /* KiiAppTests.swift */,
 				B6B0A67F1E64170600133788 /* ServerCodeTests.swift */,
 				B6AFD02B1E680D9C0066B4AD /* XCTest+Equatable.swift */,
+				B6AFD0321E695A4A0066B4AD /* AllClauseTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -732,6 +735,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6AFD0331E695A4A0066B4AD /* AllClauseTests.swift in Sources */,
 				B6C2DB4D1E5AC962008DBA83 /* SchedulePredicateTests.swift in Sources */,
 				2262F1511E4B046700080DF6 /* HistoryStateTests.swift in Sources */,
 				B6BE389A1E5FE98700FD9976 /* GatewayTests.swift in Sources */,
