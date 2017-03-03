@@ -29,20 +29,6 @@ extension XCTestCase {
     }
 
     internal func assertEqualsWrapper<T : Equatable>(
-      _ expected: T?,
-      _ actual: T?,
-      _ message: String? = nil,
-      file: StaticString = #file,
-      line: UInt = #line)
-    {
-        if message == nil {
-            XCTAssertEqual(expected, actual, file: file, line: line)
-        } else {
-            XCTAssertEqual(expected, actual, message!, file: file, line: line)
-        }
-    }
-
-    internal func assertEqualsWrapper<T : Equatable>(
       _ expected: T,
       _ actual: T,
       _ message: String? = nil,
@@ -64,12 +50,8 @@ extension XCTestCase {
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
+        assertOnlyOneNil(expected, accuracy, message, file, line)
         if expected == nil && actual == nil {
-            return
-        } else if expected == nil || actual == nil {
-            let errorMessage = message ?? "One is nil, the other is not nil."
-            XCTFail(
-              "file=\(file), line=\(line): \(errorMessage)")
             return
         }
 
@@ -98,12 +80,8 @@ extension XCTestCase {
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
+        assertOnlyOneNil(expected, actual, message, file, line)
         if expected == nil && actual == nil {
-            return
-        } else if expected == nil || actual == nil {
-            let errorMessage = message ?? "One is nil, the other is not nil."
-            XCTFail(
-              "file=\(file), line=\(line): \(errorMessage)")
             return
         }
 
@@ -146,23 +124,17 @@ extension XCTestCase {
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
+        assertOnlyOneNil(expected, actual, message, file, line)
         if expected == nil && actual == nil {
-            return
-        } else if expected == nil || actual == nil {
-            let errorMessage = message ?? "One is nil, the other is not nil."
-            XCTFail(
-              "file=\(file), line=\(line): \(errorMessage)")
             return
         }
 
-        if !NSDictionary(dictionary: expected!).isEqual(to: actual!) {
-            let errorMessage = (message ?? "") +
-              ", expected= " + expected!.description +
-              ", actual= " + actual!.description
-            XCTFail(
-              "file=\(file), line=\(line): \(errorMessage)")
-            return
-        }
+        assertEqualsWrapper(
+          NSDictionary(dictionary: expected!),
+          NSDictionary(dictionary: actual!),
+          message,
+          file: file,
+          line: line)
     }
 
     func verifyArray(_ expected: [Any]?,
