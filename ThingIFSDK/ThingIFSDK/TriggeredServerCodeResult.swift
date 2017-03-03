@@ -1,7 +1,7 @@
 import Foundation
 
 /** Class represents result of server code trigged by trigger */
-public class TriggeredServerCodeResult {
+public struct TriggeredServerCodeResult {
 
     /** Whether the invocation succeeded */
     public let succeeded: Bool

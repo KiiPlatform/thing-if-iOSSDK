@@ -6,13 +6,13 @@
 import Foundation
 
 /** Represents Owner */
-open class Owner: Equatable {
+public struct Owner: Hashable {
 
     // MARK: Properties
     /** ID of the owner. */
-    open let typedID: TypedID
+    public let typedID: TypedID
     /** Access token of the owner. */
-    open let accessToken: String
+    public let accessToken: String
 
     /** The hash value. */
     public var hashValue: Int {
