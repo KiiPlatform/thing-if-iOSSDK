@@ -12,6 +12,18 @@ import XCTest
 
 extension XCTestCase {
 
+    internal func fail(
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        if (message == nil) {
+            XCTFail(file: file, line: line)
+        } else {
+            XCTFail(message!, file: file, line: line)
+        }
+    }
+
     internal func assertOnlyOneNil(
       _ expected: Any?,
       _ actual: Any?,
@@ -24,8 +36,7 @@ extension XCTestCase {
         } else if expected != nil && actual != nil {
             return
         }
-        let errorMessage = message ?? "One is nil, the other is not nil."
-        XCTFail("file=\(file), line=\(line): \(errorMessage)")
+        fail(message, file, line)
     }
 
     internal func assertEqualsWrapper<T : Equatable>(
@@ -50,7 +61,7 @@ extension XCTestCase {
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
-        assertOnlyOneNil(expected, accuracy, message, file, line)
+        assertOnlyOneNil(expected, actual, message, file, line)
         if expected == nil && actual == nil {
             return
         }
@@ -110,9 +121,7 @@ extension XCTestCase {
               line: line)
             return
         } else {
-            let errorMessage = message ?? "Types are different."
-            XCTFail(
-              "file=\(file), line=\(line): \(errorMessage)")
+            fail(message, file, line)
             return
         }
     }
