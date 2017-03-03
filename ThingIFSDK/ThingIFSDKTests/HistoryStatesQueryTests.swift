@@ -31,7 +31,7 @@ class HistoryStatesQueryTests: SmallTestBase {
           nextPaginationKey: "next")
 
         XCTAssertEqual("alias", actual.alias)
-        assertEqualsQueryClause(clause, actual.clause)
+        XCTAssertEqual(clause, actual.clause as! EqualsClauseInQuery)
         XCTAssertEqual("version", actual.firmwareVersion)
         XCTAssertEqual(1, actual.bestEffortLimit)
         XCTAssertEqual("next", actual.nextPaginationKey)

@@ -24,6 +24,6 @@ class ConditionTests: SmallTestBase {
         let clause = EqualsClauseInTrigger("alias", field: "f", intValue: 1)
         let actual = Condition(clause)
 
-        assertEqualsTriggerClause(clause, actual.clause)
+        XCTAssertEqual(clause, actual.clause as! EqualsClauseInTrigger)
     }
 }

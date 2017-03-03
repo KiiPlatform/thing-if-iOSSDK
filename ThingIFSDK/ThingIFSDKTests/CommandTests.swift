@@ -47,10 +47,8 @@ class CommandTests: SmallTestBase {
 
         XCTAssertEqual(targetID, actual.targetID)
         XCTAssertEqual(issuerID, actual.issuerID)
-        assertEqualsAliasActionArray(aliasActions, actual.aliasActions)
-        assertEqualsAliasActionResultArray(
-          aliasActionResults,
-          actual.aliasActionResults)
+        XCTAssertEqual(aliasActions, actual.aliasActions)
+        XCTAssertEqual(aliasActionResults, actual.aliasActionResults)
         XCTAssertEqual(.sending, actual.commandState)
         XCTAssertEqual("firedByTriggerID", actual.firedByTriggerID)
         XCTAssertEqual(created, actual.created)
@@ -73,8 +71,8 @@ class CommandTests: SmallTestBase {
 
         XCTAssertEqual(targetID, actual.targetID)
         XCTAssertEqual(issuerID, actual.issuerID)
-        assertEqualsAliasActionArray(aliasActions, actual.aliasActions)
-        assertEqualsAliasActionResultArray([], actual.aliasActionResults)
+        XCTAssertEqual(aliasActions, actual.aliasActions)
+        XCTAssertEqual([], actual.aliasActionResults)
         XCTAssertEqual(.sending, actual.commandState)
         XCTAssertNil(actual.firedByTriggerID)
         XCTAssertNil(actual.created)
@@ -100,13 +98,13 @@ class CommandTests: SmallTestBase {
                          aliasActionsameAliasAsA])
 
 
-        assertEqualsAliasActionArray(
+        XCTAssertEqual(
           [actionA, aliasActionsameAliasAsA],
           actual.getAliasAction("alias"))
-        assertEqualsAliasActionArray(
+        XCTAssertEqual(
           [actionDifferentAliasFromA],
           actual.getAliasAction("different"))
-        assertEqualsAliasActionArray([], actual.getAliasAction("noalias"))
+        XCTAssertEqual([], actual.getAliasAction("noalias"))
     }
 
     func testGetActionResult() {
@@ -132,19 +130,19 @@ class CommandTests: SmallTestBase {
             aliasActionResultA,
             aliasActionResultDifferentAliasFromA,
             aliasActionResultSameAliasAsA])
-        assertEqualsActionResultArray(
+        XCTAssertEqual(
           [aliasActionResults1, aliasActionResults1],
           actual.getActionResult("alias", actionName: "action1"))
-        assertEqualsActionResultArray(
+        XCTAssertEqual(
           [aliasActionResults2],
           actual.getActionResult("different", actionName: "action2"))
-        assertEqualsActionResultArray(
+        XCTAssertEqual(
           [aliasActionResults3],
           actual.getActionResult("alias", actionName: "action3"))
-        assertEqualsActionResultArray(
+        XCTAssertEqual(
           [],
           actual.getActionResult("noalias", actionName: "action2"))
-        assertEqualsActionResultArray(
+        XCTAssertEqual(
           [],
           actual.getActionResult("alias", actionName: "noaction"))
     }

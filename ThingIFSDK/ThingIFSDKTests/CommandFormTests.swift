@@ -27,7 +27,7 @@ class CommandFormTests: SmallTestBase {
           )
         ]
         let commandForm = CommandForm(actions)
-        assertEqualsAliasActionArray(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertNil(commandForm.metadata)
@@ -41,7 +41,7 @@ class CommandFormTests: SmallTestBase {
           )
         ]
         let commandForm = CommandForm(actions, title: "title")
-        assertEqualsAliasActionArray(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertNil(commandForm.metadata)
@@ -57,7 +57,7 @@ class CommandFormTests: SmallTestBase {
         let commandForm = CommandForm(actions,
                                       commandDescription: "description")
         XCTAssertNotNil(commandForm)
-        assertEqualsAliasActionArray(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertNil(commandForm.metadata)
@@ -74,7 +74,7 @@ class CommandFormTests: SmallTestBase {
         let commandForm = CommandForm(actions,
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        assertEqualsAliasActionArray(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
         assertEqualsDictionary(commandForm.metadata, metadata)
     }
@@ -90,7 +90,7 @@ class CommandFormTests: SmallTestBase {
                                       title: "title",
                                       commandDescription: "description")
         XCTAssertNotNil(commandForm)
-        assertEqualsAliasActionArray(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertNil(commandForm.metadata)
@@ -108,7 +108,7 @@ class CommandFormTests: SmallTestBase {
                                       title: "title",
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        assertEqualsAliasActionArray(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
         assertEqualsDictionary(commandForm.metadata, metadata)
@@ -126,7 +126,7 @@ class CommandFormTests: SmallTestBase {
                                       commandDescription: "description",
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        assertEqualsAliasActionArray(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
         assertEqualsDictionary(commandForm.metadata, metadata)
@@ -145,7 +145,7 @@ class CommandFormTests: SmallTestBase {
                                       commandDescription: "description",
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        assertEqualsAliasActionArray(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
         assertEqualsDictionary(commandForm.metadata, metadata)
