@@ -35,3 +35,18 @@ public struct EndNode: TargetThing, Equatable {
         self.vendorThingID = vendorThingID
     }
 }
+
+extension EndNode: JsonDeserializable {
+
+    init(_ json: [String : Any]) throws {
+        guard let thingID = json["thingID"] as? String,
+              let accessToken = json["accessToken"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(
+          thingID,
+          vendorThingID: json["vendorThingID"] as! String,
+          accessToken: accessToken)
+    }
+}

@@ -13,3 +13,8 @@ internal protocol JsonSerializable {
     func makeJson() -> [String : Any]
 
 }
+
+internal protocol JsonDeserializable {
+
+    init(_ json: [String : Any]) throws
+}
