@@ -28,4 +28,23 @@ public extension TargetThing {
             return self.typedID.id
         }
     }
+
+}
+
+internal func makeTargetThing(
+  _ json: [String : Any],
+  layoutPosition: LayoutPosition,
+  vendorThingID: String? = nil) throws -> TargetThing
+{
+    var jsonWithVendorThingID = json
+    jsonWithVendorThingID["vendorThingID"] = vendorThingID ?? ""
+
+    switch (layoutPosition) {
+    case .standalone:
+        return try StandaloneThing(jsonWithVendorThingID)
+    case .gateway:
+        return try Gateway(jsonWithVendorThingID)
+    case .endnode:
+        return try EndNode(jsonWithVendorThingID)
+    }
 }

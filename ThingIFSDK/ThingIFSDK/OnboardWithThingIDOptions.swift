@@ -21,3 +21,13 @@ public struct OnboardWithThingIDOptions {
         self.layoutPosition = position
     }
 }
+
+extension OnboardWithThingIDOptions: JsonSerializable {
+
+    internal func makeJson() -> [String : Any]{
+        if let layoutPosition = self.layoutPosition {
+            return [ "layoutPosition" : layoutPosition.rawValue ]
+        }
+        return [ : ]
+    }
+}
