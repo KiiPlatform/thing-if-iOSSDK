@@ -8,16 +8,16 @@
 
 import Foundation
 
-enum HTTPMethod: String {
+internal enum HTTPMethod: String {
     case GET = "GET"
-    case POST = "POST"
+    case post = "POST"
     case PUT = "PUT"
     case HEAD = "HEAD"
     case DELETE = "DELETE"
     case PATCH = "PATCH"
 }
 
-struct IotRequest<T> {
+internal struct IotRequest<T> {
     let method : HTTPMethod
     let urlString: String
     let requestHeaderDict: Dictionary<String, String>
@@ -27,7 +27,15 @@ struct IotRequest<T> {
 }
 typealias DefaultRequest = IotRequest<NSDictionary>
 
-func buildDefaultRequest(_ method : HTTPMethod,urlString: String,requestHeaderDict: Dictionary<String, String>,requestBodyData: Data?,completionHandler: @escaping (_ response: NSDictionary?, _ error: ThingIFError?) -> Void) -> DefaultRequest {
+internal func buildDefaultRequest(
+  _ method : HTTPMethod,
+  urlString: String,
+  requestHeaderDict: [String : String],
+  requestBodyData: Data?,
+  completionHandler: @escaping (
+    _ response: [String : Any]?,
+    _ error: ThingIFError?) -> Void) -> DefaultRequest
+{
     kiiVerboseLog("Request URL: \(urlString)")
     kiiVerboseLog("Request Method: \(method)")
     kiiVerboseLog("Request Header: \(requestHeaderDict)")
@@ -35,7 +43,16 @@ func buildDefaultRequest(_ method : HTTPMethod,urlString: String,requestHeaderDi
     // Add X-Kii-SDK header.
     var modifiedHeaderDict = requestHeaderDict
     modifiedHeaderDict["X-Kii-SDK"] = SDKVersion.sharedInstance.kiiSDKHeader
-    return buildNewRequest(method, urlString: urlString, requestHeaderDict: modifiedHeaderDict, requestBodyData: requestBodyData, completionHandler: completionHandler)
+    return buildNewRequest(
+      method,
+      urlString: urlString,
+      requestHeaderDict: modifiedHeaderDict,
+      requestBodyData: requestBodyData) {
+            response, error in
+        // TODO: fix me.
+        // This is adhoc code. We should change NSDictionary to Dictionary.
+        completionHandler(response as? Dictionary, error)
+      }
 }
 
 func buildNewRequest(_ method : HTTPMethod,urlString: String,requestHeaderDict: Dictionary<String, String>,requestBodyData: Data?,completionHandler: @escaping (_ response: NSDictionary?, _ error: ThingIFError?) -> Void) -> DefaultRequest {
@@ -75,7 +92,7 @@ class IoTRequestOperation<T>: GroupOperation {
         addOperation(errorNotConnectedOperation)
         
         switch(request.method) {
-        case .POST :
+        case .post :
             addPostRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
             
         case .GET:

@@ -12,6 +12,8 @@ extension ThingIFAPI {
     func _getState(
         _ completionHandler: @escaping (Dictionary<String, Any>?,  ThingIFError?)-> Void
         ){
+        fatalError("TODO: implement me.")
+        /*
             guard let target = self.target else {
                 completionHandler(nil, ThingIFError.targetNotAvailable)
                 return
@@ -39,6 +41,7 @@ extension ThingIFAPI {
             
             let operation = IoTRequestOperation(request: request)
             operationQueue.addOperation(operation)
+        */
     }
     
 }
