@@ -63,7 +63,7 @@ class NotEqualsClauseInTriggerTests: SmallTestBase {
                   "field": expected.field,
                   "value": expected.value
                 ]
-              ], actual.makeDictionary(), label)
+              ], actual.makeJson(), label)
         }
     }
 

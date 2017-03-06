@@ -104,7 +104,7 @@ class RangeClauseInQueryTests: SmallTestBase {
             dict["lowerIncluded"] = expected.lower?.included
             dict["upperLimit"] = expected.upper?.limit
             dict["upperIncluded"] = expected.upper?.included
-            assertEqualsDictionary(dict, actual.makeDictionary())
+            assertEqualsDictionary(dict, actual.makeJson())
         }
 
     }
@@ -200,7 +200,7 @@ class RangeClauseInQueryTests: SmallTestBase {
             dict["lowerIncluded"] = expected.lower?.included
             dict["upperLimit"] = expected.upper?.limit
             dict["upperIncluded"] = expected.upper?.included
-            assertEqualsDictionary(dict, actual.makeDictionary())
+            assertEqualsDictionary(dict, actual.makeJson())
         }
 
     }

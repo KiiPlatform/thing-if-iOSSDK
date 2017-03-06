@@ -106,7 +106,7 @@ class OrClauseInQueryTests: SmallTestBase {
               actual.clauses.count)
             assertEqualsDictionary(
               expected,
-              actual.makeDictionary(),
+              actual.makeJson(),
               "label \(index)")
         }
     }
@@ -273,7 +273,7 @@ class OrClauseInQueryTests: SmallTestBase {
               actual.clauses.count)
             assertEqualsDictionary(
               expected,
-              actual.makeDictionary(),
+              actual.makeJson(),
               "label \(index)")
         }
     }
@@ -318,6 +318,6 @@ class OrClauseInQueryTests: SmallTestBase {
                 "clauses": [["type": "eq", "field": "f", "value": "str"]],
               ]
             ]
-          ], actual.makeDictionary())
+          ], actual.makeJson())
     }
 }

@@ -125,7 +125,7 @@ class RangeClauseInTriggerTests: SmallTestBase {
             dict["lowerIncluded"] = expected.lower?.included
             dict["upperLimit"] = expected.upper?.limit
             dict["upperIncluded"] = expected.upper?.included
-            assertEqualsDictionary(dict, actual.makeDictionary(), label)
+            assertEqualsDictionary(dict, actual.makeJson(), label)
         }
 
     }
@@ -245,7 +245,7 @@ class RangeClauseInTriggerTests: SmallTestBase {
             dict["lowerIncluded"] = expected.lower?.included
             dict["upperLimit"] = expected.upper?.limit
             dict["upperIncluded"] = expected.upper?.included
-            assertEqualsDictionary(dict, actual.makeDictionary(), label)
+            assertEqualsDictionary(dict, actual.makeJson(), label)
         }
 
     }

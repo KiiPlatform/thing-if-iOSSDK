@@ -8,8 +8,8 @@
 
 import Foundation
 
-internal protocol Dictionarable {
+internal protocol JsonSerializable {
 
-    func makeDictionary() -> [String : Any]
+    func makeJson() -> [String : Any]
 
 }

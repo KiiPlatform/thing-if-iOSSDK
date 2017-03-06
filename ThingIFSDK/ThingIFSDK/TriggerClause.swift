@@ -61,12 +61,12 @@ public struct EqualsClauseInTrigger: TriggerClause, BaseEquals {
     }
 }
 
-extension EqualsClauseInTrigger: Dictionarable {
+extension EqualsClauseInTrigger: JsonSerializable {
     /** Get Equals clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeDictionary() -> [ String : Any ] {
+    internal func makeJson() -> [ String : Any ] {
         return [
           "type" : "eq",
           "alias" : self.alias,
@@ -89,15 +89,15 @@ public struct NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
     }
 }
 
-extension NotEqualsClauseInTrigger: Dictionarable {
+extension NotEqualsClauseInTrigger: JsonSerializable {
     /** Get Not Equals clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeDictionary() -> [ String : Any ] {
+    internal func makeJson() -> [ String : Any ] {
         return [
           "type" : "not",
-          "clause" : self.equals.makeDictionary()
+          "clause" : self.equals.makeJson()
         ] as [String : Any]
     }
 
@@ -263,12 +263,12 @@ public struct RangeClauseInTrigger: TriggerClause, BaseRange {
     }
 }
 
-extension RangeClauseInTrigger: Dictionarable {
+extension RangeClauseInTrigger: JsonSerializable {
     /** Get Range clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeDictionary() -> [ String : Any ] {
+    internal func makeJson() -> [ String : Any ] {
         var retval: [String : Any] = [
           "type": "range",
           "alias": alias,
@@ -314,16 +314,16 @@ public struct AndClauseInTrigger: TriggerClause, BaseAnd {
     }
 }
 
-extension AndClauseInTrigger: Dictionarable {
+extension AndClauseInTrigger: JsonSerializable {
     /** Get And clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeDictionary() -> [ String : Any ] {
+    internal func makeJson() -> [ String : Any ] {
         return [
           "type": "and",
           "clauses":
-            self.clauses.map {($0 as! Dictionarable).makeDictionary()}
+            self.clauses.map {($0 as! JsonSerializable).makeJson()}
         ] as [String : Any]
     }
 
@@ -360,16 +360,16 @@ public struct OrClauseInTrigger: TriggerClause, BaseOr {
     }
 }
 
-extension OrClauseInTrigger: Dictionarable {
+extension OrClauseInTrigger: JsonSerializable {
     /** Get Or clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeDictionary() -> [ String : Any ] {
+    internal func makeJson() -> [ String : Any ] {
         return [
           "type": "or",
           "clauses":
-            self.clauses.map {($0 as! Dictionarable).makeDictionary()}
+            self.clauses.map {($0 as! JsonSerializable).makeJson()}
         ] as [String : Any]
     }
 
