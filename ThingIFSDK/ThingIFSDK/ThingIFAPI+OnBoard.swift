@@ -75,7 +75,7 @@ extension ThingIFAPI {
             request: buildDefaultRequest(
               .post,
               urlString:
-                "\(self.baseURL)/thinf-if/app\(self.appID)/onboardings",
+                "\(self.baseURL)/thing-if/apps/\(self.appID)/onboardings",
               requestHeaderDict:
                 [
                   "authorization" : "Bearer \(owner.accessToken)",
