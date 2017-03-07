@@ -36,8 +36,7 @@ internal func makeTargetThing(
   layoutPosition: LayoutPosition,
   vendorThingID: String? = nil) throws -> TargetThing
 {
-    var jsonWithVendorThingID = json
-    jsonWithVendorThingID["vendorThingID"] = vendorThingID ?? ""
+    json["vendorThingID"] = vendorThingID ?? ""
 
     switch (layoutPosition) {
     case .standalone:
