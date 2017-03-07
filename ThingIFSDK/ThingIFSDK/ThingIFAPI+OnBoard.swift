@@ -9,8 +9,9 @@
 import Foundation
 extension ThingIFAPI {
 
+    // MARK: - Onboard methods
 
-    /** On board IoT Cloud with the specified thing ID.
+    /** Onboard IoT Cloud with the specified thing ID.
      Specified thing will be owned by owner who consumes this API.
      (Specified on creation of ThingIFAPI instance.)
      When you're sure that the on board process has been done,
@@ -47,6 +48,46 @@ extension ThingIFAPI {
 
         onboard(
           .mediaTypeOnboardingWithThingIdByOwnerRequest,
+          requestBody: requestBody,
+          layoutPosition: options?.layoutPosition,
+          completionHandler: completionHandler)
+    }
+
+    /** On board IoT Cloud with the specified vendor thing ID.
+     Specified thing will be owned by owner who consumes this API.
+     (Specified on creation of ThingIFAPI instance.)
+
+     If you are using a gateway, you need to use
+     `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
+    to onboard endnode instead.
+
+     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
+
+    - Parameter vendorThingID: Thing ID given by vendor. Must be specified.
+    - Parameter thingPassword: Thing Password given by vendor. Must be specified.
+    - Parameter options: Optional parameters inside.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
+    */
+    open func onboardWith(
+        vendorThingID:String,
+        thingPassword:String,
+        options:OnboardWithVendorThingIDOptions? = nil,
+        completionHandler: @escaping (Target?, ThingIFError?)-> Void
+        ) ->Void
+    {
+        if self.onboarded {
+            completionHandler(nil, ThingIFError.alreadyOnboarded)
+            return
+        }
+
+        var requestBody: [String : Any] = [
+            "vendorThingID" : vendorThingID,
+            "thingPassword" : thingPassword,
+            "owner" : self.owner.typedID.toString() ]
+        requestBody += options?.makeJson() ?? [ : ]
+
+        onboard(
+          .mediaTypeOnboardingWithVendorThingIdByOwnerRequest,
           requestBody: requestBody,
           layoutPosition: options?.layoutPosition,
           completionHandler: completionHandler)

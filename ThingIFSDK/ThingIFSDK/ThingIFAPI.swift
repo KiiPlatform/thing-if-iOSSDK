@@ -88,46 +88,6 @@ open class ThingIFAPI: Equatable {
         self.tag = tag
     }
 
-    // MARK: - On board methods
-
-    /** On board IoT Cloud with the specified vendor thing ID.
-     Specified thing will be owned by owner who consumes this API.
-     (Specified on creation of ThingIFAPI instance.)
-
-     If you are using a gateway, you need to use
-     `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
-    to onboard endnode instead.
-
-     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
-
-    - Parameter vendorThingID: Thing ID given by vendor. Must be specified.
-    - Parameter thingPassword: Thing Password given by vendor. Must be specified.
-    - Parameter options: Optional parameters inside.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
-    */
-    open func onboardWith(
-        vendorThingID:String,
-        thingPassword:String,
-        options:OnboardWithVendorThingIDOptions? = nil,
-        completionHandler: @escaping (Target?, ThingIFError?)-> Void
-        ) ->Void
-    {
-        fatalError("TODO: implement me.")
-        /*
-        _onboard(true, IDString: vendorThingID, thingPassword: thingPassword,
-            thingType: options?.thingType,
-            firmwareVersion: options?.firmwareVersion,
-            thingProperties: options?.thingProperties,
-            layoutPosition: options?.layoutPosition,
-            dataGroupingInterval: options?.dataGroupingInterval) { (target, error) -> Void in
-            if error == nil {
-                self.saveToUserDefault()
-            }
-            completionHandler(target, error)
-        }
-        */
-    }
-
     /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
      Thing act as Gateway is already registered and marked as Gateway.
     

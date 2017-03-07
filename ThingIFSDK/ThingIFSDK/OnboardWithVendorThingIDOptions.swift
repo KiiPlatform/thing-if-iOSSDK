@@ -41,3 +41,15 @@ public struct OnboardWithVendorThingIDOptions {
         self.layoutPosition = position
     }
 }
+
+extension OnboardWithVendorThingIDOptions: JsonSerializable {
+
+    internal func makeJson() -> [String : Any]{
+        var retval: [String : Any] = [ : ]
+        retval["thingType"] = self.thingType
+        retval["firmwareVersion"] = self.firmwareVersion
+        retval["thingProperties"] = self.thingProperties
+        retval["layoutPosition"] = self.layoutPosition
+        return retval
+    }
+}
