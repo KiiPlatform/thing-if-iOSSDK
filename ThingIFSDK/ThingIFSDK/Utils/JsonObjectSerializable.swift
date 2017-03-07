@@ -1,5 +1,5 @@
 //
-//  Dictionarable.swift
+//  JsonObjectSerializable.swift
 //  ThingIFSDK
 //
 //  Created on 2017/03/03.
