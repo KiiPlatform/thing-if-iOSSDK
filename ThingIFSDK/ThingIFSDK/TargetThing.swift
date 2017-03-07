@@ -36,14 +36,15 @@ internal func makeTargetThing(
   layoutPosition: LayoutPosition,
   vendorThingID: String? = nil) throws -> TargetThing
 {
+    var json = json
     json["vendorThingID"] = vendorThingID ?? ""
 
     switch (layoutPosition) {
     case .standalone:
-        return try StandaloneThing(jsonWithVendorThingID)
+        return try StandaloneThing(json)
     case .gateway:
-        return try Gateway(jsonWithVendorThingID)
+        return try Gateway(json)
     case .endnode:
-        return try EndNode(jsonWithVendorThingID)
+        return try EndNode(json)
     }
 }
