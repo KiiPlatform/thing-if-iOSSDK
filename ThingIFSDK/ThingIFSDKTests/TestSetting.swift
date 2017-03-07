@@ -33,7 +33,7 @@ open class TestSetting {
         self.target = StandaloneThing(
           dict["thingID"] as! String,
           vendorThingID: dict["ownerID"] as! String,
-          accessToken: dict["ownerToken"] as! String)
+          accessToken: dict["ownerToken"] as? String)
 
         self.api = ThingIFAPI(app, owner: owner)
 

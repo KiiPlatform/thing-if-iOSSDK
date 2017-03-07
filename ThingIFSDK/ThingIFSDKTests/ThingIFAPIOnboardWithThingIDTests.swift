@@ -54,7 +54,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
                 "thingPassword": "dummyPassword",
                 "owner": owner.typedID.toString()
               ],
-             requestBody
+              requestBody
             )
 
             XCTAssertEqual(
@@ -113,14 +113,6 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             if error != nil {
                 XCTFail("execution timeout")
             }
-        }
-
-        do {
-            let storedAPI =
-              try ThingIFAPI.loadWithStoredInstance(setting.api.tag)
-            XCTAssertEqual(setting.api, storedAPI)
-        } catch {
-            XCTFail("fail to load API")
         }
 
     }
@@ -250,6 +242,171 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             XCTFail("fail to load API")
         }
 
+    }
+
+    func testOnboardWithThingIDAndOptions403Error()
+    {
+        let expectation = self.expectation(
+          description: "testOnboardWithThingIDAndOptions403Error")
+        let setting = TestSetting()
+        let thingID = "dummyThingID"
+        let password = "dummyPassword"
+        let options = OnboardWithThingIDOptions(.gateway)
+
+        // verify request
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
+
+            // verify path
+            XCTAssertEqual(
+              request.url!.absoluteString,
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/onboardings")
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/vnd.kii.OnboardingWithThingIDByOwner+json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            let requestBody: [String : String]
+            do {
+                requestBody = try JSONSerialization.jsonObject(
+                  with: request.httpBody!,
+                  options: JSONSerialization.ReadingOptions.allowFragments)
+                as! [String : String]
+            } catch {
+                XCTFail("request body must be deserializable.")
+                return
+            }
+            XCTAssertEqual(
+              [
+                "owner": setting.owner.typedID.toString(),
+                "thingID": thingID,
+                "thingPassword": password,
+                "layoutPosition": "GATEWAY"
+              ],
+              requestBody)
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 403,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        sharedMockSession.requestVerifier = requestVerifier
+        iotSession = MockSession.self
+
+        setting.api.onboardWith(
+            thingID: thingID,
+            thingPassword: password,
+            options: options) {
+            (target, error) in
+            XCTAssertNil(target)
+            XCTAssertNotNil(error)
+            switch error! {
+            case .errorResponse(let actualErrorResponse):
+                XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
+            default:
+                XCTFail("unexpected error: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    func testOnboardWithThingIDAndOptions404Error() {
+        let expectation = self.expectation(
+          description: "testOnboardWithThingIDAndOptions404Error")
+        let setting = TestSetting()
+        let thingID = "dummyThingID"
+        let password = "dummyPassword"
+        let options = OnboardWithThingIDOptions(.endnode)
+
+        // verify request
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
+
+            // verify path
+            XCTAssertEqual(
+              request.url!.absoluteString,
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/onboardings")
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/vnd.kii.OnboardingWithThingIDByOwner+json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            let requestBody: [String : String]
+            do {
+                requestBody = try JSONSerialization.jsonObject(
+                  with: request.httpBody!,
+                  options: JSONSerialization.ReadingOptions.allowFragments)
+                as! [String : String]
+            } catch {
+                XCTFail("request body must be deserializable.")
+                return
+            }
+            XCTAssertEqual(
+              [
+                "owner": setting.owner.typedID.toString(),
+                "thingID": thingID,
+                "thingPassword": password,
+                "layoutPosition": "ENDNODE"
+              ],
+              requestBody)
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          error: nil)
+        sharedMockSession.requestVerifier = requestVerifier
+        iotSession = MockSession.self
+
+        setting.api.onboardWith(
+            thingID: thingID,
+            thingPassword: password,
+            options: options) {
+            (target, error) in
+            XCTAssertNil(target)
+            XCTAssertNotNil(error)
+            switch error! {
+            case .errorResponse(let actualErrorResponse):
+                XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
+            default:
+                XCTFail("unexpected error: \(error)")
+            }
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
     }
 
 }
