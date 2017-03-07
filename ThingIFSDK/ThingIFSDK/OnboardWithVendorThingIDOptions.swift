@@ -42,7 +42,7 @@ public struct OnboardWithVendorThingIDOptions {
     }
 }
 
-extension OnboardWithVendorThingIDOptions: JsonSerializable {
+extension OnboardWithVendorThingIDOptions: JsonObjectSerializable {
 
     internal func makeJson() -> [String : Any]{
         var retval: [String : Any] = [ : ]
