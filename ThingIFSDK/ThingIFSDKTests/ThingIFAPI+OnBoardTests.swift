@@ -125,4 +125,131 @@ class ThingIFSDKOnBoardTests: SmallTestBase {
 
     }
 
+    func testOnboardWithThingIDAlreadyOnboardedError() {
+        let expectation = self.expectation(
+          description: "testOnboardWithThingID_already_onboarded_error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        api.target = setting.target
+        api.onboardWith(
+          thingID: "dummyThingID",
+          thingPassword: "dummyPassword") { (target, error) -> Void in
+            if error == nil{
+                XCTFail("should fail")
+            }else {
+                switch error! {
+                case .alreadyOnboarded:
+                    break
+                default:
+                    XCTFail("should be ALREADY_ONBOARDED error")
+                }
+            }
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    func testOnboardWithThingIDAndOptionsSuccess()
+    {
+        let expectation = self.expectation(
+          description: "testOnboardWithThingIDAndOptionsSuccess")
+        let setting = TestSetting()
+        let thingID = "dummyThingID"
+        let password = "dummyPassword"
+        let options = OnboardWithThingIDOptions(.standalone)
+
+        // verify request
+        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            XCTAssertEqual(request.httpMethod, "POST")
+
+            // verify path
+            XCTAssertEqual(
+              request.url!.absoluteString,
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/onboardings")
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/vnd.kii.OnboardingWithThingIDByOwner+json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify request body
+            let requestBody: [String : String]
+            do {
+                requestBody = try JSONSerialization.jsonObject(
+                  with: request.httpBody!,
+                  options: JSONSerialization.ReadingOptions.allowFragments)
+                  as! [String : String]
+            } catch {
+                XCTFail("request body must be deserializable.")
+                return
+            }
+            XCTAssertEqual(
+              [
+                "owner": setting.owner.typedID.toString(),
+                "thingID": thingID,
+                "thingPassword": password,
+                "layoutPosition": "STANDALONE"
+              ],
+              requestBody)
+        }
+
+        // mock response
+        let accessToken = "dummyAccessToken"
+        do {
+            sharedMockSession.mockResponse =
+              (try JSONSerialization.data(
+                 withJSONObject:
+                   ["thingID": thingID, "accessToken": accessToken],
+                 options: .prettyPrinted),
+               HTTPURLResponse(
+                 url: URL(string:setting.app.baseURL)!,
+                 statusCode: 200,
+                 httpVersion: nil,
+                 headerFields: nil),
+               nil)
+        } catch {
+            XCTFail("response body must be deserializable.")
+            return
+        }
+        sharedMockSession.requestVerifier = requestVerifier
+        iotSession = MockSession.self
+
+        setting.api.onboardWith(
+          thingID: thingID,
+          thingPassword: password,
+          options: options) {
+              (target, error) in
+              XCTAssertNil(error)
+              XCTAssertNotNil(target)
+              XCTAssertEqual(target!.typedID.id, thingID)
+              XCTAssertEqual(target!.accessToken, accessToken)
+              expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+
+        do {
+            let storedAPI =
+              try ThingIFAPI.loadWithStoredInstance(setting.api.tag)
+            XCTAssertEqual(setting.api, storedAPI)
+        } catch {
+            XCTFail("fail to load API")
+        }
+
+    }
+
 }

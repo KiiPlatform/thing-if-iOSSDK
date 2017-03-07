@@ -94,35 +94,6 @@ class OnboardingTests: SmallTestBase {
 
     }
 
-    func testOnboardWithThingID_already_onboarded_error() {
-        let expectation = self.expectation(description: "testOnboardWithThingID_already_onboarded_error")
-        let setting = TestSetting()
-        let api = setting.api
-
-        api.target = setting.target
-        api.onboardWith(
-          thingID: "dummyThingID",
-          thingPassword: "dummyPassword") { (target, error) -> Void in
-            if error == nil{
-                XCTFail("should fail")
-            }else {
-                switch error! {
-                case .alreadyOnboarded:
-                    break
-                default:
-                    XCTFail("should be ALREADY_ONBOARDED error")
-                }
-            }
-            expectation.fulfill()
-        }
-
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
-        }
-    }
-
     func testOnboardWithVendorThingIDAndImplementTag() {
 
         let expectation = self.expectation(description: "onboardWithVendorThingID")

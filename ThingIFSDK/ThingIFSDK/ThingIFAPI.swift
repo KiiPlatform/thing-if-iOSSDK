@@ -860,7 +860,8 @@ open class ThingIFAPI: Equatable {
     }
 
     func saveToUserDefault(){
-
+        // TODO: implement me.
+        /*
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
 
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(self.tag)
@@ -876,6 +877,7 @@ open class ThingIFAPI: Equatable {
             UserDefaults.standard.set(NSDictionary(dictionary: [key:data]), forKey: baseKey)
         }
         UserDefaults.standard.synchronize()
+        */
     }
 
     static func isLoadable(_ storedSDKVersion: String?) -> Bool {
