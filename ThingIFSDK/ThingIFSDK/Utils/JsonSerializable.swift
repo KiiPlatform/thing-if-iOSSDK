@@ -8,13 +8,13 @@
 
 import Foundation
 
-internal protocol JsonSerializable {
+internal protocol JsonObjectSerializable {
 
     func makeJson() -> [String : Any]
 
 }
 
-internal protocol JsonDeserializable {
+internal protocol JsonObjectDeserializable {
 
-    init(_ json: [String : Any]) throws
+    init(_ jsonObject: [String : Any]) throws
 }

@@ -61,7 +61,7 @@ public struct EqualsClauseInTrigger: TriggerClause, BaseEquals {
     }
 }
 
-extension EqualsClauseInTrigger: JsonSerializable {
+extension EqualsClauseInTrigger: JsonObjectSerializable {
     /** Get Equals clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -89,7 +89,7 @@ public struct NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
     }
 }
 
-extension NotEqualsClauseInTrigger: JsonSerializable {
+extension NotEqualsClauseInTrigger: JsonObjectSerializable {
     /** Get Not Equals clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -263,7 +263,7 @@ public struct RangeClauseInTrigger: TriggerClause, BaseRange {
     }
 }
 
-extension RangeClauseInTrigger: JsonSerializable {
+extension RangeClauseInTrigger: JsonObjectSerializable {
     /** Get Range clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -314,7 +314,7 @@ public struct AndClauseInTrigger: TriggerClause, BaseAnd {
     }
 }
 
-extension AndClauseInTrigger: JsonSerializable {
+extension AndClauseInTrigger: JsonObjectSerializable {
     /** Get And clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -323,7 +323,7 @@ extension AndClauseInTrigger: JsonSerializable {
         return [
           "type": "and",
           "clauses":
-            self.clauses.map {($0 as! JsonSerializable).makeJson()}
+            self.clauses.map {($0 as! JsonObjectSerializable).makeJson()}
         ] as [String : Any]
     }
 
@@ -360,7 +360,7 @@ public struct OrClauseInTrigger: TriggerClause, BaseOr {
     }
 }
 
-extension OrClauseInTrigger: JsonSerializable {
+extension OrClauseInTrigger: JsonObjectSerializable {
     /** Get Or clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -369,7 +369,7 @@ extension OrClauseInTrigger: JsonSerializable {
         return [
           "type": "or",
           "clauses":
-            self.clauses.map {($0 as! JsonSerializable).makeJson()}
+            self.clauses.map {($0 as! JsonObjectSerializable).makeJson()}
         ] as [String : Any]
     }
 

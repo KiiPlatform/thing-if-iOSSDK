@@ -54,7 +54,7 @@ public struct EqualsClauseInQuery: QueryClause, BaseEquals {
     }
 }
 
-extension EqualsClauseInQuery: JsonSerializable {
+extension EqualsClauseInQuery: JsonObjectSerializable {
     /** Get Equals clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -85,7 +85,7 @@ public struct NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
     }
 }
 
-extension NotEqualsClauseInQuery: JsonSerializable {
+extension NotEqualsClauseInQuery: JsonObjectSerializable {
     /** Get Not Equals clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -233,7 +233,7 @@ public struct RangeClauseInQuery: QueryClause, BaseRange {
     }
 }
 
-extension RangeClauseInQuery: JsonSerializable {
+extension RangeClauseInQuery: JsonObjectSerializable {
     /** Get Range clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -280,7 +280,7 @@ public struct AndClauseInQuery: QueryClause, BaseAnd {
     }
 }
 
-extension AndClauseInQuery: JsonSerializable {
+extension AndClauseInQuery: JsonObjectSerializable {
     /** Get And clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -289,7 +289,7 @@ extension AndClauseInQuery: JsonSerializable {
         return [
           "type": "and",
           "clauses":
-            self.clauses.map {($0 as! JsonSerializable).makeJson()}
+            self.clauses.map {($0 as! JsonObjectSerializable).makeJson()}
         ] as [String : Any]
     }
 
@@ -326,7 +326,7 @@ public struct OrClauseInQuery: QueryClause, BaseOr {
     }
 }
 
-extension OrClauseInQuery: JsonSerializable {
+extension OrClauseInQuery: JsonObjectSerializable {
     /** Get Or clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
@@ -335,7 +335,7 @@ extension OrClauseInQuery: JsonSerializable {
         return [
           "type": "or",
           "clauses":
-            self.clauses.map {($0 as! JsonSerializable).makeJson()}
+            self.clauses.map {($0 as! JsonObjectSerializable).makeJson()}
         ] as [String : Any]
     }
 
@@ -349,7 +349,7 @@ public struct AllClause: QueryClause {
 
 }
 
-extension AllClause: JsonSerializable {
+extension AllClause: JsonObjectSerializable {
 
     internal func makeJson() -> [String : Any]{
         return ["type": "all"]

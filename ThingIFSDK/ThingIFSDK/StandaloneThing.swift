@@ -37,17 +37,17 @@ public struct StandaloneThing: TargetThing, Equatable {
 
 }
 
-extension StandaloneThing: JsonDeserializable {
+extension StandaloneThing: JsonObjectDeserializable {
 
-    init(_ json: [String : Any]) throws {
-        guard let thingID = json["thingID"] as? String,
-              let accessToken = json["accessToken"] as? String else {
+    init(_ jsonObject: [String : Any]) throws {
+        guard let thingID = jsonObject["thingID"] as? String,
+              let accessToken = jsonObject["accessToken"] as? String else {
             throw ThingIFError.jsonParseError
         }
 
         self.init(
           thingID,
-          vendorThingID: json["vendorThingID"] as! String,
+          vendorThingID: jsonObject["vendorThingID"] as! String,
           accessToken: accessToken)
     }
 }

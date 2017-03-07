@@ -22,7 +22,7 @@ public struct OnboardWithThingIDOptions {
     }
 }
 
-extension OnboardWithThingIDOptions: JsonSerializable {
+extension OnboardWithThingIDOptions: JsonObjectSerializable {
 
     internal func makeJson() -> [String : Any]{
         if let layoutPosition = self.layoutPosition {
