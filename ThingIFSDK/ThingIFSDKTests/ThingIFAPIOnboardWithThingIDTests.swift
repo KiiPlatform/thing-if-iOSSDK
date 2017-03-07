@@ -1,5 +1,5 @@
 //
-//  ThingIFAPI+OnBoardTests.swift
+//  ThingIFAPIOnboardWithThingIDTests.swift
 //  ThingIFSDK
 //
 //  Created on 2017/03/06.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class ThingIFSDKOnBoardTests: SmallTestBase {
+class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()
