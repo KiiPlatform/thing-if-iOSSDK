@@ -464,4 +464,89 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         }
     }
 
+    func testOnboardWithVendorThingIDAndOptions500Error()
+    {
+        let expectation = self.expectation(
+          description: "testOnboardWithVendorThingIDAndOptions500Error")
+        let setting = TestSetting()
+        let vendorThingID = "dummyVendorThingID"
+        let password = "dummyPassword"
+        let thingProperties = [
+            "manufacture": "kii"
+        ]
+        let options = OnboardWithVendorThingIDOptions(
+            setting.thingType,
+            thingProperties: thingProperties,
+            position: .standalone)
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() {
+            (request) in
+
+            XCTAssertEqual(request.httpMethod, "POST")
+
+            // verify path
+            XCTAssertEqual(
+              request.url!.absoluteString,
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/onboardings")
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            self.assertEqualsDictionary(
+              [
+                "owner": setting.owner.typedID.toString(),
+                "vendorThingID": vendorThingID,
+                "thingPassword": password,
+                "thingType": setting.thingType,
+                "thingProperties": thingProperties,
+                "layoutPosition": "STANDALONE",
+                "dataGroupingInterval": "12_HOURS"
+              ],
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? [String : Any])
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 500,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.onboardWith(
+            vendorThingID: vendorThingID,
+            thingPassword: password,
+            options: options) { (target:Target?, error:ThingIFError?) -> Void in
+                XCTAssertNil(target)
+                XCTAssertNotNil(error)
+                switch error! {
+                case .errorResponse(let actualErrorResponse):
+                    XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
+                default:
+                    XCTFail("unexpected error: \(error)")
+                }
+                expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
 }
