@@ -37,7 +37,7 @@ public struct StandaloneThing: TargetThing, Equatable {
 
 }
 
-extension StandaloneThing: JsonObjectDeserializable {
+extension StandaloneThing: JsonObjectCompatible {
 
     init(_ jsonObject: [String : Any]) throws {
         guard let thingID = jsonObject["thingID"] as? String,

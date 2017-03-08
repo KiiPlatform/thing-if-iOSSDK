@@ -1,5 +1,5 @@
 //
-//  JsonObjectSerializable.swift
+//  JsonObjectCompatible.swift
 //  ThingIFSDK
 //
 //  Created on 2017/03/03.
@@ -8,13 +8,8 @@
 
 import Foundation
 
-internal protocol JsonObjectSerializable {
+internal protocol JsonObjectCompatible {
 
-    func makeJson() -> [String : Any]
-
-}
-
-internal protocol JsonObjectDeserializable {
-
+    func makeJsonObject() -> [String : Any]
     init(_ jsonObject: [String : Any]) throws
 }

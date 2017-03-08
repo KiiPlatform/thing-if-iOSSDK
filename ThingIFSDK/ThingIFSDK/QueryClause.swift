@@ -54,12 +54,12 @@ public struct EqualsClauseInQuery: QueryClause, BaseEquals {
     }
 }
 
-extension EqualsClauseInQuery: JsonObjectSerializable {
+extension EqualsClauseInQuery: JsonObjectCompatible {
     /** Get Equals clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeJson() -> [ String : Any ] {
+    internal func makeJsonObject() -> [ String : Any ] {
         return [
           "type" : "eq",
           "field" : self.field,
@@ -85,15 +85,15 @@ public struct NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
     }
 }
 
-extension NotEqualsClauseInQuery: JsonObjectSerializable {
+extension NotEqualsClauseInQuery: JsonObjectCompatible {
     /** Get Not Equals clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeJson() -> [ String : Any ] {
+    internal func makeJsonObject() -> [ String : Any ] {
         return [
           "type" : "not",
-          "clause" : self.equals.makeJson()
+          "clause" : self.equals.makeJsonObject()
         ] as [String : Any]
     }
 
@@ -233,12 +233,12 @@ public struct RangeClauseInQuery: QueryClause, BaseRange {
     }
 }
 
-extension RangeClauseInQuery: JsonObjectSerializable {
+extension RangeClauseInQuery: JsonObjectCompatible {
     /** Get Range clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeJson() -> [ String : Any ] {
+    internal func makeJsonObject() -> [ String : Any ] {
         var retval: [String : Any] = ["type": "range", "field": self.field]
         retval["upperLimit"] = self.upperLimit
         retval["upperIncluded"] = self.upperIncluded
@@ -280,16 +280,16 @@ public struct AndClauseInQuery: QueryClause, BaseAnd {
     }
 }
 
-extension AndClauseInQuery: JsonObjectSerializable {
+extension AndClauseInQuery: JsonObjectCompatible {
     /** Get And clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeJson() -> [ String : Any ] {
+    internal func makeJsonObject() -> [ String : Any ] {
         return [
           "type": "and",
           "clauses":
-            self.clauses.map {($0 as! JsonObjectSerializable).makeJson()}
+            self.clauses.map {($0 as! JsonObjectCompatible).makeJsonObject()}
         ] as [String : Any]
     }
 
@@ -326,16 +326,16 @@ public struct OrClauseInQuery: QueryClause, BaseOr {
     }
 }
 
-extension OrClauseInQuery: JsonObjectSerializable {
+extension OrClauseInQuery: JsonObjectCompatible {
     /** Get Or clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeJson() -> [ String : Any ] {
+    internal func makeJsonObject() -> [ String : Any ] {
         return [
           "type": "or",
           "clauses":
-            self.clauses.map {($0 as! JsonObjectSerializable).makeJson()}
+            self.clauses.map {($0 as! JsonObjectCompatible).makeJsonObject()}
         ] as [String : Any]
     }
 
@@ -349,9 +349,9 @@ public struct AllClause: QueryClause {
 
 }
 
-extension AllClause: JsonObjectSerializable {
+extension AllClause: JsonObjectCompatible {
 
-    internal func makeJson() -> [String : Any]{
+    internal func makeJsonObject() -> [String : Any]{
         return ["type": "all"]
     }
 }

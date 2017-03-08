@@ -36,7 +36,7 @@ public struct Gateway: TargetThing, Equatable {
     }
 }
 
-extension Gateway: JsonObjectDeserializable {
+extension Gateway: JsonObjectCompatible {
 
     init(_ jsonObject: [String : Any]) throws {
         guard let thingID = jsonObject["thingID"] as? String,
