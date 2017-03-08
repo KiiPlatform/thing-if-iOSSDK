@@ -37,7 +37,6 @@ extension OnboardWithThingIDOptions: JsonObjectCompatible {
         self.init(position)
     }
 
-
     internal func makeJsonObject() -> [String : Any]{
         if let layoutPosition = self.layoutPosition {
             return [ "layoutPosition" : layoutPosition.rawValue ]

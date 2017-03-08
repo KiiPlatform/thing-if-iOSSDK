@@ -84,7 +84,7 @@ extension ThingIFAPI {
             "vendorThingID" : vendorThingID,
             "thingPassword" : thingPassword,
             "owner" : self.owner.typedID.toString() ]
-        requestBody += options?.makeJson() ?? [ : ]
+        requestBody += options?.makeJsonObject() ?? [ : ]
 
         onboard(
           .mediaTypeOnboardingWithVendorThingIdByOwnerRequest,
