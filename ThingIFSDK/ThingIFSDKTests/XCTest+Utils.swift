@@ -157,14 +157,14 @@ extension XCTestCase {
         do {
             expected2 = try expected()
         } catch let error {
-            fail(error as! String, file, line)
+            XCTFail(error as! String, file: file, line: line)
             return
         }
         let actual2: [String : Any]?
         do {
             actual2 = try actual()
         } catch let error {
-            fail(error as! String, file, line)
+            XCTFail(error as! String, file: file, line: line)
             return
         }
 
