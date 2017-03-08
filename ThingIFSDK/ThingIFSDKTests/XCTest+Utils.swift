@@ -12,6 +12,26 @@ import XCTest
 
 extension XCTestCase {
 
+    internal func makeRequestVerifier(
+      file: StaticString = #file,
+      line: UInt = #line,
+      requestVerifier: @escaping (URLRequest) throws -> Void)
+          -> (URLRequest) -> Void
+    {
+        return {
+            request in
+
+            do {
+                try requestVerifier(request)
+            } catch let error {
+                XCTFail(
+                  error as! String,
+                  file: file,
+                  line: line)
+            }
+        } as (URLRequest) -> Void
+    }
+
     internal func fail(
       _ message: String? = nil,
       _ file: StaticString = #file,
@@ -127,20 +147,35 @@ extension XCTestCase {
     }
 
     func assertEqualsDictionary(
-      _ expected: [String : Any]?,
-      _ actual: [String : Any]?,
+      _ expected: @autoclosure () throws -> [String : Any]?,
+      _ actual: @autoclosure () throws -> [String : Any]?,
       _ message: String? = nil,
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
-        assertOnlyOneNil(expected, actual, message, file, line)
-        if expected == nil && actual == nil {
+        let expected2: [String : Any]?
+        do {
+            expected2 = try expected()
+        } catch let error {
+            fail(error as! String, file, line)
+            return
+        }
+        let actual2: [String : Any]?
+        do {
+            actual2 = try actual()
+        } catch let error {
+            fail(error as! String, file, line)
+            return
+        }
+
+        assertOnlyOneNil(expected2, actual2, message, file, line)
+        if expected2 == nil && actual2 == nil {
             return
         }
 
         assertEqualsWrapper(
-          NSDictionary(dictionary: expected!),
-          NSDictionary(dictionary: actual!),
+          NSDictionary(dictionary: expected2!),
+          NSDictionary(dictionary: actual2!),
           message,
           file: file,
           line: line)

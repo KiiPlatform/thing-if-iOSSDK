@@ -18,7 +18,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         super.tearDown()
     }
 
-    func testOnboardWithVendorThingIDSuccess() {
+    func testOnboardWithVendorThingIDSuccess() throws {
         let expectation = self.expectation(
           description: "onboardWithVendorThingID")
         let setting = TestSetting()
@@ -30,27 +30,23 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         let vendorThingID = "th.abcd-efgh"
         let thingPassword = "dummyPassword"
 
-        do {
-            // mock response
-            sharedMockSession.mockResponse = (
-              try JSONSerialization.data(
-                withJSONObject: [
-                  "accessToken": setting.owner.accessToken,
-                  "thingID": setting.target.typedID.id],
-                options: .prettyPrinted),
-              HTTPURLResponse(
-                url: URL(string: "https://\(setting.app.hostName)")!,
-                statusCode: 200,
-                httpVersion: nil,
-                headerFields: nil),
-              nil)
-        } catch {
-            XCTFail("json must be serializable")
-            return
-        }
+        // mock response
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: [
+              "accessToken": setting.owner.accessToken,
+              "thingID": setting.target.typedID.id],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string: "https://\(setting.app.hostName)")!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
         // mock request
-        sharedMockSession.requestVerifier = {
+        sharedMockSession.requestVerifier = makeRequestVerifier() {
             (request) in
+
             XCTAssertEqual(
               request.url?.absoluteString,
               "\(setting.app.baseURL)/thing-if/apps/50a62843/onboardings")
@@ -66,17 +62,6 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify request body
-            let requestBody: [String : Any]
-            do {
-                requestBody = try JSONSerialization.jsonObject(
-                  with: request.httpBody!,
-                  options: JSONSerialization.ReadingOptions.allowFragments)
-                as! [String : Any]
-            } catch {
-                XCTFail("request body must be deserializable.")
-                return
-            }
-
             self.assertEqualsDictionary(
               [
                 "vendorThingID": vendorThingID,
@@ -85,8 +70,13 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 "thingType": thingType,
                 "thingProperties": thingProperties
               ],
-              requestBody)
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? [String : Any]
+            )
         }
+
         iotSession = MockSession.self
 
         api.onboardWith(
@@ -116,16 +106,13 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 XCTFail("execution timeout")
             }
         }
-        do {
-            let storedAPI =
-              try ThingIFAPI.loadWithStoredInstance(setting.api.tag)
-            XCTAssertEqual(setting.api, storedAPI)
-        } catch {
-            XCTFail("fail to load API")
-        }
+
+        XCTAssertEqual(
+          setting.api,
+          try ThingIFAPI.loadWithStoredInstance(setting.api.tag))
     }
 
-    func testOnboardWithVendorThingIDAndImplementTag() {
+    func testOnboardWithVendorThingIDAndImplementTag() throws {
 
         let expectation = self.expectation(
           description: "onboardWithVendorThingID")
@@ -141,26 +128,22 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         let api = ThingIFAPI(app, owner:owner, tag:"target1")
 
         // mock response
-        do {
-            sharedMockSession.mockResponse = (
-              try JSONSerialization.data(
-                withJSONObject: [
-                  "accessToken": setting.owner.accessToken,
-                  "thingID": setting.target.typedID.id],
-                options: .prettyPrinted),
-              HTTPURLResponse(
-                url: URL(string: "https://\(setting.app.hostName)")!,
-                statusCode: 200,
-                httpVersion: nil,
-                headerFields: nil),
-              nil)
-        } catch {
-            XCTFail("json must be serializable")
-            return
-        }
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: [
+              "accessToken": setting.owner.accessToken,
+              "thingID": setting.target.typedID.id],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string: "https://\(setting.app.hostName)")!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
 
-        sharedMockSession.requestVerifier = {
+        sharedMockSession.requestVerifier = makeRequestVerifier {
             (request) in
+
             XCTAssertEqual(
               request.url?.absoluteString,
               "\(setting.app.baseURL)/thing-if/apps/50a62843/onboardings")
@@ -176,17 +159,6 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify request body
-            let requestBody: [String : Any]
-            do {
-                requestBody = try JSONSerialization.jsonObject(
-                  with: request.httpBody!,
-                  options: JSONSerialization.ReadingOptions.allowFragments)
-                as! [String : Any]
-            } catch {
-                XCTFail("request body must be deserializable.")
-                return
-            }
-
             self.assertEqualsDictionary(
               [
                 "vendorThingID": vendorThingID,
@@ -195,7 +167,10 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 "thingType":thingType,
                 "thingProperties": thingProperties
               ],
-              requestBody)
+              try JSONSerialization.jsonObject(
+                  with: request.httpBody!,
+                  options: JSONSerialization.ReadingOptions.allowFragments)
+                as? [String : Any])
         }
         iotSession = MockSession.self
 
@@ -207,7 +182,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
             thingType,
             thingProperties: thingProperties)) {
             ( target, error) -> Void in
-            if error == nil{
+            if error == nil {
                 XCTAssertEqual(
                   target!.typedID.toString(),
                   setting.target.typedID.toString())
@@ -217,7 +192,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 XCTAssertEqual(
                   target!.accessToken,
                   setting.owner.accessToken)
-            }else {
+            } else {
                 XCTFail("should success")
             }
             expectation.fulfill()
@@ -227,13 +202,8 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 XCTFail("execution timeout")
             }
         }
-        do {
-            let storedAPI =
-              try ThingIFAPI.loadWithStoredInstance(api.tag)
-            XCTAssertEqual(api, storedAPI)
-        } catch {
-            XCTFail("fail to load API")
-        }
+
+        XCTAssertEqual(api, try ThingIFAPI.loadWithStoredInstance(api.tag))
     }
 
     func testOnboardWithVendorThingIDAndOptionsSuccess() throws
@@ -270,7 +240,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
           nil)
 
         // verify request
-        let requestVerifier: (URLRequest) throws -> Void = {
+        sharedMockSession.requestVerifier = makeRequestVerifier {
             (request) in
 
             XCTAssertEqual(request.httpMethod, "POST")
@@ -304,14 +274,6 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 options: JSONSerialization.ReadingOptions.allowFragments)
                 as? [String : Any])
         }
-        sharedMockSession.requestVerifier = {
-            (request) in
-            do {
-                try requestVerifier(request)
-            } catch {
-                XCTFail("This must not happen.")
-            }
-        }
         iotSession = MockSession.self
 
         setting.api.onboardWith(
@@ -326,6 +288,91 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
             XCTAssertEqual(target!.accessToken, accessToken)
             expectation.fulfill()
         }
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
+    func testOnboardWithVendorThingIDAndOptions403Error() throws
+    {
+        let expectation = self.expectation(
+          description: "testOnboardWithVendorThingIDAndOptions403Error")
+        let setting = TestSetting()
+        let vendorThingID = "dummyVendorThingID"
+        let password = "dummyPassword"
+        let thingProperties = [
+            "manufacture": "kii"
+        ]
+        let options = OnboardWithVendorThingIDOptions(
+            setting.thingType,
+            thingProperties: thingProperties,
+            position: .gateway)
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() {
+            (request) in
+
+            XCTAssertEqual(request.httpMethod, "POST")
+
+            // verify path
+            XCTAssertEqual(
+              request.url!.absoluteString,
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/onboardings")
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            self.assertEqualsDictionary(
+              [
+                "owner": setting.owner.typedID.toString(),
+                "vendorThingID": vendorThingID,
+                "thingPassword": password,
+                "thingType": setting.thingType,
+                "thingProperties": thingProperties,
+                "layoutPosition": "GATEWAY"
+              ],
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? [String : Any])
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 403,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.onboardWith(
+            vendorThingID: vendorThingID,
+            thingPassword: password,
+            options: options,
+            completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
+                XCTAssertNil(target)
+                XCTAssertNotNil(error)
+                switch error! {
+                case .errorResponse(let actualErrorResponse):
+                    XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
+                default:
+                    XCTFail("unexpected error: \(error)")
+                }
+                expectation.fulfill()
+        })
+
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             if error != nil {
                 XCTFail("execution timeout")
