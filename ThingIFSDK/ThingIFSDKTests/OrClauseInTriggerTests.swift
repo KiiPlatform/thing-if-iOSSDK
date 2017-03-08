@@ -147,7 +147,7 @@ class OrClauseInTriggerTests: SmallTestBase {
               actual.clauses.count)
             assertEqualsDictionary(
               expected,
-              actual.makeJson(),
+              actual.makeJsonObject(),
               "label \(index)")
         }
     }
@@ -338,7 +338,7 @@ class OrClauseInTriggerTests: SmallTestBase {
               actual.clauses.count)
             assertEqualsDictionary(
               expected,
-              actual.makeJson(),
+              actual.makeJsonObject(),
               "label \(index)")
         }
     }
@@ -397,6 +397,6 @@ class OrClauseInTriggerTests: SmallTestBase {
                 ],
               ]
             ]
-          ], actual.makeJson())
+          ], actual.makeJsonObject())
     }
 }

@@ -57,7 +57,7 @@ class NotEqualsClauseInQueryTests: SmallTestBase {
                   "field": expected.field,
                   "value": expected.value
                 ]
-              ], actual.makeJson())
+              ], actual.makeJsonObject())
         }
     }
 

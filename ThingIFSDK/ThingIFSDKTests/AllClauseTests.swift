@@ -20,6 +20,6 @@ class AllClauseTests: SmallTestBase {
     }
 
     func test() {
-        assertEqualsDictionary(["type": "all"], AllClause().makeJson())
+        assertEqualsDictionary(["type": "all"], AllClause().makeJsonObject())
     }
 }
