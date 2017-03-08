@@ -312,10 +312,14 @@ extension RangeClauseInQuery: JsonObjectCompatible {
         if let limit = jsonObject["lowerLimit"] as? NSNumber,
              let included: Bool = jsonObject["lowerIncluded"] as? Bool {
             lower = (limit, included)
+        } else {
+            lower = nil
         }
         if let limit = jsonObject["upperLimit"] as? NSNumber,
              let included: Bool = jsonObject["upperIncluded"] as? Bool {
             upper = (limit, included)
+        } else {
+            upper = nil
         }
         if lower == nil && upper == nil {
             throw ThingIFError.jsonParseError
@@ -371,7 +375,6 @@ public struct AndClauseInQuery: QueryClause, BaseAnd {
 
 extension AndClauseInQuery: JsonObjectCompatible {
 
-
     internal init(_ jsonObject: [String : Any]) throws {
         // This method may not use so this method is not tested.
         // If you want to use this method, please test this.
@@ -383,7 +386,7 @@ extension AndClauseInQuery: JsonObjectCompatible {
             throw ThingIFError.jsonParseError
         }
 
-        self.init(makeQueryClauseArray(clauses))
+        self.init(try makeQueryClauseArray(clauses))
     }
 
     /** Get And clause for query as a Dictionary instance
@@ -444,7 +447,7 @@ extension OrClauseInQuery: JsonObjectCompatible {
             throw ThingIFError.jsonParseError
         }
 
-        self.init(makeQueryClauseArray(clauses))
+        self.init(try makeQueryClauseArray(clauses))
     }
 
     /** Get Or clause for query as a Dictionary instance
@@ -477,7 +480,7 @@ extension AllClause: JsonObjectCompatible {
         if jsonObject["type"] as? String != "all" {
             throw ThingIFError.jsonParseError
         }
-        return self.init()
+        self.init()
     }
 
     internal func makeJsonObject() -> [String : Any]{
