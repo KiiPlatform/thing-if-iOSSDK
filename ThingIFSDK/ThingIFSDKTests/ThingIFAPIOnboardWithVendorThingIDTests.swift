@@ -494,7 +494,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
             XCTAssertEqual(
               [
                 "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
-                "authorization": "Bearer \(setting.owner.accessToken)",
+                "Authorization": "Bearer \(setting.owner.accessToken)",
                 "Content-Type": "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
               ],
               request.allHTTPHeaderFields!)
@@ -507,8 +507,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 "thingPassword": password,
                 "thingType": setting.thingType,
                 "thingProperties": thingProperties,
-                "layoutPosition": "STANDALONE",
-                "dataGroupingInterval": "12_HOURS"
+                "layoutPosition": "STANDALONE"
               ],
               try JSONSerialization.jsonObject(
                 with: request.httpBody!,
