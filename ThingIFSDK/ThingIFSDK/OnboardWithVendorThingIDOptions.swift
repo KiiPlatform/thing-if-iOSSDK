@@ -66,7 +66,7 @@ extension OnboardWithVendorThingIDOptions: JsonObjectCompatible {
         retval["thingType"] = self.thingType
         retval["firmwareVersion"] = self.firmwareVersion
         retval["thingProperties"] = self.thingProperties
-        retval["layoutPosition"] = self.layoutPosition
+        retval["layoutPosition"] = self.layoutPosition?.rawValue
         return retval
     }
 }
