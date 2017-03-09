@@ -8,8 +8,13 @@
 
 import Foundation
 
-internal protocol JsonObjectCompatible {
+internal protocol ToJsonObject {
 
     func makeJsonObject() -> [String : Any]
+}
+
+internal protocol FromJsonObject {
+
     init(_ jsonObject: [String : Any]) throws
+
 }
