@@ -101,7 +101,7 @@ open class GatewayAPI {
             let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildNewRequest(
-                HTTPMethod.POST,
+                HTTPMethod.post,
                 urlString: requestURL,
                 requestHeaderDict: requestHeaderDict,
                 requestBodyData: requestBodyData,
@@ -143,7 +143,7 @@ open class GatewayAPI {
 
         // do request
         let request = buildNewRequest(
-            HTTPMethod.POST,
+            HTTPMethod.post,
             urlString: requestURL,
             requestHeaderDict: requestHeaderDict,
             requestBodyData: nil,
@@ -372,7 +372,7 @@ open class GatewayAPI {
 
         // do request
         let request = buildNewRequest(
-            HTTPMethod.POST,
+            HTTPMethod.post,
             urlString: requestURL,
             requestHeaderDict: requestHeaderDict,
             requestBodyData: nil,

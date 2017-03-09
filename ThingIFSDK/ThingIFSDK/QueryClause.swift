@@ -8,6 +8,31 @@
 
 import Foundation
 
+private func makeQueryClauseArray(
+  _ clauses: [[String : Any]]) throws -> [QueryClause] {
+
+    return try clauses.map {
+        guard let type = $0["type"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        switch type {
+        case "eq":
+            return try EqualsClauseInQuery($0)
+        case "not":
+            return try NotEqualsClauseInQuery($0)
+        case "range":
+            return try RangeClauseInQuery($0)
+        case "and":
+            return try AndClauseInQuery($0)
+        case "or":
+            return try OrClauseInQuery($0)
+        default:
+            throw ThingIFError.jsonParseError
+        }
+    }
+}
+
 /** Base protocol for query clause struct. */
 public protocol QueryClause: BaseClause {
 
@@ -54,12 +79,37 @@ public struct EqualsClauseInQuery: QueryClause, BaseEquals {
     }
 }
 
-extension EqualsClauseInQuery: JsonSerializable {
+extension EqualsClauseInQuery: JsonObjectCompatible {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        // This method may not use so this method is not tested.
+        // If you want to use this method, please test this.
+        if jsonObject["type"] as? String == "eq" {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let field = jsonObject["field"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        let value = jsonObject["value"]
+
+        if let value = value as? Int {
+            self.init(field, intValue: value)
+        } else if let value = value as? Bool {
+            self.init(field, boolValue: value)
+        } else if let value = value as? String {
+            self.init(field, stringValue: value)
+        } else {
+            throw ThingIFError.jsonParseError
+        }
+    }
+
     /** Get Equals clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeJson() -> [ String : Any ] {
+    internal func makeJsonObject() -> [ String : Any ] {
         return [
           "type" : "eq",
           "field" : self.field,
@@ -85,15 +135,26 @@ public struct NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
     }
 }
 
-extension NotEqualsClauseInQuery: JsonSerializable {
+extension NotEqualsClauseInQuery: JsonObjectCompatible {
+    internal init(_ jsonObject: [String : Any]) throws {
+        // This method may not use so this method is not tested.
+        // If you want to use this method, please test this.
+        if jsonObject["type"] as? String != "not" {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(
+          try EqualsClauseInQuery(jsonObject["clause"] as! [String : Any]))
+    }
+
     /** Get Not Equals clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeJson() -> [ String : Any ] {
+    internal func makeJsonObject() -> [ String : Any ] {
         return [
           "type" : "not",
-          "clause" : self.equals.makeJson()
+          "clause" : self.equals.makeJsonObject()
         ] as [String : Any]
     }
 
@@ -136,7 +197,7 @@ public struct RangeClauseInQuery: QueryClause, BaseRange {
         }
     }
 
-    private init(
+    fileprivate init(
       _ field: String,
       lower: (limit: NSNumber, included: Bool)? = nil,
       upper: (limit: NSNumber, included: Bool)? = nil)
@@ -233,12 +294,44 @@ public struct RangeClauseInQuery: QueryClause, BaseRange {
     }
 }
 
-extension RangeClauseInQuery: JsonSerializable {
+extension RangeClauseInQuery: JsonObjectCompatible {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        // This method may not use so this method is not tested.
+        // If you want to use this method, please test this.
+        if jsonObject["type"] as? String != "range" {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let field = jsonObject["field"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        let lower: (NSNumber, Bool)?
+        let upper: (NSNumber, Bool)?
+        if let limit = jsonObject["lowerLimit"] as? NSNumber,
+             let included: Bool = jsonObject["lowerIncluded"] as? Bool {
+            lower = (limit, included)
+        } else {
+            lower = nil
+        }
+        if let limit = jsonObject["upperLimit"] as? NSNumber,
+             let included: Bool = jsonObject["upperIncluded"] as? Bool {
+            upper = (limit, included)
+        } else {
+            upper = nil
+        }
+        if lower == nil && upper == nil {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(field, lower: lower, upper: upper)
+    }
+
     /** Get Range clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeJson() -> [ String : Any ] {
+    internal func makeJsonObject() -> [ String : Any ] {
         var retval: [String : Any] = ["type": "range", "field": self.field]
         retval["upperLimit"] = self.upperLimit
         retval["upperIncluded"] = self.upperIncluded
@@ -280,16 +373,31 @@ public struct AndClauseInQuery: QueryClause, BaseAnd {
     }
 }
 
-extension AndClauseInQuery: JsonSerializable {
+extension AndClauseInQuery: JsonObjectCompatible {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        // This method may not use so this method is not tested.
+        // If you want to use this method, please test this.
+        if jsonObject["type"] as? String != "and" {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let clauses = jsonObject["clauses"] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(try makeQueryClauseArray(clauses))
+    }
+
     /** Get And clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeJson() -> [ String : Any ] {
+    internal func makeJsonObject() -> [ String : Any ] {
         return [
           "type": "and",
           "clauses":
-            self.clauses.map {($0 as! JsonSerializable).makeJson()}
+            self.clauses.map {($0 as! JsonObjectCompatible).makeJsonObject()}
         ] as [String : Any]
     }
 
@@ -326,16 +434,31 @@ public struct OrClauseInQuery: QueryClause, BaseOr {
     }
 }
 
-extension OrClauseInQuery: JsonSerializable {
+extension OrClauseInQuery: JsonObjectCompatible {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        // This method may not use so this method is not tested.
+        // If you want to use this method, please test this.
+        if jsonObject["type"] as? String != "or" {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let clauses = jsonObject["clauses"] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(try makeQueryClauseArray(clauses))
+    }
+
     /** Get Or clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    internal func makeJson() -> [ String : Any ] {
+    internal func makeJsonObject() -> [ String : Any ] {
         return [
           "type": "or",
           "clauses":
-            self.clauses.map {($0 as! JsonSerializable).makeJson()}
+            self.clauses.map {($0 as! JsonObjectCompatible).makeJsonObject()}
         ] as [String : Any]
     }
 
@@ -349,9 +472,18 @@ public struct AllClause: QueryClause {
 
 }
 
-extension AllClause: JsonSerializable {
+extension AllClause: JsonObjectCompatible {
 
-    internal func makeJson() -> [String : Any]{
+    internal init(_ jsonObject: [String : Any]) throws {
+        // This method may not use so this method is not tested.
+        // If you want to use this method, please test this.
+        if jsonObject["type"] as? String != "all" {
+            throw ThingIFError.jsonParseError
+        }
+        self.init()
+    }
+
+    internal func makeJsonObject() -> [String : Any]{
         return ["type": "all"]
     }
 }

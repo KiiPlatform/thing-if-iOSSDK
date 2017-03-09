@@ -26,7 +26,7 @@ class EqualClauseInTriggerTests: SmallTestBase {
         XCTAssertEqual("f", actual.field)
         XCTAssertEqual(1, actual.value as! Int)
 
-        let actualDict = actual.makeJson()
+        let actualDict = actual.makeJsonObject()
 
         XCTAssertEqual("eq", actualDict["type"] as! String)
         XCTAssertEqual("alias", actualDict["alias"] as! String)
@@ -41,7 +41,7 @@ class EqualClauseInTriggerTests: SmallTestBase {
         XCTAssertEqual("f", actual.field)
         XCTAssertEqual(true, actual.value as! Bool)
 
-        let actualDict = actual.makeJson()
+        let actualDict = actual.makeJsonObject()
 
         XCTAssertEqual("eq", actualDict["type"] as! String)
         XCTAssertEqual("alias", actualDict["alias"] as! String)
@@ -59,7 +59,7 @@ class EqualClauseInTriggerTests: SmallTestBase {
         XCTAssertEqual("f", actual.field)
         XCTAssertEqual(false, actual.value as! Bool)
 
-        let actualDict = actual.makeJson()
+        let actualDict = actual.makeJsonObject()
 
         XCTAssertEqual("eq", actualDict["type"] as! String)
         XCTAssertEqual("alias", actualDict["alias"] as! String)
@@ -77,7 +77,7 @@ class EqualClauseInTriggerTests: SmallTestBase {
         XCTAssertEqual("f", actual.field)
         XCTAssertEqual("string", actual.value as! String)
 
-        let actualDict = actual.makeJson()
+        let actualDict = actual.makeJsonObject()
 
         XCTAssertEqual("eq", actualDict["type"] as! String)
         XCTAssertEqual("alias", actualDict["alias"] as! String)

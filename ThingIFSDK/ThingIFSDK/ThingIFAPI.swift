@@ -62,7 +62,7 @@ open class ThingIFAPI: Equatable {
     /** Checks whether on boarding is done. */
     open var onboarded: Bool {
         get {
-            fatalError("TODO: implement me.")
+            return self.target != nil
         }
     }
 
@@ -118,43 +118,6 @@ open class ThingIFAPI: Equatable {
             thingType: options?.thingType,
             firmwareVersion: options?.firmwareVersion,
             thingProperties: options?.thingProperties,
-            layoutPosition: options?.layoutPosition,
-            dataGroupingInterval: options?.dataGroupingInterval) { (target, error) -> Void in
-            if error == nil {
-                self.saveToUserDefault()
-            }
-            completionHandler(target, error)
-        }
-        */
-    }
-
-    /** On board IoT Cloud with the specified thing ID.
-     Specified thing will be owned by owner who consumes this API.
-     (Specified on creation of ThingIFAPI instance.)
-     When you're sure that the on board process has been done,
-     this method is convenient.
-     If you are using a gateway, you need to use
-    `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
-    to onboard endnode instead.
-
-     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
-
-    - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
-    - Parameter thingPassword: Thing Password given by vendor.
-    Must be specified.
-    - Parameter options: Optional parameters inside.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
-     */
-    open func onboardWith(
-        thingID:String,
-        thingPassword:String,
-        options:OnboardWithThingIDOptions? = nil,
-        completionHandler: @escaping (Target?, ThingIFError?)-> Void
-        ) ->Void
-    {
-        fatalError("TODO: implement me.")
-        /*
-        _onboard(false, IDString: thingID, thingPassword: thingPassword,
             layoutPosition: options?.layoutPosition,
             dataGroupingInterval: options?.dataGroupingInterval) { (target, error) -> Void in
             if error == nil {
@@ -897,7 +860,8 @@ open class ThingIFAPI: Equatable {
     }
 
     func saveToUserDefault(){
-
+        // TODO: implement me.
+        /*
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
 
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(self.tag)
@@ -913,6 +877,7 @@ open class ThingIFAPI: Equatable {
             UserDefaults.standard.set(NSDictionary(dictionary: [key:data]), forKey: baseKey)
         }
         UserDefaults.standard.synchronize()
+        */
     }
 
     static func isLoadable(_ storedSDKVersion: String?) -> Bool {

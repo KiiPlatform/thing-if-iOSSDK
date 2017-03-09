@@ -9,108 +9,119 @@
 import Foundation
 extension ThingIFAPI {
 
-    /*
-    func _onboard(
-        _ byVendorThingID: Bool,
-        IDString: String,
+
+    /** On board IoT Cloud with the specified thing ID.
+     Specified thing will be owned by owner who consumes this API.
+     (Specified on creation of ThingIFAPI instance.)
+     When you're sure that the on board process has been done,
+     this method is convenient.
+     If you are using a gateway, you need to use
+    `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
+    to onboard endnode instead.
+
+     **Note**: You should not call onboard second time, after successfully onboarded. Otherwise, ThingIFError.ALREADY_ONBOARDED will be returned in completionHandler callback.
+
+    - Parameter thingID: Thing ID given by IoT Cloud. Must be specified.
+    - Parameter thingPassword: Thing Password given by vendor.
+    Must be specified.
+    - Parameter options: Optional parameters inside.
+    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
+     */
+    open func onboardWith(
+        thingID:String,
         thingPassword:String,
-        thingType:String? = nil,
-        firmwareVersion:String? = nil,
-        thingProperties:Dictionary<String, Any>? = nil,
-        layoutPosition:LayoutPosition? = nil,
-        dataGroupingInterval:DataGroupingInterval? = nil,
+        options:OnboardWithThingIDOptions? = nil,
         completionHandler: @escaping (Target?, ThingIFError?)-> Void
-        ) ->Void {
+        ) ->Void
+    {
+        if self.onboarded {
+            completionHandler(nil, ThingIFError.alreadyOnboarded)
+            return
+        }
 
-            if self.target != nil {
-                completionHandler(nil, ThingIFError.alreadyOnboarded)
-                return
-            }
-            
-            let requestURL = "\(baseURL)/thing-if/apps/\(appID)/onboardings"
-            
-            // genrate body
-            var requestBodyDict: Dictionary<String, Any> =
-              [
-                "thingPassword": thingPassword,
-                "owner": owner.typedID.toString()
-              ]
-            
-            // generate header
-            var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
-            
-            if byVendorThingID {
-                requestBodyDict["vendorThingID"] = IDString
-                requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
-            } else {
-                requestBodyDict["thingID"] = IDString
-                requestHeaderDict["Content-type"] = "application/vnd.kii.OnboardingWithThingIDByOwner+json"
-            }
+        var requestBody: [String : Any] = [
+            "thingID" : thingID,
+            "thingPassword" : thingPassword,
+            "owner" : self.owner.typedID.toString() ]
+        requestBody += options?.makeJsonObject() ?? [ : ]
 
-            requestBodyDict["thingType"] = thingType
-
-            requestBodyDict["firmwareVersion"] = firmwareVersion
-
-            requestBodyDict["thingProperties"] = thingProperties
-
-            requestBodyDict["layoutPosition"] = layoutPosition?.rawValue
-
-            requestBodyDict["dataGroupingInterval"] = dataGroupingInterval?.rawValue
-
-            do{
-                let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-                // do request
-                let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                    
-                    var target:Target?
-                    if let thingID = response?["thingID"] as? String{
-                        let accessToken = response?["accessToken"] as? String
-                        /* TODO:
-                            Idealy server should send vendorThingID as response of onboarding,
-                            and SDK should use the received vendorThingID.
-                            However, current server implementation does not send vendorThingID.
-                            So we used IDString if it is vendorThingID, otherwise we set it empty string.
-                            This behavior should be fixed after server fixed.
-                        */
-                        let vendorThingID: String
-                        if byVendorThingID {
-                            vendorThingID = IDString
-                        } else {
-                            vendorThingID = ""
-                        }
-                        if layoutPosition == LayoutPosition.gateway {
-                            target = Gateway(
-                                    thingID,
-                                    vendorThingID: vendorThingID,
-                                    accessToken: accessToken)
-                        } else if layoutPosition == LayoutPosition.endnode {
-                            target = EndNode(
-                                    thingID,
-                                    vendorThingID: vendorThingID,
-                                    accessToken: accessToken)
-                        } else {
-                            target = StandaloneThing(
-                                    thingID,
-                                    vendorThingID: vendorThingID,
-                                    accessToken: accessToken)
-                        }
-
-                        self.target = target
-                    }
-                    self.saveToUserDefault()
-                    DispatchQueue.main.async {
-                        completionHandler(target, error)
-                    }
-                })
-                let operation = IoTRequestOperation(request: request)
-                operationQueue.addOperation(operation)
-                
-            }catch(_){
-                kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-                completionHandler(nil, ThingIFError.jsonParseError)
-            }
+        onboard(
+          .mediaTypeOnboardingWithThingIdByOwnerRequest,
+          requestBody: requestBody,
+          layoutPosition: options?.layoutPosition,
+          completionHandler: completionHandler)
     }
 
+    private func onboard(
+      _ mediaType: MediaType,
+      requestBody: [String : Any],
+      layoutPosition: LayoutPosition?,
+      vendorThingID: String? = nil,
+      completionHandler: @escaping (Target?, ThingIFError?) -> Void) -> Void
+    {
+        let data: Data
+        do {
+            data = try JSONSerialization.data(
+              withJSONObject: requestBody,
+              options: JSONSerialization.WritingOptions(rawValue: 0))
+        } catch {
+            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+            completionHandler(nil, ThingIFError.jsonParseError)
+            return
+        }
+
+        operationQueue.addOperation(
+          IoTRequestOperation(
+            request: buildDefaultRequest(
+              .post,
+              urlString:
+                "\(self.baseURL)/thing-if/apps/\(self.appID)/onboardings",
+              requestHeaderDict:
+                [
+                  "authorization" : "Bearer \(owner.accessToken)",
+                  "content-type" : mediaType.rawValue
+                ],
+              requestBodyData: data) { response, error in
+                var target: Target?
+                var error2 = error
+                if error == nil {
+                    do {
+                        /* TODO:
+                         Idealy, server should send vendorThingID as
+                         response of onboarding, and SDK should use
+                         the received vendorThingID. However, current
+                         server implementation does not send
+                         vendorThingID. So we used IDString if it is
+                         vendorThingID, otherwise we set it empty
+                         string. This behavior should be fixed after
+                         server fixed.
+                        */
+                        self.target = try makeTargetThing(
+                          response!,
+                          layoutPosition: layoutPosition ?? .standalone,
+                          vendorThingID: vendorThingID)
+                        self.saveToUserDefault()
+                        target = self.target
+                    } catch (ThingIFError.jsonParseError) {
+                        // This is unexpected case.
+                        // If response body is not unexpected format,
+                        // this error is thrown
+                        kiiSevereLog("unexpected error")
+                        error2 = ThingIFError.jsonParseError
+                    } catch {
+                        // This case must not happen.
+                        kiiSevereLog("must not happen")
+                        error2 = ThingIFError.jsonParseError
+                    }
+                }
+                DispatchQueue.main.async { completionHandler(target, error2) }
+            }
+          )
+        )
+    }
+
+
+    /*
     func _onboardEndnodeWithGateway(
         _ pendingEndnode:PendingEndNode,
         endnodePassword:String,
