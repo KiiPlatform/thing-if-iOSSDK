@@ -11,6 +11,7 @@ import Foundation
 internal enum MediaType : String {
     case mediaTypeOnboardingWithThingIdByOwnerRequest =
            "application/vnd.kii.OnboardingWithThingIDByOwner+json"
+    case mediaTypeOnboardingWithVendorThingIdByOwnerRequest = "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
 }
 
 

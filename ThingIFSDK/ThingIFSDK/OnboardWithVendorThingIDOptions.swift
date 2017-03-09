@@ -41,3 +41,15 @@ public struct OnboardWithVendorThingIDOptions {
         self.layoutPosition = position
     }
 }
+
+extension OnboardWithVendorThingIDOptions: ToJsonObject {
+
+    internal func makeJsonObject() -> [String : Any]{
+        var retval: [String : Any] = [ : ]
+        retval["thingType"] = self.thingType
+        retval["firmwareVersion"] = self.firmwareVersion
+        retval["thingProperties"] = self.thingProperties
+        retval["layoutPosition"] = self.layoutPosition?.rawValue
+        return retval
+    }
+}

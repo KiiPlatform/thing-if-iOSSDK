@@ -36,17 +36,7 @@ public struct EndNode: TargetThing, Equatable {
     }
 }
 
-extension EndNode: JsonObjectCompatible {
-
-    internal func makeJsonObject() -> [String : Any] {
-        // This method may not use so this method is not tested.
-        // If you want to use this method, please test this.
-
-        var retval = ["thingID": self.thingID] as [String : Any]
-        retval["accessToken"] = self.accessToken
-        retval["vendorThingID"] = self.vendorThingID
-        return retval
-    }
+extension EndNode: FromJsonObject {
 
     init(_ jsonObject: [String : Any]) throws {
         guard let thingID = jsonObject["thingID"] as? String,
