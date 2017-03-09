@@ -18,13 +18,13 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         super.tearDown()
     }
 
-    func testOnboardWithThingIDFail() {
+    func testOnboardWithThingIDFail() throws {
         let expectation = self.expectation(description: "onboardWithThingID")
         let setting = TestSetting()
         let api = setting.api
         let owner = setting.owner
 
-        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+        sharedMockSession.requestVerifier = makeRequestVerifier() {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
 
             //verify request header
@@ -38,23 +38,16 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             )
 
             //verify request body
-            let requestBody: [String : String]
-            do {
-                requestBody = try JSONSerialization.jsonObject(
-                  with: request.httpBody!,
-                  options: JSONSerialization.ReadingOptions.allowFragments)
-                as! [String : String]
-            } catch {
-                XCTFail("request body must be deserializable.")
-                return
-            }
             XCTAssertEqual(
               [
                 "thingID": "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5",
                 "thingPassword": "dummyPassword",
                 "owner": owner.typedID.toString()
               ],
-              requestBody
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as! [String : String]
             )
 
             XCTAssertEqual(
@@ -83,7 +76,6 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             XCTFail("json must be serializable")
             return
         }
-        sharedMockSession.requestVerifier = requestVerifier
 
         iotSession = MockSession.self
         api.onboardWith(
@@ -94,17 +86,17 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
                 return
             }
             switch error! {
-                case .errorResponse(let actualErrorResponse):
-                    XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
-                    XCTAssertEqual(
-                      dict["errorCode"] as! String,
-                      actualErrorResponse.errorCode)
-                    XCTAssertEqual(
-                      dict["message"] as! String,
-                      actualErrorResponse.errorMessage)
-                default:
-                    XCTFail("invalid error")
-                    break
+            case .errorResponse(let actualErrorResponse):
+                XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
+                XCTAssertEqual(
+                  dict["errorCode"] as! String,
+                  actualErrorResponse.errorCode)
+                XCTAssertEqual(
+                  dict["message"] as! String,
+                  actualErrorResponse.errorMessage)
+            default:
+                XCTFail("invalid error")
+                break
             }
 
             expectation.fulfill()
@@ -117,7 +109,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
 
     }
 
-    func testOnboardWithThingIDAlreadyOnboardedError() {
+    func testOnboardWithThingIDAlreadyOnboardedError() throws {
         let expectation = self.expectation(
           description: "testOnboardWithThingID_already_onboarded_error")
         let setting = TestSetting()
@@ -157,7 +149,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         let options = OnboardWithThingIDOptions(.standalone)
 
         // verify request
-        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+        sharedMockSession.requestVerifier = makeRequestVerifier() {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
@@ -175,16 +167,6 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify request body
-            let requestBody: [String : String]
-            do {
-                requestBody = try JSONSerialization.jsonObject(
-                  with: request.httpBody!,
-                  options: JSONSerialization.ReadingOptions.allowFragments)
-                  as! [String : String]
-            } catch {
-                XCTFail("request body must be deserializable.")
-                return
-            }
             XCTAssertEqual(
               [
                 "owner": setting.owner.typedID.toString(),
@@ -192,7 +174,11 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
                 "thingPassword": password,
                 "layoutPosition": "STANDALONE"
               ],
-              requestBody)
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as! [String : String]
+            )
         }
 
         // mock response
@@ -213,19 +199,18 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             XCTFail("response body must be deserializable.")
             return
         }
-        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         setting.api.onboardWith(
           thingID: thingID,
           thingPassword: password,
           options: options) {
-              (target, error) in
-              XCTAssertNil(error)
-              XCTAssertNotNil(target)
-              XCTAssertEqual(target!.typedID.id, thingID)
-              XCTAssertEqual(target!.accessToken, accessToken)
-              expectation.fulfill()
+            (target, error) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(target)
+            XCTAssertEqual(target!.typedID.id, thingID)
+            XCTAssertEqual(target!.accessToken, accessToken)
+            expectation.fulfill()
         }
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
@@ -254,7 +239,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         let options = OnboardWithThingIDOptions(.gateway)
 
         // verify request
-        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+        sharedMockSession.requestVerifier = makeRequestVerifier() {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
@@ -272,16 +257,6 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify body
-            let requestBody: [String : String]
-            do {
-                requestBody = try JSONSerialization.jsonObject(
-                  with: request.httpBody!,
-                  options: JSONSerialization.ReadingOptions.allowFragments)
-                as! [String : String]
-            } catch {
-                XCTFail("request body must be deserializable.")
-                return
-            }
             XCTAssertEqual(
               [
                 "owner": setting.owner.typedID.toString(),
@@ -289,7 +264,11 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
                 "thingPassword": password,
                 "layoutPosition": "GATEWAY"
               ],
-              requestBody)
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as! [String : String]
+            )
         }
 
         // mock response
@@ -301,13 +280,12 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             httpVersion: nil,
             headerFields: nil),
           nil)
-        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         setting.api.onboardWith(
-            thingID: thingID,
-            thingPassword: password,
-            options: options) {
+          thingID: thingID,
+          thingPassword: password,
+          options: options) {
             (target, error) in
             XCTAssertNil(target)
             XCTAssertNotNil(error)
@@ -327,7 +305,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
     }
 
-    func testOnboardWithThingIDAndOptions404Error() {
+    func testOnboardWithThingIDAndOptions404Error() throws {
         let expectation = self.expectation(
           description: "testOnboardWithThingIDAndOptions404Error")
         let setting = TestSetting()
@@ -336,7 +314,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         let options = OnboardWithThingIDOptions(.endnode)
 
         // verify request
-        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+        sharedMockSession.requestVerifier = makeRequestVerifier() {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
@@ -354,16 +332,6 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify body
-            let requestBody: [String : String]
-            do {
-                requestBody = try JSONSerialization.jsonObject(
-                  with: request.httpBody!,
-                  options: JSONSerialization.ReadingOptions.allowFragments)
-                as! [String : String]
-            } catch {
-                XCTFail("request body must be deserializable.")
-                return
-            }
             XCTAssertEqual(
               [
                 "owner": setting.owner.typedID.toString(),
@@ -371,7 +339,11 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
                 "thingPassword": password,
                 "layoutPosition": "ENDNODE"
               ],
-              requestBody)
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as! [String : String]
+            )
         }
 
         // mock response
@@ -383,13 +355,12 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             httpVersion: nil,
             headerFields: nil),
           error: nil)
-        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         setting.api.onboardWith(
-            thingID: thingID,
-            thingPassword: password,
-            options: options) {
+          thingID: thingID,
+          thingPassword: password,
+          options: options) {
             (target, error) in
             XCTAssertNil(target)
             XCTAssertNotNil(error)
@@ -409,7 +380,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
     }
 
-    func testOnboardWithThingIDAndOptions500Error() {
+    func testOnboardWithThingIDAndOptions500Error() throws {
         let expectation = self.expectation(
           description: "testOnboardWithThingIDAndOptions500Error")
         let setting = TestSetting()
@@ -418,7 +389,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         let options = OnboardWithThingIDOptions(.standalone)
 
         // verify request
-        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+        sharedMockSession.requestVerifier = makeRequestVerifier() {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
 
             // verify path
@@ -435,16 +406,6 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
               ],
               request.allHTTPHeaderFields!)
 
-            let requestBody: [String : String]
-            do {
-                requestBody = try JSONSerialization.jsonObject(
-                  with: request.httpBody!,
-                  options: JSONSerialization.ReadingOptions.allowFragments)
-                as! [String : String]
-            } catch {
-                XCTFail("request body must be deserializable.")
-                return
-            }
             XCTAssertEqual(
               [
                 "owner": setting.owner.typedID.toString(),
@@ -452,7 +413,11 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
                 "thingPassword": password,
                 "layoutPosition": "STANDALONE"
               ],
-              requestBody)
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as! [String : String]
+            )
         }
 
         // mock response
@@ -465,13 +430,12 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             httpVersion: nil,
             headerFields: nil),
           nil)
-        sharedMockSession.requestVerifier = requestVerifier
         iotSession = MockSession.self
 
         setting.api.onboardWith(
-            thingID: thingID,
-            thingPassword: password,
-            options: options) {
+          thingID: thingID,
+          thingPassword: password,
+          options: options) {
             (target, error) in
             XCTAssertNil(target)
             XCTAssertNotNil(error)
@@ -549,9 +513,9 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
 
         setting.api.onboardWith(
-            thingID: thingID,
-            thingPassword: password,
-            options: options) {
+          thingID: thingID,
+          thingPassword: password,
+          options: options) {
             (target, error) in
             XCTAssertNil(target)
             XCTAssertNotNil(error)
