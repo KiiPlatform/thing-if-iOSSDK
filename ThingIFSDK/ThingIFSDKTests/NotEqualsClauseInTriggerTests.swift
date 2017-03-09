@@ -54,7 +54,7 @@ class NotEqualsClauseInTriggerTests: SmallTestBase {
             let label = "label \(index)"
             XCTAssertEqual(expected.field, actual.equals.field, label)
             assertEqualsAny(expected.value, actual.equals.value, label)
-            assertEqualsDictionary(
+            XCTAssertEqual(
               [
                 "type": "not",
                 "clause": [
@@ -63,7 +63,9 @@ class NotEqualsClauseInTriggerTests: SmallTestBase {
                   "field": expected.field,
                   "value": expected.value
                 ]
-              ], actual.makeJsonObject(), label)
+              ] as NSDictionary,
+              actual.makeJsonObject() as NSDictionary,
+              label)
         }
     }
 

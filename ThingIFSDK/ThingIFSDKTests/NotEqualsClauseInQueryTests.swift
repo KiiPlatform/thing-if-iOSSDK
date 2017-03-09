@@ -49,7 +49,7 @@ class NotEqualsClauseInQueryTests: SmallTestBase {
             let actual = NotEqualsClauseInQuery(input)
             XCTAssertEqual(expected.field, actual.equals.field)
             assertEqualsAny(expected.value, actual.equals.value)
-            assertEqualsDictionary(
+            XCTAssertEqual(
               [
                 "type": "not",
                 "clause": [
@@ -57,7 +57,8 @@ class NotEqualsClauseInQueryTests: SmallTestBase {
                   "field": expected.field,
                   "value": expected.value
                 ]
-              ], actual.makeJsonObject())
+              ] as NSDictionary,
+              actual.makeJsonObject() as NSDictionary)
         }
     }
 

@@ -55,7 +55,9 @@ class CommandTests: SmallTestBase {
         XCTAssertEqual(modified, actual.modified)
         XCTAssertEqual("title", actual.title)
         XCTAssertEqual("commandDescription", actual.commandDescription)
-        assertEqualsDictionary(metadata, actual.metadata)
+        XCTAssertEqual(
+          metadata as! [String : String],
+          actual.metadata as! [String : String])
     }
 
     func testOptinalNil() {

@@ -104,9 +104,9 @@ class AndClauseInQueryTests: SmallTestBase {
             XCTAssertEqual(
               (expected["clauses"] as! [[String : Any]]).count,
               actual.clauses.count)
-            assertEqualsDictionary(
-              expected,
-              actual.makeJsonObject(),
+            XCTAssertEqual(
+              expected as NSDictionary,
+              actual.makeJsonObject() as NSDictionary,
               "label \(index)")
         }
     }
@@ -271,9 +271,9 @@ class AndClauseInQueryTests: SmallTestBase {
             XCTAssertEqual(
               (expected["clauses"] as! [[String : Any]]).count,
               actual.clauses.count)
-            assertEqualsDictionary(
-              expected,
-              actual.makeJsonObject(),
+            XCTAssertEqual(
+              expected as NSDictionary,
+              actual.makeJsonObject() as NSDictionary,
               "label \(index)")
         }
     }
@@ -293,7 +293,7 @@ class AndClauseInQueryTests: SmallTestBase {
           OrClauseInQuery(EqualsClauseInQuery("f", stringValue: "str")))
 
         XCTAssertEqual(6, actual.clauses.count)
-        assertEqualsDictionary(
+        XCTAssertEqual(
           [
             "type": "and",
             "clauses": [
@@ -318,6 +318,7 @@ class AndClauseInQueryTests: SmallTestBase {
                 "clauses": [["type": "eq", "field": "f", "value": "str"]],
               ]
             ]
-          ], actual.makeJsonObject())
+          ] as NSDictionary,
+          actual.makeJsonObject() as NSDictionary)
     }
 }
