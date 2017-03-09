@@ -14,7 +14,7 @@ extension ThingIFAPI {
     /** Onboard IoT Cloud with the specified thing ID.
      Specified thing will be owned by owner who consumes this API.
      (Specified on creation of ThingIFAPI instance.)
-     When you're sure that the on board process has been done,
+     When you're sure that the onboard process has been done,
      this method is convenient.
      If you are using a gateway, you need to use
     `ThingIFAPI.onboard(pendingEndnode:endnodePassword:options:completionHandler:)`
@@ -26,7 +26,7 @@ extension ThingIFAPI {
     - Parameter thingPassword: Thing Password given by vendor.
     Must be specified.
     - Parameter options: Optional parameters inside.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
+    - Parameter completionHandler: A closure to be executed once onboard has finished. The closure takes 2 arguments: an target, an ThingIFError
      */
     open func onboardWith(
         thingID:String,
@@ -53,7 +53,7 @@ extension ThingIFAPI {
           completionHandler: completionHandler)
     }
 
-    /** On board IoT Cloud with the specified vendor thing ID.
+    /** Onboard IoT Cloud with the specified vendor thing ID.
      Specified thing will be owned by owner who consumes this API.
      (Specified on creation of ThingIFAPI instance.)
 
@@ -66,7 +66,7 @@ extension ThingIFAPI {
     - Parameter vendorThingID: Thing ID given by vendor. Must be specified.
     - Parameter thingPassword: Thing Password given by vendor. Must be specified.
     - Parameter options: Optional parameters inside.
-    - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an target, an ThingIFError
+    - Parameter completionHandler: A closure to be executed once onboard has finished. The closure takes 2 arguments: an target, an ThingIFError
     */
     open func onboardWith(
         vendorThingID:String,
