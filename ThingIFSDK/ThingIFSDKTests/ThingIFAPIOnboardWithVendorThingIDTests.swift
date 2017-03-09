@@ -62,18 +62,18 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify request body
-            self.assertEqualsDictionary(
+            XCTAssertEqual(
               [
                 "vendorThingID": vendorThingID,
                 "thingPassword": thingPassword,
                 "owner": owner.typedID.toString(),
                 "thingType": thingType,
                 "thingProperties": thingProperties
-              ],
+              ] as NSDictionary,
               try JSONSerialization.jsonObject(
                 with: request.httpBody!,
                 options: JSONSerialization.ReadingOptions.allowFragments)
-                as? [String : Any]
+                as? NSDictionary
             )
         }
 
@@ -159,18 +159,18 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify request body
-            self.assertEqualsDictionary(
+            XCTAssertEqual(
               [
                 "vendorThingID": vendorThingID,
                 "thingPassword": thingPassword,
                 "owner": owner.typedID.toString(),
                 "thingType":thingType,
                 "thingProperties": thingProperties
-              ],
+              ] as NSDictionary,
               try JSONSerialization.jsonObject(
                   with: request.httpBody!,
                   options: JSONSerialization.ReadingOptions.allowFragments)
-                as? [String : Any])
+                as? NSDictionary)
         }
         iotSession = MockSession.self
 
@@ -259,7 +259,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify request body
-            self.assertEqualsDictionary(
+            XCTAssertEqual(
               [
                 "owner": setting.owner.typedID.toString(),
                 "vendorThingID": vendorThingID,
@@ -268,11 +268,11 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 "firmwareVersion": firmwareVersion,
                 "thingProperties": thingProperties,
                 "layoutPosition": "STANDALONE"
-              ],
+              ] as NSDictionary,
               try JSONSerialization.jsonObject(
                 with: request.httpBody!,
                 options: JSONSerialization.ReadingOptions.allowFragments)
-                as? [String : Any])
+                as? NSDictionary)
         }
         iotSession = MockSession.self
 
@@ -331,7 +331,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify body
-            self.assertEqualsDictionary(
+            XCTAssertEqual(
               [
                 "owner": setting.owner.typedID.toString(),
                 "vendorThingID": vendorThingID,
@@ -339,11 +339,11 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 "thingType": setting.thingType,
                 "thingProperties": thingProperties,
                 "layoutPosition": "GATEWAY"
-              ],
+              ] as NSDictionary,
               try JSONSerialization.jsonObject(
                 with: request.httpBody!,
                 options: JSONSerialization.ReadingOptions.allowFragments)
-                as? [String : Any])
+                as? NSDictionary)
         }
 
         // mock response
@@ -416,7 +416,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify body
-            self.assertEqualsDictionary(
+            XCTAssertEqual(
               [
                 "owner": setting.owner.typedID.toString(),
                 "vendorThingID": vendorThingID,
@@ -424,11 +424,11 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 "thingType": setting.thingType,
                 "thingProperties": thingProperties,
                 "layoutPosition": "ENDNODE"
-              ],
+              ] as NSDictionary,
               try JSONSerialization.jsonObject(
                 with: request.httpBody!,
                 options: JSONSerialization.ReadingOptions.allowFragments)
-                as? [String : Any])
+                as? NSDictionary)
         }
 
         // mock response
@@ -500,7 +500,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
               request.allHTTPHeaderFields!)
 
             //verify body
-            self.assertEqualsDictionary(
+            XCTAssertEqual(
               [
                 "owner": setting.owner.typedID.toString(),
                 "vendorThingID": vendorThingID,
@@ -508,11 +508,11 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 "thingType": setting.thingType,
                 "thingProperties": thingProperties,
                 "layoutPosition": "STANDALONE"
-              ],
+              ] as NSDictionary,
               try JSONSerialization.jsonObject(
                 with: request.httpBody!,
                 options: JSONSerialization.ReadingOptions.allowFragments)
-                as? [String : Any])
+                as? NSDictionary)
         }
 
         // mock response
