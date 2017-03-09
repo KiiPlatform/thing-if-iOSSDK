@@ -60,22 +60,17 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
           "message" :
             "There are validation errors: password - password is required.",
           "invalidFields":["password": "password is required"]]
-        do{
-            sharedMockSession.mockResponse = (
-              try JSONSerialization.data(
-                withJSONObject: dict,
-                options: .prettyPrinted),
-              HTTPURLResponse(
-                url:
-                  URL(string: "https://api-development-jp.internal.kii.com")!,
-                statusCode: 400,
-                httpVersion: nil,
-                headerFields: nil),
-              nil)
-        } catch {
-            XCTFail("json must be serializable")
-            return
-        }
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: dict,
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url:
+              URL(string: "https://api-development-jp.internal.kii.com")!,
+            statusCode: 400,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
 
         iotSession = MockSession.self
         api.onboardWith(
@@ -139,8 +134,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
     }
 
-    func testOnboardWithThingIDAndOptionsSuccess()
-    {
+    func testOnboardWithThingIDAndOptionsSuccess() throws {
         let expectation = self.expectation(
           description: "testOnboardWithThingIDAndOptionsSuccess")
         let setting = TestSetting()
@@ -183,22 +177,17 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
 
         // mock response
         let accessToken = "dummyAccessToken"
-        do {
-            sharedMockSession.mockResponse =
-              (try JSONSerialization.data(
-                 withJSONObject:
-                   ["thingID": thingID, "accessToken": accessToken],
-                 options: .prettyPrinted),
-               HTTPURLResponse(
-                 url: URL(string:setting.app.baseURL)!,
-                 statusCode: 200,
-                 httpVersion: nil,
-                 headerFields: nil),
-               nil)
-        } catch {
-            XCTFail("response body must be deserializable.")
-            return
-        }
+        sharedMockSession.mockResponse =
+          (try JSONSerialization.data(
+             withJSONObject:
+               ["thingID": thingID, "accessToken": accessToken],
+             options: .prettyPrinted),
+           HTTPURLResponse(
+             url: URL(string:setting.app.baseURL)!,
+             statusCode: 200,
+             httpVersion: nil,
+             headerFields: nil),
+           nil)
         iotSession = MockSession.self
 
         setting.api.onboardWith(
@@ -219,18 +208,12 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             }
         }
 
-        do {
-            let storedAPI =
-              try ThingIFAPI.loadWithStoredInstance(setting.api.tag)
-            XCTAssertEqual(setting.api, storedAPI)
-        } catch {
-            XCTFail("fail to load API")
-        }
-
+        XCTAssertEqual(
+          setting.api,
+          try ThingIFAPI.loadWithStoredInstance(setting.api.tag))
     }
 
-    func testOnboardWithThingIDAndOptions403Error()
-    {
+    func testOnboardWithThingIDAndOptions403Error() throws {
         let expectation = self.expectation(
           description: "testOnboardWithThingIDAndOptions403Error")
         let setting = TestSetting()
@@ -455,8 +438,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
     }
 
-    func testOnboardWithThingIDAndOptionsTwiceTest()
-    {
+    func testOnboardWithThingIDAndOptionsTwiceTest() throws {
         let expectation = self.expectation(
           description: "testOnboardWithThingIDAndOptionsTwiceTest")
         let setting = TestSetting()
@@ -465,19 +447,11 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         let accessToken = "dummyAccessToken"
         let options = OnboardWithThingIDOptions(.standalone)
 
-        let responseBody: Data
-        do {
-            responseBody = try JSONSerialization.data(
-              withJSONObject: ["thingID": thingID, "accessToken": accessToken],
-              options: .prettyPrinted)
-        } catch {
-            XCTFail("response body must be deserializable.")
-            return
-        }
-
         // mock response
         sharedMockSession.mockResponse = (
-          responseBody,
+          try JSONSerialization.data(
+              withJSONObject: ["thingID": thingID, "accessToken": accessToken],
+              options: .prettyPrinted),
           HTTPURLResponse(
             url: URL(string:setting.app.baseURL)!,
             statusCode: 200,
@@ -504,13 +478,9 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             }
         }
 
-        do {
-            let storedAPI =
-              try ThingIFAPI.loadWithStoredInstance(setting.api.tag)
-            XCTAssertEqual(setting.api, storedAPI)
-        } catch {
-            XCTFail("fail to load API")
-        }
+        XCTAssertEqual(
+          setting.api,
+          try ThingIFAPI.loadWithStoredInstance(setting.api.tag))
 
         setting.api.onboardWith(
           thingID: thingID,
@@ -527,14 +497,9 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             }
         }
 
-        do {
-            let storedAPI =
-              try ThingIFAPI.loadWithStoredInstance(setting.api.tag)
-            XCTAssertEqual(setting.api, storedAPI)
-        } catch {
-            XCTFail("fail to load API")
-        }
-
+        XCTAssertEqual(
+          setting.api,
+          try ThingIFAPI.loadWithStoredInstance(setting.api.tag))
     }
 
 }
