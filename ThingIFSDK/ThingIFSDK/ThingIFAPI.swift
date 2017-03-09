@@ -39,11 +39,23 @@ open class ThingIFAPI: Equatable {
 
     let operationQueue = OperationQueue()
     /** URL of KiiApps Server */
-    open let baseURL: String
+    open var baseURL: String {
+        get {
+            return self.app.baseURL
+        }
+    }
     /** The application ID found in your Kii developer console */
-    open let appID: String
+    open var appID: String {
+        get {
+            return self.app.appID
+        }
+    }
     /** The application key found in your Kii developer console */
-    open let appKey: String
+    open var appKey: String {
+        get {
+            return self.app.appKey
+        }
+    }
     /** Kii Cloud Application */
     open let app: KiiApp
     /** owner of target */
@@ -80,9 +92,6 @@ open class ThingIFAPI: Equatable {
       tag : String? = nil)
     {
         self.app = app
-        self.baseURL = app.baseURL
-        self.appID = app.appID
-        self.appKey = app.appKey
         self.owner = owner
         self.target = target
         self.tag = tag
