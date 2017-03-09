@@ -20,6 +20,8 @@ class AllClauseTests: SmallTestBase {
     }
 
     func test() {
-        assertEqualsDictionary(["type": "all"], AllClause().makeJsonObject())
+        XCTAssertEqual(
+          ["type": "all"],
+          AllClause().makeJsonObject() as! [String : String])
     }
 }

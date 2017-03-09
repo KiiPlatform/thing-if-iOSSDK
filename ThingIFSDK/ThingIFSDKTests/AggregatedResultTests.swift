@@ -35,9 +35,9 @@ class AggregatedResultTests: SmallTestBase {
         XCTAssertEqual(from, actual.timeRange.from)
         XCTAssertEqual(to, actual.timeRange.to)
         XCTAssertEqual(1, actual.aggregatedObjects.count)
-        assertEqualsDictionary(
+        XCTAssertEqual(
           ["key1": "value1"],
-          actual.aggregatedObjects[0].state)
+          actual.aggregatedObjects[0].state as! [String : String])
         XCTAssertEqual(createdAt, actual.aggregatedObjects[0].createdAt)
     }
 
@@ -57,9 +57,9 @@ class AggregatedResultTests: SmallTestBase {
         XCTAssertEqual(from, actual.timeRange.from)
         XCTAssertEqual(to, actual.timeRange.to)
         XCTAssertEqual(1, actual.aggregatedObjects.count)
-        assertEqualsDictionary(
+        XCTAssertEqual(
           ["key1": "value1"],
-          actual.aggregatedObjects[0].state)
+          actual.aggregatedObjects[0].state as! [String : String])
         XCTAssertEqual(createdAt, actual.aggregatedObjects[0].createdAt)
     }
 }

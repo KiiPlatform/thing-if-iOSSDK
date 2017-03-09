@@ -146,41 +146,6 @@ extension XCTestCase {
         }
     }
 
-    func assertEqualsDictionary(
-      _ expected: @autoclosure () throws -> [String : Any]?,
-      _ actual: @autoclosure () throws -> [String : Any]?,
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        let expected2: [String : Any]?
-        do {
-            expected2 = try expected()
-        } catch let error {
-            XCTFail(error as! String, file: file, line: line)
-            return
-        }
-        let actual2: [String : Any]?
-        do {
-            actual2 = try actual()
-        } catch let error {
-            XCTFail(error as! String, file: file, line: line)
-            return
-        }
-
-        assertOnlyOneNil(expected2, actual2, message, file, line)
-        if expected2 == nil && actual2 == nil {
-            return
-        }
-
-        assertEqualsWrapper(
-          NSDictionary(dictionary: expected2!),
-          NSDictionary(dictionary: actual2!),
-          message,
-          file: file,
-          line: line)
-    }
-
     func verifyArray(_ expected: [Any]?,
                      actual: [Any]?,
                      message: String? = nil)

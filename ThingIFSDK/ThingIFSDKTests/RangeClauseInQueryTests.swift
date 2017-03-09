@@ -104,7 +104,9 @@ class RangeClauseInQueryTests: SmallTestBase {
             dict["lowerIncluded"] = expected.lower?.included
             dict["upperLimit"] = expected.upper?.limit
             dict["upperIncluded"] = expected.upper?.included
-            assertEqualsDictionary(dict, actual.makeJsonObject())
+            XCTAssertEqual(
+              dict as NSDictionary,
+              actual.makeJsonObject() as NSDictionary)
         }
 
     }
@@ -200,7 +202,9 @@ class RangeClauseInQueryTests: SmallTestBase {
             dict["lowerIncluded"] = expected.lower?.included
             dict["upperLimit"] = expected.upper?.limit
             dict["upperIncluded"] = expected.upper?.included
-            assertEqualsDictionary(dict, actual.makeJsonObject())
+            XCTAssertEqual(
+              dict as NSDictionary,
+              actual.makeJsonObject() as NSDictionary)
         }
 
     }

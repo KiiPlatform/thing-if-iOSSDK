@@ -29,7 +29,9 @@ class ServerCodeTests: SmallTestBase {
         XCTAssertEqual("endpoint", actual.endpoint)
         XCTAssertEqual("executorAccessToken", actual.executorAccessToken)
         XCTAssertEqual("targetAppID", actual.targetAppID)
-        assertEqualsDictionary(["key" : "value"], actual.parameters)
+        XCTAssertEqual(
+          ["key" : "value"],
+          actual.parameters as! [String : String])
     }
 
     func testOptionalNil() {

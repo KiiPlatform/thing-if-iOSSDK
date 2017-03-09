@@ -145,9 +145,9 @@ class OrClauseInTriggerTests: SmallTestBase {
             XCTAssertEqual(
               (expected["clauses"] as! [[String : Any]]).count,
               actual.clauses.count)
-            assertEqualsDictionary(
-              expected,
-              actual.makeJsonObject(),
+            XCTAssertEqual(
+              expected as NSDictionary,
+              actual.makeJsonObject() as NSDictionary,
               "label \(index)")
         }
     }
@@ -336,9 +336,9 @@ class OrClauseInTriggerTests: SmallTestBase {
             XCTAssertEqual(
               (expected["clauses"] as! [[String : Any]]).count,
               actual.clauses.count)
-            assertEqualsDictionary(
-              expected,
-              actual.makeJsonObject(),
+            XCTAssertEqual(
+              expected as NSDictionary,
+              actual.makeJsonObject() as NSDictionary,
               "label \(index)")
         }
     }
@@ -366,7 +366,7 @@ class OrClauseInTriggerTests: SmallTestBase {
                               stringValue: "str")))
 
         XCTAssertEqual(5, actual.clauses.count)
-        assertEqualsDictionary(
+        XCTAssertEqual(
           [
             "type": "or",
             "clauses": [
@@ -397,6 +397,7 @@ class OrClauseInTriggerTests: SmallTestBase {
                 ],
               ]
             ]
-          ], actual.makeJsonObject())
+          ] as NSDictionary,
+          actual.makeJsonObject() as NSDictionary)
     }
 }

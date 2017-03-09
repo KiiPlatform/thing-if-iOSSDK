@@ -81,9 +81,9 @@ class OnboardWithVendorThingIDOptionsTests: SmallTestBase {
               expected.firmwareVersion,
               actual.firmwareVersion,
               "\(index)")
-            assertEqualsDictionary(
-              expected.thingProperties,
-              actual.thingProperties,
+            XCTAssertEqual(
+              expected.thingProperties as NSDictionary?,
+              actual.thingProperties as NSDictionary?,
               "\(index)")
             XCTAssertEqual(
               expected.layoutPosition,

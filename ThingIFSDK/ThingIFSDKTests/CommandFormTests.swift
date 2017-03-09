@@ -70,13 +70,15 @@ class CommandFormTests: SmallTestBase {
             action: [ "action1" : [ "arg1" : "value1", "arg2": "value2" ] ]
           )
         ]
-        let metadata: [String : Any] = [ "key1" : "value1", "key2" : "value2" ]
+        let metadata = [ "key1" : "value1", "key2" : "value2" ]
         let commandForm = CommandForm(actions,
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
         XCTAssertEqual(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
-        assertEqualsDictionary(commandForm.metadata, metadata)
+        XCTAssertEqual(
+          commandForm.metadata as! [String : String],
+          metadata as [String : String])
     }
 
     func testInitWithTitleAndDescription() {
@@ -111,7 +113,9 @@ class CommandFormTests: SmallTestBase {
         XCTAssertEqual(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
-        assertEqualsDictionary(commandForm.metadata, metadata)
+        XCTAssertEqual(
+          commandForm.metadata as! [String : String],
+          metadata as! [String : String])
     }
 
     func testInitWithDescriptionAndMetadata() {
@@ -129,7 +133,9 @@ class CommandFormTests: SmallTestBase {
         XCTAssertEqual(commandForm.actions, actions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
-        assertEqualsDictionary(commandForm.metadata, metadata)
+        XCTAssertEqual(
+          commandForm.metadata as! [String : String],
+          metadata as! [String : String])
     }
 
     func testInitWithAllFields() {
@@ -148,7 +154,9 @@ class CommandFormTests: SmallTestBase {
         XCTAssertEqual(commandForm.actions, actions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
-        assertEqualsDictionary(commandForm.metadata, metadata)
+        XCTAssertEqual(
+          commandForm.metadata as! [String : String],
+          metadata as! [String : String])
     }
 
 }
