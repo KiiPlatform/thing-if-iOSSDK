@@ -11,7 +11,12 @@ import Foundation
 private var typeMap: [ String : Serializable.Type] =
   [
     String(describing: ThingIFAPI.self) : ThingIFAPI.self,
-    String(describing: KiiApp.self) : KiiApp.self
+    String(describing: KiiApp.self) : KiiApp.self,
+    String(describing: Owner.self) : Owner.self,
+    String(describing: TypedID.self) : TypedID.self,
+    String(describing: StandaloneThing.self) : StandaloneThing.self,
+    String(describing: Gateway.self) : Gateway.self,
+    String(describing: EndNode.self) : EndNode.self,
   ]
 
 internal struct Coder {

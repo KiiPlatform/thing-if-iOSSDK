@@ -73,7 +73,8 @@ extension ThingIFAPI {
                 }
 
                 if let data = dict[key] as? Data {
-                    if let savedIoTAPI = NSKeyedUnarchiver.unarchiveObject(with: data) as? ThingIFAPI {
+                    if let savedIoTAPI =
+                         ThingIFAPI.deserialize(Decoder(data)) as? ThingIFAPI {
                         return savedIoTAPI
                     }else{
                         throw ThingIFError.invalidStoredApi
@@ -119,13 +120,13 @@ extension ThingIFAPI {
     }
 
     internal func saveToUserDefault(){
-        // TODO: implement me.
-        /*
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
 
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(self.tag)
         let key = ThingIFAPI.getStoredInstanceKey(self.tag)
-        let data = NSKeyedArchiver.archivedData(withRootObject: self)
+        var coder = Coder()
+        serialize(&coder)
+        let data = coder.finishCoding()
 
         if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
             let dict  = tempdict.mutableCopy() as! NSMutableDictionary
@@ -136,7 +137,6 @@ extension ThingIFAPI {
             UserDefaults.standard.set(NSDictionary(dictionary: [key:data]), forKey: baseKey)
         }
         UserDefaults.standard.synchronize()
-        */
     }
 
     static func isLoadable(_ storedSDKVersion: String?) -> Bool {
@@ -163,4 +163,25 @@ extension ThingIFAPI {
         return true
     }
 
+}
+
+extension ThingIFAPI: Serializable {
+
+    internal func serialize(_ coder: inout Coder) -> Void {
+        coder.encode(self.app, forKey: "app")
+        coder.encode(self.owner, forKey: "owner")
+        coder.encode(self.installationID, forKey: "_installationID")
+        coder.encode(self.target as? Serializable, forKey: "_target")
+        coder.encode(self.tag, forKey: "tag")
+    }
+
+    internal static func deserialize(_ decoder: Decoder) -> Serializable? {
+        let retval = ThingIFAPI(
+          decoder.decodeSerializable(forKey: "app") as! KiiApp,
+          owner: decoder.decodeSerializable(forKey: "owner") as! Owner,
+          target: decoder.decodeSerializable(forKey: "_target") as? Target,
+          tag: decoder.decodeString(forKey: "tag"))
+        retval.installationID = decoder.decodeString(forKey: "_installationID")
+        return retval
+    }
 }
