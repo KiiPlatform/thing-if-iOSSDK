@@ -10,31 +10,21 @@ import Foundation
 
 extension ThingIFAPI {
 
-    private static var SHARED_NSUSERDEFAULT_KEY_INSTANCE: String {
-        get {
-            return "ThingIFAPI_INSTANCE"
-        }
+    private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "ThingIFAPI_INSTANCE"
+    private static let SHARED_NSUSERDEFAULT_SDK_VERSION_KEY =
+      "ThingIFAPI_VERSION"
+    private static let MINIMUM_LOADABLE_SDK_VERSION =  "1.0.0"
+
+    private static func getStoredInstanceKey(_ tag : String?) -> String {
+        return SHARED_NSUSERDEFAULT_KEY_INSTANCE +
+          (tag == nil ? "" : "_\(tag!)")
     }
 
-    private static func getStoredInstanceKey(_ tag : String?) -> String{
-        return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag!)")
+    private static func getStoredSDKVersionKey(_ tag : String?) -> String {
+        return SHARED_NSUSERDEFAULT_SDK_VERSION_KEY +
+          (tag == nil ? "" : "_\(tag!)")
     }
 
-    private static var SHARED_NSUSERDEFAULT_SDK_VERSION_KEY: String {
-        get {
-            return "ThingIFAPI_VERSION"
-        }
-    }
-
-    private static func getStoredSDKVersionKey(_ tag : String?) -> String{
-        return SHARED_NSUSERDEFAULT_SDK_VERSION_KEY + (tag == nil ? "" : "_\(tag!)")
-    }
-
-    private static var MINIMUM_LOADABLE_SDK_VERSION: String {
-        get {
-            return "1.0.0"
-        }
-    }
 
     // MARK: - Persistence.
 
@@ -56,7 +46,9 @@ extension ThingIFAPI {
     - Parameter tag: tag of the ThingIFAPI instance
     - Returns: ThingIFAPI instance.
     */
-    open static func loadWithStoredInstance(_ tag : String? = nil) throws -> ThingIFAPI?{
+    open static func loadWithStoredInstance(
+      _ tag : String? = nil) throws -> ThingIFAPI?
+    {
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(tag)
         let key = ThingIFAPI.getStoredInstanceKey(tag)
@@ -67,7 +59,7 @@ extension ThingIFAPI {
             throw ThingIFError.apiNotStored(tag: tag)
         }
 
-        if dict[key] != nil  {
+        if dict[key] == nil  {
             throw ThingIFError.apiNotStored(tag: tag)
         }
 
@@ -106,7 +98,7 @@ extension ThingIFAPI {
     /** Remove saved specified instance in the NSUserDefaults.
     - Parameter tag: tag of the ThingIFAPI instance or nil for default tag
     */
-    open static func removeStoredInstances(_ tag : String?=nil){
+    open static func removeStoredInstances(_ tag : String?=nil) -> Void {
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(tag)
         let key = ThingIFAPI.getStoredInstanceKey(tag)
@@ -118,11 +110,11 @@ extension ThingIFAPI {
         }
     }
 
-    internal func saveToUserDefault(){
+    internal func saveToUserDefault() -> Void {
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(self.tag)
         let key = ThingIFAPI.getStoredInstanceKey(self.tag)
+
         var coder = Coder()
         serialize(&coder)
         let data = coder.finishCoding()
@@ -131,7 +123,7 @@ extension ThingIFAPI {
             dict[versionKey] = SDKVersion.sharedInstance.versionString
             dict[key] = data
             UserDefaults.standard.set(dict, forKey: baseKey)
-        }else{
+        } else {
             UserDefaults.standard.set([key:data], forKey: baseKey)
         }
         UserDefaults.standard.synchronize()
@@ -147,7 +139,8 @@ extension ThingIFAPI {
             return false
         }
 
-        let minimumLoadableVersions = MINIMUM_LOADABLE_SDK_VERSION.components(separatedBy: ".")
+        let minimumLoadableVersions =
+          MINIMUM_LOADABLE_SDK_VERSION.components( separatedBy: ".")
         for i in 0..<3 {
             let actual = Int(actualVersions[i])!
             let expect = Int(minimumLoadableVersions[i])!
