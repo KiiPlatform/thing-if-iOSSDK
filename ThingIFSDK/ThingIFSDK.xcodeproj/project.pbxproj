@@ -70,6 +70,7 @@
 		B63FC8AE1CEEDBFF0042C747 /* ThingIFSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */; };
 		B63FC8B51CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */; };
 		B66729351E724D7B007E3019 /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66729341E724D7B007E3019 /* Serializable.swift */; };
+		B66729371E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66729361E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift */; };
 		B673C0051CF81CEC00AEF519 /* TestSetting.plist in Resources */ = {isa = PBXBuildFile; fileRef = B673C0041CF81CEC00AEF519 /* TestSetting.plist */; };
 		B68D7BE11CF8242900D69149 /* LargeTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68D7BE01CF8242900D69149 /* LargeTestBase.swift */; };
 		B6A047161E3B379200D85A1E /* AliasAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047151E3B379200D85A1E /* AliasAction.swift */; };
@@ -220,6 +221,7 @@
 		B63FC8AD1CEEDBFF0042C747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerForSchedulePredicateTests.swift; sourceTree = "<group>"; };
 		B66729341E724D7B007E3019 /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
+		B66729361E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPersistenceTests.swift; sourceTree = "<group>"; };
 		B673C0041CF81CEC00AEF519 /* TestSetting.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TestSetting.plist; sourceTree = "<group>"; };
 		B68D7BE01CF8242900D69149 /* LargeTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LargeTestBase.swift; sourceTree = "<group>"; };
 		B6A047151E3B379200D85A1E /* AliasAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AliasAction.swift; sourceTree = "<group>"; };
@@ -509,6 +511,7 @@
 				B6AFD0321E695A4A0066B4AD /* AllClauseTests.swift */,
 				B6A86CAB1E6D60E700F9C41B /* ThingIFAPIOnboardWithThingIDTests.swift */,
 				B6A86CAF1E6E8C0D00F9C41B /* ThingIFAPIOnboardWithVendorThingIDTests.swift */,
+				B66729361E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -780,6 +783,7 @@
 				B6C2DB571E5C15C2008DBA83 /* OnboardWithVendorThingIDOptionsTests.swift in Sources */,
 				B6C33F1A1E4C530200DF2BF5 /* OrClauseInQueryTests.swift in Sources */,
 				B6C2DAFF1E4DA5EA008DBA83 /* AggregatedResultTests.swift in Sources */,
+				B66729371E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift in Sources */,
 				B6B0A6801E64170600133788 /* ServerCodeTests.swift in Sources */,
 				B6C33F181E4C3A2B00DF2BF5 /* AndClauseInQueryTests.swift in Sources */,
 				B6C33EFF1E49770B00DF2BF5 /* ThingIFSDKTests.swift in Sources */,

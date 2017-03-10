@@ -298,3 +298,59 @@ extension OrClauseInTrigger: Equatable {
     }
 
 }
+
+extension ThingIFError: Equatable {
+
+    public static func == (left: ThingIFError, right: ThingIFError) -> Bool {
+        switch (left, right) {
+        case (.connection, .connection):
+            return true
+        case (.errorResponse(let leftError), .errorResponse(let rightError))
+               where leftError == rightError:
+            return true
+        case (.pushNotAvailable, .pushNotAvailable):
+            return true
+        case (.jsonParseError, .jsonParseError):
+            return true
+        case (.unsupportedError, .unsupportedError):
+            return true
+        case (.alreadyOnboarded, .alreadyOnboarded):
+            return true
+        case (.targetNotAvailable, .targetNotAvailable):
+            return true
+        case (.apiNotStored(let leftTag), .apiNotStored(let rightTag))
+               where leftTag == rightTag:
+            return true
+        case (.apiUnloadable(let leftData), .apiUnloadable(let rightData))
+               where leftData.tag == rightData.tag &&
+                       leftData.storedVersion == rightData.storedVersion &&
+                       leftData.minimumVersion == rightData.minimumVersion:
+            return true
+        case (.invalidStoredApi, .invalidStoredApi):
+            return true
+        case (.userIsNotLoggedIn, .userIsNotLoggedIn):
+            return true
+        case (.errorRequest(let leftError), .errorRequest(let rightError))
+               where type(of: leftError) == type(of: rightError):
+            // In fact, we need to check more detail of leftError and
+            // rightError, but it dependes on concrete error type.
+            // Only we can do is add concrete type check as is.
+            return true
+        case (.invalidArgument(let leftMessage),
+              .invalidArgument(let rightMessage)) where
+               leftMessage == rightMessage:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+extension ErrorResponse: Equatable {
+
+    public static func == (left: ErrorResponse, right: ErrorResponse) -> Bool {
+        return left.httpStatusCode == right.httpStatusCode &&
+          left.errorCode == right.errorCode &&
+          left.errorMessage == right.errorMessage
+    }
+}
