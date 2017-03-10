@@ -63,8 +63,7 @@ extension ThingIFAPI {
 
         // try to get iotAPI from NSUserDefaults
 
-        if let dict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary
-        {
+        if let dict = UserDefaults.standard.dictionary(forKey: baseKey) {
             if dict.object(forKey: key) != nil {
 
                 let storedSDKVersion = dict.object(forKey: versionKey) as? String
@@ -110,10 +109,10 @@ extension ThingIFAPI {
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(tag)
         let key = ThingIFAPI.getStoredInstanceKey(tag)
-        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
-            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
-            dict.removeObject(forKey: versionKey)
-            dict.removeObject(forKey: key)
+        if let tempdict = UserDefaults.standard.dictionary(forKey: baseKey) {
+            let dict  = tempdict
+            dict[versionKey] = nil
+            dict[key] = nil
             UserDefaults.standard.set(dict, forKey: baseKey)
             UserDefaults.standard.synchronize()
         }
@@ -128,13 +127,13 @@ extension ThingIFAPI {
         serialize(&coder)
         let data = coder.finishCoding()
 
-        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
-            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
+        if let tempdict = UserDefaults.standard.dictionary(forKey: baseKey) {
+            var dict  = tempdict
             dict[versionKey] = SDKVersion.sharedInstance.versionString
             dict[key] = data
             UserDefaults.standard.set(dict, forKey: baseKey)
         }else{
-            UserDefaults.standard.set(NSDictionary(dictionary: [key:data]), forKey: baseKey)
+            UserDefaults.standard.set([key:data], forKey: baseKey)
         }
         UserDefaults.standard.synchronize()
     }
