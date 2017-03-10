@@ -62,31 +62,32 @@ extension ThingIFAPI {
         let key = ThingIFAPI.getStoredInstanceKey(tag)
 
         // try to get iotAPI from NSUserDefaults
-
-        if let dict = UserDefaults.standard.dictionary(forKey: baseKey) {
-            if dict.object(forKey: key) != nil {
-
-                let storedSDKVersion = dict.object(forKey: versionKey) as? String
-                if isLoadable(storedSDKVersion) == false {
-                    throw ThingIFError.apiUnloadable(tag: tag, storedVersion: storedSDKVersion, minimumVersion: MINIMUM_LOADABLE_SDK_VERSION)
-                }
-
-                if let data = dict[key] as? Data {
-                    if let savedIoTAPI =
-                         ThingIFAPI.deserialize(Decoder(data)) as? ThingIFAPI {
-                        return savedIoTAPI
-                    }else{
-                        throw ThingIFError.invalidStoredApi
-                    }
-                }else{
-                    throw ThingIFError.invalidStoredApi
-                }
-            } else {
-                throw ThingIFError.apiNotStored(tag: tag)
-            }
-        }else{
+        guard let dict =
+                UserDefaults.standard.dictionary(forKey: baseKey) else {
             throw ThingIFError.apiNotStored(tag: tag)
         }
+
+        if dict[key] != nil  {
+            throw ThingIFError.apiNotStored(tag: tag)
+        }
+
+        let storedSDKVersion = dict[versionKey] as? String
+        if !isLoadable(storedSDKVersion) {
+            throw ThingIFError.apiUnloadable(
+              tag: tag,
+              storedVersion: storedSDKVersion,
+              minimumVersion: MINIMUM_LOADABLE_SDK_VERSION)
+        }
+
+        guard let data = dict[key] as? Data else {
+            throw ThingIFError.invalidStoredApi
+        }
+        guard let retval =
+             ThingIFAPI.deserialize(Decoder(data)) as? ThingIFAPI else {
+            throw ThingIFError.invalidStoredApi
+        }
+        return retval
+
     }
     /** Save this instance
     */
@@ -110,7 +111,7 @@ extension ThingIFAPI {
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(tag)
         let key = ThingIFAPI.getStoredInstanceKey(tag)
         if let tempdict = UserDefaults.standard.dictionary(forKey: baseKey) {
-            let dict  = tempdict
+            var dict  = tempdict
             dict[versionKey] = nil
             dict[key] = nil
             UserDefaults.standard.set(dict, forKey: baseKey)
