@@ -110,8 +110,7 @@ extension ThingIFAPI {
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(tag)
         let key = ThingIFAPI.getStoredInstanceKey(tag)
-        if let tempdict = UserDefaults.standard.dictionary(forKey: baseKey) {
-            var dict  = tempdict
+        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
             dict[versionKey] = nil
             dict[key] = nil
             UserDefaults.standard.set(dict, forKey: baseKey)
@@ -128,8 +127,7 @@ extension ThingIFAPI {
         serialize(&coder)
         let data = coder.finishCoding()
 
-        if let tempdict = UserDefaults.standard.dictionary(forKey: baseKey) {
-            var dict  = tempdict
+        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
             dict[versionKey] = SDKVersion.sharedInstance.versionString
             dict[key] = data
             UserDefaults.standard.set(dict, forKey: baseKey)
