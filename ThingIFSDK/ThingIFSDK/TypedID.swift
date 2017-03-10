@@ -57,3 +57,17 @@ public struct TypedID: Equatable {
     }
 
 }
+
+extension TypedID: Serializable {
+
+    internal func serialize(_ coder: inout Coder) -> Void {
+        coder.encode(self.type.rawValue, forKey: "type")
+        coder.encode(self.id, forKey: "id")
+    }
+
+    internal static func deserialize(_ decoder: Decoder) -> Serializable? {
+        return self.init(
+          Types(rawValue: decoder.decodeString(forKey: "type")!)!,
+          id: decoder.decodeString(forKey: "id")!)
+    }
+}
