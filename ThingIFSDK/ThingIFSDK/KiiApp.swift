@@ -38,7 +38,7 @@ public struct KiiApp {
           siteName: site.getName())
     }
 
-    private init(
+    fileprivate init(
       _ appID: String,
       appKey: String,
       hostName: String,
@@ -80,4 +80,24 @@ public struct KiiApp {
              hostName: hostName, baseURL: baseURL, siteName: siteName)
     }
 
+}
+
+extension KiiApp: Serializable {
+
+    internal func serialize(_ coder: inout Coder) -> Void {
+        coder.encode(self.appID, forKey: "appID")
+        coder.encode(self.appKey, forKey: "appKey")
+        coder.encode(self.hostName, forKey: "hostName")
+        coder.encode(self.baseURL, forKey: "baseURL")
+        coder.encode(self.siteName, forKey: "siteName")
+    }
+
+    internal static func deserialize(_ decoder: Decoder) -> Serializable? {
+        return self.init(
+          decoder.decodeString(forKey: "appID")!,
+          appKey: decoder.decodeString(forKey: "appKey")!,
+          hostName: decoder.decodeString(forKey: "hostName")!,
+          baseURL: decoder.decodeString(forKey: "baseURL")!,
+          siteName: decoder.decodeString(forKey: "siteName")!)
+    }
 }

@@ -10,7 +10,8 @@ import Foundation
 
 private var typeMap: [ String : Serializable.Type] =
   [
-    String(describing: ThingIFAPI.self) : ThingIFAPI.self
+    String(describing: ThingIFAPI.self) : ThingIFAPI.self,
+    String(describing: KiiApp.self) : KiiApp.self
   ]
 
 internal struct Coder {
@@ -78,5 +79,5 @@ internal protocol Serializable {
 
     func serialize(_ coder: inout Coder) -> Void
 
-    static func deserialize(_ decoder: Decoder) -> Self?
+    static func deserialize(_ decoder: Decoder) -> Serializable?
 }
