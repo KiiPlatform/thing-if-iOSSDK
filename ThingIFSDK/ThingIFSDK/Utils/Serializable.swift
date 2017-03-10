@@ -42,7 +42,7 @@ internal struct Coder {
         value2.serialize(&coder)
 
         self.dict[key] = [
-          "type" : String(describing: type(of: value)),
+          "type" : String(describing: type(of: value2)),
           "value" : coder.finishCoding()
         ]
     }
