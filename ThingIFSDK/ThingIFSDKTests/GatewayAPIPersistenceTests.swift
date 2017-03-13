@@ -25,7 +25,7 @@ class GatewayAPIPersistenceTests: GatewayAPITestBase {
 
         sharedMockSession.mockResponse = (
           try JSONSerialization.data(
-            withJSONObject: ["accessToken": "accessToken"],
+            withJSONObject: ["accessToken": ACCESSTOKEN],
             options: .prettyPrinted),
           HTTPURLResponse(
             url: URL(string:setting.app.baseURL)!,
@@ -39,9 +39,7 @@ class GatewayAPIPersistenceTests: GatewayAPITestBase {
           setting.app,
           gatewayAddress: URL(string: setting.app.baseURL)!,
           tag: nil)
-        api.login(
-          "dummy",
-          password: "dummy") { error -> Void in
+        api.login("dummy", password: "dummy") { error -> Void in
             XCTAssertNil(error)
             expectation.fulfill()
         }
@@ -52,6 +50,90 @@ class GatewayAPIPersistenceTests: GatewayAPITestBase {
         }
 
         XCTAssertEqual(api, try GatewayAPI.loadWithStoredInstance())
+    }
+
+    func testLoadFromStoredInstanceWithTag() throws {
+        let expectation = self.expectation(
+          description: "testLoadFromStoredInstanceWithTag")
+        let setting = TestSetting()
+        let tag = "dummyTag"
+
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["accessToken": ACCESSTOKEN],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        let api = GatewayAPI(
+          setting.app,
+          gatewayAddress: URL(string: setting.app.baseURL)!,
+          tag: tag)
+        api.login("dummy", password: "dummy") { error -> Void in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        XCTAssertEqual(tag, api.tag)
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+
+        XCTAssertEqual(api, try GatewayAPI.loadWithStoredInstance(tag))
+    }
+
+    func testLoadFromStoredInstanceNoSDKVersion() throws {
+        let expectation = self.expectation(
+          description: "testLoadFromStoredInstanceNoSDKVersion")
+        let setting = TestSetting()
+
+
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["accessToken": ACCESSTOKEN],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        let api = GatewayAPI(
+          setting.app,
+          gatewayAddress: URL(string: setting.app.baseURL)!,
+          tag: nil)
+        api.login("dummy", password: "dummy") { error -> Void in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        XCTAssertNil(api.tag)
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+
+        let baseKey = "GatewayAPI_INSTANCE"
+        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+            dict["GatewayAPI_VERSION"] = nil
+            UserDefaults.standard.set(dict, forKey: baseKey)
+            UserDefaults.standard.synchronize()
+        }
+
+        XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
+            XCTAssertEqual(
+              ThingIFError.apiUnloadable(
+                tag: nil,
+                storedVersion: nil,
+                minimumVersion: "1.0.0"),
+              error as? ThingIFError)
+        }
     }
 
 }

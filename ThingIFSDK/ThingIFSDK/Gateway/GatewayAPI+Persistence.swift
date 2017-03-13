@@ -13,7 +13,7 @@ extension GatewayAPI {
     private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "GatewayAPI_INSTANCE"
     private static let SHARED_NSUSERDEFAULT_SDK_VERSION_KEY =
       "GatewayAPI_VERSION"
-    private static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
+    private static let MINIMUM_LOADABLE_SDK_VERSION = "1.0.0"
 
 
     private static func getStoredInstanceKey(_ tag : String?) -> String {
