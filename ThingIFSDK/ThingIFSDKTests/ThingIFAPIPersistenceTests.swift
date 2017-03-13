@@ -67,9 +67,7 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error, "execution timeout")
         }
 
         expectation = self.expectation(
@@ -88,9 +86,7 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error, "execution timeout")
         }
 
         expectation = self.expectation(
@@ -109,9 +105,7 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error, "execution timeout")
         }
 
         ThingIFAPI.removeAllStoredInstances()
@@ -162,9 +156,7 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error, "execution timeout")
         }
 
         expectation = self.expectation(
@@ -183,9 +175,7 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error, "execution timeout")
         }
 
         expectation = self.expectation(
@@ -204,9 +194,7 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error, "execution timeout")
         }
 
         XCTAssertEqual(api1, try ThingIFAPI.loadWithStoredInstance())
@@ -234,6 +222,63 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
               ThingIFError.apiNotStored(tag: tags[1]),
               error as? ThingIFError)
         }
+    }
+
+    func testOverwriteSavedInstanceWithOnboard() throws {
+        let tag = "tag1"
+        let setting = TestSetting()
+        let app1 = KiiApp("app001", appKey: "appkey001", site: Site.jp)
+        let app2 = KiiApp("app002", appKey: "appkey002", site: Site.us)
+        let owner1 = Owner(
+          TypedID(.user, id: "user001"),
+          accessToken: "token001")
+        let owner2 = Owner(
+          TypedID(.user, id: "user002"),
+          accessToken: "token002")
+
+        let api1 = ThingIFAPI(app1, owner:owner1, tag: tag)
+        var expectation = self.expectation(
+          description: "testOverwriteSavedInstanceWithOnboard")
+        try setMockResponse4Onboard(
+          "access-token-00000001",
+          thingID: "th.00000001",
+          setting: setting)
+        api1.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions("smart-light")) {
+            (target, error) -> Void in
+            XCTAssertNotNil(target)
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+
+        let api2 = ThingIFAPI(app2, owner:owner2, tag: tag)
+
+        expectation = self.expectation(
+          description: "testOverwriteSavedInstanceWithOnboard")
+        try setMockResponse4Onboard(
+          "access-token-00000002",
+          thingID: "th.00000002",
+          setting: setting)
+        api2.onboardWith(
+          vendorThingID: "vendor-0002",
+          thingPassword: "password2",
+          options: OnboardWithVendorThingIDOptions("smart-light")) {
+            (target, error) -> Void in
+            XCTAssertNotNil(target)
+            XCTAssertNil(error)
+            expectation.fulfill()
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+
+        XCTAssertEqual(api2, try ThingIFAPI.loadWithStoredInstance(tag))
     }
 
 }

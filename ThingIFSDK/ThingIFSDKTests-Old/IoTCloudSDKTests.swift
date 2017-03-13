@@ -19,63 +19,7 @@ class ThingIFSDKTests: SmallTestBase {
     override func tearDown() {
         super.tearDown()
     }
-    func testOverwriteSavedInstanceWithOnboard(){
-        let tag = "tag1"
-        let setting = TestSetting()
-        let app1 = App(appID: "app001", appKey: "appkey001", site: Site.jp)
-        let app2 = App(appID: "app002", appKey: "appkey002", site: Site.us)
-        let owner1 = Owner(typedID: TypedID(type: "user", id: "user001"), accessToken: "token001")
-        let owner2 = Owner(typedID: TypedID(type: "user", id: "user002"), accessToken: "token002")
-        
-        let api1 = ThingIFAPIBuilder(app:app1, owner:owner1, tag: tag).make()
-        
-        var expectation = self.expectation(description: "testOverwriteSavedInstanceWithOnboard")
-        setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
-        api1.onboardWith(
-          vendorThingID: "vendor-0001",
-          thingPassword: "password1",
-          options: OnboardWithVendorThingIDOptions(
-            thingType: "smart-light")) { ( target, error) -> Void in
-            if error != nil{
-                XCTFail("should success")
-            }
-            expectation.fulfill()
-        }
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
-        }
-        
-        let api2 = ThingIFAPIBuilder(app:app2, owner:owner2, tag: tag).make()
 
-        expectation = self.expectation(description: "testOverwriteSavedInstanceWithOnboard")
-        setMockResponse4Onboard("access-token-00000002", thingID: "th.00000002", setting: setting)
-        api2.onboardWith(
-          vendorThingID: "vendor-0002",
-          thingPassword: "password2",
-          options: OnboardWithVendorThingIDOptions(
-            thingType: "smart-light")) { ( target, error) -> Void in
-            if error != nil{
-                XCTFail("should success")
-            }
-            expectation.fulfill()
-        }
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
-        }
-  
-        do {
-            let temp = try ThingIFAPI.loadWithStoredInstance(tag)
-            XCTAssertEqual(api2, temp , "should be equal")
-        } catch {
-            XCTFail("Should not raise exception ")
-        }
-    }
-    
-    
     func testOverwriteSavedInstanceWithOnboard222(){
         let setting = TestSetting()
         
