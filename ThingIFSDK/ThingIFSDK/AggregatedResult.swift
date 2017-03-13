@@ -12,7 +12,7 @@ import Foundation
 public struct AggregatedResult<AggregatedValueType> {
 
     /** Returned value to be aggregated. */
-    public let value: AggregatedValueType
+    public let value: AggregatedValueType?
     /** Time range of an aggregated result. */
     public let timeRange: TimeRange
     /** Aggregated objectes. */
@@ -29,7 +29,7 @@ public struct AggregatedResult<AggregatedValueType> {
      - Parameters aggregatedObjects: Aggregated objectes.
      */
     public init(
-      _ value: AggregatedValueType,
+      _ value: AggregatedValueType?,
       timeRange: TimeRange,
       aggregatedObjects: [HistoryState])
     {
