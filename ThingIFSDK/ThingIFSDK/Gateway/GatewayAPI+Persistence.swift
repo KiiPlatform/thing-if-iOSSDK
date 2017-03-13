@@ -89,8 +89,8 @@ extension GatewayAPI {
      */
     open static func removeAllStoredInstances() -> Void
     {
-        let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        UserDefaults.standard.removeObject(forKey: baseKey)
+        UserDefaults.standard.removeObject(
+          forKey: GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE)
         UserDefaults.standard.synchronize()
     }
 
@@ -101,14 +101,13 @@ extension GatewayAPI {
     open static func removeStoredInstances(
       _ tag : String? = nil) -> Void
     {
-        let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        let versionKey = GatewayAPI.getStoredSDKVersionKey(tag)
-        let key = GatewayAPI.getStoredInstanceKey(tag)
-        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
-            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
-            dict.removeObject(forKey: versionKey)
-            dict.removeObject(forKey: key)
-            UserDefaults.standard.set(dict, forKey: baseKey)
+        if var dict = UserDefaults.standard.dictionary(
+             forKey: GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE) {
+            dict[GatewayAPI.getStoredSDKVersionKey(tag)] = nil
+            dict[GatewayAPI.getStoredInstanceKey(tag)] = nil
+            UserDefaults.standard.set(
+              dict,
+              forKey: GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE)
             UserDefaults.standard.synchronize()
         }
     }
