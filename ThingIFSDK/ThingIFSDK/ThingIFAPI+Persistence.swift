@@ -91,7 +91,7 @@ extension ThingIFAPI {
 
     /** Clear all saved instances in the NSUserDefaults.
     */
-    open static func removeAllStoredInstances(){
+    open static func removeAllStoredInstances() {
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         UserDefaults.standard.removeObject(forKey: baseKey)
         UserDefaults.standard.synchronize()
@@ -100,7 +100,7 @@ extension ThingIFAPI {
     /** Remove saved specified instance in the NSUserDefaults.
     - Parameter tag: tag of the ThingIFAPI instance or nil for default tag
     */
-    open static func removeStoredInstances(_ tag : String?=nil) -> Void {
+    open static func removeStoredInstances(_ tag : String? = nil) -> Void {
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(tag)
         let key = ThingIFAPI.getStoredInstanceKey(tag)
