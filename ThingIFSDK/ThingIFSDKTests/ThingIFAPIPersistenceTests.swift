@@ -313,4 +313,69 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
               error as? ThingIFError)
         }
     }
+
+    func testInvalidSavedInstance() throws {
+
+        let persistance = UserDefaults.standard
+        let baseKey = "ThingIFAPI_INSTANCE"
+        let versionKey = "ThingIFAPI_VERSION"
+        let sdkVersion = SDKVersion.sharedInstance.versionString
+        //clear
+        persistance.removeObject(forKey: baseKey)
+        persistance.synchronize()
+        sleep(1)
+
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            XCTAssertEqual(
+              ThingIFError.apiNotStored(tag: nil),
+              error as! ThingIFError)
+        }
+
+        //set invalid object to base key
+        persistance.set(1, forKey: baseKey)
+        persistance.synchronize()
+
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            XCTAssertEqual(
+              ThingIFError.apiNotStored(tag: nil),
+              error as! ThingIFError)
+        }
+
+        //set empty dict to base key
+        persistance.set([ : ] as [String : Any], forKey: baseKey)
+        persistance.synchronize()
+
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            XCTAssertEqual(
+              ThingIFError.apiNotStored(tag: nil),
+              error as! ThingIFError)
+        }
+
+        //set invalid object type to the persistance
+        persistance.set(
+          [baseKey : "a", versionKey : sdkVersion],
+          forKey: baseKey)
+        persistance.synchronize()
+
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            XCTAssertEqual(
+              ThingIFError.invalidStoredApi,
+              error as! ThingIFError)
+        }
+
+        //set invalid object to the persistance
+        persistance.set(
+          [
+            baseKey : NSKeyedArchiver.archivedData(withRootObject: "a"),
+            versionKey : sdkVersion
+          ],
+          forKey: baseKey)
+        persistance.synchronize()
+
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            XCTAssertEqual(
+              ThingIFError.invalidStoredApi,
+              error as! ThingIFError)
+        }
+    }
 }

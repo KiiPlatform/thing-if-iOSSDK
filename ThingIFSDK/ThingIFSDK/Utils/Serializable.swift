@@ -55,9 +55,12 @@ internal struct Coder {
 internal struct Decoder {
     private let dict: [String : Any]
 
-    internal init(_ data: Data) {
-        self.dict = NSKeyedUnarchiver.unarchiveObject(with: data) as!
-          [String : Any]
+    internal init?(_ data: Data) {
+        guard let dict = NSKeyedUnarchiver.unarchiveObject(
+                with: data) as? [String : Any] else {
+            return nil
+        }
+        self.dict = dict
     }
 
     internal func decodeString(forKey key: String) -> String? {
@@ -71,7 +74,9 @@ internal struct Decoder {
         guard let type = typeMap[dict["type"] as! String] else {
             return nil
         }
-        let decoer = Decoder(dict["value"] as! Data)
+        guard let decoer = Decoder(dict["value"] as! Data) else {
+            return nil
+        }
         return type.deserialize(decoer)
     }
 

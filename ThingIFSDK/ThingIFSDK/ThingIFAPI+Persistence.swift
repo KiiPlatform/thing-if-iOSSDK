@@ -74,8 +74,10 @@ extension ThingIFAPI {
         guard let data = dict[key] as? Data else {
             throw ThingIFError.invalidStoredApi
         }
-        guard let retval =
-             ThingIFAPI.deserialize(Decoder(data)) as? ThingIFAPI else {
+        guard let decoder = Decoder(data) else {
+            throw ThingIFError.invalidStoredApi
+        }
+        guard let retval = ThingIFAPI.deserialize(decoder) as? ThingIFAPI else {
             throw ThingIFError.invalidStoredApi
         }
         return retval
