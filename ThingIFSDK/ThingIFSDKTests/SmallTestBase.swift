@@ -28,4 +28,20 @@ class SmallTestBase: XCTestCase {
         iotSession = MockSession.self
     }
 
+    private func setMockResponse4InstallPush(
+      _ installationID: String,
+      setting:TestSetting) throws -> Void
+    {
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["installationID":installationID],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string: setting.app.baseURL)!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+    }
 }

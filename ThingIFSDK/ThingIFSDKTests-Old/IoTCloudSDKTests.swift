@@ -20,19 +20,6 @@ class ThingIFSDKTests: SmallTestBase {
         super.tearDown()
     }
 
-    private func setMockResponse4Onboard(_ accessToken: String, thingID: String, setting:TestSetting) -> Void {
-        let dict = ["accessToken":accessToken,"thingID":thingID]
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
-            let urlResponse = HTTPURLResponse(url: URL(string: setting.app.baseURL)!, statusCode: 200, httpVersion: nil, headerFields: nil)
-            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            iotSession = MockSession.self
-        } catch {
-            //should never reach this
-            XCTFail("exception happened")
-            return;
-        }
-    }
     func testSavedInstanceWithInstallPush(){
         let tags = ["tag1","tag2"]
         let setting = TestSetting()
