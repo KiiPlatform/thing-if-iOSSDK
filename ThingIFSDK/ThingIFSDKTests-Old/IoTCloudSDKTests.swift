@@ -20,41 +20,6 @@ class ThingIFSDKTests: SmallTestBase {
         super.tearDown()
     }
 
-    func testOverwriteSavedInstanceWithOnboard222(){
-        let setting = TestSetting()
-        
-        let api1 = ThingIFAPIBuilder(app:setting.app, owner:setting.owner, tag: "tag1").make()
-        
-        let expectation = self.expectation(description: "testOverwriteSavedInstanceWithOnboard")
-        setMockResponse4Onboard("access-token-00000001", thingID: "th.00000001", setting: setting)
-        api1.onboardWith(
-          vendorThingID: "vendor-0001",
-          thingPassword: "password1",
-          options: OnboardWithVendorThingIDOptions(
-            thingType: "smart-light")) { ( target, error) -> Void in
-            if error != nil{
-                XCTFail("should success")
-            }
-            expectation.fulfill()
-        }
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
-        }
-        
-        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance("tag2")) { error in
-            switch error {
-            case ThingIFError.apiNotStored:
-                break
-            default:
-                XCTFail("Exception should be API_NOT_STORED")
-                break
-            }
-        }
-    }
-
-    
     private func setMockResponse4Onboard(_ accessToken: String, thingID: String, setting:TestSetting) -> Void {
         let dict = ["accessToken":accessToken,"thingID":thingID]
         do {
