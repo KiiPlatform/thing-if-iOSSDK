@@ -378,4 +378,131 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
               error as! ThingIFError)
         }
     }
+
+    func testLoadFromStoredInstanceNoSDKVersion() throws {
+        let expectation = self.expectation(
+          description: "testLoadFromStoredInstanceNoSDKVersion")
+        let setting = TestSetting()
+        let app = setting.app
+        let owner = setting.owner
+
+        let api = ThingIFAPI(app, owner:owner)
+
+        try setMockResponse4Onboard(
+          "access-token-00000001",
+          thingID: "th.00000001",
+          setting: setting)
+        api.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions("smart-light")) {
+            (target, error) -> Void in
+            XCTAssertNotNil(target)
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+
+        let baseKey = "ThingIFAPI_INSTANCE"
+        let versionKey = "ThingIFAPI_VERSION"
+        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+            dict[versionKey] = nil
+            UserDefaults.standard.set(dict, forKey: baseKey)
+            UserDefaults.standard.synchronize()
+        }
+
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
+            XCTAssertEqual(
+              ThingIFError.apiUnloadable(
+                tag: nil,
+                storedVersion: nil,
+                minimumVersion: "1.0.0"),
+              error as? ThingIFError)
+        }
+    }
+
+    func testLoadFromStoredInstanceLowerSDKVersion() throws {
+        let expectation = self.expectation(
+          description: "testLoadFromStoredInstanceLowerSDKVersion")
+        let setting = TestSetting()
+        let app = setting.app
+        let owner = setting.owner
+        let tagName = "testLoadFromStoredInstanceLowerSDKVersion"
+
+        let api = ThingIFAPI(app, owner:owner, tag:tagName)
+
+        try setMockResponse4Onboard(
+          "access-token-00000001",
+          thingID: "th.00000001",
+          setting: setting)
+        api.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions("smart-light")) {
+            (target, error) -> Void in
+            XCTAssertNotNil(target)
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+
+        let baseKey = "ThingIFAPI_INSTANCE"
+        let versionKey = "ThingIFAPI_VERSION" + "_\(tagName)"
+        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+            dict[versionKey] = "0.0.0"
+            UserDefaults.standard.set(dict, forKey: baseKey)
+            UserDefaults.standard.synchronize()
+        }
+
+        XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tagName)) {
+            error in
+            XCTAssertEqual(
+              ThingIFError.apiUnloadable(
+                tag: tagName,
+                storedVersion: "0.0.0",
+                minimumVersion: "1.0.0"),
+              error as? ThingIFError)
+        }
+    }
+
+    func testLoadFromStoredInstanceUpperSDKVersion() throws {
+        let expectation = self.expectation(
+          description: "testLoadFromStoredInstanceUpperSDKVersion")
+        let setting = TestSetting()
+        let app = setting.app
+        let owner = setting.owner
+
+        let api = ThingIFAPI(app, owner:owner)
+
+        try setMockResponse4Onboard(
+          "access-token-00000001",
+          thingID: "th.00000001",
+          setting: setting)
+        api.onboardWith(
+          vendorThingID: "vendor-0001",
+          thingPassword: "password1",
+          options: OnboardWithVendorThingIDOptions("smart-light")) {
+            (target, error) -> Void in
+            XCTAssertNotNil(target)
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+
+        let baseKey = "ThingIFAPI_INSTANCE"
+        let versionKey = "ThingIFAPI_VERSION"
+        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+            dict[versionKey] = "1000.0.0"
+            UserDefaults.standard.set(dict, forKey: baseKey)
+            UserDefaults.standard.synchronize()
+        }
+
+        XCTAssertEqual(api, try ThingIFAPI.loadWithStoredInstance())
+    }
 }
