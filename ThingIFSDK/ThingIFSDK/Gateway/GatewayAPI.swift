@@ -38,7 +38,7 @@ open class GatewayAPI {
      - Parameter tag: tag of the GatewayAPI instance. If null or empty
        String is passed, it will be ignored.
      */
-    public init(app: KiiApp, gatewayAddress: URL, tag: String? = nil)
+    public init(_ app: KiiApp, gatewayAddress: URL, tag: String? = nil)
     {
         self.tag = tag
         self.app = app

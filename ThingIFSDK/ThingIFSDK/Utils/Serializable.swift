@@ -47,6 +47,10 @@ internal struct Coder {
         ]
     }
 
+    internal mutating func encode(_ value: URL?, forKey key: String) -> Void {
+        self.dict[key] = value
+    }
+
     internal func finishCoding() -> Data {
         return NSKeyedArchiver.archivedData(withRootObject: self.dict)
     }
@@ -65,6 +69,10 @@ internal struct Decoder {
 
     internal func decodeString(forKey key: String) -> String? {
         return self.dict[key] as? String
+    }
+
+    internal func decodeURL(forKey key: String) -> URL? {
+        return self.dict[key] as? URL
     }
 
     internal func decodeSerializable(forKey key: String) -> Serializable? {

@@ -55,29 +55,34 @@ extension GatewayAPI {
 
         // try to get iotAPI from NSUserDefaults
 
-        if let dict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
-            if dict.object(forKey: key) != nil {
-
-                let storedSDKVersion = dict.object(forKey: versionKey) as? String
-                if isLoadable(storedSDKVersion) == false {
-                    throw ThingIFError.apiUnloadable(tag: tag, storedVersion: storedSDKVersion, minimumVersion: MINIMUM_LOADABLE_SDK_VERSION)
-                }
-
-                if let data = dict[key] as? Data {
-                    if let savedAPI = NSKeyedUnarchiver.unarchiveObject(with: data) as? GatewayAPI {
-                        return savedAPI
-                    } else {
-                        throw ThingIFError.invalidStoredApi
-                    }
-                } else {
-                    throw ThingIFError.invalidStoredApi
-                }
-            } else {
-                throw ThingIFError.apiNotStored(tag: tag)
-            }
-        } else {
+        guard let dict =
+                UserDefaults.standard.dictionary(forKey: baseKey) else {
             throw ThingIFError.apiNotStored(tag: tag)
         }
+
+        if dict[key] == nil {
+            throw ThingIFError.apiNotStored(tag: tag)
+        }
+
+        let storedSDKVersion = dict[versionKey] as? String
+        if isLoadable(storedSDKVersion) == false {
+            throw ThingIFError.apiUnloadable(
+              tag: tag,
+              storedVersion: storedSDKVersion,
+              minimumVersion: MINIMUM_LOADABLE_SDK_VERSION)
+        }
+
+        guard let data = dict[key] as? Data else {
+            throw ThingIFError.invalidStoredApi
+        }
+        guard let decoder = Decoder(data) else {
+            throw ThingIFError.invalidStoredApi
+        }
+        guard let retval = GatewayAPI.deserialize(decoder) as? GatewayAPI else {
+            throw ThingIFError.invalidStoredApi
+        }
+
+        return retval
     }
 
     /** Clear all saved instances in the NSUserDefaults.
@@ -114,20 +119,24 @@ extension GatewayAPI {
      "GatewayAPI_INSTANCE", this key is reserved.
      */
     open func saveInstance() -> Void {
-        let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
+        var coder = Coder()
+        serialize(&coder)
+        let data = coder.finishCoding()
 
-        let versionKey = GatewayAPI.getStoredSDKVersionKey(self.tag)
-        let key = GatewayAPI.getStoredInstanceKey(self.tag)
-        let data = NSKeyedArchiver.archivedData(withRootObject: self)
+        // NOTE: Getting dictionary from UserDefaults is redundant but
+        // the data manytaimes is not saved without getting
+        // first. This may be bug of iOS. We should investigate the
+        // reason in future.
+        // https://github.com/KiiPlatform/thing-if-iOSSDK/issues/221
+        var dict = UserDefaults.standard.dictionary(
+          forKey: GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE) ?? [ : ]
+        dict[GatewayAPI.getStoredInstanceKey(self.tag)] = data
+        dict[GatewayAPI.getStoredSDKVersionKey(self.tag)] =
+          SDKVersion.sharedInstance.versionString
 
-        if let tempdict = UserDefaults.standard.object(forKey: baseKey) as? NSDictionary {
-            let dict  = tempdict.mutableCopy() as! NSMutableDictionary
-            dict[versionKey] = SDKVersion.sharedInstance.versionString
-            dict[key] = data
-            UserDefaults.standard.set(dict, forKey: baseKey)
-        } else {
-            UserDefaults.standard.set(NSDictionary(dictionary: [key:data]), forKey: baseKey)
-        }
+        UserDefaults.standard.set(
+          dict,
+          forKey: GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE)
         UserDefaults.standard.synchronize()
     }
 
@@ -156,4 +165,20 @@ extension GatewayAPI {
         return true
     }
 
+}
+
+extension GatewayAPI: Serializable {
+
+    internal func serialize(_ coder: inout Coder) -> Void {
+        coder.encode(self.app, forKey: "app")
+        coder.encode(self.gatewayAddress, forKey: "gatewayAddress")
+        coder.encode(self.tag, forKey: "tag")
+    }
+
+    internal static func deserialize(_ decoder: Decoder) -> Serializable? {
+        return GatewayAPI(
+          decoder.decodeSerializable(forKey: "app") as! KiiApp,
+          gatewayAddress: decoder.decodeURL(forKey: "gatewayAddress")!,
+          tag: decoder.decodeString(forKey: "tag"))
+    }
 }
