@@ -354,3 +354,24 @@ extension ErrorResponse: Equatable {
           left.errorMessage == right.errorMessage
     }
 }
+
+extension GatewayAPI: Equatable {
+
+    public static func == (left: GatewayAPI, right: GatewayAPI) -> Bool {
+        return left.app == right.app &&
+          left.gatewayAddress == right.gatewayAddress &&
+          left.accessToken == right.accessToken &&
+          left.tag == right.tag
+    }
+}
+
+extension KiiApp: Equatable {
+
+    public static func == (left: KiiApp, right: KiiApp) -> Bool {
+        return left.appID == right.appID &&
+          left.appKey == right.appKey &&
+          left.hostName == right.hostName &&
+          left.baseURL == right.baseURL &&
+          left.siteName == right.siteName
+    }
+}

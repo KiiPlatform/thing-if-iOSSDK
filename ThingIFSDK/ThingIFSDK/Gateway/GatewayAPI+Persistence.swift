@@ -47,7 +47,7 @@ extension GatewayAPI {
      - Returns: GatewayIFAPI instance.
      */
     open static func loadWithStoredInstance(
-      _ tag : String? = nil) throws -> GatewayAPI?
+      _ tag : String? = nil) throws -> GatewayAPI
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let versionKey = GatewayAPI.getStoredSDKVersionKey(tag)
@@ -171,13 +171,16 @@ extension GatewayAPI: Serializable {
     internal func serialize(_ coder: inout Coder) -> Void {
         coder.encode(self.app, forKey: "app")
         coder.encode(self.gatewayAddress, forKey: "gatewayAddress")
+        coder.encode(self.accessToken, forKey: "accessToken")
         coder.encode(self.tag, forKey: "tag")
     }
 
     internal static func deserialize(_ decoder: Decoder) -> Serializable? {
-        return GatewayAPI(
+        let retval = GatewayAPI(
           decoder.decodeSerializable(forKey: "app") as! KiiApp,
           gatewayAddress: decoder.decodeURL(forKey: "gatewayAddress")!,
           tag: decoder.decodeString(forKey: "tag"))
+        retval.accessToken = decoder.decodeString(forKey: "accessToken")
+        return retval
     }
 }

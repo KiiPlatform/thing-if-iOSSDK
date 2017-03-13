@@ -17,7 +17,7 @@ open class GatewayAPI {
     }
 
     /** Access token of this gate way */
-    open private(set) var accessToken: String?
+    open internal(set) var accessToken: String?
 
     let operationQueue = OperationQueue()
 
