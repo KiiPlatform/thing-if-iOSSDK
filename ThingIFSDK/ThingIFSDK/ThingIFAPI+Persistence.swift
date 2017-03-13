@@ -113,21 +113,24 @@ extension ThingIFAPI {
     }
 
     internal func saveToUserDefault() -> Void {
-        let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        let versionKey = ThingIFAPI.getStoredSDKVersionKey(self.tag)
-        let key = ThingIFAPI.getStoredInstanceKey(self.tag)
-
         var coder = Coder()
         serialize(&coder)
         let data = coder.finishCoding()
 
-        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
-            dict[versionKey] = SDKVersion.sharedInstance.versionString
-            dict[key] = data
-            UserDefaults.standard.set(dict, forKey: baseKey)
-        } else {
-            UserDefaults.standard.set([key:data], forKey: baseKey)
-        }
+        // NOTE: Getting dictionary from UserDefaults is redundant but
+        // the data manytaimes is not saved without getting
+        // first. This may be bug of iOS. We should investigate the
+        // reason in future.
+        // https://github.com/KiiPlatform/thing-if-iOSSDK/issues/221
+        var dict = UserDefaults.standard.dictionary(
+          forKey: ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE) ?? [ : ]
+        dict[ThingIFAPI.getStoredInstanceKey(self.tag)] = data
+        dict[ThingIFAPI.getStoredSDKVersionKey(self.tag)] =
+          SDKVersion.sharedInstance.versionString
+        UserDefaults.standard.set(
+          dict,
+          forKey: ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE)
+
         UserDefaults.standard.synchronize()
     }
 
