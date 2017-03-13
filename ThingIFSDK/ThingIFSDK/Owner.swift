@@ -46,3 +46,17 @@ public struct Owner: Hashable {
     }
 
 }
+
+extension Owner: Serializable {
+
+    internal func serialize(_ coder: inout Coder) -> Void {
+        coder.encode(self.typedID, forKey: "typedID")
+        coder.encode(self.accessToken, forKey: "accessToken")
+    }
+
+    internal static func deserialize(_ decoder: Decoder) -> Serializable? {
+        return self.init(
+          decoder.decodeSerializable(forKey: "typedID") as! TypedID,
+          accessToken: decoder.decodeString(forKey: "accessToken")!)
+    }
+}

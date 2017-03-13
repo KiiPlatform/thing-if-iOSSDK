@@ -50,3 +50,20 @@ extension EndNode: FromJsonObject {
           accessToken: accessToken)
     }
 }
+
+extension EndNode: Serializable {
+
+    internal func serialize(_ coder: inout Coder) -> Void {
+        coder.encode(self.thingID, forKey: "thingID")
+        coder.encode(self.accessToken, forKey: "accessToken")
+        coder.encode(self.vendorThingID, forKey: "vendorThingID")
+    }
+
+    internal static func deserialize(_ decoder: Decoder) -> Serializable? {
+        return self.init(
+          decoder.decodeString(forKey: "thingID")!,
+          vendorThingID: decoder.decodeString(forKey: "vendorThingID")!,
+          accessToken: decoder.decodeString(forKey: "accessToken"))
+
+    }
+}
