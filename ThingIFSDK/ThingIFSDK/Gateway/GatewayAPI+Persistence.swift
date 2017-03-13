@@ -11,31 +11,43 @@ import Foundation
 extension GatewayAPI {
 
     private static let SHARED_NSUSERDEFAULT_KEY_INSTANCE = "GatewayAPI_INSTANCE"
-    private static func getStoredInstanceKey(_ tag : String?) -> String{
+    private static let SHARED_NSUSERDEFAULT_SDK_VERSION_KEY =
+      "GatewayAPI_VERSION"
+    private static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
+
+
+    private static func getStoredInstanceKey(_ tag : String?) -> String {
         return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
     }
-    private static let SHARED_NSUSERDEFAULT_SDK_VERSION_KEY = "GatewayAPI_VERSION"
+
     private static func getStoredSDKVersionKey(_ tag : String?) -> String{
-        return SHARED_NSUSERDEFAULT_SDK_VERSION_KEY + (tag == nil ? "" : "_\(tag)")
+        return SHARED_NSUSERDEFAULT_SDK_VERSION_KEY +
+          (tag == nil ? "" : "_\(tag)")
     }
-    private static let MINIMUM_LOADABLE_SDK_VERSION = "0.13.0"
+
+    // MARK: - Persistence.
 
     /** Try to load the instance of GatewayAPI using stored serialized instance.
 
-     Instance is automatically saved when login method is called and successfully completed.
+     Instance is automatically saved when login method is called and
+     successfully completed.
 
-     If the GatewayAPI instance is build without the tag, all instance is saved in same place
-     and overwritten when the instance is saved.
+     If the GatewayAPI instance is build without the tag, all instance
+     is saved in same place and overwritten when the instance is
+     saved.
 
-     If the GatewayAPI instance is build with the tag(optional), tag is used as key to distinguish
-     the storage area to save the instance. This would be useful to saving multiple instance.
+     If the GatewayAPI instance is build with the tag(optional), tag
+     is used as key to distinguish the storage area to save the
+     instance. This would be useful to saving multiple instance.
 
-     When you catch exceptions, please call login for saving or updating serialized instance.
+     When you catch exceptions, please call login for saving or
+     updating serialized instance.
 
      - Parameter tag: tag of the GatewayAPI instance
      - Returns: GatewayIFAPI instance.
      */
-    open static func loadWithStoredInstance(_ tag : String? = nil) throws -> GatewayAPI?
+    open static func loadWithStoredInstance(
+      _ tag : String? = nil) throws -> GatewayAPI?
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let versionKey = GatewayAPI.getStoredSDKVersionKey(tag)
@@ -70,7 +82,7 @@ extension GatewayAPI {
 
     /** Clear all saved instances in the NSUserDefaults.
      */
-    open static func removeAllStoredInstances()
+    open static func removeAllStoredInstances() -> Void
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         UserDefaults.standard.removeObject(forKey: baseKey)
@@ -81,7 +93,8 @@ extension GatewayAPI {
 
      - Parameter tag: tag of the GatewayAPI instance or nil for default tag
      */
-    open static func removeStoredInstances(_ tag : String?=nil)
+    open static func removeStoredInstances(
+      _ tag : String? = nil) -> Void
     {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let versionKey = GatewayAPI.getStoredSDKVersionKey(tag)
@@ -96,10 +109,11 @@ extension GatewayAPI {
     }
 
     /** Save this instance
-     This method use NSUserDefaults. Should not use the key "GatewayAPI_INSTANCE", this key is reserved.
+
+     This method use NSUserDefaults. Should not use the key
+     "GatewayAPI_INSTANCE", this key is reserved.
      */
-    open func saveInstance()
-    {
+    open func saveInstance() -> Void {
         let baseKey = GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
 
         let versionKey = GatewayAPI.getStoredSDKVersionKey(self.tag)
@@ -127,7 +141,8 @@ extension GatewayAPI {
             return false
         }
 
-        let minimumLoadableVersions = MINIMUM_LOADABLE_SDK_VERSION.components(separatedBy: ".")
+        let minimumLoadableVersions =
+          MINIMUM_LOADABLE_SDK_VERSION.components(separatedBy: ".")
         for i in 0..<3 {
             let actual = Int(actualVersions[i])!
             let expect = Int(minimumLoadableVersions[i])!
