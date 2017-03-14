@@ -384,5 +384,69 @@ class ThingIFAPIOnboardEndNodeTests: SmallTestBase {
         }
     }
 
+    func testOboardEndnodeWithGatewayWithoutOnboardingGatewayError() throws {
+
+        let expectation = self.expectation(
+          description: "testOboardEndnodeWithGatewayWithoutOnboardingGatewayError")
+        let setting = TestSetting()
+        let vendorThingID = "dummyVendorThingID"
+        let password = "dummyPassword"
+        let thingProperties = [
+          "_thingType": setting.thingType,
+          "manufacture": "kii"
+        ]
+        let firmwareVersion = "dummyFirmwareVersion"
+
+        setting.api.onboard(
+          PendingEndNode(
+            vendorThingID,
+            thingType: setting.thingType,
+            thingProperties: thingProperties,
+            firmwareVersion: firmwareVersion),
+          endnodePassword: password) { (endNode, error) -> Void in
+            XCTAssertNil(endNode)
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func testOboardEndnodeWithGatewayWithEmptyVendorThingPasswordError() {
+        let expectation = self.expectation(
+          description: "testOboardEndnodeWithGatewayWithEmptyVendorThingPasswordError")
+        let setting = TestSetting()
+        let gatewayThingID = "dummyGatewayThingID"
+        let vendorThingID = "dummyVendorThingID"
+        let password = ""
+        let thingProperties = [
+          "_thingType": setting.thingType,
+          "manufacture": "kii"
+        ]
+        let firmwareVersion = "dummyFirmwareVersion"
+
+        // perform onboarding
+        setting.api.target = Gateway(
+          gatewayThingID,
+          vendorThingID: vendorThingID)
+
+        setting.api.onboard(
+          PendingEndNode(
+            vendorThingID,
+            thingType: setting.thingType,
+            thingProperties: thingProperties,
+            firmwareVersion: firmwareVersion),
+          endnodePassword: password) { (endNode, error) -> Void in
+            XCTAssertNil(endNode)
+            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
 
 }
