@@ -104,9 +104,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
 
         XCTAssertEqual(
@@ -172,8 +170,8 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
                 "thingProperties": thingProperties
               ] as NSDictionary,
               try JSONSerialization.jsonObject(
-                  with: request.httpBody!,
-                  options: JSONSerialization.ReadingOptions.allowFragments)
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
                 as? NSDictionary)
         }
         iotSession = MockSession.self
@@ -202,16 +200,14 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
 
         XCTAssertEqual(api, try ThingIFAPI.loadWithStoredInstance(api.tag))
     }
 
     func testOnboardWithVendorThingIDAndOptionsSuccess() throws
-    {
+      {
         let expectation = self.expectation(
           description: "testOnboardWithVendorThingIDAndOptionsSuccess")
         let setting = TestSetting()
@@ -220,13 +216,13 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         let password = "dummyPassword"
         let firmwareVersion = "dummyVersion"
         let thingProperties = [
-            "manufacture": "kii"
+          "manufacture": "kii"
         ]
         let options = OnboardWithVendorThingIDOptions(
-            setting.thingType,
-            firmwareVersion:  firmwareVersion,
-            thingProperties: thingProperties,
-            position: .standalone)
+          setting.thingType,
+          firmwareVersion:  firmwareVersion,
+          thingProperties: thingProperties,
+          position: .standalone)
 
         // mock response
         let thingID = "dummyThingID"
@@ -295,26 +291,23 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
     }
 
-    func testOnboardWithVendorThingIDAndOptions403Error() throws
-    {
+    func testOnboardWithVendorThingIDAndOptions403Error() throws {
         let expectation = self.expectation(
           description: "testOnboardWithVendorThingIDAndOptions403Error")
         let setting = TestSetting()
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
         let thingProperties = [
-            "manufacture": "kii"
+          "manufacture": "kii"
         ]
         let options = OnboardWithVendorThingIDOptions(
-            setting.thingType,
-            thingProperties: thingProperties,
-            position: .gateway)
+          setting.thingType,
+          thingProperties: thingProperties,
+          position: .gateway)
 
         // verify request
         sharedMockSession.requestVerifier = makeRequestVerifier() {
@@ -366,42 +359,39 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         iotSession = MockSession.self
 
         setting.api.onboardWith(
-            vendorThingID: vendorThingID,
-            thingPassword: password,
-            options: options,
-            completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
-                XCTAssertNil(target)
-                XCTAssertNotNil(error)
-                switch error! {
-                case .errorResponse(let actualErrorResponse):
-                    XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
-                default:
-                    XCTFail("unexpected error: \(error)")
-                }
-                expectation.fulfill()
-        })
+          vendorThingID: vendorThingID,
+          thingPassword: password,
+          options: options,
+          completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
+              XCTAssertNil(target)
+              XCTAssertNotNil(error)
+              switch error! {
+              case .errorResponse(let actualErrorResponse):
+                  XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
+              default:
+                  XCTFail("unexpected error: \(error)")
+              }
+              expectation.fulfill()
+          })
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
     }
 
-    func testOnboardWithVendorThingIDAndOptions404Error() throws
-    {
+    func testOnboardWithVendorThingIDAndOptions404Error() throws {
         let expectation = self.expectation(
           description: "testOnboardWithVendorThingIDAndOptions404Error")
         let setting = TestSetting()
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
         let thingProperties = [
-            "manufacture": "kii"
+          "manufacture": "kii"
         ]
         let options = OnboardWithVendorThingIDOptions(
-            setting.thingType,
-            thingProperties: thingProperties,
-            position: .endnode)
+          setting.thingType,
+          thingProperties: thingProperties,
+          position: .endnode)
 
         // verify request
         sharedMockSession.requestVerifier = makeRequestVerifier() {
@@ -453,24 +443,22 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         iotSession = MockSession.self
 
         setting.api.onboardWith(
-            vendorThingID: vendorThingID,
-            thingPassword: password,
-            options: options) { (target:Target?, error:ThingIFError?) -> Void in
-                XCTAssertNil(target)
-                XCTAssertNotNil(error)
-                switch error! {
-                case .errorResponse(let actualErrorResponse):
-                    XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
-                default:
-                    XCTFail("unexpected error: \(error)")
-                }
-                expectation.fulfill()
+          vendorThingID: vendorThingID,
+          thingPassword: password,
+          options: options) { (target:Target?, error:ThingIFError?) -> Void in
+            XCTAssertNil(target)
+            XCTAssertNotNil(error)
+            switch error! {
+            case .errorResponse(let actualErrorResponse):
+                XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
+            default:
+                XCTFail("unexpected error: \(error)")
+            }
+            expectation.fulfill()
         }
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
     }
 
@@ -482,12 +470,12 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         let vendorThingID = "dummyVendorThingID"
         let password = "dummyPassword"
         let thingProperties = [
-            "manufacture": "kii"
+          "manufacture": "kii"
         ]
         let options = OnboardWithVendorThingIDOptions(
-            setting.thingType,
-            thingProperties: thingProperties,
-            position: .standalone)
+          setting.thingType,
+          thingProperties: thingProperties,
+          position: .standalone)
 
         // verify request
         sharedMockSession.requestVerifier = makeRequestVerifier() {
@@ -539,24 +527,22 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         iotSession = MockSession.self
 
         setting.api.onboardWith(
-            vendorThingID: vendorThingID,
-            thingPassword: password,
-            options: options) { (target:Target?, error:ThingIFError?) -> Void in
-                XCTAssertNil(target)
-                XCTAssertNotNil(error)
-                switch error! {
-                case .errorResponse(let actualErrorResponse):
-                    XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
-                default:
-                    XCTFail("unexpected error: \(error)")
-                }
-                expectation.fulfill()
+          vendorThingID: vendorThingID,
+          thingPassword: password,
+          options: options) { (target:Target?, error:ThingIFError?) -> Void in
+            XCTAssertNil(target)
+            XCTAssertNotNil(error)
+            switch error! {
+            case .errorResponse(let actualErrorResponse):
+                XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
+            default:
+                XCTFail("unexpected error: \(error)")
+            }
+            expectation.fulfill()
         }
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
     }
 
