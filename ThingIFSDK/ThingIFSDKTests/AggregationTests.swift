@@ -19,7 +19,7 @@ class AggregationTests: SmallTestBase {
         super.tearDown()
     }
 
-    func testCount() {
+    func testCount() throws {
         let testList:
           [
             (
@@ -59,7 +59,7 @@ class AggregationTests: SmallTestBase {
         }
     }
 
-    func testMaxSuccess() {
+    func testMaxSuccess() throws {
         let testList:
           [
             (
@@ -88,7 +88,7 @@ class AggregationTests: SmallTestBase {
         }
     }
 
-    func testMaxFail() {
+    func testMaxFail() throws {
         let testList:
           [
             (field: String, fieldType: Aggregation.FieldType)
@@ -99,26 +99,20 @@ class AggregationTests: SmallTestBase {
           ]
 
         for input in testList {
-            do {
-                let _ = try Aggregation.makeMaxAggregation(
-                  input.field,
-                  fieldType: input.fieldType)
-            } catch ThingIFError.invalidArgument(let message) {
+            XCTAssertThrowsError(
+              try Aggregation.makeMaxAggregation(
+                input.field,
+                fieldType: input.fieldType)) { error in
                 XCTAssertEqual(
-                  Aggregation.FunctionType.max.rawValue +
-                    " can not use " + input.fieldType.rawValue,
-                  message)
-                continue
-            } catch {
-                XCTFail("Unexpected error: " + input.field + ", " +
-                          input.fieldType.rawValue)
+                  ThingIFError.invalidArgument(
+                    message: Aggregation.FunctionType.max.rawValue +
+                      " can not use " + input.fieldType.rawValue),
+                  error as? ThingIFError)
             }
-            XCTFail("Error not thrown: " + input.field + ", " +
-                      input.fieldType.rawValue)
         }
     }
 
-    func testMinSuccess() {
+    func testMinSuccess() throws {
         let testList:
           [
             (
@@ -147,7 +141,7 @@ class AggregationTests: SmallTestBase {
         }
     }
 
-    func testMinFail() {
+    func testMinFail() throws {
         let testList:
           [
             (field: String, fieldType: Aggregation.FieldType)
@@ -158,26 +152,21 @@ class AggregationTests: SmallTestBase {
           ]
 
         for input in testList {
-            do {
-                let _ = try Aggregation.makeMinAggregation(
-                  input.field,
-                  fieldType: input.fieldType)
-            } catch ThingIFError.invalidArgument(let message) {
+            XCTAssertThrowsError(
+              try Aggregation.makeMinAggregation(
+                input.field,
+                fieldType: input.fieldType)) { error in
                 XCTAssertEqual(
-                  Aggregation.FunctionType.min.rawValue +
-                    " can not use " + input.fieldType.rawValue,
-                  message)
-                continue
-            } catch {
-                XCTFail("Unexpected error: " + input.field + ", " +
-                          input.fieldType.rawValue)
+                  ThingIFError.invalidArgument(
+                    message: Aggregation.FunctionType.min.rawValue +
+                      " can not use " + input.fieldType.rawValue),
+                  error as? ThingIFError)
+
             }
-            XCTFail("Error not thrown: " + input.field + ", " +
-                      input.fieldType.rawValue)
         }
     }
 
-    func testSumSuccess() {
+    func testSumSuccess() throws {
         let testList:
           [
             (
@@ -206,7 +195,7 @@ class AggregationTests: SmallTestBase {
         }
     }
 
-    func testSumFail() {
+    func testSumFail() throws {
         let testList:
           [
             (field: String, fieldType: Aggregation.FieldType)
@@ -217,26 +206,20 @@ class AggregationTests: SmallTestBase {
           ]
 
         for input in testList {
-            do {
-                let _ = try Aggregation.makeSumAggregation(
-                  input.field,
-                  fieldType: input.fieldType)
-            } catch ThingIFError.invalidArgument(let message) {
+            XCTAssertThrowsError(
+              try Aggregation.makeSumAggregation(
+                input.field,
+                fieldType: input.fieldType)) { error in
                 XCTAssertEqual(
-                  Aggregation.FunctionType.sum.rawValue +
-                    " can not use " + input.fieldType.rawValue,
-                  message)
-                continue
-            } catch {
-                XCTFail("Unexpected error: " + input.field + ", " +
-                          input.fieldType.rawValue)
+                  ThingIFError.invalidArgument(
+                    message: Aggregation.FunctionType.sum.rawValue +
+                      " can not use " + input.fieldType.rawValue),
+                  error as? ThingIFError)
             }
-            XCTFail("Error not thrown: " + input.field + ", " +
-                      input.fieldType.rawValue)
         }
     }
 
-    func testMeanSuccess() {
+    func testMeanSuccess() throws {
         let testList:
           [
             (
@@ -265,7 +248,7 @@ class AggregationTests: SmallTestBase {
         }
     }
 
-    func testMeanFail() {
+    func testMeanFail() throws {
         let testList:
           [
             (field: String, fieldType: Aggregation.FieldType)
@@ -276,26 +259,20 @@ class AggregationTests: SmallTestBase {
           ]
 
         for input in testList {
-            do {
-                let _ = try Aggregation.makeMeanAggregation(
-                  input.field,
-                  fieldType: input.fieldType)
-            } catch ThingIFError.invalidArgument(let message) {
+            XCTAssertThrowsError(
+              try Aggregation.makeMeanAggregation(
+                input.field,
+                fieldType: input.fieldType)) { error in
                 XCTAssertEqual(
-                  Aggregation.FunctionType.mean.rawValue +
-                    " can not use " + input.fieldType.rawValue,
-                  message)
-                continue
-            } catch {
-                XCTFail("Unexpected error: " + input.field + ", " +
-                          input.fieldType.rawValue)
+                  ThingIFError.invalidArgument(
+                    message: Aggregation.FunctionType.mean.rawValue +
+                      " can not use " + input.fieldType.rawValue),
+                  error as? ThingIFError)
             }
-            XCTFail("Error not thrown: " + input.field + ", " +
-                      input.fieldType.rawValue)
         }
     }
 
-    func testAggregationSuccess() {
+    func testAggregationSuccess() throws {
         let testList: [
           (
             input: (
@@ -375,7 +352,7 @@ class AggregationTests: SmallTestBase {
         }
     }
 
-    func testAggregationFail() {
+    func testAggregationFail() throws {
         let testList: [
           (
             function: Aggregation.FunctionType,
@@ -398,22 +375,17 @@ class AggregationTests: SmallTestBase {
         ]
 
         for input in testList {
-            do {
-                let _ = try Aggregation.makeAggregation(
-                  input.function,
-                  field: input.field,
-                  fieldType: input.fieldType)
-            } catch ThingIFError.invalidArgument(let message) {
+            XCTAssertThrowsError(
+              try Aggregation.makeAggregation(
+                input.function,
+                field: input.field,
+                fieldType: input.fieldType)) { error in
                 XCTAssertEqual(
-                  input.function.rawValue + " can not use " +
-                    input.fieldType.rawValue, message)
-                continue
-            } catch {
-                XCTFail("Unexpected error: " + input.function.rawValue + ", " +
-                          input.field + ", " + input.fieldType.rawValue)
+                  ThingIFError.invalidArgument(
+                    message: input.function.rawValue + " can not use " +
+                      input.fieldType.rawValue),
+                  error as? ThingIFError)
             }
-            XCTFail("Error not thrown: " + input.function.rawValue + ", " + 
-                      input.field + ", " + input.fieldType.rawValue)
         }
     }
 }
