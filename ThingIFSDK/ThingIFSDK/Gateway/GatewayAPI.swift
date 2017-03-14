@@ -246,6 +246,8 @@ open class GatewayAPI {
         _ completionHandler: @escaping ([PendingEndNode]?, ThingIFError?)-> Void
         )
     {
+        fatalError("TODO: implement me")
+        /*
         if !self.isLoggedIn() {
             completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
@@ -282,6 +284,7 @@ open class GatewayAPI {
         )
         let operation = IoTRequestOperation(request: request)
         operationQueue.addOperation(operation)
+        */
     }
 
     /** Notify Onboarding completion

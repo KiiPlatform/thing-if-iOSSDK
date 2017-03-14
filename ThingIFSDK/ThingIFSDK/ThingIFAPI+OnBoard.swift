@@ -177,72 +177,53 @@ extension ThingIFAPI {
         completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
-        if self.target == nil || !(self.target is Gateway) {
+        guard let gateway = self.target as? Gateway else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
-        if pendingEndnode.vendorThingID == nil || pendingEndnode.vendorThingID!.isEmpty {
-            completionHandler(nil, ThingIFError.unsupportedError)
-            return
-        }
+
         if endnodePassword.isEmpty {
             completionHandler(nil, ThingIFError.unsupportedError)
             return
         }
 
-        let requestURL = "\(self.baseURL)/thing-if/apps/\(self.appID)/onboardings"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "x-kii-appid": self.appID,
-            "x-kii-appkey": self.appKey,
-            "authorization": "Bearer \(self.owner.accessToken)",
-            "Content-Type": "application/vnd.kii.OnboardingEndNodeWithGatewayThingID+json"
-        ]
-
-        // genrate body
-        let requestBodyDict = NSMutableDictionary(dictionary:
-            [
-                "gatewayThingID": self.target!.typedID.id,
-                "endNodeVendorThingID": pendingEndnode.vendorThingID!,
+        let requestBodyData: Data
+        do {
+            requestBodyData = try JSONSerialization.data(
+              withJSONObject: [
+                "gatewayThingID": gateway.typedID.id,
                 "endNodePassword": endnodePassword,
                 "owner": self.owner.typedID.toString()
-            ]
-        )
-
-        requestBodyDict["endNodeThingType"] = pendingEndnode.thingType
-
-        if !(pendingEndnode.thingProperties?.isEmpty ?? true) {
-            requestBodyDict["endNodeThingProperties"] = pendingEndnode.thingProperties
-        }
-
-        do {
-            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(
-                HTTPMethod.post,
-                urlString: requestURL,
-                requestHeaderDict: requestHeaderDict,
-                requestBodyData: requestBodyData,
-                completionHandler: { (response, error) -> Void in
-                    let endNode: EndNode?
-                    if error != nil {
-                        endNode = nil
-                    } else {
-                        let thingID = response?["endNodeThingID"] as! String
-                        let accessToken = response?["accessToken"] as! String
-                        endNode = EndNode(thingID, vendorThingID: pendingEndnode.vendorThingID!, accessToken: accessToken)
-                    }
-                    DispatchQueue.main.async {
-                        completionHandler(endNode, error)
-                    }
-                }
-            )
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        } catch(_) {
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
+              ] + pendingEndnode.makeJsonObject(),
+              options: JSONSerialization.WritingOptions(rawValue: 0))
+        } catch let error {
+            kiiSevereLog(error)
             completionHandler(nil, ThingIFError.jsonParseError)
+            return
         }
+
+        operationQueue.addOperation(
+          IoTRequestOperation(
+            request: buildDefaultRequest(
+              HTTPMethod.post,
+              urlString: "\(self.baseURL)/thing-if/apps/\(self.appID)/onboardings",
+              requestHeaderDict: [
+                "x-kii-appid": self.appID,
+                "x-kii-appkey": self.appKey,
+                "authorization": "Bearer \(self.owner.accessToken)",
+                "Content-Type": MediaType.mediaTypeOnboardingEndnodeWithGatewayThingIdRequest.rawValue
+              ],
+              requestBodyData: requestBodyData) { (response, error) -> Void in
+                let accessToken = response?["accessToken"] as! String
+                let endNode = error != nil ? nil : EndNode(
+                  response?["endNodeThingID"] as! String,
+                  vendorThingID: pendingEndnode.vendorThingID,
+                  accessToken: accessToken)
+                DispatchQueue.main.async {
+                    completionHandler(endNode, error)
+                }
+            }
+          )
+        )
     }
 }
