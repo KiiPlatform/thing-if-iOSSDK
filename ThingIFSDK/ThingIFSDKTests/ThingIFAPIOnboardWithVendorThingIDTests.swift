@@ -88,19 +88,16 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
             thingType,
             thingProperties: thingProperties)) {
             (target, error) -> Void in
-            if error == nil{
-                XCTAssertEqual(
-                  target!.typedID.toString(),
-                  setting.target.typedID.toString())
-                XCTAssertEqual(
-                  target!.typedID.toString(),
-                  setting.target.typedID.toString())
-                XCTAssertEqual(
-                  target!.accessToken,
-                  setting.owner.accessToken)
-            } else {
-                XCTFail("should success")
-            }
+            XCTAssertNil(error)
+            XCTAssertEqual(
+              target!.typedID.toString(),
+              setting.target.typedID.toString())
+            XCTAssertEqual(
+              target!.typedID.toString(),
+              setting.target.typedID.toString())
+            XCTAssertEqual(
+              target!.accessToken,
+              setting.owner.accessToken)
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
