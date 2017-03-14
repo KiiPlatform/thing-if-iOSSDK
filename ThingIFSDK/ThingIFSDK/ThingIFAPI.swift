@@ -704,7 +704,7 @@ open class ThingIFAPI: Equatable {
             return;
         }
 
-        let requestURL = "\(self.baseURL)/thing-if/apps/\(self.appID)/targets/\(self.target!.typedID.toString())/query"
+        let requestURL = "\(self.baseURL)/thing-if/apps/\(self.appID)/targets/\(self.target!.typedID.toString())/states/aliases/\(query.alias)/query"
 
         // generate header
         let requestHeaderDict:Dictionary<String, String> = [
@@ -726,7 +726,7 @@ open class ThingIFAPI: Equatable {
         // generate body
         let requestBodyDict = NSMutableDictionary(dictionary:
             [
-                "bucketQuery": [
+                "query": [
                     "clause": clause,
                     "grouped": true,
                     "aggregations": [
@@ -753,15 +753,21 @@ open class ThingIFAPI: Equatable {
                     var results : [AggregatedResult<AggregatedValueType>]? = nil
                     if response != nil {
                         results = []
-                        let queryResults = response?["queryResults"] as! [[String:Any]]
-                        for element in queryResults.enumerated() {
+                        let queryResults = response?["groupedResults"] as! [[String:Any]]
+                        queryResults.forEach { result in
+                            if result["range"] == nil || result["aggregations"] == nil {
+                                DispatchQueue.main.async {
+                                    completionHandler(nil, ThingIFError.unsupportedError)
+                                }
+                                return;
+                            }
                             var value: AggregatedValueType? = nil
                             var history: [HistoryState] = []
-                            let range = element["range"] as! [String: Double]
+                            let range = result["range"] as! [String: Double]
                             let timeRange = TimeRange(
                                 Date(timeIntervalSince1970:range["from"]!),
                                 to: Date(timeIntervalSince1970:range["to"]!))
-                            let aggregations = element["aggregations"] as! [[String: Any]]
+                            let aggregations = result["aggregations"] as! [[String: Any]]
                             if aggregations.count == 1 {
                                 let aggregation = aggregations[0]
                                 if aggregation["value"] != nil {
@@ -781,6 +787,20 @@ open class ThingIFAPI: Equatable {
                                     value,
                                     timeRange: timeRange,
                                     aggregatedObjects: history))
+                        }
+                    } else if error != nil {
+                        switch error! {
+                        case .errorResponse(let errorResponse):
+                            if errorResponse.httpStatusCode == 409 &&
+                                errorResponse.errorCode == "STATE_HISTORY_NOT_AVAILABLE" {
+                                DispatchQueue.main.async {
+                                    completionHandler([], nil)
+                                }
+                                return;
+                            }
+                            break
+                        default:
+                            break
                         }
                     }
                     DispatchQueue.main.async {
