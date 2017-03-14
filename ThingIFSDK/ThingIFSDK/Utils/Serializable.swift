@@ -17,6 +17,7 @@ private var typeMap: [ String : Serializable.Type] =
     String(describing: StandaloneThing.self) : StandaloneThing.self,
     String(describing: Gateway.self) : Gateway.self,
     String(describing: EndNode.self) : EndNode.self,
+    String(describing: GatewayAPI.self) : GatewayAPI.self
   ]
 
 internal struct Coder {
