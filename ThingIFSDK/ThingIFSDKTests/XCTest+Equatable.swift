@@ -9,6 +9,44 @@
 import Foundation
 @testable import ThingIFSDK
 
+internal protocol EquatableWrapper: Equatable {
+    associatedtype T
+
+    var item: T { get }
+}
+
+struct EndNodeWrapper: EquatableWrapper {
+
+    internal let item: EndNode
+
+    init(
+      _ thingID: String,
+      vendorThingID: String,
+      accessToken: String? = nil)
+    {
+        self.item = EndNode(
+          thingID,
+          vendorThingID: vendorThingID,
+          accessToken: accessToken)
+    }
+
+    init?(_ item: EndNode?) {
+        if item == nil {
+            return nil
+        }
+        self.item = item!
+    }
+
+    public static func == (
+      left: EndNodeWrapper,
+      right: EndNodeWrapper) -> Bool
+    {
+        return left.item.typedID == right.item.typedID &&
+          left.item.accessToken == right.item.accessToken &&
+          left.item.vendorThingID == right.item.vendorThingID
+    }
+}
+
 extension TimeRange: Equatable {
 
     public static func == (left: TimeRange, right: TimeRange) -> Bool {

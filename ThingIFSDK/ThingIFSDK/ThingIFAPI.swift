@@ -71,29 +71,6 @@ open class ThingIFAPI: Equatable {
         self.tag = tag
     }
 
-    /** Endpoints execute onboarding for the thing and merge MQTT channel to the gateway.
-     Thing act as Gateway is already registered and marked as Gateway.
-    
-     - Parameter pendingEndnode: Pending End Node
-     - Parameter endnodePassword: Password of the End Node
-     - Parameter options: Optional parameters inside.
-     - Parameter completionHandler: A closure to be executed once on board has finished. The closure takes 2 arguments: an end node, an ThingIFError
-     */
-    open func onboard(
-        _ pendingEndnode:PendingEndNode,
-        endnodePassword:String,
-        completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
-        ) ->Void
-    {
-        fatalError("TODO: implement me.")
-        /*
-        _onboardEndnodeWithGateway(pendingEndnode,
-            endnodePassword: endnodePassword,
-            options: options,
-            completionHandler: completionHandler)
-        */
-    }
-
     // MARK: - Push notification methods
 
     /** Install push notification to receive notification from IoT Cloud.
@@ -732,4 +709,18 @@ open class ThingIFAPI: Equatable {
           left.tag == right.tag
     }
 
+}
+
+internal extension ThingIFAPI {
+
+    var defaultHeader: [String : String] {
+        get {
+            return [
+              "Authorization" : "Bearer \(self.owner.accessToken)",
+              "X-Kii-AppID" : self.appID,
+              "X-Kii-AppKey" : self.appKey,
+              "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader
+            ]
+        }
+    }
 }
