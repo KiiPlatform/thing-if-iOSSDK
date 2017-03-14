@@ -161,6 +161,31 @@ extension ThingIFAPI {
         )
     }
 
+    /** Endpoints execute onboarding for the thing and merge MQTT
+     channel to the gateway. Thing act as Gateway is already
+     registered and marked as Gateway.
+
+     - Parameter pendingEndnode: Pending End Node
+     - Parameter endnodePassword: Password of the End Node
+     - Parameter options: Optional parameters inside.
+     - Parameter completionHandler: A closure to be executed once on
+       board has finished. The closure takes 2 arguments: an end node,
+       an ThingIFError
+     */
+    open func onboard(
+        _ pendingEndnode:PendingEndNode,
+        endnodePassword:String,
+        completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
+        ) ->Void
+    {
+        fatalError("TODO: implement me.")
+        /*
+        _onboardEndnodeWithGateway(pendingEndnode,
+            endnodePassword: endnodePassword,
+            options: options,
+            completionHandler: completionHandler)
+        */
+    }
 
     /*
     func _onboardEndnodeWithGateway(
