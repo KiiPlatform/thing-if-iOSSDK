@@ -99,9 +99,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
 
     }
@@ -130,9 +128,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
 
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
     }
 
@@ -207,9 +203,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
 
         XCTAssertEqual(
@@ -288,9 +282,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
     }
 
@@ -365,9 +357,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
     }
 
@@ -442,9 +432,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
     }
 
@@ -460,8 +448,8 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         // mock response
         sharedMockSession.mockResponse = (
           try JSONSerialization.data(
-              withJSONObject: ["thingID": thingID, "accessToken": accessToken],
-              options: .prettyPrinted),
+            withJSONObject: ["thingID": thingID, "accessToken": accessToken],
+            options: .prettyPrinted),
           HTTPURLResponse(
             url: URL(string:setting.app.baseURL)!,
             statusCode: 200,
@@ -483,9 +471,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         }
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error)
         }
 
         XCTAssertEqual(
