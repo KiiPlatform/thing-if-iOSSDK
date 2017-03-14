@@ -93,6 +93,46 @@ extension ThingIFAPI {
           completionHandler: completionHandler)
     }
 
+    /** Endpoints execute onboarding for the thing and merge MQTT
+     channel to the gateway. Thing act as Gateway is already
+     registered and marked as Gateway.
+
+     - Parameter pendingEndnode: Pending End Node
+     - Parameter endnodePassword: Password of the End Node
+     - Parameter completionHandler: A closure to be executed once on
+       board has finished. The closure takes 2 arguments: an end node,
+       an ThingIFError
+     */
+    open func onboard(
+        _ pendingEndnode:PendingEndNode,
+        endnodePassword:String,
+        completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
+        ) ->Void
+    {
+        guard let gateway = self.target as? Gateway else {
+            completionHandler(nil, ThingIFError.targetNotAvailable)
+            return
+        }
+
+        if endnodePassword.isEmpty {
+            completionHandler(nil, ThingIFError.unsupportedError)
+            return
+        }
+
+        onboard(
+          MediaType.mediaTypeOnboardingEndnodeWithGatewayThingIdRequest,
+          requestBody:
+            [
+              "gatewayThingID": gateway.typedID.id,
+              "endNodePassword": endnodePassword,
+              "owner": self.owner.typedID.toString()
+            ] + pendingEndnode.makeJsonObject(),
+          layoutPosition: .endnode,
+          vendorThingID: pendingEndnode.vendorThingID) { (target, error) in
+            completionHandler(target as? EndNode, error)
+        }
+    }
+
     private func onboard(
       _ mediaType: MediaType,
       requestBody: [String : Any],
@@ -118,10 +158,7 @@ extension ThingIFAPI {
               urlString:
                 "\(self.baseURL)/thing-if/apps/\(self.appID)/onboardings",
               requestHeaderDict:
-                [
-                  "authorization" : "Bearer \(owner.accessToken)",
-                  "content-type" : mediaType.rawValue
-                ],
+                self.defaultHeader + ["Content-Type" : mediaType.rawValue],
               requestBodyData: data) { response, error in
                 var target: Target?
                 var error2 = error
@@ -161,69 +198,4 @@ extension ThingIFAPI {
         )
     }
 
-    /** Endpoints execute onboarding for the thing and merge MQTT
-     channel to the gateway. Thing act as Gateway is already
-     registered and marked as Gateway.
-
-     - Parameter pendingEndnode: Pending End Node
-     - Parameter endnodePassword: Password of the End Node
-     - Parameter completionHandler: A closure to be executed once on
-       board has finished. The closure takes 2 arguments: an end node,
-       an ThingIFError
-     */
-    open func onboard(
-        _ pendingEndnode:PendingEndNode,
-        endnodePassword:String,
-        completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
-        ) ->Void
-    {
-        guard let gateway = self.target as? Gateway else {
-            completionHandler(nil, ThingIFError.targetNotAvailable)
-            return
-        }
-
-        if endnodePassword.isEmpty {
-            completionHandler(nil, ThingIFError.unsupportedError)
-            return
-        }
-
-        let requestBodyData: Data
-        do {
-            requestBodyData = try JSONSerialization.data(
-              withJSONObject: [
-                "gatewayThingID": gateway.typedID.id,
-                "endNodePassword": endnodePassword,
-                "owner": self.owner.typedID.toString()
-              ] + pendingEndnode.makeJsonObject(),
-              options: JSONSerialization.WritingOptions(rawValue: 0))
-        } catch let error {
-            kiiSevereLog(error)
-            completionHandler(nil, ThingIFError.jsonParseError)
-            return
-        }
-
-        operationQueue.addOperation(
-          IoTRequestOperation(
-            request: buildDefaultRequest(
-              HTTPMethod.post,
-              urlString: "\(self.baseURL)/thing-if/apps/\(self.appID)/onboardings",
-              requestHeaderDict:
-                self.defaultHeader +
-                [
-                  "Content-Type":
-                    MediaType.mediaTypeOnboardingEndnodeWithGatewayThingIdRequest.rawValue
-                ],
-              requestBodyData: requestBodyData) { (response, error) -> Void in
-                let accessToken = response?["accessToken"] as! String
-                let endNode = error != nil ? nil : EndNode(
-                  response?["endNodeThingID"] as! String,
-                  vendorThingID: pendingEndnode.vendorThingID,
-                  accessToken: accessToken)
-                DispatchQueue.main.async {
-                    completionHandler(endNode, error)
-                }
-            }
-          )
-        )
-    }
 }
