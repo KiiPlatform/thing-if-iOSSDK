@@ -181,19 +181,16 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
             thingType,
             thingProperties: thingProperties)) {
             ( target, error) -> Void in
-            if error == nil {
-                XCTAssertEqual(
-                  target!.typedID.toString(),
-                  setting.target.typedID.toString())
-                XCTAssertEqual(
-                  target!.typedID.toString(),
-                  setting.target.typedID.toString())
-                XCTAssertEqual(
-                  target!.accessToken,
-                  setting.owner.accessToken)
-            } else {
-                XCTFail("should success")
-            }
+            XCTAssertNil(error)
+            XCTAssertEqual(
+              target!.typedID.toString(),
+              setting.target.typedID.toString())
+            XCTAssertEqual(
+              target!.typedID.toString(),
+              setting.target.typedID.toString())
+            XCTAssertEqual(
+              target!.accessToken,
+              setting.owner.accessToken)
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
@@ -358,18 +355,14 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         setting.api.onboardWith(
           vendorThingID: vendorThingID,
           thingPassword: password,
-          options: options,
-          completionHandler: { (target:Target?, error:ThingIFError?) -> Void in
-              XCTAssertNil(target)
-              XCTAssertNotNil(error)
-              switch error! {
-              case .errorResponse(let actualErrorResponse):
-                  XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
-              default:
-                  XCTFail("unexpected error: \(error)")
-              }
-              expectation.fulfill()
-          })
+          options: options) { (target:Target?, error:ThingIFError?) -> Void in
+            XCTAssertNil(target)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(403, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             XCTAssertNil(error)
@@ -444,13 +437,10 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
           thingPassword: password,
           options: options) { (target:Target?, error:ThingIFError?) -> Void in
             XCTAssertNil(target)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .errorResponse(let actualErrorResponse):
-                XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
-            default:
-                XCTFail("unexpected error: \(error)")
-            }
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(404, errorCode: "", errorMessage: "")),
+              error)
             expectation.fulfill()
         }
 
@@ -528,13 +518,10 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
           thingPassword: password,
           options: options) { (target:Target?, error:ThingIFError?) -> Void in
             XCTAssertNil(target)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .errorResponse(let actualErrorResponse):
-                XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
-            default:
-                XCTFail("unexpected error: \(error)")
-            }
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(500, errorCode: "", errorMessage: "")),
+              error)
             expectation.fulfill()
         }
 
