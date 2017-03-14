@@ -354,3 +354,35 @@ extension ErrorResponse: Equatable {
           left.errorMessage == right.errorMessage
     }
 }
+
+extension GatewayAPI: Equatable, CustomStringConvertible {
+
+    public static func == (left: GatewayAPI, right: GatewayAPI) -> Bool {
+        return left.app == right.app &&
+          left.gatewayAddress == right.gatewayAddress &&
+          left.accessToken == right.accessToken &&
+          left.tag == right.tag
+    }
+
+    public var description: String {
+        return "app={\(self.app)|, gatewayAddress=\(self.gatewayAddress), "
+          + "accessToken=\(self.accessToken), tag=\(self.tag)"
+    }
+}
+
+extension KiiApp: Equatable, CustomStringConvertible {
+
+    public static func == (left: KiiApp, right: KiiApp) -> Bool {
+        return left.appID == right.appID &&
+          left.appKey == right.appKey &&
+          left.hostName == right.hostName &&
+          left.baseURL == right.baseURL &&
+          left.siteName == right.siteName
+    }
+
+    public var description: String {
+        return "appID={\(self.appID)|, appKey={\(self.appKey), "
+          + "hostName=\(self.hostName), baseURL=\(self.baseURL), "
+          + "siteName=\(self.siteName)"
+    }
+}
