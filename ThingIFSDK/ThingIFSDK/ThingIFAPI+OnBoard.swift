@@ -207,12 +207,12 @@ extension ThingIFAPI {
             request: buildDefaultRequest(
               HTTPMethod.post,
               urlString: "\(self.baseURL)/thing-if/apps/\(self.appID)/onboardings",
-              requestHeaderDict: [
-                "x-kii-appid": self.appID,
-                "x-kii-appkey": self.appKey,
-                "authorization": "Bearer \(self.owner.accessToken)",
-                "Content-Type": MediaType.mediaTypeOnboardingEndnodeWithGatewayThingIdRequest.rawValue
-              ],
+              requestHeaderDict:
+                self.defaultHeader +
+                [
+                  "Content-Type":
+                    MediaType.mediaTypeOnboardingEndnodeWithGatewayThingIdRequest.rawValue
+                ],
               requestBodyData: requestBodyData) { (response, error) -> Void in
                 let accessToken = response?["accessToken"] as! String
                 let endNode = error != nil ? nil : EndNode(

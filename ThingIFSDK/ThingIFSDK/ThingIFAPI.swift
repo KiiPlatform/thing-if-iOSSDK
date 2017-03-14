@@ -710,3 +710,17 @@ open class ThingIFAPI: Equatable {
     }
 
 }
+
+internal extension ThingIFAPI {
+
+    var defaultHeader: [String : String] {
+        get {
+            return [
+              "Authorization" : "Bearer \(self.owner.accessToken)",
+              "X-Kii-AppID" : self.appID,
+              "X-Kii-AppKey" : self.appKey,
+              "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader
+            ]
+        }
+    }
+}
