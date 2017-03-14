@@ -30,9 +30,11 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             //verify request header
             XCTAssertEqual(
               [
-                "Authorization" : "Bearer \(owner.accessToken)",
-                "Content-Type" : "application/vnd.kii.OnboardingWithThingIDByOwner+json",
-                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/vnd.kii.OnboardingWithThingIDByOwner+json"
               ],
               request.allHTTPHeaderFields!
             )
@@ -154,6 +156,8 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
               [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
                 "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
                 "Authorization": "Bearer \(setting.owner.accessToken)",
                 "Content-Type": "application/vnd.kii.OnboardingWithThingIDByOwner+json"
@@ -233,6 +237,8 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
               [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
                 "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
                 "Authorization": "Bearer \(setting.owner.accessToken)",
                 "Content-Type": "application/vnd.kii.OnboardingWithThingIDByOwner+json"
@@ -308,6 +314,8 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
               [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
                 "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
                 "Authorization": "Bearer \(setting.owner.accessToken)",
                 "Content-Type": "application/vnd.kii.OnboardingWithThingIDByOwner+json"
@@ -383,6 +391,8 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
               [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
                 "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
                 "Authorization": "Bearer \(setting.owner.accessToken)",
                 "Content-Type": "application/vnd.kii.OnboardingWithThingIDByOwner+json"
