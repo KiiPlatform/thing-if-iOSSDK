@@ -78,24 +78,15 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         api.onboardWith(
           thingID: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5",
           thingPassword: "dummyPassword") { ( target, error) -> Void in
-            if error == nil {
-                XCTFail("error must not nil")
-                return
-            }
-            switch error! {
-            case .errorResponse(let actualErrorResponse):
-                XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
-                XCTAssertEqual(
-                  dict["errorCode"] as! String,
-                  actualErrorResponse.errorCode)
-                XCTAssertEqual(
-                  dict["message"] as! String,
-                  actualErrorResponse.errorMessage)
-            default:
-                XCTFail("invalid error")
-                break
-            }
-
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  400,
+                  errorCode: dict["errorCode"] as! String,
+                  errorMessage: dict["message"] as! String
+                )
+              ),
+              error)
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
@@ -114,16 +105,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         api.onboardWith(
           thingID: "dummyThingID",
           thingPassword: "dummyPassword") { (target, error) -> Void in
-            if error == nil{
-                XCTFail("should fail")
-            }else {
-                switch error! {
-                case .alreadyOnboarded:
-                    break
-                default:
-                    XCTFail("should be ALREADY_ONBOARDED error")
-                }
-            }
+            XCTAssertEqual(ThingIFError.alreadyOnboarded, error)
             expectation.fulfill()
         }
 
@@ -271,13 +253,10 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
           options: options) {
             (target, error) in
             XCTAssertNil(target)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .errorResponse(let actualErrorResponse):
-                XCTAssertEqual(403, actualErrorResponse.httpStatusCode)
-            default:
-                XCTFail("unexpected error: \(error)")
-            }
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(403, errorCode: "", errorMessage: "")),
+              error)
             expectation.fulfill()
         }
 
@@ -346,13 +325,10 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
           options: options) {
             (target, error) in
             XCTAssertNil(target)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .errorResponse(let actualErrorResponse):
-                XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
-            default:
-                XCTFail("unexpected error: \(error)")
-            }
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(404, errorCode: "", errorMessage: "")),
+              error)
             expectation.fulfill()
         }
 
@@ -421,13 +397,10 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
           options: options) {
             (target, error) in
             XCTAssertNil(target)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .errorResponse(let actualErrorResponse):
-                XCTAssertEqual(500, actualErrorResponse.httpStatusCode)
-            default:
-                XCTFail("unexpected error: \(error)")
-            }
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(500, errorCode: "", errorMessage: "")),
+              error)
             expectation.fulfill()
         }
 
@@ -484,13 +457,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
           options: options) {
             (target, error) in
             XCTAssertNil(target)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .alreadyOnboarded:
-                break
-            default:
-                XCTFail("unexpected error: \(error)")
-            }
+            XCTAssertEqual(ThingIFError.alreadyOnboarded, error)
         }
 
         XCTAssertEqual(
