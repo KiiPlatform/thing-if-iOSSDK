@@ -167,7 +167,6 @@ extension ThingIFAPI {
 
      - Parameter pendingEndnode: Pending End Node
      - Parameter endnodePassword: Password of the End Node
-     - Parameter options: Optional parameters inside.
      - Parameter completionHandler: A closure to be executed once on
        board has finished. The closure takes 2 arguments: an end node,
        an ThingIFError
@@ -175,23 +174,6 @@ extension ThingIFAPI {
     open func onboard(
         _ pendingEndnode:PendingEndNode,
         endnodePassword:String,
-        completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
-        ) ->Void
-    {
-        fatalError("TODO: implement me.")
-        /*
-        _onboardEndnodeWithGateway(pendingEndnode,
-            endnodePassword: endnodePassword,
-            options: options,
-            completionHandler: completionHandler)
-        */
-    }
-
-    /*
-    func _onboardEndnodeWithGateway(
-        _ pendingEndnode:PendingEndNode,
-        endnodePassword:String,
-        options:OnboardEndnodeWithGatewayOptions? = nil,
         completionHandler: @escaping (EndNode?, ThingIFError?)-> Void
         ) ->Void
     {
@@ -234,13 +216,11 @@ extension ThingIFAPI {
             requestBodyDict["endNodeThingProperties"] = pendingEndnode.thingProperties
         }
 
-        requestBodyDict["dataGroupingInterval"] = options?.dataGroupingInterval?.rawValue
-
         do {
             let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
             // do request
             let request = buildDefaultRequest(
-                HTTPMethod.POST,
+                HTTPMethod.post,
                 urlString: requestURL,
                 requestHeaderDict: requestHeaderDict,
                 requestBodyData: requestBodyData,
@@ -265,5 +245,4 @@ extension ThingIFAPI {
             completionHandler(nil, ThingIFError.jsonParseError)
         }
     }
-    */
 }
