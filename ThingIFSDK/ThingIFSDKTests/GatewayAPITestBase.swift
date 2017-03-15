@@ -11,7 +11,7 @@ import XCTest
 private var sharedGatewayAPI : GatewayAPI!
 
 class GatewayAPITestBase: SmallTestBase {
-    let ACCESSTOKEN: String = "token-0000-1111-aaaa-bbbb"
+    internal let ACCESSTOKEN: String = "token-0000-1111-aaaa-bbbb"
 
     func getLoggedInGatewayAPI(
       _ file: StaticString = #file,
