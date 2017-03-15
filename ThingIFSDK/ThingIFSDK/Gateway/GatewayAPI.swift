@@ -105,33 +105,19 @@ open class GatewayAPI {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/onboarding"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
-
-        // do request
-        let request = buildNewRequest(
-            HTTPMethod.post,
-            urlString: requestURL,
-            requestHeaderDict: requestHeaderDict,
-            requestBodyData: nil,
-            completionHandler: { (response, error) -> Void in
-                let gateway: Gateway?
-                if response != nil {
-                    let thingID = response!["thingID"] as? String
-                    let vendorThingID = response!["vendorThingID"] as? String
-                    gateway = Gateway(thingID!, vendorThingID: vendorThingID!)
-                } else {
-                    gateway = nil
-                }
-                DispatchQueue.main.async {
-                    completionHandler(gateway, error)
-                }
-            }
-        )
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+        self.operationQueue.addHttpRequestOperation(
+          .post,
+          url: "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/onboarding",
+          requestHeader: self.defaultHeader,
+          requestBody: nil,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error in
+            let gateway = response == nil ? nil :
+              Gateway(
+                response!["thingID"] as! String,
+                vendorThingID: response!["vendorThingID"] as! String)
+            DispatchQueue.main.async { completionHandler(gateway, error) }
+        }
     }
 
     /** Get Gateway ID
@@ -464,8 +450,21 @@ open class GatewayAPI {
         return !(self.accessToken?.isEmpty ?? true)
     }
 
+    @available(iOS, deprecated: 1.0, message: "use defaultHeader")
     private func generateAuthBearerHeader() -> Dictionary<String, String> {
         return [ "authorization": "Bearer \(self.accessToken!)" ]
     }
 
+}
+
+fileprivate extension GatewayAPI {
+
+    var defaultHeader: [String : String] {
+        get {
+            return [
+              "authorization": "Bearer \(self.accessToken!)",
+              "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader
+            ]
+        }
+    }
 }

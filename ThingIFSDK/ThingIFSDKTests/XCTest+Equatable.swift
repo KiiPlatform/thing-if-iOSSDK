@@ -9,10 +9,43 @@
 import Foundation
 @testable import ThingIFSDK
 
-internal protocol EquatableWrapper: Equatable {
+public protocol EquatableWrapper: Equatable {
     associatedtype T
 
     var item: T { get }
+}
+
+extension EquatableWrapper where T: TargetThing {
+
+    public static func == (left: Self, right: Self) -> Bool {
+        return left.item.typedID == right.item.typedID &&
+          left.item.accessToken == right.item.accessToken &&
+          left.item.vendorThingID == right.item.vendorThingID
+    }
+}
+
+struct GatewayWrapper: EquatableWrapper {
+
+    internal let item: Gateway
+
+    init(
+      _ thingID: String,
+      vendorThingID: String,
+      accessToken: String? = nil)
+    {
+        self.item = Gateway(
+          thingID,
+          vendorThingID: vendorThingID,
+          accessToken: accessToken)
+    }
+
+    init?(_ item: Gateway?) {
+        if item == nil {
+            return nil
+        }
+        self.item = item!
+    }
+
 }
 
 struct EndNodeWrapper: EquatableWrapper {
@@ -37,14 +70,6 @@ struct EndNodeWrapper: EquatableWrapper {
         self.item = item!
     }
 
-    public static func == (
-      left: EndNodeWrapper,
-      right: EndNodeWrapper) -> Bool
-    {
-        return left.item.typedID == right.item.typedID &&
-          left.item.accessToken == right.item.accessToken &&
-          left.item.vendorThingID == right.item.vendorThingID
-    }
 }
 
 extension TimeRange: Equatable {
