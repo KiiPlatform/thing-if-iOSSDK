@@ -53,63 +53,42 @@ open class GatewayAPI {
 
      - Parameter username: Username of the Gateway.
      - Parameter password: Password of the Gateway.
-     - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 1 argument: an instance of
+       ThingIFError when failed.
      */
     open func login(
         _ username: String,
         password: String,
-        completionHandler: @escaping (ThingIFError?)-> Void
-        )
+        completionHandler: @escaping (ThingIFError?)-> Void) -> Void
     {
         if username.isEmpty || password.isEmpty {
             completionHandler(ThingIFError.unsupportedError)
             return
         }
 
-        let requestURL = "\(self.gatewayAddressString)/\(self.app.siteName)/token"
+        let plainData = "\(self.app.appID):\(self.app.appKey)".data(
+          using: String.Encoding.utf8)!
+        let base64Str = plainData.base64EncodedString(
+          options: NSData.Base64EncodingOptions.init(rawValue: 0))
 
-        // generate header
-        let credential = "\(self.app.appID):\(self.app.appKey)"
-
-        let plainData = credential.data(using: String.Encoding.utf8)!
-        let base64Str = plainData.base64EncodedString(options: NSData.Base64EncodingOptions.init(rawValue: 0))
-
-        let requestHeaderDict:Dictionary<String, String> = [
-            "authorization": "Basic " + base64Str,
-            "Content-Type": "application/json"
-        ]
-
-        // genrate body
-        let requestBodyDict = NSMutableDictionary(dictionary:
+        self.operationQueue.addHttpRequestOperation(
+          .post,
+          url: "\(self.gatewayAddressString)/\(self.app.siteName)/token",
+          requestHeader:
             [
-                "username": username,
-                "password": password
-            ]
-        )
+              "Authorization": "Basic " + base64Str,
+              "Content-Type": "application/json"
+            ],
+          requestBody: ["username": username, "password": password],
+          failureBeforeExecutionHandler: { completionHandler($0) }) {
 
-        do {
-            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-            // do request
-            let request = buildNewRequest(
-                HTTPMethod.post,
-                urlString: requestURL,
-                requestHeaderDict: requestHeaderDict,
-                requestBodyData: requestBodyData,
-                completionHandler: { (response, error) -> Void in
-                    if error == nil {
-                        self.accessToken = response?["accessToken"] as? String
-                        self.saveInstance()
-                    }
-                    DispatchQueue.main.async {
-                        completionHandler(error)
-                    }
-                }
-            )
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        } catch(_) {
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.jsonParseError)
+            response, error -> Void in
+            if error == nil {
+                self.accessToken = response?["accessToken"] as? String
+                self.saveInstance()
+            }
+            DispatchQueue.main.async { completionHandler(error) }
         }
     }
 
