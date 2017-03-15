@@ -29,21 +29,25 @@ internal extension OperationQueue {
       _ method: HTTPMethod,
       url: String,
       requestHeader: [String : String],
-      requestBody: [String : Any],
+      requestBody: [String : Any]? = nil,
       failureBeforeExecutionHandler: @escaping (_ error: ThingIFError) -> Void,
       completionHandler:
         @escaping (_ response: [String : Any]?,
                    _ error: ThingIFError?) -> Void) -> Void
     {
-        let data: Data
-        do {
-            data = try JSONSerialization.data(
-              withJSONObject: requestBody,
-              options: JSONSerialization.WritingOptions(rawValue: 0))
-        } catch let error {
-            kiiSevereLog(error)
-            failureBeforeExecutionHandler(ThingIFError.jsonParseError)
-            return
+        let data: Data?
+        if let requestBody = requestBody {
+            do {
+                data = try JSONSerialization.data(
+                  withJSONObject: requestBody,
+                  options: JSONSerialization.WritingOptions(rawValue: 0))
+            } catch let error {
+                kiiSevereLog(error)
+                failureBeforeExecutionHandler(ThingIFError.jsonParseError)
+                return
+            }
+        } else {
+            data = nil
         }
 
         self.addOperation(
