@@ -450,6 +450,7 @@ open class GatewayAPI {
         return !(self.accessToken?.isEmpty ?? true)
     }
 
+    @available(iOS, deprecated: 1.0, message: "use defaultHeader")
     private func generateAuthBearerHeader() -> Dictionary<String, String> {
         return [ "authorization": "Bearer \(self.accessToken!)" ]
     }
