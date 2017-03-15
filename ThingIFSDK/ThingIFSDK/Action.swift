@@ -22,8 +22,8 @@ public struct Action {
     /** Initializer of Action instance.
 
      - Parameter name: Name of an action
-     - Parameter value: Value of an action. This must be number, bool,
-       string or json compatible array or dictionary
+     - Parameter value: Value of an action. Type must be any of
+       number, bool, string or json compatible array/dictionary
      */
     public init(_ name: String, value: Any) {
         self.name = name
