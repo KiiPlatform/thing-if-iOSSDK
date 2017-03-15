@@ -43,3 +43,19 @@ public struct GroupedHistoryStatesQuery {
     }
 
 }
+
+extension GroupedHistoryStatesQuery : ToJsonObject {
+    internal func makeJsonObject() -> [String : Any]{
+
+        let timeRangeClause = TimeRangeClauseInQuery(self.timeRange)
+
+        var clause : [String : Any]
+        if self.clause != nil {
+            clause = AndClauseInQuery(self.clause!, timeRangeClause).makeJsonObject()
+        } else {
+            clause = timeRangeClause.makeJsonObject()
+        }
+
+        return [ "clause": clause, "grouped": true ]
+    }
+}

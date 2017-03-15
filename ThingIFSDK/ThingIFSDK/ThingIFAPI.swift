@@ -681,31 +681,10 @@ open class ThingIFAPI: Equatable {
             return;
         }
 
-        let timeRangeClause = TimeRangeClauseInQuery(query.timeRange)
-
-        var clause : [String : Any]
-        if query.clause != nil {
-            clause = AndClauseInQuery(query.clause!, timeRangeClause).makeJsonObject()
-        } else {
-            clause = timeRangeClause.makeJsonObject()
-        }
-
         // generate body
-        let requestBody : [ String : Any] =
-            [
-                "query": [
-                    "clause": clause,
-                    "grouped": true,
-                    "aggregations": [
-                        [
-                            "type": aggregation.function.rawValue.uppercased(),
-                            "putAggregationInto": aggregation.function.rawValue.lowercased(),
-                            "field": aggregation.field,
-                            "fieldType": aggregation.fieldType.rawValue
-                        ]
-                    ]
-                ]
-            ]
+        var queryBody = query.makeJsonObject()
+        queryBody["aggregations"] = [ aggregation.makeJsonObject() ]
+        let requestBody : [ String : Any] = ["query" : queryBody ]
 
         self.operationQueue.addHttpRequestOperation(
             .post,
@@ -717,36 +696,29 @@ open class ThingIFAPI: Equatable {
                 response, error in
 
                 var results : [AggregatedResult<AggregatedValueType>]? = nil
-                if response != nil {
+                if let response = response {
                     results = []
-                    let queryResults = response?["groupedResults"] as! [[String:Any]]
-                    queryResults.forEach { result in
-                        if result["range"] == nil || result["aggregations"] == nil {
-                            DispatchQueue.main.async {
-                                completionHandler(nil, ThingIFError.unsupportedError)
-                            }
-                            return;
-                        }
+                    let queryResults = response["groupedResults"] as! [[String:Any]]
+                    for result in queryResults {
                         var value: AggregatedValueType? = nil
                         var history: [HistoryState] = []
                         let range = result["range"] as! [String: Double]
                         let timeRange = TimeRange(
                             Date(timeIntervalSince1970:range["from"]!),
                             to: Date(timeIntervalSince1970:range["to"]!))
-                        let aggregations = result["aggregations"] as! [[String: Any]]
-                        if aggregations.count == 1 {
-                            let aggregation = aggregations[0]
-                            if aggregation["value"] != nil {
-                                value = aggregation["value"] as? AggregatedValueType
-                            }
-                            if aggregation["object"] != nil {
-                                var object = aggregation["object"] as! [String: Any]
-                                let createdAt = Date(timeIntervalSince1970: object["_created"] as! TimeInterval)
-                                object.removeValue(forKey: "_created")
-                                history.append(
-                                    HistoryState(
-                                        object,
-                                        createdAt: createdAt))
+                        let aggregation = (result["aggregations"] as! [[String: Any]])[0]
+                        if aggregation["value"] != nil {
+                            value = aggregation["value"] as? AggregatedValueType
+                        }
+                        if aggregation["object"] != nil {
+                            do {
+                                let object = aggregation["object"] as! [String: Any]
+                                history.append(try HistoryState(object))
+                            } catch let error {
+                                DispatchQueue.main.async {
+                                    completionHandler(nil, error as? ThingIFError)
+                                }
+                                return;
                             }
                         }
                         results!.append(

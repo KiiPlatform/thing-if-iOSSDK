@@ -27,6 +27,9 @@ class ThingIFAPIAggregateTests: SmallTestBase {
         let aggregation = try Aggregation.makeMaxAggregation(
             "dummyField",
             fieldType: Aggregation.FieldType.integer)
+        let historyState = HistoryState(
+            ["power" : true, "currentTemperature" : 25],
+            createdAt: Date(timeIntervalSince1970: 50))
 
         // verify request
         sharedMockSession.requestVerifier = makeRequestVerifier() {(request) in
@@ -97,11 +100,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                         [
                             "value" : 25,
                             "name" : "max",
-                            "object" : [
-                                "_created": 50,
-                                "power" : true,
-                                "currentTemperature" : 25
-                            ]
+                            "object" : historyState.makeJsonObject()
                         ]
                     ]
                 ]
@@ -128,12 +127,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             XCTAssertEqual(25, result.value)
             XCTAssertEqual(timeRange, result.timeRange)
             XCTAssertEqual(1, result.aggregatedObjects.count)
-            let object : HistoryState = result.aggregatedObjects[0]
-            XCTAssertNotNil(object)
-            XCTAssertEqual(true, object.state["power"] as! Bool)
-            XCTAssertEqual(25, object.state["currentTemperature"] as! Int)
-            XCTAssertNil(object.state["_created"])
-            XCTAssertEqual(50, object.createdAt.timeIntervalSince1970)
+            XCTAssertEqual(historyState, result.aggregatedObjects[0])
             expectation.fulfill()
         }
 
@@ -151,6 +145,9 @@ class ThingIFAPIAggregateTests: SmallTestBase {
         let aggregation = try Aggregation.makeMaxAggregation(
             "dummyField",
             fieldType: Aggregation.FieldType.integer)
+        let historyState = HistoryState(
+            ["power" : true, "currentTemperature" : 25],
+            createdAt: Date(timeIntervalSince1970: 50))
 
         // verify request
         sharedMockSession.requestVerifier = makeRequestVerifier() {(request) in
@@ -211,11 +208,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                         [
                             "value" : 25,
                             "name" : "max",
-                            "object" : [
-                                "_created": 50,
-                                "power" : true,
-                                "currentTemperature" : 25
-                            ]
+                            "object" : historyState.makeJsonObject()
                         ]
                     ]
                 ]
@@ -242,12 +235,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             XCTAssertEqual(25, result.value)
             XCTAssertEqual(timeRange, result.timeRange)
             XCTAssertEqual(1, result.aggregatedObjects.count)
-            let object : HistoryState = result.aggregatedObjects[0]
-            XCTAssertNotNil(object)
-            XCTAssertEqual(true, object.state["power"] as! Bool)
-            XCTAssertEqual(25, object.state["currentTemperature"] as! Int)
-            XCTAssertNil(object.state["_created"])
-            XCTAssertEqual(50, object.createdAt.timeIntervalSince1970)
+            XCTAssertEqual(historyState, result.aggregatedObjects[0])
             expectation.fulfill()
         }
 
