@@ -9,6 +9,44 @@
 import Foundation
 @testable import ThingIFSDK
 
+internal protocol EquatableWrapper: Equatable {
+    associatedtype T
+
+    var item: T { get }
+}
+
+struct EndNodeWrapper: EquatableWrapper {
+
+    internal let item: EndNode
+
+    init(
+      _ thingID: String,
+      vendorThingID: String,
+      accessToken: String? = nil)
+    {
+        self.item = EndNode(
+          thingID,
+          vendorThingID: vendorThingID,
+          accessToken: accessToken)
+    }
+
+    init?(_ item: EndNode?) {
+        if item == nil {
+            return nil
+        }
+        self.item = item!
+    }
+
+    public static func == (
+      left: EndNodeWrapper,
+      right: EndNodeWrapper) -> Bool
+    {
+        return left.item.typedID == right.item.typedID &&
+          left.item.accessToken == right.item.accessToken &&
+          left.item.vendorThingID == right.item.vendorThingID
+    }
+}
+
 extension TimeRange: Equatable {
 
     public static func == (left: TimeRange, right: TimeRange) -> Bool {
@@ -352,5 +390,37 @@ extension ErrorResponse: Equatable {
         return left.httpStatusCode == right.httpStatusCode &&
           left.errorCode == right.errorCode &&
           left.errorMessage == right.errorMessage
+    }
+}
+
+extension GatewayAPI: Equatable, CustomStringConvertible {
+
+    public static func == (left: GatewayAPI, right: GatewayAPI) -> Bool {
+        return left.app == right.app &&
+          left.gatewayAddress == right.gatewayAddress &&
+          left.accessToken == right.accessToken &&
+          left.tag == right.tag
+    }
+
+    public var description: String {
+        return "app={\(self.app)|, gatewayAddress=\(self.gatewayAddress), "
+          + "accessToken=\(self.accessToken), tag=\(self.tag)"
+    }
+}
+
+extension KiiApp: Equatable, CustomStringConvertible {
+
+    public static func == (left: KiiApp, right: KiiApp) -> Bool {
+        return left.appID == right.appID &&
+          left.appKey == right.appKey &&
+          left.hostName == right.hostName &&
+          left.baseURL == right.baseURL &&
+          left.siteName == right.siteName
+    }
+
+    public var description: String {
+        return "appID={\(self.appID)|, appKey={\(self.appKey), "
+          + "hostName=\(self.hostName), baseURL=\(self.baseURL), "
+          + "siteName=\(self.siteName)"
     }
 }

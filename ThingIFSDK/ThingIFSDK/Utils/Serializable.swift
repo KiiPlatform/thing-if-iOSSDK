@@ -17,6 +17,7 @@ private var typeMap: [ String : Serializable.Type] =
     String(describing: StandaloneThing.self) : StandaloneThing.self,
     String(describing: Gateway.self) : Gateway.self,
     String(describing: EndNode.self) : EndNode.self,
+    String(describing: GatewayAPI.self) : GatewayAPI.self
   ]
 
 internal struct Coder {
@@ -47,6 +48,10 @@ internal struct Coder {
         ]
     }
 
+    internal mutating func encode(_ value: URL?, forKey key: String) -> Void {
+        self.dict[key] = value
+    }
+
     internal func finishCoding() -> Data {
         return NSKeyedArchiver.archivedData(withRootObject: self.dict)
     }
@@ -65,6 +70,10 @@ internal struct Decoder {
 
     internal func decodeString(forKey key: String) -> String? {
         return self.dict[key] as? String
+    }
+
+    internal func decodeURL(forKey key: String) -> URL? {
+        return self.dict[key] as? URL
     }
 
     internal func decodeSerializable(forKey key: String) -> Serializable? {

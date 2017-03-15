@@ -207,7 +207,7 @@ class IoTRequestOperation<T>: GroupOperation {
                         errorCode = responseBody!["errorCode"] as! String
                         errorMessage = responseBody!["message"] as! String
                     }
-                    let errorResponse = ErrorResponse(httpStatusCode: statusCode, errorCode: errorCode, errorMessage: errorMessage)
+                    let errorResponse = ErrorResponse(statusCode, errorCode: errorCode, errorMessage: errorMessage)
                     let iotCloudError = ThingIFError.errorResponse(required: errorResponse)
                     completionHandler(nil, iotCloudError)
                 }else {
@@ -255,7 +255,7 @@ class IoTRequestOperation<T>: GroupOperation {
                         errorCode = responseBody!["errorCode"] as! String
                         errorMessage = responseBody!["message"] as! String
                     }
-                    let errorResponse = ErrorResponse(httpStatusCode: statusCode, errorCode: errorCode, errorMessage: errorMessage)
+                    let errorResponse = ErrorResponse(statusCode, errorCode: errorCode, errorMessage: errorMessage)
                     let iotCloudError = ThingIFError.errorResponse(required: errorResponse)
                     completionHandler(nil, iotCloudError)
                 }else {
