@@ -16,16 +16,17 @@ public struct AliasAction {
     /** Name of an alias. */
     public let alias: String
     /** Action of this alias. */
-    public let action: [String : Any]
+    public let actions: [Action]
 
     // MARK: - Initializing CommandForm instance.
     /** Initializer of AliasAction instance.
 
      - Parameter alias: Name of an alias.
-     - Parameter action: Action of this alias. This should be able to convert to JSON.
+     - Parameter actions: Actions of this alias. must not be empty.
      */
-    public init(_ alias: String, action: [String : Any]) {
+
+    public init(_ alias: String, actions: [Action]) {
         self.alias = alias
-        self.action = action
+        self.actions = actions
     }
 }
