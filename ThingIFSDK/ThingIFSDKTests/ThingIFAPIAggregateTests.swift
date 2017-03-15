@@ -40,8 +40,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
                 [
-                    "x-kii-appid": setting.app.appID,
-                    "x-kii-appkey": setting.app.appKey,
+                    "X-Kii-AppID": setting.app.appID,
+                    "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/vnd.kii.TraitStateQueryRequest+json"
@@ -132,6 +132,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             XCTAssertNotNil(object)
             XCTAssertEqual(true, object.state["power"] as! Bool)
             XCTAssertEqual(25, object.state["currentTemperature"] as! Int)
+            XCTAssertNil(object.state["_created"])
             XCTAssertEqual(50, object.createdAt.timeIntervalSince1970)
             expectation.fulfill()
         }
@@ -163,8 +164,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
                 [
-                    "x-kii-appid": setting.app.appID,
-                    "x-kii-appkey": setting.app.appKey,
+                    "X-Kii-AppID": setting.app.appID,
+                    "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/vnd.kii.TraitStateQueryRequest+json"
@@ -245,6 +246,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             XCTAssertNotNil(object)
             XCTAssertEqual(true, object.state["power"] as! Bool)
             XCTAssertEqual(25, object.state["currentTemperature"] as! Int)
+            XCTAssertNil(object.state["_created"])
             XCTAssertEqual(50, object.createdAt.timeIntervalSince1970)
             expectation.fulfill()
         }
@@ -276,8 +278,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
                 [
-                    "x-kii-appid": setting.app.appID,
-                    "x-kii-appkey": setting.app.appKey,
+                    "X-Kii-AppID": setting.app.appID,
+                    "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/vnd.kii.TraitStateQueryRequest+json"
@@ -362,8 +364,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
                 [
-                    "x-kii-appid": setting.app.appID,
-                    "x-kii-appkey": setting.app.appKey,
+                    "X-Kii-AppID": setting.app.appID,
+                    "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/vnd.kii.TraitStateQueryRequest+json"
@@ -414,7 +416,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             XCTAssertNil(results)
             XCTAssertEqual(
                 ThingIFError.errorResponse(required: ErrorResponse(
-                    httpStatusCode: 400, errorCode: "", errorMessage: "")),
+                    400, errorCode: "", errorMessage: "")),
                 error)
             expectation.fulfill()
         }
@@ -446,8 +448,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
                 [
-                    "x-kii-appid": setting.app.appID,
-                    "x-kii-appkey": setting.app.appKey,
+                    "X-Kii-AppID": setting.app.appID,
+                    "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/vnd.kii.TraitStateQueryRequest+json"
@@ -498,7 +500,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 XCTAssertNil(results)
                 XCTAssertEqual(
                     ThingIFError.errorResponse(required: ErrorResponse(
-                        httpStatusCode: 403, errorCode: "", errorMessage: "")),
+                        403, errorCode: "", errorMessage: "")),
                     error)
                 expectation.fulfill()
         }
@@ -530,8 +532,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
                 [
-                    "x-kii-appid": setting.app.appID,
-                    "x-kii-appkey": setting.app.appKey,
+                    "X-Kii-AppID": setting.app.appID,
+                    "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/vnd.kii.TraitStateQueryRequest+json"
@@ -582,7 +584,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             XCTAssertNil(results)
             XCTAssertEqual(
                 ThingIFError.errorResponse(required: ErrorResponse(
-                    httpStatusCode: 404, errorCode: "", errorMessage: "")),
+                    404, errorCode: "", errorMessage: "")),
                 error)
             expectation.fulfill()
         }
@@ -614,8 +616,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
                 [
-                    "x-kii-appid": setting.app.appID,
-                    "x-kii-appkey": setting.app.appKey,
+                    "X-Kii-AppID": setting.app.appID,
+                    "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/vnd.kii.TraitStateQueryRequest+json"
@@ -666,7 +668,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             XCTAssertNil(results)
             XCTAssertEqual(
                 ThingIFError.errorResponse(required: ErrorResponse(
-                    httpStatusCode: 409, errorCode: "", errorMessage: "")),
+                    409, errorCode: "", errorMessage: "")),
                 error)
             expectation.fulfill()
         }
@@ -698,8 +700,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             //verify header
             XCTAssertEqual(
                 [
-                    "x-kii-appid": setting.app.appID,
-                    "x-kii-appkey": setting.app.appKey,
+                    "X-Kii-AppID": setting.app.appID,
+                    "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
                     "Authorization": "Bearer \(setting.owner.accessToken)",
                     "Content-Type": "application/vnd.kii.TraitStateQueryRequest+json"
@@ -750,7 +752,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             XCTAssertNil(results)
             XCTAssertEqual(
                 ThingIFError.errorResponse(required: ErrorResponse(
-                    httpStatusCode: 503, errorCode: "", errorMessage: "")),
+                    503, errorCode: "", errorMessage: "")),
                 error)
             expectation.fulfill()
         }

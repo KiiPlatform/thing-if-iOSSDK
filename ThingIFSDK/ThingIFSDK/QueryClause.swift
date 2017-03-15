@@ -349,7 +349,7 @@ extension OrClauseInQuery: ToJsonObject {
 
 internal struct TimeRangeClauseInQuery: QueryClause {
     let timeRange: TimeRange
-    
+
     public init(_ range: TimeRange) {
         self.timeRange = range
     }

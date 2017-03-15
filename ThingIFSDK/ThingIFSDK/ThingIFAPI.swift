@@ -681,16 +681,6 @@ open class ThingIFAPI: Equatable {
             return;
         }
 
-        let requestURL = "\(self.baseURL)/thing-if/apps/\(self.appID)/targets/\(self.target!.typedID.toString())/states/aliases/\(query.alias)/query"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "x-kii-appid": self.appID,
-            "x-kii-appkey": self.appKey,
-            "authorization": "Bearer \(self.owner.accessToken)",
-            "Content-Type": "application/vnd.kii.TraitStateQueryRequest+json"
-        ]
-
         let timeRangeClause = TimeRangeClauseInQuery(query.timeRange)
 
         var clause : [String : Any]
@@ -701,7 +691,7 @@ open class ThingIFAPI: Equatable {
         }
 
         // generate body
-        let requestBodyDict = NSMutableDictionary(dictionary:
+        let requestBody : [ String : Any] =
             [
                 "query": [
                     "clause": clause,
@@ -716,81 +706,74 @@ open class ThingIFAPI: Equatable {
                     ]
                 ]
             ]
-        )
-        
-        do {
-            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(
-                HTTPMethod.post,
-                urlString: requestURL,
-                requestHeaderDict: requestHeaderDict,
-                requestBodyData: requestBodyData,
-                completionHandler: { (response, error) -> Void in
-                    var results : [AggregatedResult<AggregatedValueType>]? = nil
-                    if response != nil {
-                        results = []
-                        let queryResults = response?["groupedResults"] as! [[String:Any]]
-                        queryResults.forEach { result in
-                            if result["range"] == nil || result["aggregations"] == nil {
-                                DispatchQueue.main.async {
-                                    completionHandler(nil, ThingIFError.unsupportedError)
-                                }
-                                return;
+
+        self.operationQueue.addHttpRequestOperation(
+            .post,
+            url: "\(self.baseURL)/thing-if/apps/\(self.appID)/targets/\(self.target!.typedID.toString())/states/aliases/\(query.alias)/query",
+            requestHeader:
+            self.defaultHeader + ["Content-Type" : "application/vnd.kii.TraitStateQueryRequest+json"],
+            requestBody: requestBody,
+            failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+                response, error in
+
+                var results : [AggregatedResult<AggregatedValueType>]? = nil
+                if response != nil {
+                    results = []
+                    let queryResults = response?["groupedResults"] as! [[String:Any]]
+                    queryResults.forEach { result in
+                        if result["range"] == nil || result["aggregations"] == nil {
+                            DispatchQueue.main.async {
+                                completionHandler(nil, ThingIFError.unsupportedError)
                             }
-                            var value: AggregatedValueType? = nil
-                            var history: [HistoryState] = []
-                            let range = result["range"] as! [String: Double]
-                            let timeRange = TimeRange(
-                                Date(timeIntervalSince1970:range["from"]!),
-                                to: Date(timeIntervalSince1970:range["to"]!))
-                            let aggregations = result["aggregations"] as! [[String: Any]]
-                            if aggregations.count == 1 {
-                                let aggregation = aggregations[0]
-                                if aggregation["value"] != nil {
-                                    value = aggregation["value"] as? AggregatedValueType
-                                }
-                                if aggregation["object"] != nil {
-                                    let object = aggregation["object"] as! [String: Any]
-                                    let createdAt = Date(timeIntervalSince1970: object["_created"] as! TimeInterval)
-                                    history.append(
-                                        HistoryState(
-                                            object,
-                                            createdAt: createdAt))
-                                }
-                            }
-                            results!.append(
-                                AggregatedResult<AggregatedValueType>(
-                                    value,
-                                    timeRange: timeRange,
-                                    aggregatedObjects: history))
+                            return;
                         }
-                    } else if error != nil {
-                        switch error! {
-                        case .errorResponse(let errorResponse):
-                            if errorResponse.httpStatusCode == 409 &&
-                                errorResponse.errorCode == "STATE_HISTORY_NOT_AVAILABLE" {
-                                DispatchQueue.main.async {
-                                    completionHandler([], nil)
-                                }
-                                return;
+                        var value: AggregatedValueType? = nil
+                        var history: [HistoryState] = []
+                        let range = result["range"] as! [String: Double]
+                        let timeRange = TimeRange(
+                            Date(timeIntervalSince1970:range["from"]!),
+                            to: Date(timeIntervalSince1970:range["to"]!))
+                        let aggregations = result["aggregations"] as! [[String: Any]]
+                        if aggregations.count == 1 {
+                            let aggregation = aggregations[0]
+                            if aggregation["value"] != nil {
+                                value = aggregation["value"] as? AggregatedValueType
                             }
-                            break
-                        default:
-                            break
+                            if aggregation["object"] != nil {
+                                var object = aggregation["object"] as! [String: Any]
+                                let createdAt = Date(timeIntervalSince1970: object["_created"] as! TimeInterval)
+                                object.removeValue(forKey: "_created")
+                                history.append(
+                                    HistoryState(
+                                        object,
+                                        createdAt: createdAt))
+                            }
                         }
+                        results!.append(
+                            AggregatedResult<AggregatedValueType>(
+                                value,
+                                timeRange: timeRange,
+                                aggregatedObjects: history))
                     }
-                    DispatchQueue.main.async {
-                        completionHandler(results, error)
+                } else if error != nil {
+                    switch error! {
+                    case .errorResponse(let errorResponse):
+                        if errorResponse.httpStatusCode == 409 &&
+                            errorResponse.errorCode == "STATE_HISTORY_NOT_AVAILABLE" {
+                            DispatchQueue.main.async {
+                                completionHandler([], nil)
+                            }
+                            return;
+                        }
+                        break
+                    default:
+                        break
                     }
+                }
+                DispatchQueue.main.async {
+                    completionHandler(results, error)
+                }
             }
-            )
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        } catch(_) {
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.jsonParseError)
-        }
     }
 
     // MARK: - Copy with new target instance
