@@ -184,3 +184,14 @@ public struct Aggregation {
     }
 
 }
+
+extension Aggregation : ToJsonObject {
+    internal func makeJsonObject() -> [String : Any]{
+        return [
+            "type": self.function.rawValue.uppercased(),
+            "putAggregationInto": self.function.rawValue.lowercased(),
+            "field": self.field,
+            "fieldType": self.fieldType.rawValue
+        ]
+    }
+}

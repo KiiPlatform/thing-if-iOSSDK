@@ -13,4 +13,5 @@ internal enum MediaType : String {
            "application/vnd.kii.OnboardingWithThingIDByOwner+json"
     case mediaTypeOnboardingWithVendorThingIdByOwnerRequest = "application/vnd.kii.OnboardingWithVendorThingIDByOwner+json"
     case mediaTypeOnboardingEndnodeWithGatewayThingIdRequest = "application/vnd.kii.OnboardingEndNodeWithGatewayThingID+json"
+    case mediaTypeTraitStateQueryRequest = "application/vnd.kii.TraitStateQueryRequest+json"
 }

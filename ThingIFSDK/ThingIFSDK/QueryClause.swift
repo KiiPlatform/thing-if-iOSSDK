@@ -347,6 +347,24 @@ extension OrClauseInQuery: ToJsonObject {
 
 }
 
+internal struct TimeRangeClauseInQuery: QueryClause {
+    let timeRange: TimeRange
+
+    public init(_ range: TimeRange) {
+        self.timeRange = range
+    }
+}
+
+extension TimeRangeClauseInQuery: ToJsonObject {
+    internal func makeJsonObject() -> [ String : Any ] {
+        return [
+            "type": "withinTimeRange",
+            "lowerLimit": self.timeRange.from.timeIntervalSince1970,
+            "upperLimit": self.timeRange.to.timeIntervalSince1970
+            ] as [String : Any]
+    }
+}
+
 /** Struct represents All clause for query methods.
 
  If you want to get all history state, you can use this clause.

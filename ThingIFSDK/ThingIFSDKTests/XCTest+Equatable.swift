@@ -449,3 +449,17 @@ extension KiiApp: Equatable, CustomStringConvertible {
           + "siteName=\(self.siteName)"
     }
 }
+
+extension HistoryState : Equatable, ToJsonObject {
+    public static func == (left: HistoryState, right: HistoryState) -> Bool {
+        return
+            left.state as NSDictionary == right.state as NSDictionary &&
+                left.createdAt == right.createdAt
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        var ret = self.state
+        ret["_created"] = self.createdAt.timeIntervalSince1970
+        return ret
+    }
+}
