@@ -31,3 +31,19 @@ public struct AliasActionResult {
     }
 
 }
+
+extension AliasActionResult: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        if jsonObject.count != 1 {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let alias = jsonObject.keys.first,
+              let results = jsonObject[alias] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(alias, results: try results.map { try ActionResult($0) })
+    }
+}
