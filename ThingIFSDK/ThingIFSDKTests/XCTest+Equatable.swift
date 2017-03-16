@@ -454,3 +454,17 @@ extension Action: Equatable {
         return left.name == right.name && isSameAny(left.value, right.value)
     }
 }
+
+extension HistoryState : Equatable, ToJsonObject {
+    public static func == (left: HistoryState, right: HistoryState) -> Bool {
+        return
+            left.state as NSDictionary == right.state as NSDictionary &&
+                left.createdAt == right.createdAt
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        var ret = self.state
+        ret["_created"] = self.createdAt.timeIntervalSince1970
+        return ret
+    }
+}
