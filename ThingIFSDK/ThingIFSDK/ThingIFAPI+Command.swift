@@ -70,10 +70,15 @@ extension ThingIFAPI {
 
     /** Get specified command
 
-    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
 
-    - Parameter commandID: ID of the Command to obtain.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of created command, an instance of ThingIFError when failed.
+     - Parameter commandID: ID of the Command to obtain.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments: an instance of created
+       command, an instance of ThingIFError when failed.
      */
     open func getCommand(
         _ commandID:String,
