@@ -111,17 +111,18 @@ public struct Command {
 }
 
 /** Enum represents state of the Command. */
-public enum CommandState: Int {
-    /* NOTE: These numbers must not be changed.
-       These numbers are used serialization and deserialization
-       If thses numbers are changed, then serialization and deserialization
-       is broken. */
-    /** SENDING Command */
-    case sending = 1
-    /** Command is published to the Target. */
-    case delivered = 2
-    /** Target returns execution result but not completed all actions successfully. */
-    case incomplete = 3
+public enum CommandState: String {
+    /** Command is sending */
+    case sending = "SENDING"
+
+    /** Command is send but failed. */
+    case sendFailed = "SEND_FAILED"
+
+    /** Target returns execution result but not completed all actions
+     successfully.
+     */
+    case incomplete = "INCOMPLETE"
+
     /** Target returns execution result and all actions successfully done. */
-    case done = 4
+    case done = "DONE"
 }
