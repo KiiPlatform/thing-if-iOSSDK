@@ -58,6 +58,28 @@ public struct TypedID: Equatable {
 
 }
 
+internal extension TypedID {
+
+    init(_ str: String) throws {
+        let characters = str.characters
+
+        guard let index = characters.index(of: ":") else {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let type = Types(
+                rawValue:
+                  String(characters.prefix(upTo: index)).lowercased()) else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(
+          type,
+          id: String(characters.suffix(from: characters.index(after: index))))
+    }
+
+}
+
 extension TypedID: Serializable {
 
     internal func serialize(_ coder: inout Coder) -> Void {
