@@ -682,15 +682,13 @@ open class ThingIFAPI: Equatable {
         }
 
         // generate body
-        var queryBody = query.makeJsonObject()
-        queryBody["aggregations"] = [ aggregation.makeJsonObject() ]
-        let requestBody : [ String : Any] = ["query" : queryBody ]
+        let requestBody : [ String : Any] = ["query" : query.makeJsonObject() + ["aggregations" : [ aggregation.makeJsonObject() ]] ]
 
         self.operationQueue.addHttpRequestOperation(
             .post,
             url: "\(self.baseURL)/thing-if/apps/\(self.appID)/targets/\(self.target!.typedID.toString())/states/aliases/\(query.alias)/query",
             requestHeader:
-            self.defaultHeader + ["Content-Type" : "application/vnd.kii.TraitStateQueryRequest+json"],
+            self.defaultHeader + ["Content-Type" : MediaType.mediaTypeTraitStateQueryRequest.rawValue],
             requestBody: requestBody,
             failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
                 response, error in

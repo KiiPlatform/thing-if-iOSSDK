@@ -428,7 +428,7 @@ extension KiiApp: Equatable, CustomStringConvertible {
 extension HistoryState : Equatable, ToJsonObject {
     public static func == (left: HistoryState, right: HistoryState) -> Bool {
         return
-            NSDictionary(dictionary: left.state) == NSDictionary(dictionary: right.state) &&
+            left.state as NSDictionary == right.state as NSDictionary &&
                 left.createdAt == right.createdAt
     }
 
