@@ -42,3 +42,19 @@ public struct AliasAction {
     }
 
 }
+
+extension AliasAction: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        if jsonObject.count != 1 {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let alias = jsonObject.keys.first,
+              let actions = jsonObject[alias] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(alias, actions: try actions.map { try Action($0) })
+    }
+}
