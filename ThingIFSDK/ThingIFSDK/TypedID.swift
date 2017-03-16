@@ -60,8 +60,10 @@ public struct TypedID: Equatable {
 
 internal extension TypedID {
 
-    init(_ str: String) throws {
-        let characters = str.characters
+    init(_ str: String?) throws {
+        guard let characters = str?.characters else {
+            throw ThingIFError.jsonParseError
+        }
 
         guard let index = characters.index(of: ":") else {
             throw ThingIFError.jsonParseError
