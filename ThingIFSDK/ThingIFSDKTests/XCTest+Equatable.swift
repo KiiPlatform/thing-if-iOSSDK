@@ -449,3 +449,10 @@ extension KiiApp: Equatable, CustomStringConvertible {
           + "siteName=\(self.siteName)"
     }
 }
+
+extension Action: Equatable {
+
+    public static func == (left: Action, right: Action) -> Bool {
+        return left.name == right.name && isSameAny(left.value, right.value)
+    }
+}
