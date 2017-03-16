@@ -23,6 +23,30 @@ internal func +=<Key, Value>(left: inout [Key : Value], right: [Key : Value]) {
     right.forEach { left[$0.0] = $0.1 }
 }
 
+internal func parseResponse<ParsableType: FromJsonObject>(
+  _ response: [String :Any]?,
+  _ error: ThingIFError?) -> (ParsableType?, ThingIFError?)
+{
+    if error != nil {
+        return (nil, error)
+    } else {
+        do {
+            return (try ParsableType(response!), nil)
+        } catch ThingIFError.jsonParseError {
+            kiiSevereLog(
+              "Server error. Response is not satisfied the spec." +
+                response!.description)
+            return (nil, ThingIFError.jsonParseError)
+        } catch let error {
+            kiiSevereLog(
+              "Unexpected error." +
+                error.localizedDescription)
+            return (nil, ThingIFError.jsonParseError)
+        }
+    }
+
+}
+
 internal extension OperationQueue {
 
     func addHttpRequestOperation(

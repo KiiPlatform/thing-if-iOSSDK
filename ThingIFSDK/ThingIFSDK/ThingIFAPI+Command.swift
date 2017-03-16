@@ -82,43 +82,23 @@ extension ThingIFAPI {
      */
     open func getCommand(
         _ commandID:String,
-        completionHandler: @escaping (Command?, ThingIFError?)-> Void
-        )
+        completionHandler: @escaping (Command?, ThingIFError?)-> Void) -> Void
     {
-        _getCommand(commandID, completionHandler: completionHandler)
-    }
-
-    func _getCommand(
-        _ commandID:String,
-        completionHandler: @escaping (Command?, ThingIFError?)-> Void
-        )
-    {
-        fatalError("TODO: implement me")
-        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands/\(commandID)"
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-        
-        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            
-            var command:Command?
-            if let responseDict = response{
-                command = Command.commandWithNSDictionary(responseDict)
-            }
-            DispatchQueue.main.async {
-                completionHandler(command, error)
-            }
-        })
-        
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-        */
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands/\(commandID)",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error in
+            let result: (Command?, ThingIFError?) =
+              parseResponse(response, error)
+            DispatchQueue.main.async { completionHandler(result.0, result.1) }
+        }
     }
     
     func _listCommands(
