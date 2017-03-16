@@ -29,4 +29,15 @@ public struct AliasAction {
         self.alias = alias
         self.actions = actions
     }
+
+    /** Initializer of AliasAction instance.
+
+     - Parameter alias: Name of an alias.
+     - Parameter actions: Actions of this alias.
+     */
+    public init(_ alias: String, actions: Action...) {
+        self.alias = alias
+        self.actions = actions
+    }
+
 }
