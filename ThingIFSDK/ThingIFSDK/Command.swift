@@ -55,7 +55,7 @@ public struct Command {
        should be equal or less than 200 characters.
      - Parameter metadata: Meta data of a command.
      */
-    public init(_ commandID: String,
+    internal init(_ commandID: String,
          targetID: TypedID,
          issuerID: TypedID,
          aliasActions: [AliasAction],
@@ -106,6 +106,48 @@ public struct Command {
             retval += results.results.filter { $0.actionName == actionName }
         }
         return retval
+    }
+
+}
+
+extension Command: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let commandID = jsonObject["commandID"] as? String,
+              let aliasActions = jsonObject["actions"] as? [[String : Any]],
+              let state = jsonObject["commandState"] as? String,
+              let commandState = CommandState(rawValue: state),
+              let created = jsonObject["created"] as? TimeInterval else {
+            throw ThingIFError.jsonParseError
+        }
+
+        let aliasActionResults: [AliasActionResult]
+        if let results = jsonObject["actionResults"] as? [[String : Any]] {
+            aliasActionResults = try results.map { try AliasActionResult($0) }
+        } else {
+            aliasActionResults = []
+        }
+
+        let modified: Date?
+        if let date = jsonObject["modified"] as? TimeInterval {
+            modified = Date(timeIntervalSince1970: date)
+        } else {
+            modified = nil
+        }
+
+        self.init(
+          commandID,
+          targetID: try TypedID(jsonObject["target"] as? String),
+          issuerID: try TypedID(jsonObject["issuer"] as? String),
+          aliasActions: try aliasActions.map { try AliasAction($0) },
+          aliasActionResults: aliasActionResults,
+          commandState: commandState,
+          firedByTriggerID: jsonObject["firedByTriggerID"] as? String,
+          created: Date(timeIntervalSince1970: created),
+          modified: modified,
+          title: jsonObject["title"] as? String,
+          commandDescription: jsonObject["description"] as? String,
+          metadata: jsonObject["metadata"] as? [String : Any])
     }
 
 }
