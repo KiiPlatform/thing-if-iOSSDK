@@ -22,11 +22,23 @@ public struct AliasAction {
     /** Initializer of AliasAction instance.
 
      - Parameter alias: Name of an alias.
-     - Parameter actions: Actions of this alias. must not be empty.
+     - Parameter actions: Array of `Action` instances. must not be empty.
      */
 
     public init(_ alias: String, actions: [Action]) {
         self.alias = alias
         self.actions = actions
     }
+
+    /** Initializer of AliasAction instance.
+
+     - Parameter alias: Name of an alias.
+     - Parameter actions: Variable number of `Action` instance. must
+       equal or be more than one
+     */
+    public init(_ alias: String, actions: Action...) {
+        self.alias = alias
+        self.actions = actions
+    }
+
 }

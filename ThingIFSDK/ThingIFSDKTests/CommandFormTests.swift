@@ -23,7 +23,9 @@ class CommandFormTests: SmallTestBase {
         let actions = [
           AliasAction(
             "alias",
-            action: [ "action1" : [ "arg1" : "value1", "arg2": "value2" ] ]
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
         let commandForm = CommandForm(actions)
@@ -37,7 +39,9 @@ class CommandFormTests: SmallTestBase {
         let actions = [
           AliasAction(
             "alias",
-            action: [ "action1" : [ "arg1" : "value1", "arg2": "value2" ] ]
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
         let commandForm = CommandForm(actions, title: "title")
@@ -51,7 +55,9 @@ class CommandFormTests: SmallTestBase {
         let actions = [
           AliasAction(
             "alias",
-            action: [ "action1" : [ "arg1" : "value1", "arg2": "value2" ] ]
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
         let commandForm = CommandForm(actions,
@@ -67,7 +73,9 @@ class CommandFormTests: SmallTestBase {
         let actions = [
           AliasAction(
             "alias",
-            action: [ "action1" : [ "arg1" : "value1", "arg2": "value2" ] ]
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
         let metadata = [ "key1" : "value1", "key2" : "value2" ]
@@ -85,7 +93,9 @@ class CommandFormTests: SmallTestBase {
         let actions = [
           AliasAction(
             "alias",
-            action: [ "action1" : [ "arg1" : "value1", "arg2": "value2" ] ]
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
         let commandForm = CommandForm(actions,
@@ -102,7 +112,9 @@ class CommandFormTests: SmallTestBase {
         let actions = [
           AliasAction(
             "alias",
-            action: [ "action1" : [ "arg1" : "value1", "arg2": "value2" ] ]
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
         let metadata: [String : Any] = [ "key1" : "value1", "key2" : "value2" ]
@@ -122,7 +134,9 @@ class CommandFormTests: SmallTestBase {
         let actions = [
           AliasAction(
             "alias",
-            action: [ "action1" : [ "arg1" : "value1", "arg2": "value2" ] ]
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
         let metadata: [String : Any] = [ "key1" : "value1", "key2" : "value2" ]
@@ -142,7 +156,9 @@ class CommandFormTests: SmallTestBase {
         let actions = [
           AliasAction(
             "alias",
-            action: [ "action1" : [ "arg1" : "value1", "arg2": "value2" ] ]
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
         let metadata: [String : Any] = [ "key1" : "value1", "key2" : "value2" ]

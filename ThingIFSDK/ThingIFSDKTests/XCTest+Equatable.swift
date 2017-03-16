@@ -247,9 +247,7 @@ extension AliasActionResult: Equatable {
 extension AliasAction: Equatable {
 
     public static func == (left: AliasAction, right: AliasAction) -> Bool {
-        return left.alias == right.alias &&
-          NSDictionary(dictionary: left.action) ==
-            NSDictionary(dictionary: right.action)
+        return left.alias == right.alias && left.actions == right.actions
     }
 
 }
@@ -447,6 +445,13 @@ extension KiiApp: Equatable, CustomStringConvertible {
         return "appID={\(self.appID)|, appKey={\(self.appKey), "
           + "hostName=\(self.hostName), baseURL=\(self.baseURL), "
           + "siteName=\(self.siteName)"
+    }
+}
+
+extension Action: Equatable {
+
+    public static func == (left: Action, right: Action) -> Bool {
+        return left.name == right.name && isSameAny(left.value, right.value)
     }
 }
 

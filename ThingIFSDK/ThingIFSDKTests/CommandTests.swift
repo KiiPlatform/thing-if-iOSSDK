@@ -21,7 +21,8 @@ class CommandTests: SmallTestBase {
     func testOptinalNonNil() {
         let targetID = TypedID(TypedID.Types.thing, id: "target")
         let issuerID = TypedID(TypedID.Types.thing, id: "issuer")
-        let aliasActions = [AliasAction("alias", action: ["key" : "value"])]
+        let aliasActions =
+          [AliasAction("alias", actions: Action("key", value: "value"))]
         let aliasActionResults = [
           AliasActionResult(
             "alias",
@@ -63,7 +64,8 @@ class CommandTests: SmallTestBase {
     func testOptinalNil() {
         let targetID = TypedID(TypedID.Types.thing, id: "target")
         let issuerID = TypedID(TypedID.Types.thing, id: "issuer")
-        let aliasActions = [AliasAction("alias", action: ["key" : "value"])]
+        let aliasActions =
+          [AliasAction("alias", actions: Action("key", value: "value"))]
 
         let actual = Command(
           "commandID",
@@ -86,11 +88,13 @@ class CommandTests: SmallTestBase {
 
     func testGetAction() {
 
-        let actionA = AliasAction("alias", action: ["key1" : "value1"])
+        let actionA = AliasAction(
+          "alias",
+          actions: Action("key1", value: "value1"))
         let actionDifferentAliasFromA =
-          AliasAction("different", action: ["key2" : "value2"])
+          AliasAction("different", actions: Action("key2", value: "value2"))
         let aliasActionsameAliasAsA =
-          AliasAction("alias", action: ["key3" : "value3"])
+          AliasAction("alias", actions: Action("key3", value: "value3"))
 
         let actual = Command(
           "commandID",
@@ -127,7 +131,8 @@ class CommandTests: SmallTestBase {
           "commandID",
           targetID: TypedID(TypedID.Types.thing, id: "target"),
           issuerID: TypedID(TypedID.Types.thing, id: "issuer"),
-          aliasActions: [AliasAction("alias", action: ["key1" : "value1"])],
+          aliasActions:
+            [AliasAction("alias", actions: Action("key1", value: "value1"))],
           aliasActionResults: [
             aliasActionResultA,
             aliasActionResultDifferentAliasFromA,

@@ -73,6 +73,7 @@
 		B645506C1E78ECC600D8FACF /* GatewayAPILoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645506B1E78ECC600D8FACF /* GatewayAPILoginTests.swift */; };
 		B645506E1E79087F00D8FACF /* GatewayAPIOnboardGatewayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645506D1E79087F00D8FACF /* GatewayAPIOnboardGatewayTests.swift */; };
 		B64550701E79467600D8FACF /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645506F1E79467600D8FACF /* Action.swift */; };
+		B64550721E7A4BCD00D8FACF /* ActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64550711E7A4BCC00D8FACF /* ActionTests.swift */; };
 		B66729351E724D7B007E3019 /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66729341E724D7B007E3019 /* Serializable.swift */; };
 		B66729371E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66729361E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift */; };
 		B673C0051CF81CEC00AEF519 /* TestSetting.plist in Resources */ = {isa = PBXBuildFile; fileRef = B673C0041CF81CEC00AEF519 /* TestSetting.plist */; };
@@ -232,6 +233,7 @@
 		B645506B1E78ECC600D8FACF /* GatewayAPILoginTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPILoginTests.swift; sourceTree = "<group>"; };
 		B645506D1E79087F00D8FACF /* GatewayAPIOnboardGatewayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPIOnboardGatewayTests.swift; sourceTree = "<group>"; };
 		B645506F1E79467600D8FACF /* Action.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
+		B64550711E7A4BCC00D8FACF /* ActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionTests.swift; sourceTree = "<group>"; };
 		B66729341E724D7B007E3019 /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
 		B66729361E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPersistenceTests.swift; sourceTree = "<group>"; };
 		B673C0041CF81CEC00AEF519 /* TestSetting.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TestSetting.plist; sourceTree = "<group>"; };
@@ -536,6 +538,7 @@
 				B6A3DA1C1E77C05B001662D0 /* ThingIFAPIOnboardEndNodeTests.swift */,
 				B645506B1E78ECC600D8FACF /* GatewayAPILoginTests.swift */,
 				B645506D1E79087F00D8FACF /* GatewayAPIOnboardGatewayTests.swift */,
+				B64550711E7A4BCC00D8FACF /* ActionTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -825,6 +828,7 @@
 				B6C33F101E4977C700DF2BF5 /* XCTest+Utils.swift in Sources */,
 				B6BE38A21E601F3200FD9976 /* CommandFormTests.swift in Sources */,
 				B6A86CAE1E6D66E100F9C41B /* TestSetting.swift in Sources */,
+				B64550721E7A4BCD00D8FACF /* ActionTests.swift in Sources */,
 				2262F14B1E49899300080DF6 /* ActionResultTests.swift in Sources */,
 				B6AFD02C1E680D9C0066B4AD /* XCTest+Equatable.swift in Sources */,
 				B6BE38981E5FE6B500FD9976 /* StandaloneThingTests.swift in Sources */,
