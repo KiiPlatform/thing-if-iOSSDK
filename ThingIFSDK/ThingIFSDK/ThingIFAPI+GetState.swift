@@ -34,7 +34,7 @@ extension ThingIFAPI {
         }
 
         self.operationQueue.addHttpRequestOperation(
-            .GET,
+            .get,
             url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states",
             requestHeader: self.defaultHeader,
             requestBody: nil,
@@ -73,7 +73,7 @@ extension ThingIFAPI {
         }
 
         self.operationQueue.addHttpRequestOperation(
-            .GET,
+            .get,
             url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states/aliases/\(alias)",
             requestHeader: self.defaultHeader,
             requestBody: nil,
