@@ -9,7 +9,9 @@
 import Foundation
 
 internal enum HTTPMethod: String {
-    case GET = "GET"
+    @available(iOS, deprecated: 1.0, message: "use get")
+    case GET = "GET-deprecated"
+    case get = "GET"
     case post = "POST"
     case PUT = "PUT"
     case HEAD = "HEAD"
@@ -95,7 +97,7 @@ class IoTRequestOperation<T>: GroupOperation {
         case .post :
             addPostRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
             
-        case .GET:
+        case .get:
             addGetRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
 
         case .DELETE:
@@ -108,6 +110,7 @@ class IoTRequestOperation<T>: GroupOperation {
             addPutRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler, responseBodySerializer: request.responseBodySerializer)
 
         default :
+            fatalError("Unknown http method.")
             break
         }
     }

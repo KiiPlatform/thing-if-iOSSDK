@@ -68,37 +68,37 @@ extension ThingIFAPI {
         */
     }
 
-    func _getCommand(
+    /** Get specified command
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter commandID: ID of the Command to obtain.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments: an instance of created
+       command, an instance of ThingIFError when failed.
+     */
+    open func getCommand(
         _ commandID:String,
-        completionHandler: @escaping (Command?, ThingIFError?)-> Void
-        )
+        completionHandler: @escaping (Command?, ThingIFError?)-> Void) -> Void
     {
-        fatalError("TODO: implement me")
-        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands/\(commandID)"
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-        
-        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            
-            var command:Command?
-            if let responseDict = response{
-                command = Command.commandWithNSDictionary(responseDict)
-            }
-            DispatchQueue.main.async {
-                completionHandler(command, error)
-            }
-        })
-        
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-        */
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands/\(commandID)",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error in
+            let result: (Command?, ThingIFError?) =
+              parseResponse(response, error)
+            DispatchQueue.main.async { completionHandler(result.0, result.1) }
+        }
     }
     
     func _listCommands(

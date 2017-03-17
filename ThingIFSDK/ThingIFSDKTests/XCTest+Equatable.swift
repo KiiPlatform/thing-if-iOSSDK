@@ -205,24 +205,27 @@ func isSameAny(_ left: Any?, _ right: Any?) -> Bool {
         return false
     }
 
-    if left is String {
-        return left as! String == right as! String
-    } else if left is Int {
-        return left as! Int == right as! Int
-    } else if left is Double {
-        return left as! Double == right as! Double
-    } else if left is Bool {
-        return left as! Bool == right as! Bool
-    } else if left is [String : Any] {
-        return NSDictionary(dictionary: left as! [String : Any]) ==
-          NSDictionary(dictionary: right as! [String : Any])
-    } else if left is [Any] {
-        return NSArray(array: left as! [Any]) == NSArray(array: right as! [Any])
+    switch (left, right) {
+        case (is String, is String) where left as! String == right as! String:
+            return true
+        case (is Int, is Int) where left as! Int == right as! Int:
+            return true
+        case (is Double, is Double) where left as! Double == right as! Double:
+            return true
+        case (is Bool, is Bool) where left as! Bool == right as! Bool:
+            return true
+        case (is [String : Any], is [String : Any])
+               where left as! NSDictionary == right as! NSDictionary:
+            return true
+        case (is [Any], is [Any]) where left as! NSArray == right as! NSArray:
+            return true
+        default:
+            break
     }
     fatalError("You need to add equality check.")
 }
 
-extension ActionResult: Equatable {
+extension ActionResult: Equatable, ToJsonObject {
 
     public static func == (left: ActionResult, right: ActionResult) -> Bool {
         return left.succeeded == right.succeeded &&
@@ -231,9 +234,17 @@ extension ActionResult: Equatable {
           isSameAny(left.data, right.data)
     }
 
+    public func makeJsonObject() -> [String : Any] {
+        var dict: [String : Any] = ["succeeded" : self.succeeded]
+        dict["data"] = self.data
+        dict["errorMessage"] = self.errorMessage
+
+        return [self.actionName : dict]
+    }
+
 }
 
-extension AliasActionResult: Equatable {
+extension AliasActionResult: Equatable, ToJsonObject {
 
     public static func == (
       left: AliasActionResult,
@@ -242,14 +253,21 @@ extension AliasActionResult: Equatable {
         return left.alias == right.alias && left.results == right.results
     }
 
+    public func makeJsonObject() -> [String : Any] {
+        return [self.alias : self.results.map { $0.makeJsonObject() }]
+    }
+
 }
 
-extension AliasAction: Equatable {
+extension AliasAction: Equatable, ToJsonObject {
 
     public static func == (left: AliasAction, right: AliasAction) -> Bool {
         return left.alias == right.alias && left.actions == right.actions
     }
 
+    public func makeJsonObject() -> [String : Any] {
+        return [self.alias : self.actions.map { $0.makeJsonObject() }]
+    }
 }
 
 internal func == (left: TriggerClause, right: TriggerClause) -> Bool {
@@ -448,10 +466,14 @@ extension KiiApp: Equatable, CustomStringConvertible {
     }
 }
 
-extension Action: Equatable {
+extension Action: Equatable, ToJsonObject {
 
     public static func == (left: Action, right: Action) -> Bool {
         return left.name == right.name && isSameAny(left.value, right.value)
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [self.name : self.value]
     }
 }
 
@@ -466,5 +488,61 @@ extension HistoryState : Equatable, ToJsonObject {
         var ret = self.state
         ret["_created"] = self.createdAt.timeIntervalSince1970
         return ret
+    }
+}
+
+internal func isSameDate(_ left: Date?, _ right: Date?) -> Bool {
+    if left == nil && right == nil {
+        return true
+    }
+
+    guard let leftInterval = left?.timeIntervalSince1970,
+          let rightInterval = right?.timeIntervalSince1970 else {
+        return false
+    }
+
+    let distance = leftInterval - rightInterval
+    return (0 < distance && 1 > distance) ||
+      (-1 < distance && 0 > distance) ||
+      distance == 0
+
+}
+extension Command: Equatable, ToJsonObject {
+
+    public static func == (left: Command, right: Command) -> Bool {
+        return left.commandID == right.commandID &&
+          left.targetID == right.targetID &&
+          left.issuerID == right.issuerID &&
+          left.aliasActions == right.aliasActions &&
+          left.aliasActionResults == right.aliasActionResults &&
+          left.commandState == right.commandState &&
+          left.firedByTriggerID == right.firedByTriggerID &&
+          isSameDate(left.created, right.created) &&
+          isSameDate(left.modified, right.modified) &&
+          left.title == right.title &&
+          left.commandDescription == right.commandDescription &&
+          left.metadata as NSDictionary? == right.metadata as NSDictionary?
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        var retval: [String : Any] = [
+          "commandID" : self.commandID,
+          "target" : self.targetID.toString(),
+          "issuer" : self.issuerID.toString(),
+          "actions" : self.aliasActions.map { $0.makeJsonObject() },
+          "commandState" : self.commandState.rawValue,
+          "created" : self.created!.timeIntervalSince1970
+        ]
+
+        if !self.aliasActionResults.isEmpty {
+            retval["actionResults"] =
+              self.aliasActionResults.map { $0.makeJsonObject() }
+        }
+        retval["modified"] = self.modified?.timeIntervalSince1970
+        retval["firedByTriggerID"] = self.firedByTriggerID
+        retval["title"] = self.title
+        retval["metadata"] = self.metadata
+        retval["description"] = self.commandDescription
+        return retval
     }
 }

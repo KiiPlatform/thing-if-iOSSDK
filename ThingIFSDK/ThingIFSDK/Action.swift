@@ -30,3 +30,19 @@ public struct Action {
         self.value = value
     }
 }
+
+extension Action: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        if jsonObject.count != 1 {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let name = jsonObject.keys.first,
+              let value = jsonObject[name] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(name, value: value)
+    }
+}

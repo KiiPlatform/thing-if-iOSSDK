@@ -31,7 +31,7 @@ public struct ActionResult {
      - Parameters data: Data returned from thing.
      - Parameters errorMessage: Error message.
      */
-    public init(
+    internal init(
       _ succeeded: Bool,
       actionName: String,
       data: Any? = nil,
@@ -43,4 +43,25 @@ public struct ActionResult {
         self.errorMessage = errorMessage
     }
 
+}
+
+extension ActionResult: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        if jsonObject.count != 1 {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let actionName = jsonObject.keys.first,
+              let dict = jsonObject[actionName] as? [String : Any],
+              let succeeded = dict["succeeded"] as? Bool else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(
+          succeeded,
+          actionName: actionName,
+          data: dict["data"],
+          errorMessage: dict["errorMessage"] as? String)
+    }
 }
