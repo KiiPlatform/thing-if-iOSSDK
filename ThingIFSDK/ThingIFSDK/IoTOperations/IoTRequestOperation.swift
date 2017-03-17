@@ -97,7 +97,7 @@ class IoTRequestOperation<T>: GroupOperation {
         case .post :
             addPostRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
             
-        case .GET:
+        case .get:
             addGetRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
 
         case .DELETE:
@@ -110,6 +110,7 @@ class IoTRequestOperation<T>: GroupOperation {
             addPutRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler, responseBodySerializer: request.responseBodySerializer)
 
         default :
+            fatalError("Unknown http method.")
             break
         }
     }
