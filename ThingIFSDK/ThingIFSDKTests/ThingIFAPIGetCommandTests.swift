@@ -19,7 +19,7 @@ class ThingIFAPIGetCommandTests: SmallTestBase {
     }
 
 
-    func test() throws {
+    func testSuccess() throws {
         let setting:TestSetting = TestSetting()
         let api = setting.api
         // perform onboarding
@@ -183,4 +183,79 @@ class ThingIFAPIGetCommandTests: SmallTestBase {
         }
     }
 
+    func testGetCommand_404_error() throws {
+        let expectation = self.expectation(description: "getCommand404Error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        let commandID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+
+        // perform onboarding
+        api.target = setting.target
+
+        sharedMockSession.requestVerifier = makeRequestVerifier() {request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            // verify path
+            XCTAssertEqual(
+              "\(api.baseURL)/thing-if/apps/\(api.appID)/targets/\(setting.target.typedID.type):\(setting.target.typedID.id)/commands/\(commandID)",
+              request.url!.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+        }
+
+        let errorCode = "TARGET_NOT_FOUND"
+        let message = "Target \(setting.target.typedID.toString()) not found"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(withJSONObject: ["errorCode" : errorCode,
+                                                      "message" : message],
+                                     options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+        api.getCommand(commandID) { command, error -> Void in
+            XCTAssertNil(command)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  404,
+                  errorCode: errorCode,
+                  errorMessage: message)),
+              error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testGetCommand_trigger_not_available_error() throws {
+        let expectation = self.expectation(
+          description: "testGetCommand_trigger_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        let commandID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+
+        api.getCommand(commandID) { command, error -> Void in
+            XCTAssertNil(command)
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
 }
