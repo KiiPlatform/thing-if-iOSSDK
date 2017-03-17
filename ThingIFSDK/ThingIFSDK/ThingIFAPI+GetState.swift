@@ -20,8 +20,7 @@ extension ThingIFAPI {
         self.operationQueue.addHttpRequestOperation(
             .GET,
             url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states",
-            requestHeader:
-            self.defaultHeader + ["Content-Type" : "application/json" ],
+            requestHeader: self.defaultHeader,
             requestBody: nil,
             failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
                 response, error in
@@ -44,8 +43,7 @@ extension ThingIFAPI {
         self.operationQueue.addHttpRequestOperation(
             .GET,
             url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states/aliases/\(alias)",
-            requestHeader:
-            self.defaultHeader + ["Content-Type" : "application/json" ],
+            requestHeader: self.defaultHeader,
             requestBody: nil,
             failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
                 response, error in

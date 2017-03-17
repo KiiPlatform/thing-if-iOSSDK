@@ -42,8 +42,7 @@ class GetTargetStateTests: SmallTestBase {
                     "X-Kii-AppID": setting.app.appID,
                     "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
-                    "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Authorization": "Bearer \(setting.owner.accessToken)"
                 ],
                 request.allHTTPHeaderFields!)
         }
@@ -100,8 +99,7 @@ class GetTargetStateTests: SmallTestBase {
                     "X-Kii-AppID": setting.app.appID,
                     "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
-                    "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Authorization": "Bearer \(setting.owner.accessToken)"
                 ],
                 request.allHTTPHeaderFields!)
         }
@@ -154,8 +152,7 @@ class GetTargetStateTests: SmallTestBase {
                     "X-Kii-AppID": setting.app.appID,
                     "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
-                    "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Authorization": "Bearer \(setting.owner.accessToken)"
                 ],
                 request.allHTTPHeaderFields!)
         }
@@ -210,8 +207,7 @@ class GetTargetStateTests: SmallTestBase {
                     "X-Kii-AppID": setting.app.appID,
                     "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
-                    "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Authorization": "Bearer \(setting.owner.accessToken)"
                 ],
                 request.allHTTPHeaderFields!)
         }
@@ -304,8 +300,7 @@ class GetTargetStateTests: SmallTestBase {
                     "X-Kii-AppID": setting.app.appID,
                     "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
-                    "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Authorization": "Bearer \(setting.owner.accessToken)"
                 ],
                 request.allHTTPHeaderFields!)
         }
@@ -357,8 +352,7 @@ class GetTargetStateTests: SmallTestBase {
                     "X-Kii-AppID": setting.app.appID,
                     "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
-                    "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Authorization": "Bearer \(setting.owner.accessToken)"
                 ],
                 request.allHTTPHeaderFields!)
         }
@@ -411,8 +405,7 @@ class GetTargetStateTests: SmallTestBase {
                     "X-Kii-AppID": setting.app.appID,
                     "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
-                    "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Authorization": "Bearer \(setting.owner.accessToken)"
                 ],
                 request.allHTTPHeaderFields!)
         }
@@ -467,8 +460,7 @@ class GetTargetStateTests: SmallTestBase {
                     "X-Kii-AppID": setting.app.appID,
                     "X-Kii-AppKey": setting.app.appKey,
                     "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
-                    "Authorization": "Bearer \(setting.owner.accessToken)",
-                    "Content-Type": "application/json"
+                    "Authorization": "Bearer \(setting.owner.accessToken)"
                 ],
                 request.allHTTPHeaderFields!)
         }
