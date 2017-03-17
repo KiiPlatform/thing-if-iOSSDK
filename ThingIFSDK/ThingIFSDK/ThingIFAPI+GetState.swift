@@ -37,12 +37,13 @@ extension ThingIFAPI {
             .get,
             url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states",
             requestHeader: self.defaultHeader,
-            requestBody: nil,
             failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
                 response, error in
 
                 DispatchQueue.main.async {
-                    completionHandler(response as? [String : [String : Any]], error)
+                    completionHandler(
+                      response as? [String : [String : Any]],
+                      error)
                 }
             }
     }
@@ -76,7 +77,6 @@ extension ThingIFAPI {
             .get,
             url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states/aliases/\(alias)",
             requestHeader: self.defaultHeader,
-            requestBody: nil,
             failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
                 response, error in
 
