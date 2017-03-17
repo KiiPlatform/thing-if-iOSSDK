@@ -9,39 +9,48 @@
 import Foundation
 
 extension ThingIFAPI {
-    func _getState(
-        _ completionHandler: @escaping (Dictionary<String, Any>?,  ThingIFError?)-> Void
-        ){
-        fatalError("TODO: implement me.")
-        /*
-            guard let target = self.target else {
-                completionHandler(nil, ThingIFError.targetNotAvailable)
-                return
-            }
+    func _getTargetStates(
+        _ completionHandler: @escaping ([String : [String : Any]]?,  ThingIFError?)-> Void) {
 
-            let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states"
-            
-            // generate header
-            let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-            
-            let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-                var states : Dictionary<String, Any>?
-                if response != nil {
-                    states = Dictionary<String, Any>()
-                    response!.enumerateKeysAndObjects(
-                      { (key, obj, stop) -> Void in
-                          states![key as! String] = obj
-                      }
-                    )
-                }
+        guard let target = self.target else {
+            completionHandler(nil, ThingIFError.targetNotAvailable)
+            return
+        }
+
+        self.operationQueue.addHttpRequestOperation(
+            .GET,
+            url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states",
+            requestHeader: self.defaultHeader,
+            requestBody: nil,
+            failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+                response, error in
+
                 DispatchQueue.main.async {
-                    completionHandler(states, error)
+                    completionHandler(response as? [String : [String : Any]], error)
                 }
-            })
-            
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        */
+            }
     }
-    
+
+    func _getTargetState(
+        _ alias: String,
+        completionHandler:@escaping ([String : Any]?, ThingIFError?)-> Void) {
+
+        guard let target = self.target else {
+            completionHandler(nil, ThingIFError.targetNotAvailable)
+            return
+        }
+
+        self.operationQueue.addHttpRequestOperation(
+            .GET,
+            url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/states/aliases/\(alias)",
+            requestHeader: self.defaultHeader,
+            requestBody: nil,
+            failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+                response, error in
+
+                DispatchQueue.main.async {
+                    completionHandler(response, error)
+                }
+        }
+    }
 }

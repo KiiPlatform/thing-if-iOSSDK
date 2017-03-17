@@ -416,8 +416,7 @@ open class ThingIFAPI: Equatable {
       _ completionHandler:@escaping ([String : [String : Any]]?,
                                      ThingIFError?)-> Void) -> Void
     {
-        fatalError("TODO: We must reimplement this method.")
-        // _getState(completionHandler)
+        _getTargetStates(completionHandler)
     }
 
     /** Get the state of specified target by trait.
@@ -440,7 +439,7 @@ open class ThingIFAPI: Equatable {
       completionHandler:@escaping ([String : Any]?,
                                    ThingIFError?)-> Void) -> Void
     {
-        fatalError("TODO: We must reimplement this method.")
+        _getTargetState(alias, completionHandler: completionHandler)
     }
 
     // MARK: - Thing information methods
