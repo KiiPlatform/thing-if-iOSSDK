@@ -25,9 +25,13 @@ public struct AliasActionResult {
      - Parameters alias: Name of an alias.
      - Parameters results: Results of actions for an alias.
      */
-    public init(_ alias: String, results: [ActionResult]) {
+    internal init(_ alias: String, results: [ActionResult]) {
         self.alias = alias
         self.results = results
+    }
+
+    internal init(_ alias: String, results: ActionResult...) {
+        self.init(alias, results: results)
     }
 
 }
