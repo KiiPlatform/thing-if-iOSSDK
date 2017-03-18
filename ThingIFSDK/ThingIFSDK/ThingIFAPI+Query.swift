@@ -74,7 +74,7 @@ extension ThingIFAPI {
                              "STATE_HISTORY_NOT_AVAILABLE":
                         return ([], nil)
                     default:
-                        break
+                        return (nil, error)
                     }
                 }
                 return (
