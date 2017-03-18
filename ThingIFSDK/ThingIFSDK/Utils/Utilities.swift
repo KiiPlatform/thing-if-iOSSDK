@@ -23,28 +23,39 @@ internal func +=<Key, Value>(left: inout [Key : Value], right: [Key : Value]) {
     right.forEach { left[$0.0] = $0.1 }
 }
 
+internal func convertResonse<Item, Response: CustomStringConvertible>(
+  _ json: Response?,
+  _ error: ThingIFError?,
+  _ parser: (Response?, ThingIFError?) throws -> (Item?, ThingIFError?))
+  -> (Item?, ThingIFError?)
+{
+    do {
+        return try parser(json, error)
+    } catch ThingIFError.jsonParseError {
+        kiiSevereLog(
+          "Server error. Response is not satisfied the spec." +
+            (json?.description ?? ""))
+        return (nil, ThingIFError.jsonParseError)
+    } catch let error {
+        kiiSevereLog(
+          "Unexpected error." +
+            error.localizedDescription)
+        return (nil, ThingIFError.jsonParseError)
+    }
+}
+
 internal func parseResponse<ParsableType: FromJsonObject>(
-  _ response: [String :Any]?,
+  _ response: [String : Any]?,
   _ error: ThingIFError?) -> (ParsableType?, ThingIFError?)
 {
-    if error != nil {
-        return (nil, error)
-    } else {
-        do {
-            return (try ParsableType(response!), nil)
-        } catch ThingIFError.jsonParseError {
-            kiiSevereLog(
-              "Server error. Response is not satisfied the spec." +
-                response!.description)
-            return (nil, ThingIFError.jsonParseError)
-        } catch let error {
-            kiiSevereLog(
-              "Unexpected error." +
-                error.localizedDescription)
-            return (nil, ThingIFError.jsonParseError)
-        }
-    }
+    return convertResonse(response, error) {
+        response, error -> (ParsableType?, ThingIFError?) in
 
+        if error != nil {
+            return (nil, error)
+        }
+        return (try ParsableType(response!), nil)
+    }
 }
 
 internal extension OperationQueue {
