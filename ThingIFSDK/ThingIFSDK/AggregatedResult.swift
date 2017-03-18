@@ -58,14 +58,12 @@ extension AggregatedResult: FromJsonObject {
         }
 
         let aggregation = aggregations[0]
-        guard let value = aggregation["value"] as? AggregatedValueType,
-              let object = aggregation["object"] as? [String : Any] else {
-            throw ThingIFError.jsonParseError
-        }
+        let value = aggregation["value"] as? AggregatedValueType
+        let object = aggregation["object"] as? [String : Any]
 
         self.init(
           value,
           timeRange: try TimeRange(range),
-          aggregatedObjects: [try HistoryState(object)])
+          aggregatedObjects: object != nil ? [try HistoryState(object)] : [])
     }
 }
