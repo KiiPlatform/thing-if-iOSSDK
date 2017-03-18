@@ -28,7 +28,7 @@ public struct AggregatedResult<AggregatedValueType> {
      - Parameters timeRange: Time range of an aggregated result.
      - Parameters aggregatedObjects: Aggregated objectes.
      */
-    fileprivate init(
+    internal init(
       _ value: AggregatedValueType?,
       timeRange: TimeRange,
       aggregatedObjects: [HistoryState])
@@ -64,6 +64,6 @@ extension AggregatedResult: FromJsonObject {
         self.init(
           value,
           timeRange: try TimeRange(range),
-          aggregatedObjects: object != nil ? [try HistoryState(object)] : [])
+          aggregatedObjects: object != nil ? [try HistoryState(object!)] : [])
     }
 }
