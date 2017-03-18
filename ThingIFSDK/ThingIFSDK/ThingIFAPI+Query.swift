@@ -45,69 +45,46 @@ extension ThingIFAPI {
             return;
         }
 
-        // generate body
-        let requestBody : [ String : Any] = ["query" : query.makeJsonObject() + ["aggregations" : [ aggregation.makeJsonObject() ]] ]
-
         self.operationQueue.addHttpRequestOperation(
-            .post,
-            url: "\(self.baseURL)/thing-if/apps/\(self.appID)/targets/\(self.target!.typedID.toString())/states/aliases/\(query.alias)/query",
-            requestHeader:
-            self.defaultHeader + ["Content-Type" : MediaType.mediaTypeTraitStateQueryRequest.rawValue],
-            requestBody: requestBody,
-            failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
-                response, error in
+          .post,
+          url: "\(self.baseURL)/thing-if/apps/\(self.appID)/targets/\(self.target!.typedID.toString())/states/aliases/\(query.alias)/query",
+          requestHeader:
+            self.defaultHeader +
+            [
+              "Content-Type" :
+                MediaType.mediaTypeTraitStateQueryRequest.rawValue
+            ],
+          requestBody:
+            [
+              "query" : query.makeJsonObject() +
+                ["aggregations" : [ aggregation.makeJsonObject() ]]
+            ],
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error in
 
-                var results : [AggregatedResult<AggregatedValueType>]? = nil
-                if let response = response {
-                    results = []
-                    let queryResults = response["groupedResults"] as! [[String:Any]]
-                    for result in queryResults {
-                        var value: AggregatedValueType? = nil
-                        var history: [HistoryState] = []
-                        let range = result["range"] as! [String: Double]
-                        let timeRange = TimeRange(
-                            Date(timeIntervalSince1970:range["from"]!),
-                            to: Date(timeIntervalSince1970:range["to"]!))
-                        let aggregation = (result["aggregations"] as! [[String: Any]])[0]
-                        if aggregation["value"] != nil {
-                            value = aggregation["value"] as? AggregatedValueType
-                        }
-                        if aggregation["object"] != nil {
-                            do {
-                                let object = aggregation["object"] as! [String: Any]
-                                history.append(try HistoryState(object))
-                            } catch let error {
-                                DispatchQueue.main.async {
-                                    completionHandler(nil, error as? ThingIFError)
-                                }
-                                return;
-                            }
-                        }
-                        results!.append(
-                            AggregatedResult<AggregatedValueType>(
-                                value,
-                                timeRange: timeRange,
-                                aggregatedObjects: history))
-                    }
-                } else if error != nil {
-                    switch error! {
-                    case .errorResponse(let errorResponse):
-                        if errorResponse.httpStatusCode == 409 &&
-                            errorResponse.errorCode == "STATE_HISTORY_NOT_AVAILABLE" {
-                            DispatchQueue.main.async {
-                                completionHandler([], nil)
-                            }
-                            return;
-                        }
-                        break
+            let result = convertResonse(response, error) {
+                response, error throws ->
+                            ([AggregatedResult<AggregatedValueType>]?,
+                             ThingIFError?) in
+                if let error = error {
+                    switch error {
+                    case .errorResponse(let errorResponse) where
+                           errorResponse.httpStatusCode == 409 &&
+                             errorResponse.errorCode ==
+                             "STATE_HISTORY_NOT_AVAILABLE":
+                        return ([], nil)
                     default:
                         break
                     }
                 }
-                DispatchQueue.main.async {
-                    completionHandler(results, error)
-                }
+                return (
+                  try (response!["groupedResults"] as! [[String : Any]]).map {
+                      try AggregatedResult($0)
+                  },
+                  nil)
             }
+            DispatchQueue.main.async { completionHandler(result.0, result.1) }
+        }
     }
 
 }
