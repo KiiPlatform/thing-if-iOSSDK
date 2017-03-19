@@ -44,7 +44,7 @@ internal func convertResponse<Item, Response: CustomStringConvertible>(
     }
 }
 
-internal func parseResponse<ParsableType: FromJsonObject>(
+internal func converSpecifiedItem<ParsableType: FromJsonObject>(
   _ response: [String : Any]?,
   _ error: ThingIFError?) -> (ParsableType?, ThingIFError?)
 {

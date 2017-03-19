@@ -149,8 +149,8 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
             response, error in
 
-            let result convertResponse(response, error) {
-                response, error throws -> (Target?, ThingIFError)
+            let result = convertResponse(response, error) {
+                response, error throws -> (Target?, ThingIFError?) in
 
                 if error != nil {
                     return (nil, error)
@@ -163,7 +163,7 @@ extension ThingIFAPI {
                 self.saveToUserDefault()
                 return (self.target, nil)
             }
-            DispatchQueue.main.async { completionHandler(target, error2) }
+            DispatchQueue.main.async { completionHandler(result.0, result.1) }
         }
     }
 
