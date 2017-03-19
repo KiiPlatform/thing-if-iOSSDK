@@ -259,15 +259,12 @@ extension AliasActionResult: Equatable, ToJsonObject {
 
 }
 
-extension AliasAction: Equatable, ToJsonObject {
+extension AliasAction: Equatable {
 
     public static func == (left: AliasAction, right: AliasAction) -> Bool {
         return left.alias == right.alias && left.actions == right.actions
     }
 
-    public func makeJsonObject() -> [String : Any] {
-        return [self.alias : self.actions.map { $0.makeJsonObject() }]
-    }
 }
 
 internal func == (left: TriggerClause, right: TriggerClause) -> Bool {
@@ -466,15 +463,12 @@ extension KiiApp: Equatable, CustomStringConvertible {
     }
 }
 
-extension Action: Equatable, ToJsonObject {
+extension Action: Equatable {
 
     public static func == (left: Action, right: Action) -> Bool {
         return left.name == right.name && isSameAny(left.value, right.value)
     }
 
-    public func makeJsonObject() -> [String : Any] {
-        return [self.name : self.value]
-    }
 }
 
 extension HistoryState : Equatable, ToJsonObject {
