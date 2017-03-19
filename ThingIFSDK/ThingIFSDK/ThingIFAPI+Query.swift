@@ -62,7 +62,7 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
             response, error in
 
-            let result = convertResonse(response, error) {
+            let result = convertResponse(response, error) {
                 response, error throws ->
                             ([AggregatedResult<AggregatedValueType>]?,
                              ThingIFError?) in

@@ -23,7 +23,7 @@ internal func +=<Key, Value>(left: inout [Key : Value], right: [Key : Value]) {
     right.forEach { left[$0.0] = $0.1 }
 }
 
-internal func convertResonse<Item, Response: CustomStringConvertible>(
+internal func convertResponse<Item, Response: CustomStringConvertible>(
   _ json: Response?,
   _ error: ThingIFError?,
   _ parser: (Response?, ThingIFError?) throws -> (Item?, ThingIFError?))
@@ -48,7 +48,7 @@ internal func parseResponse<ParsableType: FromJsonObject>(
   _ response: [String : Any]?,
   _ error: ThingIFError?) -> (ParsableType?, ThingIFError?)
 {
-    return convertResonse(response, error) {
+    return convertResponse(response, error) {
         response, error -> (ParsableType?, ThingIFError?) in
 
         if error != nil {

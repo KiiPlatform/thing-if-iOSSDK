@@ -149,37 +149,19 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
             response, error in
 
-            var target: Target?
-            var error2 = error
-            if error == nil {
-                do {
-                    /* TODO:
-                     Idealy, server should send vendorThingID as
-                     response of onboarding, and SDK should use
-                     the received vendorThingID. However, current
-                     server implementation does not send
-                     vendorThingID. So we used IDString if it is
-                     vendorThingID, otherwise we set it empty
-                     string. This behavior should be fixed after
-                     server fixed.
-                     */
-                    self.target = try makeTargetThing(
-                      response!,
-                      layoutPosition: layoutPosition ?? .standalone,
-                      vendorThingID: vendorThingID)
-                    self.saveToUserDefault()
-                    target = self.target
-                } catch (ThingIFError.jsonParseError) {
-                    // This is unexpected case.
-                    // If response body is not unexpected format,
-                    // this error is thrown
-                    kiiSevereLog("unexpected error")
-                    error2 = ThingIFError.jsonParseError
-                } catch {
-                    // This case must not happen.
-                    kiiSevereLog("must not happen")
-                    error2 = ThingIFError.jsonParseError
+            let result convertResponse(response, error) {
+                response, error throws -> (Target?, ThingIFError)
+
+                if error != nil {
+                    return (nil, error)
                 }
+
+                self.target = try makeTargetThing(
+                  response!,
+                  layoutPosition: layoutPosition ?? .standalone,
+                  vendorThingID: vendorThingID)
+                self.saveToUserDefault()
+                return (self.target, nil)
             }
             DispatchQueue.main.async { completionHandler(target, error2) }
         }
