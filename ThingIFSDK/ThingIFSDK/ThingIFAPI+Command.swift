@@ -32,74 +32,31 @@ extension ThingIFAPI {
         completionHandler:
           @escaping (Command?, ThingIFError?) -> Void) -> Void
     {
-        fatalError("must be implemented.")
-        /*
-        _postNewCommand(commandForm.schemaName,
-                        schemaVersion: commandForm.schemaVersion,
-                        actions: commandForm.actions,
-                        title: commandForm.title,
-                        description: commandForm.commandDescription,
-                        metadata: commandForm.metadata,
-                        completionHandler: completionHandler);
-         */
-    }
-
-    func _postNewCommand(
-        _ schemaName:String,
-        schemaVersion:Int,
-        actions:[Dictionary<String, Any>],
-        title:String? = nil,
-        description:String? = nil,
-        metadata:Dictionary<String, Any>? = nil,
-        completionHandler: @escaping (Command?, ThingIFError?)-> Void
-        ) -> Void
-    {
-        fatalError("must be implemented.")
-        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
-        }   
-
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands"
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-        
-        // generate body
-        var requestBodyDict: Dictionary<String, Any> =
-          [
-            "schema": schemaName,
-            "schemaVersion": schemaVersion,
-            "actions": actions
-          ]
-
-        let issuerID = owner.typedID
-        requestBodyDict["issuer"] = issuerID.toString()
-        requestBodyDict["title"] = title;
-        requestBodyDict["description"] = description;
-        requestBodyDict["metadata"] = metadata;
-
-        do{
-            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                var command:Command?
-                if let commandID = response?["commandID"] as? String{
-                    command = Command(commandID: commandID, targetID: self.target!.typedID, issuerID: issuerID, schemaName: schemaName, schemaVersion: schemaVersion, actions: actions, actionResults: nil, commandState: nil)
-                }
-                DispatchQueue.main.async {
-                    completionHandler(command, error)
-                }
-            })
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-            
-        }catch(_){
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.jsonParseError)
         }
-        */
+
+        self.operationQueue.addHttpRequestOperation(
+          .post,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands",
+          requestHeader:
+            self.defaultHeader +
+            ["Content-Type" : MediaType.mediaTypePostNewCommandTrait.rawValue],
+          requestBody:
+            commandForm.makeJsonObject() +
+            ["issuer" : self.owner.typedID.toString()],
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error in
+            if error != nil {
+                DispatchQueue.main.async { completionHandler(nil, error) }
+            } else {
+                self.getCommand(response!["commandID"] as! String) {
+                    completionHandler($0, $1)
+                }
+            }
+        }
+
     }
 
     /** Get specified command

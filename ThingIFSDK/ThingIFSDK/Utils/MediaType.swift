@@ -16,4 +16,5 @@ internal enum MediaType : String {
     case mediaTypeTraitStateQueryRequest = "application/vnd.kii.TraitStateQueryRequest+json"
     case mediaTypeVendorThingIDUpdateRequest = "application/vnd.kii.VendorThingIDUpdateRequest+json"
     case mediaTypeThingFirmwareVersionUpdateRequest = "application/vnd.kii.ThingFirmwareVersionUpdateRequest+json"
+    case mediaTypePostNewCommandTrait = "application/vnd.kii.CommandCreationRequest+json"
 }

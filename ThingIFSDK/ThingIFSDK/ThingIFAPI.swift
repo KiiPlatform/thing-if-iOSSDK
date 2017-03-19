@@ -11,7 +11,7 @@ open class ThingIFAPI: Equatable {
     /** Tag of the ThingIFAPI instance */
     open let tag : String?
 
-    let operationQueue = OperationQueue()
+    internal let operationQueue = OperationQueue()
     /** URL of KiiApps Server */
     open var baseURL: String {
         get {
