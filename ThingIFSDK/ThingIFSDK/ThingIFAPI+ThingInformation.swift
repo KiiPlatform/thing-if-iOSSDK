@@ -21,37 +21,30 @@ extension ThingIFAPI {
      */
     open func getVendorThingID(
         _ completionHandler: @escaping (String?, ThingIFError?)-> Void
-        )
+        ) -> Void
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return;
         }
 
-        let requestURL = "\(self.baseURL)/api/apps/\(self.appID)/things/\(self.target!.typedID.id)/vendor-thing-id"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "x-kii-appid": self.appID,
-            "x-kii-appkey": self.appKey,
-            "authorization": "Bearer \(self.owner.accessToken)"
-        ]
-
         // do request
-        let request = buildDefaultRequest(
-            HTTPMethod.GET,
-            urlString: requestURL,
-            requestHeaderDict: requestHeaderDict,
-            requestBodyData: nil,
-            completionHandler: { (response, error) -> Void in
-                let vendorThingID = response?["_vendorThingID"] as? String
-                DispatchQueue.main.async {
-                    completionHandler(vendorThingID, error)
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url: "\(self.baseURL)/api/apps/\(self.appID)/things/\(target.typedID.id)/vendor-thing-id",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error -> Void in
+            let result = convertResponse(response, error) {
+                json, error throws -> (String?, ThingIFError?) in
+
+                if error != nil {
+                    return (nil, error)
                 }
+                return (response?["_vendorThingID"] as? String, nil)
             }
-        )
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+            DispatchQueue.main.async { completionHandler(result.0, result.1) }
+        }
     }
 
 }
