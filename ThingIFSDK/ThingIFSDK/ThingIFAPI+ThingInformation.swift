@@ -51,7 +51,9 @@ extension ThingIFAPI {
 
      - Parameter vendorThingID: New vendor thing id
      - Parameter password: New password
-     - Parameter completionHandler: A closure to be executed once finished. The closure takes 1 argument: an instance of ThingIFError when failed.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 1 argument: an instance of
+       ThingIFError when failed.
      */
     open func update(
         vendorThingID: String,
