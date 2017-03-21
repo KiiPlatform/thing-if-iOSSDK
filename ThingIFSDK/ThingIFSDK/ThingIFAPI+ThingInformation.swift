@@ -47,4 +47,47 @@ extension ThingIFAPI {
         }
     }
 
+    /** Update the Vendor Thing ID of specified Target.
+
+     - Parameter vendorThingID: New vendor thing id
+     - Parameter password: New password
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 1 argument: an instance of
+       ThingIFError when failed.
+     */
+    open func update(
+        vendorThingID: String,
+        password: String,
+        completionHandler: @escaping (ThingIFError?)-> Void
+        )
+    {
+        guard let target = self.target else {
+            completionHandler(ThingIFError.targetNotAvailable)
+            return;
+        }
+        if vendorThingID.isEmpty || password.isEmpty {
+            completionHandler(ThingIFError.unsupportedError)
+            return;
+        }
+
+        self.operationQueue.addHttpRequestOperation(
+          .put,
+          url: "\(self.baseURL)/api/apps/\(self.appID)/things/\(target.typedID.id)/vendor-thing-id",
+          requestHeader:
+            self.defaultHeader +
+            [
+              "Content-Type":
+                MediaType.mediaTypeVendorThingIDUpdateRequest.rawValue
+            ],
+          requestBody:
+            [
+              "_vendorThingID": vendorThingID,
+              "_password": password
+            ],
+          failureBeforeExecutionHandler: { completionHandler($0) }) {
+            response, error -> Void in
+            DispatchQueue.main.async { completionHandler(error) }
+        }
+    }
+
 }

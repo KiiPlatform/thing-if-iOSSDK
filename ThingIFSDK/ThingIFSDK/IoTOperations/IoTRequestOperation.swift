@@ -13,7 +13,9 @@ internal enum HTTPMethod: String {
     case GET = "GET-deprecated"
     case get = "GET"
     case post = "POST"
-    case PUT = "PUT"
+    @available(iOS, deprecated: 1.0, message: "use put")
+    case PUT = "PUT-deprecated"
+    case put = "PUT"
     case HEAD = "HEAD"
     case DELETE = "DELETE"
     case PATCH = "PATCH"
@@ -106,7 +108,7 @@ class IoTRequestOperation<T>: GroupOperation {
         case .PATCH:
             addPatchRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData!, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
 
-        case .PUT:
+        case .put:
             addPutRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler, responseBodySerializer: request.responseBodySerializer)
 
         default :
