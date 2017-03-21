@@ -96,7 +96,7 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
             response, error in
             let result: (Command?, ThingIFError?) =
-              parseResponse(response, error)
+              converSpecifiedItem(response, error)
             DispatchQueue.main.async { completionHandler(result.0, result.1) }
         }
     }
