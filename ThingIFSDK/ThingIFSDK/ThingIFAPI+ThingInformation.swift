@@ -36,7 +36,7 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
             response, error -> Void in
             let result = convertResponse(response, error) {
-                json, error throws -> (String?, ThingIFError?) in
+                json, error -> (String?, ThingIFError?) in
 
                 if error != nil {
                     return (nil, error)
