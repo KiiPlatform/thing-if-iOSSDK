@@ -181,7 +181,33 @@ extension ThingIFAPI {
     open func getThingType(
       _ completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
     {
-        // TODO: implement me.
+        guard let target = self.target else {
+            completionHandler(nil, ThingIFError.targetNotAvailable)
+            return;
+        }
+
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url: "\(self.baseURL)/thing-if/apps/\(self.appID)/things/\(target.typedID.id)/thing-type",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error -> Void in
+            let result = convertResponse(response, error) {
+                json, error -> (String?, ThingIFError?) in
+
+                if let error = error {
+                    switch error {
+                    case .errorResponse(let response) where
+                           response.errorCode == "THING_WITHOUT_THING_TYPE":
+                        return (nil, nil)
+                    default:
+                        return (nil, error)
+                    }
+                }
+                return (json?["thingType"] as? String, nil)
+            }
+            DispatchQueue.main.async { completionHandler(result.0, result.1) }
+        }
     }
 
 }
