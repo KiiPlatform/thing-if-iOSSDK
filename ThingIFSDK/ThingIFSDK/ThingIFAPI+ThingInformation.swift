@@ -170,4 +170,18 @@ extension ThingIFAPI {
         }
     }
 
+    /** Get thing type.
+
+     This method gets thing type for `target` thing.
+
+     - Parameter completionHandler: A closure to be executed once on
+       getting has finished The closure takes 2 arguments. First one
+       is thing type. Second one is ThingIFError.
+     */
+    open func getThingType(
+      _ completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
 }
