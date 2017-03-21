@@ -796,4 +796,40 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
             XCTAssertNil(error, "execution timeout")
         }
     }
+
+    func testUpdateFirmwareVersionWithoutTarget() {
+        let expectation = self.expectation(
+          description: "testUpdateFirmwareVersionEmptyFirmwareVersion")
+        let setting = TestSetting()
+        let firmwareVersion = "V1"
+
+        setting.api.update(firmwareVersion: firmwareVersion) { error -> Void in
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func testUpdateFirmwareVersionEmptyFirmwareVersion() {
+        let expectation = self.expectation(
+          description: "testUpdateFirmwareVersionEmptyFirmwareVersion")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        setting.api.update(firmwareVersion: "") { error -> Void in
+            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
 }
