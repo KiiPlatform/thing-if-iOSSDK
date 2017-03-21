@@ -132,4 +132,42 @@ extension ThingIFAPI {
         }
     }
 
+    /** Update firmware version.
+
+     This method updates firmware version for `target` thing.
+
+     - Parameter firmwareVersion: firmwareVersion to be updated.
+     - Parameter completionHandler: A closure to be executed once on
+       updating has finished The closure takes 1 argument. The
+       argument is ThingIFError.
+     */
+    open func update(
+      firmwareVersion: String,
+      completionHandler: @escaping (ThingIFError?)-> Void) -> Void
+    {
+        guard let target = self.target else {
+            completionHandler(ThingIFError.targetNotAvailable)
+            return;
+        }
+        if firmwareVersion.isEmpty {
+            completionHandler(ThingIFError.unsupportedError)
+            return;
+        }
+
+        self.operationQueue.addHttpRequestOperation(
+          .put,
+          url: "\(self.baseURL)/api/apps/\(self.appID)/things/\(target.typedID.id)/firmware-version",
+          requestHeader:
+            self.defaultHeader +
+            [
+              "Content-Type":
+                MediaType.mediaTypeThingFirmwareVersionUpdateRequest.rawValue
+            ],
+          requestBody: ["firmwareVersion": firmwareVersion],
+          failureBeforeExecutionHandler: { completionHandler($0) }) {
+            response, error -> Void in
+            DispatchQueue.main.async { completionHandler(error) }
+        }
+    }
+
 }
