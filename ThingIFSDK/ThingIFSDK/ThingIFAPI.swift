@@ -382,22 +382,6 @@ open class ThingIFAPI: Equatable {
         _listTriggeredServerCodeResults(triggerID, bestEffortLimit:bestEffortLimit, paginationKey:paginationKey, completionHandler: completionHandler)
     }
 
-    /** Update firmware version.
-
-     This method updates firmware version for `target` thing.
-
-     - Parameter firmwareVersion: firmwareVersion to be updated.
-     - Parameter completionHandler: A closure to be executed once on
-       updating has finished The closure takes 1 argument. The
-       argument is ThingIFError.
-     */
-    open func update(
-      firmwareVersion: String,
-      completionHandler: @escaping (ThingIFError?)-> Void) -> Void
-    {
-        // TODO: implement me.
-    }
-
     /** Update thing type.
 
      This method updates thing type for `target` thing.
