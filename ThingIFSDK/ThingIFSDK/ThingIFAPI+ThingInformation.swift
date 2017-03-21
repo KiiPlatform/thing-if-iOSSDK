@@ -61,7 +61,7 @@ extension ThingIFAPI {
         completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
-        if self.target == nil {
+        guard let target = self.target else {
             completionHandler(ThingIFError.targetNotAvailable)
             return;
         }
@@ -70,43 +70,23 @@ extension ThingIFAPI {
             return;
         }
 
-        let requestURL = "\(self.baseURL)/api/apps/\(self.appID)/things/\(self.target!.typedID.id)/vendor-thing-id"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = [
-            "x-kii-appid": self.appID,
-            "x-kii-appkey": self.appKey,
-            "authorization": "Bearer \(self.owner.accessToken)",
-            "Content-Type": "application/vnd.kii.VendorThingIDUpdateRequest+json"
-        ]
-
-        // genrate body
-        let requestBodyDict = NSMutableDictionary(dictionary:
+        self.operationQueue.addHttpRequestOperation(
+          .put,
+          url: "\(self.baseURL)/api/apps/\(self.appID)/things/\(target.typedID.id)/vendor-thing-id",
+          requestHeader:
+            self.defaultHeader +
             [
-                "_vendorThingID": vendorThingID,
-                "_password": password
-            ]
-        )
-
-        do {
-            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(
-                HTTPMethod.PUT,
-                urlString: requestURL,
-                requestHeaderDict: requestHeaderDict,
-                requestBodyData: requestBodyData,
-                completionHandler: { (response, error) -> Void in
-                    DispatchQueue.main.async {
-                        completionHandler(error)
-                    }
-                }
-            )
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        } catch(_) {
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.jsonParseError)
+              "Content-Type":
+                MediaType.mediaTypeVendorThingIDUpdateRequest.rawValue
+            ],
+          requestBody:
+            [
+              "_vendorThingID": vendorThingID,
+              "_password": password
+            ],
+          failureBeforeExecutionHandler: { completionHandler($0) }) {
+            response, error -> Void in
+            DispatchQueue.main.async { completionHandler(error) }
         }
     }
 
