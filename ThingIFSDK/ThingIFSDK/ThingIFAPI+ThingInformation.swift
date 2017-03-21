@@ -14,7 +14,10 @@ extension ThingIFAPI {
 
     /** Get the Vendor Thing ID of specified Target.
 
-     - Parameter completionHandler: A closure to be executed once get id has finished. The closure takes 2 arguments: 1st one is Vendor Thing ID and 2nd one is an instance of ThingIFError when failed.
+     - Parameter completionHandler: A closure to be executed once get
+       id has finished. The closure takes 2 arguments: 1st one is
+       Vendor Thing ID and 2nd one is an instance of ThingIFError when
+       failed.
      */
     open func getVendorThingID(
         _ completionHandler: @escaping (String?, ThingIFError?)-> Void
