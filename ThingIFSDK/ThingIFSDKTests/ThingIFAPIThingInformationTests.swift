@@ -1030,4 +1030,333 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
             XCTAssertNil(error, "execution timeout")
         }
     }
+
+    func  testGetThingTypeSuccess() throws {
+        let expectation =
+          self.expectation(description: "testGetThingTypeSuccess")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/thing-type",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+        let expectedThingType = "dummyThingType"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["thingType": expectedThingType],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getThingType() { thingType, error -> Void in
+            XCTAssertNil(error)
+            XCTAssertEqual(thingType, expectedThingType)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func  testGetThingTypeSuccessNil() throws {
+        let expectation =
+          self.expectation(description: "testGetThingTypeSuccessNil")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/thing-type",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["errorCode": "THING_WITHOUT_THING_TYPE"],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getThingType() { thingType, error -> Void in
+            XCTAssertNil(error)
+            XCTAssertNil(thingType)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func  testGetThingTypeError401() throws {
+        let expectation =
+          self.expectation(description: "testGetThingTypeError401")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/thing-type",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 401,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getThingType() { thingType, error -> Void in
+            XCTAssertNil(thingType)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(401, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func  testGetThingTypeError403() throws {
+        let expectation =
+          self.expectation(description: "testGetThingTypeError403")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/thing-type",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 403,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getThingType() { thingType, error -> Void in
+            XCTAssertNil(thingType)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(403, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func  testGetThingTypeError404() throws {
+        let expectation =
+          self.expectation(description: "testGetThingTypeError404")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/thing-type",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getThingType() { thingType, error -> Void in
+            XCTAssertNil(thingType)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(404, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func  testGetThingTypeError503() throws {
+        let expectation =
+          self.expectation(description: "testGetThingTypeError503")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/thing-type",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 503,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getThingType() { thingType, error -> Void in
+            XCTAssertNil(thingType)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(503, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
 }
