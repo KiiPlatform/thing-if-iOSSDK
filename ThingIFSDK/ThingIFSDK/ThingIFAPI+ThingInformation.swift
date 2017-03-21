@@ -90,7 +90,7 @@ extension ThingIFAPI {
         }
     }
 
-    /** Get firmeware version.
+    /** Get firmware version.
 
      This method gets firmware version for `target` thing.
 
@@ -98,7 +98,7 @@ extension ThingIFAPI {
        getting has finished The closure takes 2 arguments. First one
        is firmware version. Second one is ThingIFError.
      */
-    open func getFirmewareVerson(
+    open func getFirmwareVersion(
       _ completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
     {
         guard let target = self.target else {
@@ -108,7 +108,7 @@ extension ThingIFAPI {
 
         self.operationQueue.addHttpRequestOperation(
           .get,
-          url: "\(self.baseURL)/thing-if/apps/\(self.appID)/things/\(target.typedID.id)/vendor-thing-id",
+          url: "\(self.baseURL)/thing-if/apps/\(self.appID)/things/\(target.typedID.id)/firmware-version",
           requestHeader: self.defaultHeader,
           failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
             response, error -> Void in
