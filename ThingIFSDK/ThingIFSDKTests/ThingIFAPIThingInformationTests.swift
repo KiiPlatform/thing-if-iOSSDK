@@ -447,7 +447,7 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
     func  testGetFirmwareVersionSuccessNil() throws {
         let expectation =
-          self.expectation(description: "testGetFirmwareVersionSuccess")
+          self.expectation(description: "testGetFirmwareVersionSuccessNil")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -504,7 +504,7 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
     func  testGetFirmwareVersionError401() throws {
         let expectation =
-          self.expectation(description: "testGetFirmwareVersionSuccess")
+          self.expectation(description: "testGetFirmwareVersionError401")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -562,7 +562,7 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
     func  testGetFirmwareVersionError403() throws {
         let expectation =
-          self.expectation(description: "testGetFirmwareVersionSuccess")
+          self.expectation(description: "testGetFirmwareVersionError403")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -620,7 +620,7 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
     func  testGetFirmwareVersionError404() throws {
         let expectation =
-          self.expectation(description: "testGetFirmwareVersionSuccess")
+          self.expectation(description: "testGetFirmwareVersionError404")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -678,7 +678,7 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
     func  testGetFirmwareVersionError503() throws {
         let expectation =
-          self.expectation(description: "testGetFirmwareVersionSuccess")
+          self.expectation(description: "testGetFirmwareVersionError503")
         let setting = TestSetting()
         let api = setting.api
         let target = setting.target
@@ -722,6 +722,303 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
         setting.api.getFirmwareVersion() { firmwareVersion, error -> Void in
             XCTAssertNil(firmwareVersion)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(503, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func testUpdateFirmwareVersionSuccess() {
+        let expectation =
+          self.expectation(description: "testUpdateFirmwareVersionSuccess")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+        let firmwareVersion = "V1"
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "PUT")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
+              request.url!.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type":
+                  "application/vnd.kii.ThingFirmwareVersionUpdateRequest+json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            XCTAssertEqual(
+              ["firmwareVersion": firmwareVersion],
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary
+            )
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 204,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.update(firmwareVersion: firmwareVersion) { error -> Void in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func testUpdateFirmwareVersionWithoutTarget() {
+        let expectation = self.expectation(
+          description: "testUpdateFirmwareVersionEmptyFirmwareVersion")
+        let setting = TestSetting()
+        let firmwareVersion = "V1"
+
+        setting.api.update(firmwareVersion: firmwareVersion) { error -> Void in
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func testUpdateFirmwareVersionEmptyFirmwareVersion() {
+        let expectation = self.expectation(
+          description: "testUpdateFirmwareVersionEmptyFirmwareVersion")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        setting.api.update(firmwareVersion: "") { error -> Void in
+            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func testUpdateFirmwareVersionError403() {
+        let expectation =
+          self.expectation(description: "testUpdateFirmwareVersionError403")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+        let firmwareVersion = "V1"
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "PUT")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
+              request.url!.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type":
+                  "application/vnd.kii.ThingFirmwareVersionUpdateRequest+json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            XCTAssertEqual(
+              ["firmwareVersion": firmwareVersion],
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary
+            )
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 403,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.update(firmwareVersion: firmwareVersion) { error -> Void in
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(403, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func testUpdateFirmwareVersionError404() {
+        let expectation =
+          self.expectation(description: "testUpdateFirmwareVersionError404")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+        let firmwareVersion = "V1"
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "PUT")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
+              request.url!.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type":
+                  "application/vnd.kii.ThingFirmwareVersionUpdateRequest+json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            XCTAssertEqual(
+              ["firmwareVersion": firmwareVersion],
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary
+            )
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.update(firmwareVersion: firmwareVersion) { error -> Void in
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(404, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func testUpdateFirmwareVersionError503() {
+        let expectation =
+          self.expectation(description: "testUpdateFirmwareVersionError503")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+        let firmwareVersion = "V1"
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "PUT")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
+              request.url!.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type":
+                  "application/vnd.kii.ThingFirmwareVersionUpdateRequest+json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            XCTAssertEqual(
+              ["firmwareVersion": firmwareVersion],
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary
+            )
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 503,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.update(firmwareVersion: firmwareVersion) { error -> Void in
             XCTAssertEqual(
               ThingIFError.errorResponse(
                 required: ErrorResponse(503, errorCode: "", errorMessage: "")),
