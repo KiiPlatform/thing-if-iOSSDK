@@ -28,7 +28,7 @@ public struct CommandForm {
 
     // MARK: - Properties
 
-    /// Array of actions with alias.
+    /// Array of AliasAction instances.
     public let aliasActions: [AliasAction]
 
     /// Title of a command.
@@ -45,7 +45,7 @@ public struct CommandForm {
     /**
     Initializer of CommandForm instance.
 
-    - Parameter actions: Array of actions with alias. Must not be empty.
+    - Parameter actions: Array of AliasAction instances. Must not be empty.
     - Parameter title: Title of a command. This should be equal or
       less than 50 characters.
     - Parameter description: Description of a comand. This should be
