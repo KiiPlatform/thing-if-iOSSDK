@@ -1423,4 +1423,37 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
         }
     }
 
+    func testUpdateThingWithoutTarget() {
+        let expectation =
+          self.expectation(description: "testUpdateThingWithoutTarget")
+        let setting = TestSetting()
+
+        setting.api.update(thingType: "dummyThingType") { error -> Void in
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func testUpdateThingEmptyThingType() {
+        let expectation =
+          self.expectation(description: "testUpdateThingTypeSuccess")
+        let setting = TestSetting()
+        let target = setting.target
+
+        // perform onboarding
+        setting.api.target = target
+
+        setting.api.update(thingType: "") { error -> Void in
+            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
 }
