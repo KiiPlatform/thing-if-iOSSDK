@@ -202,7 +202,7 @@ class ThingIFAPIListCommandsTests: SmallTestBase {
 
         // verify request
         sharedMockSession.requestVerifier = makeRequestVerifier() { request in
-            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(request.httpMethod, "GET", tag)
 
             // verify path
             var path = "\(setting.app.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(setting.target.typedID.toString())/commands"
@@ -224,7 +224,8 @@ class ThingIFAPIListCommandsTests: SmallTestBase {
                 "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
                 "Authorization": "Bearer \(setting.owner.accessToken)"
               ],
-              request.allHTTPHeaderFields!)
+              request.allHTTPHeaderFields!,
+              tag)
         }
         // mock response
         var responseBody: [String : Any] =
@@ -249,11 +250,98 @@ class ThingIFAPIListCommandsTests: SmallTestBase {
           paginationKey: testcase.input.paginationKey) {
             commands, nextPaginationKey, error -> Void in
 
-            XCTAssertNil(error)
-            XCTAssertEqual(testcase.output.nextPaginationKey, nextPaginationKey)
-            XCTAssertEqual(testcase.output.commands, commands!)
+            XCTAssertNil(error, tag)
+            XCTAssertEqual(
+              testcase.output.nextPaginationKey,
+              nextPaginationKey,
+              tag)
+            XCTAssertEqual(testcase.output.commands, commands!, tag)
             expectation.fulfill()
         }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error, tag + "execution timeout.")
+        }
+    }
+
+    func testListCommand_404_error() throws {
+        let expectation = self.expectation(description: "getCommand404Error")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            // verify path
+            XCTAssertEqual(
+              "\(api.baseURL)/thing-if/apps/\(api.appID)/targets/\(setting.target.typedID.type):\(setting.target.typedID.id)/commands",
+              request.url!.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+        }
+        // mock response
+        let errorCode = "TARGET_NOT_FOUND"
+        let errorMessage = "Target \(target.typedID.toString()) not found"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject:
+              [
+                "errorCode" : errorCode,
+                "message" : errorMessage
+              ],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+
+        iotSession = MockSession.self
+        api.listCommands(nil, paginationKey: nil) {
+            commands, nextPaginationKey, error -> Void in
+            XCTAssertNil(commands)
+            XCTAssertNil(nextPaginationKey)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  404,
+                  errorCode: errorCode,
+                  errorMessage: errorMessage)),
+              error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout.")
+        }
+    }
+
+    func testListCommand_target_not_available_error() {
+        let expectation = self.expectation(
+          description: "testListCommand_target_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        api.listCommands(nil, paginationKey: nil) {
+            commands, nextPaginationKey, error -> Void in
+
+            XCTAssertNil(commands)
+            XCTAssertNil(nextPaginationKey)
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             XCTAssertNil(error, "execution timeout.")
         }
