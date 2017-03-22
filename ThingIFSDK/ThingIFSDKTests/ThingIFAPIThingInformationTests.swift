@@ -389,4 +389,348 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
             XCTAssertNil(error, "execution timeout")
         }
     }
+
+    func  testGetFirmwareVersionSuccess() throws {
+        let expectation =
+          self.expectation(description: "testGetFirmwareVersionSuccess")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/firmware-version",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+        let expectedFirmwareVersion = "V1"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["firmwareVersion": expectedFirmwareVersion],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getFirmwareVersion() { firmwareVersion, error -> Void in
+            XCTAssertNil(error)
+            XCTAssertEqual(firmwareVersion, expectedFirmwareVersion)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func  testGetFirmwareVersionSuccessNil() throws {
+        let expectation =
+          self.expectation(description: "testGetFirmwareVersionSuccess")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/firmware-version",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+
+        // TODO: When server response fixed, change to
+        // FIRMWARE_VERSION_NOT_FOUND.
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["errorCode" : "THING_WITHOUT_THING_TYPE"],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getFirmwareVersion() { firmwareVersion, error -> Void in
+            XCTAssertNil(error)
+            XCTAssertNil(firmwareVersion)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func  testGetFirmwareVersionError401() throws {
+        let expectation =
+          self.expectation(description: "testGetFirmwareVersionSuccess")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/firmware-version",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+
+        // TODO: When server response fixed, change to
+        // FIRMWARE_VERSION_NOT_FOUND.
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 401,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getFirmwareVersion() { firmwareVersion, error -> Void in
+            XCTAssertNil(firmwareVersion)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(401, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func  testGetFirmwareVersionError403() throws {
+        let expectation =
+          self.expectation(description: "testGetFirmwareVersionSuccess")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/firmware-version",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+
+        // TODO: When server response fixed, change to
+        // FIRMWARE_VERSION_NOT_FOUND.
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 403,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getFirmwareVersion() { firmwareVersion, error -> Void in
+            XCTAssertNil(firmwareVersion)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(403, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func  testGetFirmwareVersionError404() throws {
+        let expectation =
+          self.expectation(description: "testGetFirmwareVersionSuccess")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/firmware-version",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+
+        // TODO: When server response fixed, change to
+        // FIRMWARE_VERSION_NOT_FOUND.
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getFirmwareVersion() { firmwareVersion, error -> Void in
+            XCTAssertNil(firmwareVersion)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(404, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
+    func  testGetFirmwareVersionError503() throws {
+        let expectation =
+          self.expectation(description: "testGetFirmwareVersionSuccess")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(setting.target.typedID.id)/firmware-version",
+              request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
+        }
+
+        // mock response
+
+        // TODO: When server response fixed, change to
+        // FIRMWARE_VERSION_NOT_FOUND.
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 503,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.getFirmwareVersion() { firmwareVersion, error -> Void in
+            XCTAssertNil(firmwareVersion)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(503, errorCode: "", errorMessage: "")),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
 }

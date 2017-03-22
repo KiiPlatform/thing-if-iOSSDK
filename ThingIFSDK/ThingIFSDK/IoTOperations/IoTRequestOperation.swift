@@ -241,8 +241,6 @@ class IoTRequestOperation<T>: GroupOperation {
                 let httpResponse = responseOptional as! HTTPURLResponse
                 let statusCode = httpResponse.statusCode
                 var responseBody : NSDictionary?
-                var errorCode = ""
-                var errorMessage = ""
                 kiiDebugLog("Response Status Code : \(statusCode)")
 
                 if statusCode < 200 || statusCode >= 300 {
@@ -254,13 +252,10 @@ class IoTRequestOperation<T>: GroupOperation {
                         }
                     }
                     kiiDebugLog("Response Error : \(responseBody)")
-                    if responseBody != nil
-                        && responseBody!["errorCode"] != nil
-                        && responseBody!["message"] != nil {
-                        errorCode = responseBody!["errorCode"] as! String
-                        errorMessage = responseBody!["message"] as! String
-                    }
-                    let errorResponse = ErrorResponse(statusCode, errorCode: errorCode, errorMessage: errorMessage)
+                    let errorResponse = ErrorResponse(
+                      statusCode,
+                      errorCode: (responseBody?["errorCode"] as? String) ?? "",
+                      errorMessage: (responseBody?["message"] as? String) ?? "")
                     let iotCloudError = ThingIFError.errorResponse(required: errorResponse)
                     completionHandler(nil, iotCloudError)
                 }else {

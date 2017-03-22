@@ -398,20 +398,6 @@ open class ThingIFAPI: Equatable {
         // TODO: implement me.
     }
 
-    /** Get firmeware version.
-
-     This method gets firmware version for `target` thing.
-
-     - Parameter completionHandler: A closure to be executed once on
-       getting has finished The closure takes 2 arguments. First one
-       is firmware version. Second one is ThingIFError.
-     */
-    open func getFirmewareVerson(
-      _ completionHandler: @escaping (String?, ThingIFError?) -> Void) -> Void
-    {
-        // TODO: implement me.
-    }
-
     /** Update thing type.
 
      This method updates thing type for `target` thing.
