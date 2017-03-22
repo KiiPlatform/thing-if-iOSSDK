@@ -20,7 +20,7 @@ class CommandFormTests: SmallTestBase {
     }
 
     func testInitWithRequiredValue() {
-        let actions = [
+        let aliasActions = [
           AliasAction(
             "alias",
             actions: Action(
@@ -28,15 +28,15 @@ class CommandFormTests: SmallTestBase {
               value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
-        let commandForm = CommandForm(actions)
-        XCTAssertEqual(commandForm.actions, actions)
+        let commandForm = CommandForm(aliasActions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertNil(commandForm.title)
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithTitle() {
-        let actions = [
+        let aliasActions = [
           AliasAction(
             "alias",
             actions: Action(
@@ -44,15 +44,15 @@ class CommandFormTests: SmallTestBase {
               value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
-        let commandForm = CommandForm(actions, title: "title")
-        XCTAssertEqual(commandForm.actions, actions)
+        let commandForm = CommandForm(aliasActions, title: "title")
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithCommandDescription() {
-        let actions = [
+        let aliasActions = [
           AliasAction(
             "alias",
             actions: Action(
@@ -60,17 +60,17 @@ class CommandFormTests: SmallTestBase {
               value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
-        let commandForm = CommandForm(actions,
+        let commandForm = CommandForm(aliasActions,
                                       commandDescription: "description")
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithMetadata() {
-        let actions = [
+        let aliasActions = [
           AliasAction(
             "alias",
             actions: Action(
@@ -79,10 +79,10 @@ class CommandFormTests: SmallTestBase {
           )
         ]
         let metadata = [ "key1" : "value1", "key2" : "value2" ]
-        let commandForm = CommandForm(actions,
+        let commandForm = CommandForm(aliasActions,
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(
           commandForm.metadata as! [String : String],
@@ -90,7 +90,7 @@ class CommandFormTests: SmallTestBase {
     }
 
     func testInitWithTitleAndDescription() {
-        let actions = [
+        let aliasActions = [
           AliasAction(
             "alias",
             actions: Action(
@@ -98,18 +98,18 @@ class CommandFormTests: SmallTestBase {
               value: ["arg1" : "value1", "arg2": "value2"])
           )
         ]
-        let commandForm = CommandForm(actions,
+        let commandForm = CommandForm(aliasActions,
                                       title: "title",
                                       commandDescription: "description")
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithTitleAndMetadata() {
-        let actions = [
+        let aliasActions = [
           AliasAction(
             "alias",
             actions: Action(
@@ -118,11 +118,11 @@ class CommandFormTests: SmallTestBase {
           )
         ]
         let metadata: [String : Any] = [ "key1" : "value1", "key2" : "value2" ]
-        let commandForm = CommandForm(actions,
+        let commandForm = CommandForm(aliasActions,
                                       title: "title",
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertEqual(
@@ -131,7 +131,7 @@ class CommandFormTests: SmallTestBase {
     }
 
     func testInitWithDescriptionAndMetadata() {
-        let actions = [
+        let aliasActions = [
           AliasAction(
             "alias",
             actions: Action(
@@ -140,11 +140,11 @@ class CommandFormTests: SmallTestBase {
           )
         ]
         let metadata: [String : Any] = [ "key1" : "value1", "key2" : "value2" ]
-        let commandForm = CommandForm(actions,
+        let commandForm = CommandForm(aliasActions,
                                       commandDescription: "description",
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertEqual(
@@ -153,7 +153,7 @@ class CommandFormTests: SmallTestBase {
     }
 
     func testInitWithAllFields() {
-        let actions = [
+        let aliasActions = [
           AliasAction(
             "alias",
             actions: Action(
@@ -162,12 +162,12 @@ class CommandFormTests: SmallTestBase {
           )
         ]
         let metadata: [String : Any] = [ "key1" : "value1", "key2" : "value2" ]
-        let commandForm = CommandForm(actions,
+        let commandForm = CommandForm(aliasActions,
                                       title: "title",
                                       commandDescription: "description",
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.actions, actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertEqual(
