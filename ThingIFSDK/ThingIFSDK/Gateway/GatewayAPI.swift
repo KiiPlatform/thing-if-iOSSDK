@@ -133,26 +133,17 @@ open class GatewayAPI {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/id"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
-
-        // do request
-        let request = buildNewRequest(
-            HTTPMethod.GET,
-            urlString: requestURL,
-            requestHeaderDict: requestHeaderDict,
-            requestBodyData: nil,
-            completionHandler: { (response, error) -> Void in
-                let thingID = response?["thingID"] as? String
+        self.operationQueue.addHttpRequestOperation(
+            .get,
+            url: "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/id",
+            requestHeader: self.defaultHeader,
+            requestBody: nil,
+            failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+                response, error in
                 DispatchQueue.main.async {
-                    completionHandler(thingID, error)
+                    completionHandler(response?["thingID"] as? String, error)
                 }
-            }
-        )
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+        }
     }
 
     /** List connected end nodes which has been onboarded.
