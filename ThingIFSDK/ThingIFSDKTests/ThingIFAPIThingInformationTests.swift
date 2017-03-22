@@ -751,7 +751,7 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
             // verify path
             XCTAssertEqual(
-              "\(setting.api.baseURL)/api/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
               request.url!.absoluteString)
 
             //verify header
@@ -850,7 +850,7 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
             // verify path
             XCTAssertEqual(
-              "\(setting.api.baseURL)/api/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
               request.url!.absoluteString)
 
             //verify header
@@ -916,7 +916,7 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
             // verify path
             XCTAssertEqual(
-              "\(setting.api.baseURL)/api/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
               request.url!.absoluteString)
 
             //verify header
@@ -982,7 +982,7 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
             // verify path
             XCTAssertEqual(
-              "\(setting.api.baseURL)/api/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(target.typedID.id)/firmware-version",
               request.url!.absoluteString)
 
             //verify header
@@ -1359,4 +1359,5 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
             XCTAssertNil(error, "execution timeout")
         }
     }
+
 }
