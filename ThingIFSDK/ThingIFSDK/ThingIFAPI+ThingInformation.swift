@@ -156,7 +156,7 @@ extension ThingIFAPI {
 
         self.operationQueue.addHttpRequestOperation(
           .put,
-          url: "\(self.baseURL)/api/apps/\(self.appID)/things/\(target.typedID.id)/firmware-version",
+          url: "\(self.baseURL)/thing-if/apps/\(self.appID)/things/\(target.typedID.id)/firmware-version",
           requestHeader:
             self.defaultHeader +
             [
