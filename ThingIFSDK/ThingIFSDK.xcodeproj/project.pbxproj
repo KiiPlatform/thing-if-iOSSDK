@@ -69,6 +69,7 @@
 		7D36B6C21BD4D51D00D9B821 /* ThingIFSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7D36B6C41BD4D9DD00D9B821 /* ThingIFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */; };
 		A56B0A431C5B43B100E653EF /* TriggeredServerCodeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */; };
+		B63385D81E7EB01B0095466B /* ThingIFAPIPostNewCommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63385D71E7EB01B0095466B /* ThingIFAPIPostNewCommandTests.swift */; };
 		B63FC8AE1CEEDBFF0042C747 /* ThingIFSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */; };
 		B63FC8B51CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */; };
 		B645506C1E78ECC600D8FACF /* GatewayAPILoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645506B1E78ECC600D8FACF /* GatewayAPILoginTests.swift */; };
@@ -233,6 +234,7 @@
 		7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFError.swift; sourceTree = "<group>"; };
 		7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThingIFSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredServerCodeResult.swift; sourceTree = "<group>"; };
+		B63385D71E7EB01B0095466B /* ThingIFAPIPostNewCommandTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPostNewCommandTests.swift; sourceTree = "<group>"; };
 		B63FC8A91CEEDBFF0042C747 /* ThingIFSDKLargeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThingIFSDKLargeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B63FC8AD1CEEDBFF0042C747 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B63FC8B41CEEDCD50042C747 /* PostNewTriggerForSchedulePredicateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostNewTriggerForSchedulePredicateTests.swift; sourceTree = "<group>"; };
@@ -554,6 +556,7 @@
 				B64550711E7A4BCC00D8FACF /* ActionTests.swift */,
 				B64550731E7A8D2800D8FACF /* ThingIFAPIGetCommandTests.swift */,
 				B66D60DA1E80FBAA00D346B7 /* ThingIFAPIThingInformationTests.swift */,
+				B63385D71E7EB01B0095466B /* ThingIFAPIPostNewCommandTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -814,6 +817,7 @@
 				22DC5E9B1E77B04100519807 /* ThingIFAPIAggregateTests.swift in Sources */,
 				B6A3DA171E7698FD001662D0 /* GatewayAPIPersistenceTests.swift in Sources */,
 				2262F1511E4B046700080DF6 /* HistoryStateTests.swift in Sources */,
+				B63385D81E7EB01B0095466B /* ThingIFAPIPostNewCommandTests.swift in Sources */,
 				B6BE389A1E5FE98700FD9976 /* GatewayTests.swift in Sources */,
 				B6C2DAFB1E4D941A008DBA83 /* AndClauseInTriggerTests.swift in Sources */,
 				22EA81DA1E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift in Sources */,
