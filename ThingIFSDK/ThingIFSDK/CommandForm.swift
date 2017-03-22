@@ -28,8 +28,8 @@ public struct CommandForm {
 
     // MARK: - Properties
 
-    /// Array of actions.
-    public let actions: [AliasAction]
+    /// Array of actions with alias.
+    public let aliasActions: [AliasAction]
 
     /// Title of a command.
     public let title: String?
@@ -45,19 +45,19 @@ public struct CommandForm {
     /**
     Initializer of CommandForm instance.
 
-    - Parameter actions: Array of actions. Must not be empty.
+    - Parameter actions: Array of actions with alias. Must not be empty.
     - Parameter title: Title of a command. This should be equal or
       less than 50 characters.
     - Parameter description: Description of a comand. This should be
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(_ actions: [AliasAction],
+    public init(_ aliasActions: [AliasAction],
                 title: String? = nil,
                 commandDescription: String? = nil,
                 metadata: [String : Any]? = nil)
     {
-        self.actions = actions
+        self.aliasActions = aliasActions
         self.title = title;
         self.commandDescription = commandDescription;
         self.metadata = metadata;
