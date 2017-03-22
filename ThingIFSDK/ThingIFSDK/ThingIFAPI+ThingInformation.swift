@@ -210,4 +210,42 @@ extension ThingIFAPI {
         }
     }
 
+    /** Update thing type.
+
+     This method updates thing type for `target` thing.
+
+     - Parameter thingType: thing type to be updated.
+     - Parameter completionHandler: A closure to be executed once on
+       updating has finished The closure takes 1 argument. The
+       argument is ThingIFError.
+     */
+    open func update(
+      thingType: String,
+      completionHandler: @escaping (ThingIFError?)-> Void) -> Void
+    {
+        guard let target = self.target else {
+            completionHandler(ThingIFError.targetNotAvailable)
+            return;
+        }
+        if thingType.isEmpty {
+            completionHandler(ThingIFError.unsupportedError)
+            return;
+        }
+
+        self.operationQueue.addHttpRequestOperation(
+          .put,
+          url: "\(self.baseURL)/thing-if/apps/\(self.appID)/things/\(target.typedID.id)/thing-type",
+          requestHeader:
+            self.defaultHeader +
+            [
+              "Content-Type":
+                MediaType.mediaTypeThingTypeUpdateRequest.rawValue
+            ],
+          requestBody: ["thingType": thingType],
+          failureBeforeExecutionHandler: { completionHandler($0) }) {
+            response, error -> Void in
+            DispatchQueue.main.async { completionHandler(error) }
+        }
+    }
+
 }
