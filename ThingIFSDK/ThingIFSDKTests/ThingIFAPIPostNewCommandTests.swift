@@ -22,6 +22,25 @@ class ThingIFAPIPostNewCommandTests: SmallTestBase {
         let target: Target
         let aliasActions: [AliasAction]
         let issuerID: TypedID
+        let title: String?
+        let commandDescription: String?
+        let metadata: [String : Any]?
+
+        init(
+          target: Target,
+          aliasActions: [AliasAction],
+          issuerID: TypedID,
+          title: String? = nil,
+          commandDescription: String? = nil,
+          metadata: [String : Any]? = nil)
+        {
+            self.target = target
+            self.aliasActions = aliasActions
+            self.issuerID = issuerID
+            self.title = title
+            self.commandDescription = commandDescription
+            self.metadata = metadata
+        }
     }
 
     func testPostCommandSuccess() throws {
@@ -37,19 +56,18 @@ class ThingIFAPIPostNewCommandTests: SmallTestBase {
         api.target = target
 
         let testCases = [
+          // Simple case.
           TestCase(
             target: target,
             aliasActions: [AliasAction("alias1", actions: turnPower)],
             issuerID: owner.typedID),
-          TestCase(
-            target: target,
-            aliasActions: [AliasAction("alias1", actions:setBrightness)],
-            issuerID: owner.typedID),
+          // 2 action case
           TestCase(
             target: target,
             aliasActions:
               [AliasAction("alias1", actions: turnPower, setBrightness)],
             issuerID: owner.typedID),
+          // 2 alias action case
           TestCase(
             target: target,
             aliasActions:
@@ -57,7 +75,54 @@ class ThingIFAPIPostNewCommandTests: SmallTestBase {
                 AliasAction("alias1", actions: turnPower),
                 AliasAction("alias2", actions: turnPower, setBrightness),
               ],
-            issuerID: owner.typedID)
+            issuerID: owner.typedID),
+          // with title case
+          TestCase(
+            target: target,
+            aliasActions: [AliasAction("alias1", actions: turnPower)],
+            issuerID: owner.typedID,
+            title: "title"),
+          // with command description case
+          TestCase(
+            target: target,
+            aliasActions: [AliasAction("alias1", actions: turnPower)],
+            issuerID: owner.typedID,
+            commandDescription: "commandDescription"),
+          // with metadata case
+          TestCase(
+            target: target,
+            aliasActions: [AliasAction("alias1", actions: turnPower)],
+            issuerID: owner.typedID,
+            metadata: ["key" : "value"]),
+          // with title and command description case
+          TestCase(
+            target: target,
+            aliasActions: [AliasAction("alias1", actions: turnPower)],
+            issuerID: owner.typedID,
+            title: "title",
+            commandDescription: "commandDescription"),
+          // with title and matadata case
+          TestCase(
+            target: target,
+            aliasActions: [AliasAction("alias1", actions: turnPower)],
+            issuerID: owner.typedID,
+            title: "title",
+            metadata: ["key" : "value"]),
+          // with command description and matadata case
+          TestCase(
+            target: target,
+            aliasActions: [AliasAction("alias1", actions: turnPower)],
+            issuerID: owner.typedID,
+            commandDescription: "commandDescription",
+            metadata: ["key" : "value"]),
+          // with all optional case
+          TestCase(
+            target: target,
+            aliasActions: [AliasAction("alias1", actions: turnPower)],
+            issuerID: owner.typedID,
+            title: "title",
+            commandDescription: "commandDescription",
+            metadata: ["key" : "value"])
         ]
 
         for (index, testCase) in testCases.enumerated() {
@@ -81,7 +146,10 @@ class ThingIFAPIPostNewCommandTests: SmallTestBase {
           issuerID: testCase.issuerID,
           aliasActions: testCase.aliasActions,
           commandState: .sending,
-          created: Date()
+          created: Date(),
+          title: testCase.title,
+          commandDescription: testCase.commandDescription,
+          metadata: testCase.metadata
         )
 
         iotSession = MockMultipleSession.self
@@ -118,11 +186,16 @@ class ThingIFAPIPostNewCommandTests: SmallTestBase {
                   ],
                   request.allHTTPHeaderFields!)
                 //verify body
-                XCTAssertEqual(
-                  [
-                    "issuer": testCase.issuerID.toString(),
+                var body: [String : Any] = [
+                    "issuer" : testCase.issuerID.toString(),
                     "actions": testCase.aliasActions.map { $0.makeJsonObject() }
-                  ],
+                ]
+                body["title"] = testCase.title
+                body["description"] = testCase.commandDescription
+                body["metadata"] = testCase.metadata
+
+                XCTAssertEqual(
+                  body as NSDictionary,
                   try JSONSerialization.jsonObject(
                     with: request.httpBody!,
                     options: JSONSerialization.ReadingOptions.allowFragments)
@@ -165,7 +238,11 @@ class ThingIFAPIPostNewCommandTests: SmallTestBase {
         ]
 
         setting.api.postNewCommand(
-          CommandForm(testCase.aliasActions))  { command, error -> Void in
+          CommandForm(
+            testCase.aliasActions,
+            title: testCase.title,
+            commandDescription: testCase.commandDescription,
+            metadata: testCase.metadata))  { command, error -> Void in
             XCTAssertNil(error)
             XCTAssertEqual(expectedCommand, command)
             expectation.fulfill()
