@@ -1359,4 +1359,5 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
             XCTAssertNil(error, "execution timeout")
         }
     }
+
 }
