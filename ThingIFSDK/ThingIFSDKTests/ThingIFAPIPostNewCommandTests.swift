@@ -184,7 +184,7 @@ class ThingIFAPIPostNewCommandTests: SmallTestBase {
         let target = setting.target
 
         let aliasActions =
-          [AliasAction("wrongAlias", actions: Action("turnPower", value: true))]
+          [AliasAction("alias1", actions: Action("turnPower", value: true))]
 
         // perform onboarding
         api.target = target
@@ -225,7 +225,7 @@ class ThingIFAPIPostNewCommandTests: SmallTestBase {
         // mock response
         let errorCode = "COMMAND_TRAIT_VALIDATION"
         let errorMessage =
-          "There are validation errors: lampAlias.setBrightness - Invalid value."
+          "There are validation errors: alias1.turnPower - Invalid value."
         sharedMockSession.mockResponse = (
           try JSONSerialization.data(
             withJSONObject: ["errorCode" : errorCode, "message" : errorMessage],
@@ -252,10 +252,28 @@ class ThingIFAPIPostNewCommandTests: SmallTestBase {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+            XCTAssertNil(error, "execution timeout.")
         }
     }
 
+    func testPostNewCommand_target_not_available_error() {
+
+        let expectation = self.expectation(
+          description: "testPostNewCommand_target_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
+        let aliasActions =
+          [AliasAction("alias1", actions: Action("turnPower", value: true))]
+
+        api.postNewCommand(
+          CommandForm(aliasActions)) { command, error -> Void in
+            XCTAssertNil(command)
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout.")
+        }
+    }
 }
