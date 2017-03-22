@@ -223,7 +223,29 @@ extension ThingIFAPI {
       thingType: String,
       completionHandler: @escaping (ThingIFError?)-> Void) -> Void
     {
-        // TODO: implement me.
+        guard let target = self.target else {
+            completionHandler(ThingIFError.targetNotAvailable)
+            return;
+        }
+        if thingType.isEmpty {
+            completionHandler(ThingIFError.unsupportedError)
+            return;
+        }
+
+        self.operationQueue.addHttpRequestOperation(
+          .put,
+          url: "\(self.baseURL)/api/apps/\(self.appID)/things/\(target.typedID.id)/thing-type",
+          requestHeader:
+            self.defaultHeader +
+            [
+              "Content-Type":
+                MediaType.mediaTypeThingFirmwareVersionUpdateRequest.rawValue
+            ],
+          requestBody: ["thingType": thingType],
+          failureBeforeExecutionHandler: { completionHandler($0) }) {
+            response, error -> Void in
+            DispatchQueue.main.async { completionHandler(error) }
+        }
     }
 
 }
