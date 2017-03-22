@@ -176,4 +176,86 @@ class ThingIFAPIPostNewCommandTests: SmallTestBase {
         }
     }
 
+    func testPostNewCommand_400_error() throws {
+        let expectation =
+          self.expectation(description: "testPostNewCommand_400_error")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        let aliasActions =
+          [AliasAction("wrongAlias", actions: Action("turnPower", value: true))]
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "POST")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(target.typedID.toString())/commands",
+              request.url!.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type":
+                  "application/vnd.kii.CommandCreationRequest+json"
+              ],
+              request.allHTTPHeaderFields!)
+            //verify body
+            XCTAssertEqual(
+              [
+                "issuer": setting.owner.typedID.toString(),
+                "actions": aliasActions.map { $0.makeJsonObject() }
+              ],
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary
+            )
+        }
+
+        // mock response
+        let errorCode = "COMMAND_TRAIT_VALIDATION"
+        let errorMessage =
+          "There are validation errors: lampAlias.setBrightness - Invalid value."
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["errorCode" : errorCode, "message" : errorMessage],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 400,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.postNewCommand(CommandForm(aliasActions)) {
+            command, error -> Void in
+            XCTAssertNil(command)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  400,
+                  errorCode: errorCode,
+                  errorMessage: errorMessage)),
+              error)
+
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            if error != nil {
+                XCTFail("execution timeout")
+            }
+        }
+    }
+
 }
