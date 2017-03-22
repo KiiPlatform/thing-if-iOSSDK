@@ -210,4 +210,20 @@ extension ThingIFAPI {
         }
     }
 
+    /** Update thing type.
+
+     This method updates thing type for `target` thing.
+
+     - Parameter thingType: thing type to be updated.
+     - Parameter completionHandler: A closure to be executed once on
+       updating has finished The closure takes 1 argument. The
+       argument is ThingIFError.
+     */
+    open func update(
+      thingType: String,
+      completionHandler: @escaping (ThingIFError?)-> Void) -> Void
+    {
+        // TODO: implement me.
+    }
+
 }
