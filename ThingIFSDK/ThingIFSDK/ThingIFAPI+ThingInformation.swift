@@ -234,12 +234,12 @@ extension ThingIFAPI {
 
         self.operationQueue.addHttpRequestOperation(
           .put,
-          url: "\(self.baseURL)/api/apps/\(self.appID)/things/\(target.typedID.id)/thing-type",
+          url: "\(self.baseURL)/thing-if/apps/\(self.appID)/things/\(target.typedID.id)/thing-type",
           requestHeader:
             self.defaultHeader +
             [
               "Content-Type":
-                MediaType.mediaTypeThingFirmwareVersionUpdateRequest.rawValue
+                MediaType.mediaTypeThingTypeUpdateRequest.rawValue
             ],
           requestBody: ["thingType": thingType],
           failureBeforeExecutionHandler: { completionHandler($0) }) {

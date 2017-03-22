@@ -1360,4 +1360,67 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
         }
     }
 
+    func testUpdateThingTypeSuccess() {
+        let expectation =
+          self.expectation(description: "testUpdateThingTypeSuccess")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+        let thingType = "dummyThingType"
+
+        // perform onboarding
+        api.target = target
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "PUT")
+
+            // verify path
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.app.appID)/things/\(target.typedID.id)/thing-type",
+              request.url!.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type":
+                  "application/vnd.kii.ThingTypeUpdateRequest+json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            XCTAssertEqual(
+              ["thingType": thingType],
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary
+            )
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 204,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.update(thingType: thingType) { error -> Void in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout")
+        }
+    }
+
 }
