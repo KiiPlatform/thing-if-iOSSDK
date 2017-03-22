@@ -87,7 +87,7 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
             response, error in
             let result: (Command?, ThingIFError?) =
-              converSpecifiedItem(response, error)
+              convertSpecifiedItem(response, error)
             DispatchQueue.main.async { completionHandler(result.0, result.1) }
         }
     }
@@ -120,47 +120,48 @@ extension ThingIFAPI {
         _ bestEffortLimit: Int? = nil,
         paginationKey: String? = nil,
         completionHandler: @escaping ([Command]?, String?, ThingIFError?)-> Void
-        )
+        ) -> Void
     {
-        fatalError("TODO: implement me")
-        /*
         guard let target = self.target else {
             completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands"
-        if paginationKey != nil && bestEffortLimit != nil{
-            requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
-        }else if bestEffortLimit != nil {
-            requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
-        }else if paginationKey != nil {
-            requestURL += "?paginationKey=\(paginationKey!)"
-        }
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-        
-        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            var commands = [Command]()
-            var nextPaginationKey: String?
-            if response != nil {
-                if let commandNSDicts = response!["commands"] as? [NSDictionary] {
-                    for commandNSDict in commandNSDicts {
-                        if let command = Command.commandWithNSDictionary(commandNSDict) {
-                            commands.append(command)
-                        }
-                    }
-                }
-                nextPaginationKey = response!["nextPaginationKey"] as? String
-            }
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/commands".appendURLQuery(
+            ("paginationKey", paginationKey),
+            ("bestEffortLimit", bestEffortLimit)),
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, nil, $0) }) {
+            response, error -> Void in
+
+            var results: (ListCommandsReslut?, ThingIFError?) =
+              convertSpecifiedItem(response, error)
             DispatchQueue.main.async {
-                completionHandler(commands, nextPaginationKey, error)
+                completionHandler(
+                  results.0?.commands,
+                  results.0?.nextPaginationKey,
+                  results.1)
             }
-        })
-        
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-        */
+        }
     }
+}
+
+fileprivate struct ListCommandsReslut: FromJsonObject {
+
+    let commands: [Command]?
+    let nextPaginationKey: String?
+
+    init(_ jsonObject: [String : Any]) throws {
+        self.nextPaginationKey = jsonObject["nextPaginationKey"] as? String
+
+        guard let commands = jsonObject["commands"] as? [[String : Any]] else {
+            self.commands = nil
+            return
+        }
+
+        self.commands = try commands.map { try Command($0) }
+    }
+
 }
