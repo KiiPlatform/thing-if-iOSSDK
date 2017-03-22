@@ -43,7 +43,7 @@ public struct AliasAction {
 
 }
 
-extension AliasAction: FromJsonObject {
+extension AliasAction: FromJsonObject, ToJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
         if jsonObject.count != 1 {
@@ -57,4 +57,9 @@ extension AliasAction: FromJsonObject {
 
         self.init(alias, actions: try actions.map { try Action($0) })
     }
+
+    internal func makeJsonObject() -> [String : Any] {
+        return [self.alias : self.actions.map { $0.makeJsonObject() }]
+    }
+
 }

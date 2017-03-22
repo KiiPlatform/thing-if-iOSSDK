@@ -31,7 +31,7 @@ public struct Action {
     }
 }
 
-extension Action: FromJsonObject {
+extension Action: FromJsonObject, ToJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
         if jsonObject.count != 1 {
@@ -44,5 +44,9 @@ extension Action: FromJsonObject {
         }
 
         self.init(name, value: value)
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [self.name : self.value]
     }
 }
