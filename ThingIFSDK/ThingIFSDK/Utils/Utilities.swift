@@ -115,7 +115,7 @@ internal extension String {
         }
         var retval =
           "\(self)?\(filtered.first!.key)=\(filtered.first!.value)"
-        filtered.forEach { retval += "&\($0.key)=($0.value)" }
+        filtered.dropFirst().forEach { retval += "&\($0.key)=\($0.value)" }
         return retval
 
     }
