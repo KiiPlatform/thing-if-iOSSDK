@@ -32,8 +32,8 @@ public struct TriggeredCommandForm {
 
     // MARK: - Properties
 
-    /// Array of actions.
-    public let actions: [AliasAction]
+    /// Array of AliasAction instances.
+    public let aliasActions: [AliasAction]
 
     /// Target thing ID.
     public let targetID: TypedID?
@@ -52,7 +52,7 @@ public struct TriggeredCommandForm {
     /**
     Initializer of TriggeredCommandForm instance.
 
-    - Parameter actions: Array of actions. Must not be empty.
+    - Parameter aliasActions: Array of AliasAction instances. Must not be empty.
     - Parameter targetID: target thing ID.
     - Parameter title: Title of a command. This should be equal or
       less than 50 characters.
@@ -60,71 +60,16 @@ public struct TriggeredCommandForm {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(_ actions: [AliasAction],
+    public init(_ aliasActions: [AliasAction],
                 targetID: TypedID? = nil,
                 title: String? = nil,
                 commandDescription: String? = nil,
                 metadata: [String : Any]? = nil)
     {
-        self.actions = actions
+        self.aliasActions = aliasActions
         self.targetID = targetID
         self.title = title
         self.commandDescription = commandDescription
         self.metadata = metadata
-    }
-
-    /**
-    Initializer of TriggeredCommandForm instance.
-
-    This initializer copies following fields:
-
-    - `Command.actions`
-    - `Command.targetID`
-    - `Command.title`
-    - `Command.commandDescription`
-    - `Command.metadata`
-
-    If you specify optional arguments corresponding to above mentioned
-    value, Optional argument values win against the `Command` values.
-
-    - Parameter command: source command of this TriggeredCommandForm.
-    - Parameter actions: Array of actions. Must not be empty.
-    - Parameter targetID: target thing ID.
-    - Parameter title: Title of a command. This should be equal or
-      less than 50 characters.
-    - Parameter description: Description of a comand. This should be
-      equal or less than 200 characters.
-    - Parameter metadata: Meta data of a command.
-    */
-    /*
-     TODO: We consider in order to remove or not this method.
-     Because we may not craete TriggeredCommandForm from Command.
-    public init(command: Command,
-                actions: [AliasAction]? = nil,
-                targetID: TypedID? = nil,
-                title: String? = nil,
-                commandDescription: String? = nil,
-                metadata: [String : Any]? = nil)
-    {
-        self.actions = actions ?? command.actions
-        self.targetID = targetID ?? command.targetID
-        self.title = title ?? command.title
-        self.commandDescription =
-          commandDescription ?? command.commandDescription
-        self.metadata = metadata ?? command.metadata
-    }
-    */
-
-    func toDictionary() -> Dictionary<String, Any> {
-        var retval: [String : Any] =
-            [
-                "actions": self.actions
-            ]
-
-        retval["target"] = self.targetID?.toString()
-        retval["title"] = self.title
-        retval["description"] = self.commandDescription
-        retval["metadata"] = self.metadata
-        return retval;
     }
 }
