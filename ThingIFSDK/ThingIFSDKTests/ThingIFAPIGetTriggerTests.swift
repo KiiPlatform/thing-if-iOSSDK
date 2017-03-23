@@ -259,4 +259,83 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
             XCTAssertNil(error)
         }
     }
+
+    func testGetTrigger_404_error() throws {
+        let expectation = self.expectation(description: "testGetTrigger_404_error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        // perform onboarding
+        api.target = setting.target
+
+        let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)",
+              request.url?.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+        }
+
+        // mock response
+        let errorCode = "TARGET_NOT_FOUND"
+        let errorMessage =
+          "Target \(setting.target.typedID.toString()) not found"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["errorCode" : errorCode, "message" : errorMessage],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.getTrigger(triggerID) { trigger, error -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  404,
+                  errorCode: errorCode,
+                  errorMessage: errorMessage)
+              ),
+              error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testGetTrigger_Target_not_available_error() throws {
+        let expectation = self.expectation(
+          description: "testGetTrigger_Target_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        let triggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+
+        api.getTrigger(triggerID) { trigger, error -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
 }
