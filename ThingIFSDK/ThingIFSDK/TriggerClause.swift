@@ -8,6 +8,29 @@
 
 import Foundation
 
+internal func makeTriggerClause(
+  _ jsonObject: [String : Any]) throws -> TriggerClause
+{
+    guard let type = jsonObject["type"] as? String else {
+        throw ThingIFError.jsonParseError
+    }
+
+    switch type {
+    case "eq":
+        return try EqualsClauseInTrigger(jsonObject)
+    case "not":
+        return try NotEqualsClauseInTrigger(jsonObject)
+    case "range":
+        return try RangeClauseInTrigger(jsonObject)
+    case "and":
+        return try AndClauseInTrigger(jsonObject)
+    case "or":
+        return try OrClauseInTrigger(jsonObject)
+    default:
+        throw ThingIFError.jsonParseError
+    }
+}
+
 /** Base protocol for trigger clause structs. */
 public protocol TriggerClause: BaseClause {
 
@@ -23,7 +46,7 @@ public struct EqualsClauseInTrigger: TriggerClause, BaseEquals {
     /** Value of a field. */
     public let value: AnyObject
 
-    private init(_ alias: String, field: String, value: AnyObject) {
+    fileprivate init(_ alias: String, field: String, value: AnyObject) {
         self.alias = alias
         self.field = field
         self.value = value
@@ -61,7 +84,7 @@ public struct EqualsClauseInTrigger: TriggerClause, BaseEquals {
     }
 }
 
-extension EqualsClauseInTrigger: ToJsonObject {
+extension EqualsClauseInTrigger: ToJsonObject, FromJsonObject {
 
     /** Get Equals clause for trigger as a Dictionary instance
 
@@ -76,6 +99,21 @@ extension EqualsClauseInTrigger: ToJsonObject {
         ] as [String : Any]
     }
 
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let type = jsonObject["type"] as? String,
+              let alias = jsonObject["alias"] as? String,
+              let field = jsonObject["field"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if jsonObject["value"] == nil {
+            throw ThingIFError.jsonParseError
+        }
+        if type != "eq" {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(alias, field: field, value: jsonObject["value"] as AnyObject)
+    }
 }
 
 /** Struct represents Not Equals clause for trigger methods.  */
@@ -90,7 +128,7 @@ public struct NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
     }
 }
 
-extension NotEqualsClauseInTrigger: ToJsonObject {
+extension NotEqualsClauseInTrigger: ToJsonObject, FromJsonObject {
 
     /** Get Not Equals clause for trigger as a Dictionary instance
 
@@ -103,6 +141,17 @@ extension NotEqualsClauseInTrigger: ToJsonObject {
         ] as [String : Any]
     }
 
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let type = jsonObject["type"] as? String,
+              let clause = jsonObject["clause"] as? [String : Any] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if type != "not" {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(try EqualsClauseInTrigger(clause))
+    }
 }
 
 /** Struct represents Range clause for trigger methods. */
@@ -265,7 +314,7 @@ public struct RangeClauseInTrigger: TriggerClause, BaseRange {
     }
 }
 
-extension RangeClauseInTrigger: ToJsonObject {
+extension RangeClauseInTrigger: ToJsonObject, FromJsonObject {
 
     /** Get Range clause for trigger as a Dictionary instance
 
@@ -282,6 +331,34 @@ extension RangeClauseInTrigger: ToJsonObject {
         retval["lowerLimit"] = self.lowerLimit
         retval["lowerIncluded"] = self.lowerIncluded
         return retval
+    }
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let type = jsonObject["type"] as? String,
+              let alias = jsonObject["alias"] as? String,
+              let field = jsonObject["field"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        let upper: (limit: NSNumber, included: Bool)?
+        if let upperLimit = jsonObject["upperLimit"] as? NSNumber,
+           let upperIncluded = jsonObject["upperIncluded"] as? Bool {
+            upper = (upperLimit, upperIncluded)
+        } else {
+            upper = nil
+        }
+        let lower: (limit: NSNumber, included: Bool)?
+        if let lowerLimit = jsonObject["lowerLimit"] as? NSNumber,
+           let lowerIncluded = jsonObject["lowerIncluded"] as? Bool {
+            lower = (lowerLimit, lowerIncluded)
+        } else {
+            lower = nil
+        }
+
+        if upper == nil && lower == nil {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(alias, field: field, lower: lower, upper: upper)
     }
 
 }
@@ -317,7 +394,7 @@ public struct AndClauseInTrigger: TriggerClause, BaseAnd {
     }
 }
 
-extension AndClauseInTrigger: ToJsonObject {
+extension AndClauseInTrigger: ToJsonObject, FromJsonObject {
 
     /** Get And clause for trigger as a Dictionary instance
 
@@ -329,6 +406,18 @@ extension AndClauseInTrigger: ToJsonObject {
           "clauses":
             self.clauses.map {($0 as! ToJsonObject).makeJsonObject()}
         ] as [String : Any]
+    }
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let type = jsonObject["type"] as? String,
+              let clauses = jsonObject["clauses"] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if type != "and" {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(try clauses.map { try makeTriggerClause($0) })
     }
 
 }
@@ -364,7 +453,7 @@ public struct OrClauseInTrigger: TriggerClause, BaseOr {
     }
 }
 
-extension OrClauseInTrigger: ToJsonObject {
+extension OrClauseInTrigger: ToJsonObject, FromJsonObject {
 
     /** Get Or clause for trigger as a Dictionary instance
 
@@ -376,6 +465,18 @@ extension OrClauseInTrigger: ToJsonObject {
           "clauses":
             self.clauses.map {($0 as! ToJsonObject).makeJsonObject()}
         ] as [String : Any]
+    }
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let type = jsonObject["type"] as? String,
+              let clauses = jsonObject["clauses"] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if type != "or" {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(try clauses.map { try makeTriggerClause($0) })
     }
 
 }
