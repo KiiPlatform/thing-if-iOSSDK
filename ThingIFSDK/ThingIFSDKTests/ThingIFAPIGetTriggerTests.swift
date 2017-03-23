@@ -51,7 +51,7 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
           field: "color",
           limit: 1)
 
-        let testCases: [TriggerClause & ToJsonObject] =
+        let clauses: [TriggerClause & ToJsonObject] =
           [
             equalColor0,
             equalPowerTrue,
@@ -72,10 +72,10 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
             )
           ]
 
-        for (index, testCase) in testCases.enumerated() {
+        for (index, clause) in clauses.enumerated() {
             try getTriggerSuccess(
               "testGetTrigger_success_predicates\(index)",
-              testCase: testCase,
+              clause: clause,
               triggersWhen: .conditionFalseToTrue,
               setting: setting)
         }
@@ -83,7 +83,7 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
 
     func getTriggerSuccess(
       _ tag: String,
-      testCase: TriggerClause & ToJsonObject,
+      clause: TriggerClause & ToJsonObject,
       triggersWhen: TriggersWhen,
       setting:TestSetting) throws -> Void
     {
@@ -96,7 +96,7 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
           targetID: setting.target.typedID,
           enabled: true,
           predicate: StatePredicate(
-            Condition(testCase),
+            Condition(clause),
             triggersWhen: triggersWhen
           ),
           command: Command(
