@@ -299,7 +299,7 @@ extension ThingIFAPI {
 
         let request = buildDefaultRequest(HTTPMethod.PUT,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
             if error == nil {
-                self._getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
+                self.getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
                     DispatchQueue.main.async {
                         completionHandler(updatedTrigger, error2)
                     }
@@ -454,44 +454,30 @@ extension ThingIFAPI {
        Trigger, an instance of ThingIFError when failed.
     */
     open func getTrigger(
-        _ triggerID:String,
-        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
-        )
+      _ triggerID:String,
+      completionHandler: @escaping (Trigger?, ThingIFError?)-> Void) -> Void
     {
-        _getTrigger(triggerID, completionHandler: completionHandler)
-    }
-
-
-    func _getTrigger(
-        _ triggerID:String,
-        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
-        )
-    {
-        fatalError("TODO: implement me")
-        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error -> Void in
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+            var response = response
 
-        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-
-            var trigger:Trigger?
-            if let responseDict = response{
-                trigger = Trigger.triggerWithNSDict(target.typedID, triggerDict: responseDict)
-            }
-            DispatchQueue.main.async {
-                completionHandler(trigger, error)
-            }
-        })
-
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-        */
+            // NOTE: Server does not contains target id but Trigger
+            // requires it so I add it. We should discuss whether
+            // Trigger requires targe id or not
+            response?["target"] = target.typedID.toString()
+            let result: (Trigger?, ThingIFError?) =
+              convertSpecifiedItem(response, error)
+            DispatchQueue.main.async { completionHandler(result.0, result.1) }
+        }
     }
 }
