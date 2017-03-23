@@ -44,7 +44,7 @@ internal func convertResponse<Item, Response: CustomStringConvertible>(
     }
 }
 
-internal func converSpecifiedItem<ParsableType: FromJsonObject>(
+internal func convertSpecifiedItem<ParsableType: FromJsonObject>(
   _ response: [String : Any]?,
   _ error: ThingIFError?) -> (ParsableType?, ThingIFError?)
 {
@@ -97,4 +97,27 @@ internal extension OperationQueue {
           )
         )
     }
+}
+
+internal extension String {
+
+    func appendURLQuery(
+      _ queries: (key: String, value: CustomStringConvertible?)...) -> String
+    {
+        let filtered: [(key: String, value: String)] = queries.flatMap {
+            if $0.value == nil || $0.value!.description.isEmpty {
+                return nil
+            }
+            return (key: $0.key, value: $0.value!.description)
+        }
+        if filtered.isEmpty {
+            return self
+        }
+        var retval =
+          "\(self)?\(filtered.first!.key)=\(filtered.first!.value)"
+        filtered.dropFirst().forEach { retval += "&\($0.key)=\($0.value)" }
+        return retval
+
+    }
+
 }
