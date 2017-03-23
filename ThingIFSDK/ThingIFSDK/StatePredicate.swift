@@ -29,3 +29,22 @@ public struct StatePredicate: Predicate {
     }
 
 }
+
+extension StatePredicate: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let eventSource = jsonObject["eventSource"] as? String,
+              let triggersWhenStr = jsonObject["triggersWhen"] as? String,
+              let triggersWhen = TriggersWhen(rawValue: triggersWhenStr),
+              let condition = jsonObject["condition"] as? [String : Any] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if eventSource != EventSource.states.rawValue {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(try Condition(condition), triggersWhen: triggersWhen)
+    }
+
+}

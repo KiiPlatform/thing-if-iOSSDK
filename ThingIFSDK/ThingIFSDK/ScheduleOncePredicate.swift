@@ -22,3 +22,20 @@ public struct ScheduleOncePredicate: Predicate {
     }
 
 }
+
+extension ScheduleOncePredicate: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let eventSource = jsonObject["eventSource"] as? String,
+              let scheduleAt = jsonObject["scheduleAt"] as? Double else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if eventSource != EventSource.scheduleOnce.rawValue {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(Date(timeIntervalSince1970: scheduleAt))
+    }
+
+}
