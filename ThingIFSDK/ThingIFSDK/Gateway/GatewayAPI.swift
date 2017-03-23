@@ -159,39 +159,31 @@ open class GatewayAPI {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/onboarded"
+        self.operationQueue.addHttpRequestOperation(
+            .get,
+            url: "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/onboarded",
+            requestHeader: self.defaultHeader,
+            failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+                response, error in
+                let result = convertResponse(response, error) {
+                    response, error throws -> ([EndNode]?, ThingIFError?) in
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
+                    if error != nil {
+                        return (nil, error)
+                    }
 
-        // do request
-        let request = buildNewRequest(
-            HTTPMethod.GET,
-            urlString: requestURL,
-            requestHeaderDict: requestHeaderDict,
-            requestBodyData: nil,
-            completionHandler: { (response, error) -> Void in
-                var endNodes = [EndNode]()
-                if response != nil {
-                    if let endNodeArray = response!["results"] as? [NSDictionary] {
+                    var endNodes = [EndNode]()
+                    if let endNodeArray = response?["results"] as? [[String : Any]] {
                         for endNode in endNodeArray {
-                            let thingID = endNode["thingID"] as? String
-                            let vendorThingID = endNode["vendorThingID"] as? String
-                            endNodes.append(EndNode(thingID!, vendorThingID: vendorThingID!))
+                            endNodes.append(try EndNode(endNode))
                         }
                     }
+                    return (endNodes, nil)
                 }
                 DispatchQueue.main.async {
-                    if error != nil {
-                        completionHandler(nil, error)
-                    } else {
-                        completionHandler(endNodes, nil)
-                    }
+                    completionHandler(result.0, result.1)
                 }
-            }
-        )
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+        }
     }
 
     /** List connected end nodes which has not been onboarded.

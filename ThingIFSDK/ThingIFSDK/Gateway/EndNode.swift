@@ -39,8 +39,18 @@ public struct EndNode: TargetThing, Equatable {
 extension EndNode: FromJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
-        guard let thingID = jsonObject["endNodeThingID"] as? String,
-              let accessToken = jsonObject["accessToken"] as? String else {
+        let thingID: String
+        let accessToken: String?
+        if let id = jsonObject["endNodeThingID"] as? String {
+            guard let token = jsonObject["accessToken"] as? String else {
+                throw ThingIFError.jsonParseError
+            }
+            thingID = id
+            accessToken = token
+        } else if let id = jsonObject["thingID"] as? String {
+            thingID = id
+            accessToken = nil
+        } else {
             throw ThingIFError.jsonParseError
         }
 
