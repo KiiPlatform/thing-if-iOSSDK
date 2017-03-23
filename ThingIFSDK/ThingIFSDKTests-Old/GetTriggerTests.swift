@@ -18,40 +18,6 @@ class GetTriggerTests: SmallTestBase {
         super.tearDown()
     }
 
-    func testGetTrigger_success_predicates() {
-        let setting = TestSetting()
-        let api = setting.api
-
-        // perform onboarding
-        api.target = setting.target
-
-        let simpleStatementsToTest = [
-            ["type":"eq","field":"color", "value": 0],
-            ["type":"eq","field":"power", "value": true],
-            ["type": "not", "clause": ["type":"eq","field":"power", "value": true]],
-            ["type": "range", "field": "color", "upperLimit": 255, "upperIncluded": true],
-            ["type": "range", "field": "color", "upperLimit": 200, "upperIncluded": false],
-            ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": true],
-            ["type": "range", "field": "color", "lowerLimit": 1, "lowerIncluded": false],
-            ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]],
-            ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]]
-        ]
-        for simpleStatement in simpleStatementsToTest {
-            getTriggerSuccess("testGetTrigger_success_predicates", statementToTest: simpleStatement, triggersWhen: "CONDITION_FALSE_TO_TRUE", setting: setting)
-        }
-
-        let orClauseStatement = ["type": "or", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]] as [String : Any]
-        let andClauseStatement = ["type": "and", "clauses": [["type":"eq","field":"color", "value": 0], ["type": "not", "clause": ["type":"eq","field":"power", "value": true]] ]] as [String : Any]
-        let complexStatementsToTest = [
-            ["type": "and", "clauses": [["type":"eq","field":"brightness", "value": 50], orClauseStatement]],
-            ["type": "or", "clauses": [["type":"eq","field":"brightness", "value": 50], andClauseStatement]]
-        ]
-        for complextStatement in complexStatementsToTest {
-            getTriggerSuccess("getTriggerSuccess", statementToTest: complextStatement, triggersWhen: "CONDITION_FALSE_TO_TRUE", setting: setting)
-        }
-
-    }
-
     func testGetTrigger_success_triggersWhens() {
         let setting = TestSetting()
         let api = setting.api
