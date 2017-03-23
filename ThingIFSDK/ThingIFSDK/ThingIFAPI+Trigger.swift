@@ -10,6 +10,42 @@ import Foundation
 
 extension ThingIFAPI {
 
+    // MARK: - Trigger methods
+
+    /** Post new Trigger to IoT Cloud.
+
+    **Note**: Please onboard first, or provide a target instance by
+      calling copyWithTarget. Otherwise,
+      KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+      completionHandler callback
+
+    When thing related to this ThingIFAPI instance meets condition
+    described by predicate, A registered command sends to thing
+    related to `TriggeredCommandForm.targetID`.
+
+    `target` property and `TriggeredCommandForm.targetID` must be same
+    owner's things.
+
+    - Parameter triggeredCommandForm: Triggered command form of posting trigger.
+    - Parameter predicate: Predicate of this trigger.
+    - Parameter options: Optional data for this trigger.
+    - Parameter completionHandler: A closure to be executed once
+      finished. The closure takes 2 arguments: 1st one is an created
+      Trigger instance, 2nd one is an ThingIFError instance when
+      failed.
+    */
+    open func postNewTrigger(
+        _ triggeredCommandForm:TriggeredCommandForm,
+        predicate:Predicate,
+        options:TriggerOptions? = nil,
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
+    {
+        _postNewTrigger(triggeredCommandForm,
+                        predicate: predicate,
+                        options: options,
+                        completionHandler: completionHandler);
+    }
+
     func _postNewTrigger(
         _ triggeredCommandForm: TriggeredCommandForm,
         predicate: Predicate,
