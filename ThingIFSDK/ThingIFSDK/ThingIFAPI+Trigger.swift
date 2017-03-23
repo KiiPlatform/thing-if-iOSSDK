@@ -39,91 +39,42 @@ extension ThingIFAPI {
         _ triggeredCommandForm:TriggeredCommandForm,
         predicate:Predicate,
         options:TriggerOptions? = nil,
-        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
     {
-        _postNewTrigger(triggeredCommandForm,
-                        predicate: predicate,
-                        options: options,
-                        completionHandler: completionHandler);
-    }
-
-    func _postNewTrigger(
-        _ triggeredCommandForm: TriggeredCommandForm,
-        predicate: Predicate,
-        options: TriggerOptions? = nil,
-        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void)
-    {
-        fatalError("must be implemented.")
-        /*
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        // generate command
-        let targetID = triggeredCommandForm.targetID ?? target.typedID
-        var commandDict = triggeredCommandForm.toDictionary()
-        commandDict["issuer"] = owner.typedID.toString()
-        if commandDict["target"] == nil {
-            commandDict["target"] = targetID.toString()
+        var commandJson = triggeredCommandForm.makeJsonObject()
+        commandJson["issuer"] = owner.typedID.toString()
+        if commandJson["target"] == nil {
+            commandJson["target"] = target.typedID.toString()
         }
 
-        // generate body
-        var requestBodyDict: Dictionary<String, Any> = [
-          "predicate": predicate.makeDictionary(),
-          "command": commandDict,
-          "triggersWhat": TriggersWhat.command.rawValue]
-        requestBodyDict["title"] = options?.title
-        requestBodyDict["description"] = options?.triggerDescription
-        requestBodyDict["metadata"] = options?.metadata
-
-        do{
-            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                var trigger: Trigger?
-                if let triggerID = response?["triggerID"] as? String{
-                    let command = Command(
-                      commandID: nil,
-                      targetID: targetID,
-                      issuerID: self.owner.typedID,
-                      schemaName: triggeredCommandForm.schemaName,
-                      schemaVersion: triggeredCommandForm.schemaVersion,
-                      actions: triggeredCommandForm.actions,
-                      actionResults: nil,
-                      commandState: nil,
-                      title: triggeredCommandForm.title,
-                      commandDescription: triggeredCommandForm.commandDescription,
-                      metadata: triggeredCommandForm.metadata)
-                    trigger = Trigger(
-                      triggerID: triggerID,
-                      targetID: target.typedID,
-                      enabled: true,
-                      predicate: predicate,
-                      command: command,
-                      title: options?.title,
-                      triggerDescription: options?.triggerDescription,
-                      metadata: options?.metadata
-                    )
+        self.operationQueue.addHttpRequestOperation(
+          .post,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers",
+          requestHeader:
+            self.defaultHeader +
+            ["Content-Type" : MediaType.mediaTypeJson.rawValue],
+          requestBody: [
+            "predicate": (predicate as! ToJsonObject).makeJsonObject(),
+            "command" : commandJson,
+            "triggersWhat" : TriggersWhat.command.rawValue
+          ] + ( options?.makeJsonObject() ?? [ : ]),
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error -> Void in
+            if error != nil {
+                DispatchQueue.main.async { completionHandler(nil, error) }
+            } else {
+                self.getTrigger(response!["triggerID"] as! String) {
+                    completionHandler($0, $1)
                 }
-
-                DispatchQueue.main.async {
-                    completionHandler(trigger, error)
-                }
-            })
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        }catch(_){
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.jsonParseError)
+            }
         }
-        */
     }
+
     func _postNewTrigger(
         _ serverCode:ServerCode,
         predicate:Predicate,

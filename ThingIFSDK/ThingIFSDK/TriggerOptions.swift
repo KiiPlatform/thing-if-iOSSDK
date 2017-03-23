@@ -49,3 +49,14 @@ public struct TriggerOptions {
     }
 
 }
+
+extension TriggerOptions: ToJsonObject {
+
+    internal func makeJsonObject() -> [String : Any] {
+        var retval: [String : Any] = [ : ]
+        retval["title"] = self.title
+        retval["description"] = self.triggerDescription
+        retval["metadata"] = self.metadata
+        return retval
+    }
+}

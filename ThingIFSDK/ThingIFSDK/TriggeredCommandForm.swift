@@ -73,3 +73,16 @@ public struct TriggeredCommandForm {
         self.metadata = metadata
     }
 }
+
+extension TriggeredCommandForm: ToJsonObject {
+
+    internal func makeJsonObject() -> [String : Any] {
+        var retval: [String : Any] =
+          ["actions" : self.aliasActions.map { $0.makeJsonObject() }]
+        retval["target"] = self.targetID?.toString()
+        retval["title"] = self.title
+        retval["description"] = self.commandDescription
+        retval["metadata"] = self.metadata
+        return retval
+    }
+}
