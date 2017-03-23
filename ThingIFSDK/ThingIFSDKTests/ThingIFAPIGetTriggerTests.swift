@@ -81,6 +81,30 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
         }
     }
 
+    func testGetTrigger_success_triggersWhens() throws {
+        let setting = TestSetting()
+        let api = setting.api
+        // perform onboarding
+        api.target = setting.target
+
+        let triggersWhens: [TriggersWhen] = [
+          .conditionTrue,
+          .conditionFalseToTrue,
+          .conditionChanged
+        ]
+        for (index, triggersWhen) in triggersWhens.enumerated() {
+            try getTriggerSuccess(
+              "testGetTrigger_success_triggersWhens\(index)",
+              clause: EqualsClauseInTrigger(
+                "alias1",
+                field: "color",
+                intValue: 0),
+              triggersWhen: triggersWhen,
+              setting: setting)
+        }
+    }
+
+
     func getTriggerSuccess(
       _ tag: String,
       clause: TriggerClause & ToJsonObject,
