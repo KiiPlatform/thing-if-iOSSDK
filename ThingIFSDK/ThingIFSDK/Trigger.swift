@@ -157,14 +157,14 @@ extension Trigger: FromJsonObject {
             throw ThingIFError.jsonParseError
         }
 
-        let targetID = try TypedID(jsonObject["targetID"] as? String)
+        let targetID = try TypedID(jsonObject["target"] as? String)
         let predicate = try makePredicate(predicateDict)
 
         let title = jsonObject["title"] as? String
         let description = jsonObject["description"] as? String
         let metadata = jsonObject["metadata"] as? [String : Any]
 
-        if let command = jsonObject["commandDict"] as? [String : Any] {
+        if let command = jsonObject["command"] as? [String : Any] {
             self.init(
               triggerID,
               targetID: targetID,
