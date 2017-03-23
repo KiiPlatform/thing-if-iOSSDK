@@ -104,7 +104,6 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
         }
     }
 
-
     func getTriggerSuccess(
       _ tag: String,
       clause: TriggerClause & ToJsonObject,
@@ -144,7 +143,7 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
 
         // verify request
         sharedMockSession.requestVerifier = makeRequestVerifier () { request in
-            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(request.httpMethod, "GET", tag)
             //verify header
             XCTAssertEqual(
               setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)",
@@ -158,7 +157,8 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
                 "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
                 "Authorization": "Bearer \(setting.owner.accessToken)"
               ],
-              request.allHTTPHeaderFields!)
+              request.allHTTPHeaderFields!,
+              tag)
         }
 
         // mock response
@@ -176,12 +176,12 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
         iotSession = MockSession.self
 
         setting.api.getTrigger(expectedTriggerID) { trigger, error -> Void in
-            XCTAssertNil(error)
-            XCTAssertEqual(expectedTrigger, trigger)
+            XCTAssertNil(error, tag)
+            XCTAssertEqual(expectedTrigger, trigger, tag)
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            XCTAssertNil(error)
+            XCTAssertNil(error, tag)
         }
     }
 
