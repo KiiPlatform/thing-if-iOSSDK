@@ -1,5 +1,5 @@
 //
-//  ListOnboardedEndNodesTests.swift
+//  GatewayAPIListOnboardedEndNodesTests.swift
 //  ThingIFSDK
 //
 //  Copyright (c) 2016 Kii. All rights reserved.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class ListOnboardedEndNodesTests: GatewayAPITestBase {
+class GatewayAPIListOnboardedEndNodesTests: GatewayAPITestBase {
 
     override func setUp()
     {

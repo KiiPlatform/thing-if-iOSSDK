@@ -173,11 +173,9 @@ open class GatewayAPI {
                     }
 
                     var endNodes = [EndNode]()
-                    if let endNodeArray = response?["results"] as? [NSDictionary] {
+                    if let endNodeArray = response?["results"] as? [[String : Any]] {
                         for endNode in endNodeArray {
-                            endNodes.append(EndNode(
-                                endNode["thingID"] as! String,
-                                vendorThingID: endNode["vendorThingID"] as! String))
+                            endNodes.append(try EndNode(endNode))
                         }
                     }
                     return (endNodes, nil)
