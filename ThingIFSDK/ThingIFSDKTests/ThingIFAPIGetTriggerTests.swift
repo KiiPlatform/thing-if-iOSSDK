@@ -185,4 +185,78 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
         }
     }
 
+    func testGetServerCodeTrigger_success() throws {
+        let setting = TestSetting()
+        let api = setting.api
+        // perform onboarding
+        let expectation = self.expectation(
+          description: "testGetServerCodeTrigger_success")
+
+        let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+        let expectedTrigger = Trigger(
+          expectedTriggerID,
+          targetID: setting.target.typedID,
+          enabled: true,
+          predicate: StatePredicate(
+            Condition(
+              EqualsClauseInTrigger(
+                "alias1",
+                field: "color",
+                intValue: 0)
+            ),
+            triggersWhen: .conditionFalseToTrue
+          ),
+          serverCode: ServerCode(
+            "my_function",
+            executorAccessToken: "abcdefgHIJKLMN1234567",
+            targetAppID: "app000001",
+            parameters: [
+              "arg1" : "abcd",
+              "arg2" : 1234,
+              "arg3" : 0.12345,
+              "arg4" : false
+            ]
+          )
+        )
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(expectedTriggerID)",
+              request.url?.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+        }
+
+        // mock response
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: expectedTrigger.makeJsonObject(),
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.target = setting.target
+        api.getTrigger(expectedTriggerID) { trigger, error -> Void in
+            XCTAssertNil(error)
+            XCTAssertEqual(trigger, expectedTrigger)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
 }
