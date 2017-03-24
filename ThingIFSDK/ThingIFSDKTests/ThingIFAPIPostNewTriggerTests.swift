@@ -20,6 +20,20 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
         super.tearDown()
     }
 
+    struct TestCase {
+        let predicate: Predicate & ToJsonObject
+        let options: TriggerOptions?
+
+        init(
+          _ predicate:
+            Predicate & ToJsonObject = SchedulePredicate("00 * * * *"),
+          options: TriggerOptions? = nil)
+        {
+            self.predicate = predicate
+            self.options = options
+        }
+    }
+
     func testPostNewTrigger_success() throws {
         let setting = TestSetting()
         let api = setting.api
@@ -73,88 +87,107 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
             lowerIncluded: true,
             upperLimit: 345.3,
             upperIncluded: true)
+        let triggerMetadata = ["triggerMetadataKey" : "triggerMetadataValue"]
 
-        let predicates: [Predicate & ToJsonObject] = [
+        let testcases: [TestCase] = [
           // Schedule once
-          ScheduleOncePredicate(Date(timeIntervalSinceNow: 10)),
+          TestCase(ScheduleOncePredicate(Date(timeIntervalSinceNow: 10))),
           // Schedule
-          SchedulePredicate("00 * * * *"),
+          TestCase(SchedulePredicate("00 * * * *")),
           // state predicate
-          StatePredicate(
-            Condition(equalColor0),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(equalPowerTrue),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(NotEqualsClauseInTrigger(equalPowerTrue)),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(lessThanOrEqualColor255),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(lessThanColor200),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(lessThanColor200_345),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(greaterThanOrEqualColor1),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(greaterThanColor1),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(greaterThanColor1_345),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(rangeInclude1ToInclude345),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(rangeInclude1_1ToInclude345_3),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(
-              AndClauseInTrigger(
-                equalColor0,
-                NotEqualsClauseInTrigger(equalPowerTrue))),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(
-              OrClauseInTrigger(
-                equalColor0,
-                NotEqualsClauseInTrigger(equalPowerTrue))),
-            triggersWhen: .conditionFalseToTrue),
+          TestCase(StatePredicate(
+                     Condition(equalColor0),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(equalPowerTrue),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(NotEqualsClauseInTrigger(equalPowerTrue)),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(lessThanOrEqualColor255),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(lessThanColor200),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(lessThanColor200_345),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(greaterThanOrEqualColor1),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(greaterThanColor1),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(greaterThanColor1_345),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(rangeInclude1ToInclude345),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(rangeInclude1_1ToInclude345_3),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(
+                       AndClauseInTrigger(
+                         equalColor0,
+                         NotEqualsClauseInTrigger(equalPowerTrue))),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(
+                       OrClauseInTrigger(
+                         equalColor0,
+                         NotEqualsClauseInTrigger(equalPowerTrue))),
+                     triggersWhen: .conditionFalseToTrue)),
           // complex clauses
-          StatePredicate(
-            Condition(
-              AndClauseInTrigger(
-                equalBrightness50,
-                OrClauseInTrigger(
-                  equalColor0,
-                  NotEqualsClauseInTrigger(equalPowerTrue)))),
-            triggersWhen: .conditionFalseToTrue),
-          StatePredicate(
-            Condition(
-              OrClauseInTrigger(
-                equalBrightness50,
-                AndClauseInTrigger(
-                  equalColor0,
-                  NotEqualsClauseInTrigger(equalPowerTrue)))),
-            triggersWhen: .conditionFalseToTrue),
+          TestCase(StatePredicate(
+                     Condition(
+                       AndClauseInTrigger(
+                         equalBrightness50,
+                         OrClauseInTrigger(
+                           equalColor0,
+                           NotEqualsClauseInTrigger(equalPowerTrue)))),
+                     triggersWhen: .conditionFalseToTrue)),
+          TestCase(StatePredicate(
+                     Condition(
+                       OrClauseInTrigger(
+                         equalBrightness50,
+                         AndClauseInTrigger(
+                           equalColor0,
+                           NotEqualsClauseInTrigger(equalPowerTrue)))),
+                     triggersWhen: .conditionFalseToTrue)),
           // test triggersWhen
-          StatePredicate(
-            Condition(equalColor0),
-            triggersWhen: .conditionChanged),
-          StatePredicate(
-            Condition(equalColor0),
-            triggersWhen: .conditionTrue)
+          TestCase(StatePredicate(
+                     Condition(equalColor0),
+                     triggersWhen: .conditionChanged)),
+          TestCase(StatePredicate(
+                     Condition(equalColor0),
+                     triggersWhen: .conditionTrue)),
+          // trigger options
+          TestCase(options: TriggerOptions("trigger title")),
+          TestCase(options: TriggerOptions(
+                     triggerDescription: "trigger description")),
+          TestCase(options: TriggerOptions(metadata: triggerMetadata)),
+          TestCase(options: TriggerOptions(
+                     "trigger title",
+                     triggerDescription: "trigger description")),
+          TestCase(options: TriggerOptions(
+                     "trigger title",
+                     metadata: triggerMetadata)),
+          TestCase(options: TriggerOptions(
+                     triggerDescription: "trigger description",
+                     metadata: triggerMetadata)),
+          TestCase(options: TriggerOptions(
+                     "trigger title",
+                     triggerDescription: "trigger description",
+                     metadata: triggerMetadata))
         ]
 
-        for (index, predicate) in predicates.enumerated() {
+        for (index, testcase) in testcases.enumerated() {
             try postNewTriggerSuccess(
               "testPostNewTrigger_success_\(index)",
-              predicate: predicate,
+              testcase: testcase,
               setting: setting)
         }
 
@@ -162,11 +195,13 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
 
     func postNewTriggerSuccess(
       _ tag: String,
-      predicate: Predicate & ToJsonObject,
+      testcase: TestCase,
       setting:TestSetting) throws -> Void
     {
         let expectation = self.expectation(description: tag)
 
+        let predicate = testcase.predicate
+        let options = testcase.options
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let expectedAliasActions = [
@@ -234,11 +269,11 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
                     commandJson["target"] = setting.target.typedID.toString()
                 }
                 XCTAssertEqual(
-                  [
+                  ([
                     "predicate" : predicate.makeJsonObject(),
                     "command" : commandJson,
                     "triggersWhat" : TriggersWhat.command.rawValue
-                  ] as NSDictionary,
+                  ] + ( options?.makeJsonObject() ?? [ : ])) as NSDictionary,
                   try JSONSerialization.jsonObject(
                     with: request.httpBody!,
                     options: JSONSerialization.ReadingOptions.allowFragments)
@@ -281,7 +316,8 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
 
         setting.api.postNewTrigger(
           expectedTriggerdCommandForm,
-          predicate: predicate) { trigger, error -> Void in
+          predicate: predicate,
+          options: options) { trigger, error -> Void in
             XCTAssertNil(error)
             XCTAssertEqual(expectedTrigger, trigger)
             expectation.fulfill()
@@ -620,4 +656,5 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
             XCTAssertNil(error)
         }
     }
+
 }
