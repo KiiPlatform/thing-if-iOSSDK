@@ -423,6 +423,8 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, nil, $0) }) {
             response, error -> Void in
 
+            var response = response
+            response?["target"] = target.typedID.toString()
             let result: (ListTriggersResult?, ThingIFError?) =
               convertSpecifiedItem(response, error)
             DispatchQueue.main.async {
@@ -482,13 +484,17 @@ fileprivate struct ListTriggersResult: FromJsonObject {
 
     init(_ jsonObject: [String : Any]) throws {
         self.nextPaginationKey = jsonObject["nextPaginationKey"] as? String
-
+        let target = jsonObject["target"] as? String
         guard let triggers = jsonObject["triggers"] as? [[String : Any]] else {
             self.triggers = nil
             return
         }
 
-        self.triggers = try triggers.map { try Trigger($0) }
+        self.triggers = try triggers.map {
+            var json = $0;
+            json["target"] = target
+            return try Trigger(json)
+        }
     }
 
 }
