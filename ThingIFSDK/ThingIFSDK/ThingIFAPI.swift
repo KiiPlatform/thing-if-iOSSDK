@@ -233,28 +233,6 @@ open class ThingIFAPI: Equatable {
         _deleteTrigger(triggerID, completionHandler: completionHandler)
     }
     
-    /** List Triggers belongs to the specified Target
-
-    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
-
-    - Parameter bestEffortLimit: Limit the maximum number of the Triggers in the
-    Response. If omitted default limit internally defined is applied.
-    Meaning of 'bestEffort' is if specified value is greater than default limit,
-    default limit is applied.
-    - Parameter paginationKey: If there is further page to be retrieved, this
-    API returns paginationKey in 2nd element. Specifying this value in next
-    call in the argument results continue to get the results from the next page.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 3 arguments: 1st one is Array of Triggers instance if found, 2nd one is paginationKey if there is further page to be retrieved, and 3rd one is an instance of ThingIFError when failed.
-    */
-    open func listTriggers(
-        _ bestEffortLimit:Int? = nil,
-        paginationKey:String? = nil,
-        completionHandler: @escaping (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
-        )
-    {
-        _listTriggers(bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
-    }
-    
     /** Retrieves list of server code results that was executed by the specified trigger.
         Results will be listing with order by modified date descending (latest first)
      
