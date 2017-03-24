@@ -674,3 +674,13 @@ extension ServerCode: Equatable, ToJsonObject {
         return retval
     }
 }
+
+extension PendingEndNode: Equatable {
+
+    public static func == (left: PendingEndNode, right: PendingEndNode) -> Bool {
+        return left.vendorThingID == right.vendorThingID &&
+            left.thingType == right.thingType &&
+            left.firmwareVersion == right.firmwareVersion &&
+            left.thingProperties as NSDictionary? == right.thingProperties as NSDictionary?
+    }
+}

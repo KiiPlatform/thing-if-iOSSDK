@@ -71,7 +71,7 @@ class GatewayAPIListPendingEndNodesTests: GatewayAPITestBase {
             XCTAssertEqual(list[1]["vendorThingID"] as? String, nodes![1].vendorThingID)
             XCTAssertNil(nodes![1].thingProperties)
             XCTAssertEqual(list[2]["vendorThingID"] as? String, nodes![2].vendorThingID)
-            self.verifyDict(propeties, actualDict: nodes![2].thingProperties)
+            XCTAssertEqual(propeties as NSDictionary, nodes![2].thingProperties! as NSDictionary)
             expectation.fulfill()
         })
 
@@ -119,8 +119,7 @@ class GatewayAPIListPendingEndNodesTests: GatewayAPITestBase {
 
         api.listPendingEndNodes( { (nodes:[PendingEndNode]?, error:ThingIFError?) -> Void in
             XCTAssertNil(error)
-            XCTAssertNotNil(nodes)
-            XCTAssertEqual(0, nodes!.count)
+            XCTAssertEqual([], nodes!)
             expectation.fulfill()
         })
 
