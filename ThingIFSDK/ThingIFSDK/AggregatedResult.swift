@@ -43,7 +43,7 @@ public struct AggregatedResult<AggregatedValueType> {
 extension AggregatedResult: FromJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
-        guard let range = jsonObject["range"] as? [String : Double],
+        guard let range = jsonObject["range"] as? [String : Int64],
               let aggregations =
                 jsonObject["aggregations"] as? [[String : Any]] else {
             throw ThingIFError.jsonParseError

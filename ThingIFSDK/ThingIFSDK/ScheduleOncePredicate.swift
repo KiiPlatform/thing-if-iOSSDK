@@ -27,7 +27,7 @@ extension ScheduleOncePredicate: FromJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
         guard let eventSource = jsonObject["eventSource"] as? String,
-              let scheduleAt = jsonObject["scheduleAt"] as? Double else {
+              let scheduleAt = jsonObject["scheduleAt"] as? Int64 else {
             throw ThingIFError.jsonParseError
         }
 
@@ -35,7 +35,7 @@ extension ScheduleOncePredicate: FromJsonObject {
             throw ThingIFError.jsonParseError
         }
 
-        self.init(Date(timeIntervalSince1970: scheduleAt))
+        self.init(Date(timeIntervalSince1970InMillis: scheduleAt))
     }
 
 }

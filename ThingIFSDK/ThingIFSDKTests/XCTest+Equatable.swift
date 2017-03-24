@@ -486,7 +486,7 @@ extension HistoryState : Equatable, ToJsonObject {
 
     public func makeJsonObject() -> [String : Any] {
         var ret = self.state
-        ret["_created"] = self.createdAt.timeIntervalSince1970
+        ret["_created"] = self.createdAt.timeIntervalSince1970InMillis
         return ret
     }
 }
@@ -531,14 +531,14 @@ extension Command: Equatable, ToJsonObject {
           "issuer" : self.issuerID.toString(),
           "actions" : self.aliasActions.map { $0.makeJsonObject() },
           "commandState" : self.commandState.rawValue,
-          "created" : self.created!.timeIntervalSince1970
+          "created" : self.created!.timeIntervalSince1970InMillis
         ]
 
         if !self.aliasActionResults.isEmpty {
             retval["actionResults"] =
               self.aliasActionResults.map { $0.makeJsonObject() }
         }
-        retval["modified"] = self.modified?.timeIntervalSince1970
+        retval["modified"] = self.modified?.timeIntervalSince1970InMillis
         retval["firedByTriggerID"] = self.firedByTriggerID
         retval["title"] = self.title
         retval["metadata"] = self.metadata
@@ -638,7 +638,7 @@ extension ScheduleOncePredicate: Equatable, ToJsonObject {
     public func makeJsonObject() -> [String : Any] {
         return [
           "eventSource" : self.eventSource.rawValue,
-          "scheduleAt" : Int(self.scheduleAt.timeIntervalSince1970)
+          "scheduleAt" : Int(self.scheduleAt.timeIntervalSince1970InMillis)
         ]
     }
 }

@@ -121,3 +121,18 @@ internal extension String {
     }
 
 }
+
+internal extension Date {
+
+    init(timeIntervalSince1970InMillis: Int64) {
+        self.init(timeIntervalSince1970:
+                    TimeInterval(timeIntervalSince1970InMillis) / 1000)
+    }
+
+    var timeIntervalSince1970InMillis: Int64 {
+        get {
+            return Int64(self.timeIntervalSince1970 * 1000)
+        }
+    }
+}
+
