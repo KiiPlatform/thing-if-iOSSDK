@@ -340,6 +340,10 @@ extension RangeClauseInTrigger: ToJsonObject, FromJsonObject {
             throw ThingIFError.jsonParseError
         }
 
+        if type != "range" {
+            throw ThingIFError.jsonParseError
+        }
+
         let upper: (limit: NSNumber, included: Bool)?
         if let upperLimit = jsonObject["upperLimit"] as? NSNumber,
            let upperIncluded = jsonObject["upperIncluded"] as? Bool {

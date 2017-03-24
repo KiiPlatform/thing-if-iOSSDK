@@ -136,7 +136,7 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, nil, $0) }) {
             response, error -> Void in
 
-            var results: (ListCommandsReslut?, ThingIFError?) =
+            let results: (ListCommandsResult?, ThingIFError?) =
               convertSpecifiedItem(response, error)
             DispatchQueue.main.async {
                 completionHandler(
@@ -148,7 +148,7 @@ extension ThingIFAPI {
     }
 }
 
-fileprivate struct ListCommandsReslut: FromJsonObject {
+fileprivate struct ListCommandsResult: FromJsonObject {
 
     let commands: [Command]?
     let nextPaginationKey: String?
