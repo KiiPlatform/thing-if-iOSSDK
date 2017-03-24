@@ -248,38 +248,17 @@ open class GatewayAPI {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(endNode.vendorThingID)"
-
-        // generate header
-        var requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
-        requestHeaderDict["Content-Type"] = "application/json"
-
-        // genrate body
-        let requestBodyDict = NSMutableDictionary(dictionary:
-            [
-                "thingID": endNode.thingID
-            ]
-        )
-
-        do {
-            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-            // do request
-            let request = buildNewRequest(
-                HTTPMethod.PUT,
-                urlString: requestURL,
-                requestHeaderDict: requestHeaderDict,
-                requestBodyData: requestBodyData,
-                completionHandler: { (response, error) -> Void in
-                    DispatchQueue.main.async {
-                        completionHandler(error)
-                    }
+        self.operationQueue.addHttpRequestOperation(
+            .put,
+            url: "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/VENDOR_THING_ID:\(endNode.vendorThingID)",
+            requestHeader: self.defaultHeader
+                + [ "Content-Type" : MediaType.mediaTypeJson.rawValue],
+            requestBody: ["thingID": endNode.thingID],
+            failureBeforeExecutionHandler: { completionHandler($0) }) {
+                response, error in
+                DispatchQueue.main.async {
+                    completionHandler(error)
                 }
-            )
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        } catch(_) {
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.jsonParseError)
         }
     }
 

@@ -30,6 +30,7 @@
 		22E486341CC4E1C000269A1E /* GatewayAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E486331CC4E1C000269A1E /* GatewayAPI.swift */; };
 		22EA81D81E4D83310069B0B8 /* TypedIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EA81D71E4D83310069B0B8 /* TypedIDTests.swift */; };
 		22EA81DA1E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EA81D91E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift */; };
+		22F915CC1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F915CB1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift */; };
 		22FE6F601E7A9485007DCCB8 /* GetTargetStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FE6F5F1E7A9485007DCCB8 /* GetTargetStateTests.swift */; };
 		7419C2B81C27D10100F964FB /* KiiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7419C2B71C27D10100F964FB /* KiiApp.swift */; };
 		747196CF1D016EEC006B0937 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747196CE1D016EEC006B0937 /* Condition.swift */; };
@@ -200,6 +201,7 @@
 		22E486331CC4E1C000269A1E /* GatewayAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPI.swift; sourceTree = "<group>"; };
 		22EA81D71E4D83310069B0B8 /* TypedIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedIDTests.swift; sourceTree = "<group>"; };
 		22EA81D91E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedHistoryStatesTests.swift; sourceTree = "<group>"; };
+		22F915CB1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPINotifyOnboardingCompletionTests.swift; sourceTree = "<group>"; };
 		22FE6F5F1E7A9485007DCCB8 /* GetTargetStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTargetStateTests.swift; sourceTree = "<group>"; };
 		7419C2B71C27D10100F964FB /* KiiApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiiApp.swift; sourceTree = "<group>"; };
 		747196CE1D016EEC006B0937 /* Condition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
@@ -512,6 +514,7 @@
 		B6C33EFD1E49770B00DF2BF5 /* ThingIFSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				22F915CB1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift */,
 				229665AE1E84E1E500E860D3 /* GatewayAPIListPendingEndNodesTests.swift */,
 				22DD30FE1E838D600043AA1A /* GatewayAPIListOnboardedEndNodesTests.swift */,
 				229418FC1E827C9E009CF87A /* GetGatewayIDTests.swift */,
@@ -891,6 +894,7 @@
 				B6C33F0F1E4977C700DF2BF5 /* TestHelpers.swift in Sources */,
 				B6B0A67A1E63EAA100133788 /* CommandTests.swift in Sources */,
 				B6C33F141E49ABB300DF2BF5 /* NotEqualsClauseInQueryTests.swift in Sources */,
+				22F915CC1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
