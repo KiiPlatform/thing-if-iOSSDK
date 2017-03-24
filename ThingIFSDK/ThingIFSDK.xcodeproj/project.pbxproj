@@ -31,6 +31,7 @@
 		22EA81D81E4D83310069B0B8 /* TypedIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EA81D71E4D83310069B0B8 /* TypedIDTests.swift */; };
 		22EA81DA1E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EA81D91E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift */; };
 		22F915CC1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F915CB1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift */; };
+		22F915CE1E8521DF0075AFA2 /* GatewayAPIRestoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F915CD1E8521DF0075AFA2 /* GatewayAPIRestoreTests.swift */; };
 		22FE6F601E7A9485007DCCB8 /* GetTargetStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22FE6F5F1E7A9485007DCCB8 /* GetTargetStateTests.swift */; };
 		7419C2B81C27D10100F964FB /* KiiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7419C2B71C27D10100F964FB /* KiiApp.swift */; };
 		747196CF1D016EEC006B0937 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747196CE1D016EEC006B0937 /* Condition.swift */; };
@@ -202,6 +203,7 @@
 		22EA81D71E4D83310069B0B8 /* TypedIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedIDTests.swift; sourceTree = "<group>"; };
 		22EA81D91E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedHistoryStatesTests.swift; sourceTree = "<group>"; };
 		22F915CB1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPINotifyOnboardingCompletionTests.swift; sourceTree = "<group>"; };
+		22F915CD1E8521DF0075AFA2 /* GatewayAPIRestoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPIRestoreTests.swift; sourceTree = "<group>"; };
 		22FE6F5F1E7A9485007DCCB8 /* GetTargetStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetTargetStateTests.swift; sourceTree = "<group>"; };
 		7419C2B71C27D10100F964FB /* KiiApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KiiApp.swift; sourceTree = "<group>"; };
 		747196CE1D016EEC006B0937 /* Condition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
@@ -514,6 +516,7 @@
 		B6C33EFD1E49770B00DF2BF5 /* ThingIFSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				22F915CD1E8521DF0075AFA2 /* GatewayAPIRestoreTests.swift */,
 				22F915CB1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift */,
 				229665AE1E84E1E500E860D3 /* GatewayAPIListPendingEndNodesTests.swift */,
 				22DD30FE1E838D600043AA1A /* GatewayAPIListOnboardedEndNodesTests.swift */,
@@ -862,6 +865,7 @@
 				B6C33F161E4ACBD200DF2BF5 /* RangeClauseInQueryTests.swift in Sources */,
 				B6C2DB571E5C15C2008DBA83 /* OnboardWithVendorThingIDOptionsTests.swift in Sources */,
 				B6C33F1A1E4C530200DF2BF5 /* OrClauseInQueryTests.swift in Sources */,
+				22F915CE1E8521DF0075AFA2 /* GatewayAPIRestoreTests.swift in Sources */,
 				B6C2DAFF1E4DA5EA008DBA83 /* AggregatedResultTests.swift in Sources */,
 				B66729371E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift in Sources */,
 				B6B0A6801E64170600133788 /* ServerCodeTests.swift in Sources */,
