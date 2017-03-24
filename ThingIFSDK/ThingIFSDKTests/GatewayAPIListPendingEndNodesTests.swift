@@ -24,7 +24,11 @@ class GatewayAPIListPendingEndNodesTests: GatewayAPITestBase {
     {
         let api = try getLoggedInGatewayAPI()
         let expectation = self.expectation(description: "testSuccess")
-        let propeties:Dictionary<String, Any> = [ "debug": true ]
+        let propeties:Dictionary<String, Any> = [
+            "thingType" : "dummyType",
+            "firmwareVersion" : "dummyVersion",
+            "debug": true
+        ]
         let list = [
             [ "vendorThingID": "abcd-1234" ],
             [ "vendorThingID": "efgh-5678" ],
@@ -72,6 +76,8 @@ class GatewayAPIListPendingEndNodesTests: GatewayAPITestBase {
             XCTAssertNil(nodes![1].thingProperties)
             XCTAssertEqual(list[2]["vendorThingID"] as? String, nodes![2].vendorThingID)
             XCTAssertEqual(propeties as NSDictionary, nodes![2].thingProperties! as NSDictionary)
+            XCTAssertEqual(propeties["thingType"] as? String, nodes![2].thingType)
+            XCTAssertEqual(propeties["firmwareVersion"] as? String, nodes![2].firmwareVersion)
             expectation.fulfill()
         })
 
