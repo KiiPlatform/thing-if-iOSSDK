@@ -404,59 +404,34 @@ extension ThingIFAPI {
     open func listTriggers(
         _ bestEffortLimit:Int? = nil,
         paginationKey:String? = nil,
-        completionHandler: @escaping (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
-        )
+        completionHandler:
+          @escaping (_ triggers:[Trigger]?,
+                     _ paginationKey:String?,
+                     _ error: ThingIFError?)-> Void) -> Void
     {
-        _listTriggers(bestEffortLimit, paginationKey: paginationKey, completionHandler: completionHandler)
-    }
-
-    func _listTriggers(
-        _ bestEffortLimit:Int?,
-        paginationKey:String?,
-        completionHandler: @escaping (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
-        )
-    {
-        fatalError("TODO: implement me")
-        /*
         guard let target = self.target else {
             completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
-        
-        if paginationKey != nil && bestEffortLimit != nil && bestEffortLimit! != 0{
-            requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
-        }else if bestEffortLimit != nil && bestEffortLimit! != 0 {
-            requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
-        }else if paginationKey != nil {
-            requestURL += "?paginationKey=\(paginationKey!)"
-        }
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url:  "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers".appendURLQuery(
+            ("paginationKey", paginationKey),
+            ("bestEffortLimit", bestEffortLimit)),
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, nil, $0) }) {
+            response, error -> Void in
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            var triggers: [Trigger]?
-            var nextPaginationKey: String?
-            if let responseDict = response {
-                nextPaginationKey = responseDict["nextPaginationKey"] as? String
-                if let triggerDicts = responseDict["triggers"] as? NSArray {
-                    triggers = [Trigger]()
-                    for triggerDict in triggerDicts {
-                        if let trigger = Trigger.triggerWithNSDict(target.typedID, triggerDict: triggerDict as! NSDictionary){
-                            triggers!.append(trigger)
-                        }
-                    }
-                }
-            }
+            let result: (ListTriggersResult?, ThingIFError?) =
+              convertSpecifiedItem(response, error)
             DispatchQueue.main.async {
-                completionHandler(triggers, nextPaginationKey, error)
+                completionHandler(
+                  result.0?.triggers,
+                  result.0?.nextPaginationKey,
+                  result.1)
             }
-        })
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-        */
+        }
     }
 
     /** Get specified trigger
@@ -498,4 +473,22 @@ extension ThingIFAPI {
             DispatchQueue.main.async { completionHandler(result.0, result.1) }
         }
     }
+}
+
+fileprivate struct ListTriggersResult: FromJsonObject {
+
+    let triggers: [Trigger]?
+    let nextPaginationKey: String?
+
+    init(_ jsonObject: [String : Any]) throws {
+        self.nextPaginationKey = jsonObject["nextPaginationKey"] as? String
+
+        guard let triggers = jsonObject["triggers"] as? [[String : Any]] else {
+            self.triggers = nil
+            return
+        }
+
+        self.triggers = try triggers.map { try Trigger($0) }
+    }
+
 }
