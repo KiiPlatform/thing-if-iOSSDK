@@ -39,3 +39,19 @@ public struct ServerCode {
     }
 
 }
+
+extension ServerCode: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let endpoint = jsonObject["endpoint"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(
+          endpoint,
+          executorAccessToken: jsonObject["executorAccessToken"] as? String,
+          targetAppID: jsonObject["targetAppID"] as? String,
+          parameters: jsonObject["parameters"] as? [String : Any])
+    }
+
+}

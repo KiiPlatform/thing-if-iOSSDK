@@ -31,13 +31,13 @@ public struct TimeRange {
 extension TimeRange: FromJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
-        guard let from = jsonObject["from"] as? Double,
-              let to = jsonObject["to"] as? Double else {
+        guard let from = jsonObject["from"] as? Int64,
+              let to = jsonObject["to"] as? Int64 else {
             throw ThingIFError.jsonParseError
         }
 
         self.init(
-          Date(timeIntervalSince1970: from),
-          to: Date(timeIntervalSince1970: to))
+          Date(timeIntervalSince1970InMillis: from),
+          to: Date(timeIntervalSince1970InMillis: to))
     }
 }

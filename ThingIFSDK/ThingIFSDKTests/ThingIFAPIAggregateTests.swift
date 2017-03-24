@@ -63,8 +63,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                             ],
                             [
                                 "type": "withinTimeRange",
-                                "lowerLimit": timeRange.from.timeIntervalSince1970,
-                                "upperLimit": timeRange.to.timeIntervalSince1970
+                                "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                                "upperLimit": timeRange.to.timeIntervalSince1970InMillis
                             ]
                         ]
                     ],
@@ -93,8 +93,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             "groupedResults" : [
                 [
                     "range" : [
-                        "from" : timeRange.from.timeIntervalSince1970,
-                        "to" : timeRange.to.timeIntervalSince1970
+                        "from" : timeRange.from.timeIntervalSince1970InMillis,
+                        "to" : timeRange.to.timeIntervalSince1970InMillis
                     ],
                     "aggregations" : [
                         [
@@ -173,8 +173,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 "query": [
                     "clause": [
                         "type": "withinTimeRange",
-                        "lowerLimit": timeRange.from.timeIntervalSince1970,
-                        "upperLimit": timeRange.to.timeIntervalSince1970
+                        "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                        "upperLimit": timeRange.to.timeIntervalSince1970InMillis
                     ],
                     "grouped": true,
                     "aggregations": [
@@ -201,8 +201,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
             "groupedResults" : [
                 [
                     "range" : [
-                        "from" : timeRange.from.timeIntervalSince1970,
-                        "to" : timeRange.to.timeIntervalSince1970
+                        "from" : timeRange.from.timeIntervalSince1970InMillis,
+                        "to" : timeRange.to.timeIntervalSince1970InMillis
                     ],
                     "aggregations" : [
                         [
@@ -278,8 +278,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 "query": [
                     "clause": [
                         "type": "withinTimeRange",
-                        "lowerLimit": timeRange.from.timeIntervalSince1970,
-                        "upperLimit": timeRange.to.timeIntervalSince1970
+                        "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                        "upperLimit": timeRange.to.timeIntervalSince1970InMillis
                     ],
                     "grouped": true,
                     "aggregations": [
@@ -364,8 +364,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 "query": [
                     "clause": [
                         "type": "withinTimeRange",
-                        "lowerLimit": timeRange.from.timeIntervalSince1970,
-                        "upperLimit": timeRange.to.timeIntervalSince1970
+                        "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                        "upperLimit": timeRange.to.timeIntervalSince1970InMillis
                     ],
                     "grouped": true,
                     "aggregations": [
@@ -448,8 +448,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                     "query": [
                         "clause": [
                             "type": "withinTimeRange",
-                            "lowerLimit": timeRange.from.timeIntervalSince1970,
-                            "upperLimit": timeRange.to.timeIntervalSince1970
+                            "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                            "upperLimit": timeRange.to.timeIntervalSince1970InMillis
                         ],
                         "grouped": true,
                         "aggregations": [
@@ -532,8 +532,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 "query": [
                     "clause": [
                         "type": "withinTimeRange",
-                        "lowerLimit": timeRange.from.timeIntervalSince1970,
-                        "upperLimit": timeRange.to.timeIntervalSince1970
+                        "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                        "upperLimit": timeRange.to.timeIntervalSince1970InMillis
                     ],
                     "grouped": true,
                     "aggregations": [
@@ -616,8 +616,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 "query": [
                     "clause": [
                         "type": "withinTimeRange",
-                        "lowerLimit": timeRange.from.timeIntervalSince1970,
-                        "upperLimit": timeRange.to.timeIntervalSince1970
+                        "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                        "upperLimit": timeRange.to.timeIntervalSince1970InMillis
                     ],
                     "grouped": true,
                     "aggregations": [
@@ -700,8 +700,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 "query": [
                     "clause": [
                         "type": "withinTimeRange",
-                        "lowerLimit": timeRange.from.timeIntervalSince1970,
-                        "upperLimit": timeRange.to.timeIntervalSince1970
+                        "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                        "upperLimit": timeRange.to.timeIntervalSince1970InMillis
                     ],
                     "grouped": true,
                     "aggregations": [

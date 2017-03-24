@@ -359,8 +359,8 @@ extension TimeRangeClauseInQuery: ToJsonObject {
     internal func makeJsonObject() -> [ String : Any ] {
         return [
             "type": "withinTimeRange",
-            "lowerLimit": self.timeRange.from.timeIntervalSince1970,
-            "upperLimit": self.timeRange.to.timeIntervalSince1970
+            "lowerLimit": self.timeRange.from.timeIntervalSince1970InMillis,
+            "upperLimit": self.timeRange.to.timeIntervalSince1970InMillis
             ] as [String : Any]
     }
 }

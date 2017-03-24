@@ -173,21 +173,6 @@ open class ThingIFAPI: Equatable {
     }
 
 
-    /** Get specified trigger
-
-    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
-
-    - Parameter triggerID: ID of the Trigger to obtain.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: an instance of Trigger, an instance of ThingIFError when failed.
-    */
-    open func getTrigger(
-        _ triggerID:String,
-        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
-        )
-    {
-        _getTrigger(triggerID, completionHandler: completionHandler)
-    }
-
     /** Apply patch to a registered Trigger
     Modify a registered Trigger with the specified patch.
 

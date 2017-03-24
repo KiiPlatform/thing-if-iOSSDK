@@ -117,7 +117,7 @@ extension Command: FromJsonObject {
               let aliasActions = jsonObject["actions"] as? [[String : Any]],
               let state = jsonObject["commandState"] as? String,
               let commandState = CommandState(rawValue: state),
-              let created = jsonObject["created"] as? TimeInterval else {
+              let created = jsonObject["created"] as? Int64 else {
             throw ThingIFError.jsonParseError
         }
 
@@ -129,8 +129,8 @@ extension Command: FromJsonObject {
         }
 
         let modified: Date?
-        if let date = jsonObject["modified"] as? TimeInterval {
-            modified = Date(timeIntervalSince1970: date)
+        if let date = jsonObject["modified"] as? Int64 {
+            modified = Date(timeIntervalSince1970InMillis: date)
         } else {
             modified = nil
         }
@@ -143,7 +143,7 @@ extension Command: FromJsonObject {
           aliasActionResults: aliasActionResults,
           commandState: commandState,
           firedByTriggerID: jsonObject["firedByTriggerID"] as? String,
-          created: Date(timeIntervalSince1970: created),
+          created: Date(timeIntervalSince1970InMillis: created),
           modified: modified,
           title: jsonObject["title"] as? String,
           commandDescription: jsonObject["description"] as? String,

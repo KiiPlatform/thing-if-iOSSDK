@@ -147,3 +147,46 @@ public enum EventSource: String {
     case scheduleOnce = "SCHEDULE_ONCE"
 
 }
+
+extension Trigger: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let triggerID = jsonObject["triggerID"] as? String,
+              let predicateDict = jsonObject["predicate"] as? [String : Any],
+              let disabled = jsonObject["disabled"] as? Bool else {
+            throw ThingIFError.jsonParseError
+        }
+
+        let targetID = try TypedID(jsonObject["target"] as? String)
+        let predicate = try makePredicate(predicateDict)
+
+        let title = jsonObject["title"] as? String
+        let description = jsonObject["description"] as? String
+        let metadata = jsonObject["metadata"] as? [String : Any]
+
+        if let command = jsonObject["command"] as? [String : Any] {
+            self.init(
+              triggerID,
+              targetID: targetID,
+              enabled: !disabled,
+              predicate: predicate,
+              command: try Command(command),
+              title: title,
+              triggerDescription: description,
+              metadata: metadata)
+        } else if let serverCode = jsonObject["serverCode"] as? [String : Any] {
+            self.init(
+              triggerID,
+              targetID: targetID,
+              enabled: !disabled,
+              predicate: predicate,
+              serverCode: try ServerCode(serverCode),
+              title: title,
+              triggerDescription: description,
+              metadata: metadata)
+        } else {
+            throw ThingIFError.jsonParseError
+        }
+    }
+
+}

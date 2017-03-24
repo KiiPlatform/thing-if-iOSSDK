@@ -267,24 +267,30 @@ extension AliasAction: Equatable {
 
 }
 
-internal func == (left: TriggerClause, right: TriggerClause) -> Bool {
-    if left is EqualsClauseInTrigger && right is EqualsClauseInTrigger {
-        return left as! EqualsClauseInTrigger == right as! EqualsClauseInTrigger
-    } else if left is NotEqualsClauseInTrigger &&
-                right is NotEqualsClauseInTrigger {
-        return left as! NotEqualsClauseInTrigger ==
-          right as! NotEqualsClauseInTrigger
-    } else if left is RangeClauseInTrigger && right is RangeClauseInTrigger {
-        return left as! RangeClauseInTrigger == right as! RangeClauseInTrigger
-    } else if left is AndClauseInTrigger && right is AndClauseInTrigger {
-        return left as! AndClauseInTrigger == right as! AndClauseInTrigger
-    } else if left is OrClauseInTrigger && right is OrClauseInTrigger {
-        return left as! OrClauseInTrigger == right as! OrClauseInTrigger
+private func == (left: TriggerClause, right: TriggerClause) -> Bool {
+    switch (left, right) {
+    case (is EqualsClauseInTrigger, is EqualsClauseInTrigger) where
+           left as! EqualsClauseInTrigger == right as! EqualsClauseInTrigger:
+        return true
+    case (is NotEqualsClauseInTrigger, is NotEqualsClauseInTrigger) where
+           left as! NotEqualsClauseInTrigger ==
+             right as! NotEqualsClauseInTrigger:
+        return true
+    case (is RangeClauseInTrigger, is RangeClauseInTrigger) where
+           left as! RangeClauseInTrigger == right as! RangeClauseInTrigger:
+        return true
+    case (is AndClauseInTrigger, is AndClauseInTrigger) where
+           left as! AndClauseInTrigger == right as! AndClauseInTrigger:
+        return true
+    case (is OrClauseInTrigger, is OrClauseInTrigger) where
+           left as! OrClauseInTrigger == right as! OrClauseInTrigger:
+        return true
+    default:
+        return false
     }
-    return false
 }
 
-internal func != (left: TriggerClause, right: TriggerClause) -> Bool {
+private func != (left: TriggerClause, right: TriggerClause) -> Bool {
     return !(left == right)
 }
 
@@ -480,7 +486,7 @@ extension HistoryState : Equatable, ToJsonObject {
 
     public func makeJsonObject() -> [String : Any] {
         var ret = self.state
-        ret["_created"] = self.createdAt.timeIntervalSince1970
+        ret["_created"] = self.createdAt.timeIntervalSince1970InMillis
         return ret
     }
 }
@@ -525,18 +531,146 @@ extension Command: Equatable, ToJsonObject {
           "issuer" : self.issuerID.toString(),
           "actions" : self.aliasActions.map { $0.makeJsonObject() },
           "commandState" : self.commandState.rawValue,
-          "created" : self.created!.timeIntervalSince1970
+          "created" : self.created!.timeIntervalSince1970InMillis
         ]
 
         if !self.aliasActionResults.isEmpty {
             retval["actionResults"] =
               self.aliasActionResults.map { $0.makeJsonObject() }
         }
-        retval["modified"] = self.modified?.timeIntervalSince1970
+        retval["modified"] = self.modified?.timeIntervalSince1970InMillis
         retval["firedByTriggerID"] = self.firedByTriggerID
         retval["title"] = self.title
         retval["metadata"] = self.metadata
         retval["description"] = self.commandDescription
+        return retval
+    }
+}
+
+extension Trigger: Equatable, ToJsonObject {
+
+    public static func == (left: Trigger, right: Trigger) -> Bool {
+        return left.triggerID == right.triggerID &&
+          left.targetID == right.targetID &&
+          left.enabled == right.enabled &&
+          left.predicate == right.predicate &&
+          left.command == right.command &&
+          left.serverCode == right.serverCode &&
+          left.title == right.title &&
+          left.triggerDescription == right.triggerDescription &&
+          left.metadata as NSDictionary? == right.metadata as NSDictionary?
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        var retval: [String : Any] = [
+          "triggerID" : self.triggerID,
+          "disabled" : !self.enabled,
+          "predicate" : (self.predicate as! ToJsonObject).makeJsonObject()
+        ]
+        retval["command"] = self.command?.makeJsonObject()
+        retval["serverCode"] = self.serverCode?.makeJsonObject()
+        retval["title"] = self.title
+        retval["description"] = self.triggerDescription
+        retval["metadata"] = self.metadata
+        return retval
+    }
+}
+
+private func == (left: Predicate, right: Predicate) -> Bool {
+    switch (left, right) {
+    case (is StatePredicate, is StatePredicate):
+        return left as! StatePredicate == right as! StatePredicate
+    case (is SchedulePredicate, is SchedulePredicate):
+        return left as! SchedulePredicate == right as! SchedulePredicate
+    case (is ScheduleOncePredicate, is ScheduleOncePredicate):
+        return left as! ScheduleOncePredicate ==
+          right as! ScheduleOncePredicate
+    default:
+        return false
+    }
+}
+
+extension StatePredicate: Equatable, ToJsonObject {
+
+    public static func == (
+      left: StatePredicate,
+      right: StatePredicate) -> Bool
+    {
+        return left.triggersWhen == right.triggersWhen &&
+          left.condition == right.condition
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [
+          "eventSource" : self.eventSource.rawValue,
+          "triggersWhen" : self.triggersWhen.rawValue,
+          "condition" : self.condition.makeJsonObject()
+        ]
+    }
+}
+
+extension SchedulePredicate: Equatable, ToJsonObject {
+
+    public static func == (
+      left: SchedulePredicate,
+      right: SchedulePredicate) -> Bool
+    {
+        return left.schedule == right.schedule
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [
+          "eventSource" : self.eventSource.rawValue,
+          "schedule" : self.schedule
+        ]
+    }
+}
+
+extension ScheduleOncePredicate: Equatable, ToJsonObject {
+
+    public static func == (
+      left: ScheduleOncePredicate,
+      right: ScheduleOncePredicate) -> Bool
+    {
+        return isSameDate(left.scheduleAt, right.scheduleAt)
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [
+          "eventSource" : self.eventSource.rawValue,
+          "scheduleAt" : Int(self.scheduleAt.timeIntervalSince1970InMillis)
+        ]
+    }
+}
+
+extension Condition: Equatable, ToJsonObject {
+
+    public static func == (left: Condition, right: Condition) -> Bool {
+        return left.clause == right.clause
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return (self.clause as! ToJsonObject).makeJsonObject()
+    }
+}
+
+extension ServerCode: Equatable, ToJsonObject {
+
+    public static func == (left: ServerCode, right: ServerCode) -> Bool
+    {
+        return left.endpoint == right.endpoint &&
+          left.executorAccessToken == right.executorAccessToken &&
+          left.targetAppID == right.targetAppID &&
+          left.parameters as NSDictionary? == right.parameters as NSDictionary?
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        var retval: [String : Any] = [
+          "endpoint" : self.endpoint
+        ]
+        retval["executorAccessToken"] = self.executorAccessToken
+        retval["targetAppID"] = self.targetAppID
+        retval["parameters"] = self.parameters
         return retval
     }
 }

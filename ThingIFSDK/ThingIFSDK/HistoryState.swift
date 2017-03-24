@@ -35,13 +35,13 @@ public struct HistoryState {
 extension HistoryState : FromJsonObject {
     internal init(_ jsonObject: [String : Any]) throws {
         var state = jsonObject
-        guard let created = state["_created"] as? TimeInterval else {
+        guard let created = state["_created"] as? Int64 else {
             throw ThingIFError.jsonParseError
         }
 
         state.removeValue(forKey: "_created")
         self.init(
             state,
-            createdAt: Date(timeIntervalSince1970: created))
+            createdAt: Date(timeIntervalSince1970InMillis: created))
     }
 }

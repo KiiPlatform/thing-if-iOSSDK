@@ -24,3 +24,20 @@ public struct SchedulePredicate: Predicate {
     }
 
 }
+
+extension SchedulePredicate: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let eventSource = jsonObject["eventSource"] as? String,
+              let schedule = jsonObject["schedule"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if eventSource != EventSource.schedule.rawValue {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(schedule)
+    }
+
+}

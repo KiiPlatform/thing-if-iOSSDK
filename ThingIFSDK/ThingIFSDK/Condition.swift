@@ -20,3 +20,10 @@ public struct Condition {
     }
 
 }
+
+extension Condition: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        self.init(try makeTriggerClause(jsonObject))
+    }
+}
