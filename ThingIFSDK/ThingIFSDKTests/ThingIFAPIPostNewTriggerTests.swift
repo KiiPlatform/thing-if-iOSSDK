@@ -167,9 +167,8 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
     {
         let expectation = self.expectation(description: tag)
 
-        let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
 
-        iotSession = MockMultipleSession.self
+        let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
         let expectedAliasActions = [
           AliasAction(
             "alias1",
@@ -179,9 +178,8 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
             ]
           )
         ]
-        let expectedTriggerdCommandForm = TriggeredCommandForm(
-          expectedAliasActions
-        )
+        let expectedTriggerdCommandForm =
+          TriggeredCommandForm(expectedAliasActions)
         let expectedTrigger = Trigger(
           expectedTriggerID,
           targetID: setting.target.typedID,
@@ -197,6 +195,7 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
           )
         )
 
+        iotSession = MockMultipleSession.self
         sharedMockMultipleSession.responsePairs = [
           (
             (
@@ -292,4 +291,333 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
         }
     }
 
+    func testPostNewTrigger_http_404() throws {
+        let expectation =
+          self.expectation(description: "testPostNewTrigger_http_404")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        let expectedTriggerdCommandForm =
+          TriggeredCommandForm(
+            [
+              AliasAction(
+                "alias1",
+                actions: [
+                  Action("turnPower", value: true),
+                  Action("setBrightness", value: 90)
+                ]
+              )
+            ]
+          )
+        let expectedPredicate = StatePredicate(
+          Condition(
+            EqualsClauseInTrigger("alias1", field: "color", intValue: 0)),
+          triggersWhen:. conditionFalseToTrue
+        )
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "POST")
+
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers",
+              request.url?.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            var commandJson = expectedTriggerdCommandForm.makeJsonObject()
+            commandJson["issuer"] = setting.owner.typedID.toString()
+            if commandJson["target"] == nil {
+                commandJson["target"] = setting.target.typedID.toString()
+            }
+            XCTAssertEqual(
+              [
+                "predicate" : expectedPredicate.makeJsonObject(),
+                "command" : commandJson,
+                "triggersWhat" : TriggersWhat.command.rawValue
+              ] as NSDictionary,
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary
+            )
+        }
+
+        // mock response
+        let errorCode = "TARGET_NOT_FOUND"
+        let errorMessage = "Target \(target.typedID.toString()) not found"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["errorCode" : errorCode, "message" : errorMessage],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.postNewTrigger(
+          expectedTriggerdCommandForm,
+          predicate: expectedPredicate) { trigger, error -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  404,
+                  errorCode: errorCode,
+                  errorMessage: errorMessage)),
+              error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testPostNewTrigger_http_400() throws {
+        let expectation =
+          self.expectation(description: "testPostNewTrigger_http_400")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        let expectedTriggerdCommandForm =
+          TriggeredCommandForm(
+            [
+              AliasAction(
+                "alias1",
+                actions: [
+                  Action("turnPower", value: true),
+                  Action("setBrightness", value: 90)
+                ]
+              )
+            ]
+          )
+        let expectedPredicate = StatePredicate(
+          Condition(
+            EqualsClauseInTrigger("alias1", field: "color", intValue: 0)),
+          triggersWhen:. conditionFalseToTrue
+        )
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "POST")
+
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers",
+              request.url?.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            var commandJson = expectedTriggerdCommandForm.makeJsonObject()
+            commandJson["issuer"] = setting.owner.typedID.toString()
+            if commandJson["target"] == nil {
+                commandJson["target"] = setting.target.typedID.toString()
+            }
+            XCTAssertEqual(
+              [
+                "predicate" : expectedPredicate.makeJsonObject(),
+                "command" : commandJson,
+                "triggersWhat" : TriggersWhat.command.rawValue
+              ] as NSDictionary,
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary
+            )
+        }
+
+        // mock response
+        let errorCode = "BAD_REQUEST"
+        let errorMessage = "Passed Trigger is not valid"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["errorCode" : errorCode, "message" : errorMessage],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 400,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.postNewTrigger(
+          expectedTriggerdCommandForm,
+          predicate: expectedPredicate) { trigger, error -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  400,
+                  errorCode: errorCode,
+                  errorMessage: errorMessage)),
+              error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testPostNewTrigger_http_400_invalidTimestamp() throws {
+        let expectation = self.expectation(
+          description: "testPostNewTrigger_http_400_invalidTimestamp")
+
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        let expectedTriggerdCommandForm =
+          TriggeredCommandForm(
+            [
+              AliasAction(
+                "alias1",
+                actions: [
+                  Action("turnPower", value: true),
+                  Action("setBrightness", value: 90)
+                ]
+              )
+            ]
+          )
+        let expectedPredicate = StatePredicate(
+          Condition(
+            EqualsClauseInTrigger("alias1", field: "color", intValue: 0)),
+          triggersWhen:. conditionFalseToTrue
+        )
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "POST")
+
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers",
+              request.url?.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            var commandJson = expectedTriggerdCommandForm.makeJsonObject()
+            commandJson["issuer"] = setting.owner.typedID.toString()
+            if commandJson["target"] == nil {
+                commandJson["target"] = setting.target.typedID.toString()
+            }
+            XCTAssertEqual(
+              [
+                "predicate" : expectedPredicate.makeJsonObject(),
+                "command" : commandJson,
+                "triggersWhat" : TriggersWhat.command.rawValue
+              ] as NSDictionary,
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary
+            )
+        }
+
+        // mock response
+        let errorCode = "Time stamp not valid"
+        let errorMessage = "Passed Trigger's timestamp is not valid"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["errorCode" : errorCode, "message" : errorMessage],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 400,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.postNewTrigger(
+          expectedTriggerdCommandForm,
+          predicate: expectedPredicate) { trigger, error -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  400,
+                  errorCode: errorCode,
+                  errorMessage: errorMessage)),
+              error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testPostTrigger_target_not_available_error() {
+        let expectation = self.expectation(
+          description: "testPostTrigger_target_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        api.postNewTrigger(
+          TriggeredCommandForm(
+            [
+              AliasAction(
+                "alias1",
+                actions: [
+                  Action("turnPower", value: true),
+                  Action("setBrightness", value: 90)
+                ]
+              )
+            ]
+          ),
+          predicate: StatePredicate(
+            Condition(
+              EqualsClauseInTrigger("alias1", field: "color", intValue: 0)),
+            triggersWhen:. conditionFalseToTrue)) { trigger, error -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
 }
