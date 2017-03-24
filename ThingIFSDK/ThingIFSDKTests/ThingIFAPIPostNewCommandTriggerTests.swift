@@ -1,5 +1,5 @@
 //
-//  ThingIFAPIPostNewTriggerTests.swift
+//  ThingIFAPIPostNewCommandTriggerTests.swift
 //  ThingIFSDK
 //
 //  Created on 2017/03/23.
@@ -10,7 +10,7 @@ import XCTest
 
 @testable import ThingIFSDK
 
-class ThingIFAPIPostNewTriggerTests: SmallTestBase {
+class ThingIFAPIPostNewCommandTriggerTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()
