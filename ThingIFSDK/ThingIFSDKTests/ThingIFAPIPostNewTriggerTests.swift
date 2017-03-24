@@ -22,14 +22,27 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
 
     struct TestCase {
         let predicate: Predicate & ToJsonObject
+        let triggeredCommandForm: TriggeredCommandForm
         let options: TriggerOptions?
 
         init(
           _ predicate:
             Predicate & ToJsonObject = SchedulePredicate("00 * * * *"),
+          triggeredCommandForm:
+            TriggeredCommandForm = TriggeredCommandForm(
+              [
+                AliasAction(
+                  "alias1",
+                  actions: [
+                    Action("turnPower", value: true),
+                    Action("setBrightness", value: 90)
+                  ]
+                )
+              ]),
           options: TriggerOptions? = nil)
         {
             self.predicate = predicate
+            self.triggeredCommandForm = triggeredCommandForm
             self.options = options
         }
     }
@@ -88,6 +101,17 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
             upperLimit: 345.3,
             upperIncluded: true)
         let triggerMetadata = ["triggerMetadataKey" : "triggerMetadataValue"]
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action("turnPower", value: true),
+              Action("setBrightness", value: 90)
+            ]
+          )
+        ]
+        let commandMetadata = ["commandMetadataKey" : "commandMetadataValue"]
+        let targetID = target.typedID
 
         let testcases: [TestCase] = [
           // Schedule once
@@ -181,7 +205,66 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
           TestCase(options: TriggerOptions(
                      "trigger title",
                      triggerDescription: "trigger description",
-                     metadata: triggerMetadata))
+                     metadata: triggerMetadata)),
+          // triggered command form.
+          TestCase(triggeredCommandForm: TriggeredCommandForm(aliasActions)),
+          TestCase(triggeredCommandForm:
+                     TriggeredCommandForm(aliasActions, targetID: targetID)),
+          TestCase(
+            triggeredCommandForm:
+              TriggeredCommandForm(aliasActions, title: "command title")),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     commandDescription: "command description")),
+          TestCase(triggeredCommandForm:
+                     TriggeredCommandForm(
+                       aliasActions,
+                       metadata: commandMetadata)),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     targetID: targetID,
+                     title: "command title")),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     targetID: targetID,
+                     commandDescription: "command description")),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     targetID: targetID,
+                     metadata: commandMetadata)),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     targetID: targetID,
+                     title: "command title",
+                     commandDescription: "command description")),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     targetID: targetID,
+                     title: "command title",
+                     metadata: commandMetadata)),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     targetID: targetID,
+                     title: "command title",
+                     commandDescription: "command description",
+                     metadata: commandMetadata)),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     title: "command title",
+                     commandDescription: "command description")),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     title: "command title",
+                     metadata: commandMetadata)),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     title: "command title",
+                     commandDescription: "command description",
+                     metadata: commandMetadata)),
+          TestCase(triggeredCommandForm: TriggeredCommandForm(
+                     aliasActions,
+                     commandDescription: "command description",
+                     metadata: commandMetadata))
         ]
 
         for (index, testcase) in testcases.enumerated() {
@@ -202,19 +285,9 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
 
         let predicate = testcase.predicate
         let options = testcase.options
+        let triggeredCommandForm = testcase.triggeredCommandForm
 
         let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
-        let expectedAliasActions = [
-          AliasAction(
-            "alias1",
-            actions: [
-              Action("turnPower", value: true),
-              Action("setBrightness", value: 90)
-            ]
-          )
-        ]
-        let expectedTriggerdCommandForm =
-          TriggeredCommandForm(expectedAliasActions)
         let expectedTrigger = Trigger(
           expectedTriggerID,
           targetID: setting.target.typedID,
@@ -224,7 +297,7 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
             "dummyCommandID",
             targetID: setting.target.typedID,
             issuerID: setting.owner.typedID,
-            aliasActions: expectedAliasActions,
+            aliasActions: triggeredCommandForm.aliasActions,
             commandState: .sending,
             created: Date()
           )
@@ -263,7 +336,7 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
                   request.allHTTPHeaderFields!)
 
                 //verify body
-                var commandJson = expectedTriggerdCommandForm.makeJsonObject()
+                var commandJson = triggeredCommandForm.makeJsonObject()
                 commandJson["issuer"] = setting.owner.typedID.toString()
                 if commandJson["target"] == nil {
                     commandJson["target"] = setting.target.typedID.toString()
@@ -315,7 +388,7 @@ class ThingIFAPIPostNewTriggerTests: SmallTestBase {
         ]
 
         setting.api.postNewTrigger(
-          expectedTriggerdCommandForm,
+          triggeredCommandForm,
           predicate: predicate,
           options: options) { trigger, error -> Void in
             XCTAssertNil(error)
