@@ -194,45 +194,36 @@ open class GatewayAPI {
         _ completionHandler: @escaping ([PendingEndNode]?, ThingIFError?)-> Void
         )
     {
-        fatalError("TODO: implement me")
-        /*
         if !self.isLoggedIn() {
             completionHandler(nil, ThingIFError.userIsNotLoggedIn)
             return;
         }
 
-        let requestURL = "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/pending"
+        self.operationQueue.addHttpRequestOperation(
+            .get,
+            url: "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/pending",
+            requestHeader: self.defaultHeader,
+            failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+                response, error in
+                let result = convertResponse(response, error) {
+                    response, error throws -> ([PendingEndNode]?, ThingIFError?) in
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
+                    if error != nil {
+                        return (nil, error)
+                    }
 
-        // do request
-        let request = buildNewRequest(
-            HTTPMethod.GET,
-            urlString: requestURL,
-            requestHeaderDict: requestHeaderDict,
-            requestBodyData: nil,
-            completionHandler: { (response, error) -> Void in
-                var endNodes = [PendingEndNode]()
-                if response != nil {
-                    if let endNodeArray = response!["results"] as? [NSDictionary] {
+                    var endNodes = [PendingEndNode]()
+                    if let endNodeArray = response?["results"] as? [[String : Any]] {
                         for endNode in endNodeArray {
-                            endNodes.append(PendingEndNode(endNode as! Dictionary<String, AnyObject>))
+                            endNodes.append(try PendingEndNode(endNode))
                         }
                     }
+                    return (endNodes, nil)
                 }
                 DispatchQueue.main.async {
-                    if error != nil {
-                        completionHandler(nil, error)
-                    } else {
-                        completionHandler(endNodes, nil)
-                    }
+                    completionHandler(result.0, result.1)
                 }
-            }
-        )
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-        */
+        }
     }
 
     /** Notify Onboarding completion

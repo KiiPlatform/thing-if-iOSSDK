@@ -41,7 +41,7 @@ public struct PendingEndNode {
 
 }
 
-extension PendingEndNode: ToJsonObject {
+extension PendingEndNode: ToJsonObject, FromJsonObject {
 
     internal func makeJsonObject() -> [String : Any]{
         var retval: [String : Any] =
@@ -50,5 +50,18 @@ extension PendingEndNode: ToJsonObject {
         retval["endNodeThingProperties"] = self.thingProperties
         retval["endNodeFirmwareVersion"] = self.firmwareVersion
         return retval
+    }
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let id = jsonObject["vendorThingID"] as? String else {
+                throw ThingIFError.jsonParseError
+        }
+
+        let properties = jsonObject["thingProperties"] as? [String : Any]
+        self.init(
+            id,
+            thingType: properties?["thingType"] as? String,
+            thingProperties: properties,
+            firmwareVersion: properties?["firmwareVersion"] as? String)
     }
 }
