@@ -21,7 +21,8 @@ class ThingIFAPIListTriggersTests: SmallTestBase {
     }
 
     func testListTriggers_success_predicates() throws {
-        let expectation = self.expectation(description: "testListTriggers_success_predicates")
+        let expectation =
+          self.expectation(description: "testListTriggers_success_predicates")
 
         let setting = TestSetting()
         let api = setting.api
@@ -193,7 +194,6 @@ class ThingIFAPIListTriggersTests: SmallTestBase {
         sharedMockSession.requestVerifier = makeRequestVerifier() { request in
             XCTAssertEqual(request.httpMethod, "GET")
             //verify header
-            //verify header
             XCTAssertEqual(
               [
                 "X-Kii-AppID": setting.app.appID,
@@ -220,12 +220,422 @@ class ThingIFAPIListTriggersTests: SmallTestBase {
           nil)
         iotSession = MockSession.self
 
-        api.listTriggers(nil, paginationKey: nil) {
-            triggers, paginationKey, error -> Void in
+        api.listTriggers { triggers, nextPaginationKey, error -> Void in
+            XCTAssertNil(error)
+            XCTAssertNil(nextPaginationKey)
+            XCTAssertEqual(expectedTriggers, triggers!)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testListTriggers_404_error() throws {
+        let expectation = self.expectation(description: "getTrigger403Error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        // perform onboarding
+        api.target = setting.target
+
+        // mock response
+        let errorCode = "TARGET_NOT_FOUND"
+        let errorMessage =
+          "Target \(setting.target.typedID.toString()) not found"
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+        }
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject:
+              ["errorCode" : errorCode, "message" : errorMessage],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+        api.listTriggers {
+            triggers, nextPaginationKey, error -> Void in
+            XCTAssertNil(triggers)
+            XCTAssertNil(nextPaginationKey)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  404,
+                  errorCode: errorCode,
+                  errorMessage: errorMessage)),
+              error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testListTriggers_target_not_available_error() {
+        let expectation = self.expectation(
+          description: "testListTriggers_target_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        api.listTriggers { triggers, nextPaginationKey, error -> Void in
+            XCTAssertNil(triggers)
+            XCTAssertNil(nextPaginationKey)
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testListTriggersBestEffortLimit() throws {
+        let expectation =
+          self.expectation(description: "testListTriggersBestEffortLimit")
+
+        let setting = TestSetting()
+        let api = setting.api
+
+        // perform onboarding
+        api.target = setting.target
+
+        let expectedBestEffortLimit = 2
+
+        let expectedTrigger = Trigger(
+          "dymmyTriggerID",
+          targetID: setting.target.typedID,
+          enabled: true,
+          predicate: StatePredicate(
+            Condition(
+              EqualsClauseInTrigger(
+                "alias1",
+                field: "color",
+                intValue: 0)),
+            triggersWhen: .conditionTrue),
+          command: Command(
+            "dummyCommandID",
+            targetID: setting.target.typedID,
+            issuerID: setting.owner.typedID,
+            aliasActions: [
+              AliasAction(
+                "alias1",
+                actions: [
+                  Action("turnPower", value: true),
+                  Action("setBrightness", value: 90)
+                ]
+              )
+            ],
+            commandState: .sending,
+            created: Date()))
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers?bestEffortLimit=\(expectedBestEffortLimit)",
+              request.url?.absoluteString)
+        }
+        // mock response
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject:
+              ["triggers" : [expectedTrigger.makeJsonObject()]],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.listTriggers(expectedBestEffortLimit) {
+            triggers, nextPaginationKey, error -> Void in
 
             XCTAssertNil(error)
-            XCTAssertNil(paginationKey)
-            XCTAssertEqual(expectedTriggers, triggers!)
+            XCTAssertNil(nextPaginationKey)
+            XCTAssertEqual([expectedTrigger], triggers!)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testListTriggersPaginationKey() throws {
+        let expectation =
+          self.expectation(description: "testListTriggersPaginationKey")
+
+        let setting = TestSetting()
+        let api = setting.api
+
+        // perform onboarding
+        api.target = setting.target
+
+        let expectedPaginationKey = "200/2"
+
+        let expectedTrigger = Trigger(
+          "dymmyTriggerID",
+          targetID: setting.target.typedID,
+          enabled: true,
+          predicate: StatePredicate(
+            Condition(
+              EqualsClauseInTrigger(
+                "alias1",
+                field: "color",
+                intValue: 0)),
+            triggersWhen: .conditionTrue),
+          command: Command(
+            "dummyCommandID",
+            targetID: setting.target.typedID,
+            issuerID: setting.owner.typedID,
+            aliasActions: [
+              AliasAction(
+                "alias1",
+                actions: [
+                  Action("turnPower", value: true),
+                  Action("setBrightness", value: 90)
+                ]
+              )
+            ],
+            commandState: .sending,
+            created: Date()))
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers?paginationKey=\(expectedPaginationKey)",
+              request.url?.absoluteString)
+        }
+        // mock response
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject:
+              ["triggers" : [expectedTrigger.makeJsonObject()]],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.listTriggers(paginationKey: expectedPaginationKey) {
+            triggers, nextPaginationKey, error -> Void in
+
+            XCTAssertNil(error)
+            XCTAssertNil(nextPaginationKey)
+            XCTAssertEqual([expectedTrigger], triggers!)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testListTriggersBestEffortLimitAndPaginationKey() throws {
+        let expectation = self.expectation(
+          description: "testListTriggersBestEffortLimitAndPaginationKey")
+
+        let setting = TestSetting()
+        let api = setting.api
+
+        // perform onboarding
+        api.target = setting.target
+
+        let expectedBestEffortLimit = 2
+        let expectedPaginationKey = "200/2"
+
+        let expectedTrigger = Trigger(
+          "dymmyTriggerID",
+          targetID: setting.target.typedID,
+          enabled: true,
+          predicate: StatePredicate(
+            Condition(
+              EqualsClauseInTrigger(
+                "alias1",
+                field: "color",
+                intValue: 0)),
+            triggersWhen: .conditionTrue),
+          command: Command(
+            "dummyCommandID",
+            targetID: setting.target.typedID,
+            issuerID: setting.owner.typedID,
+            aliasActions: [
+              AliasAction(
+                "alias1",
+                actions: [
+                  Action("turnPower", value: true),
+                  Action("setBrightness", value: 90)
+                ]
+              )
+            ],
+            commandState: .sending,
+            created: Date()))
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers?paginationKey=\(expectedPaginationKey)&bestEffortLimit=\(expectedBestEffortLimit)",
+              request.url?.absoluteString)
+        }
+        // mock response
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject:
+              ["triggers" : [expectedTrigger.makeJsonObject()]],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.listTriggers(
+          expectedBestEffortLimit,
+          paginationKey: expectedPaginationKey) {
+            triggers, nextPaginationKey, error -> Void in
+
+            XCTAssertNil(error)
+            XCTAssertNil(nextPaginationKey)
+            XCTAssertEqual([expectedTrigger], triggers!)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testListTriggersNextPaginationKey() throws {
+        let expectation = self.expectation(
+          description: "testListTriggersNextPaginationKey")
+
+        let setting = TestSetting()
+        let api = setting.api
+
+        // perform onboarding
+        api.target = setting.target
+
+        let expectedBestEffortLimit = 2
+        let expectedPaginationKey = "200/2"
+
+        let expectedTrigger = Trigger(
+          "dymmyTriggerID",
+          targetID: setting.target.typedID,
+          enabled: true,
+          predicate: StatePredicate(
+            Condition(
+              EqualsClauseInTrigger(
+                "alias1",
+                field: "color",
+                intValue: 0)),
+            triggersWhen: .conditionTrue),
+          command: Command(
+            "dummyCommandID",
+            targetID: setting.target.typedID,
+            issuerID: setting.owner.typedID,
+            aliasActions: [
+              AliasAction(
+                "alias1",
+                actions: [
+                  Action("turnPower", value: true),
+                  Action("setBrightness", value: 90)
+                ]
+              )
+            ],
+            commandState: .sending,
+            created: Date()))
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers?paginationKey=\(expectedPaginationKey)&bestEffortLimit=\(expectedBestEffortLimit)",
+              request.url?.absoluteString)
+        }
+        // mock response
+        let expectedNextPaginationKey = "300/2"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject:
+              [
+                "triggers" : [expectedTrigger.makeJsonObject()],
+                "nextPaginationKey" : expectedNextPaginationKey
+              ],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 200,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.listTriggers(
+          expectedBestEffortLimit,
+          paginationKey: expectedPaginationKey) {
+            triggers, nextPaginationKey, error -> Void in
+
+            XCTAssertNil(error)
+            XCTAssertEqual(expectedNextPaginationKey, nextPaginationKey)
+            XCTAssertEqual([expectedTrigger], triggers!)
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
