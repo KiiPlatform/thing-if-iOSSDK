@@ -135,6 +135,42 @@ extension ThingIFAPI {
         */
     }
 
+    /** Apply patch to a registered Trigger
+    Modify a registered Trigger with the specified patch.
+
+    **Note**: Please onboard first, or provide a target instance by
+      calling copyWithTarget. Otherwise,
+      KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+      completionHandler callback
+
+    `target` property and `TriggeredCommandForm.targetID` must be same
+    owner's things.
+
+    - Parameter triggerID: ID of the Trigger to which the patch is applied.
+    - Parameter triggeredCommandForm: Modified triggered command form
+      to patch trigger.
+    - Parameter predicate: Modified Predicate to be applied as patch.
+    - Parameter options: Modified optional data for this trigger.
+    - Parameter completionHandler: A closure to be executed once
+      finished. The closure takes 2 arguments: 1st one is the modified
+      Trigger instance, 2nd one is an ThingIFError instance when
+      failed.
+    */
+    open func patchTrigger(
+        _ triggerID:String,
+        triggeredCommandForm:TriggeredCommandForm? = nil,
+        predicate:Predicate? = nil,
+        options:TriggerOptions? = nil,
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
+    {
+        _patchTrigger(
+            triggerID,
+            triggeredCommandForm: triggeredCommandForm,
+            predicate: predicate,
+            options: options,
+            completionHandler: completionHandler)
+    }
+
     func _patchTrigger(
         _ triggerID: String,
         triggeredCommandForm: TriggeredCommandForm? = nil,
