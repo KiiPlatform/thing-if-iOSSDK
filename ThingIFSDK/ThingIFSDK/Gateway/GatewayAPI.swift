@@ -337,30 +337,27 @@ open class GatewayAPI {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddressString)/gateway-info"
+        self.operationQueue.addHttpRequestOperation(
+            .get,
+            url: "\(self.gatewayAddressString)/gateway-info",
+            requestHeader: self.defaultHeader,
+            failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+                response, error in
+                let result = convertResponse(response, error) {
+                    response, error throws -> (GatewayInformation?, ThingIFError?) in
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
-
-        // do request
-        let request = buildNewRequest(
-            HTTPMethod.GET,
-            urlString: requestURL,
-            requestHeaderDict: requestHeaderDict,
-            requestBodyData: nil,
-            completionHandler: { (response, error) -> Void in
-                let id = response?["vendorThingID"] as? String
-                DispatchQueue.main.async {
-                    if id == nil {
-                        completionHandler(nil, error)
-                    } else {
-                        completionHandler(GatewayInformation(id!), error)
+                    if error != nil {
+                        return (nil, error)
                     }
+                    guard let id = response?["vendorThingID"] as? String else {
+                        return (nil, ThingIFError.jsonParseError)
+                    }
+                    return (GatewayInformation(id), nil)
                 }
-            }
-        )
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+                DispatchQueue.main.async {
+                    completionHandler(result.0, result.1)
+                }
+        }
     }
 
     /** Check if user is logged in to the Gateway.
