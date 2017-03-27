@@ -1,5 +1,5 @@
 //
-//  ThingIFAPIPatchTriggerTests.swift
+//  ThingIFAPIPatchCommandTriggerTests.swift
 //  ThingIFSDK
 //
 //  Created on 2017/03/27.
@@ -10,7 +10,7 @@ import XCTest
 
 @testable import ThingIFSDK
 
-class ThingIFAPIPatchTriggerTests: SmallTestBase {
+class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()
@@ -70,7 +70,7 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
 
         let setting = TestSetting()
 
-        let command = ThingIFAPIPatchTriggerTests.DEFAULT_COMMAND
+        let command = ThingIFAPIPatchCommandTriggerTests.DEFAULT_COMMAND
         let aliasActions = [
           AliasAction(
             "alias1",
