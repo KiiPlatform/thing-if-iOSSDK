@@ -71,13 +71,19 @@ extension ThingIFAPI {
 
 
     /** Post new Trigger to IoT Cloud.
-     
-     **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
-     
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
      - Parameter serverCode: Server code to be executed by the Trigger.
      - Parameter predicate: Predicate of the Command.
      - Parameter options: Optional data for this trigger.
-     - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is an created Trigger instance, 2nd one is an ThingIFError instance when failed.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments: 1st one is an created
+       Trigger instance, 2nd one is an ThingIFError instance when
+       failed.
      */
     open func postNewTrigger(
         _ serverCode:ServerCode,
