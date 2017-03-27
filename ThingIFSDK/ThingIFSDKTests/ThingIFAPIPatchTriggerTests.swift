@@ -71,9 +71,11 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
         let setting = TestSetting()
 
         let command = ThingIFAPIPatchTriggerTests.DEFAULT_COMMAND
+        let optionsMetadata = ["option-key" : "option-value"]
 
 
         let testsCases: [TestCase] = [
+          // TriggeredCommandForm tests.
           TestCase(
             (
               TriggeredCommandForm(
@@ -184,6 +186,68 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
               nil
             )
           ),
+          // TriggerOptions tests
+          TestCase(
+            (
+              nil,
+              nil,
+              TriggerOptions("title")
+            )
+          ),
+          TestCase(
+            (
+              nil,
+              nil,
+              TriggerOptions(triggerDescription: "trigger description")
+            )
+          ),
+          TestCase(
+            (
+              nil,
+              nil,
+              TriggerOptions(metadata: optionsMetadata)
+            )
+          ),
+          TestCase(
+            (
+              nil,
+              nil,
+              TriggerOptions(
+                "title",
+                triggerDescription: "trigger description")
+
+            )
+          ),
+          TestCase(
+            (
+              nil,
+              nil,
+              TriggerOptions(
+                "title",
+                metadata: optionsMetadata)
+            )
+          ),
+          TestCase(
+            (
+              nil,
+              nil,
+              TriggerOptions(
+                "title",
+                triggerDescription: "trigger description",
+                metadata: optionsMetadata)
+            )
+          ),
+          TestCase(
+            (
+              nil,
+              nil,
+              TriggerOptions(
+                triggerDescription: "trigger description",
+                metadata: optionsMetadata)
+            )
+          ),
+
+          // Response tests
           TestCase(
             output: Trigger(
               "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
@@ -477,6 +541,29 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
           "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
           triggeredCommandForm: nil,
           predicate: nil) { (trigger, error) -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testPatchTrigger_withEmptyOptions_unsupportedError() {
+        let expectation = self.expectation(
+          description: "testPatchTrigger_withEmptyOptions_unsupportedError")
+        let setting = TestSetting()
+        let api = setting.api
+
+        api.target = setting.target
+
+        api.patchTrigger(
+          "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
+          triggeredCommandForm: nil,
+          predicate: nil,
+          options: TriggerOptions()) { (trigger, error) -> Void in
             XCTAssertNil(trigger)
             XCTAssertEqual(ThingIFError.unsupportedError, error)
             expectation.fulfill()
