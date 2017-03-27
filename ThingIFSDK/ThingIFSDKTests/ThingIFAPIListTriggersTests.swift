@@ -186,6 +186,16 @@ class ThingIFAPIListTriggersTests: SmallTestBase {
                   predicate: StatePredicate(
                     Condition(rangeColor2_1Included345_3Included),
                     triggersWhen: .conditionTrue),
+                  command: command),
+          Trigger("\(triggerIDPrifex)11",
+                  targetID: setting.target.typedID,
+                  enabled: true,
+                  predicate: SchedulePredicate("00 * * * *"),
+                  command: command),
+          Trigger("\(triggerIDPrifex)12",
+                  targetID: setting.target.typedID,
+                  enabled: true,
+                  predicate: ScheduleOncePredicate(Date()),
                   command: command)
         ]
 
