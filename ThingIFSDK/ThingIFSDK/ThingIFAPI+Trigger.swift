@@ -41,6 +41,19 @@ extension ThingIFAPI {
         options:TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
     {
+        postNewTrigger(
+          [
+            "predicate": (predicate as! ToJsonObject).makeJsonObject(),
+            "command" : makeCommandJson(triggeredCommandForm)!,
+            "triggersWhat" : TriggersWhat.command.rawValue
+          ] + ( options?.makeJsonObject() ?? [ : ]),
+          completionHandler: completionHandler)
+    }
+
+    private func postNewTrigger(
+      _ requestBody: [String : Any],
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
+    {
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
@@ -52,11 +65,7 @@ extension ThingIFAPI {
           requestHeader:
             self.defaultHeader +
             ["Content-Type" : MediaType.mediaTypeJson.rawValue],
-          requestBody: [
-            "predicate": (predicate as! ToJsonObject).makeJsonObject(),
-            "command" : makeCommandJson(triggeredCommandForm)!,
-            "triggersWhat" : TriggersWhat.command.rawValue
-          ] + ( options?.makeJsonObject() ?? [ : ]),
+          requestBody: requestBody,
           failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
             response, error -> Void in
             if error != nil {
