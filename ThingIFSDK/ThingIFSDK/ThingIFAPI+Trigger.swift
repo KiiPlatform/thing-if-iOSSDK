@@ -407,7 +407,7 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, nil, $0) }) {
             response, error -> Void in
 
-            var json: [String : Any]?
+            let json: [String : Any]?
             if let response = response {
                 // NOTE: Server does not contains target id but
                 // Trigger requires it so I add it. We should discuss
@@ -489,7 +489,7 @@ fileprivate func convertTrigger(
   targetID: String,
   error: ThingIFError? = nil) -> (Trigger?, ThingIFError?)
 {
-    var json: [String : Any]?
+    let json: [String : Any]?
     if let response = response {
         // NOTE: Server does not contains target id but
         // Trigger requires it so I add it. We should discuss

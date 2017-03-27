@@ -157,7 +157,6 @@ extension Trigger: FromJsonObject {
         }
         let targetID = try TypedID(jsonObject["target"] as? String)
 
-
         guard let triggerID = serverResponse["triggerID"] as? String,
               let predicateDict =
                 serverResponse["predicate"] as? [String : Any],
