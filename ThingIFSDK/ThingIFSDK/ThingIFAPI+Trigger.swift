@@ -155,7 +155,7 @@ extension ThingIFAPI {
         triggeredCommandForm:TriggeredCommandForm? = nil,
         predicate:Predicate? = nil,
         options:TriggerOptions? = nil,
-        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void)
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
     {
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)

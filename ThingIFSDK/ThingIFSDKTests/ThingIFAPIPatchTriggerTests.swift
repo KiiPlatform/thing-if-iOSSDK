@@ -368,4 +368,122 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
 
         return retval.isEmpty ? nil : retval
     }
+
+    func testPatchTrigger_404() throws {
+        let expectation : XCTestExpectation! =
+          self.expectation(description: "testPatchTrigger_404")
+
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+        // perform onboarding
+        api.target = target
+
+        let options = TriggerOptions("title")
+        let triggerID = "dummyTriggerID"
+
+        sharedMockSession.requestVerifier = makeRequestVerifier()  { request in
+            XCTAssertEqual(request.httpMethod, "PATCH")
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/50a62843/targets/\(setting.target.typedID.toString())/triggers/\(triggerID)",
+              request.url?.absoluteString)
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/json"
+              ],
+              request.allHTTPHeaderFields!)
+            //verify body
+            XCTAssertEqual(
+              self.makePatchRequestBody(
+                (nil, nil, options),
+                setting: setting)! as NSDictionary,
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: .mutableContainers) as? NSDictionary)
+        }
+        let errorCode = "TRIGGER_NOT_FOUND"
+        let errorMessage = "Trigger not found"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["errorCode" : errorCode, "message" : errorMessage],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.patchTrigger(
+          triggerID,
+          triggeredCommandForm: nil,
+          options: options)
+        {
+            trigger, error -> Void in
+
+            XCTAssertNil(trigger)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  404,
+                  errorCode: errorCode,
+                  errorMessage: errorMessage)),
+              error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testPatchTrigger_target_not_available_error() {
+        let expectation = self.expectation(
+          description: "testPatchTrigger_target_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        let expectedTriggerID = "0267251d9d60-1858-5e11-3dc3-00f3f0b5"
+
+        api.patchTrigger(
+          expectedTriggerID,
+          triggeredCommandForm: nil,
+          predicate: nil) { trigger, error -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testPatchTrigger_unsupportedError() {
+        let expectation =
+          self.expectation(description: "testPatchTrigger_unsupportedError")
+        let setting = TestSetting()
+        let api = setting.api
+
+        api.target = setting.target
+
+        api.patchTrigger(
+          "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
+          triggeredCommandForm: nil,
+          predicate: nil) { (trigger, error) -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
 }
