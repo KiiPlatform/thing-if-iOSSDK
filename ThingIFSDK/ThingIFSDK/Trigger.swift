@@ -151,20 +151,27 @@ public enum EventSource: String {
 extension Trigger: FromJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
-        guard let triggerID = jsonObject["triggerID"] as? String,
-              let predicateDict = jsonObject["predicate"] as? [String : Any],
-              let disabled = jsonObject["disabled"] as? Bool else {
+        guard let serverResponse =
+                jsonObject["serverResponse"] as? [String : Any] else {
+            throw ThingIFError.jsonParseError
+        }
+        let targetID = try TypedID(jsonObject["target"] as? String)
+
+
+        guard let triggerID = serverResponse["triggerID"] as? String,
+              let predicateDict =
+                serverResponse["predicate"] as? [String : Any],
+              let disabled = serverResponse["disabled"] as? Bool else {
             throw ThingIFError.jsonParseError
         }
 
-        let targetID = try TypedID(jsonObject["target"] as? String)
         let predicate = try makePredicate(predicateDict)
 
-        let title = jsonObject["title"] as? String
-        let description = jsonObject["description"] as? String
-        let metadata = jsonObject["metadata"] as? [String : Any]
+        let title = serverResponse["title"] as? String
+        let description = serverResponse["description"] as? String
+        let metadata = serverResponse["metadata"] as? [String : Any]
 
-        if let command = jsonObject["command"] as? [String : Any] {
+        if let command = serverResponse["command"] as? [String : Any] {
             self.init(
               triggerID,
               targetID: targetID,
@@ -174,7 +181,8 @@ extension Trigger: FromJsonObject {
               title: title,
               triggerDescription: description,
               metadata: metadata)
-        } else if let serverCode = jsonObject["serverCode"] as? [String : Any] {
+        } else if let serverCode = serverResponse["serverCode"]
+                    as? [String : Any] {
             self.init(
               triggerID,
               targetID: targetID,

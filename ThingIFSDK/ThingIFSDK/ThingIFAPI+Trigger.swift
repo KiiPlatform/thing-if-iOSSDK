@@ -407,10 +407,21 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, nil, $0) }) {
             response, error -> Void in
 
-            var response = response
-            response?["target"] = target.typedID.toString()
+            var json: [String : Any]?
+            if let response = response {
+                // NOTE: Server does not contains target id but
+                // Trigger requires it so I add it. We should discuss
+                // whether Trigger requires targe id or not
+                json = [
+                  "serverResponse" : response,
+                  "target" : target.typedID.toString()
+                ]
+            } else {
+                json = nil
+            }
+
             let result: (ListTriggersResult?, ThingIFError?) =
-              convertSpecifiedItem(response, error)
+              convertSpecifiedItem(json, error)
             DispatchQueue.main.async {
                 completionHandler(
                   result.0?.triggers,
@@ -448,14 +459,10 @@ extension ThingIFAPI {
           failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
             response, error -> Void in
 
-            var response = response
-
-            // NOTE: Server does not contains target id but Trigger
-            // requires it so I add it. We should discuss whether
-            // Trigger requires targe id or not
-            response?["target"] = target.typedID.toString()
-            let result: (Trigger?, ThingIFError?) =
-              convertSpecifiedItem(response, error)
+            let result = convertTrigger(
+              response,
+              targetID: target.typedID.toString(),
+              error: error)
             DispatchQueue.main.async { completionHandler(result.0, result.1) }
         }
     }
@@ -477,23 +484,49 @@ extension ThingIFAPI {
 
 }
 
+fileprivate func convertTrigger(
+  _ response: [String : Any]?,
+  targetID: String,
+  error: ThingIFError? = nil) -> (Trigger?, ThingIFError?)
+{
+    var json: [String : Any]?
+    if let response = response {
+        // NOTE: Server does not contains target id but
+        // Trigger requires it so I add it. We should discuss
+        // whether Trigger requires targe id or not
+        json = ["serverResponse" : response, "target" : targetID]
+    } else {
+        json = nil
+    }
+
+    return convertSpecifiedItem(json, error)
+}
+
 fileprivate struct ListTriggersResult: FromJsonObject {
 
     let triggers: [Trigger]?
     let nextPaginationKey: String?
 
     init(_ jsonObject: [String : Any]) throws {
-        self.nextPaginationKey = jsonObject["nextPaginationKey"] as? String
-        let target = jsonObject["target"] as? String
-        guard let triggers = jsonObject["triggers"] as? [[String : Any]] else {
+        guard let serverResponse =
+                jsonObject["serverResponse"] as? [String : Any],
+              let targetID = jsonObject["target"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.nextPaginationKey = serverResponse["nextPaginationKey"] as? String
+        guard let triggers =
+                serverResponse["triggers"] as? [[String : Any]] else {
             self.triggers = nil
             return
         }
 
         self.triggers = try triggers.map {
-            var json = $0;
-            json["target"] = target
-            return try Trigger(json)
+            let result = convertTrigger($0, targetID: targetID)
+            if let error = result.1 {
+                throw error
+            }
+            return result.0!
         }
     }
 
