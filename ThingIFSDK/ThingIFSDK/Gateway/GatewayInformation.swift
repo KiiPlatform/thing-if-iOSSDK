@@ -30,6 +30,9 @@ public struct GatewayInformation {
 extension GatewayInformation: FromJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
-        self.init(jsonObject["vendorThingID"] as! String)
+        guard let id = jsonObject["vendorThingID"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(id)
     }
 }
