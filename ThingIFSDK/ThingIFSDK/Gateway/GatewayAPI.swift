@@ -310,38 +310,16 @@ open class GatewayAPI {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/THING_ID:\(endNodeThingID)"
-
-        // generate header
-        var requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
-        requestHeaderDict["Content-Type"] = "application/json"
-
-        // genrate body
-        let requestBodyDict = NSMutableDictionary(dictionary:
-            [
-                "vendorThingID": endNodeVendorThingID
-            ]
-        )
-
-        do {
-            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-            // do request
-            let request = buildNewRequest(
-                HTTPMethod.PUT,
-                urlString: requestURL,
-                requestHeaderDict: requestHeaderDict,
-                requestBodyData: requestBodyData,
-                completionHandler: { (response, error) -> Void in
-                    DispatchQueue.main.async {
-                        completionHandler(error)
-                    }
+        self.operationQueue.addHttpRequestOperation(
+            .put,
+            url: "\(self.gatewayAddressString)/\(self.app.siteName)/apps/\(self.app.appID)/gateway/end-nodes/THING_ID:\(endNodeThingID)",
+            requestHeader: self.defaultHeader + [ "Content-Type" : MediaType.mediaTypeJson.rawValue ],
+            requestBody: [ "vendorThingID": endNodeVendorThingID ],
+            failureBeforeExecutionHandler: { completionHandler($0) }) {
+                response, error in
+                DispatchQueue.main.async {
+                    completionHandler(error)
                 }
-            )
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        } catch(_) {
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(ThingIFError.jsonParseError)
         }
     }
 
