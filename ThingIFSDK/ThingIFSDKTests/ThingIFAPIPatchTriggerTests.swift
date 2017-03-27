@@ -71,24 +71,23 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
         let setting = TestSetting()
 
         let command = ThingIFAPIPatchTriggerTests.DEFAULT_COMMAND
-        let optionsMetadata = ["option-key" : "option-value"]
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action("turnPower", value: true),
+              Action("setBrightness", value: 90)
+            ]
+          )
+        ]
 
+        let optionsMetadata = ["option-key" : "option-value"]
 
         let testsCases: [TestCase] = [
           // TriggeredCommandForm tests.
           TestCase(
             (
-              TriggeredCommandForm(
-                [
-                  AliasAction(
-                    "alias1",
-                    actions: [
-                      Action("turnPower", value: true),
-                      Action("setBrightness", value: 90)
-                    ]
-                  )
-                ]
-              ),
+              TriggeredCommandForm(aliasActions),
               nil,
               nil
             )
@@ -96,15 +95,7 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
           TestCase(
             (
               TriggeredCommandForm(
-                [
-                  AliasAction(
-                    "alias1",
-                    actions: [
-                      Action("turnPower", value: true),
-                      Action("setBrightness", value: 90)
-                    ]
-                  )
-                ],
+                aliasActions,
                 targetID: TypedID(.thing, id: "dummyCommandID")
               ),
               nil,
@@ -114,15 +105,7 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
           TestCase(
             (
               TriggeredCommandForm(
-                [
-                  AliasAction(
-                    "alias1",
-                    actions: [
-                      Action("turnPower", value: true),
-                      Action("setBrightness", value: 90)
-                    ]
-                  )
-                ],
+                aliasActions,
                 title: "title"
               ),
               nil,
@@ -132,15 +115,7 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
           TestCase(
             (
               TriggeredCommandForm(
-                [
-                  AliasAction(
-                    "alias1",
-                    actions: [
-                      Action("turnPower", value: true),
-                      Action("setBrightness", value: 90)
-                    ]
-                  )
-                ],
+                aliasActions,
                 commandDescription: "description"
               ),
               nil,
@@ -150,15 +125,7 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
           TestCase(
             (
               TriggeredCommandForm(
-                [
-                  AliasAction(
-                    "alias1",
-                    actions: [
-                      Action("turnPower", value: true),
-                      Action("setBrightness", value: 90)
-                    ]
-                  )
-                ],
+                aliasActions,
                 metadata: ["key" : "value"]
               ),
               nil,
@@ -168,15 +135,109 @@ class ThingIFAPIPatchTriggerTests: SmallTestBase {
           TestCase(
             (
               TriggeredCommandForm(
-                [
-                  AliasAction(
-                    "alias1",
-                    actions: [
-                      Action("turnPower", value: true),
-                      Action("setBrightness", value: 90)
-                    ]
-                  )
-                ],
+                aliasActions,
+                targetID: TypedID(.thing, id: "dummyCommandID"),
+                title: "title"
+              ),
+              nil,
+              nil
+            )
+          ),
+          TestCase(
+            (
+              TriggeredCommandForm(
+                aliasActions,
+                targetID: TypedID(.thing, id: "dummyCommandID"),
+                commandDescription: "description"
+              ),
+              nil,
+              nil
+            )
+          ),
+          TestCase(
+            (
+              TriggeredCommandForm(
+                aliasActions,
+                targetID: TypedID(.thing, id: "dummyCommandID"),
+                metadata: ["key" : "value"]
+              ),
+              nil,
+              nil
+            )
+          ),
+          TestCase(
+            (
+              TriggeredCommandForm(
+                aliasActions,
+                title: "title",
+                commandDescription: "description"
+              ),
+              nil,
+              nil
+            )
+          ),
+          TestCase(
+            (
+              TriggeredCommandForm(
+                aliasActions,
+                title: "title",
+                metadata: ["key" : "value"]
+              ),
+              nil,
+              nil
+            )
+          ),
+          TestCase(
+            (
+              TriggeredCommandForm(
+                aliasActions,
+                targetID: TypedID(.thing, id: "dummyCommandID"),
+                title: "title",
+                commandDescription: "description"
+              ),
+              nil,
+              nil
+            )
+          ),
+          TestCase(
+            (
+              TriggeredCommandForm(
+                aliasActions,
+                targetID: TypedID(.thing, id: "dummyCommandID"),
+                title: "title",
+                metadata: ["key" : "value"]
+              ),
+              nil,
+              nil
+            )
+          ),
+          TestCase(
+            (
+              TriggeredCommandForm(
+                aliasActions,
+                commandDescription: "description",
+                metadata: ["key" : "value"]
+              ),
+              nil,
+              nil
+            )
+          ),
+          TestCase(
+            (
+              TriggeredCommandForm(
+                aliasActions,
+                title: "title",
+                commandDescription: "description",
+                metadata: ["key" : "value"]
+              ),
+              nil,
+              nil
+            )
+          ),
+          TestCase(
+            (
+              TriggeredCommandForm(
+                aliasActions,
                 targetID: TypedID(.thing, id: "dummyCommandID"),
                 title: "title",
                 commandDescription: "description",
