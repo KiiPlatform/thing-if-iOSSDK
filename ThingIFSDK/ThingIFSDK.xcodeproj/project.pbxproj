@@ -11,6 +11,7 @@
 		224051FA1D40D5C90001BF4E /* OnboardWithThingIDOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051F91D40D5C90001BF4E /* OnboardWithThingIDOptions.swift */; };
 		224051FC1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051FB1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift */; };
 		2243670A1E88E01E0064D394 /* GatewayAPIReplaceEndNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224367091E88E01E0064D394 /* GatewayAPIReplaceEndNodeTests.swift */; };
+		2243670C1E890E100064D394 /* GatewayAPIGetGatewayInformationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2243670B1E890E100064D394 /* GatewayAPIGetGatewayInformationTests.swift */; };
 		224FA09B1D59A5460011327C /* OnboardAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224FA09A1D59A5460011327C /* OnboardAPITests.swift */; };
 		225E43381CC5FF55003A3C4B /* GatewayInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225E43371CC5FF55003A3C4B /* GatewayInformation.swift */; };
 		2262F14B1E49899300080DF6 /* ActionResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2262F14A1E49899300080DF6 /* ActionResultTests.swift */; };
@@ -186,6 +187,7 @@
 		224051F91D40D5C90001BF4E /* OnboardWithThingIDOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardWithThingIDOptions.swift; sourceTree = "<group>"; };
 		224051FB1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardWithVendorThingIDOptions.swift; sourceTree = "<group>"; };
 		224367091E88E01E0064D394 /* GatewayAPIReplaceEndNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPIReplaceEndNodeTests.swift; sourceTree = "<group>"; };
+		2243670B1E890E100064D394 /* GatewayAPIGetGatewayInformationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPIGetGatewayInformationTests.swift; sourceTree = "<group>"; };
 		224FA09A1D59A5460011327C /* OnboardAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardAPITests.swift; sourceTree = "<group>"; };
 		225E43371CC5FF55003A3C4B /* GatewayInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayInformation.swift; sourceTree = "<group>"; };
 		2262F14A1E49899300080DF6 /* ActionResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionResultTests.swift; sourceTree = "<group>"; };
@@ -522,6 +524,7 @@
 		B6C33EFD1E49770B00DF2BF5 /* ThingIFSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				2243670B1E890E100064D394 /* GatewayAPIGetGatewayInformationTests.swift */,
 				224367091E88E01E0064D394 /* GatewayAPIReplaceEndNodeTests.swift */,
 				22F915CD1E8521DF0075AFA2 /* GatewayAPIRestoreTests.swift */,
 				22F915CB1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift */,
@@ -878,6 +881,7 @@
 				B6C2DB571E5C15C2008DBA83 /* OnboardWithVendorThingIDOptionsTests.swift in Sources */,
 				B6C33F1A1E4C530200DF2BF5 /* OrClauseInQueryTests.swift in Sources */,
 				22F915CE1E8521DF0075AFA2 /* GatewayAPIRestoreTests.swift in Sources */,
+				2243670C1E890E100064D394 /* GatewayAPIGetGatewayInformationTests.swift in Sources */,
 				B6C2DAFF1E4DA5EA008DBA83 /* AggregatedResultTests.swift in Sources */,
 				B66729371E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift in Sources */,
 				B6B0A6801E64170600133788 /* ServerCodeTests.swift in Sources */,
