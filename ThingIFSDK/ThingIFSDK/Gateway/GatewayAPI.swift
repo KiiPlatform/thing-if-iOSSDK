@@ -343,17 +343,8 @@ open class GatewayAPI {
             requestHeader: self.defaultHeader,
             failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
                 response, error in
-                let result = convertResponse(response, error) {
-                    response, error throws -> (GatewayInformation?, ThingIFError?) in
-
-                    if error != nil {
-                        return (nil, error)
-                    }
-                    guard let id = response?["vendorThingID"] as? String else {
-                        return (nil, ThingIFError.jsonParseError)
-                    }
-                    return (GatewayInformation(id), nil)
-                }
+                let result : (GatewayInformation?, ThingIFError?) =
+                    convertSpecifiedItem(response, error)
                 DispatchQueue.main.async {
                     completionHandler(result.0, result.1)
                 }

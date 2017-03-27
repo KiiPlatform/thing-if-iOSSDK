@@ -26,3 +26,10 @@ public struct GatewayInformation {
         self.vendorThingID = vendorThingID
     }
 }
+
+extension GatewayInformation: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        self.init(jsonObject["vendorThingID"] as! String)
+    }
+}
