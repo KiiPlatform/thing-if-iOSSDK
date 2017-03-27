@@ -380,53 +380,60 @@ extension ThingIFAPI {
         */
     }
 
-    func _listTriggers(
-        _ bestEffortLimit:Int?,
-        paginationKey:String?,
-        completionHandler: @escaping (_ triggers:[Trigger]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
-        )
+    /** List Triggers belongs to the specified Target
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter bestEffortLimit: Limit the maximum number of the
+       Triggers in the Response. If omitted default limit internally
+       defined is applied. Meaning of 'bestEffort' is if specified
+       value is greater than default limit, default limit is applied.
+     - Parameter paginationKey: If there is further page to be
+       retrieved, this API returns paginationKey in 2nd
+       element. Specifying this value in next call in the argument
+       results continue to get the results from the next page.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 3 arguments: 1st one is Array of
+       Triggers instance if found, 2nd one is paginationKey if there
+       is further page to be retrieved, and 3rd one is an instance of
+       ThingIFError when failed.
+    */
+    open func listTriggers(
+        _ bestEffortLimit:Int? = nil,
+        paginationKey:String? = nil,
+        completionHandler:
+          @escaping (_ triggers:[Trigger]?,
+                     _ paginationKey:String?,
+                     _ error: ThingIFError?)-> Void) -> Void
     {
-        fatalError("TODO: implement me")
-        /*
         guard let target = self.target else {
             completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
-        
-        if paginationKey != nil && bestEffortLimit != nil && bestEffortLimit! != 0{
-            requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
-        }else if bestEffortLimit != nil && bestEffortLimit! != 0 {
-            requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
-        }else if paginationKey != nil {
-            requestURL += "?paginationKey=\(paginationKey!)"
-        }
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url:  "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers".appendURLQuery(
+            ("paginationKey", paginationKey),
+            ("bestEffortLimit", bestEffortLimit)),
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, nil, $0) }) {
+            response, error -> Void in
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            var triggers: [Trigger]?
-            var nextPaginationKey: String?
-            if let responseDict = response {
-                nextPaginationKey = responseDict["nextPaginationKey"] as? String
-                if let triggerDicts = responseDict["triggers"] as? NSArray {
-                    triggers = [Trigger]()
-                    for triggerDict in triggerDicts {
-                        if let trigger = Trigger.triggerWithNSDict(target.typedID, triggerDict: triggerDict as! NSDictionary){
-                            triggers!.append(trigger)
-                        }
-                    }
-                }
-            }
+            var response = response
+            response?["target"] = target.typedID.toString()
+            let result: (ListTriggersResult?, ThingIFError?) =
+              convertSpecifiedItem(response, error)
             DispatchQueue.main.async {
-                completionHandler(triggers, nextPaginationKey, error)
+                completionHandler(
+                  result.0?.triggers,
+                  result.0?.nextPaginationKey,
+                  result.1)
             }
-        })
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-        */
+        }
     }
 
     /** Get specified trigger
@@ -468,4 +475,26 @@ extension ThingIFAPI {
             DispatchQueue.main.async { completionHandler(result.0, result.1) }
         }
     }
+}
+
+fileprivate struct ListTriggersResult: FromJsonObject {
+
+    let triggers: [Trigger]?
+    let nextPaginationKey: String?
+
+    init(_ jsonObject: [String : Any]) throws {
+        self.nextPaginationKey = jsonObject["nextPaginationKey"] as? String
+        let target = jsonObject["target"] as? String
+        guard let triggers = jsonObject["triggers"] as? [[String : Any]] else {
+            self.triggers = nil
+            return
+        }
+
+        self.triggers = try triggers.map {
+            var json = $0;
+            json["target"] = target
+            return try Trigger(json)
+        }
+    }
+
 }
