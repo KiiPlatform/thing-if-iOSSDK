@@ -210,7 +210,6 @@ class PatchServerCodeTriggeWIthTriggerOptions: SmallTestBase {
         }
     }
 
-
     func testServerCodeAndOption() {
         let metadata: Dictionary<String, Any> = [
           "key" : "value"

@@ -18,7 +18,7 @@ internal enum HTTPMethod: String {
     case put = "PUT"
     case HEAD = "HEAD"
     case DELETE = "DELETE"
-    case PATCH = "PATCH"
+    case patch = "PATCH"
 }
 
 internal struct IotRequest<T> {
@@ -105,7 +105,7 @@ class IoTRequestOperation<T>: GroupOperation {
         case .DELETE:
             addDeleteRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
 
-        case .PATCH:
+        case .patch:
             addPatchRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData!, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
 
         case .put:
