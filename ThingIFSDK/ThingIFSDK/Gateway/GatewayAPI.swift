@@ -276,25 +276,16 @@ open class GatewayAPI {
             return;
         }
 
-        let requestURL = "\(self.gatewayAddressString)/gateway-app/gateway/restore"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = generateAuthBearerHeader()
-
-        // do request
-        let request = buildNewRequest(
-            HTTPMethod.post,
-            urlString: requestURL,
-            requestHeaderDict: requestHeaderDict,
-            requestBodyData: nil,
-            completionHandler: { (response, error) -> Void in
+        self.operationQueue.addHttpRequestOperation(
+            .post,
+            url: "\(self.gatewayAddressString)/gateway-app/gateway/restore",
+            requestHeader: self.defaultHeader,
+            failureBeforeExecutionHandler: { completionHandler($0) }) {
+                response, error in
                 DispatchQueue.main.async {
                     completionHandler(error)
                 }
-            }
-        )
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+        }
     }
 
     /** Replace end-node by new vendorThingID for end node thingID.
