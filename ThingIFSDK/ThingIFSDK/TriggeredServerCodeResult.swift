@@ -134,9 +134,9 @@ public struct ServerError {
      - Parameter detailMessage: Detail message.
      */
     public init(
-      _ errorMessage: String?,
-      errorCode: String?,
-      detailMessage: String?)
+      _ errorMessage: String? = nil,
+      errorCode: String? = nil,
+      detailMessage: String? = nil)
     {
         self.errorMessage = errorMessage
         self.errorCode = errorCode
