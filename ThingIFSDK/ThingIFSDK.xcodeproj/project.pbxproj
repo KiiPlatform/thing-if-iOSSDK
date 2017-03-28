@@ -94,6 +94,7 @@
 		B69ADF331E88E2F500BC48A1 /* ThingIFAPIPatchCommandTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69ADF321E88E2F500BC48A1 /* ThingIFAPIPatchCommandTriggerTests.swift */; };
 		B69ADF351E8A11C100BC48A1 /* ThingIFAPIPostNewServerCodeTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69ADF341E8A11C100BC48A1 /* ThingIFAPIPostNewServerCodeTriggerTests.swift */; };
 		B69ADF371E8A2F9600BC48A1 /* ThingIFAPIPatchServerCodeTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69ADF361E8A2F9600BC48A1 /* ThingIFAPIPatchServerCodeTriggerTests.swift */; };
+		B69ADF391E8A41FD00BC48A1 /* ThingIFAPIListTriggeredServerCodeResultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69ADF381E8A41FD00BC48A1 /* ThingIFAPIListTriggeredServerCodeResultsTests.swift */; };
 		B6A047161E3B379200D85A1E /* AliasAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047151E3B379200D85A1E /* AliasAction.swift */; };
 		B6A047181E3B38C000D85A1E /* AliasActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A047171E3B38C000D85A1E /* AliasActionResult.swift */; };
 		B6A0471B1E3B3DC000D85A1E /* ActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A0471A1E3B3DC000D85A1E /* ActionResult.swift */; };
@@ -274,6 +275,7 @@
 		B69ADF321E88E2F500BC48A1 /* ThingIFAPIPatchCommandTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPatchCommandTriggerTests.swift; sourceTree = "<group>"; };
 		B69ADF341E8A11C100BC48A1 /* ThingIFAPIPostNewServerCodeTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPostNewServerCodeTriggerTests.swift; sourceTree = "<group>"; };
 		B69ADF361E8A2F9600BC48A1 /* ThingIFAPIPatchServerCodeTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPatchServerCodeTriggerTests.swift; sourceTree = "<group>"; };
+		B69ADF381E8A41FD00BC48A1 /* ThingIFAPIListTriggeredServerCodeResultsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIListTriggeredServerCodeResultsTests.swift; sourceTree = "<group>"; };
 		B6A047151E3B379200D85A1E /* AliasAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AliasAction.swift; sourceTree = "<group>"; };
 		B6A047171E3B38C000D85A1E /* AliasActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AliasActionResult.swift; sourceTree = "<group>"; };
 		B6A0471A1E3B3DC000D85A1E /* ActionResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionResult.swift; sourceTree = "<group>"; };
@@ -599,6 +601,7 @@
 				B69ADF321E88E2F500BC48A1 /* ThingIFAPIPatchCommandTriggerTests.swift */,
 				B69ADF341E8A11C100BC48A1 /* ThingIFAPIPostNewServerCodeTriggerTests.swift */,
 				B69ADF361E8A2F9600BC48A1 /* ThingIFAPIPatchServerCodeTriggerTests.swift */,
+				B69ADF381E8A41FD00BC48A1 /* ThingIFAPIListTriggeredServerCodeResultsTests.swift */,
 			);
 			path = ThingIFSDKTests;
 			sourceTree = "<group>";
@@ -877,6 +880,7 @@
 				B6B0A67E1E640D1000133788 /* KiiAppTests.swift in Sources */,
 				B645506C1E78ECC600D8FACF /* GatewayAPILoginTests.swift in Sources */,
 				B645506E1E79087F00D8FACF /* GatewayAPIOnboardGatewayTests.swift in Sources */,
+				B69ADF391E8A41FD00BC48A1 /* ThingIFAPIListTriggeredServerCodeResultsTests.swift in Sources */,
 				B6A86CB01E6E8C0D00F9C41B /* ThingIFAPIOnboardWithVendorThingIDTests.swift in Sources */,
 				B6C33F1C1E4C5D2100DF2BF5 /* EqualsClauseInTriggerTests.swift in Sources */,
 				B6E58D7B1E85074A004C1873 /* ThingIFAPIListTriggersTests.swift in Sources */,
