@@ -41,10 +41,19 @@ extension ThingIFAPI {
         options:TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
     {
+        let commandJson: [String : Any]
+        do {
+            commandJson = try makeCommandJson(triggeredCommandForm)!
+        } catch let error {
+            kiiVerboseLog(error)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
+            return
+        }
+
         postNewTrigger(
           [
             "predicate": (predicate as! ToJsonObject).makeJsonObject(),
-            "command" : makeCommandJson(triggeredCommandForm)!,
+            "command" : commandJson,
             "triggersWhat" : TriggersWhat.command.rawValue
           ] + ( options?.makeJsonObject() ?? [ : ]),
           completionHandler: completionHandler)
@@ -138,15 +147,33 @@ extension ThingIFAPI {
         options:TriggerOptions? = nil,
         completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
     {
+        var requestBody = options?.makeJsonObject() ?? [ : ]
+        do {
+            requestBody["command"] = try makeCommandJson(triggeredCommandForm)
+        } catch let error {
+            kiiVerboseLog(error)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
+            return
+        }
+        requestBody["predicate"] =
+          (predicate as? ToJsonObject)?.makeJsonObject()
+        requestBody["triggersWhat"] =
+          triggeredCommandForm == nil ? nil : TriggersWhat.command.rawValue
+
+        patchTrigger(triggerID,
+                     requestBody: requestBody,
+                     completionHandler: completionHandler)
+    }
+
+    private func patchTrigger(
+      _ triggerID: String,
+      requestBody: [String : Any],
+      completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
+    {
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
-
-        var requestBody = options?.makeJsonObject() ?? [ : ]
-        requestBody["command"] = makeCommandJson(triggeredCommandForm)
-        requestBody["predicate"] =
-          (predicate as? ToJsonObject)?.makeJsonObject()
 
         if requestBody.isEmpty {
             completionHandler(nil, ThingIFError.unsupportedError)
@@ -196,72 +223,18 @@ extension ThingIFAPI {
         completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
-        _patchTrigger(triggerID,
-                      serverCode: serverCode,
-                      predicate: predicate,
-                      options: options,
-                      completionHandler: completionHandler)
+        var requestBody = options?.makeJsonObject() ?? [ : ]
+        requestBody["serverCode"] = serverCode?.makeJsonObject()
+        requestBody["predicate"] =
+          (predicate as? ToJsonObject)?.makeJsonObject()
+        requestBody["triggersWhat"] =
+          serverCode == nil ? nil : TriggersWhat.serverCode.rawValue
+
+        patchTrigger(triggerID,
+                     requestBody: requestBody,
+                     completionHandler: completionHandler)
     }
 
-    func _patchTrigger(
-        _ triggerID:String,
-        serverCode:ServerCode?,
-        predicate:Predicate?,
-        options:TriggerOptions?,
-        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void
-        )
-    {
-        fatalError("TODO: implement me.")
-        /*
-        guard let target = self.target else {
-            completionHandler(nil, ThingIFError.targetNotAvailable)
-            return
-        }
-
-        if serverCode == nil && predicate == nil && options == nil {
-            completionHandler(nil, ThingIFError.unsupportedError)
-            return
-        }
-
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-        
-        // generate body
-        var requestBodyDict: Dictionary<String, Any> = [
-          "triggersWhat" : TriggersWhat.serverCode.rawValue
-        ]
-        requestBodyDict["predicate"] = predicate?.makeDictionary()
-        requestBodyDict["serverCode"] = serverCode?.makeDictionary()
-        requestBodyDict["title"] = options?.title
-        requestBodyDict["description"] = options?.triggerDescription
-        requestBodyDict["metadata"] = options?.metadata
-        do{
-            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(.PATCH,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                if error == nil {
-                    self._getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
-                        DispatchQueue.main.async {
-                            completionHandler(updatedTrigger, error2)
-                        }
-                    })
-                }else{
-                    DispatchQueue.main.async {
-                        completionHandler(nil, error)
-                    }
-                }
-            })
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        }catch(_){
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.jsonParseError)
-        }
-        */
-    }
-    
     func _enableTrigger(
         _ triggerID:String,
         enable:Bool,
@@ -481,7 +454,7 @@ extension ThingIFAPI {
     }
 
     private func makeCommandJson(
-      _ form: TriggeredCommandForm?) -> [String : Any]?
+      _ form: TriggeredCommandForm?) throws -> [String : Any]?
     {
         guard let form = form else {
             return nil
@@ -490,7 +463,10 @@ extension ThingIFAPI {
         var retval = form.makeJsonObject()
         retval["issuer"] = self.owner.typedID.toString()
         if retval["target"] == nil {
-            retval["target"] = self.target!.typedID.toString()
+            guard let target = self.target else {
+                throw ThingIFError.targetNotAvailable
+            }
+            retval["target"] = target.typedID.toString()
         }
         return retval
     }

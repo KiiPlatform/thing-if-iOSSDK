@@ -489,6 +489,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
                 commandJson["target"] = setting.target.typedID.toString()
             }
             retval["command"] = commandJson
+            retval["triggersWhat"] = TriggersWhat.command.rawValue
         }
 
         return retval.isEmpty ? nil : retval
