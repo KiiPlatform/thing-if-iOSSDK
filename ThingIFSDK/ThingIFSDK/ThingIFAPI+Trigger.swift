@@ -43,7 +43,7 @@ extension ThingIFAPI {
     {
         let commandJson: [String : Any]
         do {
-            commandJson = try makeCommandJson(triggeredCommandForm)!
+            commandJson = try makeCommandJson(triggeredCommandForm)
         } catch let error {
             kiiVerboseLog(error)
             completionHandler(nil, ThingIFError.targetNotAvailable)
@@ -149,7 +149,10 @@ extension ThingIFAPI {
     {
         var requestBody = options?.makeJsonObject() ?? [ : ]
         do {
-            requestBody["command"] = try makeCommandJson(triggeredCommandForm)
+            if let form = triggeredCommandForm {
+                requestBody["command"] = try makeCommandJson(form)
+                requestBody["triggersWhat"] = TriggersWhat.command.rawValue
+            }
         } catch let error {
             kiiVerboseLog(error)
             completionHandler(nil, ThingIFError.targetNotAvailable)
@@ -157,8 +160,6 @@ extension ThingIFAPI {
         }
         requestBody["predicate"] =
           (predicate as? ToJsonObject)?.makeJsonObject()
-        requestBody["triggersWhat"] =
-          triggeredCommandForm == nil ? nil : TriggersWhat.command.rawValue
 
         patchTrigger(triggerID,
                      requestBody: requestBody,
@@ -224,11 +225,12 @@ extension ThingIFAPI {
         )
     {
         var requestBody = options?.makeJsonObject() ?? [ : ]
-        requestBody["serverCode"] = serverCode?.makeJsonObject()
+        if let serverCode = serverCode {
+            requestBody["serverCode"] = serverCode.makeJsonObject()
+            requestBody["triggersWhat"] = TriggersWhat.serverCode.rawValue
+        }
         requestBody["predicate"] =
           (predicate as? ToJsonObject)?.makeJsonObject()
-        requestBody["triggersWhat"] =
-          serverCode == nil ? nil : TriggersWhat.serverCode.rawValue
 
         patchTrigger(triggerID,
                      requestBody: requestBody,
@@ -454,12 +456,8 @@ extension ThingIFAPI {
     }
 
     private func makeCommandJson(
-      _ form: TriggeredCommandForm?) throws -> [String : Any]?
+      _ form: TriggeredCommandForm) throws -> [String : Any]
     {
-        guard let form = form else {
-            return nil
-        }
-
         var retval = form.makeJsonObject()
         retval["issuer"] = self.owner.typedID.toString()
         if retval["target"] == nil {
