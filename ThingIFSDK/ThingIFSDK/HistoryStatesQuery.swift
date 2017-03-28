@@ -54,17 +54,10 @@ public struct HistoryStatesQuery {
 extension HistoryStatesQuery : ToJsonObject {
 
     internal func makeJsonObject() -> [String : Any]{
-        var json : [String : Any] = [:]
-        if self.firmwareVersion != nil {
-            json["firmwareVersion"] = self.firmwareVersion
-        }
-        if self.bestEffortLimit != nil {
-            json["bestEffortLimit"] = self.bestEffortLimit
-        }
-        if self.nextPaginationKey != nil {
-            json["paginationKey"] = self.nextPaginationKey
-        }
-        json["query"] = ["clause" : (self.clause as? ToJsonObject)?.makeJsonObject()]
+        var json : [String : Any] = ["query" : ["clause" : (self.clause as? ToJsonObject)?.makeJsonObject()]]
+        json["firmwareVersion"] = self.firmwareVersion
+        json["bestEffortLimit"] = self.bestEffortLimit
+        json["paginationKey"] = self.nextPaginationKey
         return json
     }
 }

@@ -22,11 +22,24 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
         let setting = TestSetting()
         let alias = "dummyAlias"
         let clause : EqualsClauseInQuery = EqualsClauseInQuery("dummyField", intValue: 10)
-        let query = HistoryStatesQuery(alias, clause: clause)
-        let historyState = HistoryState(
-            ["power" : true, "currentTemperature" : 25],
-            createdAt: Date(timeIntervalSince1970: 50))
-        let nextPaginationKey = "100/2"
+        let query = HistoryStatesQuery(
+            alias,
+            clause: clause,
+            firmwareVersion: "V1",
+            bestEffortLimit: 5,
+            nextPaginationKey: "100/2")
+        let states = [
+            HistoryState(
+                ["power" : true, "currentTemperature" : 25],
+                createdAt: Date(timeIntervalSince1970: 50)),
+            HistoryState(
+                ["power" : false, "currentTemperature" : 32],
+                createdAt: Date(timeIntervalSince1970: 10)),
+            HistoryState(
+                ["power" : true, "currentTemperature" : 10],
+                createdAt: Date(timeIntervalSince1970: 2000))
+        ]
+        let nextPaginationKey = "100/3"
 
         // verify request
         sharedMockSession.requestVerifier = makeRequestVerifier() {(request) in
@@ -48,6 +61,7 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
+            //verify body
             let expectedBody: [ String : Any] = [
                 "query": [
                     "clause": [
@@ -55,7 +69,10 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
                         "field": clause.field,
                         "value": clause.value
                     ]
-                ]
+                ],
+                "firmwareVersion" : "V1",
+                "bestEffortLimit" : 5,
+                "paginationKey" : "100/2"
             ]
             let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
             let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
@@ -68,9 +85,7 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
 
         // mock response
         let responseBody : [String: Any] = [
-            "results" : [
-                historyState.makeJsonObject()
-            ],
+            "results" : states.map { $0.makeJsonObject() },
             "nextPaginationKey": nextPaginationKey
         ]
         sharedMockSession.mockResponse = (
@@ -87,10 +102,7 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
         setting.api.query(query) {
             (results: [HistoryState]?, paginationKey:String?, error) in
             XCTAssertNil(error)
-            XCTAssertNotNil(results)
-            XCTAssertEqual(1, results!.count)
-            let result: HistoryState = results![0]
-            XCTAssertEqual(historyState, result)
+            XCTAssertEqual(states, results!)
             XCTAssertEqual(nextPaginationKey, paginationKey)
             expectation.fulfill()
         }
@@ -163,8 +175,7 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
         setting.api.query(query) {
             (results: [HistoryState]?, paginationKey:String?, error) in
             XCTAssertNil(error)
-            XCTAssertNotNil(results)
-            XCTAssertEqual(0, results!.count)
+            XCTAssertEqual([], results!)
             XCTAssertNil(paginationKey)
             expectation.fulfill()
         }
@@ -238,8 +249,7 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
         setting.api.query(query) {
             (results: [HistoryState]?, paginationKey:String?, error) in
             XCTAssertNil(error)
-            XCTAssertNotNil(results)
-            XCTAssertEqual(0, results!.count)
+            XCTAssertEqual([], results!)
             XCTAssertNil(paginationKey)
             expectation.fulfill()
         }

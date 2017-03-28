@@ -10,6 +10,8 @@ import Foundation
 
 extension ThingIFAPI {
 
+    // MARK: Qeury state history.
+
     /** Query history states with trait alias.
 
      - Parameter query: Instance of `HistoryStatesQuery`.

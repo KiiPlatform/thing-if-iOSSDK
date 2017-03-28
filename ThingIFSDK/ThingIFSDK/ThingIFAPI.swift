@@ -131,8 +131,6 @@ open class ThingIFAPI: Equatable {
         _enableTrigger(triggerID, enable: enable, completionHandler: completionHandler)
     }
 
-    // MARK: Qeury state history.
-
     /** Group history state
 
      - Parameter query: `GroupedHistoryStatesQuery` instance.timeRange
