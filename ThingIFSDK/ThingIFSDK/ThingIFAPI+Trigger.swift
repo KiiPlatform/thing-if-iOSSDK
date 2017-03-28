@@ -44,9 +44,12 @@ extension ThingIFAPI {
         let commandJson: [String : Any]
         do {
             commandJson = try makeCommandJson(triggeredCommandForm)
+        } catch let error as ThingIFError {
+            completionHandler(nil, error)
+            return
         } catch let error {
             kiiVerboseLog(error)
-            completionHandler(nil, ThingIFError.targetNotAvailable)
+            completionHandler(nil, ThingIFError.unsupportedError)
             return
         }
 
@@ -153,9 +156,12 @@ extension ThingIFAPI {
                 requestBody["command"] = try makeCommandJson(form)
                 requestBody["triggersWhat"] = TriggersWhat.command.rawValue
             }
+        } catch let error as ThingIFError{
+            completionHandler(nil, error)
+            return
         } catch let error {
             kiiVerboseLog(error)
-            completionHandler(nil, ThingIFError.targetNotAvailable)
+            completionHandler(nil, ThingIFError.unsupportedError)
             return
         }
         requestBody["predicate"] =
