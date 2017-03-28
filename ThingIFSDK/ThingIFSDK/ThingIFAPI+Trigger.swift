@@ -243,20 +243,26 @@ extension ThingIFAPI {
                      completionHandler: completionHandler)
     }
 
-    
     /** Enable/Disable a registered Trigger
-    If its already enabled(/disabled), this method won't throw error and behave
-    as succeeded.
 
-    **Note**: Please onboard first, or provide a target instance by calling copyWithTarget. Otherwise, KiiCloudError.TARGET_NOT_AVAILABLE will be return in completionHandler callback
+     If its already enabled(/disabled), this method won't throw error
+     and behaveas succeeded.
 
-    - Parameter triggerID: ID of the Trigger to be enabled/disabled.
-    - Parameter enable: Flag indicate enable/disable Trigger.
-    - Parameter completionHandler: A closure to be executed once finished. The closure takes 2 arguments: 1st one is the enabled/disabled Trigger instance, 2nd one is an ThingIFError instance when failed.
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter triggerID: ID of the Trigger to be enabled/disabled.
+     - Parameter enable: Flag indicate enable/disable Trigger.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments: 1st one is the
+       enabled/disabled Trigger instance, 2nd one is an ThingIFError
+       instance when failed.
     */
     open func enableTrigger(
-        _ triggerID:String,
-        enable:Bool,
+        _ triggerID: String,
+        enable: Bool,
         completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
