@@ -137,6 +137,11 @@ class ThingIFAPIPostNewServerCodeTriggerTests: SmallTestBase {
             predicate: ScheduleOncePredicate(Date(timeIntervalSinceNow: 10))),
           // Schedule
           TestCase(predicate: SchedulePredicate("00 * * * *")),
+          TestCase(predicate: SchedulePredicate("1 * * * *")),
+          TestCase(predicate: SchedulePredicate("1 1 * * *")),
+          TestCase(predicate: SchedulePredicate("1 1 1 * *")),
+          TestCase(predicate: SchedulePredicate("1 1 1 1 *")),
+          TestCase(predicate: SchedulePredicate("1 1 1 1 1")),
           // state predicate
           TestCase(predicate: StatePredicate(
                      Condition(equalColor0),

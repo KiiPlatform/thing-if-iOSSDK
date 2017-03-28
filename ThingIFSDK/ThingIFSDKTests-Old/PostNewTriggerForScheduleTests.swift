@@ -275,27 +275,6 @@ class PostNewTriggerForScheduleTests: SmallTestBase {
         }
     }
 
-    func testPostNewTrigger_success() {
-        let setting = TestSetting()
-
-        let predicates: [Predicate] = [
-            SchedulePredicate(schedule: "1 * * * *"),
-            SchedulePredicate(schedule: "1 1 * * *"),
-            SchedulePredicate(schedule: "1 1 1 * *"),
-            SchedulePredicate(schedule: "1 1 1 1 *"),
-            SchedulePredicate(schedule: "1 1 1 1 1")
-        ]
-
-        let testCases: [TestCase] =
-            PostNewTriggerForScheduleTests.createTestCases(
-                predicates,
-                setting:setting)
-
-        for testCase in testCases {
-            postNewTrigger(testCase, setting: setting)
-        }
-    }
-
     func testPostNewTrigger_wrongScheduleString() {
         let setting = TestSetting()
 
