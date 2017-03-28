@@ -1,8 +1,8 @@
 //
-//  ThingIFAPIPatchCommandTriggerTests.swift
+//  ThingIFAPIPatchServerCodeTriggerTests.swift
 //  ThingIFSDK
 //
-//  Created on 2017/03/27.
+//  Created on 2017/03/28.
 //  Copyright (c) 2017 Kii. All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import XCTest
 
 @testable import ThingIFSDK
 
-class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
+class ThingIFAPIPatchServerCodeTriggerTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()
@@ -20,22 +20,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
         super.tearDown()
     }
 
-    static let DEFAULT_COMMAND = Command(
-      "429251a0-46f7-11e5-a5eb-06d9d1527620",
-      targetID: TestSetting().target.typedID,
-      issuerID: TestSetting().owner.typedID,
-      aliasActions: [
-        AliasAction(
-          "alias1",
-          actions: [
-            Action("turnPower", value: true),
-            Action("setBrightness", value: 90)
-          ]
-        )
-      ],
-      commandState: .sending,
-      created: Date()
-    )
+    static let DEFAULT_SERVERCODE = ServerCode("endpoint")
 
     static let defaultTrigger = Trigger(
       "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
@@ -48,15 +33,15 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
             field: "color",
             intValue: 0)),
         triggersWhen: .conditionFalseToTrue),
-      command: DEFAULT_COMMAND
+      serverCode: DEFAULT_SERVERCODE
     )
 
     struct TestCase {
-        let input: (TriggeredCommandForm?, Predicate?, TriggerOptions?)?
+        let input: (ServerCode?, Predicate?, TriggerOptions?)?
         let output: Trigger
 
         init(
-          _ input: (TriggeredCommandForm?, Predicate?, TriggerOptions?)? =
+          _ input: (ServerCode?, Predicate?, TriggerOptions?)? =
             (nil, nil, TriggerOptions("title")),
           output: Trigger = defaultTrigger
         )
@@ -70,191 +55,61 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
 
         let setting = TestSetting()
 
-        let command = ThingIFAPIPatchCommandTriggerTests.DEFAULT_COMMAND
-        let aliasActions = [
-          AliasAction(
-            "alias1",
-            actions: [
-              Action("turnPower", value: true),
-              Action("setBrightness", value: 90)
-            ]
-          )
+        let serverCode =
+          ThingIFAPIPatchServerCodeTriggerTests.DEFAULT_SERVERCODE
+        let serverCodeParameters: [String : Any] = [
+          "string" : "str",
+          "int" : 1234,
+          "float" : 0.12345,
+          "bool" : false
         ]
 
         let optionsMetadata = ["option-key" : "option-value"]
 
         let testsCases: [TestCase] = [
-          // TriggeredCommandForm tests.
-          TestCase(
-            (
-              TriggeredCommandForm(aliasActions),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                targetID: TypedID(.thing, id: "dummyCommandID")
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                title: "title"
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                commandDescription: "description"
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                metadata: ["key" : "value"]
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                targetID: TypedID(.thing, id: "dummyCommandID"),
-                title: "title"
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                targetID: TypedID(.thing, id: "dummyCommandID"),
-                commandDescription: "description"
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                targetID: TypedID(.thing, id: "dummyCommandID"),
-                metadata: ["key" : "value"]
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                title: "title",
-                commandDescription: "description"
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                title: "title",
-                metadata: ["key" : "value"]
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                targetID: TypedID(.thing, id: "dummyCommandID"),
-                title: "title",
-                commandDescription: "description"
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                targetID: TypedID(.thing, id: "dummyCommandID"),
-                title: "title",
-                metadata: ["key" : "value"]
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                commandDescription: "description",
-                metadata: ["key" : "value"]
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                title: "title",
-                commandDescription: "description",
-                metadata: ["key" : "value"]
-              ),
-              nil,
-              nil
-            )
-          ),
-          TestCase(
-            (
-              TriggeredCommandForm(
-                aliasActions,
-                targetID: TypedID(.thing, id: "dummyCommandID"),
-                title: "title",
-                commandDescription: "description",
-                metadata: ["key" : "value"]
-              ),
-              nil,
-              nil
-            )
-          ),
+          // ServerCode tests.
+          TestCase((ServerCode("endpoint"), nil, nil)),
+          TestCase((ServerCode("endpoint",
+                              executorAccessToken: "executorAccessToken"),
+                   nil,
+                   nil
+                   )),
+          TestCase((ServerCode("endpoint", targetAppID: "targetAppID"),
+                   nil,
+                   nil
+                   )),
+          TestCase((ServerCode("endpoint", parameters: serverCodeParameters),
+                   nil,
+                   nil
+                   )),
+          TestCase((ServerCode("endpoint",
+                              executorAccessToken: "executorAccessToken",
+                              targetAppID: "targetAppID"),
+                   nil,
+                   nil
+                   )),
+          TestCase((ServerCode("endpoint",
+                              executorAccessToken: "executorAccessToken",
+                              parameters: serverCodeParameters),
+                   nil,
+                   nil
+                   )),
+          TestCase((ServerCode("endpoint",
+                              targetAppID: "targetAppID",
+                              parameters: serverCodeParameters),
+                   nil,
+                   nil
+                   )),
+          TestCase((ServerCode("endpoint",
+                              executorAccessToken: "executorAccessToken",
+                              targetAppID: "targetAppID",
+                              parameters: serverCodeParameters),
+                   nil,
+                   nil
+                   )),
+
           // TriggerOptions tests
-          TestCase(
-            (
-              nil,
-              nil,
-              TriggerOptions("title")
-            )
-          ),
+          TestCase((nil, nil, TriggerOptions("title"))),
           TestCase(
             (
               nil,
@@ -262,13 +117,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
               TriggerOptions(triggerDescription: "trigger description")
             )
           ),
-          TestCase(
-            (
-              nil,
-              nil,
-              TriggerOptions(metadata: optionsMetadata)
-            )
-          ),
+          TestCase((nil, nil, TriggerOptions(metadata: optionsMetadata))),
           TestCase(
             (
               nil,
@@ -308,6 +157,26 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
             )
           ),
 
+          // Predicate tests
+          TestCase(
+            (nil, ScheduleOncePredicate(Date(timeIntervalSinceNow: 10)), nil)
+          ),
+          TestCase((nil, SchedulePredicate("00 * * * *"), nil)),
+          TestCase((nil, SchedulePredicate("1 * * * *"), nil)),
+          TestCase((nil, SchedulePredicate("1 1 * * *"), nil)),
+          TestCase((nil, SchedulePredicate("1 1 1 * *"), nil)),
+          TestCase((nil, SchedulePredicate("1 1 1 1 *"), nil)),
+          TestCase((nil, SchedulePredicate("1 1 1 1 1"), nil)),
+          TestCase(
+            (
+              nil,
+              StatePredicate(
+                Condition(
+                  EqualsClauseInTrigger("alias1", field: "color", intValue: 0)),
+                triggersWhen: .conditionFalseToTrue),
+              nil)
+          ),
+
           // Response tests
           TestCase(
             output: Trigger(
@@ -321,7 +190,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
                     field: "color",
                     intValue: 0)),
                 triggersWhen: .conditionFalseToTrue),
-              command: command)),
+              serverCode: serverCode)),
           TestCase(
             output: Trigger(
               "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
@@ -335,14 +204,14 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
                       field: "power",
                       boolValue: true))),
                 triggersWhen: .conditionFalseToTrue),
-              command: command)),
+              serverCode: serverCode)),
           TestCase(
             output: Trigger(
               "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
               targetID: setting.target.typedID,
               enabled: true,
               predicate: SchedulePredicate("00 * * * *"),
-              command: command)),
+              serverCode: serverCode)),
           TestCase(
             output: Trigger(
               "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
@@ -350,7 +219,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
               enabled: true,
               predicate: ScheduleOncePredicate(
                 Date(timeIntervalSinceNow: 1000)),
-              command: command))
+              serverCode: serverCode))
         ]
 
         for (index,testCase) in testsCases.enumerated() {
@@ -454,7 +323,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
 
         api.patchTrigger(
           testcase.output.triggerID,
-          triggeredCommandForm: testcase.input?.0,
+          serverCode: testcase.input?.0,
           predicate: testcase.input?.1,
           options: testcase.input?.2) { trigger, error -> Void in
 
@@ -470,7 +339,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
 
     private func makePatchRequestBody(
       _ input: (
-        form: TriggeredCommandForm?,
+        serverCode: ServerCode?,
         predicate: Predicate?,
         options: TriggerOptions?)?,
       setting: TestSetting) -> [String : Any]?
@@ -482,16 +351,10 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
         var retval = input.options?.makeJsonObject() ?? [ : ]
         retval["predicate"] =
           (input.predicate as? ToJsonObject)?.makeJsonObject()
-        if let form = input.form {
-            var commandJson = form.makeJsonObject()
-            commandJson["issuer"] = setting.owner.typedID.toString()
-            if commandJson["target"] == nil {
-                commandJson["target"] = setting.target.typedID.toString()
-            }
-            retval["command"] = commandJson
-            retval["triggersWhat"] = TriggersWhat.command.rawValue
+        if let serverCode = input.serverCode {
+            retval["serverCode"] = serverCode.makeJsonObject()
+            retval["triggersWhat"] = TriggersWhat.serverCode.rawValue
         }
-
         return retval.isEmpty ? nil : retval
     }
 
@@ -548,7 +411,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
 
         api.patchTrigger(
           triggerID,
-          triggeredCommandForm: nil,
+          serverCode: nil,
           options: options)
         {
             trigger, error -> Void in
@@ -579,7 +442,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
 
         api.patchTrigger(
           expectedTriggerID,
-          triggeredCommandForm: nil,
+          serverCode: nil,
           predicate: nil) { trigger, error -> Void in
             XCTAssertNil(trigger)
             XCTAssertEqual(ThingIFError.targetNotAvailable, error)
@@ -601,7 +464,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
 
         api.patchTrigger(
           "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
-          triggeredCommandForm: nil,
+          serverCode: nil,
           predicate: nil) { (trigger, error) -> Void in
             XCTAssertNil(trigger)
             XCTAssertEqual(ThingIFError.unsupportedError, error)
@@ -623,7 +486,7 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
 
         api.patchTrigger(
           "0267251d9d60-1858-5e11-3dc3-00f3f0b5",
-          triggeredCommandForm: nil,
+          serverCode: nil,
           predicate: nil,
           options: TriggerOptions()) { (trigger, error) -> Void in
             XCTAssertNil(trigger)
