@@ -263,49 +263,28 @@ extension ThingIFAPI {
     open func enableTrigger(
         _ triggerID: String,
         enable: Bool,
-        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
-        )
-    {
-        _enableTrigger(triggerID, enable: enable, completionHandler: completionHandler)
-    }
-
-    func _enableTrigger(
-        _ triggerID:String,
-        enable:Bool,
-        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
-        )
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void) -> Void
     {
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        var enableString = "enable"
-        if !enable {
-            enableString = "disable"
-        }
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/\(enableString)"
+        let enableString = enable ? "enable" :  "disable"
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+        self.operationQueue.addHttpRequestOperation(
+          .put,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/\(enableString)",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error -> Void in
 
-        let request = buildDefaultRequest(HTTPMethod.PUT,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            if error == nil {
-                self.getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
-                    DispatchQueue.main.async {
-                        completionHandler(updatedTrigger, error2)
-                    }
-                })
-            }else{
-                DispatchQueue.main.async {
-                    completionHandler(nil, error)
-                }
+            if error != nil {
+                DispatchQueue.main.async { completionHandler(nil, error) }
+            } else {
+                self.getTrigger(triggerID) { completionHandler($0, $1) }
             }
-        })
-
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-
+        }
     }
 
     /** Delete a registered Trigger.
