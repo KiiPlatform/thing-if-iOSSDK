@@ -295,37 +295,25 @@ extension ThingIFAPI {
      TriggerId, 2nd one is an ThingIFError instance when failed.
     */
     open func deleteTrigger(
-        _ triggerID:String,
-        completionHandler: @escaping (String, ThingIFError?)-> Void
-        )
-    {
-        _deleteTrigger(triggerID, completionHandler: completionHandler)
-    }
-
-    func _deleteTrigger(
-        _ triggerID:String,
-        completionHandler: @escaping (String, ThingIFError?)-> Void
-        )
+        _ triggerID: String,
+        completionHandler: @escaping (String, ThingIFError?)-> Void) -> Void
     {
         guard let target = self.target else {
             completionHandler(triggerID, ThingIFError.targetNotAvailable)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        let request = buildDefaultRequest(HTTPMethod.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+        self.operationQueue.addHttpRequestOperation(
+          .delete,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(triggerID, $0) }) {
+            response, error -> Void in
 
             DispatchQueue.main.async {
                 completionHandler(triggerID, error)
             }
-        })
-
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+        }
     }
 
     /** Retrieves list of server code results that was executed by the
