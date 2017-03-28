@@ -40,7 +40,7 @@ public struct ServerCode {
 
 }
 
-extension ServerCode: FromJsonObject {
+extension ServerCode: FromJsonObject, ToJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
         guard let endpoint = jsonObject["endpoint"] as? String else {
@@ -52,6 +52,14 @@ extension ServerCode: FromJsonObject {
           executorAccessToken: jsonObject["executorAccessToken"] as? String,
           targetAppID: jsonObject["targetAppID"] as? String,
           parameters: jsonObject["parameters"] as? [String : Any])
+    }
+
+    internal func makeJsonObject() -> [String : Any] {
+        var retval: [String : Any] = ["endpoint" : self.endpoint]
+        retval["executorAccessToken"] = self.executorAccessToken
+        retval["targetAppID"] = self.targetAppID
+        retval["parameters"] = self.parameters
+        return retval
     }
 
 }

@@ -654,7 +654,7 @@ extension Condition: Equatable, ToJsonObject {
     }
 }
 
-extension ServerCode: Equatable, ToJsonObject {
+extension ServerCode: Equatable {
 
     public static func == (left: ServerCode, right: ServerCode) -> Bool
     {
@@ -664,15 +664,6 @@ extension ServerCode: Equatable, ToJsonObject {
           left.parameters as NSDictionary? == right.parameters as NSDictionary?
     }
 
-    public func makeJsonObject() -> [String : Any] {
-        var retval: [String : Any] = [
-          "endpoint" : self.endpoint
-        ]
-        retval["executorAccessToken"] = self.executorAccessToken
-        retval["targetAppID"] = self.targetAppID
-        retval["parameters"] = self.parameters
-        return retval
-    }
 }
 
 extension PendingEndNode: Equatable {
