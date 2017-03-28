@@ -9,14 +9,10 @@
 import Foundation
 
 internal enum HTTPMethod: String {
-    @available(iOS, deprecated: 1.0, message: "use get")
-    case GET = "GET-deprecated"
     case get = "GET"
     case post = "POST"
-    @available(iOS, deprecated: 1.0, message: "use put")
-    case PUT = "PUT-deprecated"
     case put = "PUT"
-    case HEAD = "HEAD"
+    case head = "HEAD"
     @available(iOS, deprecated: 1.0, message: "use delete")
     case DELETE = "DELETE-deprecated"
     case delete = "DELETE"
