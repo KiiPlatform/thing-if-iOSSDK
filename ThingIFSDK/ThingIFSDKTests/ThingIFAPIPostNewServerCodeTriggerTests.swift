@@ -352,4 +352,109 @@ class ThingIFAPIPostNewServerCodeTriggerTests: SmallTestBase {
             XCTAssertNil(error, tag)
         }
     }
+
+    func testPostNewTrigger_http_404() throws {
+        let expectation =
+          self.expectation(description: "testPostNewTrigger_http_404")
+        let setting = TestSetting()
+        let api = setting.api
+        let target = setting.target
+
+        // perform onboarding
+        api.target = target
+
+        let expectedServerCode = ServerCode("endpoint")
+        let expectedPredicate = StatePredicate(
+          Condition(
+            EqualsClauseInTrigger("alias1", field: "color", intValue: 0)),
+          triggersWhen:. conditionFalseToTrue
+        )
+
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "POST")
+
+            XCTAssertEqual(
+              setting.app.baseURL + "/thing-if/apps/\(setting.app.appID)/targets/\(setting.target.typedID.toString())/triggers",
+              request.url?.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)",
+                "Content-Type": "application/json"
+              ],
+              request.allHTTPHeaderFields!)
+
+            //verify body
+            XCTAssertEqual(
+              [
+                "predicate" : expectedPredicate.makeJsonObject(),
+                "serverCode" : expectedServerCode.makeJsonObject(),
+                "triggersWhat" : TriggersWhat.serverCode.rawValue
+              ] as NSDictionary,
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary
+            )
+        }
+
+        // mock response
+        let errorCode = "TARGET_NOT_FOUND"
+        let errorMessage = "Target \(target.typedID.toString()) not found"
+        sharedMockSession.mockResponse = (
+          try JSONSerialization.data(
+            withJSONObject: ["errorCode" : errorCode, "message" : errorMessage],
+            options: .prettyPrinted),
+          HTTPURLResponse(
+            url: URL(string:setting.app.baseURL)!,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        api.postNewTrigger(
+          expectedServerCode,
+          predicate: expectedPredicate) { trigger, error -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  404,
+                  errorCode: errorCode,
+                  errorMessage: errorMessage)),
+              error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
+
+    func testPostTrigger_target_not_available_error() {
+        let expectation = self.expectation(
+          description: "testPostTrigger_target_not_available_error")
+        let setting = TestSetting()
+        let api = setting.api
+
+        api.postNewTrigger(
+          ServerCode("endpoint"),
+          predicate: StatePredicate(
+            Condition(
+              EqualsClauseInTrigger("alias1", field: "color", intValue: 0)),
+            triggersWhen:. conditionFalseToTrue)) { trigger, error -> Void in
+            XCTAssertNil(trigger)
+            XCTAssertEqual(ThingIFError.targetNotAvailable, error)
+            expectation.fulfill()
+        }
+
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
 }
