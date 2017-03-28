@@ -307,55 +307,66 @@ extension ThingIFAPI {
         let operation = IoTRequestOperation(request: request)
         operationQueue.addOperation(operation)
     }
-    
-    func _listTriggeredServerCodeResults(
+
+    /** Retrieves list of server code results that was executed by the
+     specified trigger.
+
+     Results will be listing with order by modified date descending
+     (latest first)
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter bestEffortLimit: Limit the maximum number of the
+       Results in theResponse. If omitted default limit internally
+       defined is applied. Meaning of 'bestEffort' is if specified
+       value is greater than default limit, default limit is applied.
+     - Parameter triggerID: ID of the Trigger
+     - Parameter paginationKey: If there is further page to be
+       retrieved, this API returns paginationKey in 2nd
+       element. Specifying this value in next call in the argument
+       results continue to get the results from the next page.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 3 arguments: 1st one is Array of
+       Results instance if found, 2nd one is paginationKey if there is
+       further page to be retrieved, and 3rd one is an instance of
+       ThingIFError when failed.
+     */
+    open func listTriggeredServerCodeResults(
         _ triggerID:String,
-        bestEffortLimit:Int?,
-        paginationKey:String?,
-        completionHandler: @escaping (_ results:[TriggeredServerCodeResult]?, _ paginationKey:String?, _ error: ThingIFError?)-> Void
-    )
+        bestEffortLimit:Int? = nil,
+        paginationKey:String? = nil,
+        completionHandler:
+          @escaping (
+            _ results:[TriggeredServerCodeResult]?,
+            _ paginationKey:String?,
+            _ error: ThingIFError?) -> Void) -> Void
     {
-        fatalError("TODO: Implement me")
-        /*
         guard let target = self.target else {
             completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
         }
-        
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/results/server-code"
 
-        if paginationKey != nil && bestEffortLimit != nil && bestEffortLimit! != 0 {
-            requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
-        }else if bestEffortLimit != nil && bestEffortLimit! != 0 {
-            requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
-        }else if paginationKey != nil {
-            requestURL += "?paginationKey=\(paginationKey!)"
-        }
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-        
-        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            var results: [TriggeredServerCodeResult]?
-            var nextPaginationKey: String?
-            if let responseDict = response {
-                nextPaginationKey = responseDict["nextPaginationKey"] as? String
-                if let resultDicts = responseDict["triggerServerCodeResults"] as? NSArray {
-                    results = [TriggeredServerCodeResult]()
-                    for resultDict in resultDicts {
-                        if let result = TriggeredServerCodeResult.resultWithNSDict(resultDict as! NSDictionary){
-                            results!.append(result)
-                        }
-                    }
-                }
-            }
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/results/server-code".appendURLQuery(
+            ("paginationKey", paginationKey),
+            ("bestEffortLimit", bestEffortLimit)),
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, nil, $0) }) {
+
+            response, error -> Void in
+            let results: (ListTriggeredServerCodeResult?, ThingIFError?) =
+              convertSpecifiedItem(response, error)
             DispatchQueue.main.async {
-                completionHandler(results, nextPaginationKey, error)
+                completionHandler(
+                  results.0?.results,
+                  results.0?.nextPaginationKey,
+                  results.1)
             }
-        })
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-        */
+        }
     }
 
     /** List Triggers belongs to the specified Target
@@ -523,4 +534,21 @@ fileprivate struct ListTriggersResult: FromJsonObject {
         }
     }
 
+}
+
+fileprivate struct ListTriggeredServerCodeResult: FromJsonObject {
+    let results: [TriggeredServerCodeResult]?
+    let nextPaginationKey: String?
+
+    init(_ jsonObject: [String : Any]) throws {
+        self.nextPaginationKey = jsonObject["nextPaginationKey"] as? String
+        guard let results =
+                jsonObject["triggerServerCodeResults"] as? [[String : Any]] else
+        {
+            self.results = nil
+            return
+        }
+
+        self.results = try results.map { try TriggeredServerCodeResult($0) }
+    }
 }

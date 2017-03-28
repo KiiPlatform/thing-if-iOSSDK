@@ -653,3 +653,52 @@ extension PendingEndNode: Equatable {
             left.thingProperties as NSDictionary? == right.thingProperties as NSDictionary?
     }
 }
+
+extension TriggeredServerCodeResult: Equatable, ToJsonObject {
+    public static func == (
+      left: TriggeredServerCodeResult,
+      right: TriggeredServerCodeResult) -> Bool
+    {
+        return left.succeeded == right.succeeded &&
+          left.endpoint == right.endpoint &&
+          left.error == right.error &&
+          isSameDate(left.executedAt, right.executedAt) &&
+          isSameAny(left.returnedValue, right.returnedValue)
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        var retval: [String : Any] = [
+          "succeeded" : self.succeeded,
+          "executedAt" : self.executedAt.timeIntervalSince1970InMillis
+        ]
+        retval["endpoint"] = self.endpoint
+        retval["returnedValue"] = self.returnedValue
+        if let error = self.error?.makeJsonObject() {
+            if !error.isEmpty {
+                retval["error"] = error
+            }
+        }
+        return retval
+    }
+}
+
+extension ServerError: Equatable, ToJsonObject {
+    public static func == (left: ServerError, right: ServerError) -> Bool {
+        return left.errorMessage == right.errorMessage &&
+          left.errorCode == right.errorCode &&
+          left.detailMessage == right.detailMessage
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        var detail: [String : Any] = [ : ]
+        detail["errorCode"] = self.errorCode
+        detail["message"] = self.detailMessage
+        var retval: [String : Any] = [ : ]
+        retval["errorMessage"] = self.errorMessage
+        if !detail.isEmpty {
+            retval["detail"] = detail
+        }
+        return retval
+    }
+
+}
