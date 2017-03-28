@@ -136,9 +136,7 @@ class ThingIFAPIListTriggeredServerCodeResultsTests: SmallTestBase {
 
         api.target = setting.target
         api.listTriggeredServerCodeResults(
-          triggerID,
-          bestEffortLimit: 0,
-          paginationKey: nil) {
+          triggerID) {
             results, paginationKey, error -> Void in
             XCTAssertNil(error)
             XCTAssertEqual(expectedFirstTriggeredServerCodeResults, results!)
