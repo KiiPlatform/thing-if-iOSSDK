@@ -30,7 +30,7 @@ public struct StatePredicate: Predicate {
 
 }
 
-extension StatePredicate: FromJsonObject {
+extension StatePredicate: FromJsonObject, ToJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
         guard let eventSource = jsonObject["eventSource"] as? String,
@@ -45,6 +45,14 @@ extension StatePredicate: FromJsonObject {
         }
 
         self.init(try Condition(condition), triggersWhen: triggersWhen)
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [
+          "eventSource" : self.eventSource.rawValue,
+          "triggersWhen" : self.triggersWhen.rawValue,
+          "condition" : self.condition.makeJsonObject()
+        ]
     }
 
 }
