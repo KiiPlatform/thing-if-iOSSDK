@@ -590,7 +590,7 @@ private func == (left: Predicate, right: Predicate) -> Bool {
     }
 }
 
-extension StatePredicate: Equatable, ToJsonObject {
+extension StatePredicate: Equatable {
 
     public static func == (
       left: StatePredicate,
@@ -600,16 +600,9 @@ extension StatePredicate: Equatable, ToJsonObject {
           left.condition == right.condition
     }
 
-    public func makeJsonObject() -> [String : Any] {
-        return [
-          "eventSource" : self.eventSource.rawValue,
-          "triggersWhen" : self.triggersWhen.rawValue,
-          "condition" : self.condition.makeJsonObject()
-        ]
-    }
 }
 
-extension SchedulePredicate: Equatable, ToJsonObject {
+extension SchedulePredicate: Equatable {
 
     public static func == (
       left: SchedulePredicate,
@@ -618,15 +611,9 @@ extension SchedulePredicate: Equatable, ToJsonObject {
         return left.schedule == right.schedule
     }
 
-    public func makeJsonObject() -> [String : Any] {
-        return [
-          "eventSource" : self.eventSource.rawValue,
-          "schedule" : self.schedule
-        ]
-    }
 }
 
-extension ScheduleOncePredicate: Equatable, ToJsonObject {
+extension ScheduleOncePredicate: Equatable {
 
     public static func == (
       left: ScheduleOncePredicate,
@@ -635,23 +622,14 @@ extension ScheduleOncePredicate: Equatable, ToJsonObject {
         return isSameDate(left.scheduleAt, right.scheduleAt)
     }
 
-    public func makeJsonObject() -> [String : Any] {
-        return [
-          "eventSource" : self.eventSource.rawValue,
-          "scheduleAt" : Int(self.scheduleAt.timeIntervalSince1970InMillis)
-        ]
-    }
 }
 
-extension Condition: Equatable, ToJsonObject {
+extension Condition: Equatable {
 
     public static func == (left: Condition, right: Condition) -> Bool {
         return left.clause == right.clause
     }
 
-    public func makeJsonObject() -> [String : Any] {
-        return (self.clause as! ToJsonObject).makeJsonObject()
-    }
 }
 
 extension ServerCode: Equatable {

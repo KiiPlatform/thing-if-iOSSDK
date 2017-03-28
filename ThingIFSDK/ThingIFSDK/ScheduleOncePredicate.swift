@@ -23,7 +23,7 @@ public struct ScheduleOncePredicate: Predicate {
 
 }
 
-extension ScheduleOncePredicate: FromJsonObject {
+extension ScheduleOncePredicate: FromJsonObject, ToJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
         guard let eventSource = jsonObject["eventSource"] as? String,
@@ -36,6 +36,13 @@ extension ScheduleOncePredicate: FromJsonObject {
         }
 
         self.init(Date(timeIntervalSince1970InMillis: scheduleAt))
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [
+          "eventSource" : self.eventSource.rawValue,
+          "scheduleAt" : Int(self.scheduleAt.timeIntervalSince1970InMillis)
+        ]
     }
 
 }

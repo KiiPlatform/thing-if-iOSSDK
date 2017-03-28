@@ -25,7 +25,7 @@ public struct SchedulePredicate: Predicate {
 
 }
 
-extension SchedulePredicate: FromJsonObject {
+extension SchedulePredicate: FromJsonObject, ToJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
         guard let eventSource = jsonObject["eventSource"] as? String,
@@ -38,6 +38,13 @@ extension SchedulePredicate: FromJsonObject {
         }
 
         self.init(schedule)
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [
+          "eventSource" : self.eventSource.rawValue,
+          "schedule" : self.schedule
+        ]
     }
 
 }

@@ -21,9 +21,13 @@ public struct Condition {
 
 }
 
-extension Condition: FromJsonObject {
+extension Condition: FromJsonObject, ToJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
         self.init(try makeTriggerClause(jsonObject))
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return (self.clause as! ToJsonObject).makeJsonObject()
     }
 }
