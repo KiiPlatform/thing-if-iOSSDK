@@ -282,30 +282,38 @@ extension ThingIFAPI {
 
     }
 
-    func _deleteTrigger(
-        _ triggerID:String,
-        completionHandler: @escaping (String, ThingIFError?)-> Void
-        )
+    /** Delete a registered Trigger.
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter triggerID: ID of the Trigger to be deleted.
+     - Parameter completionHandler: A closure to be executed once
+     finished. The closure takes 2 arguments: 1st one is the deleted
+     TriggerId, 2nd one is an ThingIFError instance when failed.
+    */
+    open func deleteTrigger(
+        _ triggerID: String,
+        completionHandler: @escaping (String, ThingIFError?)-> Void) -> Void
     {
         guard let target = self.target else {
             completionHandler(triggerID, ThingIFError.targetNotAvailable)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        let request = buildDefaultRequest(HTTPMethod.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+        self.operationQueue.addHttpRequestOperation(
+          .delete,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(triggerID, $0) }) {
+            response, error -> Void in
 
             DispatchQueue.main.async {
                 completionHandler(triggerID, error)
             }
-        })
-
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+        }
     }
 
     /** Retrieves list of server code results that was executed by the
