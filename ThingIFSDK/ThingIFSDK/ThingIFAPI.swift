@@ -70,20 +70,6 @@ open class ThingIFAPI: Equatable {
         self.target = target
         self.tag = tag
     }
-    
-    /** Uninstall push notification.
-    After done, notification from IoT Cloud won't be notified.
-
-    - Parameter installationID: installation ID returned from installPush().
-    If null is specified, value of the installationID property is used.
-    */
-    open func uninstallPush(
-        _ installationID:String?,
-        completionHandler: @escaping (ThingIFError?)-> Void
-        )
-    {
-        _uninstallPush(installationID, completionHandler: completionHandler)
-    }
 
     /** Group history state
 

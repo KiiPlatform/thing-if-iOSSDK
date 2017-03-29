@@ -58,29 +58,38 @@ extension ThingIFAPI {
         }
     }
 
-    func _uninstallPush(
+    /** Uninstall push notification.
+     After done, notification from IoT Cloud won't be notified.
+
+     - Parameter installationID: installation ID returned from installPush().
+     If null is specified, value of the installationID property is used.
+     */
+    open func uninstallPush(
         _ installationID:String?,
         completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
         let idParam = installationID != nil ? installationID : self.installationID
         let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(idParam!)"
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
-        
-        let request = buildDefaultRequest(.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            
-            if error == nil{
-                self.installationID = nil
-            }
-            self.saveToUserDefault()
-            DispatchQueue.main.async {
-                completionHandler( error)
-            }
-        })
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+
+        self.operationQueue.addHttpRequestOperation(
+            .delete,
+            url: requestURL,
+            requestHeader:
+            self.defaultHeader,
+            requestBody: nil,
+            failureBeforeExecutionHandler: { completionHandler($0) }) {
+                response, error in
+
+                if error == nil{
+                    self.installationID = nil
+                }
+                self.saveToUserDefault()
+                DispatchQueue.main.async {
+                    completionHandler( error)
+                }
+        }
 
     }
+
 }
