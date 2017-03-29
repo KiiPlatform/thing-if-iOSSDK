@@ -243,43 +243,48 @@ extension ThingIFAPI {
                      completionHandler: completionHandler)
     }
 
-    func _enableTrigger(
-        _ triggerID:String,
-        enable:Bool,
-        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
-        )
+    /** Enable/Disable a registered Trigger
+
+     If its already enabled(/disabled), this method won't throw error
+     and behaveas succeeded.
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter triggerID: ID of the Trigger to be enabled/disabled.
+     - Parameter enable: Flag indicate enable/disable Trigger.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments: 1st one is the
+       enabled/disabled Trigger instance, 2nd one is an ThingIFError
+       instance when failed.
+    */
+    open func enableTrigger(
+        _ triggerID: String,
+        enable: Bool,
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void) -> Void
     {
         guard let target = self.target else {
             completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        var enableString = "enable"
-        if !enable {
-            enableString = "disable"
-        }
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/\(enableString)"
+        let enableString = enable ? "enable" :  "disable"
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+        self.operationQueue.addHttpRequestOperation(
+          .put,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/\(enableString)",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error -> Void in
 
-        let request = buildDefaultRequest(HTTPMethod.PUT,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            if error == nil {
-                self.getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
-                    DispatchQueue.main.async {
-                        completionHandler(updatedTrigger, error2)
-                    }
-                })
-            }else{
-                DispatchQueue.main.async {
-                    completionHandler(nil, error)
-                }
+            if error != nil {
+                DispatchQueue.main.async { completionHandler(nil, error) }
+            } else {
+                self.getTrigger(triggerID) { completionHandler($0, $1) }
             }
-        })
-
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-
+        }
     }
 
     /** Delete a registered Trigger.
