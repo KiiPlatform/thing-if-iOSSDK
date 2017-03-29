@@ -19,24 +19,25 @@ extension ThingIFAPI {
      fired by Application or registered Trigger.
      After installation is done Installation ID is managed in this class.
 
-     - Parameter deviceToken: NSData instance of device token for APNS.
+     - Parameter deviceToken: Data instance of device token for APNS.
      - Parameter development: Bool flag indicate whether the cert is development or
      production. This is optional, the default is false (production).
      - Parameter completionHandler: A closure to be executed once on board has finished.
      */
     open func installPush(
         _ deviceToken:Data,
-        development:Bool?=false,
+        development:Bool=false,
         completionHandler: @escaping (String?, ThingIFError?)-> Void
         )
     {
 
         let requestURL = "\(baseURL)/api/apps/\(appID)/installations"
 
-        var requestBody : [String:Any] = [:]
-        requestBody["installationRegistrationID"] = deviceToken.hexString()
-        requestBody["deviceType"] = "IOS"
-        requestBody["development"] = NSNumber(value: development! as Bool)
+        let requestBody : [String:Any] = [
+            "installationRegistrationID":deviceToken.hexString(),
+            "deviceType":"IOS",
+            "development":development
+        ]
 
         self.operationQueue.addHttpRequestOperation(
             .post,
