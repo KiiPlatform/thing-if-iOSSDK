@@ -21,7 +21,7 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithTitle() {
-        let form = TriggerOptions(title: "title")
+        let form = TriggerOptions("title")
 
         XCTAssertNotNil(form)
         XCTAssertEqual(form.title, "title")
@@ -52,7 +52,7 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithTitleAndDescription() {
-        let form = TriggerOptions(title: "title",
+        let form = TriggerOptions("title",
                                   triggerDescription: "description")
 
         XCTAssertNotNil(form)
@@ -66,7 +66,7 @@ class TriggerOptionsTests: SmallTestBase {
             "key1" : "value1",
             "key2" : "value2"
         ]
-        let form = TriggerOptions(title: "title",
+        let form = TriggerOptions("title",
                                   metadata: metadata)
 
         XCTAssertNotNil(form)
@@ -93,38 +93,13 @@ class TriggerOptionsTests: SmallTestBase {
             "key1" : "value1",
             "key2" : "value2"
         ]
-        let form = TriggerOptions(title: "title",
+        let form = TriggerOptions("title",
                                   triggerDescription: "description",
                                   metadata: metadata)
         XCTAssertNotNil(form)
         XCTAssertEqual(form.title, "title")
         XCTAssertEqual(form.triggerDescription, "description")
         verifyDict(form.metadata!, actualDict: metadata)
-    }
-
-    func testNSCoding() {
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
-        ]
-        let original = TriggerOptions(title: "title",
-                                      triggerDescription: "description",
-                                      metadata: metadata)
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-            NSKeyedArchiver(forWritingWith: data);
-        original.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-            NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized: TriggerOptions = TriggerOptions(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertNotNil(deserialized)
-        XCTAssertEqual(deserialized.title, "title")
-        XCTAssertEqual(deserialized.triggerDescription, "description")
-        verifyDict(deserialized.metadata!, actualDict: metadata)
     }
 
 }

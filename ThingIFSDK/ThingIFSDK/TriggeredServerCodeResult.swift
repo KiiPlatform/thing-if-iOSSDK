@@ -8,7 +8,7 @@ public struct TriggeredServerCodeResult {
     /** Date of the execution */
     public let executedAt: Date
     /** The endpoint used in the server code invocation */
-    public let endpoint: String
+    public let endpoint: String?
     /** Error object of the invocation if any */
     public let error: ServerError?
 
@@ -75,9 +75,9 @@ public struct TriggeredServerCodeResult {
      - Parameter error: Error object of the invocation if any
      */
     public init(
-      succeeded: Bool,
+      _ succeeded: Bool,
       executedAt: Date,
-      endpoint: String,
+      endpoint: String?,
       returnedValue: Any? = nil,
       error: ServerError? = nil)
     {
@@ -88,6 +88,30 @@ public struct TriggeredServerCodeResult {
         self.error = error
     }
 
+}
+
+extension TriggeredServerCodeResult: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let succeeded = jsonObject["succeeded"] as? Bool,
+              let executedAt = jsonObject["executedAt"] as? Int64 else {
+            throw ThingIFError.jsonParseError
+        }
+
+        let serverError: ServerError?
+        if let error = jsonObject["error"] as? [String : Any] {
+            serverError = try ServerError(error)
+        } else {
+            serverError = nil
+        }
+
+        self.init(
+          succeeded,
+          executedAt: Date(timeIntervalSince1970InMillis: executedAt),
+          endpoint: jsonObject["endpoint"] as? String,
+          returnedValue: jsonObject["returnedValue"],
+          error: serverError)
+    }
 }
 
 public struct ServerError {
@@ -110,13 +134,23 @@ public struct ServerError {
      - Parameter detailMessage: Detail message.
      */
     public init(
-      _ errorMessage: String?,
-      errorCode: String?,
-      detailMessage: String?)
+      _ errorMessage: String? = nil,
+      errorCode: String? = nil,
+      detailMessage: String? = nil)
     {
         self.errorMessage = errorMessage
         self.errorCode = errorCode
         self.detailMessage = detailMessage
     }
 
+}
+
+extension ServerError: FromJsonObject {
+    internal init(_ jsonObject: [String : Any]) throws {
+        let details = jsonObject["details"] as? [String : Any]
+        self.init(
+          jsonObject["errorMessage"] as? String,
+          errorCode: details?["errorCode"] as? String,
+          detailMessage: details?["message"] as? String)
+    }
 }
