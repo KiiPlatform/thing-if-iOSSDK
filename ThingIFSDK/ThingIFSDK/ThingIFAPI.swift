@@ -112,30 +112,6 @@ open class ThingIFAPI: Equatable {
         _uninstallPush(installationID, completionHandler: completionHandler)
     }
 
-    // MARK: Qeury state history.
-
-    /** Query history states with trait alias.
-
-     - Parameter query: Instance of `HistoryStatesQuery`. If nil or
-       omitted, query all history states
-     - Parameter completionHandler: A closure to be executed once
-       finished. The closure takes 3 arguments:
-       - 1st one is array of history states. If there is no objects to
-         be queried, the array is empty.
-       - 2nd one is a pagination key. It represents information to
-         retrieve further page. You can use pagination key to retrieve
-         next page by setting nextPaginationKey. if there is no
-         further page, pagination key is nil.
-       - 3rd one is an instance of ThingIFError when failed.
-     */
-    open func query(
-      _ query: HistoryStatesQuery? = nil,
-      completionHandler: @escaping (
-        [HistoryState]?, String?, ThingIFError?) -> Void) -> Void
-    {
-        // TODO: implement me.
-    }
-
     /** Group history state
 
      - Parameter query: `GroupedHistoryStatesQuery` instance.timeRange

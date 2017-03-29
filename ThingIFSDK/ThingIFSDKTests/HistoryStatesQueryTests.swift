@@ -38,10 +38,11 @@ class HistoryStatesQueryTests: SmallTestBase {
     }
 
     func testOptinalNil() {
-        let actual = HistoryStatesQuery("alias")
+        let clause = EqualsClauseInQuery("f", intValue: 1)
+        let actual = HistoryStatesQuery("alias", clause: clause)
 
         XCTAssertEqual("alias", actual.alias)
-        XCTAssertNil(actual.clause)
+        XCTAssertEqual(clause, actual.clause as! EqualsClauseInQuery)
         XCTAssertNil(actual.firmwareVersion)
         XCTAssertNil(actual.bestEffortLimit)
         XCTAssertNil(actual.nextPaginationKey)
