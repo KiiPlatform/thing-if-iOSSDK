@@ -39,7 +39,7 @@ class IoTRequestTests: XCTestCase {
 
         iotSession = URLSession.self
 
-        let request = buildDefaultRequest(HTTPMethod.PUT,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+        let request = buildDefaultRequest(.put,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
             if error == nil {
                 XCTFail("Should not be nil")
             }else{
