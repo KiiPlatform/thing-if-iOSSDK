@@ -56,35 +56,30 @@ class LargeTestBase: XCTestCase {
                            TypedID.Types(rawValue: "user")!,
                            id: userInfo["userID"]! as! String),
                 accessToken: userInfo["_accessToken"]! as! String)
-        let app = AppBuilder(
-                appID: setting.appID,
-                appKey: setting.appKey,
-                hostName: setting.hostName).build()
-        let api = ThingIFAPIBuilder(
-                app: app,
-                owner: owner,
-                tag: setting.tag).build()
-
+        let app = KiiApp(
+          setting.appID,
+          appKey: setting.appKey,
+          hostName: setting.hostName)
+        let api = ThingIFAPI(
+          app,
+          owner: owner,
+          tag: setting.tag)
 
         let expectation = self.expectation(description: "onboard")
 
         let vendorThingID = "vid-" + String(Date.init().timeIntervalSince1970)
-        api.onboard(
-            vendorThingID,
-            thingPassword: "password",
-            thingType: DEMO_THING_TYPE,
-            thingProperties: nil,
-            completionHandler: {
-                (target, error) -> Void in
-                    XCTAssertNil(error)
-                    XCTAssertEqual("thing", target!.typedID.type)
-                    XCTAssertNotEqual(target!.accessToken, nil)
-                    expectation.fulfill()
-            })
+        api.onboardWith(
+          vendorThingID: vendorThingID,
+          thingPassword: "password",
+          options: OnboardWithVendorThingIDOptions(DEMO_THING_TYPE)) {
+            target, error -> Void in
+            XCTAssertNil(error)
+            XCTAssertEqual(.thing, target!.typedID.type)
+            XCTAssertNotNil(target!.accessToken)
+            expectation.fulfill()
+        }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("error")
-            }
+            XCTAssertNil(error)
         }
 
         self.onboardedApi = api
@@ -145,15 +140,17 @@ class LargeTestBase: XCTestCase {
     func createPseudoUser(
             _ appID: String,
             appKey: String,
-            hostName: String) -> Dictionary<String, AnyObject> {
-        let request = NSMutableURLRequest(
-                url: URL(string: "https://\(hostName)/api/apps/\(appID)/users")!)
+            hostName: String) -> Dictionary<String, AnyObject>
+    {
+        var request = URLRequest(
+          url: URL(string: "https://\(hostName)/api/apps/\(appID)/users")!)
         request.httpMethod = "POST"
-        request.addValue(appID, forHTTPHeaderField: "X-Kii-AppID")
-        request.addValue(appKey, forHTTPHeaderField: "X-Kii-AppKey")
-        request.addValue(
+        request.allHTTPHeaderFields = [
+          "X-Kii-AppID" : appID,
+          "X-Kii-AppKey" : appKey,
+          "Content-Type" :
             "application/vnd.kii.RegistrationAndAuthorizationRequest+json",
-            forHTTPHeaderField: "Content-Type")
+        ]
         request.httpBody =
             ("{}" as NSString).data(using: String.Encoding.utf8.rawValue)
 
@@ -162,12 +159,11 @@ class LargeTestBase: XCTestCase {
         let session =
             URLSession(configuration: URLSessionConfiguration.default)
         var data: Data?
-        let dataTask = session.dataTask(
-                           with: request,
-                           completionHandler: { (receivedData, response, error) -> Void in
-                               data = receivedData
-                               expectation.fulfill()
-            })
+        let dataTask = session.dataTask(with: request) {
+            receivedData, response, error -> Void in
+            data = receivedData
+            expectation.fulfill()
+        }
         dataTask.resume()
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
@@ -185,29 +181,28 @@ class LargeTestBase: XCTestCase {
             appKey: String,
             userID: String,
             accessToken: String,
-            hostName: String) -> Void {
-        let request = NSMutableURLRequest(
-                url: URL(string: "https://\(hostName)/api/apps/\(appID)/users/\(userID)")!)
+            hostName: String) -> Void
+    {
+        var request = URLRequest(
+          url: URL(string: "https://\(hostName)/api/apps/\(appID)/users/\(userID)")!)
         request.httpMethod = "DELETE"
-        request.addValue(appID, forHTTPHeaderField: "X-Kii-AppID")
-        request.addValue(appKey, forHTTPHeaderField: "X-Kii-AppKey")
-        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-
+        request.allHTTPHeaderFields = [
+          "X-Kii-AppID" : appID,
+          "X-Kii-AppKey" : appKey,
+          "Authorization" : "Bearer \(accessToken)"
+        ]
         let expectation = self.expectation(description: "Delete user")
 
         let session =
             URLSession(configuration: URLSessionConfiguration.default)
-        let dataTask = session.dataTask(
-                           with: request,
-                           completionHandler: { (receivedData, response, error) -> Void in
-                               XCTAssertEqual(204, (response as! HTTPURLResponse).statusCode)
-                               expectation.fulfill()
-            })
+        let dataTask = session.dataTask(with: request) {
+            receivedData, response, error -> Void in
+            XCTAssertEqual(204, (response as! HTTPURLResponse).statusCode)
+            expectation.fulfill()
+        }
         dataTask.resume()
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("error")
-            }
+            XCTAssertNil(error)
         }
 
     }
