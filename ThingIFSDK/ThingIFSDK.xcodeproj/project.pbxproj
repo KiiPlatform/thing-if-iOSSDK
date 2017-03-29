@@ -129,6 +129,7 @@
 		B6B0A6801E64170600133788 /* ServerCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B0A67F1E64170600133788 /* ServerCodeTests.swift */; };
 		B6BA435A1E8B7743002A26DA /* TriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BA43591E8B7743002A26DA /* TriggerOptionsTests.swift */; };
 		B6BA435C1E8B77C2002A26DA /* TriggeredCommandFormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BA435B1E8B77C2002A26DA /* TriggeredCommandFormTests.swift */; };
+		B6BA435E1E8B7C4C002A26DA /* TriggeredServerCodeResultTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BA435D1E8B7C4C002A26DA /* TriggeredServerCodeResultTest.swift */; };
 		B6BE38981E5FE6B500FD9976 /* StandaloneThingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BE38971E5FE6B500FD9976 /* StandaloneThingTests.swift */; };
 		B6BE389A1E5FE98700FD9976 /* GatewayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BE38991E5FE98700FD9976 /* GatewayTests.swift */; };
 		B6BE389C1E5FEA6A00FD9976 /* EndNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6BE389B1E5FEA6A00FD9976 /* EndNodeTests.swift */; };
@@ -315,6 +316,7 @@
 		B6B0A67F1E64170600133788 /* ServerCodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerCodeTests.swift; sourceTree = "<group>"; };
 		B6BA43591E8B7743002A26DA /* TriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerOptionsTests.swift; sourceTree = "<group>"; };
 		B6BA435B1E8B77C2002A26DA /* TriggeredCommandFormTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredCommandFormTests.swift; sourceTree = "<group>"; };
+		B6BA435D1E8B7C4C002A26DA /* TriggeredServerCodeResultTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredServerCodeResultTest.swift; sourceTree = "<group>"; };
 		B6BE38971E5FE6B500FD9976 /* StandaloneThingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandaloneThingTests.swift; sourceTree = "<group>"; };
 		B6BE38991E5FE98700FD9976 /* GatewayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayTests.swift; sourceTree = "<group>"; };
 		B6BE389B1E5FEA6A00FD9976 /* EndNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndNodeTests.swift; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 		B6C33EFD1E49770B00DF2BF5 /* ThingIFSDKTests */ = {
 			isa = PBXGroup;
 			children = (
+				B6BA435D1E8B7C4C002A26DA /* TriggeredServerCodeResultTest.swift */,
 				B6BA435B1E8B77C2002A26DA /* TriggeredCommandFormTests.swift */,
 				B6BA43591E8B7743002A26DA /* TriggerOptionsTests.swift */,
 				2243670B1E890E100064D394 /* GatewayAPIGetGatewayInformationTests.swift */,
@@ -896,6 +899,7 @@
 				B6B0A67E1E640D1000133788 /* KiiAppTests.swift in Sources */,
 				B645506C1E78ECC600D8FACF /* GatewayAPILoginTests.swift in Sources */,
 				B645506E1E79087F00D8FACF /* GatewayAPIOnboardGatewayTests.swift in Sources */,
+				B6BA435E1E8B7C4C002A26DA /* TriggeredServerCodeResultTest.swift in Sources */,
 				B69ADF391E8A41FD00BC48A1 /* ThingIFAPIListTriggeredServerCodeResultsTests.swift in Sources */,
 				B6A86CB01E6E8C0D00F9C41B /* ThingIFAPIOnboardWithVendorThingIDTests.swift in Sources */,
 				B6C33F1C1E4C5D2100DF2BF5 /* EqualsClauseInTriggerTests.swift in Sources */,
