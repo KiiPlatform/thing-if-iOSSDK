@@ -70,33 +70,6 @@ open class ThingIFAPI: Equatable {
         self.target = target
         self.tag = tag
     }
-
-    // MARK: - Push notification methods
-
-    /** Install push notification to receive notification from IoT Cloud.
-    IoT Cloud will send notification when the Target replies to the Command.
-    Application can receive the notification and check the result of Command
-    fired by Application or registered Trigger.
-    After installation is done Installation ID is managed in this class.
-
-    - Parameter deviceToken: NSData instance of device token for APNS.
-    - Parameter development: flag indicate whether the cert is development or
-    production. This is optional, the default is false (production).
-    - Parameter completionHandler: A closure to be executed once on board has finished.
-    */
-    open func installPush(
-        _ deviceToken:Data,
-        development:Bool?=false,
-        completionHandler: @escaping (String?, ThingIFError?)-> Void
-        )
-    {
-        _installPush(deviceToken, development: development) { (token, error) -> Void in
-            if error == nil {
-                self.saveToUserDefault()
-            }
-            completionHandler(token, error)
-        }
-    }
     
     /** Uninstall push notification.
     After done, notification from IoT Cloud won't be notified.
