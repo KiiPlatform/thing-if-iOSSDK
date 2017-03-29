@@ -505,4 +505,31 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
 
         XCTAssertEqual(api, try ThingIFAPI.loadWithStoredInstance())
     }
+
+    func testCopyWithTarget() throws {
+        let api: ThingIFAPI! = TestSetting().api
+        let newTarget = StandaloneThing(
+          "newID",
+          vendorThingID: "vendor-thing-id-001",
+          accessToken: "token-00001")
+        let newIotapi = api.copyWithTarget(newTarget)
+
+        XCTAssertNotEqual(
+          api.target as? StandaloneThing,
+          newIotapi.target as? StandaloneThing)
+        XCTAssertEqual(newTarget, newIotapi.target as! StandaloneThing)
+
+        XCTAssertEqual(api.baseURL, newIotapi.baseURL)
+        XCTAssertEqual(api.appID, newIotapi.appID)
+        XCTAssertEqual(api.appKey, newIotapi.appKey)
+        XCTAssertEqual(api.app, newIotapi.app)
+        XCTAssertEqual(api.owner, newIotapi.owner)
+        XCTAssertEqual(api.installationID, newIotapi.installationID)
+        XCTAssertEqual(api.tag, newIotapi.tag)
+
+        let loadedAPI = try ThingIFAPI.loadWithStoredInstance()
+        XCTAssertEqual(newIotapi, loadedAPI)
+
+        ThingIFAPI.removeAllStoredInstances()
+    }
 }

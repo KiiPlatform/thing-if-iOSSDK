@@ -112,6 +112,29 @@ extension ThingIFAPI {
         }
     }
 
+
+    // MARK: - Copy with new target instance
+
+    /** Get new instance with new target
+
+    - Parameter newTarget: target instance will be setted to new ThingIFAPI instance
+    - Parameter tag: tag of the ThingIFAPI instance or nil for default tag
+    - Returns: New ThingIFAPI instance with newTarget
+    */
+    open func copyWithTarget(
+      _ newTarget: Target,
+      tag : String? = nil) -> ThingIFAPI
+    {
+        let newIotapi = ThingIFAPI(self.app,
+                                   owner: self.owner,
+                                   target: newTarget,
+                                   tag: tag)
+
+        newIotapi.installationID = self.installationID
+        newIotapi.saveToUserDefault()
+        return newIotapi
+    }
+
     internal func saveToUserDefault() -> Void {
         var coder = Coder()
         serialize(&coder)
