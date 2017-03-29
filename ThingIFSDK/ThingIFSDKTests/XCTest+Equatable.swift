@@ -206,19 +206,18 @@ func isSameAny(_ left: Any?, _ right: Any?) -> Bool {
     }
 
     switch (left, right) {
-        case (is String, is String) where left as! String == right as! String:
-            return true
-        case (is Int, is Int) where left as! Int == right as! Int:
-            return true
-        case (is Double, is Double) where left as! Double == right as! Double:
-            return true
-        case (is Bool, is Bool) where left as! Bool == right as! Bool:
-            return true
-        case (is [String : Any], is [String : Any])
-               where left as! NSDictionary == right as! NSDictionary:
-            return true
-        case (is [Any], is [Any]) where left as! NSArray == right as! NSArray:
-            return true
+        case (is String, is String):
+            return left as! String == right as! String
+        case (is Int, is Int):
+            return left as! Int == right as! Int
+        case (is Double, is Double):
+            return left as! Double == right as! Double
+        case (is Bool, is Bool):
+            return left as! Bool == right as! Bool
+        case (is [String : Any], is [String : Any]):
+            return left as! NSDictionary == right as! NSDictionary
+        case (is [Any], is [Any]):
+            return left as! NSArray == right as! NSArray
         default:
             break
     }
