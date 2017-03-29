@@ -16,9 +16,9 @@ class TestSetting: NSObject {
     let tag: String?
 
     override init() {
-        let path = NSBundle(
-                forClass:TestSetting.self).pathForResource(
-                       "TestSetting",
+        let path = Bundle(
+                for:TestSetting.self).path(
+                       forResource: "TestSetting",
                        ofType:"plist")
 
         let dict: Dictionary = NSDictionary(
@@ -52,8 +52,8 @@ class LargeTestBase: XCTestCase {
                 hostName: setting.hostName)
         let userInfo: Dictionary<String, AnyObject> = self.userInfo!
         let owner = Owner(
-                typedID: TypedID(
-                           type: "user",
+                TypedID(
+                           TypedID.Types(rawValue: "user")!,
                            id: userInfo["userID"]! as! String),
                 accessToken: userInfo["_accessToken"]! as! String)
         let app = AppBuilder(
@@ -66,9 +66,9 @@ class LargeTestBase: XCTestCase {
                 tag: setting.tag).build()
 
 
-        let expectation = self.expectationWithDescription("onboard")
+        let expectation = self.expectation(description: "onboard")
 
-        let vendorThingID = "vid-" + String(NSDate.init().timeIntervalSince1970)
+        let vendorThingID = "vid-" + String(Date.init().timeIntervalSince1970)
         api.onboard(
             vendorThingID,
             thingPassword: "password",
@@ -81,7 +81,7 @@ class LargeTestBase: XCTestCase {
                     XCTAssertNotEqual(target!.accessToken, nil)
                     expectation.fulfill()
             })
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("error")
             }
@@ -96,7 +96,7 @@ class LargeTestBase: XCTestCase {
         let setting = self.setting
         let userInfo = self.userInfo!
 
-        var expectation = self.expectationWithDescription("list")
+        var expectation = self.expectation(description: "list")
 
         api.listTriggers(
             100,
@@ -110,21 +110,21 @@ class LargeTestBase: XCTestCase {
                     }
                     expectation.fulfill()
             })
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("error")
             }
         }
 
         for triggerID in triggerIDs {
-            expectation = self.expectationWithDescription("delete")
+            expectation = self.expectation(description: "delete")
             api.deleteTrigger(
                 triggerID ,
                 completionHandler: {
                     (deleted, error) -> Void in
                     expectation.fulfill()
                 })
-            self.waitForExpectationsWithTimeout(TEST_TIMEOUT) {
+            self.waitForExpectations(timeout: TEST_TIMEOUT) {
                 (error) -> Void in
                     if error != nil {
                         XCTFail("error")
@@ -143,68 +143,68 @@ class LargeTestBase: XCTestCase {
     }
 
     func createPseudoUser(
-            appID: String,
+            _ appID: String,
             appKey: String,
             hostName: String) -> Dictionary<String, AnyObject> {
         let request = NSMutableURLRequest(
-                URL: NSURL(string: "https://\(hostName)/api/apps/\(appID)/users")!)
-        request.HTTPMethod = "POST"
+                url: URL(string: "https://\(hostName)/api/apps/\(appID)/users")!)
+        request.httpMethod = "POST"
         request.addValue(appID, forHTTPHeaderField: "X-Kii-AppID")
         request.addValue(appKey, forHTTPHeaderField: "X-Kii-AppKey")
         request.addValue(
             "application/vnd.kii.RegistrationAndAuthorizationRequest+json",
             forHTTPHeaderField: "Content-Type")
-        request.HTTPBody =
-            ("{}" as NSString).dataUsingEncoding(NSUTF8StringEncoding)
+        request.httpBody =
+            ("{}" as NSString).data(using: String.Encoding.utf8.rawValue)
 
-        let expectation = self.expectationWithDescription("Create user")
+        let expectation = self.expectation(description: "Create user")
 
         let session =
-            NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        var data: NSData?
-        let dataTask = session.dataTaskWithRequest(
-                           request,
+            URLSession(configuration: URLSessionConfiguration.default)
+        var data: Data?
+        let dataTask = session.dataTask(
+                           with: request,
                            completionHandler: { (receivedData, response, error) -> Void in
                                data = receivedData
                                expectation.fulfill()
             })
         dataTask.resume()
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("error")
             }
         }
 
-        return try! NSJSONSerialization.JSONObjectWithData(
-                   data!,
-                   options:.AllowFragments) as! Dictionary<String, AnyObject>
+        return try! JSONSerialization.jsonObject(
+                   with: data!,
+                   options:.allowFragments) as! Dictionary<String, AnyObject>
     }
 
     func deletePseudoUser(
-            appID: String,
+            _ appID: String,
             appKey: String,
             userID: String,
             accessToken: String,
             hostName: String) -> Void {
         let request = NSMutableURLRequest(
-                URL: NSURL(string: "https://\(hostName)/api/apps/\(appID)/users/\(userID)")!)
-        request.HTTPMethod = "DELETE"
+                url: URL(string: "https://\(hostName)/api/apps/\(appID)/users/\(userID)")!)
+        request.httpMethod = "DELETE"
         request.addValue(appID, forHTTPHeaderField: "X-Kii-AppID")
         request.addValue(appKey, forHTTPHeaderField: "X-Kii-AppKey")
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 
-        let expectation = self.expectationWithDescription("Delete user")
+        let expectation = self.expectation(description: "Delete user")
 
         let session =
-            NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        let dataTask = session.dataTaskWithRequest(
-                           request,
+            URLSession(configuration: URLSessionConfiguration.default)
+        let dataTask = session.dataTask(
+                           with: request,
                            completionHandler: { (receivedData, response, error) -> Void in
-                               XCTAssertEqual(204, (response as! NSHTTPURLResponse).statusCode)
+                               XCTAssertEqual(204, (response as! HTTPURLResponse).statusCode)
                                expectation.fulfill()
             })
         dataTask.resume()
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             if error != nil {
                 XCTFail("error")
             }
