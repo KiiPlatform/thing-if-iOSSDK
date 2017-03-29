@@ -85,23 +85,6 @@ open class ThingIFAPI: Equatable {
         _uninstallPush(installationID, completionHandler: completionHandler)
     }
 
-    /** Group history state
-
-     - Parameter query: `GroupedHistoryStatesQuery` instance.timeRange
-       in query should less than 60 data grouping intervals.
-     - Parameter completionHandler: A closure to be executed once
-       finished. The closure takes 2 arguments:
-       - 1st one is `GroupedHistoryStates` array.
-       - 2nd one is an instance of ThingIFError when failed.
-     */
-    open func query(
-      _ query: GroupedHistoryStatesQuery,
-      completionHandler: @escaping (
-        [GroupedHistoryStates]?, ThingIFError?) -> Void) -> Void
-    {
-        // TODO: implement me.
-    }
-
     public static func == (left: ThingIFAPI, right: ThingIFAPI) -> Bool {
         return left.appID == right.appID &&
           left.appKey == right.appKey &&

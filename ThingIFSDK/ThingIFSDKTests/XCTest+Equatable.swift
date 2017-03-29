@@ -72,10 +72,17 @@ struct EndNodeWrapper: EquatableWrapper {
 
 }
 
-extension TimeRange: Equatable {
+extension TimeRange: Equatable, ToJsonObject {
 
     public static func == (left: TimeRange, right: TimeRange) -> Bool {
         return left.from == right.from && left.to == right.to
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [
+            "from" : self.from.timeIntervalSince1970InMillis,
+            "to" : self.to.timeIntervalSince1970InMillis
+        ]
     }
 }
 
@@ -487,6 +494,22 @@ extension HistoryState : Equatable, ToJsonObject {
         var ret = self.state
         ret["_created"] = self.createdAt.timeIntervalSince1970InMillis
         return ret
+    }
+}
+
+extension GroupedHistoryStates : Equatable, ToJsonObject {
+
+    public static func == (left: GroupedHistoryStates, right: GroupedHistoryStates) -> Bool {
+        return
+            left.timeRange == right.timeRange &&
+            left.objects == right.objects
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [
+            "range" : self.timeRange.makeJsonObject(),
+            "objects" : self.objects.map { $0.makeJsonObject() }
+        ]
     }
 }
 

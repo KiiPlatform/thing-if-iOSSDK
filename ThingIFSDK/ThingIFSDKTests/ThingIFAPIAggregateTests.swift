@@ -23,7 +23,7 @@ class ThingIFAPIAggregateTests: SmallTestBase {
         let alias = "dummyAlias"
         let timeRange = TimeRange(Date(timeIntervalSince1970: 1), to: Date(timeIntervalSince1970: 1))
         let clause : EqualsClauseInQuery = EqualsClauseInQuery("dummyField", intValue: 10)
-        let query = GroupedHistoryStatesQuery(alias, timeRange: timeRange, clause: clause)
+        let query = GroupedHistoryStatesQuery(alias, timeRange: timeRange, clause: clause, firmwareVersion: "V1")
         let aggregation = try Aggregation.makeMaxAggregation(
             "dummyField",
             fieldType: Aggregation.FieldType.integer)
@@ -79,7 +79,8 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                                 "fieldType": aggregation.fieldType.rawValue
                             ]
                         ]
-                    ]
+                    ],
+                    "firmwareVersion" : "V1"
                 ],
                 try JSONSerialization.jsonObject(
                     with: request.httpBody!,

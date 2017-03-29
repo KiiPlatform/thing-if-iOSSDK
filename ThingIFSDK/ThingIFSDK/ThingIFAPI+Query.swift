@@ -74,6 +74,61 @@ extension ThingIFAPI {
         }
     }
 
+    /** Group history state
+
+     - Parameter query: `GroupedHistoryStatesQuery` instance.timeRange
+       in query should less than 60 data grouping intervals.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments:
+       - 1st one is `GroupedHistoryStates` array.
+       - 2nd one is an instance of ThingIFError when failed.
+     */
+    open func query(
+        _ query: GroupedHistoryStatesQuery,
+        completionHandler: @escaping (
+        [GroupedHistoryStates]?, ThingIFError?) -> Void) -> Void
+    {
+        if self.target == nil {
+            completionHandler(nil, ThingIFError.targetNotAvailable)
+            return;
+        }
+
+        self.operationQueue.addHttpRequestOperation(
+            .post,
+            url: "\(self.baseURL)/thing-if/apps/\(self.appID)/targets/\(self.target!.typedID.toString())/states/aliases/\(query.alias)/query",
+            requestHeader:
+                self.defaultHeader +
+                [
+                    "Content-Type" : MediaType.mediaTypeTraitStateQueryRequest.rawValue
+                ],
+            requestBody: query.makeJsonObject(),
+            failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+                response, error in
+
+                let result = convertResponse(response, error) {
+                    response, error throws ->
+                    ([GroupedHistoryStates]?, ThingIFError?) in
+                    if let error = error {
+                        switch error {
+                        case .errorResponse(let errorResponse) where
+                            errorResponse.httpStatusCode == 409 &&
+                                errorResponse.errorCode ==
+                            "STATE_HISTORY_NOT_AVAILABLE":
+                            return ([], nil)
+                        default:
+                            return (nil, error)
+                        }
+                    }
+                    return (
+                        try (response!["groupedResults"] as! [[String : Any]]).map {
+                            try GroupedHistoryStates($0)
+                        },
+                        nil)
+                }
+                DispatchQueue.main.async { completionHandler(result.0, result.1) }
+        }
+    }
+
     /** Aggregate history states
 
      `AggregatedValueType` represents type of calcuated value with
@@ -109,6 +164,9 @@ extension ThingIFAPI {
             return;
         }
 
+        var query = query
+        query.setAggregation(aggregation)
+
         self.operationQueue.addHttpRequestOperation(
           .post,
           url: "\(self.baseURL)/thing-if/apps/\(self.appID)/targets/\(self.target!.typedID.toString())/states/aliases/\(query.alias)/query",
@@ -118,11 +176,7 @@ extension ThingIFAPI {
               "Content-Type" :
                 MediaType.mediaTypeTraitStateQueryRequest.rawValue
             ],
-          requestBody:
-            [
-              "query" : query.makeJsonObject() +
-                ["aggregations" : [ aggregation.makeJsonObject() ]]
-            ],
+          requestBody: query.makeJsonObject(),
           failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
             response, error in
 
