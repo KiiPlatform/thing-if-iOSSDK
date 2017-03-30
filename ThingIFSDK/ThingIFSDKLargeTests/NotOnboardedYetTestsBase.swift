@@ -63,46 +63,13 @@ class NotOnboardedYetTestsBase: XCTestCase {
     }
 
     override func tearDown() {
-        var triggerIDs: [String] = []
-        let setting = self.setting
-        let userInfo = self.userInfo!
-
-        var expectation = self.expectation(description: "list")
-
-        self.api.listTriggers(
-            100,
-            paginationKey: nil,
-            completionHandler: {
-                triggers, paginationKey, error in
-                    if triggers != nil {
-                        for trigger in triggers! {
-                            triggerIDs.append(trigger.triggerID)
-                        }
-                    }
-                    expectation.fulfill()
-            })
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
-            if error != nil {
-                XCTFail("error")
-            }
-        }
-
-        for triggerID in triggerIDs {
-            expectation = self.expectation(description: "delete")
-            api.deleteTrigger(triggerID) { deleted, error in
-                expectation.fulfill()
-            }
-            self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
-                XCTAssertNil(error)
-            }
-        }
 
         deletePseudoUser(
-            setting.appID,
-            appKey: setting.appKey,
-            userID: userInfo["userID"] as! String,
-            accessToken: userInfo["_accessToken"] as! String,
-            hostName: setting.hostName)
+          self.setting.appID,
+          appKey: self.setting.appKey,
+          userID: self.userInfo["userID"] as! String,
+          accessToken: self.userInfo["_accessToken"] as! String,
+          hostName: self.setting.hostName)
 
         super.tearDown()
     }
