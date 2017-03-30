@@ -1,47 +1,46 @@
 //
-//  LargeTestBase.swift
+//  NotOnboardedYetTestsBase.swift
 //  ThingIFSDK
 //
-//  Created on 2016/05/27.
-//  Copyright 2016 Kii. All rights reserved.
+//  Created on 2017/03/30.
+//  Copyright (c) 2017 Kii. All rights reserved.
 //
 
 import XCTest
 @testable import ThingIFSDK
 
-/*
-class TestSetting: NSObject {
+struct TestSetting {
     let appID: String
     let appKey: String
     let hostName: String
     let tag: String?
 
-    override init() {
-        let path = Bundle(
-                for:TestSetting.self).path(
-                       forResource: "TestSetting",
-                       ofType:"plist")
+    init() {
+        let path = Bundle.main.path(
+          forResource: "TestSetting",
+          ofType:"plist")
 
-        let dict: Dictionary = NSDictionary(
-                contentsOfFile: path!) as! Dictionary<String, AnyObject>
+        let dict = NSDictionary(
+          contentsOfFile: path!) as! [String : String]
 
-        self.appID = dict["appID"] as! String
-        self.appKey = dict["appKey"] as! String
-        self.hostName = dict["hostName"] as! String
+        self.appID = dict["appID"]!
+        self.appKey = dict["appKey"]!
+        self.hostName = dict["hostName"]!
         self.tag = nil
     }
 }
 
-class LargeTestBase: XCTestCase {
+class NotOnboardedYetTestsBase: XCTestCase {
 
     internal let TEST_TIMEOUT = 5.0
     internal let DEMO_THING_TYPE = "LED"
     internal let DEMO_SCHEMA_NAME = "SmartLightDemo"
     internal let DEMO_SCHEMA_VERSION = 1
 
-    internal var onboardedApi: ThingIFAPI?
-    internal var userInfo: Dictionary<String, AnyObject>?
-    internal let setting = TestSetting();
+    internal var app: KiiApp!
+    internal var api: ThingIFAPI!
+    internal var userInfo: [String : Any]!
+    internal let setting = TestSetting()
 
     override func setUp() {
         super.setUp()
@@ -51,50 +50,26 @@ class LargeTestBase: XCTestCase {
                 setting.appID,
                 appKey: setting.appKey,
                 hostName: setting.hostName)
-        let userInfo: Dictionary<String, AnyObject> = self.userInfo!
         let owner = Owner(
-                TypedID(
-                           TypedID.Types(rawValue: "user")!,
-                           id: userInfo["userID"]! as! String),
-                accessToken: userInfo["_accessToken"]! as! String)
+          TypedID(
+            TypedID.Types(rawValue: "user")!,
+            id: self.userInfo["userID"]! as! String),
+          accessToken: self.userInfo["_accessToken"]! as! String)
         let app = KiiApp(
           setting.appID,
           appKey: setting.appKey,
           hostName: setting.hostName)
-        let api = ThingIFAPI(
-          app,
-          owner: owner,
-          tag: setting.tag)
-
-        let expectation = self.expectation(description: "onboard")
-
-        let vendorThingID = "vid-" + String(Date.init().timeIntervalSince1970)
-        api.onboardWith(
-          vendorThingID: vendorThingID,
-          thingPassword: "password",
-          options: OnboardWithVendorThingIDOptions(DEMO_THING_TYPE)) {
-            target, error in
-            XCTAssertNil(error)
-            XCTAssertEqual(.thing, target!.typedID.type)
-            XCTAssertNotNil(target!.accessToken)
-            expectation.fulfill()
-        }
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
-            XCTAssertNil(error)
-        }
-
-        self.onboardedApi = api
+        self.api = ThingIFAPI(app, owner: owner, tag: setting.tag)
     }
 
     override func tearDown() {
         var triggerIDs: [String] = []
-        let api = self.onboardedApi!
         let setting = self.setting
         let userInfo = self.userInfo!
 
         var expectation = self.expectation(description: "list")
 
-        api.listTriggers(
+        self.api.listTriggers(
             100,
             paginationKey: nil,
             completionHandler: {
@@ -201,4 +176,3 @@ class LargeTestBase: XCTestCase {
     }
 
 }
-*/

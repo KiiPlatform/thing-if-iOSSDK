@@ -8,10 +8,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class OnboardAPITests: LargeTestBase {
-
-    internal var app: KiiApp?
-    internal var api: ThingIFAPI?
+class OnboardAPITests: NotOnboardedYetTestsBase {
 
     override func setUp() {
         super.setUp()
@@ -21,12 +18,11 @@ class OnboardAPITests: LargeTestBase {
           setting.appID,
           appKey: setting.appKey,
           hostName: setting.hostName)
-        let userInfo: Dictionary<String, AnyObject> = self.userInfo!
         let owner = Owner(
           TypedID(
             .user,
-            id: userInfo["userID"]! as! String),
-          accessToken: userInfo["_accessToken"]! as! String)
+            id: self.userInfo["userID"]! as! String),
+          accessToken: self.userInfo["_accessToken"]! as! String)
         let app = KiiApp(
           setting.appID,
           appKey: setting.appKey,
@@ -42,13 +38,12 @@ class OnboardAPITests: LargeTestBase {
 
     override func tearDown() {
         let setting = self.setting
-        let userInfo = self.userInfo!
 
         deletePseudoUser(
           setting.appID,
           appKey: setting.appKey,
-          userID: userInfo["userID"] as! String,
-          accessToken: userInfo["_accessToken"] as! String,
+          userID: self.userInfo["userID"] as! String,
+          accessToken: self.userInfo["_accessToken"] as! String,
           hostName: setting.hostName)
 
         super.tearDown()
@@ -81,8 +76,8 @@ class OnboardAPITests: LargeTestBase {
           owner: Owner(
             TypedID(
               .user,
-              id: self.userInfo!["userID"]! as! String),
-            accessToken: self.userInfo!["_accessToken"]! as! String))
+              id: self.userInfo["userID"]! as! String),
+            accessToken: self.userInfo["_accessToken"]! as! String))
         let thingIdOptions = OnboardWithThingIDOptions(.standalone)
         api.onboardWith(
           thingID: self.api!.target!.typedID.id,
