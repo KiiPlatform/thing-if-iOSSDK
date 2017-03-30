@@ -13,39 +13,9 @@ class OnboardAPITests: NotOnboardedYetTestsBase {
     override func setUp() {
         super.setUp()
 
-        let setting = self.setting
-        self.userInfo = createPseudoUser(
-          setting.appID,
-          appKey: setting.appKey,
-          hostName: setting.hostName)
-        let owner = Owner(
-          TypedID(
-            .user,
-            id: self.userInfo["userID"]! as! String),
-          accessToken: self.userInfo["_accessToken"]! as! String)
-        let app = KiiApp(
-          setting.appID,
-          appKey: setting.appKey,
-          hostName: setting.hostName)
-        let api = ThingIFAPI(
-          app,
-          owner: owner,
-          tag: setting.tag)
-
-        self.app = app
-        self.api = api
     }
 
     override func tearDown() {
-        let setting = self.setting
-
-        deletePseudoUser(
-          setting.appID,
-          appKey: setting.appKey,
-          userID: self.userInfo["userID"] as! String,
-          accessToken: self.userInfo["_accessToken"] as! String,
-          hostName: setting.hostName)
-
         super.tearDown()
     }
 

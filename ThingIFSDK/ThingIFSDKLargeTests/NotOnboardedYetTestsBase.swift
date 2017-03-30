@@ -9,6 +9,17 @@
 import XCTest
 @testable import ThingIFSDK
 
+class PathGetter: NSObject {
+
+    fileprivate var path: String? {
+        get {
+            return Bundle(for: PathGetter.self).path(
+              forResource: "TestSetting",
+              ofType:"plist")
+        }
+    }
+}
+
 struct TestSetting {
     let appID: String
     let appKey: String
@@ -16,9 +27,7 @@ struct TestSetting {
     let tag: String?
 
     init() {
-        let path = Bundle.main.path(
-          forResource: "TestSetting",
-          ofType:"plist")
+        let path = PathGetter().path
 
         let dict = NSDictionary(
           contentsOfFile: path!) as! [String : String]
@@ -55,7 +64,7 @@ class NotOnboardedYetTestsBase: XCTestCase {
             TypedID.Types(rawValue: "user")!,
             id: self.userInfo["userID"]! as! String),
           accessToken: self.userInfo["_accessToken"]! as! String)
-        let app = KiiApp(
+        self.app = KiiApp(
           setting.appID,
           appKey: setting.appKey,
           hostName: setting.hostName)
