@@ -42,9 +42,8 @@ struct TestSetting {
 class NotOnboardedYetTestsBase: XCTestCase {
 
     internal let TEST_TIMEOUT = 5.0
-    internal let DEMO_THING_TYPE = "LED"
-    internal let DEMO_SCHEMA_NAME = "SmartLightDemo"
-    internal let DEMO_SCHEMA_VERSION = 1
+    internal let DEFAULT_THING_TYPE = "MyAirConditioner";
+    internal let DEFAULT_FIRMWAREVERSION = "v1"
 
     internal var app: KiiApp!
     internal var api: ThingIFAPI!

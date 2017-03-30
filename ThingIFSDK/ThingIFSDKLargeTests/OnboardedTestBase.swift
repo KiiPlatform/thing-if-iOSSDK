@@ -26,7 +26,10 @@ class OnboardedTestBase: NotOnboardedYetTestsBase {
         self.api.onboardWith(
           vendorThingID: vendorThingID,
           thingPassword: "password",
-          options: OnboardWithVendorThingIDOptions(DEMO_THING_TYPE)) {
+          options: OnboardWithVendorThingIDOptions(
+            DEFAULT_THING_TYPE,
+            firmwareVersion: DEFAULT_FIRMWAREVERSION,
+            position: .standalone)) {
             target, error in
             XCTAssertNil(error)
             XCTAssertEqual(.thing, target!.typedID.type)

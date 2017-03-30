@@ -23,7 +23,8 @@ class OnboardAPITests: NotOnboardedYetTestsBase {
         var expectation = self.expectation(description: "testOnboardWithVendorThingIDAndThingIDSuccess")
         let vendorThingID = "vid-" + String(Date().timeIntervalSince1970)
         let vendorThingIdOptions = OnboardWithVendorThingIDOptions(
-          DEMO_THING_TYPE,
+          DEFAULT_THING_TYPE,
+          firmwareVersion: DEFAULT_FIRMWAREVERSION,
           position: .standalone)
         self.api?.onboardWith(
           vendorThingID: vendorThingID,
@@ -76,7 +77,8 @@ class OnboardAPITests: NotOnboardedYetTestsBase {
           vendorThingID: gatewayVendorThingID,
           thingPassword: "password",
           options: OnboardWithVendorThingIDOptions(
-            DEMO_THING_TYPE,
+            DEFAULT_THING_TYPE,
+            firmwareVersion: DEFAULT_FIRMWAREVERSION,
             position: .gateway)) {
             target, error in
             XCTAssertNil(error)
