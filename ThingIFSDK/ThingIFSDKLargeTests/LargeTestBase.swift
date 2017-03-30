@@ -72,13 +72,13 @@ class LargeTestBase: XCTestCase {
           vendorThingID: vendorThingID,
           thingPassword: "password",
           options: OnboardWithVendorThingIDOptions(DEMO_THING_TYPE)) {
-            target, error -> Void in
+            target, error in
             XCTAssertNil(error)
             XCTAssertEqual(.thing, target!.typedID.type)
             XCTAssertNotNil(target!.accessToken)
             expectation.fulfill()
         }
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
             XCTAssertNil(error)
         }
 
@@ -97,7 +97,7 @@ class LargeTestBase: XCTestCase {
             100,
             paginationKey: nil,
             completionHandler: {
-                (triggers, paginationKey, error) -> Void in
+                triggers, paginationKey, error in
                     if triggers != nil {
                         for trigger in triggers! {
                             triggerIDs.append(trigger.triggerID)
@@ -105,7 +105,7 @@ class LargeTestBase: XCTestCase {
                     }
                     expectation.fulfill()
             })
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
             if error != nil {
                 XCTFail("error")
             }
@@ -113,17 +113,11 @@ class LargeTestBase: XCTestCase {
 
         for triggerID in triggerIDs {
             expectation = self.expectation(description: "delete")
-            api.deleteTrigger(
-                triggerID ,
-                completionHandler: {
-                    (deleted, error) -> Void in
-                    expectation.fulfill()
-                })
-            self.waitForExpectations(timeout: TEST_TIMEOUT) {
-                (error) -> Void in
-                    if error != nil {
-                        XCTFail("error")
-                    }
+            api.deleteTrigger(triggerID) { deleted, error in
+                expectation.fulfill()
+            }
+            self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
+                XCTAssertNil(error)
             }
         }
 
@@ -160,15 +154,14 @@ class LargeTestBase: XCTestCase {
             URLSession(configuration: URLSessionConfiguration.default)
         var data: Data?
         let dataTask = session.dataTask(with: request) {
-            receivedData, response, error -> Void in
+            receivedData, response, error in
+
             data = receivedData
             expectation.fulfill()
         }
         dataTask.resume()
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            if error != nil {
-                XCTFail("error")
-            }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
+            XCTAssertNil(error)
         }
 
         return try! JSONSerialization.jsonObject(
@@ -196,15 +189,14 @@ class LargeTestBase: XCTestCase {
         let session =
             URLSession(configuration: URLSessionConfiguration.default)
         let dataTask = session.dataTask(with: request) {
-            receivedData, response, error -> Void in
+            receivedData, response, error in
             XCTAssertEqual(204, (response as! HTTPURLResponse).statusCode)
             expectation.fulfill()
         }
         dataTask.resume()
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
             XCTAssertNil(error)
         }
-
     }
 
 }
