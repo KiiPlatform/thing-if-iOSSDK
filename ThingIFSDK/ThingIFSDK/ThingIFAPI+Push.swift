@@ -13,16 +13,19 @@ extension ThingIFAPI {
 
     // MARK: - Push notification methods
 
-    /** Install push notification to receive notification from IoT Cloud.
-     IoT Cloud will send notification when the Target replies to the Command.
-     Application can receive the notification and check the result of Command
-     fired by Application or registered Trigger.
-     After installation is done Installation ID is managed in this class.
+    /** Install push notification to receive notification from IoT
+     Cloud.  IoT Cloud will send notification when the Target replies
+     to the Command.  Application can receive the notification and
+     check the result of Command fired by Application or registered
+     Trigger.  After installation is done Installation ID is managed
+     in this class.
 
      - Parameter deviceToken: Data instance of device token for APNS.
-     - Parameter development: Bool flag indicate whether the cert is development or
-     production. This is optional, the default is false (production).
-     - Parameter completionHandler: A closure to be executed once on board has finished.
+     - Parameter development: Bool flag indicate whether the cert is
+       development or production. This is optional, the default is
+       false (production).
+     - Parameter completionHandler: A closure to be executed once on
+       board has finished.
      */
     open func installPush(
         _ deviceToken:Data,
@@ -61,8 +64,9 @@ extension ThingIFAPI {
     /** Uninstall push notification.
      After done, notification from IoT Cloud won't be notified.
 
-     - Parameter installationID: installation ID returned from installPush().
-     If null is specified, value of the installationID property is used.
+     - Parameter installationID: installation ID returned from
+       installPush(). If null is specified, value of the
+       installationID property is used.
      */
     open func uninstallPush(
         _ installationID:String?,
