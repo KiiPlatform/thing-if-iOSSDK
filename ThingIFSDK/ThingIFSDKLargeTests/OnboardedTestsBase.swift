@@ -1,5 +1,5 @@
 //
-//  OnboardedTestBase.swift
+//  OnboardedTestsBase.swift
 //  ThingIFSDK
 //
 //  Created on 2016/05/27.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class OnboardedTestBase: NotOnboardedYetTestsBase {
+class OnboardedTestsBase: NotOnboardedYetTestsBase {
 
     internal var onboardedApi: ThingIFAPI! {
         get {

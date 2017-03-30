@@ -110,7 +110,7 @@
 		B6A3DA171E7698FD001662D0 /* GatewayAPIPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A3DA161E7698FD001662D0 /* GatewayAPIPersistenceTests.swift */; };
 		B6A3DA191E769C38001662D0 /* GatewayAPITestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A3DA181E769C38001662D0 /* GatewayAPITestBase.swift */; };
 		B6A3DA1D1E77C05B001662D0 /* ThingIFAPIOnboardEndNodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A3DA1C1E77C05B001662D0 /* ThingIFAPIOnboardEndNodeTests.swift */; };
-		B6A55CCE1E8B995200AAC733 /* OnboardedTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A55CCD1E8B995200AAC733 /* OnboardedTestBase.swift */; };
+		B6A55CCE1E8B995200AAC733 /* OnboardedTestsBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A55CCD1E8B995200AAC733 /* OnboardedTestsBase.swift */; };
 		B6A55CD01E8CC56000AAC733 /* OnboardAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A55CCF1E8CC56000AAC733 /* OnboardAPITests.swift */; };
 		B6A55CD21E8CDB6700AAC733 /* NotOnboardedYetTestsBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A55CD11E8CDB6700AAC733 /* NotOnboardedYetTestsBase.swift */; };
 		B6A86CA81E6D291200F9C41B /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A86CA71E6D291200F9C41B /* Utilities.swift */; };
@@ -301,7 +301,7 @@
 		B6A3DA161E7698FD001662D0 /* GatewayAPIPersistenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPIPersistenceTests.swift; sourceTree = "<group>"; };
 		B6A3DA181E769C38001662D0 /* GatewayAPITestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPITestBase.swift; sourceTree = "<group>"; };
 		B6A3DA1C1E77C05B001662D0 /* ThingIFAPIOnboardEndNodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIOnboardEndNodeTests.swift; sourceTree = "<group>"; };
-		B6A55CCD1E8B995200AAC733 /* OnboardedTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardedTestBase.swift; sourceTree = "<group>"; };
+		B6A55CCD1E8B995200AAC733 /* OnboardedTestsBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardedTestsBase.swift; sourceTree = "<group>"; };
 		B6A55CCF1E8CC56000AAC733 /* OnboardAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardAPITests.swift; sourceTree = "<group>"; };
 		B6A55CD11E8CDB6700AAC733 /* NotOnboardedYetTestsBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotOnboardedYetTestsBase.swift; sourceTree = "<group>"; };
 		B6A86CA71E6D291200F9C41B /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -539,7 +539,7 @@
 			isa = PBXGroup;
 			children = (
 				B6A55CCF1E8CC56000AAC733 /* OnboardAPITests.swift */,
-				B6A55CCD1E8B995200AAC733 /* OnboardedTestBase.swift */,
+				B6A55CCD1E8B995200AAC733 /* OnboardedTestsBase.swift */,
 				B63FC8AD1CEEDBFF0042C747 /* Info.plist */,
 				B673C0041CF81CEC00AEF519 /* TestSetting.plist */,
 				B6A55CD11E8CDB6700AAC733 /* NotOnboardedYetTestsBase.swift */,
@@ -879,7 +879,7 @@
 			files = (
 				B6A55CD21E8CDB6700AAC733 /* NotOnboardedYetTestsBase.swift in Sources */,
 				B6A55CD01E8CC56000AAC733 /* OnboardAPITests.swift in Sources */,
-				B6A55CCE1E8B995200AAC733 /* OnboardedTestBase.swift in Sources */,
+				B6A55CCE1E8B995200AAC733 /* OnboardedTestsBase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
