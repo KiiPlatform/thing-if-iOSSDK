@@ -1,5 +1,5 @@
 //
-//  PushUninstallationTests.swift
+//  ThingIFAPIPushUninstallationTests.swift
 //  ThingIFSDK
 //
 //  Created by Syah Riza on 8/17/15.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PushUninstallationTests: SmallTestBase {
+class ThingIFAPIPushUninstallationTests: SmallTestBase {
     let deviceToken = "dummyDeviceToken"
     
     override func setUp() {
@@ -66,7 +66,7 @@ class PushUninstallationTests: SmallTestBase {
               vendorThingID: vendorThingID,
               thingPassword: thingPassword,
               options: OnboardWithVendorThingIDOptions(
-                thingType: thingType,
+                thingType,
                 thingProperties: thingProperties)) { ( target, error) -> Void in
                 if error == nil{
                     XCTAssertEqual(target!.typedID.toString(), "thing:th.0267251d9d60-1858-5e11-3dc3-00f3f0b5")

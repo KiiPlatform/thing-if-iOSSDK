@@ -55,7 +55,7 @@ public struct Command {
        should be equal or less than 200 characters.
      - Parameter metadata: Meta data of a command.
      */
-    internal init(_ commandID: String,
+    public init(_ commandID: String,
          targetID: TypedID,
          issuerID: TypedID,
          aliasActions: [AliasAction],

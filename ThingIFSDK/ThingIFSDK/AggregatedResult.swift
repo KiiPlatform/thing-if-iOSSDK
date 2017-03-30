@@ -28,7 +28,7 @@ public struct AggregatedResult<AggregatedValueType> {
      - Parameters timeRange: Time range of an aggregated result.
      - Parameters aggregatedObjects: Aggregated objectes.
      */
-    internal init(
+    public init(
       _ value: AggregatedValueType?,
       timeRange: TimeRange,
       aggregatedObjects: [HistoryState])
