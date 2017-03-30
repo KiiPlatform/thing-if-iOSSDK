@@ -31,7 +31,7 @@ public struct ActionResult {
      - Parameters data: Data returned from thing.
      - Parameters errorMessage: Error message.
      */
-    internal init(
+    public init(
       _ succeeded: Bool,
       actionName: String,
       data: Any? = nil,
