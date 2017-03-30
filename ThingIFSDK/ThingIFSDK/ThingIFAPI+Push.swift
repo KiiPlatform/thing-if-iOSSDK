@@ -84,17 +84,16 @@ extension ThingIFAPI {
             url: requestURL,
             requestHeader:
             self.defaultHeader,
-            requestBody: nil,
             failureBeforeExecutionHandler: { completionHandler($0) }) {
-                response, error in
+            response, error in
 
-                if error == nil{
-                    self.installationID = nil
-                }
-                self.saveToUserDefault()
-                DispatchQueue.main.async {
-                    completionHandler( error)
-                }
+            if error == nil && self.installationID == installationID {
+                self.installationID = nil
+            }
+            self.saveToUserDefault()
+            DispatchQueue.main.async {
+                completionHandler( error)
+            }
         }
 
     }
