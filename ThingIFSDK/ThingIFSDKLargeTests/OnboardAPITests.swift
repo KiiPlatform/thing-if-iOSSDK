@@ -21,7 +21,7 @@ class OnboardAPITests: NotOnboardedYetTestsBase {
 
     func testOnboardWithVendorThingIDAndThingIDSuccess() {
         var expectation = self.expectation(description: "testOnboardWithVendorThingIDAndThingIDSuccess")
-        let vendorThingID = "vid-" + String(NSDate.init().timeIntervalSince1970)
+        let vendorThingID = "vid-" + String(Date().timeIntervalSince1970)
         let vendorThingIdOptions = OnboardWithVendorThingIDOptions(
           DEMO_THING_TYPE,
           position: .standalone)
@@ -71,7 +71,7 @@ class OnboardAPITests: NotOnboardedYetTestsBase {
           description: "testOnboardEndnodeWithGatewaySuccess")
         // Register gateway.
         let gatewayVendorThingID =
-          "gvid-" + String(NSDate.init().timeIntervalSince1970)
+          "gvid-" + String(Date().timeIntervalSince1970)
         self.api!.onboardWith(
           vendorThingID: gatewayVendorThingID,
           thingPassword: "password",
@@ -92,7 +92,7 @@ class OnboardAPITests: NotOnboardedYetTestsBase {
         expectation = self.expectation(
           description: "testOnboardEndnodeWithGatewaySuccess")
         let endnodeVendorThingID =
-          "vid-" + String(NSDate.init().timeIntervalSince1970)
+          "vid-" + String(Date().timeIntervalSince1970)
         let pendingEndnode =
           try PendingEndNode(["vendorThingID" : endnodeVendorThingID])
         self.api!.onboard(
