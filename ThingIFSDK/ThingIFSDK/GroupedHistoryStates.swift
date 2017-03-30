@@ -31,3 +31,13 @@ public struct GroupedHistoryStates {
     }
 
 }
+
+extension GroupedHistoryStates : FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        self.init(
+            try TimeRange(jsonObject["range"] as! [String : Any]),
+            objects: try (jsonObject["objects"] as! [[String : Any]]).map {try HistoryState($0)}
+        )
+    }
+}

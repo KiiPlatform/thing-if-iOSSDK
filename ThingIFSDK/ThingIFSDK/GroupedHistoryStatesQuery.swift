@@ -20,6 +20,7 @@ public struct GroupedHistoryStatesQuery {
     /** Firmware version of a query. */
     public let firmwareVersion: String?
 
+    fileprivate var aggregation: Aggregation? = nil
 
     // MARK: - Initializing GroupedHistoryStatesQuery instance.
     /** Initializer of GroupedHistoryStatesQuery
@@ -45,6 +46,11 @@ public struct GroupedHistoryStatesQuery {
 }
 
 extension GroupedHistoryStatesQuery : ToJsonObject {
+
+    internal mutating func setAggregation(_ aggregation: Aggregation?) {
+        self.aggregation = aggregation
+    }
+
     internal func makeJsonObject() -> [String : Any]{
 
         let timeRangeClause = TimeRangeClauseInQuery(self.timeRange)
@@ -56,6 +62,13 @@ extension GroupedHistoryStatesQuery : ToJsonObject {
             clause = timeRangeClause.makeJsonObject()
         }
 
-        return [ "clause": clause, "grouped": true ]
+        var query : [ String: Any ] = ["clause": clause, "grouped": true ]
+        if self.aggregation != nil {
+            query["aggregations"] = [ self.aggregation!.makeJsonObject() ]
+        }
+
+        var json : [String : Any] = [ "query" : query ]
+        json["firmwareVersion"] = self.firmwareVersion
+        return json
     }
 }
