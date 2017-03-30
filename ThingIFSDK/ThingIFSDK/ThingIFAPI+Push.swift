@@ -69,12 +69,15 @@ extension ThingIFAPI {
        installationID property is used.
      */
     open func uninstallPush(
-        _ installationID:String?,
+        _ installationID: String? = nil,
         completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
-        let idParam = installationID != nil ? installationID : self.installationID
-        let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(idParam!)"
+        guard let installationID = installationID ?? self.installationID else {
+            completionHandler(ThingIFError.unsupportedError)
+            return
+        }
+        let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(installationID)"
 
         self.operationQueue.addHttpRequestOperation(
             .delete,
