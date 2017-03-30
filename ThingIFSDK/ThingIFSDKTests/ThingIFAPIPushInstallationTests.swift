@@ -1,5 +1,5 @@
 //
-//  PushInstallationTests.swift
+//  ThingIFAPIPushInstallationTests.swift
 //  ThingIFSDK
 //
 //  Created by Syah Riza on 8/13/15.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import ThingIFSDK
 
-class PushInstallationTests: SmallTestBase {
+class ThingIFAPIPushInstallationTests: SmallTestBase {
 
     let deviceToken = "dummyDeviceToken".data(using: String.Encoding.utf8)!
     let deviceTokenString = "dummyDeviceToken".data(using: String.Encoding.utf8)!.hexString()
