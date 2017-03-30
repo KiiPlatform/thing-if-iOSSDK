@@ -1,5 +1,5 @@
 //
-//  LargeTestBase.swift
+//  OnboardedTestBase.swift
 //  ThingIFSDK
 //
 //  Created on 2016/05/27.
