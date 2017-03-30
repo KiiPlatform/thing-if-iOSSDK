@@ -138,21 +138,21 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "eq",
-                        "field": clause.field,
-                        "value": clause.value
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "eq",
+                            "field": clause.field,
+                            "value": clause.value
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
@@ -211,21 +211,21 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "eq",
-                        "field": clause.field,
-                        "value": clause.value
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "eq",
+                            "field": clause.field,
+                            "value": clause.value
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
@@ -285,21 +285,21 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "eq",
-                        "field": clause.field,
-                        "value": clause.value
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "eq",
+                            "field": clause.field,
+                            "value": clause.value
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
@@ -358,21 +358,21 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "eq",
-                        "field": clause.field,
-                        "value": clause.value
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "eq",
+                            "field": clause.field,
+                            "value": clause.value
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
@@ -431,21 +431,21 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "eq",
-                        "field": clause.field,
-                        "value": clause.value
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "eq",
+                            "field": clause.field,
+                            "value": clause.value
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
@@ -504,21 +504,21 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "eq",
-                        "field": clause.field,
-                        "value": clause.value
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "eq",
+                            "field": clause.field,
+                            "value": clause.value
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
@@ -577,21 +577,21 @@ class ThingIFAPIQueryUngroupedTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "eq",
-                        "field": clause.field,
-                        "value": clause.value
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "eq",
+                            "field": clause.field,
+                            "value": clause.value
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 

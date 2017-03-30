@@ -360,30 +360,30 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "withinTimeRange",
-                        "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
-                        "upperLimit": timeRange.to.timeIntervalSince1970InMillis
-                    ],
-                    "grouped": true,
-                    "aggregations": [
-                        [
-                            "type": aggregation.function.rawValue.uppercased(),
-                            "putAggregationInto": aggregation.function.rawValue.lowercased(),
-                            "field": aggregation.field,
-                            "fieldType": aggregation.fieldType.rawValue
-                        ]
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "withinTimeRange",
+                            "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                            "upperLimit": timeRange.to.timeIntervalSince1970InMillis
+                        ],
+                        "grouped": true,
+                        "aggregations": [
+                            [
+                                "type": aggregation.function.rawValue.uppercased(),
+                                "putAggregationInto": aggregation.function.rawValue.lowercased(),
+                                "field": aggregation.field,
+                                "fieldType": aggregation.fieldType.rawValue
+                            ]
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
@@ -444,7 +444,9 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
+            //verify body
+            XCTAssertEqual(
+                [
                     "query": [
                         "clause": [
                             "type": "withinTimeRange",
@@ -461,13 +463,11 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                             ]
                         ]
                     ]
-                ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
-            //verify body
-            XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
@@ -528,30 +528,30 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "withinTimeRange",
-                        "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
-                        "upperLimit": timeRange.to.timeIntervalSince1970InMillis
-                    ],
-                    "grouped": true,
-                    "aggregations": [
-                        [
-                            "type": aggregation.function.rawValue.uppercased(),
-                            "putAggregationInto": aggregation.function.rawValue.lowercased(),
-                            "field": aggregation.field,
-                            "fieldType": aggregation.fieldType.rawValue
-                        ]
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "withinTimeRange",
+                            "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                            "upperLimit": timeRange.to.timeIntervalSince1970InMillis
+                        ],
+                        "grouped": true,
+                        "aggregations": [
+                            [
+                                "type": aggregation.function.rawValue.uppercased(),
+                                "putAggregationInto": aggregation.function.rawValue.lowercased(),
+                                "field": aggregation.field,
+                                "fieldType": aggregation.fieldType.rawValue
+                            ]
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
@@ -612,30 +612,30 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "withinTimeRange",
-                        "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
-                        "upperLimit": timeRange.to.timeIntervalSince1970InMillis
-                    ],
-                    "grouped": true,
-                    "aggregations": [
-                        [
-                            "type": aggregation.function.rawValue.uppercased(),
-                            "putAggregationInto": aggregation.function.rawValue.lowercased(),
-                            "field": aggregation.field,
-                            "fieldType": aggregation.fieldType.rawValue
-                        ]
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "withinTimeRange",
+                            "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                            "upperLimit": timeRange.to.timeIntervalSince1970InMillis
+                        ],
+                        "grouped": true,
+                        "aggregations": [
+                            [
+                                "type": aggregation.function.rawValue.uppercased(),
+                                "putAggregationInto": aggregation.function.rawValue.lowercased(),
+                                "field": aggregation.field,
+                                "fieldType": aggregation.fieldType.rawValue
+                            ]
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
@@ -696,30 +696,30 @@ class ThingIFAPIAggregateTests: SmallTestBase {
                 ],
                 request.allHTTPHeaderFields!)
 
-            let expectedBody: [ String : Any] = [
-                "query": [
-                    "clause": [
-                        "type": "withinTimeRange",
-                        "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
-                        "upperLimit": timeRange.to.timeIntervalSince1970InMillis
-                    ],
-                    "grouped": true,
-                    "aggregations": [
-                        [
-                            "type": aggregation.function.rawValue.uppercased(),
-                            "putAggregationInto": aggregation.function.rawValue.lowercased(),
-                            "field": aggregation.field,
-                            "fieldType": aggregation.fieldType.rawValue
-                        ]
-                    ]
-                ]
-            ]
-            let data: Data = try JSONSerialization.data(withJSONObject: expectedBody, options: JSONSerialization.WritingOptions(rawValue: 0))
-            let expectedBodyStr: String = String.init(data: data, encoding: .utf8)!
             //verify body
             XCTAssertEqual(
-                expectedBodyStr,
-                String.init(data: request.httpBody!, encoding: .utf8)
+                [
+                    "query": [
+                        "clause": [
+                            "type": "withinTimeRange",
+                            "lowerLimit": timeRange.from.timeIntervalSince1970InMillis,
+                            "upperLimit": timeRange.to.timeIntervalSince1970InMillis
+                        ],
+                        "grouped": true,
+                        "aggregations": [
+                            [
+                                "type": aggregation.function.rawValue.uppercased(),
+                                "putAggregationInto": aggregation.function.rawValue.lowercased(),
+                                "field": aggregation.field,
+                                "fieldType": aggregation.fieldType.rawValue
+                            ]
+                        ]
+                    ]
+                ],
+                try JSONSerialization.jsonObject(
+                    with: request.httpBody!,
+                    options: JSONSerialization.ReadingOptions.allowFragments)
+                    as? NSDictionary
             )
         }
 
