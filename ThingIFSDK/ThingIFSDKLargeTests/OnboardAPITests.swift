@@ -8,28 +8,6 @@
 import XCTest
 @testable import ThingIFSDK
 
-class OnboardTestSetting: NSObject {
-    let appID: String
-    let appKey: String
-    let hostName: String
-    let tag: String?
-
-    override init() {
-        let path = Bundle(
-            for:TestSetting.self).path(
-                forResource: "TestSetting",
-                ofType:"plist")
-
-        let dict: Dictionary = NSDictionary(
-            contentsOfFile: path!) as! Dictionary<String, AnyObject>
-
-        self.appID = dict["appID"] as! String
-        self.appKey = dict["appKey"] as! String
-        self.hostName = dict["hostName"] as! String
-        self.tag = nil
-    }
-}
-
 class OnboardAPITests: LargeTestBase {
 
     internal var app: KiiApp?
