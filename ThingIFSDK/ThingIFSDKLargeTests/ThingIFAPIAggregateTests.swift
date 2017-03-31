@@ -32,8 +32,7 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
         onboardedApi.aggregate(query, aggregation: aggregation) {
             (results: [AggregatedResult<Bool>]?, error) in
             XCTAssertNil(error)
-            XCTAssertNotNil(results)
-            XCTAssertEqual(0, results?.count)
+            XCTAssertEqual([], results!)
         }
     }
 
