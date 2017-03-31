@@ -111,7 +111,7 @@ class ThingIFAPIPushUninstallationTests: SmallTestBase {
         
         setting.api.uninstallPush(installID) { (error) -> Void in
             XCTAssertTrue(error==nil,"should not error")
-            XCTAssertNil(setting.api.installationID,"Should be nil")
+            XCTAssertEqual("dummyInstallationID", setting.api.installationID)
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
