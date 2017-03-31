@@ -21,7 +21,7 @@ public struct Aggregation {
         case decimal = "DECIMAL"
 
         /** A type of a boolean field. */
-        case bool = "BOOL"
+        case bool = "BOOLEAN"
 
         /** A type of a object field. */
         case object = "OBJECT"
