@@ -62,8 +62,14 @@ open class GatewayAPI {
         password: String,
         completionHandler: @escaping (ThingIFError?)-> Void) -> Void
     {
-        if username.isEmpty || password.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
+        if username.isEmpty {
+            completionHandler(
+              ThingIFError.invalidArgument(message: "username is empty."))
+            return
+        }
+        if password.isEmpty {
+            completionHandler(
+              ThingIFError.invalidArgument(message: "password is empty."))
             return
         }
 
