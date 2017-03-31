@@ -75,6 +75,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
           nil)
 
         iotSession = MockSession.self
+        XCTAssertFalse(api.onboarded)
         api.onboardWith(
           thingID: "th.0267251d9d60-1858-5e11-3dc3-00f3f0b5",
           thingPassword: "dummyPassword") { ( target, error) -> Void in
@@ -102,6 +103,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         let api = setting.api
 
         api.target = setting.target
+        XCTAssertTrue(api.onboarded)
         api.onboardWith(
           thingID: "dummyThingID",
           thingPassword: "dummyPassword") { (target, error) -> Void in
@@ -112,6 +114,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             XCTAssertNil(error)
         }
+        XCTAssertTrue(api.onboarded)
     }
 
     func testOnboardWithThingIDAndOptionsSuccess() throws {
@@ -172,6 +175,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
            nil)
         iotSession = MockSession.self
 
+        XCTAssertFalse(setting.api.onboarded)
         setting.api.onboardWith(
           thingID: thingID,
           thingPassword: password,
@@ -188,6 +192,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             XCTAssertNil(error)
         }
 
+        XCTAssertTrue(setting.api.onboarded)
         XCTAssertEqual(
           setting.api,
           try ThingIFAPI.loadWithStoredInstance(setting.api.tag))
@@ -247,6 +252,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
           nil)
         iotSession = MockSession.self
 
+        XCTAssertFalse(setting.api.onboarded)
         setting.api.onboardWith(
           thingID: thingID,
           thingPassword: password,
@@ -263,6 +269,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             XCTAssertNil(error)
         }
+        XCTAssertFalse(setting.api.onboarded)
     }
 
     func testOnboardWithThingIDAndOptions404Error() throws {
@@ -319,6 +326,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
           error: nil)
         iotSession = MockSession.self
 
+        XCTAssertFalse(setting.api.onboarded)
         setting.api.onboardWith(
           thingID: thingID,
           thingPassword: password,
@@ -335,6 +343,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             XCTAssertNil(error)
         }
+        XCTAssertFalse(setting.api.onboarded)
     }
 
     func testOnboardWithThingIDAndOptions500Error() throws {
@@ -391,6 +400,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
           nil)
         iotSession = MockSession.self
 
+        XCTAssertFalse(setting.api.onboarded)
         setting.api.onboardWith(
           thingID: thingID,
           thingPassword: password,
@@ -407,6 +417,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             XCTAssertNil(error)
         }
+        XCTAssertFalse(setting.api.onboarded)
     }
 
     func testOnboardWithThingIDAndOptionsTwiceTest() throws {
@@ -431,6 +442,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
           nil)
         iotSession = MockSession.self
 
+        XCTAssertFalse(setting.api.onboarded)
         setting.api.onboardWith(
           thingID: thingID,
           thingPassword: password,
@@ -442,6 +454,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             XCTAssertEqual(target!.accessToken, accessToken)
             expectation.fulfill()
         }
+        XCTAssertTrue(setting.api.onboarded)
 
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             XCTAssertNil(error)
@@ -460,6 +473,7 @@ class ThingIFAPIOnboardWithThingIDTests: SmallTestBase {
             XCTAssertEqual(ThingIFError.alreadyOnboarded, error)
         }
 
+        XCTAssertTrue(setting.api.onboarded)
         XCTAssertEqual(
           setting.api,
           try ThingIFAPI.loadWithStoredInstance(setting.api.tag))
