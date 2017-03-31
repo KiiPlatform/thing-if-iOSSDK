@@ -246,7 +246,7 @@ class ThingIFAPIPushUninstallationTests: SmallTestBase {
 
             XCTAssertEqual(
               ThingIFError.invalidArgument(
-                message: "installationID is nil and self.installationID also nil."),
+                message: "Both of installationID and self.installationID are nil."),
               error)
         }
     }

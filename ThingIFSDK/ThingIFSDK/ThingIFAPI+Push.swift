@@ -66,7 +66,7 @@ extension ThingIFAPI {
 
      - Parameter installationID: installation ID returned from
        installPush(). If null is specified, value of the
-       installationID property is used.
+       `installationID` property is used.
      */
     open func uninstallPush(
         _ installationID: String? = nil,
@@ -77,7 +77,7 @@ extension ThingIFAPI {
             completionHandler(
               ThingIFError.invalidArgument(
                 message:
-                  "installationID is nil and self.installationID also nil."))
+                  "Both of installationID and self.installationID are nil."))
             return
         }
         let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(installationID)"
