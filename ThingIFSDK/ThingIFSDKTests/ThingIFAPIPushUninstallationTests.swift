@@ -111,7 +111,7 @@ class ThingIFAPIPushUninstallationTests: SmallTestBase {
         
         setting.api.uninstallPush(installID) { (error) -> Void in
             XCTAssertTrue(error==nil,"should not error")
-            XCTAssertNil(setting.api.installationID,"Should be nil")
+            XCTAssertEqual("dummyInstallationID", setting.api.installationID)
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
@@ -237,5 +237,61 @@ class ThingIFAPIPushUninstallationTests: SmallTestBase {
         }
         checkSavedIoTAPI(setting)
     }
-    
+
+    func testInvalidArgumentError() {
+        let setting = TestSetting()
+
+        setting.api.uninstallPush() {
+            error in
+
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(
+                message: "Both of installationID and self.installationID are nil."),
+              error)
+        }
+    }
+
+    func testUseInstallationIDProperty() throws {
+        let expectation =
+          self.expectation(description: "testUseInstallationIDProperty")
+        let setting = TestSetting()
+        let installationID = "dummyInstallationID"
+        setting.api.installationID = installationID
+
+        sharedMockSession.requestVerifier = makeRequestVerifier { request in
+            XCTAssertEqual(request.httpMethod, "DELETE")
+            XCTAssertEqual(
+              "\(setting.api.baseURL)/api/apps/\(setting.api.appID)/installations/\(installationID)",
+              request.url!.absoluteString)
+
+            //verify header
+            XCTAssertEqual(
+              [
+                "X-Kii-AppID": setting.app.appID,
+                "X-Kii-AppKey": setting.app.appKey,
+                "X-Kii-SDK" : SDKVersion.sharedInstance.kiiSDKHeader,
+                "Authorization": "Bearer \(setting.owner.accessToken)"
+              ],
+              request.allHTTPHeaderFields!)
+        }
+
+        sharedMockSession.mockResponse = (
+          nil,
+          HTTPURLResponse(
+            url: URL(string: setting.app.baseURL)!,
+            statusCode: 204,
+            httpVersion: nil,
+            headerFields: nil),
+          nil)
+        iotSession = MockSession.self
+
+        setting.api.uninstallPush() { error in
+            XCTAssertNil(error)
+            XCTAssertNil(setting.api.installationID)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+    }
 }

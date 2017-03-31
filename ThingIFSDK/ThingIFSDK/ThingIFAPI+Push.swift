@@ -66,32 +66,37 @@ extension ThingIFAPI {
 
      - Parameter installationID: installation ID returned from
        installPush(). If null is specified, value of the
-       installationID property is used.
+       `installationID` property is used.
      */
     open func uninstallPush(
-        _ installationID:String?,
+        _ installationID: String? = nil,
         completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
-        let idParam = installationID != nil ? installationID : self.installationID
-        let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(idParam!)"
+        guard let installationID = installationID ?? self.installationID else {
+            completionHandler(
+              ThingIFError.invalidArgument(
+                message:
+                  "Both of installationID and self.installationID are nil."))
+            return
+        }
+        let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(installationID)"
 
         self.operationQueue.addHttpRequestOperation(
             .delete,
             url: requestURL,
             requestHeader:
             self.defaultHeader,
-            requestBody: nil,
             failureBeforeExecutionHandler: { completionHandler($0) }) {
-                response, error in
+            response, error in
 
-                if error == nil{
-                    self.installationID = nil
-                }
-                self.saveToUserDefault()
-                DispatchQueue.main.async {
-                    completionHandler( error)
-                }
+            if error == nil && self.installationID == installationID {
+                self.installationID = nil
+            }
+            self.saveToUserDefault()
+            DispatchQueue.main.async {
+                completionHandler( error)
+            }
         }
 
     }
