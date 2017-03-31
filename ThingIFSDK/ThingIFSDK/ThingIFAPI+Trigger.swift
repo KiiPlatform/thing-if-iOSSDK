@@ -183,7 +183,10 @@ extension ThingIFAPI {
         }
 
         if requestBody.isEmpty {
-            completionHandler(nil, ThingIFError.unsupportedError)
+            completionHandler(
+              nil,
+              ThingIFError.invalidArgument(
+                message: "nothing to send as patch trigger"))
             return
         }
 

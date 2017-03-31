@@ -440,7 +440,10 @@ class ThingIFAPIOnboardEndNodeTests: SmallTestBase {
             firmwareVersion: firmwareVersion),
           endnodePassword: password) { (endNode, error) -> Void in
             XCTAssertNil(endNode)
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(
+                message: "endnodePassword is empty."),
+              error)
             expectation.fulfill()
         }
 

@@ -65,9 +65,15 @@ extension ThingIFAPI {
             completionHandler(ThingIFError.targetNotAvailable)
             return;
         }
-        if vendorThingID.isEmpty || password.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
-            return;
+        if vendorThingID.isEmpty {
+            completionHandler(ThingIFError.invalidArgument(
+                                message: "vendorThingID is empty."))
+            return
+        }
+        if password.isEmpty {
+            completionHandler(ThingIFError.invalidArgument(
+                                message: "password is empty."))
+            return
         }
 
         self.operationQueue.addHttpRequestOperation(
@@ -150,7 +156,8 @@ extension ThingIFAPI {
             return;
         }
         if firmwareVersion.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
+            completionHandler(
+              ThingIFError.invalidArgument(message: "firmwareVersionis empty."))
             return;
         }
 
@@ -228,7 +235,8 @@ extension ThingIFAPI {
             return;
         }
         if thingType.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
+            completionHandler(
+              ThingIFError.invalidArgument(message: "thingType is empty."))
             return;
         }
 

@@ -62,8 +62,14 @@ open class GatewayAPI {
         password: String,
         completionHandler: @escaping (ThingIFError?)-> Void) -> Void
     {
-        if username.isEmpty || password.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
+        if username.isEmpty {
+            completionHandler(
+              ThingIFError.invalidArgument(message: "username is empty."))
+            return
+        }
+        if password.isEmpty {
+            completionHandler(
+              ThingIFError.invalidArgument(message: "password is empty."))
             return
         }
 
@@ -243,8 +249,14 @@ open class GatewayAPI {
             return;
         }
 
+        if endNode.thingID.isEmpty {
+            completionHandler(
+              ThingIFError.invalidArgument(message: "thingID is empty."))
+            return;
+        }
         if endNode.thingID.isEmpty || endNode.vendorThingID.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
+            completionHandler(
+              ThingIFError.invalidArgument(message: "vendorThingID is empty."))
             return;
         }
 
@@ -305,8 +317,14 @@ open class GatewayAPI {
             return;
         }
 
-        if endNodeThingID.isEmpty || endNodeVendorThingID.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
+        if endNodeThingID.isEmpty {
+            completionHandler(
+              ThingIFError.invalidArgument(message: "thingID is empty."))
+            return;
+        }
+        if endNodeVendorThingID.isEmpty {
+            completionHandler(
+              ThingIFError.invalidArgument(message: "vendorThingID is empty."))
             return;
         }
 

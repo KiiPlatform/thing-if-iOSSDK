@@ -100,7 +100,9 @@ class GatewayAPINotifyOnboardingCompletionTests: GatewayAPITestBase {
         let endNode = EndNode("", vendorThingID: vendorThingID)
 
         api.notifyOnboardingCompletion(endNode, completionHandler: { (error:ThingIFError?) -> Void in
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(message: "thingID is empty."),
+              error)
             expectation.fulfill()
         })
 
@@ -117,7 +119,9 @@ class GatewayAPINotifyOnboardingCompletionTests: GatewayAPITestBase {
         let endNode = EndNode(thingID, vendorThingID: "")
 
         api.notifyOnboardingCompletion(endNode, completionHandler: { (error:ThingIFError?) -> Void in
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(message: "vendorThingID is empty."),
+              error)
             expectation.fulfill()
         })
 

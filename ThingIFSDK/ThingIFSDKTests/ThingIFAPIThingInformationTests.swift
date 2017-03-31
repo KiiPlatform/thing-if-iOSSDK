@@ -357,7 +357,10 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
         setting.api.update(
           vendorThingID: newVendorThingID,
           password: newPassword) { error -> Void in
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(
+                message: "vendorThingID is empty."),
+              error)
             expectation.fulfill()
         }
 
@@ -381,7 +384,10 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
         setting.api.update(
           vendorThingID: newVendorThingID,
           password: newPassword) { error -> Void in
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(
+                message: "password is empty."),
+              error)
             expectation.fulfill()
         }
 
@@ -824,7 +830,9 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
         api.target = target
 
         setting.api.update(firmwareVersion: "") { error -> Void in
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(message: "firmwareVersionis empty."),
+              error)
             expectation.fulfill()
         }
 
@@ -1448,7 +1456,9 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
         setting.api.target = target
 
         setting.api.update(thingType: "") { error -> Void in
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(message: "thingType is empty."),
+              error)
             expectation.fulfill()
         }
 

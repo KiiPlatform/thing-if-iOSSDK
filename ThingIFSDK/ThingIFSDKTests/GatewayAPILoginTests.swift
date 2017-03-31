@@ -92,7 +92,9 @@ class GatewayAPILoginTests: GatewayAPITestBase {
           setting.app,
           gatewayAddress: URL(string: setting.app.baseURL)!)
         gatewayAPI.login("", password: password) { error in
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(message: "username is empty."),
+              error)
             expectation.fulfill()
         }
 
@@ -111,7 +113,9 @@ class GatewayAPILoginTests: GatewayAPITestBase {
           setting.app,
           gatewayAddress: URL(string: setting.app.baseURL)!)
         gatewayAPI.login(username, password: "") { error in
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(message: "password is empty."),
+              error)
             expectation.fulfill()
         }
 
