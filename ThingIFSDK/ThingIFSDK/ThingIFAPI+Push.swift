@@ -74,7 +74,10 @@ extension ThingIFAPI {
         )
     {
         guard let installationID = installationID ?? self.installationID else {
-            completionHandler(ThingIFError.unsupportedError)
+            completionHandler(
+              ThingIFError.invalidArgument(
+                message:
+                  "installationID is nil and self.installationID also nil."))
             return
         }
         let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(installationID)"

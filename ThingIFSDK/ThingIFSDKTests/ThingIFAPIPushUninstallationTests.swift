@@ -238,13 +238,16 @@ class ThingIFAPIPushUninstallationTests: SmallTestBase {
         checkSavedIoTAPI(setting)
     }
 
-    func testUnsupportedError() {
+    func testInvalidArgumentError() {
         let setting = TestSetting()
 
         setting.api.uninstallPush() {
             error in
 
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(
+                message: "installationID is nil and self.installationID also nil."),
+              error)
         }
     }
 
