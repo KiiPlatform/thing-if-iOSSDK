@@ -115,7 +115,10 @@ extension ThingIFAPI {
         }
 
         if endnodePassword.isEmpty {
-            completionHandler(nil, ThingIFError.unsupportedError)
+            completionHandler(
+              nil,
+              ThingIFError.invalidArgument(
+                message: "endnodePassword is empty."))
             return
         }
 
