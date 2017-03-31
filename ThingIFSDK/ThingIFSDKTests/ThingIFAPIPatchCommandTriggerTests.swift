@@ -604,7 +604,10 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
           triggeredCommandForm: nil,
           predicate: nil) { (trigger, error) -> Void in
             XCTAssertNil(trigger)
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(
+                message: "nothing to send as patch trigger"),
+              error)
             expectation.fulfill()
         }
 
@@ -627,7 +630,10 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
           predicate: nil,
           options: TriggerOptions()) { (trigger, error) -> Void in
             XCTAssertNil(trigger)
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(
+                message: "nothing to send as patch trigger"),
+              error)
             expectation.fulfill()
         }
 
