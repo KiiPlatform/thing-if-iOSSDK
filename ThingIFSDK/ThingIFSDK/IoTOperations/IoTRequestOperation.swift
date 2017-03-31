@@ -13,8 +13,6 @@ internal enum HTTPMethod: String {
     case post = "POST"
     case put = "PUT"
     case head = "HEAD"
-    @available(iOS, deprecated: 1.0, message: "use delete")
-    case DELETE = "DELETE-deprecated"
     case delete = "DELETE"
     case patch = "PATCH"
 }
@@ -108,9 +106,8 @@ class IoTRequestOperation<T>: GroupOperation {
 
         case .put:
             addPutRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler, responseBodySerializer: request.responseBodySerializer)
-
         default :
-            fatalError("Unknown http method.")
+            fatalError("Unknown http method: \(request.method.rawValue)")
             break
         }
     }
