@@ -65,9 +65,15 @@ extension ThingIFAPI {
             completionHandler(ThingIFError.targetNotAvailable)
             return;
         }
-        if vendorThingID.isEmpty || password.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
-            return;
+        if vendorThingID.isEmpty {
+            completionHandler(ThingIFError.invalidArgument(
+                                message: "vendorThingID is empty."))
+            return
+        }
+        if password.isEmpty {
+            completionHandler(ThingIFError.invalidArgument(
+                                message: "password is empty."))
+            return
         }
 
         self.operationQueue.addHttpRequestOperation(
