@@ -1456,7 +1456,9 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
         setting.api.target = target
 
         setting.api.update(thingType: "") { error -> Void in
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(message: "thingType is empty."),
+              error)
             expectation.fulfill()
         }
 

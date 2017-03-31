@@ -235,7 +235,8 @@ extension ThingIFAPI {
             return;
         }
         if thingType.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
+            completionHandler(
+              ThingIFError.invalidArgument(message: "thingType is empty."))
             return;
         }
 
