@@ -81,6 +81,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
 
         iotSession = MockSession.self
 
+        XCTAssertFalse(api.onboarded)
         api.onboardWith(
           vendorThingID: vendorThingID,
           thingPassword: thingPassword,
@@ -104,6 +105,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
             XCTAssertNil(error)
         }
 
+        XCTAssertTrue(api.onboarded)
         XCTAssertEqual(
           setting.api,
           try ThingIFAPI.loadWithStoredInstance(setting.api.tag))
@@ -173,7 +175,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         }
         iotSession = MockSession.self
 
-        // verify request
+        XCTAssertFalse(api.onboarded)
         api.onboardWith(
           vendorThingID:vendorThingID,
           thingPassword: thingPassword,
@@ -197,6 +199,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
             XCTAssertNil(error)
         }
 
+        XCTAssertTrue(api.onboarded)
         XCTAssertEqual(api, try ThingIFAPI.loadWithStoredInstance(api.tag))
     }
 
@@ -272,6 +275,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         }
         iotSession = MockSession.self
 
+        XCTAssertFalse(setting.api.onboarded)
         setting.api.onboardWith(
           vendorThingID: vendorThingID,
           thingPassword: password,
@@ -287,6 +291,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             XCTAssertNil(error)
         }
+        XCTAssertTrue(setting.api.onboarded)
     }
 
     func testOnboardWithVendorThingIDAndOptions403Error() throws {
@@ -352,6 +357,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
           nil)
         iotSession = MockSession.self
 
+        XCTAssertFalse(setting.api.onboarded)
         setting.api.onboardWith(
           vendorThingID: vendorThingID,
           thingPassword: password,
@@ -367,6 +373,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             XCTAssertNil(error)
         }
+        XCTAssertFalse(setting.api.onboarded)
     }
 
     func testOnboardWithVendorThingIDAndOptions404Error() throws {
@@ -432,6 +439,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
           nil)
         iotSession = MockSession.self
 
+        XCTAssertFalse(setting.api.onboarded)
         setting.api.onboardWith(
           vendorThingID: vendorThingID,
           thingPassword: password,
@@ -447,6 +455,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             XCTAssertNil(error)
         }
+        XCTAssertFalse(setting.api.onboarded)
     }
 
     func testOnboardWithVendorThingIDAndOptions500Error()
@@ -513,6 +522,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
           nil)
         iotSession = MockSession.self
 
+        XCTAssertFalse(setting.api.onboarded)
         setting.api.onboardWith(
           vendorThingID: vendorThingID,
           thingPassword: password,
@@ -528,6 +538,7 @@ class ThingIFAPIOnboardWithVendorThingIDTests: SmallTestBase {
         self.waitForExpectations(timeout: 20.0) { (error) -> Void in
             XCTAssertNil(error)
         }
+        XCTAssertFalse(setting.api.onboarded)
     }
 
 }
