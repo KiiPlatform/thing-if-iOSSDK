@@ -44,6 +44,8 @@ class NotOnboardedYetTestsBase: XCTestCase {
     internal let TEST_TIMEOUT = 5.0
     internal let DEFAULT_THING_TYPE = "MyAirConditioner";
     internal let DEFAULT_FIRMWAREVERSION = "v1"
+    internal let ALIAS1 = "AirConditionerAlias"
+    internal let ALIAS2 = "HumidityAlias"
 
     internal var app: KiiApp!
     internal var api: ThingIFAPI!

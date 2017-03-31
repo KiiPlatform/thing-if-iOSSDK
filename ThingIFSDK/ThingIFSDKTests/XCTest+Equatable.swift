@@ -724,3 +724,11 @@ extension ServerError: Equatable, ToJsonObject {
     }
 
 }
+
+extension AggregatedResult: Equatable {
+    public static func == (left: AggregatedResult<AggregatedValueType>, right: AggregatedResult<AggregatedValueType>) -> Bool {
+        return isSameAny(left.value, right.value) &&
+            left.timeRange == right.timeRange &&
+            left.aggregatedObjects == right.aggregatedObjects
+    }
+}
