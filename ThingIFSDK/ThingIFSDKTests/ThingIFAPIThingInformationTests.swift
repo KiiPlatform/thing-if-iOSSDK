@@ -824,7 +824,9 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
         api.target = target
 
         setting.api.update(firmwareVersion: "") { error -> Void in
-            XCTAssertEqual(ThingIFError.unsupportedError, error)
+            XCTAssertEqual(
+              ThingIFError.invalidArgument(message: "firmwareVersionis empty."),
+              error)
             expectation.fulfill()
         }
 

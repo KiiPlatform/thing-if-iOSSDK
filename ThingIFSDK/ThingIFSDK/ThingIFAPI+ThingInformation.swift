@@ -150,7 +150,8 @@ extension ThingIFAPI {
             return;
         }
         if firmwareVersion.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
+            completionHandler(
+              ThingIFError.invalidArgument(message: "firmwareVersionis empty."))
             return;
         }
 
