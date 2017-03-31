@@ -317,8 +317,14 @@ open class GatewayAPI {
             return;
         }
 
-        if endNodeThingID.isEmpty || endNodeVendorThingID.isEmpty {
-            completionHandler(ThingIFError.unsupportedError)
+        if endNodeThingID.isEmpty {
+            completionHandler(
+              ThingIFError.invalidArgument(message: "thingID is empty."))
+            return;
+        }
+        if endNodeVendorThingID.isEmpty {
+            completionHandler(
+              ThingIFError.invalidArgument(message: "vendorThingID is empty."))
             return;
         }
 

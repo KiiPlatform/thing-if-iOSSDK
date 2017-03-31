@@ -108,7 +108,9 @@ class GatewayAPIReplaceEndNodeTests: GatewayAPITestBase {
             "",
             endNodeVendorThingID: vendorThingID,
             completionHandler: { (error:ThingIFError?) -> Void in
-                XCTAssertEqual(ThingIFError.unsupportedError, error)
+                XCTAssertEqual(
+                  ThingIFError.invalidArgument(message: "thingID is empty."),
+                  error)
                 expectation.fulfill()
             }
         )
@@ -128,7 +130,10 @@ class GatewayAPIReplaceEndNodeTests: GatewayAPITestBase {
             thingID,
             endNodeVendorThingID: "",
             completionHandler: { (error:ThingIFError?) -> Void in
-                XCTAssertEqual(ThingIFError.unsupportedError, error)
+                XCTAssertEqual(
+                  ThingIFError.invalidArgument(
+                    message: "vendorThingID is empty."),
+                  error)
                 expectation.fulfill()
             }
         )
