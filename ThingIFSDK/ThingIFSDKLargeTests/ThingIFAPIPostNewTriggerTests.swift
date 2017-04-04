@@ -1,0 +1,268 @@
+//
+//  ThingIFAPIPostNewTriggerTests.swift
+//  ThingIFSDK
+//
+//  Created on 2016/05/20.
+//  Copyright (c) 2016 Kii. All rights reserved.
+//
+
+import XCTest
+@testable import ThingIFSDK
+
+class ThingIFAPIPostNewTriggerTests: OnboardedTestsBase {
+
+    func testSchedulePredicateSuccess() {
+
+        let temperatureAliasActions = [
+          AliasAction(
+            ALIAS1,
+            actions: [
+              Action("turnPower", value: true),
+              Action("setPresetTemperature", value: 25)
+            ]
+          )
+        ]
+
+        var gotTriggerID: String?
+        let targetID = self.onboardedApi.target!.typedID
+        let schedulePredicateForTemperature = SchedulePredicate("1 * * * *")
+        let checkDataForTemperature = TriggerToCheck(
+          true,
+          targetID: targetID,
+          enabled: true,
+          command: CommandToCheck(
+            false,
+            targetID: targetID,
+            issuerID: self.onboardedApi.owner.typedID,
+            commandState: nil,
+            hasFiredByTriggerID: false,
+            hasCreated: false,
+            hasModified: false,
+            aliasActions: temperatureAliasActions,
+            aliasActionResults: []
+          ),
+          predicate: schedulePredicateForTemperature)
+
+        var expectation =
+          self.expectation(description: "post trigger for temperature")
+        self.onboardedApi.postNewTrigger(
+          TriggeredCommandForm(
+            temperatureAliasActions,
+            targetID: targetID),
+          predicate: schedulePredicateForTemperature) { trigger, error in
+
+            XCTAssertNil(error)
+            XCTAssertEqual(checkDataForTemperature, TriggerToCheck(trigger))
+
+            gotTriggerID = trigger?.triggerID
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
+            XCTAssertNil(error)
+        }
+        guard let triggerID1 = gotTriggerID else {
+            XCTFail("triggerID must get.")
+            return
+        }
+
+        let humidityAliasActions = [
+          AliasAction(ALIAS2, actions: [Action("setPresetHumidity", value: 45)])
+        ]
+
+        let schedulePredicateForHumidity = SchedulePredicate("* 1 * * *")
+        let checkDataForHumidity = TriggerToCheck(
+          true,
+          targetID: targetID,
+          enabled: true,
+          command: CommandToCheck(
+            false,
+            targetID: targetID,
+            issuerID: self.onboardedApi.owner.typedID,
+            commandState: nil,
+            hasFiredByTriggerID: false,
+            hasCreated: false,
+            hasModified: false,
+            aliasActions: humidityAliasActions,
+            aliasActionResults: []
+          ),
+          predicate: schedulePredicateForHumidity)
+
+        expectation = self.expectation(description: "post trigger for humidity")
+        self.onboardedApi.postNewTrigger(
+          TriggeredCommandForm(
+            humidityAliasActions),
+          predicate: schedulePredicateForHumidity) { trigger, error in
+
+            XCTAssertNil(error)
+            XCTAssertEqual(checkDataForHumidity, TriggerToCheck(trigger))
+
+            gotTriggerID = trigger!.triggerID
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
+            XCTAssertNil(error)
+        }
+        guard let triggerID2 = gotTriggerID else {
+            XCTFail("triggerID must get.")
+            return
+        }
+
+        expectation = self.expectation(description: "list trigger first")
+        self.onboardedApi.listTriggers(100)  { triggers, paginationKey, error in
+
+            { () in
+                XCTAssertNil(error)
+                XCTAssertNil(paginationKey)
+                guard let triggers = triggers else {
+                    XCTFail("triggers must not be nil")
+                    return
+                }
+
+                XCTAssertEqual(
+                  [triggerID1, triggerID2], triggers.map { $0.triggerID })
+
+
+                XCTAssertEqual(
+                  [checkDataForTemperature, checkDataForHumidity],
+                  (triggers.map { TriggerToCheck($0)! })
+                )
+
+            }()
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
+            XCTAssertNil(error)
+        }
+
+        expectation = self.expectation(description: "delete trigger")
+        self.onboardedApi.deleteTrigger(triggerID1) { deleted, error in
+            XCTAssertNil(error)
+            XCTAssertEqual(triggerID1, deleted)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
+            XCTAssertNil(error)
+        }
+
+        let modifiedHumidityAliasActions = [
+          AliasAction(ALIAS2, actions: [Action("setPresetHumidity", value: 55)])
+        ]
+
+        let schedulePredicateForModifiedHumidity =
+          SchedulePredicate("* 1 * * *")
+        let checkDataForModifiedHumidity = TriggerToCheck(
+          true,
+          targetID: targetID,
+          enabled: true,
+          command: CommandToCheck(
+            false,
+            targetID: targetID,
+            issuerID: self.onboardedApi.owner.typedID,
+            commandState: nil,
+            hasFiredByTriggerID: false,
+            hasCreated: false,
+            hasModified: false,
+            aliasActions: modifiedHumidityAliasActions,
+            aliasActionResults: []
+          ),
+          predicate: schedulePredicateForModifiedHumidity)
+
+        expectation = self.expectation(description: "patch trigger")
+        self.onboardedApi.patchTrigger(
+            triggerID2,
+            triggeredCommandForm: TriggeredCommandForm(
+              modifiedHumidityAliasActions),
+            predicate: schedulePredicateForModifiedHumidity) { trigger, error in
+
+            XCTAssertNil(error)
+            XCTAssertEqual(
+              checkDataForModifiedHumidity,
+              TriggerToCheck(trigger))
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
+            XCTAssertNil(error)
+        }
+
+        expectation = self.expectation(description: "list trigger second")
+        self.onboardedApi.listTriggers(100) { triggers, paginationKey, error in
+
+            { () in
+                XCTAssertNil(error)
+                XCTAssertNil(paginationKey)
+                guard let triggers = triggers else {
+                    XCTFail("triggers must not be nil")
+                    return
+                }
+
+                XCTAssertEqual([triggerID2], triggers.map { $0.triggerID })
+
+                XCTAssertEqual(
+                  [checkDataForModifiedHumidity],
+                  (triggers.map { TriggerToCheck($0)! })
+                )
+
+            }()
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
+            XCTAssertNil(error)
+        }
+
+        expectation = self.expectation(description: "delete modified trigger")
+        self.onboardedApi.deleteTrigger(triggerID2) { deleted, error in
+            XCTAssertNil(error)
+            XCTAssertEqual(triggerID2, deleted)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
+            XCTAssertNil(error)
+        }
+
+    }
+
+/*
+    func testInvalidSchedulePredicate() {
+        let api = self.onboardedApi!
+        let expectation =
+            self.expectationWithDescription("post trigger for color")
+        let actions: [Dictionary<String, AnyObject>] = [
+            [
+                "setColor": [128, 0, 255]
+            ],
+            [
+                "setColorTemperature": 25
+            ]
+        ]
+
+        api.postNewTrigger(
+            DEMO_SCHEMA_NAME,
+            schemaVersion: DEMO_SCHEMA_VERSION,
+            actions: actions,
+            predicate: SchedulePredicate(schedule: "wrong format"),
+            completionHandler: {
+                (trigger, error) -> Void in
+                XCTAssertNil(trigger)
+                XCTAssertTrue(error != nil)
+                switch error! {
+                case let .ERROR_RESPONSE(reason):
+                    XCTAssertEqual(400, reason.httpStatusCode)
+                    XCTAssertEqual("WRONG_PREDICATE", reason.errorCode)
+                    XCTAssertEqual("Value for \'schedule\' field is incorrect",
+                                   reason.errorMessage)
+                    break
+                default:
+                    XCTFail()
+                    break
+                }
+                expectation.fulfill()
+            })
+        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { error in
+            if error != nil {
+                XCTFail("error")
+            }
+        }
+
+    }
+    */
+}
