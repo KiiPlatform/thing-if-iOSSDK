@@ -145,7 +145,7 @@ class ThingIFAPIGetCommandTests: SmallTestBase {
 
             // verify path
             XCTAssertEqual(
-              "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(testCase.targetID.toString())/commands/\(testCase.commandID)",
+              "\(setting.api.baseURL)/thing-if/apps/\(setting.api.appID)/targets/\(testCase.targetID.toString())/commands/\(testCase.commandID!)",
               request.url!.absoluteString)
 
             //verify header
@@ -173,7 +173,7 @@ class ThingIFAPIGetCommandTests: SmallTestBase {
             nil)
         iotSession = MockSession.self
 
-        setting.api.getCommand(testCase.commandID) { command, error -> Void in
+        setting.api.getCommand(testCase.commandID!) { command, error -> Void in
             XCTAssertNil(error)
             XCTAssertEqual(testCase, command)
             expectation.fulfill()
