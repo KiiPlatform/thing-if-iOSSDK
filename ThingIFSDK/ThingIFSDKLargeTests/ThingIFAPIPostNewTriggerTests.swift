@@ -218,51 +218,40 @@ class ThingIFAPIPostNewTriggerTests: OnboardedTestsBase {
         self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
             XCTAssertNil(error)
         }
-
     }
 
-/*
     func testInvalidSchedulePredicate() {
-        let api = self.onboardedApi!
-        let expectation =
-            self.expectationWithDescription("post trigger for color")
-        let actions: [Dictionary<String, AnyObject>] = [
-            [
-                "setColor": [128, 0, 255]
-            ],
-            [
-                "setColorTemperature": 25
+        let temperatureAliasActions = [
+          AliasAction(
+            ALIAS1,
+            actions: [
+              Action("turnPower", value: true),
+              Action("setPresetTemperature", value: 25)
             ]
+          )
         ]
 
-        api.postNewTrigger(
-            DEMO_SCHEMA_NAME,
-            schemaVersion: DEMO_SCHEMA_VERSION,
-            actions: actions,
-            predicate: SchedulePredicate(schedule: "wrong format"),
-            completionHandler: {
-                (trigger, error) -> Void in
-                XCTAssertNil(trigger)
-                XCTAssertTrue(error != nil)
-                switch error! {
-                case let .ERROR_RESPONSE(reason):
-                    XCTAssertEqual(400, reason.httpStatusCode)
-                    XCTAssertEqual("WRONG_PREDICATE", reason.errorCode)
-                    XCTAssertEqual("Value for \'schedule\' field is incorrect",
-                                   reason.errorMessage)
-                    break
-                default:
-                    XCTFail()
-                    break
-                }
-                expectation.fulfill()
-            })
-        self.waitForExpectationsWithTimeout(TEST_TIMEOUT) { error in
-            if error != nil {
-                XCTFail("error")
-            }
-        }
+        let expectation =
+            self.expectation(description: "post trigger for color")
 
+        self.onboardedApi.postNewTrigger(
+          TriggeredCommandForm(temperatureAliasActions),
+          predicate: SchedulePredicate("wrong format")) {
+            trigger, error in
+
+            XCTAssertNil(trigger)
+            XCTAssertEqual(
+              ThingIFError.errorResponse(
+                required: ErrorResponse(
+                  400,
+                  errorCode: "WRONG_PREDICATE",
+                  errorMessage: "Value for \'schedule\' field is incorrect")),
+              error)
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
+            XCTAssertNil(error)
+        }
     }
-    */
+
 }
