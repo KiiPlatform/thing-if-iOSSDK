@@ -44,6 +44,7 @@ class ThingIFAPIQueryUngroupedTests: OnboardedTestsBase {
             [ "power" : true, "currentTemperature" : 26]
         ]
 
+        // update 4 states
         states.forEach {
             let expectation = self.expectation(description: "updateTargetState")
             onboardedApi.updateTargetState(ALIAS1, state: $0) {
@@ -56,6 +57,7 @@ class ThingIFAPIQueryUngroupedTests: OnboardedTestsBase {
             sleep(1)
         }
 
+        // all query
         let query1 = HistoryStatesQuery(
             ALIAS1,
             clause: AllClause())
@@ -65,12 +67,21 @@ class ThingIFAPIQueryUngroupedTests: OnboardedTestsBase {
             XCTAssertNil(error)
             XCTAssertNil(nextPaginationKey)
             XCTAssertEqual(4, results!.count)
+            XCTAssertEqual(states[0] as NSDictionary, results![0].state as NSDictionary)
+            XCTAssertNotNil(results![0].createdAt)
+            XCTAssertEqual(states[1] as NSDictionary, results![1].state as NSDictionary)
+            XCTAssertNotNil(results![1].createdAt)
+            XCTAssertEqual(states[2] as NSDictionary, results![2].state as NSDictionary)
+            XCTAssertNotNil(results![2].createdAt)
+            XCTAssertEqual(states[3] as NSDictionary, results![3].state as NSDictionary)
+            XCTAssertNotNil(results![3].createdAt)
             expectation1.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             XCTAssertNil(error)
         }
 
+        // query with empty result returned
         let query2 = HistoryStatesQuery(
             ALIAS1,
             clause: RangeClauseInQuery.greaterThan("currentTemperature", limit: 30),
@@ -87,6 +98,7 @@ class ThingIFAPIQueryUngroupedTests: OnboardedTestsBase {
             XCTAssertNil(error)
         }
 
+        // query with bestEffortLimit
         let query3 = HistoryStatesQuery(
             ALIAS1,
             clause: AllClause(),
@@ -98,12 +110,19 @@ class ThingIFAPIQueryUngroupedTests: OnboardedTestsBase {
             XCTAssertNil(error)
             XCTAssertEqual("100/3", nextPaginationKey)
             XCTAssertEqual(3, results!.count)
+            XCTAssertEqual(states[0] as NSDictionary, results![0].state as NSDictionary)
+            XCTAssertNotNil(results![0].createdAt)
+            XCTAssertEqual(states[1] as NSDictionary, results![1].state as NSDictionary)
+            XCTAssertNotNil(results![1].createdAt)
+            XCTAssertEqual(states[2] as NSDictionary, results![2].state as NSDictionary)
+            XCTAssertNotNil(results![2].createdAt)
             expectation3.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             XCTAssertNil(error)
         }
 
+        // query with pagination key
         let query4 = HistoryStatesQuery(
             ALIAS1,
             clause: AllClause(),
@@ -114,12 +133,26 @@ class ThingIFAPIQueryUngroupedTests: OnboardedTestsBase {
             XCTAssertNil(error)
             XCTAssertNil(nextPaginationKey)
             XCTAssertEqual(1, results!.count)
+            XCTAssertEqual(states[3] as NSDictionary, results![0].state as NSDictionary)
+            XCTAssertNotNil(results![0].createdAt)
             expectation4.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
             XCTAssertNil(error)
         }
 
+        // update thing new versio, in v3, ALIAS1 is not defined.
+        let updateExpectation = self.expectation(description: "updateFirmwareVersion")
+        onboardedApi.update(firmwareVersion: "v3") {
+            error in
+            XCTAssertNil(error)
+            updateExpectation.fulfill()
+        }
+        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+
+        // query with older firmwareVersion, in v3, ALIAS1 is not defined.
         let query5 = HistoryStatesQuery(
             ALIAS1,
             clause: AllClause(),
@@ -130,6 +163,14 @@ class ThingIFAPIQueryUngroupedTests: OnboardedTestsBase {
             XCTAssertNil(error)
             XCTAssertNil(nextPaginationKey)
             XCTAssertEqual(4, results!.count)
+            XCTAssertEqual(states[0] as NSDictionary, results![0].state as NSDictionary)
+            XCTAssertNotNil(results![0].createdAt)
+            XCTAssertEqual(states[1] as NSDictionary, results![1].state as NSDictionary)
+            XCTAssertNotNil(results![1].createdAt)
+            XCTAssertEqual(states[2] as NSDictionary, results![2].state as NSDictionary)
+            XCTAssertNotNil(results![2].createdAt)
+            XCTAssertEqual(states[3] as NSDictionary, results![3].state as NSDictionary)
+            XCTAssertNotNil(results![3].createdAt)
             expectation5.fulfill()
         }
         self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
@@ -138,7 +179,7 @@ class ThingIFAPIQueryUngroupedTests: OnboardedTestsBase {
     }
 
     func testFailedQueryWithNotDefinedAlias404Error() {
-
+        // update thing new versio, in v3, ALIAS1 is not defined.
         let updateExpectation = self.expectation(description: "updateFirmwareVersion")
         onboardedApi.update(firmwareVersion: "v3") {
             error -> Void in
