@@ -1,5 +1,5 @@
 //
-//  ThingIFAPIPostNewTriggerTests.swift
+//  ThingIFAPIScheduleTriggerTests.swift
 //  ThingIFSDK
 //
 //  Created on 2016/05/20.
@@ -9,9 +9,9 @@
 import XCTest
 @testable import ThingIFSDK
 
-class ThingIFAPIPostNewTriggerTests: OnboardedTestsBase {
+class ThingIFAPIScheduleTriggerTests: OnboardedTestsBase {
 
-    func testSchedulePredicateSuccess() {
+    func testSuccess() {
 
         let temperatureAliasActions = [
           AliasAction(
