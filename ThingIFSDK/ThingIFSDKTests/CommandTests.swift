@@ -77,7 +77,7 @@ class CommandTests: SmallTestBase {
         XCTAssertEqual(issuerID, actual.issuerID)
         XCTAssertEqual(aliasActions, actual.aliasActions)
         XCTAssertEqual([], actual.aliasActionResults)
-        XCTAssertEqual(.sending, actual.commandState)
+        XCTAssertNil(actual.commandState)
         XCTAssertNil(actual.firedByTriggerID)
         XCTAssertNil(actual.created)
         XCTAssertNil(actual.modified)

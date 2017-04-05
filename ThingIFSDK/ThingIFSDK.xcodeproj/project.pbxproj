@@ -118,6 +118,7 @@
 		B6A55CD01E8CC56000AAC733 /* OnboardAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A55CCF1E8CC56000AAC733 /* OnboardAPITests.swift */; };
 		B6A55CD21E8CDB6700AAC733 /* NotOnboardedYetTestsBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A55CD11E8CDB6700AAC733 /* NotOnboardedYetTestsBase.swift */; };
 		B6A55CD41E92233000AAC733 /* ThingIFAPIQueryGroupedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A55CD31E92233000AAC733 /* ThingIFAPIQueryGroupedTests.swift */; };
+		B6A55CD61E923BA200AAC733 /* ThingIFAPIScheduleTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A55CD51E923BA200AAC733 /* ThingIFAPIScheduleTriggerTests.swift */; };
 		B6A86CA81E6D291200F9C41B /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A86CA71E6D291200F9C41B /* Utilities.swift */; };
 		B6A86CAA1E6D41EC00F9C41B /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A86CA91E6D41EC00F9C41B /* MediaType.swift */; };
 		B6A86CAC1E6D60E700F9C41B /* ThingIFAPIOnboardWithThingIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A86CAB1E6D60E700F9C41B /* ThingIFAPIOnboardWithThingIDTests.swift */; };
@@ -163,6 +164,7 @@
 		B6C33F1C1E4C5D2100DF2BF5 /* EqualsClauseInTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F1B1E4C5D2100DF2BF5 /* EqualsClauseInTriggerTests.swift */; };
 		B6C33F1E1E4C61DB00DF2BF5 /* NotEqualsClauseInTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F1D1E4C61DB00DF2BF5 /* NotEqualsClauseInTriggerTests.swift */; };
 		B6C33F201E4C66F100DF2BF5 /* RangeClauseInTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F1F1E4C66F100DF2BF5 /* RangeClauseInTriggerTests.swift */; };
+		B6CF92F11E93852000F24D61 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CF92F01E93852000F24D61 /* Utilities.swift */; };
 		B6E58D751E8269CF004C1873 /* ThingIFAPIListCommandsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E58D741E8269CF004C1873 /* ThingIFAPIListCommandsTests.swift */; };
 		B6E58D771E839B2D004C1873 /* ThingIFAPIGetTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E58D761E839B2D004C1873 /* ThingIFAPIGetTriggerTests.swift */; };
 		B6E58D791E83CEE1004C1873 /* ThingIFAPIPostNewCommandTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E58D781E83CEE1004C1873 /* ThingIFAPIPostNewCommandTriggerTests.swift */; };
@@ -314,6 +316,7 @@
 		B6A55CCF1E8CC56000AAC733 /* OnboardAPITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardAPITests.swift; sourceTree = "<group>"; };
 		B6A55CD11E8CDB6700AAC733 /* NotOnboardedYetTestsBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotOnboardedYetTestsBase.swift; sourceTree = "<group>"; };
 		B6A55CD31E92233000AAC733 /* ThingIFAPIQueryGroupedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIQueryGroupedTests.swift; sourceTree = "<group>"; };
+		B6A55CD51E923BA200AAC733 /* ThingIFAPIScheduleTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIScheduleTriggerTests.swift; sourceTree = "<group>"; };
 		B6A86CA71E6D291200F9C41B /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		B6A86CA91E6D41EC00F9C41B /* MediaType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		B6A86CAB1E6D60E700F9C41B /* ThingIFAPIOnboardWithThingIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIOnboardWithThingIDTests.swift; sourceTree = "<group>"; };
@@ -360,6 +363,7 @@
 		B6C33F1B1E4C5D2100DF2BF5 /* EqualsClauseInTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqualsClauseInTriggerTests.swift; sourceTree = "<group>"; };
 		B6C33F1D1E4C61DB00DF2BF5 /* NotEqualsClauseInTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotEqualsClauseInTriggerTests.swift; sourceTree = "<group>"; };
 		B6C33F1F1E4C66F100DF2BF5 /* RangeClauseInTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeClauseInTriggerTests.swift; sourceTree = "<group>"; };
+		B6CF92F01E93852000F24D61 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		B6E58D741E8269CF004C1873 /* ThingIFAPIListCommandsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIListCommandsTests.swift; sourceTree = "<group>"; };
 		B6E58D761E839B2D004C1873 /* ThingIFAPIGetTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIGetTriggerTests.swift; sourceTree = "<group>"; };
 		B6E58D781E83CEE1004C1873 /* ThingIFAPIPostNewCommandTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPostNewCommandTriggerTests.swift; sourceTree = "<group>"; };
@@ -549,6 +553,7 @@
 		B63FC8AA1CEEDBFF0042C747 /* ThingIFSDKLargeTests */ = {
 			isa = PBXGroup;
 			children = (
+				B6A55CD51E923BA200AAC733 /* ThingIFAPIScheduleTriggerTests.swift */,
 				B6A55CCF1E8CC56000AAC733 /* OnboardAPITests.swift */,
 				B6A55CCD1E8B995200AAC733 /* OnboardedTestsBase.swift */,
 				B63FC8AD1CEEDBFF0042C747 /* Info.plist */,
@@ -899,7 +904,9 @@
 				22CB84CA1E8CF9050089450E /* ThingIFAPIAggregateTests.swift in Sources */,
 				D547C2E51E9397F30002BC31 /* ThingIFAPIPushInstallationTests.swift in Sources */,
 				B6A55CD41E92233000AAC733 /* ThingIFAPIQueryGroupedTests.swift in Sources */,
+				B6A55CD61E923BA200AAC733 /* ThingIFAPIScheduleTriggerTests.swift in Sources */,
 				22DD62EF1E8E3A1200B2507D /* XCTest+Equatable.swift in Sources */,
+				B6CF92F11E93852000F24D61 /* Utilities.swift in Sources */,
 				B6A55CD01E8CC56000AAC733 /* OnboardAPITests.swift in Sources */,
 				B6A55CCE1E8B995200AAC733 /* OnboardedTestsBase.swift in Sources */,
 			);
