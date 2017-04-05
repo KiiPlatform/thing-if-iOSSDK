@@ -21,14 +21,16 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
 
     func testSuccess() {
 
-        // Get empty command list.
+        // List commands. The list is empty.
         self.executeAsynchronous { expectation in
             self.onboardedApi.listCommands() { commands, paginationKey, error in
 
                 XCTAssertNil(paginationKey)
                 XCTAssertNil(error)
                 XCTAssertNotNil(commands)
-                XCTAssertEqual([], commands!)
+                if let commands = commands {
+                    XCTAssertEqual([], commands)
+                }
                 expectation.fulfill()
             }
         }
@@ -61,7 +63,9 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                   ),
                   CommandToCheck(command)
                 )
-                createdCommands.append(command!)
+                if let command = command {
+                    createdCommands.append(command)
+                }
                 expectation.fulfill()
             }
         }
@@ -95,7 +99,70 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                   ),
                   CommandToCheck(command)
                 )
-                createdCommands.append(command!)
+                if let command = command {
+                    createdCommands.append(command)
+                }
+                expectation.fulfill()
+            }
+        }
+
+        // Get commands.
+        for createdCommand in createdCommands {
+            self.executeAsynchronous { expectation in
+                self.onboardedApi.getCommand(
+                  createdCommand.commandID!) { command, error in
+
+                    XCTAssertNil(error)
+                    XCTAssertEqual(createdCommand, command)
+                    expectation.fulfill()
+                }
+            }
+        }
+
+        // Post another command
+        let anotherTemperatureAliasActions = [
+          AliasAction(
+            ALIAS1,
+            actions: [
+              Action("turnPower", value: false),
+              Action("setPresetTemperature", value: 30)
+            ]
+          )
+        ]
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.postNewCommand(
+              CommandForm(anotherTemperatureAliasActions)) { command, error in
+                XCTAssertNil(error)
+                XCTAssertEqual(
+                  CommandToCheck(
+                    true,
+                    targetID: self.onboardedApi.target!.typedID,
+                    issuerID: self.onboardedApi.owner.typedID,
+                    commandState: .sending,
+                    hasFiredByTriggerID: false,
+                    hasCreated: false,
+                    hasModified: false,
+                    aliasActions: anotherTemperatureAliasActions
+                  ),
+                  CommandToCheck(command)
+                )
+                if let command = command {
+                    createdCommands.append(command)
+                }
+                expectation.fulfill()
+            }
+        }
+
+        // List all commands.
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.listCommands() { commands, paginationKey, error in
+
+                XCTAssertNil(paginationKey)
+                XCTAssertNil(error)
+                XCTAssertNotNil(commands)
+                if let commands = commands {
+                    XCTAssertEqual(Set(createdCommands), Set(commands))
+                }
                 expectation.fulfill()
             }
         }
