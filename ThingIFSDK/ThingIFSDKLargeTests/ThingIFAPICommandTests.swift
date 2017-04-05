@@ -29,6 +29,7 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                 XCTAssertNil(error)
                 XCTAssertNotNil(commands)
                 if let commands = commands {
+                    // commands must be empty.
                     XCTAssertEqual([], commands)
                 }
                 expectation.fulfill()
@@ -50,6 +51,8 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
             self.onboardedApi.postNewCommand(
               CommandForm(temperatureAliasActions)) { command, error in
                 XCTAssertNil(error)
+
+                // To check command is valid or not, We use CommandToCheck.
                 XCTAssertEqual(
                   CommandToCheck(
                     true,
@@ -64,6 +67,7 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                   CommandToCheck(command)
                 )
                 if let command = command {
+                    // Command must be inserted to set as new Item..
                     XCTAssertTrue(createdCommands.insert(command).inserted)
                 }
                 expectation.fulfill()
@@ -83,6 +87,8 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                 metadata: ["k" : "v"])) { command, error in
 
                 XCTAssertNil(error)
+
+                // To check command is valid or not, We use CommandToCheck.
                 XCTAssertEqual(
                   CommandToCheck(
                     true,
@@ -100,6 +106,7 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                   CommandToCheck(command)
                 )
                 if let command = command {
+                    // Command must be inserted to set as new Item..
                     XCTAssertTrue(createdCommands.insert(command).inserted)
                 }
                 expectation.fulfill()
@@ -133,6 +140,8 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
             self.onboardedApi.postNewCommand(
               CommandForm(anotherTemperatureAliasActions)) { command, error in
                 XCTAssertNil(error)
+
+                // To check command is valid or not, We use CommandToCheck.
                 XCTAssertEqual(
                   CommandToCheck(
                     true,
@@ -147,6 +156,7 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                   CommandToCheck(command)
                 )
                 if let command = command {
+                    // Command must be inserted to set as new Item..
                     XCTAssertTrue(createdCommands.insert(command).inserted)
                 }
                 expectation.fulfill()
@@ -192,8 +202,6 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
         }
 
         // list rest commands
-        XCTAssertNotNil(gotPaginationKey)
-        XCTAssertNotNil(gotComand)
         guard let paginationKey = gotPaginationKey,
               let commandToRemove = gotComand else {
             return
