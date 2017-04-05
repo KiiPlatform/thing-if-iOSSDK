@@ -173,7 +173,7 @@ class ThingIFAPIGetCommandTests: SmallTestBase {
             nil)
         iotSession = MockSession.self
 
-        setting.api.getCommand(testCase.commandID!) { command, error -> Void in
+        setting.api.getCommand(testCase.commandID!) { command, error in
             XCTAssertNil(error)
             XCTAssertEqual(testCase, command)
             expectation.fulfill()
