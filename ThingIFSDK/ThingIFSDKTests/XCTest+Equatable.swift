@@ -573,7 +573,11 @@ extension Command: Equatable, Hashable, ToJsonObject {
     }
 }
 
-extension Trigger: Equatable, ToJsonObject {
+extension Trigger: Equatable, Hashable, ToJsonObject {
+
+    public var hashValue: Int {
+        return self.triggerID.hash
+    }
 
     public static func == (left: Trigger, right: Trigger) -> Bool {
         return left.triggerID == right.triggerID &&
