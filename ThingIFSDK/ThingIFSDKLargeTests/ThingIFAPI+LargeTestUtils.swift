@@ -15,6 +15,15 @@ extension ThingIFAPI {
         state: [String : Any],
         completionHandler: @escaping(ThingIFError?) -> Void) -> Void
     {
+        updateTargetStates(
+            [ alias: state ],
+            completionHandler: completionHandler)
+    }
+
+    internal func updateTargetStates(
+        _ body: [String : Any],
+        completionHandler: @escaping(ThingIFError?) -> Void) -> Void
+    {
         if self.target == nil {
             completionHandler(ThingIFError.targetNotAvailable)
             return;
@@ -26,9 +35,7 @@ extension ThingIFAPI {
             requestHeader: self.defaultHeader + [
                 "Content-Type" : "application/vnd.kii.MultipleTraitState+json"
             ],
-            requestBody: [
-                alias: state
-            ],
+            requestBody: body,
             failureBeforeExecutionHandler: { completionHandler($0) }) {
                 response, error in
 
