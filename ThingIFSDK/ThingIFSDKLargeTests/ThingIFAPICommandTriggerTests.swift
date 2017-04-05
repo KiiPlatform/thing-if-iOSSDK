@@ -285,9 +285,78 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
             }
         }
 
+        // List all modified triggers
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.listTriggers { triggers, paginationKey, error in
+                XCTAssertNil(error)
+                XCTAssertNil(paginationKey)
+                XCTAssertNotNil(triggers)
+                if let triggers = triggers {
+                    XCTAssertEqual(modifiedTriggers, Set(triggers))
+                }
+                expectation.fulfill()
+            }
+        }
+
+        // Get triggers
+        for modifiedTrigger in modifiedTriggers {
+            self.executeAsynchronous { expectation in
+                self.onboardedApi.getTrigger(
+                  modifiedTrigger.triggerID) { trigger, error in
+                    XCTAssertNil(error)
+                    XCTAssertEqual(modifiedTrigger, trigger)
+                    expectation.fulfill()
+                }
+            }
+        }
+
+        // List a trigger.
+        var gotPaginationKey: String?
+        var gotTrigger: Trigger?
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.listTriggers(1) {
+                triggers, paginationKey, error in
+
+                XCTAssertNil(error)
+                XCTAssertNotNil(paginationKey)
+                gotPaginationKey = paginationKey
+                XCTAssertNotNil(triggers)
+
+                ({ () in
+                     guard let triggers = triggers else {
+                         return
+                     }
+                     XCTAssertEqual(1, triggers.count)
+                     XCTAssertTrue(modifiedTriggers.contains(triggers[0]))
+                     gotTrigger = triggers[0]
+                 })()
+
+                expectation.fulfill()
+            }
+        }
+
+        // List rest triggers
+        guard let paginationKey = gotPaginationKey,
+              let triggerToRemove = gotTrigger else {
+            return
+        }
+        XCTAssertNotNil(modifiedTriggers.remove(triggerToRemove))
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.listTriggers(
+              3,
+              paginationKey: paginationKey) { triggers, paginationKey, error in
+                XCTAssertNil(error)
+                XCTAssertNil(paginationKey)
+                XCTAssertNotNil(triggers)
+                if let triggers = triggers {
+                    XCTAssertEqual(modifiedTriggers, Set(triggers))
+                }
+                expectation.fulfill()
+            }
+        }
 
         // delete all triggers
-        for triggerID in modifiedTriggers.map({ $0.triggerID }) {
+        for triggerID in triggerIDs {
             self.executeAsynchronous { expectation in
                 self.onboardedApi.deleteTrigger(triggerID) { deleted, error in
                     XCTAssertNil(error)
