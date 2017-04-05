@@ -65,5 +65,39 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                 expectation.fulfill()
             }
         }
+
+        // Post a new command with options.
+        let humidityAliasActions = [
+          AliasAction(ALIAS2, actions: [Action("setPresetHumidity", value: 45)])
+        ]
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.postNewCommand(
+              CommandForm(
+                humidityAliasActions,
+                title: "dummy titile",
+                commandDescription: "dummy description",
+                metadata: ["k" : "v"])) { command, error in
+
+                XCTAssertNil(error)
+                XCTAssertEqual(
+                  CommandToCheck(
+                    true,
+                    targetID: self.onboardedApi.target!.typedID,
+                    issuerID: self.onboardedApi.owner.typedID,
+                    commandState: .sending,
+                    hasFiredByTriggerID: false,
+                    hasCreated: false,
+                    hasModified: false,
+                    aliasActions: humidityAliasActions,
+                    title: "dummy titile",
+                    commandDescription: "dummy description",
+                    metadata: ["k" : "v"]
+                  ),
+                  CommandToCheck(command)
+                )
+                createdCommands.append(command!)
+                expectation.fulfill()
+            }
+        }
     }
 }
