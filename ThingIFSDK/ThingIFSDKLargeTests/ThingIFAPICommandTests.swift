@@ -194,11 +194,15 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
         // list rest commands
         XCTAssertNotNil(gotPaginationKey)
         XCTAssertNotNil(gotComand)
+        guard let paginationKey = gotPaginationKey,
+              let commandToRemove = gotComand else {
+            return
+        }
 
-        XCTAssertNotNil(createdCommands.remove(gotComand!))
+        XCTAssertNotNil(createdCommands.remove(commandToRemove))
         self.executeAsynchronous { expectation in
             self.onboardedApi.listCommands(
-              3, paginationKey: gotPaginationKey!) {
+              3, paginationKey: paginationKey) {
 
                 commands, paginationKey, error in
 
