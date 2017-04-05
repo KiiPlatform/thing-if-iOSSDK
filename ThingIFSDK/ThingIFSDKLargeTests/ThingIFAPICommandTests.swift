@@ -21,6 +21,7 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
 
     func testSuccess() {
 
+        // Get empty command list.
         self.executeAsynchronous { expectation in
             self.onboardedApi.listCommands() { commands, paginationKey, error in
 
@@ -32,5 +33,37 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
             }
         }
 
+        var createdCommands: [Command] = []
+        // Post a new command with only alias actions.
+        let temperatureAliasActions = [
+          AliasAction(
+            ALIAS1,
+            actions: [
+              Action("turnPower", value: true),
+              Action("setPresetTemperature", value: 25)
+            ]
+          )
+        ]
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.postNewCommand(
+              CommandForm(temperatureAliasActions)) { command, error in
+                XCTAssertNil(error)
+                XCTAssertEqual(
+                  CommandToCheck(
+                    true,
+                    targetID: self.onboardedApi.target!.typedID,
+                    issuerID: self.onboardedApi.owner.typedID,
+                    commandState: .sending,
+                    hasFiredByTriggerID: false,
+                    hasCreated: false,
+                    hasModified: false,
+                    aliasActions: temperatureAliasActions
+                  ),
+                  CommandToCheck(command)
+                )
+                createdCommands.append(command!)
+                expectation.fulfill()
+            }
+        }
     }
 }
