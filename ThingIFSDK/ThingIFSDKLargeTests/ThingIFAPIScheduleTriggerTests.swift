@@ -60,8 +60,8 @@ class ThingIFAPIScheduleTriggerTests: OnboardedTestsBase {
         self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
             XCTAssertNil(error)
         }
+        XCTAssertNotNil(gotTriggerID)
         guard let triggerID1 = gotTriggerID else {
-            XCTFail("triggerID must get.")
             return
         }
 
@@ -102,8 +102,8 @@ class ThingIFAPIScheduleTriggerTests: OnboardedTestsBase {
         self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
             XCTAssertNil(error)
         }
+        XCTAssertNotNil(gotTriggerID)
         guard let triggerID2 = gotTriggerID else {
-            XCTFail("triggerID must get.")
             return
         }
 
@@ -113,8 +113,8 @@ class ThingIFAPIScheduleTriggerTests: OnboardedTestsBase {
             { () in
                 XCTAssertNil(error)
                 XCTAssertNil(paginationKey)
+                XCTAssertNotNil(triggers)
                 guard let triggers = triggers else {
-                    XCTFail("triggers must not be nil")
                     return
                 }
 
@@ -190,8 +190,8 @@ class ThingIFAPIScheduleTriggerTests: OnboardedTestsBase {
             { () in
                 XCTAssertNil(error)
                 XCTAssertNil(paginationKey)
+                XCTAssertNotNil(triggers)
                 guard let triggers = triggers else {
-                    XCTFail("triggers must not be nil")
                     return
                 }
 
