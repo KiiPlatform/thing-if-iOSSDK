@@ -181,6 +181,7 @@
 		D5D170131E8B9BC8005EE037 /* TriggerOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D170101E8B9BC8005EE037 /* TriggerOptionsTests.swift */; };
 		D5D170151E8BA6BE005EE037 /* IoTRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D170141E8BA6BE005EE037 /* IoTRequestTests.swift */; };
 		D5D170171E8BB6E7005EE037 /* ThingIFAPIPushUninstallationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D170161E8BB6E7005EE037 /* ThingIFAPIPushUninstallationTests.swift */; };
+		D5E14E381E94998800205982 /* ThingIFAPIPushUnnstallationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E14E371E94998800205982 /* ThingIFAPIPushUnnstallationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -377,6 +378,7 @@
 		D5D170101E8B9BC8005EE037 /* TriggerOptionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerOptionsTests.swift; sourceTree = "<group>"; };
 		D5D170141E8BA6BE005EE037 /* IoTRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IoTRequestTests.swift; sourceTree = "<group>"; };
 		D5D170161E8BB6E7005EE037 /* ThingIFAPIPushUninstallationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPushUninstallationTests.swift; sourceTree = "<group>"; };
+		D5E14E371E94998800205982 /* ThingIFAPIPushUnnstallationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPushUnnstallationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -556,6 +558,7 @@
 				22DD62F01E8E3E1C00B2507D /* ThingIFAPI+LargeTestUtils.swift */,
 				22DD62F21E8E4CBF00B2507D /* ThingIFAPIQueryUngroupedTests.swift */,
 				B6A55CD31E92233000AAC733 /* ThingIFAPIQueryGroupedTests.swift */,
+				D5E14E371E94998800205982 /* ThingIFAPIPushUnnstallationTests.swift */,
 			);
 			path = ThingIFSDKLargeTests;
 			sourceTree = "<group>";
@@ -891,6 +894,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22DD62F11E8E3E1C00B2507D /* ThingIFAPI+LargeTestUtils.swift in Sources */,
+				D5E14E381E94998800205982 /* ThingIFAPIPushUnnstallationTests.swift in Sources */,
 				B6A55CD21E8CDB6700AAC733 /* NotOnboardedYetTestsBase.swift in Sources */,
 				22DD62F31E8E4CBF00B2507D /* ThingIFAPIQueryUngroupedTests.swift in Sources */,
 				22CB84CA1E8CF9050089450E /* ThingIFAPIAggregateTests.swift in Sources */,
