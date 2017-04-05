@@ -60,10 +60,8 @@ class ThingIFAPIScheduleTriggerTests: OnboardedTestsBase {
         self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
             XCTAssertNil(error)
         }
-        guard let triggerID1 = gotTriggerID else {
-            XCTFail("triggerID must get.")
-            return
-        }
+        XCTAssertNotNil(gotTriggerID)
+        let triggerID1 = gotTriggerID!
 
         let humidityAliasActions = [
           AliasAction(ALIAS2, actions: [Action("setPresetHumidity", value: 45)])
@@ -102,10 +100,8 @@ class ThingIFAPIScheduleTriggerTests: OnboardedTestsBase {
         self.waitForExpectations(timeout: TEST_TIMEOUT) { error in
             XCTAssertNil(error)
         }
-        guard let triggerID2 = gotTriggerID else {
-            XCTFail("triggerID must get.")
-            return
-        }
+        XCTAssertNotNil(gotTriggerID)
+        let triggerID2 = gotTriggerID!
 
         expectation = self.expectation(description: "list trigger first")
         self.onboardedApi.listTriggers(100)  { triggers, paginationKey, error in
@@ -113,10 +109,8 @@ class ThingIFAPIScheduleTriggerTests: OnboardedTestsBase {
             { () in
                 XCTAssertNil(error)
                 XCTAssertNil(paginationKey)
-                guard let triggers = triggers else {
-                    XCTFail("triggers must not be nil")
-                    return
-                }
+                XCTAssertNotNil(triggers)
+                let triggers = triggers!
 
                 XCTAssertEqual(
                   [triggerID1, triggerID2], triggers.map { $0.triggerID })
@@ -190,10 +184,8 @@ class ThingIFAPIScheduleTriggerTests: OnboardedTestsBase {
             { () in
                 XCTAssertNil(error)
                 XCTAssertNil(paginationKey)
-                guard let triggers = triggers else {
-                    XCTFail("triggers must not be nil")
-                    return
-                }
+                XCTAssertNotNil(triggers)
+                let triggers = triggers!
 
                 XCTAssertEqual([triggerID2], triggers.map { $0.triggerID })
 
