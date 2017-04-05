@@ -566,6 +566,8 @@
 				22DD62F21E8E4CBF00B2507D /* ThingIFAPIQueryUngroupedTests.swift */,
 				B6A55CD31E92233000AAC733 /* ThingIFAPIQueryGroupedTests.swift */,
 				D5E14E371E94998800205982 /* ThingIFAPIPushUnnstallationTests.swift */,
+				D547C2E41E9397F30002BC31 /* ThingIFAPIPushInstallationTests.swift */,
+				B6CF92F01E93852000F24D61 /* Utilities.swift */,
 			);
 			path = ThingIFSDKLargeTests;
 			sourceTree = "<group>";
