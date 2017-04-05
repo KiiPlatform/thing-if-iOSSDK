@@ -216,4 +216,23 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
             }
         }
     }
+
+    func testFailToGetCommand() {
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.getCommand("dummyID") { command, error in
+
+                XCTAssertNil(command)
+                XCTAssertEqual(
+                  ThingIFError.errorResponse(
+                    required: ErrorResponse(
+                      404,
+                      errorCode: "COMMAND_NOT_FOUND",
+                      errorMessage: "Command dummyID not found")
+                  ),
+                  error
+                )
+                expectation.fulfill()
+            }
+        }
+    }
 }
