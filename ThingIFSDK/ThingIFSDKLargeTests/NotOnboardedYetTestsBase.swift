@@ -55,6 +55,7 @@ class NotOnboardedYetTestsBase: XCTestCase {
     override func setUp() {
         super.setUp()
 
+        self.continueAfterFailure = false
         let setting = self.setting
         self.userInfo = createPseudoUser(
                 setting.appID,
