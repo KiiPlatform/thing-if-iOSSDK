@@ -548,18 +548,18 @@ extension Command: Equatable, ToJsonObject {
 
     public func makeJsonObject() -> [String : Any] {
         var retval: [String : Any] = [
-          "commandID" : self.commandID,
           "target" : self.targetID.toString(),
           "issuer" : self.issuerID.toString(),
-          "actions" : self.aliasActions.map { $0.makeJsonObject() },
-          "commandState" : self.commandState.rawValue,
-          "created" : self.created!.timeIntervalSince1970InMillis
+          "actions" : self.aliasActions.map { $0.makeJsonObject() }
         ]
 
         if !self.aliasActionResults.isEmpty {
             retval["actionResults"] =
               self.aliasActionResults.map { $0.makeJsonObject() }
         }
+        retval["commandID"] = self.commandID
+        retval["commandState"] = self.commandState?.rawValue
+        retval["created"] = self.created?.timeIntervalSince1970InMillis
         retval["modified"] = self.modified?.timeIntervalSince1970InMillis
         retval["firedByTriggerID"] = self.firedByTriggerID
         retval["title"] = self.title
@@ -598,7 +598,7 @@ extension Trigger: Equatable, ToJsonObject {
     }
 }
 
-private func == (left: Predicate, right: Predicate) -> Bool {
+internal func == (left: Predicate, right: Predicate) -> Bool {
     switch (left, right) {
     case (is StatePredicate, is StatePredicate):
         return left as! StatePredicate == right as! StatePredicate
@@ -610,6 +610,10 @@ private func == (left: Predicate, right: Predicate) -> Bool {
     default:
         return false
     }
+}
+
+internal func != (left: Predicate, right: Predicate) -> Bool {
+    return !(left == right)
 }
 
 extension StatePredicate: Equatable {

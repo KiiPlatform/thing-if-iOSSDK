@@ -9,7 +9,7 @@ public struct Command {
 
     // MARK: Properties
     /** ID of the Command. */
-    public let commandID: String
+    public let commandID: String?
     /** ID of the Command Target. */
     public let targetID: TypedID
     /** ID of the issuer of the Command. */
@@ -19,7 +19,7 @@ public struct Command {
     /** Results of the action. */
     public let aliasActionResults: [AliasActionResult]
     /** State of the Command. */
-    public let commandState: CommandState
+    public let commandState: CommandState?
     /** ID of the trigger which fired this command. */
     public let firedByTriggerID: String?
     /** Creation time of the Command.*/
@@ -55,12 +55,12 @@ public struct Command {
        should be equal or less than 200 characters.
      - Parameter metadata: Meta data of a command.
      */
-    public init(_ commandID: String,
+    public init(_ commandID: String?,
          targetID: TypedID,
          issuerID: TypedID,
          aliasActions: [AliasAction],
          aliasActionResults: [AliasActionResult] = [],
-         commandState: CommandState = .sending,
+         commandState: CommandState? = nil,
          firedByTriggerID: String? = nil,
          created: Date? = nil,
          modified: Date? = nil,
@@ -113,11 +113,8 @@ public struct Command {
 extension Command: FromJsonObject {
 
     internal init(_ jsonObject: [String : Any]) throws {
-        guard let commandID = jsonObject["commandID"] as? String,
-              let aliasActions = jsonObject["actions"] as? [[String : Any]],
-              let state = jsonObject["commandState"] as? String,
-              let commandState = CommandState(rawValue: state),
-              let created = jsonObject["created"] as? Int64 else {
+        guard let aliasActions =
+                jsonObject["actions"] as? [[String : Any]] else {
             throw ThingIFError.jsonParseError
         }
 
@@ -128,6 +125,20 @@ extension Command: FromJsonObject {
             aliasActionResults = []
         }
 
+        let commandState: CommandState?
+        if let state = jsonObject["commandState"] as? String {
+            commandState = CommandState(rawValue: state)
+        } else {
+            commandState = nil
+        }
+
+        let created: Date?
+        if let date = jsonObject["created"] as? Int64 {
+            created = Date(timeIntervalSince1970InMillis: date)
+        } else {
+            created = nil
+        }
+
         let modified: Date?
         if let date = jsonObject["modified"] as? Int64 {
             modified = Date(timeIntervalSince1970InMillis: date)
@@ -136,14 +147,14 @@ extension Command: FromJsonObject {
         }
 
         self.init(
-          commandID,
+          jsonObject["commandID"] as? String,
           targetID: try TypedID(jsonObject["target"] as? String),
           issuerID: try TypedID(jsonObject["issuer"] as? String),
           aliasActions: try aliasActions.map { try AliasAction($0) },
           aliasActionResults: aliasActionResults,
           commandState: commandState,
           firedByTriggerID: jsonObject["firedByTriggerID"] as? String,
-          created: Date(timeIntervalSince1970InMillis: created),
+          created: created,
           modified: modified,
           title: jsonObject["title"] as? String,
           commandDescription: jsonObject["description"] as? String,
