@@ -35,7 +35,7 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
             }
         }
 
-        var createdCommands: [Command] = []
+        var createdCommands: Set<Command> = []
         // Post a new command with only alias actions.
         let temperatureAliasActions = [
           AliasAction(
@@ -64,7 +64,7 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                   CommandToCheck(command)
                 )
                 if let command = command {
-                    createdCommands.append(command)
+                    XCTAssertTrue(createdCommands.insert(command).inserted)
                 }
                 expectation.fulfill()
             }
@@ -100,7 +100,7 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                   CommandToCheck(command)
                 )
                 if let command = command {
-                    createdCommands.append(command)
+                    XCTAssertTrue(createdCommands.insert(command).inserted)
                 }
                 expectation.fulfill()
             }
@@ -147,7 +147,7 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                   CommandToCheck(command)
                 )
                 if let command = command {
-                    createdCommands.append(command)
+                    XCTAssertTrue(createdCommands.insert(command).inserted)
                 }
                 expectation.fulfill()
             }
@@ -161,8 +161,57 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                 XCTAssertNil(error)
                 XCTAssertNotNil(commands)
                 if let commands = commands {
-                    XCTAssertEqual(Set(createdCommands), Set(commands))
+                    XCTAssertEqual(createdCommands, Set(commands))
                 }
+                expectation.fulfill()
+            }
+        }
+
+        // List a command
+        var gotPaginationKey: String?
+        var gotComand: Command?
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.listCommands(1) {
+                commands, paginationKey, error in
+
+                { () in
+                    XCTAssertNotNil(paginationKey)
+                    XCTAssertNil(error)
+                    XCTAssertNotNil(commands)
+                    guard let commands = commands else {
+                        return
+                    }
+                    XCTAssertEqual(1, commands.count)
+                    XCTAssertTrue(createdCommands.contains(commands[0]))
+
+                    gotPaginationKey = paginationKey
+                    gotComand = commands[0]
+                }()
+                expectation.fulfill()
+            }
+        }
+
+        // list rest commands
+        XCTAssertNotNil(gotPaginationKey)
+        XCTAssertNotNil(gotComand)
+
+        XCTAssertNotNil(createdCommands.remove(gotComand!))
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.listCommands(
+              3, paginationKey: gotPaginationKey!) {
+
+                commands, paginationKey, error in
+
+                { () in
+                    XCTAssertNil(paginationKey)
+                    XCTAssertNil(error)
+                    XCTAssertNotNil(commands)
+                    guard let commands = commands else {
+                        return
+                    }
+                    XCTAssertEqual(2, commands.count)
+                    XCTAssertEqual(createdCommands, Set(commands))
+                }()
                 expectation.fulfill()
             }
         }
