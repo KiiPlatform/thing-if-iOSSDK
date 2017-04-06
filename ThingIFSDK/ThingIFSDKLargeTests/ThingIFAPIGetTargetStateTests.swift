@@ -77,13 +77,12 @@ class ThingIFAPIGetTargetStateTests: OnboardedTestsBase
                 }
                 XCTAssertNil(error)
                 XCTAssertNotNil(results)
-                XCTAssertEqual(2, results!.count)
                 XCTAssertEqual(
-                    airState as NSDictionary,
-                    results![self.ALIAS1]! as NSDictionary)
-                XCTAssertEqual(
-                    humState as NSDictionary,
-                    results![self.ALIAS2]! as NSDictionary)
+                    [
+                        self.ALIAS1 : airState,
+                        self.ALIAS2 : humState
+                    ] as NSDictionary,
+                    results! as NSDictionary)
             }
         }
 
