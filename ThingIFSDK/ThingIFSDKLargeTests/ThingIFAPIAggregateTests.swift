@@ -29,10 +29,15 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             "power",
             fieldType:Aggregation.FieldType.bool)
 
-        onboardedApi.aggregate(query, aggregation: aggregation) {
-            (results: [AggregatedResult<Bool>]?, error) in
-            XCTAssertNil(error)
-            XCTAssertEqual([], results!)
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.aggregate(query, aggregation: aggregation) {
+                (results: [AggregatedResult<Bool>]?, error) in
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertEqual([], results!)
+            }
         }
     }
 
@@ -42,14 +47,16 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             [ "power" : true, "currentTemperature" : 26]
         ]
 
-        states.forEach {
-            let expectation = self.expectation(description: "updateTargetState")
-            onboardedApi.updateTargetState(ALIAS1, state: $0) {
-                (error) in
-                expectation.fulfill()
-            }
-            self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-                XCTAssertNil(error)
+        for state in states {
+            self.executeAsynchronous { expectation in
+                self.onboardedApi.updateTargetState(self.ALIAS1, state: state) {
+                    (error) in
+                    defer {
+                        expectation.fulfill()
+                    }
+                    XCTAssertNil(error)
+                }
+                sleep(1)
             }
         }
 
@@ -63,17 +70,22 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             "currentTemperature",
             fieldType:Aggregation.FieldType.integer)
 
-        onboardedApi.aggregate(query, aggregation: aggregation) {
-            (results: [AggregatedResult<Int>]?, error) in
-            XCTAssertNil(error)
-            XCTAssertNotNil(results)
-            XCTAssertEqual(1, results?.count)
-            let result = results![0]
-            XCTAssertNotNil(result)
-            XCTAssertTrue(timeRange.from >= result.timeRange.from)
-            XCTAssertTrue(timeRange.to <= result.timeRange.to)
-            XCTAssertEqual(2, result.value)
-            XCTAssertEqual(0, result.aggregatedObjects.count)
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.aggregate(query, aggregation: aggregation) {
+                (results: [AggregatedResult<Int>]?, error) in
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertNotNil(results)
+                XCTAssertEqual(1, results?.count)
+                let result = results![0]
+                XCTAssertNotNil(result)
+                XCTAssertTrue(timeRange.from >= result.timeRange.from)
+                XCTAssertTrue(timeRange.to <= result.timeRange.to)
+                XCTAssertEqual(2, result.value)
+                XCTAssertEqual(0, result.aggregatedObjects.count)
+            }
         }
     }
 
@@ -83,14 +95,16 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             [ "power" : true, "currentTemperature" : 26]
         ]
 
-        states.forEach {
-            let expectation = self.expectation(description: "updateTargetState")
-            onboardedApi.updateTargetState(ALIAS1, state: $0) {
-                (error) in
-                expectation.fulfill()
-            }
-            self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-                XCTAssertNil(error)
+        for state in states {
+            self.executeAsynchronous { expectation in
+                self.onboardedApi.updateTargetState(self.ALIAS1, state: state) {
+                    (error) in
+                    defer {
+                        expectation.fulfill()
+                    }
+                    XCTAssertNil(error)
+                }
+                sleep(1)
             }
         }
 
@@ -104,21 +118,27 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             "currentTemperature",
             fieldType:Aggregation.FieldType.integer)
 
-        onboardedApi.aggregate(query, aggregation: aggregation) {
-            (results: [AggregatedResult<Int>]?, error) in
-            XCTAssertNil(error)
-            XCTAssertNotNil(results)
-            XCTAssertEqual(1, results?.count)
-            let result = results![0]
-            XCTAssertNotNil(result)
-            XCTAssertTrue(timeRange.from >= result.timeRange.from)
-            XCTAssertTrue(timeRange.to <= result.timeRange.to)
-            XCTAssertEqual(26, result.value)
-            XCTAssertEqual(1, result.aggregatedObjects.count)
-            XCTAssertEqual(
-                states[1] as NSDictionary,
-                result.aggregatedObjects[0].state as NSDictionary)
-            XCTAssertNotNil(result.aggregatedObjects[0].createdAt)
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.aggregate(query, aggregation: aggregation) {
+                (results: [AggregatedResult<Int>]?, error) in
+                defer {
+                    expectation.fulfill()
+                }
+
+                XCTAssertNil(error)
+                XCTAssertNotNil(results)
+                XCTAssertEqual(1, results?.count)
+                let result = results![0]
+                XCTAssertNotNil(result)
+                XCTAssertTrue(timeRange.from >= result.timeRange.from)
+                XCTAssertTrue(timeRange.to <= result.timeRange.to)
+                XCTAssertEqual(26, result.value)
+                XCTAssertEqual(1, result.aggregatedObjects.count)
+                XCTAssertEqual(
+                  states[1] as NSDictionary,
+                  result.aggregatedObjects[0].state as NSDictionary)
+                XCTAssertNotNil(result.aggregatedObjects[0].createdAt)
+            }
         }
     }
 
@@ -128,14 +148,16 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             [ "power" : true, "currentTemperature" : 26]
         ]
 
-        states.forEach {
-            let expectation = self.expectation(description: "updateTargetState")
-            onboardedApi.updateTargetState(ALIAS1, state: $0) {
-                (error) in
-                expectation.fulfill()
-            }
-            self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-                XCTAssertNil(error)
+        for state in states {
+            self.executeAsynchronous { expectation in
+                self.onboardedApi.updateTargetState(self.ALIAS1, state: state) {
+                    (error) in
+                    defer {
+                        expectation.fulfill()
+                    }
+                    XCTAssertNil(error)
+                }
+                sleep(1)
             }
         }
 
@@ -149,21 +171,27 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             "currentTemperature",
             fieldType:Aggregation.FieldType.integer)
 
-        onboardedApi.aggregate(query, aggregation: aggregation) {
-            (results: [AggregatedResult<Int>]?, error) in
-            XCTAssertNil(error)
-            XCTAssertNotNil(results)
-            XCTAssertEqual(1, results?.count)
-            let result = results![0]
-            XCTAssertNotNil(result)
-            XCTAssertTrue(timeRange.from >= result.timeRange.from)
-            XCTAssertTrue(timeRange.to <= result.timeRange.to)
-            XCTAssertEqual(23, result.value)
-            XCTAssertEqual(1, result.aggregatedObjects.count)
-            XCTAssertEqual(
-                states[0] as NSDictionary,
-                result.aggregatedObjects[0].state as NSDictionary)
-            XCTAssertNotNil(result.aggregatedObjects[0].createdAt)
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.aggregate(query, aggregation: aggregation) {
+                (results: [AggregatedResult<Int>]?, error) in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertNotNil(results)
+                XCTAssertEqual(1, results?.count)
+                let result = results![0]
+                XCTAssertNotNil(result)
+                XCTAssertTrue(timeRange.from >= result.timeRange.from)
+                XCTAssertTrue(timeRange.to <= result.timeRange.to)
+                XCTAssertEqual(23, result.value)
+                XCTAssertEqual(1, result.aggregatedObjects.count)
+                XCTAssertEqual(
+                  states[0] as NSDictionary,
+                  result.aggregatedObjects[0].state as NSDictionary)
+                XCTAssertNotNil(result.aggregatedObjects[0].createdAt)
+            }
         }
     }
 
@@ -173,14 +201,16 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             [ "power" : true, "currentTemperature" : 28]
         ]
 
-        states.forEach {
-            let expectation = self.expectation(description: "updateTargetState")
-            onboardedApi.updateTargetState(ALIAS1, state: $0) {
-                (error) in
-                expectation.fulfill()
-            }
-            self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-                XCTAssertNil(error)
+        for state in states {
+            self.executeAsynchronous { expectation in
+                self.onboardedApi.updateTargetState(self.ALIAS1, state: state) {
+                    (error) in
+                    defer {
+                        expectation.fulfill()
+                    }
+                    XCTAssertNil(error)
+                }
+                sleep(1)
             }
         }
 
@@ -194,17 +224,23 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             "currentTemperature",
             fieldType:Aggregation.FieldType.integer)
 
-        onboardedApi.aggregate(query, aggregation: aggregation) {
-            (results: [AggregatedResult<Int>]?, error) in
-            XCTAssertNil(error)
-            XCTAssertNotNil(results)
-            XCTAssertEqual(1, results?.count)
-            let result = results![0]
-            XCTAssertNotNil(result)
-            XCTAssertTrue(timeRange.from >= result.timeRange.from)
-            XCTAssertTrue(timeRange.to <= result.timeRange.to)
-            XCTAssertEqual(25, result.value)
-            XCTAssertEqual(0, result.aggregatedObjects.count)
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.aggregate(query, aggregation: aggregation) {
+                (results: [AggregatedResult<Int>]?, error) in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertNotNil(results)
+                XCTAssertEqual(1, results?.count)
+                let result = results![0]
+                XCTAssertNotNil(result)
+                XCTAssertTrue(timeRange.from >= result.timeRange.from)
+                XCTAssertTrue(timeRange.to <= result.timeRange.to)
+                XCTAssertEqual(25, result.value)
+                XCTAssertEqual(0, result.aggregatedObjects.count)
+            }
         }
     }
 
@@ -214,14 +250,16 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             [ "power" : true, "currentTemperature" : 26]
         ]
 
-        states.forEach {
-            let expectation = self.expectation(description: "updateTargetState")
-            onboardedApi.updateTargetState(ALIAS1, state: $0) {
-                (error) in
-                expectation.fulfill()
-            }
-            self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-                XCTAssertNil(error)
+        for state in states {
+            self.executeAsynchronous { expectation in
+                self.onboardedApi.updateTargetState(self.ALIAS1, state: state) {
+                    (error) in
+                    defer {
+                        expectation.fulfill()
+                    }
+                    XCTAssertNil(error)
+                }
+                sleep(1)
             }
         }
 
@@ -235,17 +273,23 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
             "currentTemperature",
             fieldType:Aggregation.FieldType.integer)
 
-        onboardedApi.aggregate(query, aggregation: aggregation) {
-            (results: [AggregatedResult<Int>]?, error) in
-            XCTAssertNil(error)
-            XCTAssertNotNil(results)
-            XCTAssertEqual(1, results?.count)
-            let result = results![0]
-            XCTAssertNotNil(result)
-            XCTAssertTrue(timeRange.from >= result.timeRange.from)
-            XCTAssertTrue(timeRange.to <= result.timeRange.to)
-            XCTAssertEqual(49, result.value)
-            XCTAssertEqual(0, result.aggregatedObjects.count)
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.aggregate(query, aggregation: aggregation) {
+                (results: [AggregatedResult<Int>]?, error) in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertNotNil(results)
+                XCTAssertEqual(1, results?.count)
+                let result = results![0]
+                XCTAssertNotNil(result)
+                XCTAssertTrue(timeRange.from >= result.timeRange.from)
+                XCTAssertTrue(timeRange.to <= result.timeRange.to)
+                XCTAssertEqual(49, result.value)
+                XCTAssertEqual(0, result.aggregatedObjects.count)
+            }
         }
     }
 }
