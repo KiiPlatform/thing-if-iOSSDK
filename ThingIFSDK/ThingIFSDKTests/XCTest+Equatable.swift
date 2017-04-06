@@ -529,7 +529,11 @@ internal func isSameDate(_ left: Date?, _ right: Date?) -> Bool {
       distance == 0
 
 }
-extension Command: Equatable, ToJsonObject {
+extension Command: Equatable, Hashable, ToJsonObject {
+
+    public var hashValue: Int {
+        return self.commandID?.hash ?? 0
+    }
 
     public static func == (left: Command, right: Command) -> Bool {
         return left.commandID == right.commandID &&

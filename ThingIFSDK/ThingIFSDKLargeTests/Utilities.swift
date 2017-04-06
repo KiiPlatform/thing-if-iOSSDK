@@ -122,7 +122,10 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
         hasCreated: Bool,
         hasModified: Bool,
         aliasActions: [AliasAction],
-        aliasActionResults: [AliasActionResult]
+        aliasActionResults: [AliasActionResult],
+        title: String?,
+        commandDescription: String?,
+        metadata: [String : Any]?
       )?,
       checkee: Command?
     )
@@ -136,7 +139,10 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
       hasCreated: Bool,
       hasModified: Bool,
       aliasActions: [AliasAction],
-      aliasActionResults: [AliasActionResult] = [])
+      aliasActionResults: [AliasActionResult] = [],
+      title: String? = nil,
+      commandDescription: String? = nil,
+      metadata: [String : Any]? = nil)
     {
         self.data = (
           (
@@ -148,7 +154,10 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
             hasCreated,
             hasModified,
             aliasActions,
-            aliasActionResults
+            aliasActionResults,
+            title,
+            commandDescription,
+            metadata
           ),
           nil
         )
@@ -197,6 +206,16 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
         if checker.aliasActionResults != checkee.aliasActionResults {
             return false
         }
+        if checker.title != checkee.title {
+            return false
+        }
+        if checker.commandDescription != checkee.commandDescription {
+            return false
+        }
+        if checker.metadata as NSDictionary?
+             != checkee.metadata as NSDictionary? {
+            return false
+        }
         return true
     }
 
@@ -213,6 +232,9 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
               "aliasActionResults" : checker.aliasActionResults
             ]
             retval["commandState"] = checker.commandState
+            retval["title"] = checker.title
+            retval["commandDescription"] = checker.commandDescription
+            retval["metadata"] = checker.metadata
             return retval.description
         } else if let checkee = self.data.checkee {
             var retval: [String : Any] = [
@@ -226,6 +248,9 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
               "aliasActionResults" : checkee.aliasActionResults
             ]
             retval["commandState"] = checkee.commandState
+            retval["title"] = checkee.title
+            retval["commandDescription"] = checkee.commandDescription
+            retval["metadata"] = checkee.metadata
             return retval.description
         }
         fatalError()
