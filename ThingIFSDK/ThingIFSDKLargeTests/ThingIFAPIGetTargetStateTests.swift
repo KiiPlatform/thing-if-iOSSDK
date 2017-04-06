@@ -56,15 +56,15 @@ class ThingIFAPIGetTargetStateTests: OnboardedTestsBase
         let humState : [String : Any] = [ "currentHumidity" : 50 ]
 
         self.executeAsynchronous { expectation in
-            defer {
-                expectation.fulfill()
-            }
             self.onboardedApi.updateTargetStates(
                 [
                     self.ALIAS1 : airState,
                     self.ALIAS2 : humState
                 ]
             ) { error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(error)
             }
         }
