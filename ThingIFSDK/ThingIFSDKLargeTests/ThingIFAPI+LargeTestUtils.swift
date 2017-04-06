@@ -21,7 +21,7 @@ extension ThingIFAPI {
     }
 
     internal func updateTargetStates(
-        _ body: [String : Any],
+        _ body: [String : [String : Any] ],
         completionHandler: @escaping(ThingIFError?) -> Void) -> Void
     {
         if self.target == nil {
