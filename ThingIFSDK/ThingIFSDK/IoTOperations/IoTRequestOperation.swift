@@ -246,7 +246,7 @@ class IoTRequestOperation<T>: GroupOperation {
                             kiiDebugLog("unable to parse JSON")
                         }
                     }
-                    kiiDebugLog("Response Error : \(responseBody)")
+                    kiiDebugLog("Response Error : \(String(describing: responseBody))")
                     let errorResponse = ErrorResponse(
                       statusCode,
                       errorCode: (responseBody?["errorCode"] as? String) ?? "",

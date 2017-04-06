@@ -17,12 +17,12 @@ extension GatewayAPI {
 
 
     private static func getStoredInstanceKey(_ tag : String?) -> String {
-        return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag)")
+        return SHARED_NSUSERDEFAULT_KEY_INSTANCE + (tag == nil ? "" : "_\(tag!)")
     }
 
     private static func getStoredSDKVersionKey(_ tag : String?) -> String{
         return SHARED_NSUSERDEFAULT_SDK_VERSION_KEY +
-          (tag == nil ? "" : "_\(tag)")
+          (tag == nil ? "" : "_\(tag!)")
     }
 
     // MARK: - Persistence.
