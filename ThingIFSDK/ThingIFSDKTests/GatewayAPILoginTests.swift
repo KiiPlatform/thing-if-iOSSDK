@@ -189,10 +189,15 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             XCTAssertNil(error)
         }
 
+        let expectation2 = self.expectation(description: "test400Error")
         XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
+            defer { expectation2.fulfill()}
             XCTAssertEqual(
               ThingIFError.apiNotStored(tag: nil),
               error as? ThingIFError)
+        }
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error)
         }
     }
 
@@ -254,11 +259,17 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             XCTAssertNil(error)
         }
 
+        let expectation2 = self.expectation(description: "test400Error")
         XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
+            defer { expectation2.fulfill()}
             XCTAssertEqual(
               ThingIFError.apiNotStored(tag: nil),
               error as? ThingIFError)
         }
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error)
+        }
+
     }
 
 }
