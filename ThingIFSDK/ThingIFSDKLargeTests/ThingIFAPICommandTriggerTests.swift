@@ -19,6 +19,43 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
         super.tearDown()
     }
 
+    /*
+     Summary of testSuccess.
+
+     === Aim ===
+     testSuccess checks APIs concerned with trigger for
+     command. This test checks following methods:
+
+     - ThingIFAPI.listTriggers
+     - ThingIFAPI.getTrigger
+     - ThingIFAPI.postNewTrigger
+     - ThingIFAPI.patchTrigger
+     - ThingIFAPI.deleteTrigger
+
+     This test checks only success case. Error cases are out of scope
+     of this test.
+
+     === Test flow ===
+
+     1. Get triggers with ThingIFAPI.listTriggers. The list is empty.
+     2. Create 3 triggers with ThingIFAPI.postNewTrigger. Each
+        creating triggers has different type of predicate. One is
+        StatePredicate, other is SchedulePredicate, and the other is
+        ScheduleOncePredicate.
+     3. Get triggers with ThingIFAPI.listTriggers again. The list
+        contains 3 triggers which we create at 2.
+     4. Update all triggers which we carete at 2 with
+        ThingIFAPI.patchTrigger. We change predicates and alias
+        actions in this update.
+     5. Get triggers with ThingIFAPI.listTriggers again. The list
+        contains triggers which we update at 4.
+     6. Get each triggers with ThingIFAPI.getTrigger. The triggers is
+        same as triggers updated at 4.
+     7. Get a trigger with ThingIFAPI.listTriggers using bestEffortLimit as 1.
+     8. Get rest of triggers with ThingIFAPI.listTriggers using
+        bestEffortLimit and paginationKey.
+     9. Delete all triggers with ThingIFAPI.deleteTrigger.
+     */
     func testSuccess() {
 
         // List empty triggers
