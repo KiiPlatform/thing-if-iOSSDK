@@ -420,4 +420,34 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
         }
     }
 
+
+    func testFailToGetTrigger() {
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.getTrigger("dummyID") { trigger, error in
+                XCTAssertNil(trigger)
+                XCTAssertEqual(ThingIFError.errorResponse(
+                                 required: ErrorResponse(
+                                   404,
+                                   errorCode: "TRIGGER_NOT_FOUND",
+                                   errorMessage: "Trigger dummyID not found")),
+                               error)
+                expectation.fulfill()
+            }
+        }
+    }
+
+    func testFailToDeleteTrigger() {
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.deleteTrigger("dummyID") { triggerID, error in
+                XCTAssertEqual("dummyID", triggerID)
+                XCTAssertEqual(ThingIFError.errorResponse(
+                                 required: ErrorResponse(
+                                   404,
+                                   errorCode: "TRIGGER_NOT_FOUND",
+                                   errorMessage: "Trigger dummyID not found")),
+                               error)
+                expectation.fulfill()
+            }
+        }
+    }
 }
