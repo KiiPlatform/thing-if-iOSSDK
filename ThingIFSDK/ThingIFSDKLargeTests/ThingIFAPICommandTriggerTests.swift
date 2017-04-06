@@ -71,6 +71,10 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
             }
         }
 
+        // Set of created triggers by ThingIFAPI.postNewTrigger. We
+        // use this to check that results of ThingIFAPI.listTriggers
+        // is same trigger which we create with
+        // ThingIFAPI.postNewTrigger.
         var createdTriggers: Set<Trigger> = []
 
         // post new comand trigger with StatePredicate
@@ -113,6 +117,10 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                   TriggerToCheck(trigger)
                 )
                 if let trigger = trigger {
+                    // createdTriggers is set so we can not insert
+                    // same trigger to createdTriggers. If server
+                    // returns same trigger, it is server error. We
+                    // catch it with this check.
                     XCTAssertTrue(createdTriggers.insert(trigger).inserted)
                 }
                 expectation.fulfill()
@@ -147,6 +155,10 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                   TriggerToCheck(trigger)
                 )
                 if let trigger = trigger {
+                    // createdTriggers is set so we can not insert
+                    // same trigger to createdTriggers. If server
+                    // returns same trigger, it is server error. We
+                    // catch it with this check.
                     XCTAssertTrue(createdTriggers.insert(trigger).inserted)
                 }
                 expectation.fulfill()
@@ -182,6 +194,10 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                   TriggerToCheck(trigger)
                 )
                 if let trigger = trigger {
+                    // createdTriggers is set so we can not insert
+                    // same trigger to createdTriggers. If server
+                    // returns same trigger, it is server error. We
+                    // catch it with this check.
                     XCTAssertTrue(createdTriggers.insert(trigger).inserted)
                 }
                 expectation.fulfill()
