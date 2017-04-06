@@ -56,6 +56,7 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
                     }
                     XCTAssertNil(error)
                 }
+                sleep(2)
             }
         }
 
@@ -103,6 +104,7 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
                     }
                     XCTAssertNil(error)
                 }
+                sleep(2)
             }
         }
 
@@ -155,6 +157,7 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
                     }
                     XCTAssertNil(error)
                 }
+                sleep(2)
             }
         }
 
@@ -207,6 +210,7 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
                     }
                     XCTAssertNil(error)
                 }
+                sleep(2)
             }
         }
 
@@ -255,6 +259,7 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
                     }
                     XCTAssertNil(error)
                 }
+                sleep(2)
             }
         }
 
