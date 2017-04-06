@@ -25,6 +25,9 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
         self.executeAsynchronous { expectation in
             self.onboardedApi.listCommands() { commands, paginationKey, error in
 
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(paginationKey)
                 XCTAssertNil(error)
                 XCTAssertNotNil(commands)
@@ -32,7 +35,6 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                     // commands must be empty.
                     XCTAssertEqual([], commands)
                 }
-                expectation.fulfill()
             }
         }
 
@@ -50,6 +52,9 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
         self.executeAsynchronous { expectation in
             self.onboardedApi.postNewCommand(
               CommandForm(temperatureAliasActions)) { command, error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(error)
 
                 // To check command is valid or not, We use CommandToCheck.
@@ -70,7 +75,6 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                     // Command must be inserted to set as new Item..
                     XCTAssertTrue(createdCommands.insert(command).inserted)
                 }
-                expectation.fulfill()
             }
         }
 
@@ -85,6 +89,10 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                 title: "dummy titile",
                 commandDescription: "dummy description",
                 metadata: ["k" : "v"])) { command, error in
+
+                defer {
+                    expectation.fulfill()
+                }
 
                 XCTAssertNil(error)
 
@@ -109,7 +117,6 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                     // Command must be inserted to set as new Item..
                     XCTAssertTrue(createdCommands.insert(command).inserted)
                 }
-                expectation.fulfill()
             }
         }
 
@@ -119,9 +126,11 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                 self.onboardedApi.getCommand(
                   createdCommand.commandID!) { command, error in
 
+                    defer {
+                        expectation.fulfill()
+                    }
                     XCTAssertNil(error)
                     XCTAssertEqual(createdCommand, command)
-                    expectation.fulfill()
                 }
             }
         }
@@ -139,6 +148,9 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
         self.executeAsynchronous { expectation in
             self.onboardedApi.postNewCommand(
               CommandForm(anotherTemperatureAliasActions)) { command, error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(error)
 
                 // To check command is valid or not, We use CommandToCheck.
@@ -159,7 +171,6 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                     // Command must be inserted to set as new Item..
                     XCTAssertTrue(createdCommands.insert(command).inserted)
                 }
-                expectation.fulfill()
             }
         }
 
@@ -167,13 +178,15 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
         self.executeAsynchronous { expectation in
             self.onboardedApi.listCommands() { commands, paginationKey, error in
 
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(paginationKey)
                 XCTAssertNil(error)
                 XCTAssertNotNil(commands)
                 if let commands = commands {
                     XCTAssertEqual(createdCommands, Set(commands))
                 }
-                expectation.fulfill()
             }
         }
 
@@ -184,20 +197,21 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
             self.onboardedApi.listCommands(1) {
                 commands, paginationKey, error in
 
-                { () in
-                    XCTAssertNotNil(paginationKey)
-                    XCTAssertNil(error)
-                    XCTAssertNotNil(commands)
-                    guard let commands = commands else {
-                        return
-                    }
-                    XCTAssertEqual(1, commands.count)
-                    XCTAssertTrue(createdCommands.contains(commands[0]))
+                defer {
+                    expectation.fulfill()
+                }
 
-                    gotPaginationKey = paginationKey
-                    gotComand = commands[0]
-                }()
-                expectation.fulfill()
+                XCTAssertNotNil(paginationKey)
+                XCTAssertNil(error)
+                XCTAssertNotNil(commands)
+                guard let commands = commands else {
+                    return
+                }
+                XCTAssertEqual(1, commands.count)
+                XCTAssertTrue(createdCommands.contains(commands[0]))
+
+                gotPaginationKey = paginationKey
+                gotComand = commands[0]
             }
         }
 
@@ -214,17 +228,18 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
 
                 commands, paginationKey, error in
 
-                { () in
-                    XCTAssertNil(paginationKey)
-                    XCTAssertNil(error)
-                    XCTAssertNotNil(commands)
-                    guard let commands = commands else {
-                        return
-                    }
-                    XCTAssertEqual(2, commands.count)
-                    XCTAssertEqual(createdCommands, Set(commands))
-                }()
-                expectation.fulfill()
+                defer {
+                    expectation.fulfill()
+                }
+
+                XCTAssertNil(paginationKey)
+                XCTAssertNil(error)
+                XCTAssertNotNil(commands)
+                guard let commands = commands else {
+                    return
+                }
+                XCTAssertEqual(2, commands.count)
+                XCTAssertEqual(createdCommands, Set(commands))
             }
         }
     }
@@ -232,6 +247,10 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
     func testFailToGetCommand() {
         self.executeAsynchronous { expectation in
             self.onboardedApi.getCommand("dummyID") { command, error in
+
+                defer {
+                    expectation.fulfill()
+                }
 
                 XCTAssertNil(command)
                 XCTAssertEqual(
@@ -243,7 +262,6 @@ class ThingIFAPICommandTests: OnboardedTestsBase {
                   ),
                   error
                 )
-                expectation.fulfill()
             }
         }
     }

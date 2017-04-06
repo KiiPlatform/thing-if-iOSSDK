@@ -9,6 +9,19 @@
 import Foundation
 import ThingIFSDK
 
+/*
+ Struct to check received trigger.
+
+ In large tests, It is hard for us to use '==' of Trigger because we can
+ not know values of some properties which are received from server in
+ advance. For example, triggerID, created, modified and so on.
+
+ TriggerToCheck is a struct to check all of properties in Trigger with
+ '==' operator. Introducing TriggerToCheck gives us following 2 benefits:
+
+ 1. Summarize checking Trigger logic in one place.
+ 2. XCode point out failure positions with using XCTAssertEqual.
+ */
 internal struct TriggerToCheck: Equatable, CustomStringConvertible {
 
     private let data: (
@@ -110,6 +123,8 @@ internal struct TriggerToCheck: Equatable, CustomStringConvertible {
 
 }
 
+// Command version of Checking received command.
+// The reason to create this, Please refer TriggerToCheck.
 internal struct CommandToCheck: Equatable, CustomStringConvertible {
 
     private let data: (
