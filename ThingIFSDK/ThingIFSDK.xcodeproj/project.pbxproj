@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		222E5D911E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222E5D901E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift */; };
 		224051F81D40D2360001BF4E /* LayoutPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051F71D40D2360001BF4E /* LayoutPosition.swift */; };
 		224051FA1D40D5C90001BF4E /* OnboardWithThingIDOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051F91D40D5C90001BF4E /* OnboardWithThingIDOptions.swift */; };
 		224051FC1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051FB1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift */; };
@@ -207,6 +208,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		222E5D901E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIGetTargetStateTests.swift; sourceTree = "<group>"; };
 		224051F71D40D2360001BF4E /* LayoutPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutPosition.swift; sourceTree = "<group>"; };
 		224051F91D40D5C90001BF4E /* OnboardWithThingIDOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardWithThingIDOptions.swift; sourceTree = "<group>"; };
 		224051FB1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardWithVendorThingIDOptions.swift; sourceTree = "<group>"; };
@@ -572,6 +574,7 @@
 				D547C2E41E9397F30002BC31 /* ThingIFAPIPushInstallationTests.swift */,
 				B6CF92F01E93852000F24D61 /* Utilities.swift */,
 				B65D21A91E949FFE00165A50 /* ThingIFAPICommandTests.swift */,
+				222E5D901E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift */,
 			);
 			path = ThingIFSDKLargeTests;
 			sourceTree = "<group>";
@@ -913,6 +916,7 @@
 				22CB84CA1E8CF9050089450E /* ThingIFAPIAggregateTests.swift in Sources */,
 				D547C2E51E9397F30002BC31 /* ThingIFAPIPushInstallationTests.swift in Sources */,
 				B6A55CD41E92233000AAC733 /* ThingIFAPIQueryGroupedTests.swift in Sources */,
+				222E5D911E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift in Sources */,
 				B6A55CD61E923BA200AAC733 /* ThingIFAPIScheduleTriggerTests.swift in Sources */,
 				22DD62EF1E8E3A1200B2507D /* XCTest+Equatable.swift in Sources */,
 				B65D21AA1E949FFE00165A50 /* ThingIFAPICommandTests.swift in Sources */,
