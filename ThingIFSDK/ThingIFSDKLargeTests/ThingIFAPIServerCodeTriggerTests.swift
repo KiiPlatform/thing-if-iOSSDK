@@ -23,8 +23,8 @@ class ThingIFAPIServerCodeTriggerTests: OnboardedTestsBase {
      Summary of testSuccess.
 
      === Aim ===
-     testSuccess checks APIs concerned with trigger for
-     command. This test checks following methods:
+     testSuccess checks APIs concerned with trigger for server
+     code. This test checks following methods:
 
      - ThingIFAPI.listTriggers
      - ThingIFAPI.getTrigger
@@ -80,7 +80,7 @@ class ThingIFAPIServerCodeTriggerTests: OnboardedTestsBase {
         // ThingIFAPI.postNewTrigger.
         var createdTriggers: Set<Trigger> = []
 
-        // post new comand trigger with StatePredicate
+        // post new server code trigger with StatePredicate
         let serverCode = ServerCode(
           "my_function",
           executorAccessToken: self.onboardedApi.target!.accessToken!,
@@ -118,7 +118,7 @@ class ThingIFAPIServerCodeTriggerTests: OnboardedTestsBase {
             }
         }
 
-        // post new comand trigger with SchedulePredicate
+        // post new server code trigger with SchedulePredicate
         let schedulePredicate = SchedulePredicate("1 * * * *")
         self.executeAsynchronous { expectation in
             self.onboardedApi.postNewTrigger(
@@ -148,7 +148,7 @@ class ThingIFAPIServerCodeTriggerTests: OnboardedTestsBase {
             }
         }
 
-        // post new comand trigger with ScheduleOncePredicate
+        // post new server code trigger with ScheduleOncePredicate
         let scheduleOncePredicate =
           ScheduleOncePredicate(Date(timeIntervalSinceNow: 3600))
         self.executeAsynchronous { expectation in
