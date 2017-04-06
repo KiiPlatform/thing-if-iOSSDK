@@ -30,14 +30,15 @@
 		22AFCCBD1E8A524500C4DB61 /* ThingIFAPIQueryUngroupedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AFCCBC1E8A524500C4DB61 /* ThingIFAPIQueryUngroupedTests.swift */; };
 		22C27B641E8B807D00AA2E0B /* ThingIFAPIQueryGroupedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C27B631E8B807D00AA2E0B /* ThingIFAPIQueryGroupedTests.swift */; };
 		22CB84CA1E8CF9050089450E /* ThingIFAPIAggregateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CB84C91E8CF9050089450E /* ThingIFAPIAggregateTests.swift */; };
-		22D6456C1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6456B1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift */; };
 		22D6456A1E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D645691E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift */; };
+		22D6456C1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6456B1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift */; };
 		22DC5E9B1E77B04100519807 /* ThingIFAPIAggregateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DC5E9A1E77B04100519807 /* ThingIFAPIAggregateTests.swift */; };
 		22DD30FF1E838D600043AA1A /* GatewayAPIListOnboardedEndNodesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DD30FE1E838D600043AA1A /* GatewayAPIListOnboardedEndNodesTests.swift */; };
 		22DD62EF1E8E3A1200B2507D /* XCTest+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD02B1E680D9C0066B4AD /* XCTest+Equatable.swift */; };
 		22DD62F11E8E3E1C00B2507D /* ThingIFAPI+LargeTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DD62F01E8E3E1C00B2507D /* ThingIFAPI+LargeTestUtils.swift */; };
 		22DD62F31E8E4CBF00B2507D /* ThingIFAPIQueryUngroupedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DD62F21E8E4CBF00B2507D /* ThingIFAPIQueryUngroupedTests.swift */; };
 		22E486341CC4E1C000269A1E /* GatewayAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E486331CC4E1C000269A1E /* GatewayAPI.swift */; };
+		22E618C21E9647EB001FE95D /* ThingIFAPIUpdateThingTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E618C11E9647EB001FE95D /* ThingIFAPIUpdateThingTypeTests.swift */; };
 		22EA81D81E4D83310069B0B8 /* TypedIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EA81D71E4D83310069B0B8 /* TypedIDTests.swift */; };
 		22EA81DA1E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EA81D91E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift */; };
 		22F915CC1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F915CB1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift */; };
@@ -235,13 +236,14 @@
 		22AFCCBC1E8A524500C4DB61 /* ThingIFAPIQueryUngroupedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIQueryUngroupedTests.swift; sourceTree = "<group>"; };
 		22C27B631E8B807D00AA2E0B /* ThingIFAPIQueryGroupedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIQueryGroupedTests.swift; sourceTree = "<group>"; };
 		22CB84C91E8CF9050089450E /* ThingIFAPIAggregateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIAggregateTests.swift; sourceTree = "<group>"; };
-		22D6456B1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIUpdateFirmwareVersionTests.swift; sourceTree = "<group>"; };
 		22D645691E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIVendorThingIDTests.swift; sourceTree = "<group>"; };
+		22D6456B1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIUpdateFirmwareVersionTests.swift; sourceTree = "<group>"; };
 		22DC5E9A1E77B04100519807 /* ThingIFAPIAggregateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIAggregateTests.swift; sourceTree = "<group>"; };
 		22DD30FE1E838D600043AA1A /* GatewayAPIListOnboardedEndNodesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPIListOnboardedEndNodesTests.swift; sourceTree = "<group>"; };
 		22DD62F01E8E3E1C00B2507D /* ThingIFAPI+LargeTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+LargeTestUtils.swift"; sourceTree = "<group>"; };
 		22DD62F21E8E4CBF00B2507D /* ThingIFAPIQueryUngroupedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIQueryUngroupedTests.swift; sourceTree = "<group>"; };
 		22E486331CC4E1C000269A1E /* GatewayAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPI.swift; sourceTree = "<group>"; };
+		22E618C11E9647EB001FE95D /* ThingIFAPIUpdateThingTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIUpdateThingTypeTests.swift; sourceTree = "<group>"; };
 		22EA81D71E4D83310069B0B8 /* TypedIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedIDTests.swift; sourceTree = "<group>"; };
 		22EA81D91E4DB1A70069B0B8 /* GroupedHistoryStatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupedHistoryStatesTests.swift; sourceTree = "<group>"; };
 		22F915CB1E8513730075AFA2 /* GatewayAPINotifyOnboardingCompletionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPINotifyOnboardingCompletionTests.swift; sourceTree = "<group>"; };
@@ -587,6 +589,7 @@
 				22D6456B1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift */,
 				22D645691E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift */,
 				B64B2B901E961D9C003BFEAC /* ThingIFAPIServerCodeTriggerTests.swift */,
+				22E618C11E9647EB001FE95D /* ThingIFAPIUpdateThingTypeTests.swift */,
 			);
 			path = ThingIFSDKLargeTests;
 			sourceTree = "<group>";
@@ -929,6 +932,7 @@
 				22CB84CA1E8CF9050089450E /* ThingIFAPIAggregateTests.swift in Sources */,
 				D547C2E51E9397F30002BC31 /* ThingIFAPIPushInstallationTests.swift in Sources */,
 				B6A55CD41E92233000AAC733 /* ThingIFAPIQueryGroupedTests.swift in Sources */,
+				22E618C21E9647EB001FE95D /* ThingIFAPIUpdateThingTypeTests.swift in Sources */,
 				22D6456C1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift in Sources */,
 				222E5D911E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift in Sources */,
 				22D6456A1E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift in Sources */,
