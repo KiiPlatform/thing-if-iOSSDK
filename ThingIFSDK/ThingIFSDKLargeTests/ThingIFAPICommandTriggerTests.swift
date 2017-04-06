@@ -370,21 +370,21 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
             self.onboardedApi.listTriggers(1) {
                 triggers, paginationKey, error in
 
-                { () in
-                    XCTAssertNil(error)
-                    XCTAssertNotNil(paginationKey)
-                    gotPaginationKey = paginationKey
-                    XCTAssertNotNil(triggers)
+                defer {
+                    expectation.fulfill()
+                }
 
-                    guard let triggers = triggers else {
-                        return
-                    }
-                    XCTAssertEqual(1, triggers.count)
-                    XCTAssertTrue(modifiedTriggers.contains(triggers[0]))
-                    gotTrigger = triggers[0]
-                }()
+                XCTAssertNil(error)
+                XCTAssertNotNil(paginationKey)
+                gotPaginationKey = paginationKey
+                XCTAssertNotNil(triggers)
 
-                expectation.fulfill()
+                guard let triggers = triggers else {
+                    return
+                }
+                XCTAssertEqual(1, triggers.count)
+                XCTAssertTrue(modifiedTriggers.contains(triggers[0]))
+                gotTrigger = triggers[0]
             }
         }
 
