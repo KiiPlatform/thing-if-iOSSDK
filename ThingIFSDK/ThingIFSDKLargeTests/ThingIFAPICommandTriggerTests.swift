@@ -61,13 +61,16 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
         // List empty triggers
         self.executeAsynchronous { expectation in
             self.onboardedApi.listTriggers { triggers, paginationKey, error in
+                defer {
+                    expectation.fulfill()
+                }
+
                 XCTAssertNil(error)
                 XCTAssertNil(paginationKey)
                 XCTAssertNotNil(triggers)
                 if let triggers = triggers {
                     XCTAssertEqual([], triggers)
                 }
-                expectation.fulfill()
             }
         }
 
@@ -96,6 +99,10 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
               TriggeredCommandForm(temperatureAliasActions),
               predicate: statePredicate) { trigger, error in
 
+                defer {
+                    expectation.fulfill()
+                }
+
                 XCTAssertNil(error)
                 XCTAssertEqual(
                   TriggerToCheck(
@@ -123,7 +130,6 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                     // catch it with this check.
                     XCTAssertTrue(createdTriggers.insert(trigger).inserted)
                 }
-                expectation.fulfill()
             }
         }
 
@@ -133,6 +139,10 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
             self.onboardedApi.postNewTrigger(
               TriggeredCommandForm(temperatureAliasActions),
               predicate: schedulePredicate) { trigger, error in
+
+                defer {
+                    expectation.fulfill()
+                }
 
                 XCTAssertNil(error)
                 XCTAssertEqual(
@@ -161,7 +171,6 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                     // catch it with this check.
                     XCTAssertTrue(createdTriggers.insert(trigger).inserted)
                 }
-                expectation.fulfill()
             }
         }
 
@@ -172,6 +181,10 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
             self.onboardedApi.postNewTrigger(
               TriggeredCommandForm(temperatureAliasActions),
               predicate: scheduleOncePredicate) { trigger, error in
+
+                defer {
+                    expectation.fulfill()
+                }
 
                 XCTAssertNil(error)
                 XCTAssertEqual(
@@ -200,20 +213,21 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                     // catch it with this check.
                     XCTAssertTrue(createdTriggers.insert(trigger).inserted)
                 }
-                expectation.fulfill()
             }
         }
 
         // List all triggers
         self.executeAsynchronous { expectation in
             self.onboardedApi.listTriggers { triggers, paginationKey, error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(error)
                 XCTAssertNil(paginationKey)
                 XCTAssertNotNil(triggers)
                 if let triggers = triggers {
                     XCTAssertEqual(createdTriggers, Set(triggers))
                 }
-                expectation.fulfill()
             }
         }
 
@@ -238,6 +252,10 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                 TriggeredCommandForm(humidityAliasActions),
               predicate: modifiedStatePredicate) { trigger, error in
 
+                defer {
+                    expectation.fulfill()
+                }
+
                 XCTAssertNil(error)
                 XCTAssertEqual(
                   TriggerToCheck(
@@ -261,7 +279,6 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                 if let trigger = trigger {
                     XCTAssertTrue(modifiedTriggers.insert(trigger).inserted)
                 }
-                expectation.fulfill()
             }
         }
 
@@ -273,6 +290,10 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
               triggeredCommandForm:
                 TriggeredCommandForm(humidityAliasActions),
               predicate: modifiedSchedulePredicate) { trigger, error in
+
+                defer {
+                    expectation.fulfill()
+                }
 
                 XCTAssertNil(error)
                 XCTAssertEqual(
@@ -297,7 +318,6 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                 if let trigger = trigger {
                     XCTAssertTrue(modifiedTriggers.insert(trigger).inserted)
                 }
-                expectation.fulfill()
             }
         }
 
@@ -310,6 +330,10 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
               triggeredCommandForm:
                 TriggeredCommandForm(humidityAliasActions),
               predicate: modifiedScheduleOncePredicate) { trigger, error in
+
+                defer {
+                    expectation.fulfill()
+                }
 
                 XCTAssertNil(error)
                 XCTAssertEqual(
@@ -334,20 +358,22 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                 if let trigger = trigger {
                     XCTAssertTrue(modifiedTriggers.insert(trigger).inserted)
                 }
-                expectation.fulfill()
             }
         }
 
         // List all modified triggers
         self.executeAsynchronous { expectation in
             self.onboardedApi.listTriggers { triggers, paginationKey, error in
+                defer {
+                    expectation.fulfill()
+                }
+
                 XCTAssertNil(error)
                 XCTAssertNil(paginationKey)
                 XCTAssertNotNil(triggers)
                 if let triggers = triggers {
                     XCTAssertEqual(modifiedTriggers, Set(triggers))
                 }
-                expectation.fulfill()
             }
         }
 
@@ -356,9 +382,12 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
             self.executeAsynchronous { expectation in
                 self.onboardedApi.getTrigger(
                   modifiedTrigger.triggerID) { trigger, error in
+                    defer {
+                        expectation.fulfill()
+                    }
+
                     XCTAssertNil(error)
                     XCTAssertEqual(modifiedTrigger, trigger)
-                    expectation.fulfill()
                 }
             }
         }
@@ -398,13 +427,16 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
             self.onboardedApi.listTriggers(
               3,
               paginationKey: paginationKey) { triggers, paginationKey, error in
+                defer {
+                    expectation.fulfill()
+                }
+
                 XCTAssertNil(error)
                 XCTAssertNil(paginationKey)
                 XCTAssertNotNil(triggers)
                 if let triggers = triggers {
                     XCTAssertEqual(modifiedTriggers, Set(triggers))
                 }
-                expectation.fulfill()
             }
         }
 
@@ -412,9 +444,11 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
         for triggerID in triggerIDs {
             self.executeAsynchronous { expectation in
                 self.onboardedApi.deleteTrigger(triggerID) { deleted, error in
+                    defer {
+                        expectation.fulfill()
+                    }
                     XCTAssertNil(error)
                     XCTAssertEqual(triggerID, deleted)
-                    expectation.fulfill()
                 }
             }
         }
@@ -424,6 +458,9 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
     func testFailToGetTrigger() {
         self.executeAsynchronous { expectation in
             self.onboardedApi.getTrigger("dummyID") { trigger, error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(trigger)
                 XCTAssertEqual(ThingIFError.errorResponse(
                                  required: ErrorResponse(
@@ -431,7 +468,6 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                                    errorCode: "TRIGGER_NOT_FOUND",
                                    errorMessage: "Trigger dummyID not found")),
                                error)
-                expectation.fulfill()
             }
         }
     }
@@ -439,6 +475,9 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
     func testFailToDeleteTrigger() {
         self.executeAsynchronous { expectation in
             self.onboardedApi.deleteTrigger("dummyID") { triggerID, error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertEqual("dummyID", triggerID)
                 XCTAssertEqual(ThingIFError.errorResponse(
                                  required: ErrorResponse(
@@ -446,7 +485,6 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                                    errorCode: "TRIGGER_NOT_FOUND",
                                    errorMessage: "Trigger dummyID not found")),
                                error)
-                expectation.fulfill()
             }
         }
     }
