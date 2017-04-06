@@ -18,16 +18,17 @@ struct NetworkObserver: OperationObserver {
     init() { }
     
     func operationDidStart(_ operation: Operation) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async(group: nil, qos: DispatchQoS.userInitiated, flags: .enforceQoS) { 
             // Increment the network indicator's "reference count"
             NetworkIndicatorController.sharedIndicatorController.networkActivityDidStart()
         }
+
     }
     
     func operation(_ operation: Operation, didProduceOperation newOperation: Foundation.Operation) { }
     
     func operationDidFinish(_ operation: Operation, errors: [NSError]) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async(group: nil, qos: DispatchQoS.userInitiated, flags: .enforceQoS) {
             // Decrement the network indicator's "reference count".
             NetworkIndicatorController.sharedIndicatorController.networkActivityDidEnd()
         }
@@ -102,12 +103,13 @@ class Timer {
 
     init(interval: TimeInterval, handler: @escaping ()->()) {
         let when = DispatchTime.now() + Double(Int64(interval * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-        
-        DispatchQueue.main.asyncAfter(deadline: when) { [weak self] in
+
+        DispatchQueue.main.asyncAfter(deadline: when, qos: .userInitiated, flags: DispatchWorkItemFlags.enforceQoS) { [weak self] in
             if self?.isCancelled == false {
                 handler()
             }
         }
+        
     }
     
     func cancel() {
