@@ -24,17 +24,21 @@ class ThingIFAPIGetTargetStateTests: OnboardedTestsBase
         self.executeAsynchronous { expectation in
 
             self.onboardedApi.getTargetState() { results, error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(error)
                 XCTAssertNotNil(results)
                 XCTAssertEqual(0, results!.count)
-
-                expectation.fulfill()
             }
         }
 
         self.executeAsynchronous { expectation in
 
             self.onboardedApi.getTargetState(self.ALIAS1) { result, error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(result)
                 XCTAssertEqual(
                     ThingIFError.errorResponse(
@@ -43,8 +47,6 @@ class ThingIFAPIGetTargetStateTests: OnboardedTestsBase
                             errorCode: "STATE_NOT_FOUND",
                             errorMessage: "Thing state not found")),
                     error)
-
-                expectation.fulfill()
             }
         }
     }
@@ -54,6 +56,9 @@ class ThingIFAPIGetTargetStateTests: OnboardedTestsBase
         let humState : [String : Any] = [ "currentHumidity" : 50 ]
 
         self.executeAsynchronous { expectation in
+            defer {
+                expectation.fulfill()
+            }
             self.onboardedApi.updateTargetStates(
                 [
                     self.ALIAS1 : airState,
@@ -62,12 +67,14 @@ class ThingIFAPIGetTargetStateTests: OnboardedTestsBase
             ) { error in
                 XCTAssertNil(error)
             }
-            expectation.fulfill()
         }
 
         self.executeAsynchronous { expectation in
 
             self.onboardedApi.getTargetState() { results, error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(error)
                 XCTAssertNotNil(results)
                 XCTAssertEqual(2, results!.count)
@@ -77,34 +84,34 @@ class ThingIFAPIGetTargetStateTests: OnboardedTestsBase
                 XCTAssertEqual(
                     humState as NSDictionary,
                     results![self.ALIAS2]! as NSDictionary)
-
-                expectation.fulfill()
             }
         }
 
         self.executeAsynchronous { expectation in
 
             self.onboardedApi.getTargetState(self.ALIAS1) { result, error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(error)
                 XCTAssertNotNil(result)
                 XCTAssertEqual(
                     airState as NSDictionary,
                     result! as NSDictionary)
-
-                expectation.fulfill()
             }
         }
 
         self.executeAsynchronous { expectation in
 
             self.onboardedApi.getTargetState(self.ALIAS2) { result, error in
+                defer {
+                    expectation.fulfill()
+                }
                 XCTAssertNil(error)
                 XCTAssertNotNil(result)
                 XCTAssertEqual(
                     humState as NSDictionary,
                     result! as NSDictionary)
-
-                expectation.fulfill()
             }
         }
     }
