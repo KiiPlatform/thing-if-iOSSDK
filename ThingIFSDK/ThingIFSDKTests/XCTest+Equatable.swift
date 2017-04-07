@@ -604,6 +604,31 @@ extension Trigger: Equatable, Hashable, ToJsonObject {
         retval["metadata"] = self.metadata
         return retval
     }
+
+    internal init(
+      _ trigger: Trigger,
+      triggerID: String? = nil,
+      targetID: TypedID? = nil,
+      enabled: Bool? = nil,
+      predicate: Predicate? = nil,
+      command: Command? = nil,
+      serverCode: ServerCode? = nil,
+      title: String? = nil,
+      triggerDescription: String? = nil,
+      metadata: Dictionary<String, Any>? = nil)
+    {
+        self.triggerID = triggerID ?? trigger.triggerID
+        self.targetID = targetID ?? trigger.targetID
+        self.enabled = enabled ?? trigger.enabled
+        self.predicate = predicate ?? trigger.predicate
+        self.command = command ?? trigger.command
+        self.serverCode = serverCode ?? trigger.serverCode
+        self.title = title ?? trigger.title
+        self.triggerDescription =
+          triggerDescription ?? trigger.triggerDescription
+        self.metadata = metadata ?? trigger.metadata
+    }
+
 }
 
 internal func == (left: Predicate, right: Predicate) -> Bool {

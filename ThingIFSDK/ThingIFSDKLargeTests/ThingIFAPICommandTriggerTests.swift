@@ -54,7 +54,8 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
      7. Get a trigger with ThingIFAPI.listTriggers using bestEffortLimit as 1.
      8. Get rest of triggers with ThingIFAPI.listTriggers using
         bestEffortLimit and paginationKey.
-     9. Delete all triggers with ThingIFAPI.deleteTrigger.
+     9. Enable and disable a trigger.
+     10. Delete all triggers with ThingIFAPI.deleteTrigger.
      */
     func testSuccess() {
 
@@ -437,6 +438,32 @@ class ThingIFAPICommandTriggerTests: OnboardedTestsBase {
                 if let triggers = triggers {
                     XCTAssertEqual(modifiedTriggers, Set(triggers))
                 }
+            }
+        }
+
+        // Disable trigger
+        let trigger = modifiedTriggers.first!
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.enableTrigger(trigger.triggerID, enable: false) {
+                received, error in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertEqual(Trigger(trigger, enabled: false), received)
+            }
+        }
+        // Enable trigger
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.enableTrigger(trigger.triggerID, enable: true) {
+                received, error in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertEqual(Trigger(trigger, enabled: true), received)
             }
         }
 
