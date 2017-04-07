@@ -413,4 +413,217 @@ class ThingIFAPIServerCodeTriggerTests: OnboardedTestsBase {
         }
     }
 
+    func testListTriggerServerCodeResults() {
+
+        var createdTriggerID: String?
+
+        // Create new server code trigger.
+        let serverCode = ServerCode(
+          "server_code_for_trigger",
+          executorAccessToken: self.onboardedApi.target!.accessToken!,
+          targetAppID: self.onboardedApi.appID,
+          parameters: ["arg1" : "passed_parameter"])
+        let statePredicate = StatePredicate(
+          Condition(
+            EqualsClauseInTrigger(ALIAS1, field: "power", boolValue: true)),
+          triggersWhen: .conditionTrue)
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.postNewTrigger(
+              serverCode, predicate: statePredicate) { trigger, error in
+
+                defer {
+                    expectation.fulfill()
+                }
+
+                XCTAssertNil(error)
+                XCTAssertEqual(
+                  TriggerToCheck(
+                    true,
+                    targetID: self.onboardedApi.target!.typedID,
+                    enabled: true,
+                    serverCode: serverCode,
+                    predicate: statePredicate),
+                  TriggerToCheck(trigger)
+                )
+                if let trigger = trigger {
+                    createdTriggerID = trigger.triggerID
+                }
+            }
+        }
+        XCTAssertNotNil(createdTriggerID)
+        guard let triggerID = createdTriggerID else {
+            // if fail to create trigger, stop test.
+            return
+        }
+
+        sleep(3)
+
+        //Update thing state to trigger a server code.
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.updateTargetState(
+              self.ALIAS1, state: ["power" : false]) { error in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+            }
+        }
+        sleep(3)
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.updateTargetState(
+              self.ALIAS1, state: ["power" : true]) { error in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+            }
+        }
+        sleep(3)
+
+        // Get server code result.
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.listTriggeredServerCodeResults(triggerID) {
+                resutls, paginationKey, error in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertNil(paginationKey)
+                XCTAssertNotNil(resutls)
+                if let resutls = resutls {
+                    XCTAssertEqual(
+                      [
+                        TriggeredServerCodeResultToCheck(
+                          true,
+                          endpoint: "server_code_for_trigger",
+                          returnedValue: 100)
+                      ],
+                      resutls.map { TriggeredServerCodeResultToCheck($0)! }
+                    )
+                }
+            }
+        }
+
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.deleteTrigger(triggerID) { deleted, error in
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertEqual(triggerID, deleted)
+            }
+        }
+    }
+
+    func testListTriggerServerCodeResultsWithError() {
+
+        var createdTriggerID: String?
+
+        // Create new server code trigger.
+        let serverCode = ServerCode(
+          "server_code_for_trigger_error",
+          executorAccessToken: self.onboardedApi.target!.accessToken!,
+          targetAppID: self.onboardedApi.appID,
+          parameters: ["arg1" : "passed_parameter"])
+        let statePredicate = StatePredicate(
+          Condition(
+            EqualsClauseInTrigger(ALIAS1, field: "power", boolValue: true)),
+          triggersWhen: .conditionTrue)
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.postNewTrigger(
+              serverCode, predicate: statePredicate) { trigger, error in
+
+                defer {
+                    expectation.fulfill()
+                }
+
+                XCTAssertNil(error)
+                XCTAssertEqual(
+                  TriggerToCheck(
+                    true,
+                    targetID: self.onboardedApi.target!.typedID,
+                    enabled: true,
+                    serverCode: serverCode,
+                    predicate: statePredicate),
+                  TriggerToCheck(trigger)
+                )
+                if let trigger = trigger {
+                    createdTriggerID = trigger.triggerID
+                }
+            }
+        }
+        XCTAssertNotNil(createdTriggerID)
+        guard let triggerID = createdTriggerID else {
+            // if fail to create trigger, stop test.
+            return
+        }
+
+        sleep(3)
+
+        //Update thing state to trigger a server code.
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.updateTargetState(
+              self.ALIAS1, state: ["power" : false]) { error in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+            }
+        }
+        sleep(3)
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.updateTargetState(
+              self.ALIAS1, state: ["power" : true]) { error in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+            }
+        }
+        sleep(3)
+
+        // Get server code result.
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.listTriggeredServerCodeResults(triggerID) {
+                resutls, paginationKey, error in
+
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertNil(paginationKey)
+                XCTAssertNotNil(resutls)
+                if let resutls = resutls {
+                    XCTAssertEqual(
+                      [
+                        TriggeredServerCodeResultToCheck(
+                          false,
+                          endpoint: "server_code_for_trigger_error",
+                          error: ServerError(
+                            "Error found while executing the developer-defined code",
+                            errorCode: "RUNTIME_ERROR",
+                            detailMessage: "reference is not defined")
+                        )
+                      ],
+                      resutls.map { TriggeredServerCodeResultToCheck($0)! }
+                    )
+                }
+            }
+        }
+
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.deleteTrigger(triggerID) { deleted, error in
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertEqual(triggerID, deleted)
+            }
+        }
+    }
 }

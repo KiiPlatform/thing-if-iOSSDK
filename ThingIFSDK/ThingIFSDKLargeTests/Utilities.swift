@@ -271,3 +271,100 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
         fatalError()
     }
 }
+
+/*
+ TriggeredServerCodeResult version of Checking received
+ TriggeredServerCodeResult. The reason to create this, Please refer
+ TriggerToCheck.
+
+ TriggeredServerCodeResultToCheck ignores executeAt field because of
+ following reasons:
+
+ 1. executeAt is server dependent, we can not know the value in advance.
+ 2. executeAt is not optional so we do not need to check nil.
+ */
+internal struct TriggeredServerCodeResultToCheck:
+  Equatable, CustomStringConvertible
+{
+    private let data: (
+      checker: (
+        succeeded: Bool,
+        endpoint: String?,
+        error: ServerError?,
+        returnedValue: Any?
+      )?,
+      checkee: TriggeredServerCodeResult?
+    )
+
+    init(
+      _ succeeded: Bool,
+      endpoint: String? = nil,
+      error: ServerError? = nil,
+      returnedValue: Any? = nil)
+    {
+        self.init((succeeded, endpoint, error, returnedValue), checkee: nil)
+    }
+
+    init?(_ result: TriggeredServerCodeResult?) {
+        guard let result = result else {
+            return nil
+        }
+        self.init(nil, checkee: result)
+    }
+
+    private init(
+      _ checker: (
+        succeeded: Bool,
+        endpoint: String?,
+        error: ServerError?,
+        returnedValue: Any?
+      )?,
+      checkee: TriggeredServerCodeResult?)
+    {
+        self.data = (checker, checkee)
+    }
+
+    public static func == (
+      left: TriggeredServerCodeResultToCheck,
+      right: TriggeredServerCodeResultToCheck) -> Bool
+    {
+        guard let checker = left.data.checker ?? right.data.checker,
+              let checkee = left.data.checkee ?? right.data.checkee else {
+            fatalError()
+        }
+
+        if checker.succeeded != checkee.succeeded {
+            return false
+        }
+        if checker.endpoint != checkee.endpoint {
+            return false
+        }
+        if checker.error != checkee.error {
+            return false
+        }
+        if !isSameAny(checker.returnedValue, checkee.returnedValue) {
+            return false
+        }
+        return true
+    }
+
+    public var description: String {
+        get {
+            if let checker = self.data.checker {
+                var retval: [String : Any] = ["succeeded" : checker.succeeded]
+                retval["endpoint"] = checker.endpoint
+                retval["error"] = checker.error
+                retval["returnedValue"] = checker.returnedValue
+                return retval.description
+            } else if let checkee = self.data.checkee {
+                var retval: [String : Any] = ["succeeded" : checkee.succeeded]
+                retval["endpoint"] = checkee.endpoint
+                retval["error"] = checkee.error
+                retval["returnedValue"] = checkee.returnedValue
+                return retval.description
+            }
+            fatalError()
+        }
+    }
+
+}

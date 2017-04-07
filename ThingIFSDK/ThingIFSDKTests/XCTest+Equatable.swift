@@ -201,7 +201,7 @@ extension AllClause: Equatable {
 
 }
 
-func isSameAny(_ left: Any?, _ right: Any?) -> Bool {
+internal func isSameAny(_ left: Any?, _ right: Any?) -> Bool {
     if left == nil && right == nil {
         return true
     } else if left == nil || right == nil {
