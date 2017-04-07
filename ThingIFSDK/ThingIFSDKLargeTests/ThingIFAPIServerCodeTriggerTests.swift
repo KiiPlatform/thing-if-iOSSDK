@@ -413,6 +413,26 @@ class ThingIFAPIServerCodeTriggerTests: OnboardedTestsBase {
         }
     }
 
+    /*
+     testListTriggerServerCodeResults and
+     testListTriggerServerCodeResultsWithError requires deployed
+     server code. We already deployed server code for these tests in
+     current application.
+
+     If you change application, you need to deploy server code before
+     execute these tests.
+
+     The server codes which we deploy are followings:
+
+     function server_code_for_trigger(params, context) {
+       return 100;
+     }
+
+     function server_code_for_trigger_error(params, context) {
+       reference.error = 100;
+       return 100;
+     }
+     */
     func testListTriggerServerCodeResults() {
 
         var createdTriggerID: String?
