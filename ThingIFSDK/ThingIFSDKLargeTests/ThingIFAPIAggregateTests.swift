@@ -19,6 +19,13 @@ class ThingIFAPIAggregateTests: OnboardedTestsBase
         super.tearDown()
     }
 
+    override class func defaultTestSuite() -> XCTestSuite { //TODO: This is temporary to mark crashed test, remove this later
+
+        let testSuite = XCTestSuite(name: NSStringFromClass(self))
+
+        return testSuite
+    }
+
     func testSuccessEmptyResults() {
         let timeRange = TimeRange(Date(timeIntervalSince1970: 1), to: Date())
         let query = GroupedHistoryStatesQuery(

@@ -19,6 +19,13 @@ class ThingIFAPIGetTargetStateTests: OnboardedTestsBase
         super.tearDown()
     }
 
+    override class func defaultTestSuite() -> XCTestSuite { //TODO: This is temporary to mark crashed test, remove this later
+
+        let testSuite = XCTestSuite(name: NSStringFromClass(self))
+
+        return testSuite
+    }
+
     func testSuccessEmptyResults() {
 
         self.executeAsynchronous { expectation in

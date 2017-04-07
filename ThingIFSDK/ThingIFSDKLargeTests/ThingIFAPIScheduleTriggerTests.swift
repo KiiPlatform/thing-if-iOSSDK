@@ -10,6 +10,13 @@ import XCTest
 @testable import ThingIFSDK
 
 class ThingIFAPIScheduleTriggerTests: OnboardedTestsBase {
+    override func setUp() {
+        super.setUp()
+    }
+
+    override func tearDown() {
+        super.tearDown()
+    }
 
     func testSuccess() {
 
