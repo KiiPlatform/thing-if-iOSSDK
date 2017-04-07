@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		222E5D911E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222E5D901E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift */; };
 		224051F81D40D2360001BF4E /* LayoutPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051F71D40D2360001BF4E /* LayoutPosition.swift */; };
 		224051FA1D40D5C90001BF4E /* OnboardWithThingIDOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051F91D40D5C90001BF4E /* OnboardWithThingIDOptions.swift */; };
 		224051FC1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224051FB1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift */; };
@@ -29,6 +30,8 @@
 		22AFCCBD1E8A524500C4DB61 /* ThingIFAPIQueryUngroupedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AFCCBC1E8A524500C4DB61 /* ThingIFAPIQueryUngroupedTests.swift */; };
 		22C27B641E8B807D00AA2E0B /* ThingIFAPIQueryGroupedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C27B631E8B807D00AA2E0B /* ThingIFAPIQueryGroupedTests.swift */; };
 		22CB84CA1E8CF9050089450E /* ThingIFAPIAggregateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CB84C91E8CF9050089450E /* ThingIFAPIAggregateTests.swift */; };
+		22D6456C1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6456B1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift */; };
+		22D6456A1E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D645691E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift */; };
 		22DC5E9B1E77B04100519807 /* ThingIFAPIAggregateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DC5E9A1E77B04100519807 /* ThingIFAPIAggregateTests.swift */; };
 		22DD30FF1E838D600043AA1A /* GatewayAPIListOnboardedEndNodesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22DD30FE1E838D600043AA1A /* GatewayAPIListOnboardedEndNodesTests.swift */; };
 		22DD62EF1E8E3A1200B2507D /* XCTest+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AFD02B1E680D9C0066B4AD /* XCTest+Equatable.swift */; };
@@ -89,6 +92,10 @@
 		B64550721E7A4BCD00D8FACF /* ActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64550711E7A4BCC00D8FACF /* ActionTests.swift */; };
 		B64550741E7A8D2800D8FACF /* ThingIFAPIGetCommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64550731E7A8D2800D8FACF /* ThingIFAPIGetCommandTests.swift */; };
 		B64550761E7BD1F100D8FACF /* ThingIFAPI+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64550751E7BD1F100D8FACF /* ThingIFAPI+Query.swift */; };
+		B64B2B911E961D9C003BFEAC /* ThingIFAPIServerCodeTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64B2B901E961D9C003BFEAC /* ThingIFAPIServerCodeTriggerTests.swift */; };
+		B65D21AA1E949FFE00165A50 /* ThingIFAPICommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D21A91E949FFE00165A50 /* ThingIFAPICommandTests.swift */; };
+		B65D21AB1E94B22200165A50 /* XCTest+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F0B1E4977C700DF2BF5 /* XCTest+Utils.swift */; };
+		B65D21AD1E94DB6A00165A50 /* ThingIFAPICommandTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D21AC1E94DB6A00165A50 /* ThingIFAPICommandTriggerTests.swift */; };
 		B66729351E724D7B007E3019 /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66729341E724D7B007E3019 /* Serializable.swift */; };
 		B66729371E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66729361E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift */; };
 		B66D60D91E80F93100D346B7 /* ThingIFAPI+ThingInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66D60D81E80F93100D346B7 /* ThingIFAPI+ThingInformation.swift */; };
@@ -205,6 +212,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		222E5D901E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIGetTargetStateTests.swift; sourceTree = "<group>"; };
 		224051F71D40D2360001BF4E /* LayoutPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutPosition.swift; sourceTree = "<group>"; };
 		224051F91D40D5C90001BF4E /* OnboardWithThingIDOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardWithThingIDOptions.swift; sourceTree = "<group>"; };
 		224051FB1D40DB4F0001BF4E /* OnboardWithVendorThingIDOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardWithVendorThingIDOptions.swift; sourceTree = "<group>"; };
@@ -227,6 +235,8 @@
 		22AFCCBC1E8A524500C4DB61 /* ThingIFAPIQueryUngroupedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIQueryUngroupedTests.swift; sourceTree = "<group>"; };
 		22C27B631E8B807D00AA2E0B /* ThingIFAPIQueryGroupedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIQueryGroupedTests.swift; sourceTree = "<group>"; };
 		22CB84C91E8CF9050089450E /* ThingIFAPIAggregateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIAggregateTests.swift; sourceTree = "<group>"; };
+		22D6456B1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIUpdateFirmwareVersionTests.swift; sourceTree = "<group>"; };
+		22D645691E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIVendorThingIDTests.swift; sourceTree = "<group>"; };
 		22DC5E9A1E77B04100519807 /* ThingIFAPIAggregateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIAggregateTests.swift; sourceTree = "<group>"; };
 		22DD30FE1E838D600043AA1A /* GatewayAPIListOnboardedEndNodesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GatewayAPIListOnboardedEndNodesTests.swift; sourceTree = "<group>"; };
 		22DD62F01E8E3E1C00B2507D /* ThingIFAPI+LargeTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+LargeTestUtils.swift"; sourceTree = "<group>"; };
@@ -288,6 +298,9 @@
 		B64550711E7A4BCC00D8FACF /* ActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionTests.swift; sourceTree = "<group>"; };
 		B64550731E7A8D2800D8FACF /* ThingIFAPIGetCommandTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIGetCommandTests.swift; sourceTree = "<group>"; };
 		B64550751E7BD1F100D8FACF /* ThingIFAPI+Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+Query.swift"; sourceTree = "<group>"; };
+		B64B2B901E961D9C003BFEAC /* ThingIFAPIServerCodeTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIServerCodeTriggerTests.swift; sourceTree = "<group>"; };
+		B65D21A91E949FFE00165A50 /* ThingIFAPICommandTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPICommandTests.swift; sourceTree = "<group>"; };
+		B65D21AC1E94DB6A00165A50 /* ThingIFAPICommandTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPICommandTriggerTests.swift; sourceTree = "<group>"; };
 		B66729341E724D7B007E3019 /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
 		B66729361E72A0BA007E3019 /* ThingIFAPIPersistenceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPersistenceTests.swift; sourceTree = "<group>"; };
 		B66D60D81E80F93100D346B7 /* ThingIFAPI+ThingInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+ThingInformation.swift"; sourceTree = "<group>"; };
@@ -568,6 +581,12 @@
 				D5E14E371E94998800205982 /* ThingIFAPIPushUnnstallationTests.swift */,
 				D547C2E41E9397F30002BC31 /* ThingIFAPIPushInstallationTests.swift */,
 				B6CF92F01E93852000F24D61 /* Utilities.swift */,
+				B65D21A91E949FFE00165A50 /* ThingIFAPICommandTests.swift */,
+				B65D21AC1E94DB6A00165A50 /* ThingIFAPICommandTriggerTests.swift */,
+				222E5D901E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift */,
+				22D6456B1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift */,
+				22D645691E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift */,
+				B64B2B901E961D9C003BFEAC /* ThingIFAPIServerCodeTriggerTests.swift */,
 			);
 			path = ThingIFSDKLargeTests;
 			sourceTree = "<group>";
@@ -902,6 +921,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B64B2B911E961D9C003BFEAC /* ThingIFAPIServerCodeTriggerTests.swift in Sources */,
 				22DD62F11E8E3E1C00B2507D /* ThingIFAPI+LargeTestUtils.swift in Sources */,
 				D5E14E381E94998800205982 /* ThingIFAPIPushUnnstallationTests.swift in Sources */,
 				B6A55CD21E8CDB6700AAC733 /* NotOnboardedYetTestsBase.swift in Sources */,
@@ -909,8 +929,14 @@
 				22CB84CA1E8CF9050089450E /* ThingIFAPIAggregateTests.swift in Sources */,
 				D547C2E51E9397F30002BC31 /* ThingIFAPIPushInstallationTests.swift in Sources */,
 				B6A55CD41E92233000AAC733 /* ThingIFAPIQueryGroupedTests.swift in Sources */,
+				22D6456C1E9627B000ED3A04 /* ThingIFAPIUpdateFirmwareVersionTests.swift in Sources */,
+				222E5D911E94E47600AF095A /* ThingIFAPIGetTargetStateTests.swift in Sources */,
+				22D6456A1E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift in Sources */,
 				B6A55CD61E923BA200AAC733 /* ThingIFAPIScheduleTriggerTests.swift in Sources */,
+				B65D21AD1E94DB6A00165A50 /* ThingIFAPICommandTriggerTests.swift in Sources */,
 				22DD62EF1E8E3A1200B2507D /* XCTest+Equatable.swift in Sources */,
+				B65D21AA1E949FFE00165A50 /* ThingIFAPICommandTests.swift in Sources */,
+				B65D21AB1E94B22200165A50 /* XCTest+Utils.swift in Sources */,
 				B6CF92F11E93852000F24D61 /* Utilities.swift in Sources */,
 				B6A55CD01E8CC56000AAC733 /* OnboardAPITests.swift in Sources */,
 				B6A55CCE1E8B995200AAC733 /* OnboardedTestsBase.swift in Sources */,

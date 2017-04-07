@@ -12,6 +12,20 @@ import XCTest
 
 extension XCTestCase {
 
+    func executeAsynchronous(
+      description: String = "Asynchronous test executing",
+      timeout: TimeInterval = 5.0,
+      file: StaticString = #file,
+      line: UInt = #line,
+      _ executing: @escaping (XCTestExpectation) -> Void) -> Void
+    {
+        let expectation = self.expectation(description: description)
+        executing(expectation)
+        self.waitForExpectations(timeout: timeout) {
+            XCTAssertNil($0, file: file, line: line)
+        }
+    }
+
     internal func makeRequestVerifier(
       file: StaticString = #file,
       line: UInt = #line,

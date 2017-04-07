@@ -36,14 +36,15 @@ class ThingIFAPIQueryGroupedTests: OnboardedTestsBase {
         // update first 4 states
         let start = Date()
         for (index, state) in airState1.enumerated() {
-            let expectation =
-              self.expectation(description: "updateState\(index)")
-            onboardedApi.updateTargetState(ALIAS1, state: state) {
-                (error) in
-                expectation.fulfill()
-            }
-            self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-                XCTAssertNil(error)
+            self.executeAsynchronous { expectation in
+                self.onboardedApi.updateTargetState(self.ALIAS1, state: state) {
+                    (error) in
+
+                    defer {
+                        expectation.fulfill()
+                    }
+                    XCTAssertNil(error)
+                }
             }
             sleep(1)
         }
@@ -53,62 +54,62 @@ class ThingIFAPIQueryGroupedTests: OnboardedTestsBase {
         // update second 4 states
         sleep(2)
         for (index, state) in airState2.enumerated() {
-            let expectation =
-              self.expectation(description: "updateState\(index)")
-            onboardedApi.updateTargetState(ALIAS1, state: state) {
-                (error) in
-                expectation.fulfill()
-            }
-            self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-                XCTAssertNil(error)
+            self.executeAsynchronous { expectation in
+                self.onboardedApi.updateTargetState(self.ALIAS1, state: state) {
+                    (error) in
+                    defer {
+                        expectation.fulfill()
+                    }
+                    XCTAssertNil(error)
+                }
             }
             sleep(1)
         }
         let end = Date()
 
-        let expectation1 =
-          self.expectation(description: "query with only time range ")
-        self.onboardedApi.query(
-          GroupedHistoryStatesQuery(
-            ALIAS1,
-            timeRange: TimeRange(start, to: end))) { states, error in
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.query(
+              GroupedHistoryStatesQuery(
+                self.ALIAS1,
+                timeRange: TimeRange(start, to: end))) { states, error in
 
-            XCTAssertNil(error)
-            XCTAssertGreaterThanOrEqual(states!.count, 2)
+                defer {
+                    expectation.fulfill()
+                }
 
-            var actualStates: [[String : Any]] = []
-            states!.forEach { actualStates += $0.objects.map { $0.state } }
-            XCTAssertEqual(
-              (airState1 + airState2) as NSArray,
-              actualStates as NSArray)
-            expectation1.fulfill()
+                XCTAssertNil(error)
+                XCTAssertGreaterThanOrEqual(states!.count, 2)
+
+                var actualStates: [[String : Any]] = []
+                states!.forEach { actualStates += $0.objects.map { $0.state } }
+                XCTAssertEqual(
+                  (airState1 + airState2) as NSArray,
+                  actualStates as NSArray)
+            }
         }
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            XCTAssertNil(error)
-        }
 
-        let expectation2 =
-          self.expectation(description: "query with clause")
-        self.onboardedApi.query(
-          GroupedHistoryStatesQuery(
-            ALIAS1,
-            timeRange: TimeRange(start, to: end),
-            clause: RangeClauseInQuery.greaterThanOrEqualTo(
-              "currentTemperature",
-              limit: 23))) { states, error in
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.query(
+              GroupedHistoryStatesQuery(
+                self.ALIAS1,
+                timeRange: TimeRange(start, to: end),
+                clause: RangeClauseInQuery.greaterThanOrEqualTo(
+                  "currentTemperature",
+                  limit: 23))) { states, error in
 
-            XCTAssertNil(error)
-            XCTAssertGreaterThanOrEqual(states!.count, 1)
+                defer {
+                    expectation.fulfill()
+                }
 
-            var actualStates: [[String : Any]] = []
-            states!.forEach { actualStates += $0.objects.map { $0.state } }
-            XCTAssertEqual(
-              airState1 as NSArray,
-              actualStates as NSArray)
-            expectation2.fulfill()
+                XCTAssertNil(error)
+                XCTAssertGreaterThanOrEqual(states!.count, 1)
+
+                var actualStates: [[String : Any]] = []
+                states!.forEach { actualStates += $0.objects.map { $0.state } }
+                XCTAssertEqual(
+                  airState1 as NSArray,
+                  actualStates as NSArray)
+            }
         }
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            XCTAssertNil(error)
-        }
-  }
+    }
 }

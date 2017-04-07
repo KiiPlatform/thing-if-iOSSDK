@@ -22,36 +22,34 @@ class ThingIFAPIPushInstallationTests: OnboardedTestsBase {
 
         let dummyDevice = NSUUID().uuidString.data(using: .ascii)!
 
-        let expectation = self.expectation(description: "testInstallPushNoDevelopmentFlagSuccess")
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.installPush(dummyDevice) {
+                installationID, error in
 
-        onboardedApi.installPush(dummyDevice) { (installationID, error) in
-            XCTAssertNil(error)
-            XCTAssertNotNil(installationID)
-            expectation.fulfill()
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertNotNil(installationID)
+            }
         }
-
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            XCTAssertNil(error)
-        }
-
     }
 
     func testInstallPushDevelopmentSuccess() {
 
         let dummyDevice = NSUUID().uuidString.data(using: .ascii)!
 
-        let expectation = self.expectation(description: "testInstallPushDevelopmentSuccess")
+        self.executeAsynchronous { expectation in
+            self.onboardedApi.installPush(dummyDevice, development: true) {
+                installationID, error in
 
-        onboardedApi.installPush(dummyDevice, development: true) { (installationID, error) in
-            XCTAssertNil(error)
-            XCTAssertNotNil(installationID)
-            expectation.fulfill()
+                defer {
+                    expectation.fulfill()
+                }
+                XCTAssertNil(error)
+                XCTAssertNotNil(installationID)
+            }
         }
-
-        self.waitForExpectations(timeout: TEST_TIMEOUT) { (error) -> Void in
-            XCTAssertNil(error)
-        }
-        
     }
-    
+
 }

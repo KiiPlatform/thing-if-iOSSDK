@@ -9,6 +9,19 @@
 import Foundation
 import ThingIFSDK
 
+/*
+ Struct to check received trigger.
+
+ In large tests, It is hard for us to use '==' of Trigger because we can
+ not know values of some properties which are received from server in
+ advance. For example, triggerID, created, modified and so on.
+
+ TriggerToCheck is a struct to check all of properties in Trigger with
+ '==' operator. Introducing TriggerToCheck gives us following 2 benefits:
+
+ 1. Summarize checking Trigger logic in one place.
+ 2. XCode point out failure positions with using XCTAssertEqual.
+ */
 internal struct TriggerToCheck: Equatable, CustomStringConvertible {
 
     private let data: (
@@ -110,6 +123,8 @@ internal struct TriggerToCheck: Equatable, CustomStringConvertible {
 
 }
 
+// Command version of Checking received command.
+// The reason to create this, Please refer TriggerToCheck.
 internal struct CommandToCheck: Equatable, CustomStringConvertible {
 
     private let data: (
@@ -122,7 +137,10 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
         hasCreated: Bool,
         hasModified: Bool,
         aliasActions: [AliasAction],
-        aliasActionResults: [AliasActionResult]
+        aliasActionResults: [AliasActionResult],
+        title: String?,
+        commandDescription: String?,
+        metadata: [String : Any]?
       )?,
       checkee: Command?
     )
@@ -136,7 +154,10 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
       hasCreated: Bool,
       hasModified: Bool,
       aliasActions: [AliasAction],
-      aliasActionResults: [AliasActionResult] = [])
+      aliasActionResults: [AliasActionResult] = [],
+      title: String? = nil,
+      commandDescription: String? = nil,
+      metadata: [String : Any]? = nil)
     {
         self.data = (
           (
@@ -148,7 +169,10 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
             hasCreated,
             hasModified,
             aliasActions,
-            aliasActionResults
+            aliasActionResults,
+            title,
+            commandDescription,
+            metadata
           ),
           nil
         )
@@ -197,6 +221,16 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
         if checker.aliasActionResults != checkee.aliasActionResults {
             return false
         }
+        if checker.title != checkee.title {
+            return false
+        }
+        if checker.commandDescription != checkee.commandDescription {
+            return false
+        }
+        if checker.metadata as NSDictionary?
+             != checkee.metadata as NSDictionary? {
+            return false
+        }
         return true
     }
 
@@ -213,6 +247,9 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
               "aliasActionResults" : checker.aliasActionResults
             ]
             retval["commandState"] = checker.commandState
+            retval["title"] = checker.title
+            retval["commandDescription"] = checker.commandDescription
+            retval["metadata"] = checker.metadata
             return retval.description
         } else if let checkee = self.data.checkee {
             var retval: [String : Any] = [
@@ -226,6 +263,9 @@ internal struct CommandToCheck: Equatable, CustomStringConvertible {
               "aliasActionResults" : checkee.aliasActionResults
             ]
             retval["commandState"] = checkee.commandState
+            retval["title"] = checkee.title
+            retval["commandDescription"] = checkee.commandDescription
+            retval["metadata"] = checkee.metadata
             return retval.description
         }
         fatalError()
