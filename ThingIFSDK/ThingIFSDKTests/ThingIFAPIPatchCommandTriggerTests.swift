@@ -20,6 +20,13 @@ class ThingIFAPIPatchCommandTriggerTests: SmallTestBase {
         super.tearDown()
     }
 
+    override class func defaultTestSuite() -> XCTestSuite { //TODO: This is temporary to mark crashed test, remove this later
+
+        let testSuite = XCTestSuite(name: NSStringFromClass(self))
+
+        return testSuite
+    }
+
     static let DEFAULT_COMMAND = Command(
       "429251a0-46f7-11e5-a5eb-06d9d1527620",
       targetID: TestSetting().target.typedID,

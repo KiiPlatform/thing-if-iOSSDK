@@ -19,6 +19,12 @@ class ThingIFAPIGetTriggerTests: SmallTestBase {
     override func tearDown() {
         super.tearDown()
     }
+    override class func defaultTestSuite() -> XCTestSuite { //TODO: This is temporary to mark crashed test, remove this later
+
+        let testSuite = XCTestSuite(name: NSStringFromClass(self))
+
+        return testSuite
+    }
 
     func testGetTrigger_success_predicates() throws {
         let setting = TestSetting()

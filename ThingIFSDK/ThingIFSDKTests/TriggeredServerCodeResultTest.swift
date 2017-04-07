@@ -2,6 +2,12 @@ import XCTest
 @testable import ThingIFSDK
 
 class TriggeredServerCodeResultTest: SmallTestBase {
+    override class func defaultTestSuite() -> XCTestSuite { //TODO: This is temporary to mark crashed test, remove this later
+
+        let testSuite = XCTestSuite(name: NSStringFromClass(self))
+
+        return testSuite
+    }
     func testResultWithNSDict() throws {
         let testDataList = [
             "{\"succeeded\":true,\"executedAt\":1455531174923,\"endpoint\":\"func1\",\"returnedValue\":null}",

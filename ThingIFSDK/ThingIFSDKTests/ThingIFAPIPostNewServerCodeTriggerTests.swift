@@ -20,6 +20,13 @@ class ThingIFAPIPostNewServerCodeTriggerTests: SmallTestBase {
         super.tearDown()
     }
 
+    override class func defaultTestSuite() -> XCTestSuite { //TODO: This is temporary to mark crashed test, remove this later
+
+        let testSuite = XCTestSuite(name: NSStringFromClass(self))
+
+        return testSuite
+    }
+
     struct TestCase {
         let serverCode: ServerCode
         let predicate: Predicate & ToJsonObject

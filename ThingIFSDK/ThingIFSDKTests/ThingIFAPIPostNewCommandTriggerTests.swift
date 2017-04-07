@@ -19,6 +19,12 @@ class ThingIFAPIPostNewCommandTriggerTests: SmallTestBase {
     override func tearDown() {
         super.tearDown()
     }
+    override class func defaultTestSuite() -> XCTestSuite { //TODO: This is temporary to mark crashed test, remove this later
+
+        let testSuite = XCTestSuite(name: NSStringFromClass(self))
+
+        return testSuite
+    }
 
     struct TestCase {
         let predicate: Predicate & ToJsonObject

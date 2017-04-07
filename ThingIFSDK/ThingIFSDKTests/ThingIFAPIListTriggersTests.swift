@@ -20,6 +20,13 @@ class ThingIFAPIListTriggersTests: SmallTestBase {
         super.tearDown()
     }
 
+    override class func defaultTestSuite() -> XCTestSuite { //TODO: This is temporary to mark crashed test, remove this later
+
+        let testSuite = XCTestSuite(name: NSStringFromClass(self))
+
+        return testSuite
+    }
+
     func testListTriggers_success_predicates() throws {
         let expectation =
           self.expectation(description: "testListTriggers_success_predicates")

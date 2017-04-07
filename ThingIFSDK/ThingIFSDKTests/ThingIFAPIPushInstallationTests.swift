@@ -18,6 +18,12 @@ class ThingIFAPIPushInstallationTests: SmallTestBase {
         super.setUp()
         setKiiLogLevel(.verbose)
     }
+    override class func defaultTestSuite() -> XCTestSuite { //TODO: This is temporary to mark crashed test, remove this later
+
+        let testSuite = XCTestSuite(name: NSStringFromClass(self))
+
+        return testSuite
+    }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.

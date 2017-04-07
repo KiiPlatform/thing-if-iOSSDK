@@ -20,6 +20,13 @@ class ThingIFAPIListCommandsTests: SmallTestBase {
         super.tearDown()
     }
 
+    override class func defaultTestSuite() -> XCTestSuite { //TODO: This is temporary to mark crashed test, remove this later
+
+        let testSuite = XCTestSuite(name: NSStringFromClass(self))
+
+        return testSuite
+    }
+
     struct TestCase {
         let target: Target
         let input: (paginationKey: String?, bestEffortLimit: Int?)
