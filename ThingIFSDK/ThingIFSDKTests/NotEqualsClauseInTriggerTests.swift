@@ -53,7 +53,10 @@ class NotEqualsClauseInTriggerTests: SmallTestBase {
             let actual = NotEqualsClauseInTrigger(input)
             let label = "label \(index)"
             XCTAssertEqual(expected.field, actual.equals.field, label)
-            assertEqualsAny(expected.value, actual.equals.value, label)
+            XCTAssertEqual(
+              AnyWrapper(expected.value),
+              AnyWrapper(actual.equals.value),
+              label)
             XCTAssertEqual(
               [
                 "type": "not",

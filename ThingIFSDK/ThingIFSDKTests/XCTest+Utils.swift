@@ -118,46 +118,4 @@ extension XCTestCase {
         }
     }
 
-    func assertEqualsAny(
-      _ expected:  Any?,
-      _ actual: Any?,
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        assertOnlyOneNil(expected, actual, message, file, line)
-        if expected == nil && actual == nil {
-            return
-        }
-
-        if expected is String && actual is String {
-            assertEqualsWrapper(
-              expected as! String,
-              actual as! String,
-              message,
-              file: file,
-              line: line)
-            return
-        } else if expected is Int && actual is Int {
-            assertEqualsWrapper(
-              expected as! Int,
-              actual as! Int,
-              message,
-              file: file,
-              line: line)
-            return
-        } else if expected is Bool && actual is Bool {
-            assertEqualsWrapper(
-              expected as! Bool,
-              actual as! Bool,
-              message,
-              file: file,
-              line: line)
-            return
-        } else {
-            fail(message, file, line)
-            return
-        }
-    }
-
 }

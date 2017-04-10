@@ -72,6 +72,22 @@ struct EndNodeWrapper: EquatableWrapper {
 
 }
 
+struct AnyWrapper: EquatableWrapper {
+
+    internal let item: Any
+
+    init?(_ item: Any?) {
+        guard let item = item else {
+            return nil
+        }
+        self.item = item
+    }
+
+    public static func == (left: AnyWrapper, right: AnyWrapper) -> Bool {
+        return isSameAny(left, right)
+    }
+}
+
 extension TimeRange: Equatable, ToJsonObject {
 
     public static func == (left: TimeRange, right: TimeRange) -> Bool {
