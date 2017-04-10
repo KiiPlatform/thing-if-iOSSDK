@@ -36,4 +36,4 @@ struct MutuallyExclusive<T>: OperationCondition {
 enum Alert { }
 
 /// A condition describing that the targeted operation may present an alert.
-typealias AlertPresentation = MutuallyExclusive<Alert>
+internal typealias AlertPresentation = MutuallyExclusive<Alert>
