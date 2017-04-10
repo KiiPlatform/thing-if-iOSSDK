@@ -46,33 +46,6 @@ extension XCTestCase {
         } as (URLRequest) -> Void
     }
 
-    internal func fail(
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        if (message == nil) {
-            XCTFail(file: file, line: line)
-        } else {
-            XCTFail(message!, file: file, line: line)
-        }
-    }
-
-    internal func assertOnlyOneNil(
-      _ expected: Any?,
-      _ actual: Any?,
-      _ message: String? = nil,
-      _ file: StaticString = #file,
-      _ line: UInt = #line)
-    {
-        if expected == nil && actual == nil {
-            return
-        } else if expected != nil && actual != nil {
-            return
-        }
-        fail(message, file, line)
-    }
-
     func assertEqualsWithAccuracyOrNil<T: FloatingPoint>(
       _ expected:  T?,
       _ actual: T?,
@@ -81,8 +54,14 @@ extension XCTestCase {
       _ file: StaticString = #file,
       _ line: UInt = #line)
     {
-        assertOnlyOneNil(expected, actual, message, file, line)
         if expected == nil && actual == nil {
+            return
+        } else if expected == nil || actual == nil {
+            if (message == nil) {
+                XCTFail(file: file, line: line)
+            } else {
+                XCTFail(message!, file: file, line: line)
+            }
             return
         }
 
