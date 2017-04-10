@@ -106,11 +106,11 @@ class CommandTests: SmallTestBase {
 
         XCTAssertEqual(
           [actionA, aliasActionsameAliasAsA],
-          actual.getAliasAction("alias"))
+          actual.getAliasActions("alias"))
         XCTAssertEqual(
           [actionDifferentAliasFromA],
-          actual.getAliasAction("different"))
-        XCTAssertEqual([], actual.getAliasAction("noalias"))
+          actual.getAliasActions("different"))
+        XCTAssertEqual([], actual.getAliasActions("noalias"))
     }
 
     func testGetActionResult() {
