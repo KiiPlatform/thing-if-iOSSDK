@@ -99,16 +99,13 @@ class TriggeredCommandFormTest: SmallTestBase {
             ]
           )
         ]
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let form = TriggeredCommandForm(aliasActions,
                                         metadata: metadata)
         XCTAssertNotNil(form)
         XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertNil(form.title)
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithTitleAndDescription() {
@@ -147,10 +144,7 @@ class TriggeredCommandFormTest: SmallTestBase {
             ]
           )
         ]
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let form = TriggeredCommandForm(aliasActions,
                                         title: "title",
                                         metadata: metadata)
@@ -158,7 +152,7 @@ class TriggeredCommandFormTest: SmallTestBase {
         XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.title, "title")
         XCTAssertNil(form.commandDescription)
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithDescriptionAndMetadata() {
@@ -174,10 +168,7 @@ class TriggeredCommandFormTest: SmallTestBase {
             ]
           )
         ]
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let form = TriggeredCommandForm(aliasActions,
                                         commandDescription: "description",
                                         metadata: metadata)
@@ -185,7 +176,7 @@ class TriggeredCommandFormTest: SmallTestBase {
         XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertNil(form.title)
         XCTAssertEqual(form.commandDescription, "description")
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithTargetID() {
@@ -275,10 +266,7 @@ class TriggeredCommandFormTest: SmallTestBase {
             ]
           )
         ]
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let targetID = TypedID(.thing, id: "id");
         let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
@@ -290,7 +278,7 @@ class TriggeredCommandFormTest: SmallTestBase {
         XCTAssertEqual(form.targetID, targetID)
         XCTAssertEqual(form.title, "title")
         XCTAssertEqual(form.commandDescription, "description")
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithTargetIDAndDescription() {
@@ -331,10 +319,7 @@ class TriggeredCommandFormTest: SmallTestBase {
             ]
           )
         ]
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let targetID = TypedID(.thing, id: "id");
         let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
@@ -344,7 +329,7 @@ class TriggeredCommandFormTest: SmallTestBase {
         XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.targetID, targetID)
         XCTAssertEqual(form.commandDescription, "description")
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
         XCTAssertNil(form.title)
     }
 
@@ -361,10 +346,7 @@ class TriggeredCommandFormTest: SmallTestBase {
             ]
           )
         ]
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let targetID = TypedID(.thing, id: "id");
         let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
@@ -372,7 +354,7 @@ class TriggeredCommandFormTest: SmallTestBase {
         XCTAssertNotNil(form)
         XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.targetID, targetID)
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
         XCTAssertNil(form.title)
         XCTAssertNil(form.commandDescription)
     }
@@ -390,10 +372,7 @@ class TriggeredCommandFormTest: SmallTestBase {
             ]
           )
         ]
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let targetID = TypedID(.thing, id: "id");
         let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
@@ -405,7 +384,7 @@ class TriggeredCommandFormTest: SmallTestBase {
         XCTAssertEqual(form.targetID, targetID);
         XCTAssertEqual(form.title, "title")
         XCTAssertEqual(form.commandDescription, "description")
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
 }

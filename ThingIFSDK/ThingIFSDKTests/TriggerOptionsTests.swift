@@ -39,16 +39,13 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithMetadata() {
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let form = TriggerOptions(metadata: metadata)
 
         XCTAssertNotNil(form)
         XCTAssertNil(form.title)
         XCTAssertNil(form.triggerDescription)
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithTitleAndDescription() {
@@ -62,44 +59,35 @@ class TriggerOptionsTests: SmallTestBase {
     }
 
     func testInitWithTitleAndMetadata() {
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let form = TriggerOptions("title",
                                   metadata: metadata)
 
         XCTAssertNotNil(form)
         XCTAssertEqual(form.title, "title")
         XCTAssertNil(form.triggerDescription)
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithDescriptionAndMetadata() {
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let form = TriggerOptions(triggerDescription: "description",
                                   metadata: metadata)
         XCTAssertNotNil(form)
         XCTAssertNil(form.title)
         XCTAssertEqual(form.triggerDescription, "description")
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithAllFields() {
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
-        ]
+        let metadata = ["key1" : "value1", "key2" : "value2"]
         let form = TriggerOptions("title",
                                   triggerDescription: "description",
                                   metadata: metadata)
         XCTAssertNotNil(form)
         XCTAssertEqual(form.title, "title")
         XCTAssertEqual(form.triggerDescription, "description")
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
 }

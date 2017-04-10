@@ -159,22 +159,5 @@ extension XCTestCase {
             return
         }
     }
-    
-    func verifyDict(_ expectedDict:Dictionary<String, Any>, actualDict: Dictionary<String, Any>?, errorMessage: String? = nil){
-        guard let actualDict2 = actualDict else {
-            XCTFail("actualDict must not be nil")
-            return
-        }
-
-        let s: String
-        if let message = errorMessage {
-            s = message + ", expected=" +
-              expectedDict.description + "actual" + actualDict2.description
-        } else {
-            s = "expected=" + expectedDict.description +
-              "actual" + actualDict2.description
-        }
-        XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqual(to: actualDict2), s)
-    }
 
 }
