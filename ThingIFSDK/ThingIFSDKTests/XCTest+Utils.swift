@@ -176,16 +176,5 @@ extension XCTestCase {
         }
         XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqual(to: actualDict2), s)
     }
-    
-    func verifyDict(_ expectedDict:Dictionary<String, Any>, actualData: Data){
-        
-        do{
-            let actualDict: NSDictionary = try JSONSerialization.jsonObject(with: actualData, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
-            let s = "\nexpected=" + expectedDict.description + "\nactual" + actualDict.description
-            XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqual(to: actualDict as! [AnyHashable: Any]), s)
-        }catch(_){
-            XCTFail()
-        }
-    }
 
 }
