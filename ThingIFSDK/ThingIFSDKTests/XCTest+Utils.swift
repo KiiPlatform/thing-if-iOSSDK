@@ -73,20 +73,6 @@ extension XCTestCase {
         fail(message, file, line)
     }
 
-    internal func assertEqualsWrapper<T : Equatable>(
-      _ expected: T,
-      _ actual: T,
-      _ message: String? = nil,
-      file: StaticString = #file,
-      line: UInt = #line)
-    {
-        if message == nil {
-            XCTAssertEqual(expected, actual, file: file, line: line)
-        } else {
-            XCTAssertEqual(expected, actual, message!, file: file, line: line)
-        }
-    }
-
     func assertEqualsWithAccuracyOrNil<T: FloatingPoint>(
       _ expected:  T?,
       _ actual: T?,
