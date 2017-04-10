@@ -87,7 +87,7 @@ public struct Command {
      - Parameter alias: Alias to get action.
      - Returns Array of `AliasAction`.
      */
-    public func getAliasAction(_ alias: String) -> [AliasAction] {
+    public func getAliasActions(_ alias: String) -> [AliasAction] {
         return self.aliasActions.filter { $0.alias == alias }
     }
 
