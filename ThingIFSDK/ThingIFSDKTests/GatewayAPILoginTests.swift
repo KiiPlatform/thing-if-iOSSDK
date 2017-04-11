@@ -222,10 +222,13 @@ class GatewayAPILoginTests: GatewayAPITestBase {
               ],
               request.allHTTPHeaderFields!)
             //verify body
-            let expectedBody: Dictionary<String, Any> = [
-              "username": username,
-              "password": password];
-            self.verifyDict(expectedBody, actualData: request.httpBody!)
+            let expectedBody = ["username": username, "password": password];
+            XCTAssertEqual(
+              expectedBody,
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as! [String : String])
         }
 
         // mock response

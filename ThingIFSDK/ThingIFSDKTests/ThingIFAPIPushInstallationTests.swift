@@ -51,7 +51,7 @@ class ThingIFAPIPushInstallationTests: SmallTestBase {
             let urlResponse = HTTPURLResponse(url: URL(string: "https://api-development-jp.internal.kii.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
             
             // verify request
-            let requestVerifier: ((URLRequest) -> Void) = {(request) in
+            let requestVerifier = makeRequestVerifier() {(request) in
                 XCTAssertEqual(request.httpMethod, "POST")
                 
                 //verify header
@@ -93,7 +93,7 @@ class ThingIFAPIPushInstallationTests: SmallTestBase {
         let expectation = self.expectation(description: "testPushInstallation_success")
         //iotSession = NSURLSession.self
         // verify request
-        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+        let requestVerifier = makeRequestVerifier() {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
             
             //verify header
@@ -103,7 +103,13 @@ class ThingIFAPIPushInstallationTests: SmallTestBase {
             }
             //verify request body
             let expectedBody: [String: Any] = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": false]
-            self.verifyDict(expectedBody, actualData: request.httpBody!)
+            XCTAssertEqual(
+              expectedBody as NSDictionary,
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary)
+
             XCTAssertEqual(request.url?.absoluteString, setting.app.baseURL + "/api/apps/50a62843/installations")
         }
         
@@ -142,7 +148,7 @@ class ThingIFAPIPushInstallationTests: SmallTestBase {
         let expectation = self.expectation(description: "testPushInstallation_http_404")
         //iotSession = NSURLSession.self
         // verify request
-        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+        let requestVerifier = makeRequestVerifier() {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
             
             //verify header
@@ -152,7 +158,13 @@ class ThingIFAPIPushInstallationTests: SmallTestBase {
             }
             //verify request body
             let expectedBody: [String: Any] = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": false]
-            self.verifyDict(expectedBody, actualData: request.httpBody!)
+            XCTAssertEqual(
+              expectedBody as NSDictionary,
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary)
+
         }
         
         let dict = ["errorCode":"USER_NOT_FOUND","message":"error message"]
@@ -203,7 +215,7 @@ class ThingIFAPIPushInstallationTests: SmallTestBase {
         let expectation = self.expectation(description: "testPushInstallation_http_400")
         //iotSession = NSURLSession.self
         // verify request
-        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+        let requestVerifier = makeRequestVerifier() {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
             
             //verify header
@@ -213,7 +225,13 @@ class ThingIFAPIPushInstallationTests: SmallTestBase {
             }
             //verify request body
             let expectedBody: [String: Any] = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": false]
-            self.verifyDict(expectedBody, actualData: request.httpBody!)
+            XCTAssertEqual(
+              expectedBody as NSDictionary,
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary)
+
         }
         
         let dict = ["errorCode":"INVALID_INPUT_DATA","message":"error message"]
@@ -264,7 +282,7 @@ class ThingIFAPIPushInstallationTests: SmallTestBase {
         let expectation = self.expectation(description: "testPushInstallation_http_401")
         //iotSession = NSURLSession.self
         // verify request
-        let requestVerifier: ((URLRequest) -> Void) = {(request) in
+        let requestVerifier = makeRequestVerifier() {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
             
             //verify header
@@ -274,7 +292,13 @@ class ThingIFAPIPushInstallationTests: SmallTestBase {
             }
             //verify request body
             let expectedBody: [String : Any] = ["installationRegistrationID": self.deviceTokenString, "deviceType": "IOS","development": false]
-            self.verifyDict(expectedBody, actualData: request.httpBody!)
+            XCTAssertEqual(
+              expectedBody as NSDictionary,
+              try JSONSerialization.jsonObject(
+                with: request.httpBody!,
+                options: JSONSerialization.ReadingOptions.allowFragments)
+                as? NSDictionary)
+
         }
         
         let dict = ["errorCode":"INVALID_INPUT_DATA","message":"error message"]

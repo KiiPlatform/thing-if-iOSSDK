@@ -9,7 +9,7 @@
 import Foundation
 @testable import ThingIFSDK
 
-public protocol EquatableWrapper: Equatable {
+public protocol EquatableWrapper: Equatable, CustomStringConvertible {
     associatedtype T
 
     var item: T { get }
@@ -21,6 +21,17 @@ extension EquatableWrapper where T: TargetThing {
         return left.item.typedID == right.item.typedID &&
           left.item.accessToken == right.item.accessToken &&
           left.item.vendorThingID == right.item.vendorThingID
+    }
+
+    public var description: String {
+        get {
+            var retval: [String : Any] = [
+              "typedID" : self.item.typedID,
+              "vendorThingID" : self.item.vendorThingID
+            ]
+            retval["accessToken"] = self.item.accessToken
+            return retval.description
+        }
     }
 }
 
@@ -70,6 +81,31 @@ struct EndNodeWrapper: EquatableWrapper {
         self.item = item!
     }
 
+}
+
+struct AnyWrapper: EquatableWrapper {
+
+    internal let item: Any
+
+    init?(_ item: Any?) {
+        guard let item = item else {
+            return nil
+        }
+        self.item = item
+    }
+
+    public static func == (left: AnyWrapper, right: AnyWrapper) -> Bool {
+        return isSameAny(left.item, right.item)
+    }
+
+    public var description: String {
+        get {
+            guard let item = self.item as? CustomStringConvertible else {
+                return "concrete type of this Any does not adopt CustomStringConvertible"
+            }
+            return item.description
+        }
+    }
 }
 
 extension TimeRange: Equatable, ToJsonObject {

@@ -48,7 +48,9 @@ class NotEqualsClauseInQueryTests: SmallTestBase {
         for (input, expected) in testCases {
             let actual = NotEqualsClauseInQuery(input)
             XCTAssertEqual(expected.field, actual.equals.field)
-            assertEqualsAny(expected.value, actual.equals.value)
+            XCTAssertEqual(
+              AnyWrapper(expected.value),
+              AnyWrapper(actual.equals.value))
             XCTAssertEqual(
               [
                 "type": "not",
