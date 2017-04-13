@@ -26,7 +26,16 @@ class GroupOperation: Operation {
     fileprivate let startingOperation = Foundation.BlockOperation(block: {})
     fileprivate let finishingOperation = Foundation.BlockOperation(block: {})
 
-    fileprivate var aggregatedErrors = [NSError]()
+    private var lockingQueue = DispatchQueue(label: "lockQueue")
+    private var safeAggregatedErrors = [NSError]()
+    fileprivate var aggregatedErrors : [NSError] {
+        get{
+            return lockingQueue.sync{  safeAggregatedErrors }
+        }
+        set(newAggregatedErrors){
+            lockingQueue.sync{  safeAggregatedErrors = newAggregatedErrors }
+        }
+    }
     
     convenience init(operations: Foundation.Operation...) {
         self.init(operations: operations)
