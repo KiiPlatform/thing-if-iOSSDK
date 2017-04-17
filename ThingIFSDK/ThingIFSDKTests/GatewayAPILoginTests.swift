@@ -130,8 +130,6 @@ class GatewayAPILoginTests: GatewayAPITestBase {
         let username = "dummyUser"
         let password = "dummyPass"
 
-        GatewayAPI.removeAllStoredInstances()
-
         // verify request
         sharedMockSession.requestVerifier = makeRequestVerifier() {(request) in
             XCTAssertEqual(request.httpMethod, "POST")
@@ -189,11 +187,6 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             XCTAssertNil(error)
         }
 
-        XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
-            XCTAssertEqual(
-              ThingIFError.apiNotStored(tag: nil),
-              error as? ThingIFError)
-        }
     }
 
     func test401Error() throws {
@@ -257,11 +250,6 @@ class GatewayAPILoginTests: GatewayAPITestBase {
             XCTAssertNil(error)
         }
 
-        XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
-            XCTAssertEqual(
-              ThingIFError.apiNotStored(tag: nil),
-              error as? ThingIFError)
-        }
     }
 
 }
