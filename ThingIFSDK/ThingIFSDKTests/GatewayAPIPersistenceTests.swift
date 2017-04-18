@@ -120,10 +120,10 @@ class GatewayAPIPersistenceTests: GatewayAPITestBase {
         }
 
         let baseKey = "GatewayAPI_INSTANCE"
-        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+        if var dict = iotUserDefaults.standard.dictionary(forKey: baseKey) {
             dict["GatewayAPI_VERSION"] = nil
-            UserDefaults.standard.set(dict, forKey: baseKey)
-            UserDefaults.standard.synchronize()
+            iotUserDefaults.standard.set(dict, forKey: baseKey)
+            iotUserDefaults.standard.synchronize()
         }
 
         XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
@@ -168,10 +168,10 @@ class GatewayAPIPersistenceTests: GatewayAPITestBase {
         }
 
         let baseKey = "GatewayAPI_INSTANCE"
-        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+        if var dict = iotUserDefaults.standard.dictionary(forKey: baseKey) {
             dict["GatewayAPI_VERSION"] = "0.0.0"
-            UserDefaults.standard.set(dict, forKey: baseKey)
-            UserDefaults.standard.synchronize()
+            iotUserDefaults.standard.set(dict, forKey: baseKey)
+            iotUserDefaults.standard.synchronize()
         }
 
         XCTAssertThrowsError(try GatewayAPI.loadWithStoredInstance()) { error in
@@ -216,10 +216,10 @@ class GatewayAPIPersistenceTests: GatewayAPITestBase {
         }
 
         let baseKey = "GatewayAPI_INSTANCE"
-        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+        if var dict = iotUserDefaults.standard.dictionary(forKey: baseKey) {
             dict["GatewayAPI_VERSION"] = "1000.0.0"
-            UserDefaults.standard.set(dict, forKey: baseKey)
-            UserDefaults.standard.synchronize()
+            iotUserDefaults.standard.set(dict, forKey: baseKey)
+            iotUserDefaults.standard.synchronize()
         }
 
         XCTAssertEqual(api, try GatewayAPI.loadWithStoredInstance())
