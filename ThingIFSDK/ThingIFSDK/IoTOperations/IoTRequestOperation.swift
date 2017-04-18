@@ -75,6 +75,7 @@ func buildNewRequest(_ method : HTTPMethod,urlString: String,requestHeaderDict: 
 
 //use for dependency injection
 var iotSession = URLSession.self
+var iotUserDefaults = UserDefaults.self
 
 class IoTRequestOperation<T>: GroupOperation {
     init(request : IotRequest<T>){
