@@ -17,16 +17,9 @@ open class GatewayAPI {
     }
 
     private var safeAccessToken: String?
-    private let lockQueue : DispatchQueue = DispatchQueue(label: "GatewayAPILock")
+
     /** Access token of this gate way */
-    open internal(set) var accessToken: String? {
-        get{
-            return lockQueue.sync{ safeAccessToken }
-        }
-        set(newAccessToken){
-            lockQueue.sync{ safeAccessToken = newAccessToken }
-        }
-    }
+    open internal(set) var accessToken: String?
 
     let operationQueue = OperationQueue()
 
