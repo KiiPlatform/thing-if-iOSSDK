@@ -10,12 +10,6 @@ import XCTest
 @testable import ThingIFSDK
 
 class GatewayAPILoadInstanceErrorTests: SmallTestBase {
-    override func setUp() {
-        super.setUp()
-        //removing all gateway stored instance
-        GatewayAPI.removeAllStoredInstances()
-
-    }
 
     func testLoadStoredInstanceError(){
 

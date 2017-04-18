@@ -4,6 +4,9 @@ import XCTest
 class SmallTestBase: XCTestCase {
     override func setUp() {
         super.setUp()
+        iotUserDefaults = FakeUserDefaults.self
+        //removing all gateway stored instance
+        GatewayAPI.removeAllStoredInstances()
         sharedMockSession.mockResponse = (data: nil, urlResponse: nil, error: nil)
         sharedMockSession.requestVerifier = {(request) in }
         sharedMockMultipleSession.responsePairs = [MockResponsePair]()

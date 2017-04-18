@@ -56,7 +56,7 @@ extension GatewayAPI {
         // try to get iotAPI from NSUserDefaults
 
         guard let dict =
-                UserDefaults.standard.dictionary(forKey: baseKey) else {
+                iotUserDefaults.standard.dictionary(forKey: baseKey) else {
             throw ThingIFError.apiNotStored(tag: tag)
         }
 
@@ -85,36 +85,36 @@ extension GatewayAPI {
         return retval
     }
 
-    /** Clear all saved instances in the NSUserDefaults.
+    /** Clear all saved instances in the NSiotUserDefaults.
      */
     open static func removeAllStoredInstances() -> Void
     {
-        UserDefaults.standard.removeObject(
+        iotUserDefaults.standard.removeObject(
           forKey: GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE)
-        UserDefaults.standard.synchronize()
+        iotUserDefaults.standard.synchronize()
     }
 
-    /** Remove saved specified instance in the NSUserDefaults.
+    /** Remove saved specified instance in the NSiotUserDefaults.
 
      - Parameter tag: tag of the GatewayAPI instance or nil for default tag
      */
     open static func removeStoredInstances(
       _ tag : String? = nil) -> Void
     {
-        if var dict = UserDefaults.standard.dictionary(
+        if var dict = iotUserDefaults.standard.dictionary(
              forKey: GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE) {
             dict[GatewayAPI.getStoredSDKVersionKey(tag)] = nil
             dict[GatewayAPI.getStoredInstanceKey(tag)] = nil
-            UserDefaults.standard.set(
+            iotUserDefaults.standard.set(
               dict,
               forKey: GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE)
-            UserDefaults.standard.synchronize()
+            iotUserDefaults.standard.synchronize()
         }
     }
 
     /** Save this instance
 
-     This method use NSUserDefaults. Should not use the key
+     This method use NSiotUserDefaults. Should not use the key
      "GatewayAPI_INSTANCE", this key is reserved.
      */
     open func saveInstance() -> Void {
@@ -127,16 +127,16 @@ extension GatewayAPI {
         // first. This may be bug of iOS. We should investigate the
         // reason in future.
         // https://github.com/KiiPlatform/thing-if-iOSSDK/issues/221
-        var dict = UserDefaults.standard.dictionary(
+        var dict = iotUserDefaults.standard.dictionary(
           forKey: GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE) ?? [ : ]
         dict[GatewayAPI.getStoredInstanceKey(self.tag)] = data
         dict[GatewayAPI.getStoredSDKVersionKey(self.tag)] =
           SDKVersion.sharedInstance.versionString
 
-        UserDefaults.standard.set(
+        iotUserDefaults.standard.set(
           dict,
           forKey: GatewayAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE)
-        UserDefaults.standard.synchronize()
+        iotUserDefaults.standard.synchronize()
     }
 
     private static func isLoadable(_ storedSDKVersion: String?) -> Bool {

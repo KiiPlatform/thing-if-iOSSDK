@@ -77,4 +77,71 @@ class MockMultipleSession: URLSession {
         return MockTask()
     }
 }
+let defaults = FakeUserDefaults()
+class FakeUserDefaults : UserDefaults {
+
+    typealias FakeDefaults = Dictionary<String, Any?>
+    var data : FakeDefaults
+
+    override init?(suiteName suitename: String?) {
+        data = FakeDefaults()
+        super.init(suiteName: "UnitTest")
+    }
+
+    override class var standard: UserDefaults { return defaults }
+
+    override func synchronize() -> Bool {
+        return true
+    }
+
+    override func object(forKey defaultName: String) -> Any? {
+        return data[defaultName] ?? nil
+    }
+
+    override func value(forKeyPath keyPath: String) -> Any? {
+        return data[keyPath] ?? nil
+    }
+    override func value(forKey key: String) -> Any? {
+        return data[key] ?? nil
+    }
+
+    override func bool(forKey defaultName: String) -> Bool {
+        return data[defaultName] as! Bool
+    }
+
+    override func integer(forKey defaultName: String) -> Int {
+        return data[defaultName] as! Int
+    }
+
+    override func float(forKey defaultName: String) -> Float {
+        return data[defaultName] as! Float
+    }
+
+    override func dictionary(forKey defaultName: String) -> [String : Any]? {
+        return data[defaultName] as? Dictionary
+    }
+
+    override func setValue(_ value: Any?, forKey key: String) {
+        data[key] = value
+    }
+    override func set(_ url: URL?, forKey defaultName: String) {
+        data[defaultName] = url
+    }
+    override func set(_ value: Any?, forKey defaultName: String) {
+        data[defaultName] = value
+    }
+
+    override func removeObject(forKey defaultName: String) {
+        data.removeValue(forKey: defaultName)
+    }
+
+}
+
+extension UserDefaults {
+
+    @objc class func transientDefaults() -> FakeUserDefaults {
+        return FakeUserDefaults(suiteName: "UnitTest")!
+    }
+
+}
 

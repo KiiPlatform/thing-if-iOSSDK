@@ -19,7 +19,7 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
     }
 
     func testSavedInstanceWithInit() throws {
-        let persistance = UserDefaults.standard
+        let persistance = iotUserDefaults.standard
         let baseKey = "ThingIFAPI_INSTANCE"
         let setting = TestSetting()
         let app = setting.app
@@ -316,7 +316,7 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
 
     func testInvalidSavedInstance() throws {
 
-        let persistance = UserDefaults.standard
+        let persistance = iotUserDefaults.standard
         let baseKey = "ThingIFAPI_INSTANCE"
         let versionKey = "ThingIFAPI_VERSION"
         let sdkVersion = SDKVersion.sharedInstance.versionString
@@ -407,10 +407,10 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
 
         let baseKey = "ThingIFAPI_INSTANCE"
         let versionKey = "ThingIFAPI_VERSION"
-        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+        if var dict = iotUserDefaults.standard.dictionary(forKey: baseKey) {
             dict[versionKey] = nil
-            UserDefaults.standard.set(dict, forKey: baseKey)
-            UserDefaults.standard.synchronize()
+            iotUserDefaults.standard.set(dict, forKey: baseKey)
+            iotUserDefaults.standard.synchronize()
         }
 
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance()) { error in
@@ -452,10 +452,10 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
 
         let baseKey = "ThingIFAPI_INSTANCE"
         let versionKey = "ThingIFAPI_VERSION" + "_\(tagName)"
-        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+        if var dict = iotUserDefaults.standard.dictionary(forKey: baseKey) {
             dict[versionKey] = "0.0.0"
-            UserDefaults.standard.set(dict, forKey: baseKey)
-            UserDefaults.standard.synchronize()
+            iotUserDefaults.standard.set(dict, forKey: baseKey)
+            iotUserDefaults.standard.synchronize()
         }
 
         XCTAssertThrowsError(try ThingIFAPI.loadWithStoredInstance(tagName)) {
@@ -497,10 +497,10 @@ class ThingIFAPIPersistenceTests: SmallTestBase {
 
         let baseKey = "ThingIFAPI_INSTANCE"
         let versionKey = "ThingIFAPI_VERSION"
-        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+        if var dict = iotUserDefaults.standard.dictionary(forKey: baseKey) {
             dict[versionKey] = "1000.0.0"
-            UserDefaults.standard.set(dict, forKey: baseKey)
-            UserDefaults.standard.synchronize()
+            iotUserDefaults.standard.set(dict, forKey: baseKey)
+            iotUserDefaults.standard.synchronize()
         }
 
         XCTAssertEqual(api, try ThingIFAPI.loadWithStoredInstance())

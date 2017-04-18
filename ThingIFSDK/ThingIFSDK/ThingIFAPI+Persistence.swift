@@ -55,7 +55,7 @@ extension ThingIFAPI {
 
         // try to get iotAPI from NSUserDefaults
         guard let dict =
-                UserDefaults.standard.dictionary(forKey: baseKey) else {
+                iotUserDefaults.standard.dictionary(forKey: baseKey) else {
             throw ThingIFError.apiNotStored(tag: tag)
         }
 
@@ -89,26 +89,26 @@ extension ThingIFAPI {
         self.saveToUserDefault()
     }
 
-    /** Clear all saved instances in the NSUserDefaults.
+    /** Clear all saved instances in the NSiotUserDefaults.
     */
     open static func removeAllStoredInstances() {
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
-        UserDefaults.standard.removeObject(forKey: baseKey)
-        UserDefaults.standard.synchronize()
+        iotUserDefaults.standard.removeObject(forKey: baseKey)
+        iotUserDefaults.standard.synchronize()
     }
 
-    /** Remove saved specified instance in the NSUserDefaults.
+    /** Remove saved specified instance in the NSiotUserDefaults.
     - Parameter tag: tag of the ThingIFAPI instance or nil for default tag
     */
     open static func removeStoredInstances(_ tag : String? = nil) -> Void {
         let baseKey = ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE
         let versionKey = ThingIFAPI.getStoredSDKVersionKey(tag)
         let key = ThingIFAPI.getStoredInstanceKey(tag)
-        if var dict = UserDefaults.standard.dictionary(forKey: baseKey) {
+        if var dict = iotUserDefaults.standard.dictionary(forKey: baseKey) {
             dict[versionKey] = nil
             dict[key] = nil
-            UserDefaults.standard.set(dict, forKey: baseKey)
-            UserDefaults.standard.synchronize()
+            iotUserDefaults.standard.set(dict, forKey: baseKey)
+            iotUserDefaults.standard.synchronize()
         }
     }
 
@@ -145,16 +145,16 @@ extension ThingIFAPI {
         // first. This may be bug of iOS. We should investigate the
         // reason in future.
         // https://github.com/KiiPlatform/thing-if-iOSSDK/issues/221
-        var dict = UserDefaults.standard.dictionary(
+        var dict = iotUserDefaults.standard.dictionary(
           forKey: ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE) ?? [ : ]
         dict[ThingIFAPI.getStoredInstanceKey(self.tag)] = data
         dict[ThingIFAPI.getStoredSDKVersionKey(self.tag)] =
           SDKVersion.sharedInstance.versionString
-        UserDefaults.standard.set(
+        iotUserDefaults.standard.set(
           dict,
           forKey: ThingIFAPI.SHARED_NSUSERDEFAULT_KEY_INSTANCE)
 
-        UserDefaults.standard.synchronize()
+        iotUserDefaults.standard.synchronize()
     }
 
     static func isLoadable(_ storedSDKVersion: String?) -> Bool {
