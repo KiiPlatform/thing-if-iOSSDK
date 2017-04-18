@@ -35,34 +35,16 @@ open class ThingIFAPI: Equatable {
     /** owner of target */
     open let owner: Owner
 
-    private let lockQueue : DispatchQueue = DispatchQueue(label: "ThingIFAPILock")
-    private var safeTarget: Target?
-    private var safeInstallationID: String?
 
     /** Get installationID if the push is already installed.
     null will be returned if the push installation has not been done.
 
     - Returns: Installation ID used in IoT Cloud.
     */
-    open internal(set) var installationID: String? {
-        get{
-            return lockQueue.sync{ safeInstallationID }
-        }
-        set(newInstallationID){
-            lockQueue.sync{ safeInstallationID = newInstallationID }
-        }
-    }
+    open internal(set) var installationID: String?
 
     /** target */
-    open internal(set) var target: Target? {
-        get{
-            return lockQueue.sync{ safeTarget }
-        }
-        set(newTarget){
-            lockQueue.sync{ safeTarget = newTarget }
-        }
-    }
-
+    open internal(set) var target: Target?
 
     /** Checks whether on boarding is done. */
     open var onboarded: Bool {
@@ -86,7 +68,7 @@ open class ThingIFAPI: Equatable {
     {
         self.app = app
         self.owner = owner
-        self.safeTarget = target
+        self.target = target
         self.tag = tag
     }
 
