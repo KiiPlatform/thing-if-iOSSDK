@@ -94,6 +94,7 @@
 		B64550741E7A8D2800D8FACF /* ThingIFAPIGetCommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64550731E7A8D2800D8FACF /* ThingIFAPIGetCommandTests.swift */; };
 		B64550761E7BD1F100D8FACF /* ThingIFAPI+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64550751E7BD1F100D8FACF /* ThingIFAPI+Query.swift */; };
 		B64B2B911E961D9C003BFEAC /* ThingIFAPIServerCodeTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64B2B901E961D9C003BFEAC /* ThingIFAPIServerCodeTriggerTests.swift */; };
+		B64E689C1EC06E490040D8A2 /* VariousTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64E689B1EC06E490040D8A2 /* VariousTests.swift */; };
 		B65D21AA1E949FFE00165A50 /* ThingIFAPICommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D21A91E949FFE00165A50 /* ThingIFAPICommandTests.swift */; };
 		B65D21AB1E94B22200165A50 /* XCTest+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F0B1E4977C700DF2BF5 /* XCTest+Utils.swift */; };
 		B65D21AD1E94DB6A00165A50 /* ThingIFAPICommandTriggerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65D21AC1E94DB6A00165A50 /* ThingIFAPICommandTriggerTests.swift */; };
@@ -301,6 +302,7 @@
 		B64550731E7A8D2800D8FACF /* ThingIFAPIGetCommandTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIGetCommandTests.swift; sourceTree = "<group>"; };
 		B64550751E7BD1F100D8FACF /* ThingIFAPI+Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+Query.swift"; sourceTree = "<group>"; };
 		B64B2B901E961D9C003BFEAC /* ThingIFAPIServerCodeTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIServerCodeTriggerTests.swift; sourceTree = "<group>"; };
+		B64E689B1EC06E490040D8A2 /* VariousTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariousTests.swift; sourceTree = "<group>"; };
 		B65D21A91E949FFE00165A50 /* ThingIFAPICommandTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPICommandTests.swift; sourceTree = "<group>"; };
 		B65D21AC1E94DB6A00165A50 /* ThingIFAPICommandTriggerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPICommandTriggerTests.swift; sourceTree = "<group>"; };
 		B66729341E724D7B007E3019 /* Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
@@ -590,6 +592,7 @@
 				22D645691E960B3E00ED3A04 /* ThingIFAPIVendorThingIDTests.swift */,
 				B64B2B901E961D9C003BFEAC /* ThingIFAPIServerCodeTriggerTests.swift */,
 				22E618C11E9647EB001FE95D /* ThingIFAPIUpdateThingTypeTests.swift */,
+				B64E689B1EC06E490040D8A2 /* VariousTests.swift */,
 			);
 			path = ThingIFSDKLargeTests;
 			sourceTree = "<group>";
@@ -939,6 +942,7 @@
 				B6A55CD61E923BA200AAC733 /* ThingIFAPIScheduleTriggerTests.swift in Sources */,
 				B65D21AD1E94DB6A00165A50 /* ThingIFAPICommandTriggerTests.swift in Sources */,
 				22DD62EF1E8E3A1200B2507D /* XCTest+Equatable.swift in Sources */,
+				B64E689C1EC06E490040D8A2 /* VariousTests.swift in Sources */,
 				B65D21AA1E949FFE00165A50 /* ThingIFAPICommandTests.swift in Sources */,
 				B65D21AB1E94B22200165A50 /* XCTest+Utils.swift in Sources */,
 				B6CF92F11E93852000F24D61 /* Utilities.swift in Sources */,
