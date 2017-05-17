@@ -370,7 +370,7 @@ extension TimeRangeClauseInQuery: ToJsonObject {
  If you want to get all history state, you can use this clause.
  */
 public struct AllClause: QueryClause {
-
+    public init() { }
 }
 
 extension AllClause: ToJsonObject {
