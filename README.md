@@ -58,7 +58,7 @@ github "KiiPlatform/thing-if-iOSSDK" >= 0.8
 
 ## CocoaPods or Carthage
 
-Using CocoaPods you can only integrate with released thing-if iOSSDK, and Carthage allow you to build other branch of this repository. 
+Using CocoaPods you can only integrate with released thing-if iOSSDK, and Carthage allow you to build other branch of this repository.
 
 # Sample Project
 
@@ -66,4 +66,4 @@ A sample project using thing-if iOSSDK can be found [here](https://github.com/Ki
 
 # License
 
-thing-if iOSSDK is released under the MIT license. See LICENSE for details.
+thing-if iOSSDK is released under the Apache 2.0 license. See LICENSE for details.
