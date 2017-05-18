@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
-  s.name             = "ThingIFSDK"
+  s.name             = "ThingIF"
   s.version          = "1.0.0"
   s.summary          = "Thing Interaction Framework"
 
   s.description      = <<-DESC
-                        Thing Interaction Framework for iOS
+                        Thing Interaction Framework for iOS uses trait
                        DESC
 
   s.homepage         = "http://www.kii.com"
