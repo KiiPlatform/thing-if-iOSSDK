@@ -9,7 +9,7 @@
 import Foundation
 
 /** Aggregation. */
-open class Aggregation: NSCoding {
+public struct Aggregation {
 
     /** Field types to count. */
     public enum FieldType: String {
@@ -21,7 +21,7 @@ open class Aggregation: NSCoding {
         case decimal = "DECIMAL"
 
         /** A type of a boolean field. */
-        case bool = "BOOL"
+        case bool = "BOOLEAN"
 
         /** A type of a object field. */
         case object = "OBJECT"
@@ -51,11 +51,11 @@ open class Aggregation: NSCoding {
     }
 
     /** Name of a target field. */
-    let field: String
+    public let field: String
     /** Field type. */
-    let fieldType: FieldType
+    public let fieldType: FieldType
     /** Function type. */
-    let function: FunctionType
+    public let function: FunctionType
 
 
     private init(
@@ -63,7 +63,9 @@ open class Aggregation: NSCoding {
       field: String,
       fieldType: FieldType)
     {
-        fatalError("TODO: implement me.")
+        self.function = function
+        self.field = field
+        self.fieldType = fieldType
     }
 
     /** Make aggregation.
@@ -92,7 +94,16 @@ open class Aggregation: NSCoding {
       field: String,
       fieldType: FieldType) throws -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        if function == .max || function == .sum || function == .min ||
+             function == .mean {
+            if fieldType != .integer && fieldType != .decimal {
+                throw ThingIFError.invalidArgument(
+                  message: function.rawValue + " can not use " +
+                    fieldType.rawValue)
+            }
+        }
+
+        return Aggregation(function, field: field, fieldType: fieldType)
     }
 
     /** Make aggregation.
@@ -105,7 +116,7 @@ open class Aggregation: NSCoding {
       _ field: String,
       fieldType: FieldType) -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        return try! makeAggregation(.count, field: field, fieldType: fieldType)
     }
 
     /** Make mean aggregation.
@@ -121,7 +132,7 @@ open class Aggregation: NSCoding {
       _ field: String,
       fieldType: FieldType) throws -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        return try makeAggregation(.mean, field: field, fieldType: fieldType)
     }
 
     /** Make max aggregation.
@@ -137,7 +148,7 @@ open class Aggregation: NSCoding {
       _ field: String,
       fieldType: FieldType) throws -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        return try makeAggregation(.max, field: field, fieldType: fieldType)
     }
 
     /** Make min aggregation.
@@ -153,7 +164,7 @@ open class Aggregation: NSCoding {
       _ field: String,
       fieldType: FieldType) throws -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        return try makeAggregation(.min, field: field, fieldType: fieldType)
     }
 
     /** Make sum aggregation.
@@ -169,15 +180,18 @@ open class Aggregation: NSCoding {
       _ field: String,
       fieldType: FieldType) throws -> Aggregation
     {
-        fatalError("TODO: implement me.")
+        return try makeAggregation(.sum, field: field, fieldType: fieldType)
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+}
 
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+extension Aggregation : ToJsonObject {
+    internal func makeJsonObject() -> [String : Any]{
+        return [
+            "type": self.function.rawValue.uppercased(),
+            "putAggregationInto": self.function.rawValue.lowercased(),
+            "field": self.field,
+            "fieldType": self.fieldType.rawValue
+        ]
     }
-
 }

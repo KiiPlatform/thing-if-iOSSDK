@@ -20,246 +20,159 @@ class CommandFormTests: SmallTestBase {
     }
 
     func testInitWithRequiredValue() {
-        let actions: [Dictionary<String, Any>] = [
-            [
-                "action1" :
-                [
-                    "arg1" : "value1",
-                    "arg2": "value2"
-                ]
-            ]
-        ];
-        let commandForm = CommandForm(schemaName: "name",
-                                      schemaVersion: 1,
-                                      actions: actions)
-        XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.schemaName, "name")
-        XCTAssertEqual(commandForm.schemaVersion, 1)
-        verifyArray(commandForm.actions, actual: actions)
+        let aliasActions = [
+          AliasAction(
+            "alias",
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
+          )
+        ]
+        let commandForm = CommandForm(aliasActions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertNil(commandForm.title)
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithTitle() {
-        let actions: [Dictionary<String, Any>] = [
-            [
-                "action1" :
-                [
-                    "arg1" : "value1",
-                    "arg2": "value2"
-                ]
-            ]
-        ];
-        let commandForm = CommandForm(schemaName: "name",
-                                      schemaVersion: 1,
-                                      actions: actions,
-                                      title: "title")
-        XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.schemaName, "name")
-        XCTAssertEqual(commandForm.schemaVersion, 1)
-        verifyArray(commandForm.actions, actual: actions)
+        let aliasActions = [
+          AliasAction(
+            "alias",
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
+          )
+        ]
+        let commandForm = CommandForm(aliasActions, title: "title")
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithCommandDescription() {
-        let actions: [Dictionary<String, Any>] = [
-            [
-                "action1" :
-                [
-                    "arg1" : "value1",
-                    "arg2": "value2"
-                ]
-            ]
-        ];
-        let commandForm = CommandForm(schemaName: "name",
-                                      schemaVersion: 1,
-                                      actions: actions,
+        let aliasActions = [
+          AliasAction(
+            "alias",
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
+          )
+        ]
+        let commandForm = CommandForm(aliasActions,
                                       commandDescription: "description")
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.schemaName, "name")
-        XCTAssertEqual(commandForm.schemaVersion, 1)
-        verifyArray(commandForm.actions, actual: actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithMetadata() {
-        let actions: [Dictionary<String, Any>] = [
-            [
-                "action1" :
-                [
-                    "arg1" : "value1",
-                    "arg2": "value2"
-                ]
-            ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias",
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
+          )
         ]
-        let commandForm = CommandForm(schemaName: "name",
-                                      schemaVersion: 1,
-                                      actions: actions,
+        let metadata = [ "key1" : "value1", "key2" : "value2" ]
+        let commandForm = CommandForm(aliasActions,
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.schemaName, "name")
-        XCTAssertEqual(commandForm.schemaVersion, 1)
-        verifyArray(commandForm.actions, actual: actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertNil(commandForm.title)
-        verifyDict(commandForm.metadata!, actualDict: metadata)
+        XCTAssertEqual(
+          commandForm.metadata as! [String : String],
+          metadata as [String : String])
     }
 
     func testInitWithTitleAndDescription() {
-        let actions: [Dictionary<String, Any>] = [
-            [
-                "action1" :
-                [
-                    "arg1" : "value1",
-                    "arg2": "value2"
-                ]
-            ]
-        ];
-        let commandForm = CommandForm(schemaName: "name",
-                                      schemaVersion: 1,
-                                      actions: actions,
+        let aliasActions = [
+          AliasAction(
+            "alias",
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
+          )
+        ]
+        let commandForm = CommandForm(aliasActions,
                                       title: "title",
                                       commandDescription: "description")
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.schemaName, "name")
-        XCTAssertEqual(commandForm.schemaVersion, 1)
-        verifyArray(commandForm.actions, actual: actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
         XCTAssertNil(commandForm.metadata)
     }
 
     func testInitWithTitleAndMetadata() {
-        let actions: [Dictionary<String, Any>] = [
-            [
-                "action1" :
-                [
-                    "arg1" : "value1",
-                    "arg2": "value2"
-                ]
-            ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias",
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
+          )
         ]
-        let commandForm = CommandForm(schemaName: "name",
-                                      schemaVersion: 1,
-                                      actions: actions,
+        let metadata: [String : Any] = [ "key1" : "value1", "key2" : "value2" ]
+        let commandForm = CommandForm(aliasActions,
                                       title: "title",
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.schemaName, "name")
-        XCTAssertEqual(commandForm.schemaVersion, 1)
-        verifyArray(commandForm.actions, actual: actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertNil(commandForm.commandDescription)
-        verifyDict(commandForm.metadata!, actualDict: metadata)
+        XCTAssertEqual(
+          commandForm.metadata as! [String : String],
+          metadata as! [String : String])
     }
 
     func testInitWithDescriptionAndMetadata() {
-        let actions: [Dictionary<String, Any>] = [
-            [
-                "action1" :
-                [
-                    "arg1" : "value1",
-                    "arg2": "value2"
-                ]
-            ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias",
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
+          )
         ]
-        let commandForm = CommandForm(schemaName: "name",
-                                      schemaVersion: 1,
-                                      actions: actions,
+        let metadata: [String : Any] = [ "key1" : "value1", "key2" : "value2" ]
+        let commandForm = CommandForm(aliasActions,
                                       commandDescription: "description",
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.schemaName, "name")
-        XCTAssertEqual(commandForm.schemaVersion, 1)
-        verifyArray(commandForm.actions, actual: actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertNil(commandForm.title)
         XCTAssertEqual(commandForm.commandDescription, "description")
-        verifyDict(commandForm.metadata!, actualDict: metadata)
+        XCTAssertEqual(
+          commandForm.metadata as! [String : String],
+          metadata as! [String : String])
     }
 
     func testInitWithAllFields() {
-        let actions: [Dictionary<String, Any>] = [
-            [
-                "action1" :
-                [
-                    "arg1" : "value1",
-                    "arg2": "value2"
-                ]
-            ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias",
+            actions: Action(
+              "action1",
+              value: ["arg1" : "value1", "arg2": "value2"])
+          )
         ]
-        let commandForm = CommandForm(schemaName: "name",
-                                      schemaVersion: 1,
-                                      actions: actions,
+        let metadata: [String : Any] = [ "key1" : "value1", "key2" : "value2" ]
+        let commandForm = CommandForm(aliasActions,
                                       title: "title",
                                       commandDescription: "description",
                                       metadata: metadata)
         XCTAssertNotNil(commandForm)
-        XCTAssertEqual(commandForm.schemaName, "name")
-        XCTAssertEqual(commandForm.schemaVersion, 1)
-        verifyArray(commandForm.actions, actual: actions)
+        XCTAssertEqual(commandForm.aliasActions, aliasActions)
         XCTAssertEqual(commandForm.title, "title")
         XCTAssertEqual(commandForm.commandDescription, "description")
-        verifyDict(commandForm.metadata!, actualDict: metadata)
-    }
-
-    func testNSCoding() {
-        let actions: [Dictionary<String, Any>] = [
-            [
-                "action1" :
-                [
-                    "arg1" : "value1",
-                    "arg2": "value2"
-                ]
-            ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
-        ]
-        let original = CommandForm(schemaName: "name",
-                                      schemaVersion: 1,
-                                      actions: actions,
-                                      title: "title",
-                                      commandDescription: "description",
-                                      metadata: metadata)
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-            NSKeyedArchiver(forWritingWith: data);
-        original.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-            NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized: CommandForm = CommandForm(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertNotNil(deserialized)
-        XCTAssertEqual(deserialized.schemaName, "name")
-        XCTAssertEqual(deserialized.schemaVersion, 1)
-        verifyArray(deserialized.actions, actual: actions)
-        XCTAssertEqual(deserialized.title, "title")
-        XCTAssertEqual(deserialized.commandDescription, "description")
-        verifyDict(deserialized.metadata!, actualDict: metadata)
+        XCTAssertEqual(
+          commandForm.metadata as! [String : String],
+          metadata as! [String : String])
     }
 
 }

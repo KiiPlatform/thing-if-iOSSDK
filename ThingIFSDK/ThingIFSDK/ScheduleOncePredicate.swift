@@ -3,15 +3,15 @@
 //  ThingIFSDK
 //
 //  Created by syahRiza on 5/10/16.
-//  Copyright © 2016 Kii. All rights reserved.
+//  Copyright (c) 2016 Kii. All rights reserved.
 //
 
 /** Class represents ScheduleOncePredicate. */
-open class ScheduleOncePredicate: Predicate {
+public struct ScheduleOncePredicate: Predicate {
     /** Specified schedule. */
-    open let scheduleAt: Date
+    public let scheduleAt: Date
 
-    open let eventSource: EventSource = EventSource.scheduleOnce
+    public let eventSource: EventSource = EventSource.scheduleOnce
 
     /** Instantiate new ScheduleOncePredicate.
 
@@ -21,26 +21,28 @@ open class ScheduleOncePredicate: Predicate {
         self.scheduleAt = scheduleAt
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        self.scheduleAt = aDecoder.decodeObject(forKey: "scheduleAt") as! Date
-    }
-
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.scheduleAt, forKey: "scheduleAt")
-    }
-
-    /** Get Json object of ScheduleOncePredicate instance
-
-     - Returns: Json object as an instance of NSDictionary
-     */
-    open func makeDictionary() -> [ String : Any ] {
-
-        let dateNumber = NSNumber(value: Int64(self.scheduleAt.timeIntervalSince1970 * 1000) as Int64)
-
-        return [
-          "eventSource": EventSource.scheduleOnce.rawValue,
-          "scheduleAt":dateNumber] as [ String : Any ]
-
-    }
 }
 
+extension ScheduleOncePredicate: FromJsonObject, ToJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let eventSource = jsonObject["eventSource"] as? String,
+              let scheduleAt = jsonObject["scheduleAt"] as? Int64 else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if eventSource != EventSource.scheduleOnce.rawValue {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(Date(timeIntervalSince1970InMillis: scheduleAt))
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [
+          "eventSource" : self.eventSource.rawValue,
+          "scheduleAt" : Int(self.scheduleAt.timeIntervalSince1970InMillis)
+        ]
+    }
+
+}

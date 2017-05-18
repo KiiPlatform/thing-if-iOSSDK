@@ -11,42 +11,46 @@ import XCTest
 private var sharedGatewayAPI : GatewayAPI!
 
 class GatewayAPITestBase: SmallTestBase {
-    let ACCESSTOKEN: String = "token-0000-1111-aaaa-bbbb"
+    internal let ACCESSTOKEN: String = "token-0000-1111-aaaa-bbbb"
 
-    func getLoggedInGatewayAPI() -> GatewayAPI {
+    func getLoggedInGatewayAPI(
+      _ file: StaticString = #file,
+      _ line: UInt = #line) throws -> GatewayAPI
+    {
 
         if sharedGatewayAPI == nil {
-            let expectation = self.expectation(description: "getLoggedInGatewayAPI")
+            let expectation = self.expectation(
+              description: "getLoggedInGatewayAPI")
             let setting = TestSetting()
 
-            do {
-                let dict = ["accessToken": ACCESSTOKEN]
-                let jsonData = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
-                let urlResponse = HTTPURLResponse(url: URL(string:setting.app.baseURL)!,
-                                                    statusCode: 200, httpVersion: nil, headerFields: nil)
+            sharedMockSession.mockResponse = (
+              try JSONSerialization.data(
+                withJSONObject: ["accessToken": ACCESSTOKEN],
+                options: .prettyPrinted),
+              HTTPURLResponse(
+                url: URL(string:setting.app.baseURL)!,
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: nil),
+              nil)
+            iotSession = MockSession.self
 
-                sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-                iotSession = MockSession.self
-            } catch(_) {
-                XCTFail("should not throw error")
-            }
-
-            let gatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
-            gatewayAPI.login("dummy", password: "dummy", completionHandler: { (error:ThingIFError?) -> Void in
-                XCTAssertNil(error)
+            let gatewayAPI = GatewayAPI(
+              setting.app,
+              gatewayAddress: URL(string: setting.app.baseURL)!)
+            gatewayAPI.login(
+              "dummy",
+              password: "dummy") { error -> Void in
+                XCTAssertNil(error, file: file, line: line)
                 expectation.fulfill()
-            })
-
-            self.waitForExpectations(timeout: 20.0) { (error) -> Void in
-                if error != nil {
-                    XCTFail("execution timeout")
-                }
             }
 
-            sharedGatewayAPI = gatewayAPI
-
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error, "execution timeout", file: file, line: line)
         }
-
-        return sharedGatewayAPI
+        sharedGatewayAPI = gatewayAPI
     }
+
+    return sharedGatewayAPI
+}
 }

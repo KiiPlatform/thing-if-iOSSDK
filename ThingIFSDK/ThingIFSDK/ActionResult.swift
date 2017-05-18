@@ -9,32 +9,59 @@
 import Foundation
 
 /** Result of an action. */
-open class ActionResult: NSCoding {
+public struct ActionResult {
 
     /** Action is succeeded or not. */
-    open let succeeded: Bool
+    public let succeeded: Bool
     /** Name of an action. */
-    open let actionName: String
+    public let actionName: String
     /** Data returned from thing. */
-    open let data: Any?
+    public let data: Any?
     /** Error message. */
-    open let errorMessage: String?
+    public let errorMessage: String?
 
-    internal init(
+    /** Initialize `ActionResult`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters succeeded: Action is succeeded or not
+     - Parameters actionName: Name of action.
+     - Parameters data: Data returned from thing.
+     - Parameters errorMessage: Error message.
+     */
+    public init(
       _ succeeded: Bool,
       actionName: String,
-      data: Any?,
-      errorMessage: String?)
+      data: Any? = nil,
+      errorMessage: String? = nil)
     {
-        fatalError("TODO: implement me.")
+        self.succeeded = succeeded
+        self.actionName = actionName
+        self.data = data
+        self.errorMessage = errorMessage
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+}
 
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+extension ActionResult: FromJsonObject {
 
+    internal init(_ jsonObject: [String : Any]) throws {
+        if jsonObject.count != 1 {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let actionName = jsonObject.keys.first,
+              let dict = jsonObject[actionName] as? [String : Any],
+              let succeeded = dict["succeeded"] as? Bool else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(
+          succeeded,
+          actionName: actionName,
+          data: dict["data"],
+          errorMessage: dict["errorMessage"] as? String)
+    }
 }

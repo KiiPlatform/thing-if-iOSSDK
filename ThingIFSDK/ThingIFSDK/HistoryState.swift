@@ -9,23 +9,39 @@
 import Foundation
 
 /** History of state. */
-open class HistoryState: NSCoding {
+public struct HistoryState {
 
     /** State of a target thing. */
-    open let state: [String : Any]
+    public let state: [String : Any]
     /** Creation time of a state. */
-    open let createdAt: Date
+    public let createdAt: Date
 
-    internal init(_ state: [String: Any], createdAt: Date) {
-        fatalError("TODO: implement me.")
+    /** Initialize `HistoryState`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters state: State of a target thing.
+     - Parameters createdAt: Creation time of a state.
+     */
+    public init(_ state: [String: Any], createdAt: Date) {
+        self.state = state
+        self.createdAt = createdAt
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+}
 
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+extension HistoryState : FromJsonObject {
+    internal init(_ jsonObject: [String : Any]) throws {
+        var state = jsonObject
+        guard let created = state["_created"] as? Int64 else {
+            throw ThingIFError.jsonParseError
+        }
 
+        state.removeValue(forKey: "_created")
+        self.init(
+            state,
+            createdAt: Date(timeIntervalSince1970InMillis: created))
+    }
 }

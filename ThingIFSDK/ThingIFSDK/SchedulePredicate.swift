@@ -9,11 +9,11 @@
 import Foundation
 
 /** Class represents SchedulePredicate. */
-open class SchedulePredicate: Predicate {
+public struct SchedulePredicate: Predicate {
     /** Specified schedule. (cron tab format) */
-    open let schedule: String
+    public let schedule: String
 
-    open let eventSource: EventSource = EventSource.schedule
+    public let eventSource: EventSource = EventSource.schedule
 
     /** Instantiate new SchedulePredicate.
 
@@ -23,22 +23,28 @@ open class SchedulePredicate: Predicate {
         self.schedule = schedule
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        self.schedule = aDecoder.decodeObject(forKey: "schedule") as! String;
+}
 
+extension SchedulePredicate: FromJsonObject, ToJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let eventSource = jsonObject["eventSource"] as? String,
+              let schedule = jsonObject["schedule"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if eventSource != EventSource.schedule.rawValue {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(schedule)
     }
 
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.schedule, forKey: "schedule");
-    }
-
-    /** Get Json object of SchedulePredicate instance
-
-     - Returns: Json object as an instance of NSDictionary
-     */
-    open func makeDictionary() -> [ String : Any ] {
+    public func makeJsonObject() -> [String : Any] {
         return [
-          "eventSource": EventSource.schedule.rawValue,
-          "schedule":self.schedule] as [ String : Any ]
+          "eventSource" : self.eventSource.rawValue,
+          "schedule" : self.schedule
+        ]
     }
+
 }

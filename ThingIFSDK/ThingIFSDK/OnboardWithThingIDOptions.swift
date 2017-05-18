@@ -10,8 +10,8 @@ import Foundation
 /** Optional parameters of
 `ThingIFAPI.onboardWith(thingID:thingPassword:options:completionHandler:)`.
 */
-open class OnboardWithThingIDOptions {
-    open let layoutPosition: LayoutPosition?
+public struct OnboardWithThingIDOptions {
+    public let layoutPosition: LayoutPosition?
 
     /** initializer.
 
@@ -19,5 +19,15 @@ open class OnboardWithThingIDOptions {
     */
     public init(_ position: LayoutPosition? = nil) {
         self.layoutPosition = position
+    }
+}
+
+extension OnboardWithThingIDOptions: ToJsonObject {
+
+    internal func makeJsonObject() -> [String : Any]{
+        if let layoutPosition = self.layoutPosition {
+            return [ "layoutPosition" : layoutPosition.rawValue ]
+        }
+        return [ : ]
     }
 }

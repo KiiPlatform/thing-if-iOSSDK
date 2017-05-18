@@ -9,23 +9,35 @@
 import Foundation
 
 /** Grouped history states. */
-open class GroupedHistoryStates: NSCoding {
+public struct GroupedHistoryStates {
 
     /** Time range of this states. */
-    open let timeRange: TimeRange
+    public let timeRange: TimeRange
     /** Result objects. */
-    open let objects: [HistoryState]
+    public let objects: [HistoryState]
 
-    internal init(_ timeRange: TimeRange, objects: [HistoryState]) {
-        fatalError("TODO: implement me.")
+    /** Initialize `GroupedHistoryStates`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters timeRange: Time range of this states.
+     - Parameters objects: Result objects.
+     */
+    public init(_ timeRange: TimeRange, objects: [HistoryState]) {
+        self.timeRange = timeRange
+        self.objects = objects
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+}
 
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+extension GroupedHistoryStates : FromJsonObject {
 
+    internal init(_ jsonObject: [String : Any]) throws {
+        self.init(
+            try TimeRange(jsonObject["range"] as! [String : Any]),
+            objects: try (jsonObject["objects"] as! [[String : Any]]).map {try HistoryState($0)}
+        )
+    }
 }

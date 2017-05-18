@@ -8,22 +8,45 @@
 
 import Foundation
 
-/** Base protocol for trigger clause classes. */
+internal func makeTriggerClause(
+  _ jsonObject: [String : Any]) throws -> TriggerClause
+{
+    guard let type = jsonObject["type"] as? String else {
+        throw ThingIFError.jsonParseError
+    }
+
+    switch type {
+    case "eq":
+        return try EqualsClauseInTrigger(jsonObject)
+    case "not":
+        return try NotEqualsClauseInTrigger(jsonObject)
+    case "range":
+        return try RangeClauseInTrigger(jsonObject)
+    case "and":
+        return try AndClauseInTrigger(jsonObject)
+    case "or":
+        return try OrClauseInTrigger(jsonObject)
+    default:
+        throw ThingIFError.jsonParseError
+    }
+}
+
+/** Base protocol for trigger clause structs. */
 public protocol TriggerClause: BaseClause {
 
 }
 
-/** Class represents Equals clause for trigger methods. */
-open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
+/** Struct represents Equals clause for trigger methods. */
+public struct EqualsClauseInTrigger: TriggerClause, BaseEquals {
 
     /** Alias of this clause. */
-    open let alias: String
+    public let alias: String
     /** Name of a field. */
-    open let field: String
+    public let field: String
     /** Value of a field. */
-    open let value: AnyObject
+    public let value: AnyObject
 
-    private init(_ alias: String, field: String, value: AnyObject) {
+    fileprivate init(_ alias: String, field: String, value: AnyObject) {
         self.alias = alias
         self.field = field
         self.value = value
@@ -34,7 +57,7 @@ open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter intValue: Left hand side value to be compared.
      */
-    public convenience init(_ alias: String, field: String, intValue: Int) {
+    public init(_ alias: String, field: String, intValue: Int) {
         self.init(alias, field: field, value: intValue as AnyObject)
     }
 
@@ -43,7 +66,7 @@ open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter stringValue: Left hand side value to be compared.
      */
-    public convenience init(
+    public init(
       _ alias: String,
       field: String,
       stringValue: String)
@@ -56,91 +79,130 @@ open class EqualsClauseInTrigger: TriggerClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter boolValue: Left hand side value to be compared.
      */
-    public convenience init(_ alias: String, field: String, boolValue: Bool) {
+    public init(_ alias: String, field: String, boolValue: Bool) {
         self.init(alias, field: field, value: boolValue as AnyObject)
     }
+}
+
+extension EqualsClauseInTrigger: ToJsonObject, FromJsonObject {
 
     /** Get Equals clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+    internal func makeJsonObject() -> [ String : Any ] {
+        return [
+          "type" : "eq",
+          "alias" : self.alias,
+          "field" : self.field,
+          "value" : self.value
+        ] as [String : Any]
     }
 
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let type = jsonObject["type"] as? String,
+              let alias = jsonObject["alias"] as? String,
+              let field = jsonObject["field"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
 
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        if jsonObject["value"] == nil {
+            throw ThingIFError.jsonParseError
+        }
+        if type != "eq" {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(alias, field: field, value: jsonObject["value"] as AnyObject)
     }
-
 }
 
-/** Class represents Not Equals clause for trigger methods.  */
-open class NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
+/** Struct represents Not Equals clause for trigger methods.  */
+public struct NotEqualsClauseInTrigger: TriggerClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInTrigger
 
     /** Contained Equals clause instance. */
-    open let equals: EqualsClauseInTrigger
+    public let equals: EqualsClauseInTrigger
 
     public init(_ equals: EqualsClauseInTrigger) {
         self.equals = equals
     }
+}
+
+extension NotEqualsClauseInTrigger: ToJsonObject, FromJsonObject {
 
     /** Get Not Equals clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+    internal func makeJsonObject() -> [ String : Any ] {
+        return [
+          "type" : "not",
+          "clause" : self.equals.makeJsonObject()
+        ] as [String : Any]
     }
 
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let type = jsonObject["type"] as? String,
+              let clause = jsonObject["clause"] as? [String : Any] else {
+            throw ThingIFError.jsonParseError
+        }
 
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        if type != "not" {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(try EqualsClauseInTrigger(clause))
     }
-
 }
 
-/** Class represents Range clause for trigger methods. */
-open class RangeClauseInTrigger: TriggerClause, BaseRange {
+/** Struct represents Range clause for trigger methods. */
+public struct RangeClauseInTrigger: TriggerClause, BaseRange {
+
+    private let lower: (limit: NSNumber, included: Bool)?
+    private let upper: (limit: NSNumber, included: Bool)?
 
     /** Alias of this clause. */
-    open let alias: String
+    public let alias: String
     /** Name of a field. */
-    open let field: String
-    /** Lower limit for an instance. */
-    open let lowerLimit: NSNumber?
-    /** Include or not lower limit. */
-    open let lowerIncluded: Bool?
-    /** Upper limit for an instance. */
-    open let upperLimit: NSNumber?
-    /** Include or not upper limit. */
-    open let upperIncluded: Bool?
+    public let field: String
 
-    private init(
+    /** Lower limit for an instance. */
+    public var lowerLimit: NSNumber? {
+        get {
+            return self.lower?.limit
+        }
+    }
+
+    /** Include or not lower limit. */
+    public var lowerIncluded: Bool? {
+        get {
+            return self.lower?.included
+        }
+    }
+
+    /** Upper limit for an instance. */
+    public var upperLimit: NSNumber? {
+        get {
+            return self.upper?.limit
+        }
+    }
+
+    /** Include or not upper limit. */
+    public var upperIncluded: Bool? {
+        get {
+            return self.upper?.included
+        }
+    }
+
+    fileprivate init(
       _ alias: String,
       field: String,
-      lowerLimit: NSNumber? = nil,
-      lowerIncluded: Bool? = nil,
-      upperLimit: NSNumber? = nil,
-      upperIncluded: Bool? = nil)
+      lower: (limit: NSNumber, included: Bool)? = nil,
+      upper: (limit: NSNumber, included: Bool)? = nil)
     {
         self.alias = alias
         self.field = field
-        self.lowerLimit = lowerLimit
-        self.lowerIncluded = lowerIncluded
-        self.upperLimit = upperLimit
-        self.upperIncluded = upperIncluded
+        self.lower = lower
+        self.upper = upper
     }
 
     /** Create Range clause for trigger having lower and upper limit.
@@ -159,7 +221,7 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
        included
      - Returns: An instance of `RangeClauseInTrigger`.
      */
-    open static func range(
+    public static func range(
       _ alias: String,
       field: String,
       lowerLimit: NSNumber,
@@ -167,7 +229,11 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
       upperLimit: NSNumber,
       upperIncluded: Bool) -> RangeClauseInTrigger
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInTrigger(
+          alias,
+          field: field,
+          lower: (lowerLimit, lowerIncluded),
+          upper: (upperLimit, upperIncluded))
     }
 
     /** Create Range clause for trigger which denotes greater than.
@@ -178,12 +244,15 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInTrigger`.
      */
-    open static func greaterThan(
+    public static func greaterThan(
       _ alias: String,
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInTrigger(
+          alias,
+          field: field,
+          lower: (limit, false))
     }
 
     /** Create Range clause for trigger which denotes greater than or
@@ -195,12 +264,15 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInTrigger`.
      */
-    open static func greaterThanOrEqualTo(
+    public static func greaterThanOrEqualTo(
       _ alias: String,
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInTrigger(
+          alias,
+          field: field,
+          lower: (limit, true))
     }
 
     /** Create Range clause for trigger which denotes less than.
@@ -211,12 +283,15 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInTrigger`.
      */
-    open static func lessThan(
+    public static func lessThan(
       _ alias: String,
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInTrigger(
+          alias,
+          field: field,
+          upper: (limit, false))
     }
 
     /** Create Range clause for trigger which denotes less than or
@@ -227,41 +302,76 @@ open class RangeClauseInTrigger: TriggerClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInTrigger`.
      */
-    open static func lessThanOrEqualTo(
+    public static func lessThanOrEqualTo(
       _ alias: String,
        field: String,
       limit: NSNumber) -> RangeClauseInTrigger
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInTrigger(
+          alias,
+          field: field,
+          upper: (limit, true))
     }
+}
+
+extension RangeClauseInTrigger: ToJsonObject, FromJsonObject {
 
     /** Get Range clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+    internal func makeJsonObject() -> [ String : Any ] {
+        var retval: [String : Any] = [
+          "type": "range",
+          "alias": alias,
+          "field": self.field
+        ]
+        retval["upperLimit"] = self.upperLimit
+        retval["upperIncluded"] = self.upperIncluded
+        retval["lowerLimit"] = self.lowerLimit
+        retval["lowerIncluded"] = self.lowerIncluded
+        return retval
     }
 
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let type = jsonObject["type"] as? String,
+              let alias = jsonObject["alias"] as? String,
+              let field = jsonObject["field"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
 
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+        if type != "range" {
+            throw ThingIFError.jsonParseError
+        }
+
+        let upper: (limit: NSNumber, included: Bool)?
+        if let upperLimit = jsonObject["upperLimit"] as? NSNumber,
+           let upperIncluded = jsonObject["upperIncluded"] as? Bool {
+            upper = (upperLimit, upperIncluded)
+        } else {
+            upper = nil
+        }
+        let lower: (limit: NSNumber, included: Bool)?
+        if let lowerLimit = jsonObject["lowerLimit"] as? NSNumber,
+           let lowerIncluded = jsonObject["lowerIncluded"] as? Bool {
+            lower = (lowerLimit, lowerIncluded)
+        } else {
+            lower = nil
+        }
+
+        if upper == nil && lower == nil {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(alias, field: field, lower: lower, upper: upper)
     }
 
 }
 
-
-/** Class represents And clause for trigger methods. */
-open class AndClauseInTrigger: TriggerClause, BaseAnd {
-    public typealias ClausesType = TriggerClause
+/** Struct represents And clause for trigger methods. */
+public struct AndClauseInTrigger: TriggerClause, BaseAnd {
 
     /** Clauses conjuncted with And. */
-    open internal(set) var clauses: [TriggerClause]
+    public internal(set) var clauses: [TriggerClause]
 
     /** Initialize with clauses array.
 
@@ -275,44 +385,52 @@ open class AndClauseInTrigger: TriggerClause, BaseAnd {
 
      - Parameter clauses: Clause array for And clauses
      */
-    public convenience init(_ clause: TriggerClause...) {
+    public init(_ clause: TriggerClause...) {
         self.init(clause)
-    }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
     }
 
     /** Add a clause to And clauses.
 
      - Parameter clause: Clause to be added to and clauses.
      */
-    open func add(_ clause: TriggerClause) -> Self {
-        fatalError("TODO: implement me.")
+    public mutating func add(_ clause: TriggerClause) -> Void {
+        self.clauses.append(clause)
     }
+}
+
+extension AndClauseInTrigger: ToJsonObject, FromJsonObject {
 
     /** Get And clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+    internal func makeJsonObject() -> [ String : Any ] {
+        return [
+          "type": "and",
+          "clauses":
+            self.clauses.map {($0 as! ToJsonObject).makeJsonObject()}
+        ] as [String : Any]
+    }
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let type = jsonObject["type"] as? String,
+              let clauses = jsonObject["clauses"] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if type != "and" {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(try clauses.map { try makeTriggerClause($0) })
     }
 
 }
 
-/** Class represents Or clause for trigger methods. */
-open class OrClauseInTrigger: TriggerClause, BaseOr {
-    public typealias ClausesType = TriggerClause
+/** Struct represents Or clause for trigger methods. */
+public struct OrClauseInTrigger: TriggerClause, BaseOr {
 
     /** Clauses conjuncted with Or. */
-    open internal(set) var clauses: [TriggerClause]
+    public internal(set) var clauses: [TriggerClause]
 
     /** Initialize with clauses array.
 
@@ -326,34 +444,43 @@ open class OrClauseInTrigger: TriggerClause, BaseOr {
 
      - Parameter clauses: Clause array for Or clauses
      */
-    public convenience init(_ clause: TriggerClause...) {
+    public init(_ clause: TriggerClause...) {
         self.init(clause)
-    }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
     }
 
     /** Add a clause to Or clauses.
 
      - Parameter clause: Clause to be added to or clauses.
      */
-    open func add(_ clause: TriggerClause) -> Self {
-        fatalError("TODO: implement me.")
+    public mutating func add(_ clause: TriggerClause) -> Void {
+        self.clauses.append(clause)
     }
+}
+
+extension OrClauseInTrigger: ToJsonObject, FromJsonObject {
 
     /** Get Or clause for trigger as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+    internal func makeJsonObject() -> [ String : Any ] {
+        return [
+          "type": "or",
+          "clauses":
+            self.clauses.map {($0 as! ToJsonObject).makeJsonObject()}
+        ] as [String : Any]
+    }
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let type = jsonObject["type"] as? String,
+              let clauses = jsonObject["clauses"] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if type != "or" {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(try clauses.map { try makeTriggerClause($0) })
     }
 
 }

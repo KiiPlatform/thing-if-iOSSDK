@@ -8,14 +8,14 @@
 
 import Foundation
 
-extension NSNumber {
-    public func isBool() -> Bool {
+internal extension NSNumber {
+    internal func isBool() -> Bool {
         let boolID = CFBooleanGetTypeID() // the type ID of CFBoolean
         let numID = CFGetTypeID(self) // the type ID of num
         return numID == boolID
     }
 
-    public func isDouble() -> Bool{
+    internal func isDouble() -> Bool{
         let numberType = CFNumberGetType(self)
         if numberType == CFNumberType.float64Type {
             return true
@@ -24,7 +24,7 @@ extension NSNumber {
         }
     }
 
-    public func isInt() -> Bool{
+    internal func isInt() -> Bool{
         let numberType = CFNumberGetType(self)
         if numberType == CFNumberType.sInt64Type ||
             numberType == CFNumberType.sInt16Type ||

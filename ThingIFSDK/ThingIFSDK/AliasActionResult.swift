@@ -9,22 +9,45 @@
 import Foundation
 
 /** Result of action for an alias. */
-open class AliasActionResult: NSCoding {
+public struct AliasActionResult {
 
     /** Name of an alias. */
-    open let alias: String
+    public let alias: String
     /** Results of actions for an alias. */
-    open let results: [ActionResult]
+    public let results: [ActionResult]
 
-    internal init(_ alias: String, results: [ActionResult]) {
-        fatalError("TODO: implement me.")
+    /** Initialize `AliasActionResult`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters alias: Name of an alias.
+     - Parameters results: Results of actions for an alias.
+     */
+    public init(_ alias: String, results: [ActionResult]) {
+        self.alias = alias
+        self.results = results
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+    internal init(_ alias: String, results: ActionResult...) {
+        self.init(alias, results: results)
     }
 
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+}
+
+extension AliasActionResult: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        if jsonObject.count != 1 {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let alias = jsonObject.keys.first,
+              let results = jsonObject[alias] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(alias, results: try results.map { try ActionResult($0) })
     }
 }

@@ -21,224 +21,206 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithRequiredValue() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "key1" : "value1",
-                "key2": "value2"
-              ]
-          ]
-        ];
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
+        ]
 
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions);
+        let form = TriggeredCommandForm(aliasActions);
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertNil(form.title)
         XCTAssertNil(form.commandDescription)
         XCTAssertNil(form.metadata)
     }
 
     func testInitWithTitle() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
+        ]
+        let form = TriggeredCommandForm(aliasActions,
                                         title: "title")
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.title, "title")
         XCTAssertNil(form.commandDescription)
         XCTAssertNil(form.metadata)
     }
 
     func testInitWithCommandDescription() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
+        ]
+        let form = TriggeredCommandForm(aliasActions,
                                         commandDescription: "description")
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertNil(form.title)
         XCTAssertEqual(form.commandDescription, "description")
         XCTAssertNil(form.metadata)
     }
 
     func testInitWithMetadata() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
         ]
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let metadata = ["key1" : "value1", "key2" : "value2"]
+        let form = TriggeredCommandForm(aliasActions,
                                         metadata: metadata)
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertNil(form.title)
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithTitleAndDescription() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
+        ]
+        let form = TriggeredCommandForm(aliasActions,
                                         title: "title",
                                         commandDescription: "description")
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.title, "title")
         XCTAssertEqual(form.commandDescription, "description")
         XCTAssertNil(form.metadata)
     }
 
     func testInitWithTitleAndMetadata() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
         ]
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let metadata = ["key1" : "value1", "key2" : "value2"]
+        let form = TriggeredCommandForm(aliasActions,
                                         title: "title",
                                         metadata: metadata)
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.title, "title")
         XCTAssertNil(form.commandDescription)
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithDescriptionAndMetadata() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
         ]
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let metadata = ["key1" : "value1", "key2" : "value2"]
+        let form = TriggeredCommandForm(aliasActions,
                                         commandDescription: "description",
                                         metadata: metadata)
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertNil(form.title)
         XCTAssertEqual(form.commandDescription, "description")
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithTargetID() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let targetID = TypedID(type: "THING", id: "id");
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
+        ]
+        let targetID = TypedID(.thing, id: "id");
+        let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID)
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.targetID, targetID)
         XCTAssertNil(form.commandDescription)
         XCTAssertNil(form.metadata)
     }
 
     func testInitWithTargetIDAndTitle() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let targetID = TypedID(type: "THING", id: "id");
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
+        ]
+        let targetID = TypedID(.thing, id: "id");
+        let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
                                         title: "title")
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.targetID, targetID)
         XCTAssertEqual(form.title, "title")
         XCTAssertNil(form.commandDescription)
@@ -246,26 +228,25 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTargetIDAndTitleAndDescription() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let targetID = TypedID(type: "THING", id: "id");
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
+        ]
+        let targetID = TypedID(.thing, id: "id");
+        let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
                                         title: "title",
                                         commandDescription: "description")
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.targetID, targetID)
         XCTAssertEqual(form.title, "title")
         XCTAssertEqual(form.commandDescription, "description")
@@ -273,57 +254,52 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTargetIDAndTitleAndDescriptionAndMetadata() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
         ]
-        let targetID = TypedID(type: "THING", id: "id");
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let metadata = ["key1" : "value1", "key2" : "value2"]
+        let targetID = TypedID(.thing, id: "id");
+        let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
                                         title: "title",
                                         commandDescription: "description",
                                         metadata: metadata)
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.targetID, targetID)
         XCTAssertEqual(form.title, "title")
         XCTAssertEqual(form.commandDescription, "description")
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
     func testInitWithTargetIDAndDescription() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let targetID = TypedID(type: "THING", id: "id");
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
+        ]
+        let targetID = TypedID(.thing, id: "id");
+        let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
                                         commandDescription: "description")
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.targetID, targetID)
         XCTAssertEqual(form.commandDescription, "description")
         XCTAssertNil(form.title)
@@ -331,140 +307,84 @@ class TriggeredCommandFormTest: SmallTestBase {
     }
 
     func testInitWithTargetIDAndDescriptionAndMetadata() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
         ]
-        let targetID = TypedID(type: "THING", id: "id");
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let metadata = ["key1" : "value1", "key2" : "value2"]
+        let targetID = TypedID(.thing, id: "id");
+        let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
                                         commandDescription: "description",
                                         metadata: metadata)
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.targetID, targetID)
         XCTAssertEqual(form.commandDescription, "description")
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
         XCTAssertNil(form.title)
     }
 
     func testInitWithTargetIDAndMetadata() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
         ]
-        let targetID = TypedID(type: "THING", id: "id");
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let metadata = ["key1" : "value1", "key2" : "value2"]
+        let targetID = TypedID(.thing, id: "id");
+        let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
                                         metadata: metadata)
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.targetID, targetID)
-        verifyDict(form.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
         XCTAssertNil(form.title)
         XCTAssertNil(form.commandDescription)
     }
 
     func testInitWithAllFields() {
-        let actions: [Dictionary<String, Any>] = [
-          [
-            "action1" :
-              [
-                "arg1" : "value1",
-                "arg2": "value2"
-              ]
-          ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-          "key1" : "value1",
-          "key2" : "value2"
+        let aliasActions = [
+          AliasAction(
+            "alias1",
+            actions: [
+              Action(
+                "action1",
+                value: ["key1" : "value", "key2" : "value2"
+                ]
+              )
+            ]
+          )
         ]
-        let targetID = TypedID(type: "THING", id: "id");
-        let form = TriggeredCommandForm(schemaName: "name",
-                                        schemaVersion: 1,
-                                        actions: actions,
+        let metadata = ["key1" : "value1", "key2" : "value2"]
+        let targetID = TypedID(.thing, id: "id");
+        let form = TriggeredCommandForm(aliasActions,
                                         targetID: targetID,
                                         title: "title",
                                         commandDescription: "description",
                                         metadata: metadata)
         XCTAssertNotNil(form)
-        XCTAssertEqual(form.schemaName, "name")
-        XCTAssertEqual(form.schemaVersion, 1)
-        verifyArray(form.actions, actual: actions)
+        XCTAssertEqual(form.aliasActions, aliasActions)
         XCTAssertEqual(form.targetID, targetID);
         XCTAssertEqual(form.title, "title")
         XCTAssertEqual(form.commandDescription, "description")
-        verifyDict(form.metadata!, actualDict: metadata)
-    }
-
-    func testNSCoding() {
-        let actions: [Dictionary<String, Any>] = [
-            [
-                "action1" :
-                [
-                    "arg1" : "value1",
-                    "arg2": "value2"
-                ]
-            ]
-        ];
-        let metadata: Dictionary<String, Any> = [
-            "key1" : "value1",
-            "key2" : "value2"
-        ]
-        let targetID = TypedID(type: "THING", id: "id");
-        let original = TriggeredCommandForm(schemaName: "name",
-                                      schemaVersion: 1,
-                                      actions: actions,
-                                      targetID: targetID,
-                                      title: "title",
-                                      commandDescription: "description",
-                                      metadata: metadata)
-        let data: NSMutableData = NSMutableData(capacity: 1024)!;
-        let coder: NSKeyedArchiver =
-            NSKeyedArchiver(forWritingWith: data);
-        original.encode(with: coder);
-        coder.finishEncoding();
-
-        let decoder: NSKeyedUnarchiver =
-            NSKeyedUnarchiver(forReadingWith: data as Data);
-        let deserialized: TriggeredCommandForm =
-          TriggeredCommandForm(coder: decoder)!;
-        decoder.finishDecoding();
-
-        XCTAssertNotNil(deserialized)
-        XCTAssertEqual(deserialized.schemaName, "name")
-        XCTAssertEqual(deserialized.schemaVersion, 1)
-        verifyArray(deserialized.actions, actual: actions)
-        XCTAssertEqual(deserialized.targetID, targetID);
-        XCTAssertEqual(deserialized.title, "title")
-        XCTAssertEqual(deserialized.commandDescription, "description")
-        verifyDict(deserialized.metadata!, actualDict: metadata)
+        XCTAssertEqual(form.metadata as! [String : String], metadata)
     }
 
 }

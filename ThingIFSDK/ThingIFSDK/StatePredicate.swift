@@ -3,17 +3,17 @@
 //  ThingIFSDK
 //
 //  Created by syahRiza on 5/10/16.
-//  Copyright © 2016 Kii. All rights reserved.
+//  Copyright 2016 Kii. All rights reserved.
 //
 
 import Foundation
 
 /** Class represents StatePredicate */
-open class StatePredicate: Predicate {
-    open let triggersWhen: TriggersWhen
-    open let condition: Condition
+public struct StatePredicate: Predicate {
+    public let triggersWhen: TriggersWhen
+    public let condition: Condition
 
-    open let eventSource: EventSource = EventSource.states
+    public let eventSource: EventSource = EventSource.states
 
     /** Initialize StatePredicate with Condition and TriggersWhen
 
@@ -28,52 +28,31 @@ open class StatePredicate: Predicate {
         self.condition = condition
     }
 
-    public required convenience init(coder aDecoder: NSCoder) {
-        self.init(
-          aDecoder.decodeObject(forKey: "condition")
-            as! Condition,
-          triggersWhen: TriggersWhen(
-            rawValue: aDecoder.decodeObject(forKey: "triggersWhen")
-              as! String)!
-        )
+}
+
+extension StatePredicate: FromJsonObject, ToJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let eventSource = jsonObject["eventSource"] as? String,
+              let triggersWhenStr = jsonObject["triggersWhen"] as? String,
+              let triggersWhen = TriggersWhen(rawValue: triggersWhenStr),
+              let condition = jsonObject["condition"] as? [String : Any] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if eventSource != EventSource.states.rawValue {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(try Condition(condition), triggersWhen: triggersWhen)
     }
 
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.triggersWhen.rawValue, forKey: "triggersWhen");
-        aCoder.encode(self.condition, forKey: "condition");
-    }
-
-    /** Get StatePredicate as NSDictionary instance
-
-     - Returns: a NSDictionary instance
-     */
-    open func makeDictionary() -> [ String : Any ]  {
+    public func makeJsonObject() -> [String : Any] {
         return [
-          "eventSource": EventSource.states.rawValue,
-          "triggersWhen": self.triggersWhen.rawValue,
-          "condition": self.condition.makeDictionary()] as [ String : Any ]
+          "eventSource" : self.eventSource.rawValue,
+          "triggersWhen" : self.triggersWhen.rawValue,
+          "condition" : self.condition.makeJsonObject()
+        ]
     }
 
-    /*
-     TODO: We should change a method below to initializer. We will do
-     that in another PR.
-
-    class func statePredicateWithNSDict(_ predicateDict: NSDictionary) -> StatePredicate?{
-        var triggersWhen: TriggersWhen?
-        var condition: Condition?
-        if let triggersWhenString = predicateDict["triggersWhen"] as? String {
-            triggersWhen = TriggersWhen(rawValue: triggersWhenString)
-        }
-
-        if let conditionDict = predicateDict["condition"] as? NSDictionary {
-            condition = Condition.conditionWithNSDict(conditionDict)
-        }
-
-        if triggersWhen != nil && condition != nil {
-            return StatePredicate(condition: condition!, triggersWhen: triggersWhen!)
-        }else {
-            return nil
-        }
-    }
-    */
 }

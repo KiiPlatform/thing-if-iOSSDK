@@ -9,25 +9,24 @@
 import Foundation
 
 /** Query to retrieve history of states. */
-open class HistoryStatesQuery: NSCoding {
+public struct HistoryStatesQuery {
 
     /** Alias to be queried history. */
-    open let alias: String
+    public let alias: String
     /** Query clause. */
-    open let clause: QueryClause?
+    public let clause: QueryClause
     /** firmware version. */
-    open let firmwareVersion: String?
+    public let firmwareVersion: String?
     /** Best effor limit to retrieve results. */
-    open let bestEffortLimit: Int?
+    public let bestEffortLimit: Int?
     /** Key to specify next page. */
-    open let nextPaginationKey: String?
+    public let nextPaginationKey: String?
 
     // MARK: - Initializing HistoryStatesQuery instance.
     /** Initializer of HistoryStatesQuery
 
      - Parameter alias: Alias for a query.
-     - Parameter clause: Clause to narrow down history states. If nil
-       or ommited, all history states are target to be retrived.
+     - Parameter clause: Clause to narrow down history states.
      - Parameter firmwareVersion: Firmware version for a query.
      - Parameter bestEffortLimit: bestEffortLimit: Limit the maximum
        number of results in a response. If omitted, default limitis
@@ -38,19 +37,27 @@ open class HistoryStatesQuery: NSCoding {
      */
     public init(
       _ alias: String,
-      clause: QueryClause? = nil,
+      clause: QueryClause,
       firmwareVersion: String? = nil,
       bestEffortLimit: Int? = nil,
       nextPaginationKey: String? = nil)
     {
-        fatalError("TODO: implement me.")
+        self.alias = alias
+        self.clause = clause
+        self.firmwareVersion = firmwareVersion
+        self.bestEffortLimit = bestEffortLimit
+        self.nextPaginationKey = nextPaginationKey
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+}
 
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+extension HistoryStatesQuery : ToJsonObject {
+
+    internal func makeJsonObject() -> [String : Any]{
+        var json : [String : Any] = ["query" : ["clause" : (self.clause as? ToJsonObject)?.makeJsonObject()]]
+        json["firmwareVersion"] = self.firmwareVersion
+        json["bestEffortLimit"] = self.bestEffortLimit
+        json["paginationKey"] = self.nextPaginationKey
+        return json
     }
 }

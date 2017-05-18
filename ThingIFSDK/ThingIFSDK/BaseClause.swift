@@ -9,13 +9,7 @@
 import Foundation
 
 /** Base protocol for all clause classes. */
-public protocol BaseClause: class, NSCoding {
-
-    /** Get Clause as Dictionary instance
-
-     - Returns: a Dictionary instance.
-     */
-    func makeDictionary() -> [ String : Any ]
+public protocol BaseClause {
 
 }
 
@@ -63,7 +57,7 @@ public protocol BaseAnd: BaseClause {
     var clauses: [ClausesType] { get }
 
     /** Add a clause. */
-    func add(_ clause: ClausesType) -> Self
+    mutating func add(_ clause: ClausesType) -> Void
 }
 
 
@@ -77,5 +71,5 @@ public protocol BaseOr: BaseClause {
     var clauses: [ClausesType] { get }
 
     /** Add a clause. */
-    func add(_ clause: ClausesType) -> Self
+    mutating func add(_ clause: ClausesType) -> Void
 }

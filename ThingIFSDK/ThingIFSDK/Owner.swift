@@ -6,25 +6,22 @@
 import Foundation
 
 /** Represents Owner */
-open class Owner: Equatable, NSCoding {
+public struct Owner: Hashable {
 
-    // MARK: - Implements NSCoding protocol
-    open func encode(with aCoder: NSCoder) {
-        aCoder.encode(self.typedID, forKey: "typedID")
-        aCoder.encode(self.accessToken, forKey: "accessToken")
-    }
-
-    // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
-        self.typedID = aDecoder.decodeObject(forKey: "typedID") as! TypedID
-        self.accessToken = aDecoder.decodeObject(forKey: "accessToken") as! String
-    }
-
+    // MARK: Properties
     /** ID of the owner. */
-    open let typedID: TypedID
+    public let typedID: TypedID
     /** Access token of the owner. */
-    open let accessToken: String
+    public let accessToken: String
 
+    /** The hash value. */
+    public var hashValue: Int {
+        get {
+            return self.typedID.hashValue
+        }
+    }
+
+    // MARK: Initilization
     /** instantiate Owner.
 
     - Parameter typedID: ID of the Owner.
@@ -34,16 +31,32 @@ open class Owner: Equatable, NSCoding {
         self.typedID = typedID
         self.accessToken = accessToken
     }
-    
-    open func isEqual(_ object: Any?) -> Bool {
-        guard let anOwner = object as? Owner else{
-            return false
-        }
-        
-        return self.typedID == anOwner.typedID && self.accessToken == anOwner.accessToken
+
+    /** Returns a Boolean value indicating whether two values are equal.
+
+     Equality is the inverse of inequality. For any values `a` and `b`,
+     `a == b` implies that `a != b` is `false`.
+
+     - Parameters left: A value to compare
+     - Parameters right:  Another value to compare.
+     - Returns: True if left and right is same, otherwise false.
+     */
+    public static func == (left: Owner, right: Owner) -> Bool {
+        return left.typedID == right.typedID
     }
 
-    public static func == (left: Owner, right: Owner) -> Bool {
-        return left.isEqual(right);
+}
+
+extension Owner: Serializable {
+
+    internal func serialize(_ coder: inout Coder) -> Void {
+        coder.encode(self.typedID, forKey: "typedID")
+        coder.encode(self.accessToken, forKey: "accessToken")
+    }
+
+    internal static func deserialize(_ decoder: Decoder) -> Serializable? {
+        return self.init(
+          decoder.decodeSerializable(forKey: "typedID") as! TypedID,
+          accessToken: decoder.decodeString(forKey: "accessToken")!)
     }
 }

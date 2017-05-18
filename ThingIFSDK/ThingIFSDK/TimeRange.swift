@@ -9,12 +9,12 @@
 import Foundation
 
 /** Time range. */
-open class TimeRange: NSCoding {
+public struct TimeRange {
 
     /** Start point of a time range. Inclusive. */
-    open let from: Date
+    public let from: Date
     /** End point of a time range. Inclusive. */
-    open let to: Date
+    public let to: Date
 
     /** Initialize with form date and to date.
 
@@ -22,15 +22,22 @@ open class TimeRange: NSCoding {
      - Parameter to: End point of time range. Inclusive
      */
     public init(_ from: Date, to: Date) {
-        fatalError("TODO: implement me.")
+        self.from = from
+        self.to = to
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+}
 
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+extension TimeRange: FromJsonObject {
 
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let from = jsonObject["from"] as? Int64,
+              let to = jsonObject["to"] as? Int64 else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(
+          Date(timeIntervalSince1970InMillis: from),
+          to: Date(timeIntervalSince1970InMillis: to))
+    }
 }

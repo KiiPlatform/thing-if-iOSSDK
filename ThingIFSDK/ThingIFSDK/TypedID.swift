@@ -5,7 +5,7 @@
 import Foundation
 
 /** Represents entity type and its ID. */
-open class TypedID : Equatable, NSCoding {
+public struct TypedID: Equatable {
 
     public enum Types: String {
         /** User type. */
@@ -17,20 +17,17 @@ open class TypedID : Equatable, NSCoding {
 
     }
 
-    // MARK: - Implements NSCoding protocol
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.*/")
-    }
-
-    // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.*/")
-    }
-
     /** Type of the ID*/
-    open let type:Types
+    public let type: Types
     /** ID of the entity. */
-    open let id:String
+    public let id: String
+
+    /** Hash value for `TypedID` instance. */
+    public var hashValue: Int {
+        get {
+            return self.toString().hashValue
+        }
+    }
 
     /** Ininitialize TypedID with type and id.
 
@@ -42,18 +39,59 @@ open class TypedID : Equatable, NSCoding {
         self.id = id
     }
 
-    func toString() -> String {
+    internal func toString() -> String {
         return "\(type):\(id)"
     }
 
-    open func isEqual(_ object: Any?) -> Bool {
-        guard let aType = object as? TypedID else{
-            return false
-        }
-        return (self.type == aType.type) && (self.id == aType.id)
+    /** Returns a Boolean value indicating whether two values are equal.
+
+     Equality is the inverse of inequality. For any values `a` and `b`,
+     `a == b` implies that `a != b` is `false`.
+
+     - Parameters left: A value to compare
+     - Parameters right:  Another value to compare.
+     - Returns: True if left and right is same, otherwise false.
+     */
+    public static func ==(left: TypedID, right: TypedID) -> Bool {
+        return left.id == right.id && left.type == right.type
     }
 
-    public static func == (left: TypedID, right: TypedID) -> Bool {
-        return left.isEqual(right)
+}
+
+internal extension TypedID {
+
+    init(_ str: String?) throws {
+        guard let characters = str?.characters else {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let index = characters.index(of: ":") else {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let type = Types(
+                rawValue:
+                  String(characters.prefix(upTo: index)).lowercased()) else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(
+          type,
+          id: String(characters.suffix(from: characters.index(after: index))))
+    }
+
+}
+
+extension TypedID: Serializable {
+
+    internal func serialize(_ coder: inout Coder) -> Void {
+        coder.encode(self.type.rawValue, forKey: "type")
+        coder.encode(self.id, forKey: "id")
+    }
+
+    internal static func deserialize(_ decoder: Decoder) -> Serializable? {
+        return self.init(
+          Types(rawValue: decoder.decodeString(forKey: "type")!)!,
+          id: decoder.decodeString(forKey: "id")!)
     }
 }

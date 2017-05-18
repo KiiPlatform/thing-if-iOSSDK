@@ -11,7 +11,11 @@ public struct ErrorResponse {
     public let errorCode: String
     public let errorMessage: String
 
-    init (httpStatusCode:Int, errorCode:String, errorMessage:String) {
+    internal init (
+      _ httpStatusCode:Int,
+      errorCode:String,
+      errorMessage:String)
+    {
         self.httpStatusCode = httpStatusCode
         self.errorCode = errorCode
         self.errorMessage = errorMessage

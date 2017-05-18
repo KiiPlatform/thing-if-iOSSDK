@@ -9,17 +9,18 @@
 import Foundation
 
 /** Query to retrieve grouped states of history. */
-open class GroupedHistoryStatesQuery: NSCoding {
+public struct GroupedHistoryStatesQuery {
 
     /** Alias of a query. */
-    open let alias: String
+    public let alias: String
     /** Time range of a query. */
-    open let timeRange: TimeRange
+    public let timeRange: TimeRange
     /** Query clause. */
-    open let clause: QueryClause?
+    public let clause: QueryClause?
     /** Firmware version of a query. */
-    open let firmwareVersion: String?
+    public let firmwareVersion: String?
 
+    fileprivate var aggregation: Aggregation? = nil
 
     // MARK: - Initializing GroupedHistoryStatesQuery instance.
     /** Initializer of GroupedHistoryStatesQuery
@@ -36,15 +37,38 @@ open class GroupedHistoryStatesQuery: NSCoding {
       clause: QueryClause? = nil,
       firmwareVersion: String? = nil)
     {
-        fatalError("TODO: implement me.")
+        self.alias = alias
+        self.timeRange = timeRange
+        self.clause = clause
+        self.firmwareVersion = firmwareVersion
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+}
+
+extension GroupedHistoryStatesQuery : ToJsonObject {
+
+    internal mutating func setAggregation(_ aggregation: Aggregation?) {
+        self.aggregation = aggregation
     }
 
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+    internal func makeJsonObject() -> [String : Any]{
 
+        let timeRangeClause = TimeRangeClauseInQuery(self.timeRange)
+
+        var clause : [String : Any]
+        if self.clause != nil {
+            clause = AndClauseInQuery(self.clause!, timeRangeClause).makeJsonObject()
+        } else {
+            clause = timeRangeClause.makeJsonObject()
+        }
+
+        var query : [ String: Any ] = ["clause": clause, "grouped": true ]
+        if self.aggregation != nil {
+            query["aggregations"] = [ self.aggregation!.makeJsonObject() ]
+        }
+
+        var json : [String : Any] = [ "query" : query ]
+        json["firmwareVersion"] = self.firmwareVersion
+        return json
+    }
 }

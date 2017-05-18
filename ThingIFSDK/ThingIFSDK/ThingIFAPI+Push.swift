@@ -8,32 +8,49 @@
 
 import Foundation
 
+
 extension ThingIFAPI {
-    func _installPush(
+
+    // MARK: - Push notification methods
+
+    /** Install push notification to receive notification from IoT
+     Cloud.  IoT Cloud will send notification when the Target replies
+     to the Command.  Application can receive the notification and
+     check the result of Command fired by Application or registered
+     Trigger.  After installation is done Installation ID is managed
+     in this class.
+
+     - Parameter deviceToken: Data instance of device token for APNS.
+     - Parameter development: Bool flag indicate whether the cert is
+       development or production. This is optional, the default is
+       false (production).
+     - Parameter completionHandler: A closure to be executed once on
+       board has finished.
+     */
+    open func installPush(
         _ deviceToken:Data,
-        development:Bool?=false,
+        development:Bool=false,
         completionHandler: @escaping (String?, ThingIFError?)-> Void
         )
     {
+
         let requestURL = "\(baseURL)/api/apps/\(appID)/installations"
-        
-        // genrate body
-        let requestBodyDict = NSMutableDictionary()
-        
-        requestBodyDict["installationRegistrationID"] = deviceToken.hexString()
-        requestBodyDict["deviceType"] = "IOS"
-        requestBodyDict["development"] = NSNumber(value: development! as Bool)
-        kiiVerboseLog("Request body",requestBodyDict)
-        // generate header
-        var requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
-        
-        requestHeaderDict["Content-type"] = "application/vnd.kii.InstallationCreationRequest+json"
-        
-        do{
-            let requestBodyData = try JSONSerialization.data(withJSONObject: requestBodyDict, options: JSONSerialization.WritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                
+
+        let requestBody : [String:Any] = [
+            "installationRegistrationID":deviceToken.hexString(),
+            "deviceType":"IOS",
+            "development":development
+        ]
+
+        self.operationQueue.addHttpRequestOperation(
+            .post,
+            url: requestURL,
+            requestHeader:
+            self.defaultHeader + ["Content-Type" : MediaType.mediaTypeThingPushInstallationRequest.rawValue],
+            requestBody: requestBody,
+            failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+                response, error in
+
                 if let installationID = response?["installationID"] as? String{
                     self.installationID = installationID
                 }
@@ -41,42 +58,47 @@ extension ThingIFAPI {
                 DispatchQueue.main.async {
                     completionHandler(self.installationID, error)
                 }
-            })
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-            
-        }catch(let e){
-            kiiSevereLog(e)
-            DispatchQueue.main.async {
-                completionHandler(nil, ThingIFError.jsonParseError)
-            }
         }
-
     }
 
-    func _uninstallPush(
-        _ installationID:String?,
+    /** Uninstall push notification.
+     After done, notification from IoT Cloud won't be notified.
+
+     - Parameter installationID: installation ID returned from
+       installPush(). If null is specified, value of the
+       `installationID` property is used.
+     */
+    open func uninstallPush(
+        _ installationID: String? = nil,
         completionHandler: @escaping (ThingIFError?)-> Void
         )
     {
-        let idParam = installationID != nil ? installationID : self.installationID
-        let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(idParam!)"
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)"]
-        
-        let request = buildDefaultRequest(.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            
-            if error == nil{
+        guard let installationID = installationID ?? self.installationID else {
+            completionHandler(
+              ThingIFError.invalidArgument(
+                message:
+                  "Both of installationID and self.installationID are nil."))
+            return
+        }
+        let requestURL = "\(baseURL)/api/apps/\(appID)/installations/\(installationID)"
+
+        self.operationQueue.addHttpRequestOperation(
+            .delete,
+            url: requestURL,
+            requestHeader:
+            self.defaultHeader,
+            failureBeforeExecutionHandler: { completionHandler($0) }) {
+            response, error in
+
+            if error == nil && self.installationID == installationID {
                 self.installationID = nil
             }
             self.saveToUserDefault()
             DispatchQueue.main.async {
                 completionHandler( error)
             }
-        })
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+        }
 
     }
+
 }

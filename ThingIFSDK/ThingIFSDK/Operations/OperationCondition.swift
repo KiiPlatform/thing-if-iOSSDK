@@ -78,6 +78,7 @@ func ==(lhs: OperationConditionResult, rhs: OperationConditionResult) -> Bool {
 struct OperationConditionEvaluator {
     static func evaluate(_ conditions: [OperationCondition], operation: Operation, completion: @escaping ([NSError]) -> Void) {
         // Check conditions.
+        let serialQueue = DispatchQueue(label: "com.kii.thing-if.serial")
         let conditionGroup = DispatchGroup()
 
         var results = [OperationConditionResult?](repeating: nil, count: conditions.count)
@@ -87,12 +88,15 @@ struct OperationConditionEvaluator {
             conditionGroup.enter()
             condition.evaluateForOperation(operation) { result in
                 results[index] = result
-                conditionGroup.leave()
+                serialQueue.async {
+                    conditionGroup.leave()
+                }
+
             }
         }
         
         // After all the conditions have evaluated, this block will execute.
-        conditionGroup.notify(queue: DispatchQueue.global(qos: DispatchQoS.QoSClass.default)) {
+        conditionGroup.notify(queue: serialQueue) {
             // Aggregate the errors that occurred, in order.
             var failures = results.flatMap { $0?.error }
             

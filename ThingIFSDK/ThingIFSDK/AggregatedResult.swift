@@ -9,29 +9,61 @@
 import Foundation
 
 /** Aggregated result. */
-open class AggregatedResult<AggregatedValueType>: NSCoding {
+public struct AggregatedResult<AggregatedValueType> {
 
     /** Returned value to be aggregated. */
-    open let value: AggregatedValueType
+    public let value: AggregatedValueType?
     /** Time range of an aggregated result. */
-    open let timeRange: TimeRange
+    public let timeRange: TimeRange
     /** Aggregated objectes. */
-    open let aggregatedObjects: [HistoryState]
+    public let aggregatedObjects: [HistoryState]
 
-    internal init(
-      _ value: AggregatedValueType,
+    /** Initialize `AggregatedResult`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters value: Returned value to be aggregated.
+     - Parameters timeRange: Time range of an aggregated result.
+     - Parameters aggregatedObjects: Aggregated objectes.
+     */
+    public init(
+      _ value: AggregatedValueType?,
       timeRange: TimeRange,
       aggregatedObjects: [HistoryState])
     {
-        fatalError("TODO: implement me.")
+        self.value = value
+        self.timeRange = timeRange
+        self.aggregatedObjects = aggregatedObjects
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+}
 
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
+extension AggregatedResult: FromJsonObject {
 
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let range = jsonObject["range"] as? [String : Int64],
+              let aggregations =
+                jsonObject["aggregations"] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if aggregations.count == 0 {
+            kiiSevereLog("Aggregation not found")
+            throw ThingIFError.jsonParseError
+        }
+        if aggregations.count >= 2 {
+            kiiSevereLog("Currently, number of aggregations must be 1")
+        }
+
+        let aggregation = aggregations[0]
+        let value = aggregation["value"] as? AggregatedValueType
+        let object = aggregation["object"] as? [String : Any]
+
+        self.init(
+          value,
+          timeRange: try TimeRange(range),
+          aggregatedObjects: object != nil ? [try HistoryState(object!)] : [])
+    }
 }

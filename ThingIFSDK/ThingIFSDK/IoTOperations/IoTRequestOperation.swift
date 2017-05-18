@@ -8,16 +8,16 @@
 
 import Foundation
 
-enum HTTPMethod: String {
-    case GET = "GET"
-    case POST = "POST"
-    case PUT = "PUT"
-    case HEAD = "HEAD"
-    case DELETE = "DELETE"
-    case PATCH = "PATCH"
+internal enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+    case put = "PUT"
+    case head = "HEAD"
+    case delete = "DELETE"
+    case patch = "PATCH"
 }
 
-struct IotRequest<T> {
+internal struct IotRequest<T> {
     let method : HTTPMethod
     let urlString: String
     let requestHeaderDict: Dictionary<String, String>
@@ -27,7 +27,15 @@ struct IotRequest<T> {
 }
 typealias DefaultRequest = IotRequest<NSDictionary>
 
-func buildDefaultRequest(_ method : HTTPMethod,urlString: String,requestHeaderDict: Dictionary<String, String>,requestBodyData: Data?,completionHandler: @escaping (_ response: NSDictionary?, _ error: ThingIFError?) -> Void) -> DefaultRequest {
+internal func buildDefaultRequest(
+  _ method : HTTPMethod,
+  urlString: String,
+  requestHeaderDict: [String : String],
+  requestBodyData: Data?,
+  completionHandler: @escaping (
+    _ response: [String : Any]?,
+    _ error: ThingIFError?) -> Void) -> DefaultRequest
+{
     kiiVerboseLog("Request URL: \(urlString)")
     kiiVerboseLog("Request Method: \(method)")
     kiiVerboseLog("Request Header: \(requestHeaderDict)")
@@ -35,7 +43,16 @@ func buildDefaultRequest(_ method : HTTPMethod,urlString: String,requestHeaderDi
     // Add X-Kii-SDK header.
     var modifiedHeaderDict = requestHeaderDict
     modifiedHeaderDict["X-Kii-SDK"] = SDKVersion.sharedInstance.kiiSDKHeader
-    return buildNewRequest(method, urlString: urlString, requestHeaderDict: modifiedHeaderDict, requestBodyData: requestBodyData, completionHandler: completionHandler)
+    return buildNewRequest(
+      method,
+      urlString: urlString,
+      requestHeaderDict: modifiedHeaderDict,
+      requestBodyData: requestBodyData) {
+            response, error in
+        // TODO: fix me.
+        // This is adhoc code. We should change NSDictionary to Dictionary.
+        completionHandler(response as? Dictionary, error)
+      }
 }
 
 func buildNewRequest(_ method : HTTPMethod,urlString: String,requestHeaderDict: Dictionary<String, String>,requestBodyData: Data?,completionHandler: @escaping (_ response: NSDictionary?, _ error: ThingIFError?) -> Void) -> DefaultRequest {
@@ -58,6 +75,7 @@ func buildNewRequest(_ method : HTTPMethod,urlString: String,requestHeaderDict: 
 
 //use for dependency injection
 var iotSession = URLSession.self
+var iotUserDefaults = UserDefaults.self
 
 class IoTRequestOperation<T>: GroupOperation {
     init(request : IotRequest<T>){
@@ -75,22 +93,22 @@ class IoTRequestOperation<T>: GroupOperation {
         addOperation(errorNotConnectedOperation)
         
         switch(request.method) {
-        case .POST :
+        case .post :
             addPostRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
             
-        case .GET:
+        case .get:
             addGetRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
 
-        case .DELETE:
+        case .delete:
             addDeleteRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
 
-        case .PATCH:
+        case .patch:
             addPatchRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData!, completionHandler: request.completionHandler,responseBodySerializer:request.responseBodySerializer)
 
-        case .PUT:
+        case .put:
             addPutRequestTask(request.urlString, requestHeaderDict: request.requestHeaderDict, requestBodyData: request.requestBodyData, completionHandler: request.completionHandler, responseBodySerializer: request.responseBodySerializer)
-
         default :
+            fatalError("Unknown http method: \(request.method.rawValue)")
             break
         }
     }
@@ -190,7 +208,7 @@ class IoTRequestOperation<T>: GroupOperation {
                         errorCode = responseBody!["errorCode"] as! String
                         errorMessage = responseBody!["message"] as! String
                     }
-                    let errorResponse = ErrorResponse(httpStatusCode: statusCode, errorCode: errorCode, errorMessage: errorMessage)
+                    let errorResponse = ErrorResponse(statusCode, errorCode: errorCode, errorMessage: errorMessage)
                     let iotCloudError = ThingIFError.errorResponse(required: errorResponse)
                     completionHandler(nil, iotCloudError)
                 }else {
@@ -219,8 +237,6 @@ class IoTRequestOperation<T>: GroupOperation {
                 let httpResponse = responseOptional as! HTTPURLResponse
                 let statusCode = httpResponse.statusCode
                 var responseBody : NSDictionary?
-                var errorCode = ""
-                var errorMessage = ""
                 kiiDebugLog("Response Status Code : \(statusCode)")
 
                 if statusCode < 200 || statusCode >= 300 {
@@ -232,13 +248,10 @@ class IoTRequestOperation<T>: GroupOperation {
                         }
                     }
                     kiiDebugLog("Response Error : \(responseBody)")
-                    if responseBody != nil
-                        && responseBody!["errorCode"] != nil
-                        && responseBody!["message"] != nil {
-                        errorCode = responseBody!["errorCode"] as! String
-                        errorMessage = responseBody!["message"] as! String
-                    }
-                    let errorResponse = ErrorResponse(httpStatusCode: statusCode, errorCode: errorCode, errorMessage: errorMessage)
+                    let errorResponse = ErrorResponse(
+                      statusCode,
+                      errorCode: (responseBody?["errorCode"] as? String) ?? "",
+                      errorMessage: (responseBody?["message"] as? String) ?? "")
                     let iotCloudError = ThingIFError.errorResponse(required: errorResponse)
                     completionHandler(nil, iotCloudError)
                 }else {

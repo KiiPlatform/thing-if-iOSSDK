@@ -8,18 +8,18 @@
 
 import Foundation
 
-/** Base protocol for query clause classes. */
+/** Base protocol for query clause struct. */
 public protocol QueryClause: BaseClause {
 
 }
 
-/** Class represents Equals clause for query methods. */
-open class EqualsClauseInQuery: QueryClause, BaseEquals {
+/** Struct represents Equals clause for query methods. */
+public struct EqualsClauseInQuery: QueryClause, BaseEquals {
 
     /** Name of a field. */
-    open let field: String
+    public let field: String
     /** Value of a field. */
-    open let value: AnyObject
+    public let value: AnyObject
 
     private init(_ field: String, value: AnyObject) {
         self.field = field
@@ -31,7 +31,7 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter intValue: Left hand side value to be compared.
      */
-    public convenience init(_ field: String, intValue: Int) {
+    public init(_ field: String, intValue: Int) {
         self.init(field, value: intValue as AnyObject)
     }
 
@@ -40,7 +40,7 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter stringValue: Left hand side value to be compared.
      */
-    public convenience init(_ field: String, stringValue: String) {
+    public init(_ field: String, stringValue: String) {
         self.init(field, value: stringValue as AnyObject)
     }
 
@@ -49,87 +49,103 @@ open class EqualsClauseInQuery: QueryClause, BaseEquals {
      - Parameter field: Name of the field to be compared.
      - Parameter boolValue: Left hand side value to be compared.
      */
-    public convenience init(_ field: String, boolValue: Bool) {
+    public init(_ field: String, boolValue: Bool) {
         self.init(field, value: boolValue as AnyObject)
     }
+}
+
+extension EqualsClauseInQuery: ToJsonObject {
 
     /** Get Equals clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
-    }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+    internal func makeJsonObject() -> [ String : Any ] {
+        return [
+          "type" : "eq",
+          "field" : self.field,
+          "value" : self.value
+        ] as [String : Any]
     }
 
 }
 
-/** Class represents Not Equals clause for query methods.  */
-open class NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
+/** Struct represents Not Equals clause for query methods.  */
+public struct NotEqualsClauseInQuery: QueryClause, BaseNotEquals {
     public typealias EqualClauseType = EqualsClauseInQuery
 
     /** Contained Equals clause instance. */
-    open let equals: EqualsClauseInQuery
+    public let equals: EqualsClauseInQuery
 
+    /** Initialize with `EqualsClauseInQuery`.
+
+     - Parameter equals: equals clause.
+     */
     public init(_ equals: EqualsClauseInQuery) {
         self.equals = equals
     }
+}
+
+extension NotEqualsClauseInQuery: ToJsonObject {
 
     /** Get Not Equals clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
-    }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+    internal func makeJsonObject() -> [ String : Any ] {
+        return [
+          "type" : "not",
+          "clause" : self.equals.makeJsonObject()
+        ] as [String : Any]
     }
 
 }
 
-/** Class represents Range clause for query methods. */
-open class RangeClauseInQuery: QueryClause, BaseRange {
+/** Struct represents Range clause for query methods. */
+public struct RangeClauseInQuery: QueryClause, BaseRange {
+
+    private let lower: (limit: NSNumber, included: Bool)?
+    private let upper: (limit: NSNumber, included: Bool)?
 
     /** Name of a field. */
-    open let field: String
-    /** Lower limit for an instance. */
-    open let lowerLimit: NSNumber?
-    /** Include or not lower limit. */
-    open let lowerIncluded: Bool?
-    /** Upper limit for an instance. */
-    open let upperLimit: NSNumber?
-    /** Include or not upper limit. */
-    open let upperIncluded: Bool?
+    public let field: String
 
-    private init(
+    /** Lower limit for an instance. */
+    public var lowerLimit: NSNumber? {
+        get {
+            return self.lower?.limit
+        }
+    }
+
+    /** Include or not lower limit. */
+    public var lowerIncluded: Bool? {
+        get {
+            return self.lower?.included
+        }
+    }
+
+    /** Upper limit for an instance. */
+    public var upperLimit: NSNumber? {
+        get {
+            return self.upper?.limit
+        }
+    }
+
+    /** Include or not upper limit. */
+    public var upperIncluded: Bool? {
+        get {
+            return self.upper?.included
+        }
+    }
+
+    fileprivate init(
       _ field: String,
-      lowerLimit: NSNumber? = nil,
-      lowerIncluded: Bool? = nil,
-      upperLimit: NSNumber? = nil,
-      upperIncluded: Bool? = nil)
+      lower: (limit: NSNumber, included: Bool)? = nil,
+      upper: (limit: NSNumber, included: Bool)? = nil)
     {
         self.field = field
-        self.lowerLimit = lowerLimit
-        self.lowerIncluded = lowerIncluded
-        self.upperLimit = upperLimit
-        self.upperIncluded = upperIncluded
+        self.lower = lower
+        self.upper = upper
     }
 
     /** Create Range clause for query having lower and upper limit.
@@ -147,14 +163,17 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
        included
      - Returns: An instance of `RangeClauseInQuery`.
      */
-    open static func range(
+    public static func range(
       _ field: String,
       lowerLimit: NSNumber,
       lowerIncluded: Bool,
       upperLimit: NSNumber,
       upperIncluded: Bool) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(
+          field,
+          lower: (lowerLimit, lowerIncluded),
+          upper: (upperLimit, upperIncluded))
     }
 
     /** Create Range clause for query which denotes greater than.
@@ -164,11 +183,11 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInQuery`.
      */
-    open static func greaterThan(
+    public static func greaterThan(
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, lower: (limit, false))
     }
 
     /** Create Range clause for query which denotes greater than or
@@ -179,11 +198,11 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInQuery`.
      */
-    open static func greaterThanOrEqualTo(
+    public static func greaterThanOrEqualTo(
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, lower: (limit, true))
     }
 
     /** Create Range clause for query which denotes less than.
@@ -193,11 +212,11 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInQuery`.
      */
-    open static func lessThan(
+    public static func lessThan(
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, upper: (limit, false))
     }
 
     /** Create Range clause for query which denotes less than or
@@ -208,40 +227,37 @@ open class RangeClauseInQuery: QueryClause, BaseRange {
        or float.
      - Returns: An instance of `RangeClauseInQuery`.
      */
-    open static func lessThanOrEqualTo(
+    public static func lessThanOrEqualTo(
       _ field: String,
       limit: NSNumber) -> RangeClauseInQuery
     {
-        fatalError("TODO: implement me.")
+        return RangeClauseInQuery(field, upper: (limit, true))
     }
+}
+
+extension RangeClauseInQuery: ToJsonObject {
+
 
     /** Get Range clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+    internal func makeJsonObject() -> [ String : Any ] {
+        var retval: [String : Any] = ["type": "range", "field": self.field]
+        retval["upperLimit"] = self.upperLimit
+        retval["upperIncluded"] = self.upperIncluded
+        retval["lowerLimit"] = self.lowerLimit
+        retval["lowerIncluded"] = self.lowerIncluded
+        return retval
     }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
-
 }
 
 
-/** Class represents And clause for query methods. */
-open class AndClauseInQuery: QueryClause, BaseAnd {
-    public typealias ClausesType = QueryClause
+/** Struct represents And clause for query methods. */
+public struct AndClauseInQuery: QueryClause, BaseAnd {
 
     /** Clauses conjuncted with And. */
-    open internal(set) var clauses: [QueryClause]
+    public internal(set) var clauses: [QueryClause]
 
     /** Initialize with clauses array.
 
@@ -255,44 +271,40 @@ open class AndClauseInQuery: QueryClause, BaseAnd {
 
      - Parameter clauses: Clause array for And clauses
      */
-    public convenience init(_ clause: QueryClause...) {
+    public init(_ clause: QueryClause...) {
         self.init(clause)
-    }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
     }
 
     /** Add a clause to And clauses.
 
      - Parameter clause: Clause to be added to and clauses.
      */
-    open func add(_ clause: QueryClause) -> Self {
-        fatalError("TODO: implement me.")
+    public mutating func add(_ clause: QueryClause) -> Void {
+        self.clauses.append(clause)
     }
+}
+
+extension AndClauseInQuery: ToJsonObject {
 
     /** Get And clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+    internal func makeJsonObject() -> [ String : Any ] {
+        return [
+          "type": "and",
+          "clauses":
+            self.clauses.map {($0 as! ToJsonObject).makeJsonObject()}
+        ] as [String : Any]
     }
 
 }
 
-/** Class represents Or clause for query methods. */
-open class OrClauseInQuery: QueryClause, BaseOr {
-    public typealias ClausesType = QueryClause
+/** Struct represents Or clause for query methods. */
+public struct OrClauseInQuery: QueryClause, BaseOr {
 
     /** Clauses conjuncted with Or. */
-    open internal(set) var clauses: [QueryClause]
+    public internal(set) var clauses: [QueryClause]
 
     /** Initialize with clauses array.
 
@@ -306,34 +318,64 @@ open class OrClauseInQuery: QueryClause, BaseOr {
 
      - Parameter clauses: Clause array for Or clauses
      */
-    public convenience init(_ clause: QueryClause...) {
+    public init(_ clause: QueryClause...) {
         self.init(clause)
-    }
-
-    /** Decoder confirming `NSCoding`. */
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
-    }
-
-    /** Encoder confirming `NSCoding`. */
-    open func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
     }
 
     /** Add a clause to Or clauses.
 
      - Parameter clause: Clause to be added to or clauses.
      */
-    open func add(_ clause: QueryClause) -> Self {
-        fatalError("TODO: implement me.")
+    public mutating func add(_ clause: QueryClause) -> Void {
+        self.clauses.append(clause)
     }
+}
+
+extension OrClauseInQuery: ToJsonObject {
 
     /** Get Or clause for query as a Dictionary instance
 
      - Returns: A Dictionary instance.
      */
-    open func makeDictionary() -> [ String : Any ] {
-        fatalError("TODO: implement me.")
+    internal func makeJsonObject() -> [ String : Any ] {
+        return [
+          "type": "or",
+          "clauses":
+            self.clauses.map {($0 as! ToJsonObject).makeJsonObject()}
+        ] as [String : Any]
     }
 
+}
+
+internal struct TimeRangeClauseInQuery: QueryClause {
+    let timeRange: TimeRange
+
+    public init(_ range: TimeRange) {
+        self.timeRange = range
+    }
+}
+
+extension TimeRangeClauseInQuery: ToJsonObject {
+    internal func makeJsonObject() -> [ String : Any ] {
+        return [
+            "type": "withinTimeRange",
+            "lowerLimit": self.timeRange.from.timeIntervalSince1970InMillis,
+            "upperLimit": self.timeRange.to.timeIntervalSince1970InMillis
+            ] as [String : Any]
+    }
+}
+
+/** Struct represents All clause for query methods.
+
+ If you want to get all history state, you can use this clause.
+ */
+public struct AllClause: QueryClause {
+    public init() { }
+}
+
+extension AllClause: ToJsonObject {
+
+    internal func makeJsonObject() -> [String : Any]{
+        return ["type": "all"]
+    }
 }

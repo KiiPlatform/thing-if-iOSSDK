@@ -9,22 +9,57 @@
 import Foundation
 
 /** Action with an alias. */
-open class AliasAction: NSCoding {
+public struct AliasAction {
+
+    // MARK: - Properties
 
     /** Name of an alias. */
-    open let alias: String
+    public let alias: String
     /** Action of this alias. */
-    open let action: [String : Any]
+    public let actions: [Action]
 
-    public init(_ alias: String, action: [String : Any]) {
-        fatalError("TODO: implement me.")
+    // MARK: - Initializing CommandForm instance.
+    /** Initializer of AliasAction instance.
+
+     - Parameter alias: Name of an alias.
+     - Parameter actions: Array of `Action` instances. must not be empty.
+     */
+
+    public init(_ alias: String, actions: [Action]) {
+        self.alias = alias
+        self.actions = actions
     }
 
-    public required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("TODO: implement me.")
+    /** Initializer of AliasAction instance.
+
+     - Parameter alias: Name of an alias.
+     - Parameter actions: Variable number of `Action` instance. must
+       equal or be more than one
+     */
+    public init(_ alias: String, actions: Action...) {
+        self.alias = alias
+        self.actions = actions
     }
 
-    public func encode(with aCoder: NSCoder) {
-        fatalError("TODO: implement me.")
+}
+
+extension AliasAction: FromJsonObject, ToJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        if jsonObject.count != 1 {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let alias = jsonObject.keys.first,
+              let actions = jsonObject[alias] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(alias, actions: try actions.map { try Action($0) })
     }
+
+    internal func makeJsonObject() -> [String : Any] {
+        return [self.alias : self.actions.map { $0.makeJsonObject() }]
+    }
+
 }

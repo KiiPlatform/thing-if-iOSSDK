@@ -8,6 +8,62 @@
 import Foundation
 
 /** Represents gateway. */
-open class Gateway: AbstractThing {
+public struct Gateway: TargetThing, Equatable {
 
+    /** ID of target to issue REST API. */
+    public let typedID: TypedID
+
+    /** Access token. */
+    public let accessToken: String?
+
+    /** Vendor thing id. */
+    public let vendorThingID: String
+
+    /** Init
+
+    - Parameter thingID: ID of thing
+    - Parameter vendorThingID: ID of vendor thing
+    - Parameter accessToken: Access token of the target, can nil.
+    */
+    public init(
+      _ thingID: String,
+      vendorThingID : String,
+      accessToken: String? = nil)
+    {
+        self.typedID = TypedID(TypedID.Types.thing, id: thingID)
+        self.accessToken = accessToken
+        self.vendorThingID = vendorThingID
+    }
+}
+
+extension Gateway: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let thingID = jsonObject["thingID"] as? String,
+              let accessToken = jsonObject["accessToken"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(
+          thingID,
+          vendorThingID: jsonObject["vendorThingID"] as! String,
+          accessToken: accessToken)
+    }
+}
+
+extension Gateway: Serializable {
+
+    internal func serialize(_ coder: inout Coder) -> Void {
+        coder.encode(self.thingID, forKey: "thingID")
+        coder.encode(self.accessToken, forKey: "accessToken")
+        coder.encode(self.vendorThingID, forKey: "vendorThingID")
+    }
+
+    internal static func deserialize(_ decoder: Decoder) -> Serializable? {
+        return self.init(
+          decoder.decodeString(forKey: "thingID")!,
+          vendorThingID: decoder.decodeString(forKey: "vendorThingID")!,
+          accessToken: decoder.decodeString(forKey: "accessToken"))
+
+    }
 }
