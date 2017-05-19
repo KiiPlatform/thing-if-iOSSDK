@@ -8,7 +8,7 @@ clean:
 		rm -rf test-reports
 
 build:
-		xcodebuild -project ThingIFSDK.xcodeproj -target ThingIFSDK -sdk iphonesimulator clean build
+		xcodebuild -project ThingIFSDK.xcodeproj -target ThingIF -sdk iphonesimulator clean build
 
 doc: build
 		(cd Documentation; \
