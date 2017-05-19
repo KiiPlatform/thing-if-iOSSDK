@@ -1,5 +1,5 @@
 import XCTest
-@testable import ThingIFSDK
+@testable import ThingIF
 
 class TriggeredServerCodeResultTest: SmallTestBase {
     func testResultWithNSDict() throws {

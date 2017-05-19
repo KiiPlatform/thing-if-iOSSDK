@@ -1,5 +1,5 @@
 import XCTest
-@testable import ThingIFSDK
+@testable import ThingIF
 
 class SmallTestBase: XCTestCase {
     override func setUp() {

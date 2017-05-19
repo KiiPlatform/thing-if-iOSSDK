@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import ThingIFSDK
+@testable import ThingIF
 
 /*
  This test file contains tests which are difficult to classify in some reasons.

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ThingIFSDK
+import ThingIF
 
 /*
  Struct to check received trigger.

@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import ThingIFSDK
+@testable import ThingIF
 
 class ThingIFAPIPushUninstallationTests: SmallTestBase {
     let deviceToken = "dummyDeviceToken"
