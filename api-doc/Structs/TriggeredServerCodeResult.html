@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>TriggeredServerCodeResult Struct Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/TriggeredServerCodeResult" class="dashAnchor"></a>
+    <a title="TriggeredServerCodeResult Struct Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (100% documented)</p>
+        <p class="header-right"><a href="https://github.com/KiiPlatform/thing-if-iOSSDK"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        TriggeredServerCodeResult Struct Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/DefaultLogger.html">DefaultLogger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GatewayAPI.html">GatewayAPI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SDKVersion.html">SDKVersion</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ThingIFAPI.html">ThingIFAPI</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/CommandState.html">CommandState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/EventSource.html">EventSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/LayoutPosition.html">LayoutPosition</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/LogLevel.html">LogLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Site.html">Site</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ThingIFError.html">ThingIFError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TriggersWhat.html">TriggersWhat</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/TriggersWhen.html">TriggersWhen</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F7ThingIF11kiiDebugLogurFxT_">kiiDebugLog(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F7ThingIF11kiiErrorLogurFxT_">kiiErrorLog(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F7ThingIF10kiiInfoLogurFxT_">kiiInfoLog(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F7ThingIF12kiiSevereLogurFxT_">kiiSevereLog(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F7ThingIF13kiiVerboseLogurFxT_">kiiVerboseLog(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F7ThingIF10kiiWarnLogurFxT_">kiiWarnLog(_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:F7ThingIF14setKiiLogLevelFOS_8LogLevelT_">setKiiLogLevel(_:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/BaseAnd.html">BaseAnd</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:P7ThingIF10BaseClause">BaseClause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/BaseEquals.html">BaseEquals</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/BaseNotEquals.html">BaseNotEquals</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/BaseOr.html">BaseOr</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/BaseRange.html">BaseRange</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Logger.html">Logger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Predicate.html">Predicate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:P7ThingIF11QueryClause">QueryClause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Target.html">Target</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/TargetThing.html">TargetThing</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:P7ThingIF13TriggerClause">TriggerClause</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Action.html">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ActionResult.html">ActionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AggregatedResult.html">AggregatedResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Aggregation.html">Aggregation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Aggregation/FieldType.html">– FieldType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Aggregation/FunctionType.html">– FunctionType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AliasAction.html">AliasAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AliasActionResult.html">AliasActionResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AllClause.html">AllClause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AndClauseInQuery.html">AndClauseInQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AndClauseInTrigger.html">AndClauseInTrigger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Command.html">Command</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/CommandForm.html">CommandForm</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Condition.html">Condition</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/EndNode.html">EndNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/EqualsClauseInQuery.html">EqualsClauseInQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/EqualsClauseInTrigger.html">EqualsClauseInTrigger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ErrorResponse.html">ErrorResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Gateway.html">Gateway</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GatewayInformation.html">GatewayInformation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GroupedHistoryStates.html">GroupedHistoryStates</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GroupedHistoryStatesQuery.html">GroupedHistoryStatesQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HistoryState.html">HistoryState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HistoryStatesQuery.html">HistoryStatesQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/KiiApp.html">KiiApp</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/NotEqualsClauseInQuery.html">NotEqualsClauseInQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/NotEqualsClauseInTrigger.html">NotEqualsClauseInTrigger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OnboardWithThingIDOptions.html">OnboardWithThingIDOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OnboardWithVendorThingIDOptions.html">OnboardWithVendorThingIDOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OrClauseInQuery.html">OrClauseInQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OrClauseInTrigger.html">OrClauseInTrigger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Owner.html">Owner</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PendingEndNode.html">PendingEndNode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/RangeClauseInQuery.html">RangeClauseInQuery</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/RangeClauseInTrigger.html">RangeClauseInTrigger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ScheduleOncePredicate.html">ScheduleOncePredicate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SchedulePredicate.html">SchedulePredicate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServerCode.html">ServerCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ServerError.html">ServerError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/StandaloneThing.html">StandaloneThing</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/StatePredicate.html">StatePredicate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TimeRange.html">TimeRange</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Trigger.html">Trigger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TriggerOptions.html">TriggerOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TriggeredCommandForm.html">TriggeredCommandForm</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TriggeredServerCodeResult.html">TriggeredServerCodeResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TypedID.html">TypedID</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TypedID/Types.html">– Types</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>TriggeredServerCodeResult</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">TriggeredServerCodeResult</span></code></pre>
+
+                </div>
+              </div>
+            <p>Class represents result of server code trigged by trigger</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult9succeededSb"></a>
+                    <a name="//apple_ref/swift/Property/succeeded" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult9succeededSb">succeeded</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether the invocation succeeded</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">succeeded</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult10executedAtV10Foundation4Date"></a>
+                    <a name="//apple_ref/swift/Property/executedAt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult10executedAtV10Foundation4Date">executedAt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Date of the execution</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">executedAt</span><span class="p">:</span> <span class="kt">Date</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult8endpointGSqSS_"></a>
+                    <a name="//apple_ref/swift/Property/endpoint" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult8endpointGSqSS_">endpoint</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The endpoint used in the server code invocation</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">endpoint</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult5errorGSqVS_11ServerError_"></a>
+                    <a name="//apple_ref/swift/Property/error" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult5errorGSqVS_11ServerError_">error</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Error object of the invocation if any</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">error</span><span class="p">:</span> <span class="kt"><a href="../Structs/ServerError.html">ServerError</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult13returnedValueGSqP__"></a>
+                    <a name="//apple_ref/swift/Property/returnedValue" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult13returnedValueGSqP__">returnedValue</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returned value from server code (JsonObject, JsonArray, String, Number, Boolean or null)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">returnedValue</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult21returnedValueAsStringGSqSS_"></a>
+                    <a name="//apple_ref/swift/Property/returnedValueAsString" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult21returnedValueAsStringGSqSS_">returnedValueAsString</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returned value from server code casted to String.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">returnedValueAsString</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult19returnedValueAsBoolGSqSb_"></a>
+                    <a name="//apple_ref/swift/Property/returnedValueAsBool" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult19returnedValueAsBoolGSqSb_">returnedValueAsBool</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returned value from server code casted to Bool.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">returnedValueAsBool</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult18returnedValueAsIntGSqSi_"></a>
+                    <a name="//apple_ref/swift/Property/returnedValueAsInt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult18returnedValueAsIntGSqSi_">returnedValueAsInt</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returned value from server code casted to Int.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">returnedValueAsInt</span><span class="p">:</span> <span class="kt">Int</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult21returnedValueAsDoubleGSqSd_"></a>
+                    <a name="//apple_ref/swift/Property/returnedValueAsDouble" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult21returnedValueAsDoubleGSqSd_">returnedValueAsDouble</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returned value from server code casted to Double.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">returnedValueAsDouble</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult25returnedValueAsDictionaryGSqGVs10DictionarySSP___"></a>
+                    <a name="//apple_ref/swift/Property/returnedValueAsDictionary" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult25returnedValueAsDictionaryGSqGVs10DictionarySSP___">returnedValueAsDictionary</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returned value from server code casted to [String : Any].</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">returnedValueAsDictionary</span><span class="p">:</span> <span class="kt">Dictionary</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">Any</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vV7ThingIF25TriggeredServerCodeResult20returnedValueAsArrayGSqGSaP___"></a>
+                    <a name="//apple_ref/swift/Property/returnedValueAsArray" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vV7ThingIF25TriggeredServerCodeResult20returnedValueAsArrayGSqGSaP___">returnedValueAsArray</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Returned value from server code casted to [Any].</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">returnedValueAsArray</span><span class="p">:</span> <span class="p">[</span><span class="kt">Any</span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FV7ThingIF25TriggeredServerCodeResultcFTSb10executedAtV10Foundation4Date8endpointGSqSS_13returnedValueGSqP__5errorGSqVS_11ServerError__S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(_:executedAt:endpoint:returnedValue:error:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FV7ThingIF25TriggeredServerCodeResultcFTSb10executedAtV10Foundation4Date8endpointGSqSS_13returnedValueGSqP__5errorGSqVS_11ServerError__S0_">init(_:executedAt:endpoint:returnedValue:error:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initialize <code>TriggeredServerCodeResult</code>.</p>
+
+<p>Developers rarely use this initializer. If you want to recreate
+ same instance from stored data or transmitted data, you can use
+ this method.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span>
+      <span class="n">_</span> <span class="nv">succeeded</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">,</span>
+      <span class="nv">executedAt</span><span class="p">:</span> <span class="kt">Date</span><span class="p">,</span>
+      <span class="nv">endpoint</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span>
+      <span class="nv">returnedValue</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+      <span class="nv">error</span><span class="p">:</span> <span class="kt"><a href="../Structs/ServerError.html">ServerError</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2017 <a class="link" href="http://kii.com" target="_blank" rel="external">Kii Corp</a>. All rights reserved. (Last updated: 2017-05-19)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
