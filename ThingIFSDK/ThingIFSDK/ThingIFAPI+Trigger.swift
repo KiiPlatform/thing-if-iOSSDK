@@ -10,446 +10,561 @@ import Foundation
 
 extension ThingIFAPI {
 
-    func _postNewTrigger(
-        triggeredCommandForm: TriggeredCommandForm,
-        predicate: Predicate,
-        options: TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?)-> Void)
-    {
-        guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
-            return
-        }
+    // MARK: - Trigger methods
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
+    /** Post new Trigger to IoT Cloud.
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
 
-        // generate command
-        let targetID = triggeredCommandForm.targetID ?? target.typedID
-        var commandDict = triggeredCommandForm.toDictionary()
-        commandDict["issuer"] = owner.typedID.toString()
-        if commandDict["target"] == nil {
-            commandDict["target"] = targetID.toString()
-        }
+     When thing related to this ThingIFAPI instance meets condition
+     described by predicate, A registered command sends to thing
+     related to `TriggeredCommandForm.targetID`.
 
-        // generate body
-        var requestBodyDict: Dictionary<String, AnyObject> = [
-          "predicate": predicate.toNSDictionary(),
-          "command": commandDict,
-          "triggersWhat": TriggersWhat.COMMAND.rawValue]
-        requestBodyDict["title"] = options?.title
-        requestBodyDict["description"] = options?.triggerDescription
-        requestBodyDict["metadata"] = options?.metadata
+     `target` property and `TriggeredCommandForm.targetID` must be
+     same owner's things.
 
-        do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                var trigger: Trigger?
-                if let triggerID = response?["triggerID"] as? String{
-                    let command = Command(
-                      commandID: nil,
-                      targetID: targetID,
-                      issuerID: self.owner.typedID,
-                      schemaName: triggeredCommandForm.schemaName,
-                      schemaVersion: triggeredCommandForm.schemaVersion,
-                      actions: triggeredCommandForm.actions,
-                      actionResults: nil,
-                      commandState: nil,
-                      title: triggeredCommandForm.title,
-                      commandDescription: triggeredCommandForm.commandDescription,
-                      metadata: triggeredCommandForm.metadata)
-                    trigger = Trigger(
-                      triggerID: triggerID,
-                      targetID: target.typedID,
-                      enabled: true,
-                      predicate: predicate,
-                      command: command,
-                      title: options?.title,
-                      triggerDescription: options?.triggerDescription,
-                      metadata: options?.metadata
-                    )
-                }
-
-                dispatch_async(dispatch_get_main_queue()) {
-                    completionHandler(trigger, error)
-                }
-            })
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        }catch(_){
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
-        }
-    }
-    func _postNewTrigger(
-        serverCode:ServerCode,
+     - Parameter triggeredCommandForm: Triggered command form of
+       posting trigger.
+     - Parameter predicate: Predicate of this trigger.
+     - Parameter options: Optional data for this trigger.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments: 1st one is an created
+       Trigger instance, 2nd one is an ThingIFError instance when
+       failed.
+    */
+    open func postNewTrigger(
+        _ triggeredCommandForm:TriggeredCommandForm,
         predicate:Predicate,
         options:TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
-        )
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
     {
-        guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+        let commandJson: [String : Any]
+        do {
+            commandJson = try makeCommandJson(triggeredCommandForm)
+        } catch let error as ThingIFError {
+            completionHandler(nil, error)
+            return
+        } catch let error {
+            kiiVerboseLog(error)
+            completionHandler(nil, ThingIFError.unsupportedError)
             return
         }
-        
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-        
-        // generate body
-        var requestBodyDict: Dictionary<String, AnyObject> = [
-          "predicate": predicate.toNSDictionary(),
-          "serverCode": serverCode.toNSDictionary(),
-          "triggersWhat": TriggersWhat.SERVER_CODE.rawValue]
-        requestBodyDict["title"] = options?.title
-        requestBodyDict["description"] = options?.triggerDescription
-        requestBodyDict["metadata"] = options?.metadata
-        do{
-            let requestBodyData =
-              try NSJSONSerialization.dataWithJSONObject(
-                requestBodyDict,
-                options: NSJSONWritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(.POST,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                var trigger: Trigger?
-                if let triggerID = response?["triggerID"] as? String{
-                    trigger = Trigger(
-                      triggerID: triggerID,
-                      targetID: target.typedID,
-                      enabled: true,
-                      predicate: predicate,
-                      serverCode: serverCode,
-                      title: options?.title,
-                      triggerDescription: options?.triggerDescription,
-                      metadata: options?.metadata)
-                }
-                
-                dispatch_async(dispatch_get_main_queue()) {
-                    completionHandler(trigger, error)
-                }
-            })
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        }catch(_){
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
-        }
+
+        postNewTrigger(
+          [
+            "predicate": (predicate as! ToJsonObject).makeJsonObject(),
+            "command" : commandJson,
+            "triggersWhat" : TriggersWhat.command.rawValue
+          ] + ( options?.makeJsonObject() ?? [ : ]),
+          completionHandler: completionHandler)
     }
 
-    func _patchTrigger(
-        triggerID: String,
-        triggeredCommandForm: TriggeredCommandForm? = nil,
-        predicate: Predicate? = nil,
-        options: TriggerOptions? = nil,
-        completionHandler: (Trigger?, ThingIFError?) -> Void)
+    private func postNewTrigger(
+      _ requestBody: [String : Any],
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        if triggeredCommandForm == nil && predicate == nil && options == nil {
-            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
-            return
-        }
-
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        // generate body
-        var requestBodyDict: Dictionary<String, AnyObject> = [
-          "triggersWhat": TriggersWhat.COMMAND.rawValue
-        ];
-        requestBodyDict["title"] = options?.title
-        requestBodyDict["description"] = options?.triggerDescription
-        requestBodyDict["metadata"] = options?.metadata
-
-        // generate predicate
-        if predicate != nil {
-            requestBodyDict["predicate"] = predicate!.toNSDictionary()
-        }
-
-        // generate command
-        if let form = triggeredCommandForm {
-            var command = form.toDictionary()
-            command["issuer"] = owner.typedID.toString()
-            if command["target"] == nil {
-                command["target"] = target.typedID.toString()
-            }
-            requestBodyDict["command"] = command
-        }
-        do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(.PATCH,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                if error == nil {
-                    self._getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
-                        dispatch_async(dispatch_get_main_queue()) {
-                            completionHandler(updatedTrigger, error2)
-                        }
-                    })
-                }else{
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completionHandler(nil, error)
-                    }
-                }
-            })
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        }catch(_){
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
-        }
-    }
-
-    func _patchTrigger(
-        triggerID:String,
-        serverCode:ServerCode?,
-        predicate:Predicate?,
-        options:TriggerOptions?,
-        completionHandler: (Trigger?, ThingIFError?) -> Void
-        )
-    {
-        guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
-            return
-        }
-
-        if serverCode == nil && predicate == nil && options == nil {
-            completionHandler(nil, ThingIFError.UNSUPPORTED_ERROR)
-            return
-        }
-
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-        
-        // generate body
-        var requestBodyDict: Dictionary<String, AnyObject> = [
-          "triggersWhat" : TriggersWhat.SERVER_CODE.rawValue
-        ]
-        requestBodyDict["predicate"] = predicate?.toNSDictionary()
-        requestBodyDict["serverCode"] = serverCode?.toNSDictionary()
-        requestBodyDict["title"] = options?.title;
-        requestBodyDict["description"] = options?.triggerDescription;
-        requestBodyDict["metadata"] = options?.metadata;
-        do{
-            let requestBodyData = try NSJSONSerialization.dataWithJSONObject(requestBodyDict, options: NSJSONWritingOptions(rawValue: 0))
-            // do request
-            let request = buildDefaultRequest(.PATCH,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: requestBodyData, completionHandler: { (response, error) -> Void in
-                if error == nil {
-                    self._getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
-                        dispatch_async(dispatch_get_main_queue()) {
-                            completionHandler(updatedTrigger, error2)
-                        }
-                    })
-                }else{
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completionHandler(nil, error)
-                    }
-                }
-            })
-            let operation = IoTRequestOperation(request: request)
-            operationQueue.addOperation(operation)
-        }catch(_){
-            kiiSevereLog("ThingIFError.JSON_PARSE_ERROR")
-            completionHandler(nil, ThingIFError.JSON_PARSE_ERROR)
-        }
-    }
-    
-    func _enableTrigger(
-        triggerID:String,
-        enable:Bool,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
-        )
-    {
-        guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
-            return
-        }
-
-        var enableString = "enable"
-        if !enable {
-            enableString = "disable"
-        }
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/\(enableString)"
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        let request = buildDefaultRequest(HTTPMethod.PUT,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            if error == nil {
-                self._getTrigger(triggerID, completionHandler: { (updatedTrigger, error2) -> Void in
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completionHandler(updatedTrigger, error2)
-                    }
-                })
-            }else{
-                dispatch_async(dispatch_get_main_queue()) {
-                    completionHandler(nil, error)
+        self.operationQueue.addHttpRequestOperation(
+          .post,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers",
+          requestHeader:
+            self.defaultHeader +
+            ["Content-Type" : MediaType.mediaTypeJson.rawValue],
+          requestBody: requestBody,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error -> Void in
+            if error != nil {
+                DispatchQueue.main.async { completionHandler(nil, error) }
+            } else {
+                self.getTrigger(response!["triggerID"] as! String) {
+                    completionHandler($0, $1)
                 }
             }
-        })
-
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-
+        }
     }
 
-    func _deleteTrigger(
-        triggerID:String,
-        completionHandler: (String, ThingIFError?)-> Void
+
+    /** Post new Trigger to IoT Cloud.
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter serverCode: Server code to be executed by the Trigger.
+     - Parameter predicate: Predicate of the Command.
+     - Parameter options: Optional data for this trigger.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments: 1st one is an created
+       Trigger instance, 2nd one is an ThingIFError instance when
+       failed.
+     */
+    open func postNewTrigger(
+        _ serverCode:ServerCode,
+        predicate:Predicate,
+        options:TriggerOptions? = nil,
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
         )
     {
+        postNewTrigger(
+          [
+            "predicate": (predicate as! ToJsonObject).makeJsonObject(),
+            "serverCode" : serverCode.makeJsonObject(),
+            "triggersWhat" : TriggersWhat.serverCode.rawValue
+          ] + ( options?.makeJsonObject() ?? [ : ]),
+          completionHandler: completionHandler)
+    }
+
+    /** Apply patch to a registered Trigger
+    Modify a registered Trigger with the specified patch.
+
+    **Note**: Please onboard first, or provide a target instance by
+      calling copyWithTarget. Otherwise,
+      KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+      completionHandler callback
+
+    `target` property and `TriggeredCommandForm.targetID` must be same
+    owner's things.
+
+    - Parameter triggerID: ID of the Trigger to which the patch is applied.
+    - Parameter triggeredCommandForm: Modified triggered command form
+      to patch trigger.
+    - Parameter predicate: Modified Predicate to be applied as patch.
+    - Parameter options: Modified optional data for this trigger.
+    - Parameter completionHandler: A closure to be executed once
+      finished. The closure takes 2 arguments: 1st one is the modified
+      Trigger instance, 2nd one is an ThingIFError instance when
+      failed.
+    */
+    open func patchTrigger(
+        _ triggerID:String,
+        triggeredCommandForm:TriggeredCommandForm? = nil,
+        predicate:Predicate? = nil,
+        options:TriggerOptions? = nil,
+        completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
+    {
+        var requestBody = options?.makeJsonObject() ?? [ : ]
+        do {
+            if let form = triggeredCommandForm {
+                requestBody["command"] = try makeCommandJson(form)
+                requestBody["triggersWhat"] = TriggersWhat.command.rawValue
+            }
+        } catch let error as ThingIFError{
+            completionHandler(nil, error)
+            return
+        } catch let error {
+            kiiVerboseLog(error)
+            completionHandler(nil, ThingIFError.unsupportedError)
+            return
+        }
+        requestBody["predicate"] =
+          (predicate as? ToJsonObject)?.makeJsonObject()
+
+        patchTrigger(triggerID,
+                     requestBody: requestBody,
+                     completionHandler: completionHandler)
+    }
+
+    private func patchTrigger(
+      _ triggerID: String,
+      requestBody: [String : Any],
+      completionHandler: @escaping (Trigger?, ThingIFError?) -> Void) -> Void
+    {
         guard let target = self.target else {
-            completionHandler(triggerID, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
+        if requestBody.isEmpty {
+            completionHandler(
+              nil,
+              ThingIFError.invalidArgument(
+                message: "nothing to send as patch trigger"))
+            return
+        }
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
+        self.operationQueue.addHttpRequestOperation(
+          .patch,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)",
+          requestHeader:
+            self.defaultHeader +
+            ["Content-Type" : MediaType.mediaTypeJson.rawValue],
+          requestBody: requestBody,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error -> Void in
 
-        let request = buildDefaultRequest(HTTPMethod.DELETE,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
+            if error != nil {
+                DispatchQueue.main.async { completionHandler(nil, error) }
+            } else {
+                self.getTrigger(triggerID) { completionHandler($0, $1) }
+            }
+        }
+    }
 
-            dispatch_async(dispatch_get_main_queue()) {
+    /** Apply patch to a registered Trigger.
+     Modify a registered Trigger with the specified patch.
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter triggerID: ID of the Trigger to which the patch is applied.
+     - Parameter serverCode: Modified ServerCode to be applied as patch.
+     - Parameter predicate: Modified Predicate to be applied as patch.
+     - Parameter options: Optional data for this trigger.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments: 1st one is the
+       modified Trigger instance, 2nd one is an ThingIFError instance
+       when failed.
+     */
+    open func patchTrigger(
+        _ triggerID:String,
+        serverCode:ServerCode? = nil,
+        predicate:Predicate? = nil,
+        options:TriggerOptions? = nil,
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void
+        )
+    {
+        var requestBody = options?.makeJsonObject() ?? [ : ]
+        if let serverCode = serverCode {
+            requestBody["serverCode"] = serverCode.makeJsonObject()
+            requestBody["triggersWhat"] = TriggersWhat.serverCode.rawValue
+        }
+        requestBody["predicate"] =
+          (predicate as? ToJsonObject)?.makeJsonObject()
+
+        patchTrigger(triggerID,
+                     requestBody: requestBody,
+                     completionHandler: completionHandler)
+    }
+
+    /** Enable/Disable a registered Trigger
+
+     If its already enabled(/disabled), this method won't throw error
+     and behaveas succeeded.
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter triggerID: ID of the Trigger to be enabled/disabled.
+     - Parameter enable: Flag indicate enable/disable Trigger.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments: 1st one is the
+       enabled/disabled Trigger instance, 2nd one is an ThingIFError
+       instance when failed.
+    */
+    open func enableTrigger(
+        _ triggerID: String,
+        enable: Bool,
+        completionHandler: @escaping (Trigger?, ThingIFError?)-> Void) -> Void
+    {
+        guard let target = self.target else {
+            completionHandler(nil, ThingIFError.targetNotAvailable)
+            return
+        }
+
+        let enableString = enable ? "enable" :  "disable"
+
+        self.operationQueue.addHttpRequestOperation(
+          .put,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/\(enableString)",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error -> Void in
+
+            if error != nil {
+                DispatchQueue.main.async { completionHandler(nil, error) }
+            } else {
+                self.getTrigger(triggerID) { completionHandler($0, $1) }
+            }
+        }
+    }
+
+    /** Delete a registered Trigger.
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter triggerID: ID of the Trigger to be deleted.
+     - Parameter completionHandler: A closure to be executed once
+     finished. The closure takes 2 arguments: 1st one is the deleted
+     TriggerId, 2nd one is an ThingIFError instance when failed.
+    */
+    open func deleteTrigger(
+        _ triggerID: String,
+        completionHandler: @escaping (String, ThingIFError?)-> Void) -> Void
+    {
+        guard let target = self.target else {
+            completionHandler(triggerID, ThingIFError.targetNotAvailable)
+            return
+        }
+
+        self.operationQueue.addHttpRequestOperation(
+          .delete,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(triggerID, $0) }) {
+            response, error -> Void in
+
+            DispatchQueue.main.async {
                 completionHandler(triggerID, error)
             }
-        })
-
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
-    }
-    
-    func _listTriggeredServerCodeResults(
-        triggerID:String,
-        bestEffortLimit:Int?,
-        paginationKey:String?,
-        completionHandler: (results:[TriggeredServerCodeResult]?, paginationKey:String?, error: ThingIFError?)-> Void
-    )
-    {
-        guard let target = self.target else {
-            completionHandler(results: nil, paginationKey: nil, error: ThingIFError.TARGET_NOT_AVAILABLE)
-            return
         }
-        
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/results/server-code"
-
-        if paginationKey != nil && bestEffortLimit != nil && bestEffortLimit! != 0 {
-            requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
-        }else if bestEffortLimit != nil && bestEffortLimit! != 0 {
-            requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
-        }else if paginationKey != nil {
-            requestURL += "?paginationKey=\(paginationKey!)"
-        }
-        
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-        
-        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            var results: [TriggeredServerCodeResult]?
-            var nextPaginationKey: String?
-            if let responseDict = response {
-                nextPaginationKey = responseDict["nextPaginationKey"] as? String
-                if let resultDicts = responseDict["triggerServerCodeResults"] as? NSArray {
-                    results = [TriggeredServerCodeResult]()
-                    for resultDict in resultDicts {
-                        if let result = TriggeredServerCodeResult.resultWithNSDict(resultDict as! NSDictionary){
-                            results!.append(result)
-                        }
-                    }
-                }
-            }
-            dispatch_async(dispatch_get_main_queue()) {
-                completionHandler(results: results, paginationKey: nextPaginationKey, error: error)
-            }
-        })
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
     }
 
-    func _listTriggers(
-        bestEffortLimit:Int?,
-        paginationKey:String?,
-        completionHandler: (triggers:[Trigger]?, paginationKey:String?, error: ThingIFError?)-> Void
-        )
+    /** Retrieves list of server code results that was executed by the
+     specified trigger.
+
+     Results will be listing with order by modified date descending
+     (latest first)
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter bestEffortLimit: Limit the maximum number of the
+       Results in theResponse. If omitted default limit internally
+       defined is applied. Meaning of 'bestEffort' is if specified
+       value is greater than default limit, default limit is applied.
+     - Parameter triggerID: ID of the Trigger
+     - Parameter paginationKey: If there is further page to be
+       retrieved, this API returns paginationKey in 2nd
+       element. Specifying this value in next call in the argument
+       results continue to get the results from the next page.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 3 arguments: 1st one is Array of
+       Results instance if found, 2nd one is paginationKey if there is
+       further page to be retrieved, and 3rd one is an instance of
+       ThingIFError when failed.
+     */
+    open func listTriggeredServerCodeResults(
+        _ triggerID:String,
+        bestEffortLimit:Int? = nil,
+        paginationKey:String? = nil,
+        completionHandler:
+          @escaping (
+            _ results:[TriggeredServerCodeResult]?,
+            _ paginationKey:String?,
+            _ error: ThingIFError?) -> Void) -> Void
     {
         guard let target = self.target else {
-            completionHandler(triggers: nil, paginationKey: nil, error: ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        var requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers"
-        
-        if paginationKey != nil && bestEffortLimit != nil && bestEffortLimit! != 0{
-            requestURL += "?paginationKey=\(paginationKey!)&bestEffortLimit=\(bestEffortLimit!)"
-        }else if bestEffortLimit != nil && bestEffortLimit! != 0 {
-            requestURL += "?bestEffortLimit=\(bestEffortLimit!)"
-        }else if paginationKey != nil {
-            requestURL += "?paginationKey=\(paginationKey!)"
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)/results/server-code".appendURLQuery(
+            ("paginationKey", paginationKey),
+            ("bestEffortLimit", bestEffortLimit)),
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, nil, $0) }) {
+
+            response, error -> Void in
+            let results: (ListTriggeredServerCodeResult?, ThingIFError?) =
+              convertSpecifiedItem(response, error)
+            DispatchQueue.main.async {
+                completionHandler(
+                  results.0?.results,
+                  results.0?.nextPaginationKey,
+                  results.1)
+            }
         }
-
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-            var triggers: [Trigger]?
-            var nextPaginationKey: String?
-            if let responseDict = response {
-                nextPaginationKey = responseDict["nextPaginationKey"] as? String
-                if let triggerDicts = responseDict["triggers"] as? NSArray {
-                    triggers = [Trigger]()
-                    for triggerDict in triggerDicts {
-                        if let trigger = Trigger.triggerWithNSDict(target.typedID, triggerDict: triggerDict as! NSDictionary){
-                            triggers!.append(trigger)
-                        }
-                    }
-                }
-            }
-            dispatch_async(dispatch_get_main_queue()) {
-                completionHandler(triggers: triggers, paginationKey: nextPaginationKey, error: error)
-            }
-        })
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
     }
 
-    func _getTrigger(
-        triggerID:String,
-        completionHandler: (Trigger?, ThingIFError?)-> Void
-        )
+    /** List Triggers belongs to the specified Target
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter bestEffortLimit: Limit the maximum number of the
+       Triggers in the Response. If omitted default limit internally
+       defined is applied. Meaning of 'bestEffort' is if specified
+       value is greater than default limit, default limit is applied.
+     - Parameter paginationKey: If there is further page to be
+       retrieved, this API returns paginationKey in 2nd
+       element. Specifying this value in next call in the argument
+       results continue to get the results from the next page.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 3 arguments: 1st one is Array of
+       Triggers instance if found, 2nd one is paginationKey if there
+       is further page to be retrieved, and 3rd one is an instance of
+       ThingIFError when failed.
+    */
+    open func listTriggers(
+        _ bestEffortLimit:Int? = nil,
+        paginationKey:String? = nil,
+        completionHandler:
+          @escaping (_ triggers:[Trigger]?,
+                     _ paginationKey:String?,
+                     _ error: ThingIFError?)-> Void) -> Void
     {
         guard let target = self.target else {
-            completionHandler(nil, ThingIFError.TARGET_NOT_AVAILABLE)
+            completionHandler(nil, nil, ThingIFError.targetNotAvailable)
             return
         }
 
-        let requestURL = "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)"
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url:  "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers".appendURLQuery(
+            ("paginationKey", paginationKey),
+            ("bestEffortLimit", bestEffortLimit)),
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, nil, $0) }) {
+            response, error -> Void in
 
-        // generate header
-        let requestHeaderDict:Dictionary<String, String> = ["authorization": "Bearer \(owner.accessToken)", "content-type": "application/json"]
-
-        let request = buildDefaultRequest(HTTPMethod.GET,urlString: requestURL, requestHeaderDict: requestHeaderDict, requestBodyData: nil, completionHandler: { (response, error) -> Void in
-
-            var trigger:Trigger?
-            if let responseDict = response{
-                trigger = Trigger.triggerWithNSDict(target.typedID, triggerDict: responseDict)
+            let json: [String : Any]?
+            if let response = response {
+                // NOTE: Server does not contains target id but
+                // Trigger requires it so I add it. We should discuss
+                // whether Trigger requires targe id or not
+                json = [
+                  "serverResponse" : response,
+                  "target" : target.typedID.toString()
+                ]
+            } else {
+                json = nil
             }
-            dispatch_async(dispatch_get_main_queue()) {
-                completionHandler(trigger, error)
-            }
-        })
 
-        let operation = IoTRequestOperation(request: request)
-        operationQueue.addOperation(operation)
+            let result: (ListTriggersResult?, ThingIFError?) =
+              convertSpecifiedItem(json, error)
+            DispatchQueue.main.async {
+                completionHandler(
+                  result.0?.triggers,
+                  result.0?.nextPaginationKey,
+                  result.1)
+            }
+        }
+    }
+
+    /** Get specified trigger
+
+     **Note**: Please onboard first, or provide a target instance by
+     calling copyWithTarget. Otherwise,
+     KiiCloudError.TARGET_NOT_AVAILABLE will be return in
+     completionHandler callback
+
+     - Parameter triggerID: ID of the Trigger to obtain.
+     - Parameter completionHandler: A closure to be executed once
+       finished. The closure takes 2 arguments: an instance of
+       Trigger, an instance of ThingIFError when failed.
+    */
+    open func getTrigger(
+      _ triggerID:String,
+      completionHandler: @escaping (Trigger?, ThingIFError?)-> Void) -> Void
+    {
+        guard let target = self.target else {
+            completionHandler(nil, ThingIFError.targetNotAvailable)
+            return
+        }
+
+        self.operationQueue.addHttpRequestOperation(
+          .get,
+          url: "\(baseURL)/thing-if/apps/\(appID)/targets/\(target.typedID.toString())/triggers/\(triggerID)",
+          requestHeader: self.defaultHeader,
+          failureBeforeExecutionHandler: { completionHandler(nil, $0) }) {
+            response, error -> Void in
+
+            let result = convertTrigger(
+              response,
+              targetID: target.typedID.toString(),
+              error: error)
+            DispatchQueue.main.async { completionHandler(result.0, result.1) }
+        }
+    }
+
+    private func makeCommandJson(
+      _ form: TriggeredCommandForm) throws -> [String : Any]
+    {
+        var retval = form.makeJsonObject()
+        retval["issuer"] = self.owner.typedID.toString()
+        if retval["target"] == nil {
+            guard let target = self.target else {
+                throw ThingIFError.targetNotAvailable
+            }
+            retval["target"] = target.typedID.toString()
+        }
+        return retval
+    }
+
+}
+
+fileprivate func convertTrigger(
+  _ response: [String : Any]?,
+  targetID: String,
+  error: ThingIFError? = nil) -> (Trigger?, ThingIFError?)
+{
+    let json: [String : Any]?
+    if let response = response {
+        // NOTE: Server does not contains target id but
+        // Trigger requires it so I add it. We should discuss
+        // whether Trigger requires targe id or not
+        json = ["serverResponse" : response, "target" : targetID]
+    } else {
+        json = nil
+    }
+
+    return convertSpecifiedItem(json, error)
+}
+
+fileprivate struct ListTriggersResult: FromJsonObject {
+
+    let triggers: [Trigger]?
+    let nextPaginationKey: String?
+
+    init(_ jsonObject: [String : Any]) throws {
+        guard let serverResponse =
+                jsonObject["serverResponse"] as? [String : Any],
+              let targetID = jsonObject["target"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.nextPaginationKey = serverResponse["nextPaginationKey"] as? String
+        guard let triggers =
+                serverResponse["triggers"] as? [[String : Any]] else {
+            self.triggers = nil
+            return
+        }
+
+        self.triggers = try triggers.map {
+            let result = convertTrigger($0, targetID: targetID)
+            if let error = result.1 {
+                throw error
+            }
+            return result.0!
+        }
+    }
+
+}
+
+fileprivate struct ListTriggeredServerCodeResult: FromJsonObject {
+    let results: [TriggeredServerCodeResult]?
+    let nextPaginationKey: String?
+
+    init(_ jsonObject: [String : Any]) throws {
+        self.nextPaginationKey = jsonObject["nextPaginationKey"] as? String
+        guard let results =
+                jsonObject["triggerServerCodeResults"] as? [[String : Any]] else
+        {
+            self.results = nil
+            return
+        }
+
+        self.results = try results.map { try TriggeredServerCodeResult($0) }
     }
 }

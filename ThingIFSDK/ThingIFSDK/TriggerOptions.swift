@@ -14,11 +14,12 @@ Options of trigger.
 This class contains optional data in order to create and modify
 `Trigger` with following methods:
 
- - `ThingIFAPI.postNewTrigger(triggeredCommandForm:predicate:options:completionHandler:)`
- - `ThingIFAPI.patchTrigger(triggerID:triggeredCommandForm:predicate:options:completionHandler:)`
+ - `ThingIFAPI.postNewTrigger(_:predicate:options:completionHandler:)`
+ - `ThingIFAPI.patchTrigger(_:triggeredCommandForm:predicate:options:completionHandler:)`
 */
-public class TriggerOptions: NSObject, NSCoding {
+public struct TriggerOptions {
 
+    // MARK: - Properties
     /// Title of a command.
     public let title: String?
 
@@ -26,7 +27,7 @@ public class TriggerOptions: NSObject, NSCoding {
     public let triggerDescription: String?
 
     /// Meta data of a trigger.
-    public let metadata: Dictionary<String, AnyObject>?
+    public let metadata: [String : Any]?
 
     // MARK: - Initializing TriggerOptions instance.
     /**
@@ -38,27 +39,24 @@ public class TriggerOptions: NSObject, NSCoding {
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(title: String? = nil,
+    public init(_ title: String? = nil,
                 triggerDescription: String? = nil,
-                metadata: Dictionary<String, AnyObject>? = nil)
+                metadata: [String : Any]? = nil)
     {
         self.title = title
         self.triggerDescription = triggerDescription;
         self.metadata = metadata;
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.title, forKey: "title")
-        aCoder.encodeObject(self.triggerDescription,
-                forKey: "triggerDescription")
-        aCoder.encodeObject(self.metadata, forKey: "metadata")
-    }
+}
 
-    public required init?(coder aDecoder: NSCoder) {
-        self.title = aDecoder.decodeObjectForKey("title") as? String
-        self.triggerDescription =
-            aDecoder.decodeObjectForKey("triggerDescription") as? String
-        self.metadata = aDecoder.decodeObjectForKey("metadata")
-                as? Dictionary<String, AnyObject>
+extension TriggerOptions: ToJsonObject {
+
+    internal func makeJsonObject() -> [String : Any] {
+        var retval: [String : Any] = [ : ]
+        retval["title"] = self.title
+        retval["description"] = self.triggerDescription
+        retval["metadata"] = self.metadata
+        return retval
     }
 }

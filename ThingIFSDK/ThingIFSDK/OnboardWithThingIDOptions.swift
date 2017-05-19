@@ -8,20 +8,26 @@
 import Foundation
 
 /** Optional parameters of
-`ThingIFAPI.onboardWithThingID(thingID:thingPassword:options:completionHandler:)`.
+`ThingIFAPI.onboardWith(thingID:thingPassword:options:completionHandler:)`.
 */
-public class OnboardWithThingIDOptions {
+public struct OnboardWithThingIDOptions {
     public let layoutPosition: LayoutPosition?
-    public let dataGroupingInterval: DataGroupingInterval?
 
     /** initializer.
 
     - Parameter position: GATEWAY | STANDALONE | ENDNODE.
-    - Parameter interval: INTERVAL_1_MINUTE | INTERVAL_15_MINUTES | INTERVAL_30_MINUTES | INTERVAL_1_HOUR | INTERVAL_12_HOURS.
-     Will be used to create the bucket to store the state history when the thing is not using traits.
     */
-    public init(position: LayoutPosition? = nil, interval: DataGroupingInterval? = nil) {
+    public init(_ position: LayoutPosition? = nil) {
         self.layoutPosition = position
-        self.dataGroupingInterval = interval
+    }
+}
+
+extension OnboardWithThingIDOptions: ToJsonObject {
+
+    internal func makeJsonObject() -> [String : Any]{
+        if let layoutPosition = self.layoutPosition {
+            return [ "layoutPosition" : layoutPosition.rawValue ]
+        }
+        return [ : ]
     }
 }

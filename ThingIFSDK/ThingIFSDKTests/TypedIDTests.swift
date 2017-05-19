@@ -2,42 +2,57 @@
 //  TypedIDTests.swift
 //  ThingIFSDK
 //
-//  Created on 2016/05/27.
-//  Copyright 2016 Kii. All rights reserved.
+//  Copyright (c) 2017 Kii. All rights reserved.
 //
 
 import XCTest
-@testable import ThingIFSDK
 
-class TypedIDTests: XCTestCase {
+@testable import ThingIF
+
+class TypedIDTests: SmallTestBase {
 
     override func setUp() {
         super.setUp()
     }
+
     override func tearDown() {
         super.tearDown()
     }
 
-    func testTypedID() {
-        let typedID_A = TypedID(type: "THING", id: "id")
-        let typedID_B = TypedID(type: "thing", id: "id")
-        let typedID_C = TypedID(type: "Thing", id: "id")
+    func testValues() {
+        let target = TypedID(TypedID.Types.thing, id: "dummy")
 
-        XCTAssertEqual(typedID_A, typedID_B)
-        XCTAssertEqual(typedID_A, typedID_C)
-        XCTAssertEqual(typedID_B, typedID_C)
+        XCTAssertNotNil(target)
+        XCTAssertEqual(target.type, TypedID.Types.thing)
+        XCTAssertEqual(target.id, "dummy")
+    }
 
-        XCTAssertEqual(typedID_A.type, typedID_B.type)
-        XCTAssertEqual(typedID_A.type, typedID_C.type)
-        XCTAssertEqual(typedID_B.type, typedID_C.type)
+    func testToString() {
+        let thingType = TypedID(TypedID.Types.thing, id: "thingID")
+        let groupType = TypedID(TypedID.Types.group, id: "groupID")
+        let userType = TypedID(TypedID.Types.user, id: "userID")
 
-        XCTAssertEqual("thing", typedID_A.type)
-        XCTAssertEqual("thing", typedID_B.type)
-        XCTAssertEqual("thing", typedID_C.type)
+        XCTAssertEqual(thingType.toString(), "thing:thingID")
+        XCTAssertEqual(groupType.toString(), "group:groupID")
+        XCTAssertEqual(userType.toString(), "user:userID")
+    }
 
-        XCTAssertEqual("id", typedID_A.id)
-        XCTAssertEqual("id", typedID_B.id)
-        XCTAssertEqual("id", typedID_C.id)
+    func testEqualAndHash() {
+        let target = TypedID(TypedID.Types.thing, id: "dummy")
 
+        XCTAssertTrue(target == target)
+
+        let sameOne = TypedID(TypedID.Types.thing, id: "dummy")
+
+        XCTAssertTrue(target == sameOne)
+        XCTAssertEqual(target.hashValue, sameOne.hashValue)
+
+        let differentOne = TypedID(TypedID.Types.user, id: "dummy")
+
+        XCTAssertFalse(target == differentOne)
+        XCTAssertFalse(differentOne == target)
+        XCTAssertTrue(target != differentOne)
+        XCTAssertTrue(differentOne != target)
+        XCTAssertNotEqual(target.hashValue, differentOne.hashValue)
     }
 }

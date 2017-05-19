@@ -7,33 +7,61 @@
 
 import Foundation
 
-public class PendingEndNode: NSObject, NSCoding {
-    let KEY_VENDORTHINGID = "vendorThingID"
-    let KEY_THINGPROPERTIES = "thingProperties"
+public struct PendingEndNode {
 
-    public let vendorThingID: String?
-    public let thingProperties: Dictionary<String, AnyObject>?
+    /** Vendor thing ID. */
+    public let vendorThingID: String
+    /** Thing type. */
+    public let thingType: String?
+    /** Thing properties. */
+    public let thingProperties: [String : Any]?
+    /** Firmware version. */
+    public let firmwareVersion: String?
 
-    public var thingType: String? {
-        return self.thingProperties?["_thingType"] as? String
+    /** Initialize `ActionResult`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters vendorThingID: Vendor thing ID.
+     - Parameters thingProperties: Thing properties.
+     */
+    public init(
+      _ vendorThingID: String,
+      thingType: String? = nil,
+      thingProperties: [String : Any]? = nil,
+      firmwareVersion: String? = nil)
+    {
+        self.vendorThingID = vendorThingID
+        self.thingType = thingType
+        self.thingProperties = thingProperties
+        self.firmwareVersion = firmwareVersion
     }
 
-    // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder)
-    {
-        aCoder.encodeObject(self.vendorThingID, forKey: KEY_VENDORTHINGID)
-        aCoder.encodeObject(self.thingProperties, forKey: KEY_THINGPROPERTIES)
+}
+
+extension PendingEndNode: ToJsonObject, FromJsonObject {
+
+    internal func makeJsonObject() -> [String : Any]{
+        var retval: [String : Any] =
+          ["endNodeVendorThingID" : self.vendorThingID ]
+        retval["endNodeThingType"] = self.thingType
+        retval["endNodeThingProperties"] = self.thingProperties
+        retval["endNodeFirmwareVersion"] = self.firmwareVersion
+        return retval
     }
 
-    public required init(coder aDecoder: NSCoder)
-    {
-        self.vendorThingID = aDecoder.decodeObjectForKey(KEY_VENDORTHINGID) as? String
-        self.thingProperties = aDecoder.decodeObjectForKey(KEY_THINGPROPERTIES) as? Dictionary<String, AnyObject>
-    }
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let id = jsonObject["vendorThingID"] as? String else {
+                throw ThingIFError.jsonParseError
+        }
 
-    init(json: Dictionary<String, AnyObject>)
-    {
-        self.vendorThingID = json[KEY_VENDORTHINGID] as? String
-        self.thingProperties = json[KEY_THINGPROPERTIES] as? Dictionary<String, AnyObject>
+        let properties = jsonObject["thingProperties"] as? [String : Any]
+        self.init(
+            id,
+            thingType: properties?["thingType"] as? String,
+            thingProperties: properties,
+            firmwareVersion: properties?["firmwareVersion"] as? String)
     }
 }

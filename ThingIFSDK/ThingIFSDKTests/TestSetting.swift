@@ -6,51 +6,37 @@
 //
 
 import UIKit
-@testable import ThingIFSDK
+@testable import ThingIF
 
-public class TestSetting: NSObject {
+open class TestSetting {
 
-    let app:App!
+    let app: KiiApp
+    let owner: Owner
+    let target: Target
+    let api: ThingIFAPI
+    let thingType: String
 
-    let owner:Owner!
-    let ownerID:String!
-    let ownerToken:String!
+    public init() {
+        let b:Bundle = Bundle(for:TestSetting.self)
+        let path:String = b.path(forResource: "testapp", ofType: "plist")!
+        let dict = NSDictionary(contentsOfFile: path) as! [String : Any]
 
-    let target:Target!
-    let thingID:String!
+        self.app = KiiApp(
+          dict["appID"] as! String,
+          appKey: dict["appKey"] as! String,
+          hostName: dict["hostName"] as! String)
 
-    let appID:String!
-    let appKey:String!
-    let hostName:String!
+        self.owner = Owner(
+          TypedID(.user, id: dict["ownerID"] as! String),
+          accessToken: dict["ownerToken"] as! String)
 
-    let api:ThingIFAPI
+        self.target = StandaloneThing(
+          dict["thingID"] as! String,
+          vendorThingID: dict["ownerID"] as! String,
+          accessToken: dict["ownerToken"] as? String)
 
-    let schema:String
-    let schemaVersion:Int
-    let thingType:String
+        self.api = ThingIFAPI(app, owner: owner)
 
-    public override init() {
-        let b:NSBundle = NSBundle(forClass:TestSetting.self)
-        let path:String = b.pathForResource("testapp", ofType: "plist")!
-        let dict:NSDictionary = NSDictionary(contentsOfFile: path)!
-
-        self.appID = dict["appID"] as! String
-        self.appKey = dict["appKey"] as! String
-        self.hostName = dict["hostName"] as! String
-        self.app = AppBuilder(appID: appID, appKey: appKey, hostName: hostName).build()
-
-        self.ownerID = dict["ownerID"] as! String
-        self.ownerToken = dict["ownerToken"] as! String
-        self.owner = Owner(typedID: TypedID(type:"user", id:ownerID),
-            accessToken: ownerToken)
-
-        self.thingID = dict["thingID"] as! String
-        self.target = StandaloneThing(thingID: thingID, vendorThingID: ownerID, accessToken: ownerToken)
-
-        self.api = ThingIFAPIBuilder(app: app, owner: owner).build()
-
-        self.schema = dict["schema"] as! String
-        self.schemaVersion = dict["schemaVersion"] as! Int
         self.thingType = dict["thingType"] as! String
     }
 

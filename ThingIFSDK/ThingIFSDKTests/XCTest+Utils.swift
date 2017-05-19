@@ -8,38 +8,79 @@
 
 import Foundation
 import XCTest
-@testable import ThingIFSDK
+@testable import ThingIF
 
 extension XCTestCase {
-    
-    func verifyDict(expectedDict:Dictionary<String, AnyObject>, actualDict: Dictionary<String, AnyObject>){
-        let s = "expected=" + expectedDict.description + "actual" + actualDict.description
-        XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqualToDictionary(actualDict), s)
-    }
-    func verifyNsDict(expectedDict:NSDictionary, actualDict:NSDictionary){
-        let s = "expected=" + expectedDict.description + "actual" + actualDict.description
-        XCTAssertTrue(expectedDict.isEqualToDictionary(actualDict as [NSObject : AnyObject]), s)
-    }
-    
-    func verifyDict(expectedDict:Dictionary<String, AnyObject>, actualData: NSData){
-        
-        do{
-            let actualDict: NSDictionary = try NSJSONSerialization.JSONObjectWithData(actualData, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-            let s = "\nexpected=" + expectedDict.description + "\nactual" + actualDict.description
-            XCTAssertTrue(NSDictionary(dictionary: expectedDict).isEqualToDictionary(actualDict as [NSObject : AnyObject]), s)
-        }catch(_){
-            XCTFail()
+
+    func executeAsynchronous(
+      description: String = "Asynchronous test executing",
+      timeout: TimeInterval = 5.0,
+      file: StaticString = #file,
+      line: UInt = #line,
+      _ executing: @escaping (XCTestExpectation) -> Void) -> Void
+    {
+        let expectation = self.expectation(description: description)
+        executing(expectation)
+        self.waitForExpectations(timeout: timeout) {
+            XCTAssertNil($0, file: file, line: line)
         }
     }
 
-    func XCTAssertEqualDictionaries<S, T: Equatable>(first: [S:T], _ second: [S:T]) {
-        XCTAssert(first == second)
+    internal func makeRequestVerifier(
+      file: StaticString = #file,
+      line: UInt = #line,
+      requestVerifier: @escaping (URLRequest) throws -> Void)
+          -> (URLRequest) -> Void
+    {
+        return {
+            request in
+
+            do {
+                try requestVerifier(request)
+            } catch let error {
+                XCTFail(
+                  error as! String,
+                  file: file,
+                  line: line)
+            }
+        } as (URLRequest) -> Void
     }
 
-    func XCTAssertEqualIoTAPIWithoutTarget(first: ThingIFAPI, _ second: ThingIFAPI) {
-        XCTAssertEqual(first.appID, second.appID)
-        XCTAssertEqual(first.appKey, second.appKey)
-        XCTAssertEqual(first.baseURL, second.baseURL)
-        XCTAssertEqual(first.installationID, second.installationID)
+    func assertEqualsWithAccuracyOrNil<T: FloatingPoint>(
+      _ expected:  T?,
+      _ actual: T?,
+      accuracy: T,
+      _ message: String? = nil,
+      _ file: StaticString = #file,
+      _ line: UInt = #line)
+    {
+        if expected == nil && actual == nil {
+            return
+        } else if expected == nil || actual == nil {
+            if (message == nil) {
+                XCTFail(file: file, line: line)
+            } else {
+                XCTFail(message!, file: file, line: line)
+            }
+            return
+        }
+
+        if message == nil {
+            XCTAssertEqualWithAccuracy(
+              expected!,
+              actual!,
+              accuracy: accuracy,
+              file: file,
+              line: line)
+        } else {
+            XCTAssertEqualWithAccuracy(
+              expected!,
+              actual!,
+              accuracy: accuracy,
+              message!,
+              file: file,
+              line: line)
+        }
     }
+
 }

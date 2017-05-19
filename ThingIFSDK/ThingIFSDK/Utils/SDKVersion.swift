@@ -7,16 +7,18 @@
 import UIKit
 
 /** Accessor of the Thing-IF SDK version. */
-public class SDKVersion: NSObject {
-    public static let sharedInstance = SDKVersion()
+open class SDKVersion {
+    open static let sharedInstance = SDKVersion()
     /** Version of the Thing-IF SDK */
-    public let versionString:String?
-    internal var kiiSDKHeader:String?
-    private override init() {
-        let b:NSBundle? = NSBundle.allFrameworks().filter{$0.bundleIdentifier == "Kii-Corporation.ThingIFSDK"}.first
-        versionString = b?.infoDictionary?["CFBundleShortVersionString"] as! String?
-        if let v = versionString {
-            kiiSDKHeader = "sn=it;sv=\(v);pv=\(UIDevice.currentDevice().systemVersion)"
+    open let versionString:String
+    internal var kiiSDKHeader:String
+    private init() {
+        let b:Bundle? = Bundle.allFrameworks.filter{$0.bundleIdentifier == "Kii-Corporation.ThingIF"}.first
+        if let v = b?.infoDictionary?["CFBundleShortVersionString"] as? String {
+            versionString = v
+        } else {
+            versionString = "0.0.0"
         }
+        kiiSDKHeader = "sn=it;sv=\(versionString);pv=\(UIDevice.current.systemVersion)"
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import ThingIFSDK
+@testable import ThingIF
 
 class GetGatewayIDTests: GatewayAPITestBase {
 
@@ -20,66 +20,65 @@ class GetGatewayIDTests: GatewayAPITestBase {
         super.tearDown()
     }
 
-    func testSuccess()
+    func testSuccess() throws
     {
-        let api:GatewayAPI = getLoggedInGatewayAPI()
+        let api = try getLoggedInGatewayAPI()
         let gatewayID = "dummyGatewayID"
-        let expectation = self.expectationWithDescription("testSuccess")
+        let expectation = self.expectation(description: "testSuccess")
 
-        do {
-            // verify request
-            let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-                XCTAssertEqual(request.HTTPMethod, "GET")
-                // verify path
-                let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id"
-                XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
-                //verify header
-                let expectedHeader = [
-                    "authorization": "Bearer \(self.ACCESSTOKEN)"
-                ]
-                XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
-                for (key, value) in expectedHeader {
-                    XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
-                }
-            }
-
-            // mock response
-            let dict = ["thingID": gatewayID]
-            let jsonData = try NSJSONSerialization.dataWithJSONObject(dict, options: .PrettyPrinted)
-            let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-                statusCode: 200, HTTPVersion: nil, headerFields: nil)
-
-            sharedMockSession.mockResponse = (jsonData, urlResponse: urlResponse, error: nil)
-            sharedMockSession.requestVerifier = requestVerifier
-            iotSession = MockSession.self
-
-            api.getGatewayID( { (id:String?, error:ThingIFError?) -> Void in
-                XCTAssertNil(error)
-                XCTAssertEqual(gatewayID, id)
-                expectation.fulfill()
-            })
-        } catch(_) {
-            XCTFail("should not throw error")
+        // verify request
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            // verify path
+            XCTAssertEqual(
+                "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id",
+                request.url!.absoluteString)
+            //verify header
+            XCTAssertEqual(
+                [
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                    "Authorization": "Bearer \(self.ACCESSTOKEN)"
+                ],
+                request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
         }
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+        // mock response
+        sharedMockSession.mockResponse = (
+            try JSONSerialization.data(
+                withJSONObject:
+                ["thingID": gatewayID],
+                options: .prettyPrinted),
+            HTTPURLResponse(
+                url: URL(string:api.gatewayAddress.absoluteString)!,
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: nil),
+            nil)
+        iotSession = MockSession.self
+
+        api.getGatewayID( { (id:String?, error:ThingIFError?) -> Void in
+            XCTAssertNil(error)
+            XCTAssertEqual(gatewayID, id)
+            expectation.fulfill()
+        })
+
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error)
         }
     }
 
     func testNoLoggedInError()
     {
         let setting = TestSetting()
-        let api:GatewayAPI = GatewayAPI(app: setting.app, gatewayAddress: NSURL(string: setting.app.baseURL)!)
-        let expectation = self.expectationWithDescription("testNoLoggedInError")
+        let api = GatewayAPI(setting.app, gatewayAddress: URL(string: setting.app.baseURL)!)
+        let expectation = self.expectation(description: "testNoLoggedInError")
 
         api.getGatewayID( { (id:String?, error:ThingIFError?) -> Void in
             XCTAssertNil(id)
             XCTAssertNotNil(error)
             switch error! {
-            case .USER_IS_NOT_LOGGED_IN:
+            case .userIsNotLoggedIn:
                 break
             default:
                 XCTFail("unknown error response")
@@ -87,250 +86,243 @@ class GetGatewayIDTests: GatewayAPITestBase {
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error)
         }
     }
 
-    func test400Error()
+    func test400Error() throws
     {
-        let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test400Error")
+        let api = try getLoggedInGatewayAPI()
+        let expectation = self.expectation(description: "test400Error")
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(
+                "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id",
+                request.url!.absoluteString)
             //verify header
-            let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
-            ]
-            XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
-            for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
-            }
+            XCTAssertEqual(
+                [
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                    "Authorization": "Bearer \(self.ACCESSTOKEN)"
+                ],
+                request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 400, HTTPVersion: nil, headerFields: nil)
-
-        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        sharedMockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (
+            nil,
+            HTTPURLResponse(
+                url: URL(string:api.gatewayAddress.absoluteString)!,
+                statusCode: 400,
+                httpVersion: nil,
+                headerFields: nil),
+            nil)
         iotSession = MockSession.self
 
         api.getGatewayID( { (id:String?, error:ThingIFError?) -> Void in
             XCTAssertNil(id)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
-                XCTAssertEqual(400, actualErrorResponse.httpStatusCode)
-            default:
-                XCTFail("unknown error response")
-            }
+            XCTAssertEqual(
+                ThingIFError.errorResponse(
+                    required: ErrorResponse(400, errorCode: "", errorMessage: "")),
+                error)
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error)
         }
     }
 
-    func test401Error()
+    func test401Error() throws
     {
-        let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test401Error")
+        let api = try getLoggedInGatewayAPI()
+        let expectation = self.expectation(description: "test401Error")
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(
+                "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id",
+                request.url!.absoluteString)
             //verify header
-            let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
-            ]
-            XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
-            for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
-            }
+            XCTAssertEqual(
+                [
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                    "Authorization": "Bearer \(self.ACCESSTOKEN)"
+                ],
+                request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 401, HTTPVersion: nil, headerFields: nil)
-
-        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        sharedMockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (
+            nil,
+            HTTPURLResponse(
+                url: URL(string:api.gatewayAddress.absoluteString)!,
+                statusCode: 401,
+                httpVersion: nil,
+                headerFields: nil),
+            nil)
         iotSession = MockSession.self
 
         api.getGatewayID( { (id:String?, error:ThingIFError?) -> Void in
             XCTAssertNil(id)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
-                XCTAssertEqual(401, actualErrorResponse.httpStatusCode)
-            default:
-                XCTFail("unknown error response")
-            }
+            XCTAssertEqual(
+                ThingIFError.errorResponse(
+                    required: ErrorResponse(401, errorCode: "", errorMessage: "")),
+                error)
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error)
         }
     }
 
-    func test404Error()
+    func test404Error() throws
     {
-        let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test404Error")
+        let api = try getLoggedInGatewayAPI()
+        let expectation = self.expectation(description: "test404Error")
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(
+                "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id",
+                request.url!.absoluteString)
             //verify header
-            let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
-            ]
-            XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
-            for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
-            }
+            XCTAssertEqual(
+                [
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                    "Authorization": "Bearer \(self.ACCESSTOKEN)"
+                ],
+                request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 404, HTTPVersion: nil, headerFields: nil)
-
-        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        sharedMockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (
+            nil,
+            HTTPURLResponse(
+                url: URL(string:api.gatewayAddress.absoluteString)!,
+                statusCode: 404,
+                httpVersion: nil,
+                headerFields: nil),
+            nil)
         iotSession = MockSession.self
 
         api.getGatewayID( { (id:String?, error:ThingIFError?) -> Void in
             XCTAssertNil(id)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
-                XCTAssertEqual(404, actualErrorResponse.httpStatusCode)
-            default:
-                XCTFail("unknown error response")
-            }
+            XCTAssertEqual(
+                ThingIFError.errorResponse(
+                    required: ErrorResponse(404, errorCode: "", errorMessage: "")),
+                error)
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error)
         }
     }
 
-    func test409Error()
+    func test409Error() throws
     {
-        let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test409Error")
+        let api = try getLoggedInGatewayAPI()
+        let expectation = self.expectation(description: "test409Error")
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(
+                "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id",
+                request.url!.absoluteString)
             //verify header
-            let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
-            ]
-            XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
-            for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
-            }
+            XCTAssertEqual(
+                [
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                    "Authorization": "Bearer \(self.ACCESSTOKEN)"
+                ],
+                request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 409, HTTPVersion: nil, headerFields: nil)
-
-        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        sharedMockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (
+            nil,
+            HTTPURLResponse(
+                url: URL(string:api.gatewayAddress.absoluteString)!,
+                statusCode: 409,
+                httpVersion: nil,
+                headerFields: nil),
+            nil)
         iotSession = MockSession.self
 
         api.getGatewayID( { (id:String?, error:ThingIFError?) -> Void in
             XCTAssertNil(id)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
-                XCTAssertEqual(409, actualErrorResponse.httpStatusCode)
-            default:
-                XCTFail("unknown error response")
-            }
+            XCTAssertEqual(
+                ThingIFError.errorResponse(
+                    required: ErrorResponse(409, errorCode: "", errorMessage: "")),
+                error)
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error)
         }
     }
 
-    func test503Error()
+    func test503Error() throws
     {
-        let api:GatewayAPI = getLoggedInGatewayAPI()
-        let expectation = self.expectationWithDescription("test503Error")
+        let api = try getLoggedInGatewayAPI()
+        let expectation = self.expectation(description: "test503Error")
 
         // verify request
-        let requestVerifier: ((NSURLRequest) -> Void) = {(request) in
-            XCTAssertEqual(request.HTTPMethod, "GET")
+        sharedMockSession.requestVerifier = makeRequestVerifier() { request in
+            XCTAssertEqual(request.httpMethod, "GET")
             // verify path
-            let expectedPath = "\(api.gatewayAddress.absoluteString!)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id"
-            XCTAssertEqual(request.URL!.absoluteString, expectedPath, "Should be equal")
+            XCTAssertEqual(
+                "\(api.gatewayAddress.absoluteString)/\(api.app.siteName)/apps/\(api.app.appID)/gateway/id",
+                request.url!.absoluteString)
             //verify header
-            let expectedHeader = [
-                "authorization": "Bearer \(self.ACCESSTOKEN)"
-            ]
-            XCTAssertEqual(expectedHeader.count, request.allHTTPHeaderFields?.count)
-            for (key, value) in expectedHeader {
-                XCTAssertEqual(value, request.valueForHTTPHeaderField(key))
-            }
+            XCTAssertEqual(
+                [
+                    "X-Kii-SDK": SDKVersion.sharedInstance.kiiSDKHeader,
+                    "Authorization": "Bearer \(self.ACCESSTOKEN)"
+                ],
+                request.allHTTPHeaderFields!)
+            XCTAssertNil(request.httpBody)
         }
 
         // mock response
-        let urlResponse = NSHTTPURLResponse(URL: NSURL(string:api.gatewayAddress.absoluteString!)!,
-            statusCode: 503, HTTPVersion: nil, headerFields: nil)
-
-        sharedMockSession.mockResponse = (nil, urlResponse: urlResponse, error: nil)
-        sharedMockSession.requestVerifier = requestVerifier
+        sharedMockSession.mockResponse = (
+            nil,
+            HTTPURLResponse(
+                url: URL(string:api.gatewayAddress.absoluteString)!,
+                statusCode: 503,
+                httpVersion: nil,
+                headerFields: nil),
+            nil)
         iotSession = MockSession.self
 
         api.getGatewayID( { (id:String?, error:ThingIFError?) -> Void in
             XCTAssertNil(id)
-            XCTAssertNotNil(error)
-            switch error! {
-            case .ERROR_RESPONSE(let actualErrorResponse):
-                XCTAssertEqual(503, actualErrorResponse.httpStatusCode)
-            default:
-                XCTFail("unknown error response")
-            }
+            XCTAssertEqual(
+                ThingIFError.errorResponse(
+                    required: ErrorResponse(503, errorCode: "", errorMessage: "")),
+                error)
             expectation.fulfill()
         })
 
-        self.waitForExpectationsWithTimeout(20.0) { (error) -> Void in
-            if error != nil {
-                XCTFail("execution timeout")
-            }
+        self.waitForExpectations(timeout: 20.0) { (error) -> Void in
+            XCTAssertNil(error)
         }
     }
 }

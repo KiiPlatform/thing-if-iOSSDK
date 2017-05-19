@@ -5,48 +5,93 @@
 import Foundation
 
 /** Represents entity type and its ID. */
-public class TypedID : NSObject, NSCoding {
+public struct TypedID: Equatable {
 
-    // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.type, forKey: "type")
-        aCoder.encodeObject(self.id, forKey: "id")
+    public enum Types: String {
+        /** User type. */
+        case user = "user"
+        /** Group type. */
+        case group = "group"
+        /** Thing type. */
+        case thing = "thing"
+
     }
 
-    // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
-        self.type =
-            (aDecoder.decodeObjectForKey("type") as! String).lowercaseString
-        self.id = aDecoder.decodeObjectForKey("id") as! String
-    }
-
-    /** Type of the ID
-
-     All characters in this string are lower case.
-     */
-    public let type:String
+    /** Type of the ID*/
+    public let type: Types
     /** ID of the entity. */
-    public let id:String
+    public let id: String
+
+    /** Hash value for `TypedID` instance. */
+    public var hashValue: Int {
+        get {
+            return self.toString().hashValue
+        }
+    }
 
     /** Ininitialize TypedID with type and id.
 
-    - Parameter type: Type of the entity. All upper case characters in
-      given string are converted to lower case.
+    - Parameter type: Type of the entity.
     - Parameter id: ID of the entity.
      */
-    public init(type:String, id:String) {
-        self.type = type.lowercaseString
+    public init(_ type:Types, id:String) {
+        self.type = type
         self.id = id
     }
 
-    func toString() -> String {
+    internal func toString() -> String {
         return "\(type):\(id)"
     }
 
-    public override func isEqual(object: AnyObject?) -> Bool {
-        guard let aType = object as? TypedID else{
-            return false
+    /** Returns a Boolean value indicating whether two values are equal.
+
+     Equality is the inverse of inequality. For any values `a` and `b`,
+     `a == b` implies that `a != b` is `false`.
+
+     - Parameters left: A value to compare
+     - Parameters right:  Another value to compare.
+     - Returns: True if left and right is same, otherwise false.
+     */
+    public static func ==(left: TypedID, right: TypedID) -> Bool {
+        return left.id == right.id && left.type == right.type
+    }
+
+}
+
+internal extension TypedID {
+
+    init(_ str: String?) throws {
+        guard let characters = str?.characters else {
+            throw ThingIFError.jsonParseError
         }
-        return (self.type == aType.type) && (self.id == aType.id)
+
+        guard let index = characters.index(of: ":") else {
+            throw ThingIFError.jsonParseError
+        }
+
+        guard let type = Types(
+                rawValue:
+                  String(characters.prefix(upTo: index)).lowercased()) else {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(
+          type,
+          id: String(characters.suffix(from: characters.index(after: index))))
+    }
+
+}
+
+extension TypedID: Serializable {
+
+    internal func serialize(_ coder: inout Coder) -> Void {
+        coder.encode(self.type.rawValue, forKey: "type")
+        coder.encode(self.id, forKey: "id")
+    }
+
+    internal static func deserialize(_ decoder: Decoder) -> Serializable? {
+        return self.init(
+          Types(rawValue: decoder.decodeString(forKey: "type")!)!,
+          id: decoder.decodeString(forKey: "id")!)
     }
 }

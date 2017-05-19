@@ -12,32 +12,24 @@ import Foundation
 Form of a command.
 
 This class contains data in order to create `Command` with
-`ThingIFAPI.postNewCommand(commandForm:completionHandler:)`.
+`ThingIFAPI.postNewCommand(_:completionHandler:)`.
 
 Mandatory data are followings:
 
-  - Schema name
-  - Schema version
-  - List of actions
+  - Array of actions
 
 Optional data are followings:
 
-  - Title of a schema
-  - Description of a schema
-  - Meta data of a schema
+  - Title of a command
+  - Description of a command
+  - Meta data of a command
 */
-public class CommandForm: NSObject, NSCoding {
+public struct CommandForm {
 
     // MARK: - Properties
 
-    /// Schema name.
-    public let schemaName: String
-
-    /// Schema version.
-    public let schemaVersion: Int
-
-    /// List of actions.
-    public let actions: [Dictionary<String, AnyObject>]
+    /// Array of AliasAction instances.
+    public let aliasActions: [AliasAction]
 
     /// Title of a command.
     public let title: String?
@@ -46,56 +38,41 @@ public class CommandForm: NSObject, NSCoding {
     public let commandDescription: String?
 
     /// Meta data of ad command.
-    public let metadata: Dictionary<String, AnyObject>?
+    public let metadata: [String : Any]?
 
 
     // MARK: - Initializing CommandForm instance.
     /**
     Initializer of CommandForm instance.
 
-    - Parameter schemaName: Schema name.
-    - Parameter schemaVersion: Schema version.
-    - Parameter actions: List of actions. Must not be empty.
+    - Parameter actions: Array of AliasAction instances. Must not be empty.
     - Parameter title: Title of a command. This should be equal or
       less than 50 characters.
     - Parameter description: Description of a comand. This should be
       equal or less than 200 characters.
     - Parameter metadata: Meta data of a command.
     */
-    public init(schemaName: String,
-                schemaVersion: Int,
-                actions: [Dictionary<String, AnyObject>],
+    public init(_ aliasActions: [AliasAction],
                 title: String? = nil,
                 commandDescription: String? = nil,
-                metadata: Dictionary<String, AnyObject>? = nil)
+                metadata: [String : Any]? = nil)
     {
-        self.schemaName = schemaName
-        self.schemaVersion = schemaVersion
-        self.actions = actions
+        self.aliasActions = aliasActions
         self.title = title;
         self.commandDescription = commandDescription;
         self.metadata = metadata;
     }
 
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.schemaName, forKey: "schemaName")
-        aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
-        aCoder.encodeObject(self.actions, forKey: "actions")
-        aCoder.encodeObject(self.title, forKey: "title")
-        aCoder.encodeObject(self.commandDescription,
-                forKey: "commandDescription");
-        aCoder.encodeObject(self.metadata, forKey: "metadata")
-    }
+}
 
-    public required init?(coder aDecoder: NSCoder) {
-        self.schemaName = aDecoder.decodeObjectForKey("schemaName") as! String
-        self.schemaVersion = aDecoder.decodeIntegerForKey("schemaVersion")
-        self.actions = aDecoder.decodeObjectForKey("actions")
-                as! [Dictionary<String, AnyObject>];
-        self.title = aDecoder.decodeObjectForKey("title") as? String
-        self.commandDescription =
-            aDecoder.decodeObjectForKey("commandDescription") as? String;
-        self.metadata = aDecoder.decodeObjectForKey("metadata")
-                as? Dictionary<String, AnyObject>;
+extension CommandForm: ToJsonObject {
+
+    internal func makeJsonObject() -> [String : Any] {
+        var retval: [String : Any] =
+          ["actions" : self.aliasActions.map { $0.makeJsonObject() }]
+        retval["title"] = self.title
+        retval["description"] = self.commandDescription
+        retval["metadata"] = self.metadata
+        return retval
     }
 }

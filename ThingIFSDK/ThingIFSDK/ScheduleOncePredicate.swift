@@ -3,46 +3,46 @@
 //  ThingIFSDK
 //
 //  Created by syahRiza on 5/10/16.
-//  Copyright © 2016 Kii. All rights reserved.
+//  Copyright (c) 2016 Kii. All rights reserved.
 //
-
+import Foundation
 /** Class represents ScheduleOncePredicate. */
-public class ScheduleOncePredicate: NSObject,Predicate {
+public struct ScheduleOncePredicate: Predicate {
     /** Specified schedule. */
-    public let scheduleAt: NSDate
+    public let scheduleAt: Date
 
-    public func getEventSource() -> EventSource {
-        return EventSource.ScheduleOnce
-    }
-    
+    public let eventSource: EventSource = EventSource.scheduleOnce
+
     /** Instantiate new ScheduleOncePredicate.
 
      -Parameter scheduleAt: Specify execution schedule. It must be future date.
      */
-    public init(scheduleAt: NSDate) {
+    public init(_ scheduleAt: Date) {
         self.scheduleAt = scheduleAt
-        super.init()
     }
 
-    public required init(coder aDecoder: NSCoder) {
-        self.scheduleAt = aDecoder.decodeObjectForKey("scheduleAt") as! NSDate
-    }
-
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.scheduleAt, forKey: "scheduleAt")
-    }
-
-    /** Get Json object of ScheduleOncePredicate instance
-
-     - Returns: Json object as an instance of NSDictionary
-     */
-    public func toNSDictionary() -> NSDictionary {
-
-        let dateNumber = NSNumber(longLong: Int64(self.scheduleAt.timeIntervalSince1970 * 1000))
-
-        return NSDictionary(dictionary: ["eventSource": EventSource.ScheduleOnce.rawValue,
-            "scheduleAt":dateNumber])
-
-    }
 }
 
+extension ScheduleOncePredicate: FromJsonObject, ToJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let eventSource = jsonObject["eventSource"] as? String,
+              let scheduleAt = jsonObject["scheduleAt"] as? Int64 else {
+            throw ThingIFError.jsonParseError
+        }
+
+        if eventSource != EventSource.scheduleOnce.rawValue {
+            throw ThingIFError.jsonParseError
+        }
+
+        self.init(Date(timeIntervalSince1970InMillis: scheduleAt))
+    }
+
+    public func makeJsonObject() -> [String : Any] {
+        return [
+          "eventSource" : self.eventSource.rawValue,
+          "scheduleAt" : Int(self.scheduleAt.timeIntervalSince1970InMillis)
+        ]
+    }
+
+}

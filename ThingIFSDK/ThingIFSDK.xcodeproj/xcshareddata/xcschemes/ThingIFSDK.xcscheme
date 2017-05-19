@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7DD44DB91BD4B7CD00AE0249"
-               BuildableName = "ThingIFSDK.framework"
-               BlueprintName = "ThingIFSDK"
+               BuildableName = "ThingIF.framework"
+               BlueprintName = "ThingIF"
                ReferencedContainer = "container:ThingIFSDK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7DD44DEB1BD4B88A00AE0249"
+               BlueprintIdentifier = "B6C33EFB1E49770B00DF2BF5"
                BuildableName = "ThingIFSDKTests.xctest"
                BlueprintName = "ThingIFSDKTests"
                ReferencedContainer = "container:ThingIFSDK.xcodeproj">
@@ -43,8 +43,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7DD44DB91BD4B7CD00AE0249"
-            BuildableName = "ThingIFSDK.framework"
-            BlueprintName = "ThingIFSDK"
+            BuildableName = "ThingIF.framework"
+            BlueprintName = "ThingIF"
             ReferencedContainer = "container:ThingIFSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -65,8 +65,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7DD44DB91BD4B7CD00AE0249"
-            BuildableName = "ThingIFSDK.framework"
-            BlueprintName = "ThingIFSDK"
+            BuildableName = "ThingIF.framework"
+            BlueprintName = "ThingIF"
             ReferencedContainer = "container:ThingIFSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -83,8 +83,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7DD44DB91BD4B7CD00AE0249"
-            BuildableName = "ThingIFSDK.framework"
-            BlueprintName = "ThingIFSDK"
+            BuildableName = "ThingIF.framework"
+            BlueprintName = "ThingIF"
             ReferencedContainer = "container:ThingIFSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

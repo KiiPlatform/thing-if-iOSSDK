@@ -12,20 +12,20 @@ import XCTest
 public let TEST_TIMEOUT = 5.0
 
 func failIfNotRunningOnDevice(){
-    let environment = NSProcessInfo.processInfo().environment
+    let environment = ProcessInfo.processInfo.environment
 
     if environment["SIMULATOR_RUNTIME_VERSION"] != nil {
         XCTFail("This test is prohibited to launch in simulator")
     }
 
 }
-typealias MockResponse = (data: NSData?, urlResponse: NSURLResponse?, error: NSError?)
-typealias MockResponsePair = (response: MockResponse,requestVerifier: ((NSURLRequest) -> Void))
+typealias MockResponse = (data: Data?, urlResponse: URLResponse?, error: NSError?)
+typealias MockResponsePair = (response: MockResponse,requestVerifier: ((URLRequest) -> Void))
 let sharedMockSession = MockSession()
-private class MockTask: NSURLSessionDataTask {
+private class MockTask: URLSessionDataTask {
 
-    @objc override var state : NSURLSessionTaskState {
-        return NSURLSessionTaskState.Suspended
+    @objc override var state : URLSessionTask.State {
+        return URLSessionTask.State.suspended
     }
 
     override func resume() {
@@ -33,17 +33,19 @@ private class MockTask: NSURLSessionDataTask {
     }
 
 }
-class MockSession: NSURLSession {
-    var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
-    var requestVerifier: ((NSURLRequest) -> Void) = {(request) in }
+class MockSession: URLSession {
+    var completionHandler: ((Data?, URLResponse?, NSError?) -> Void)?
+    var requestVerifier: ((URLRequest) -> Void) = {(request) in }
 
-    var mockResponse: (data: NSData?, urlResponse: NSURLResponse?, error: NSError?) = (data: nil, urlResponse: nil, error: nil)
+    var mockResponse: (data: Data?, urlResponse: URLResponse?, error: NSError?) = (data: nil, urlResponse: nil, error: nil)
 
-    override class func sharedSession() -> NSURLSession {
-        return sharedMockSession
+    override class var shared: URLSession {
+        get {
+            return sharedMockSession
+        }
     }
 
-    override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
+    override func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         self.requestVerifier(request)
 
         self.completionHandler = completionHandler
@@ -53,18 +55,20 @@ class MockSession: NSURLSession {
 
 }
 let sharedMockMultipleSession = MockMultipleSession()
-class MockMultipleSession: NSURLSession {
+class MockMultipleSession: URLSession {
 
-    var completionHandler: ((NSData!, NSURLResponse!, NSError!) -> Void)?
+    var completionHandler: ((Data?, URLResponse?, NSError?) -> Void)?
     var responsePairs = [MockResponsePair]()
 
-    override class func sharedSession() -> NSURLSession {
-        return sharedMockMultipleSession
+    override class var shared: URLSession {
+        get {
+            return sharedMockMultipleSession
+        }
     }
 
-    override func dataTaskWithRequest(request: NSURLRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) -> NSURLSessionDataTask {
+    override func dataTask(with request: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
         if (self.responsePairs.count > 0) {
-            let pair = self.responsePairs.removeAtIndex(0);
+            let pair = self.responsePairs.remove(at: 0);
             pair.requestVerifier(request)
             completionHandler(pair.response.data, pair.response.urlResponse, pair.response.error)
         } else {
@@ -72,5 +76,72 @@ class MockMultipleSession: NSURLSession {
         }
         return MockTask()
     }
+}
+let defaults = FakeUserDefaults()
+class FakeUserDefaults : UserDefaults {
+
+    typealias FakeDefaults = Dictionary<String, Any?>
+    var data : FakeDefaults
+
+    override init?(suiteName suitename: String?) {
+        data = FakeDefaults()
+        super.init(suiteName: "UnitTest")
+    }
+
+    override class var standard: UserDefaults { return defaults }
+
+    override func synchronize() -> Bool {
+        return true
+    }
+
+    override func object(forKey defaultName: String) -> Any? {
+        return data[defaultName] ?? nil
+    }
+
+    override func value(forKeyPath keyPath: String) -> Any? {
+        return data[keyPath] ?? nil
+    }
+    override func value(forKey key: String) -> Any? {
+        return data[key] ?? nil
+    }
+
+    override func bool(forKey defaultName: String) -> Bool {
+        return data[defaultName] as! Bool
+    }
+
+    override func integer(forKey defaultName: String) -> Int {
+        return data[defaultName] as! Int
+    }
+
+    override func float(forKey defaultName: String) -> Float {
+        return data[defaultName] as! Float
+    }
+
+    override func dictionary(forKey defaultName: String) -> [String : Any]? {
+        return data[defaultName] as? Dictionary
+    }
+
+    override func setValue(_ value: Any?, forKey key: String) {
+        data[key] = value
+    }
+    override func set(_ url: URL?, forKey defaultName: String) {
+        data[defaultName] = url
+    }
+    override func set(_ value: Any?, forKey defaultName: String) {
+        data[defaultName] = value
+    }
+
+    override func removeObject(forKey defaultName: String) {
+        data.removeValue(forKey: defaultName)
+    }
+
+}
+
+extension UserDefaults {
+
+    @objc class func transientDefaults() -> FakeUserDefaults {
+        return FakeUserDefaults(suiteName: "UnitTest")!
+    }
+
 }
 

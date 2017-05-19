@@ -20,12 +20,12 @@ struct MutuallyExclusive<T>: OperationCondition {
     
     init() { }
     
-    func dependencyForOperation(operation: Operation) -> NSOperation? {
+    func dependencyForOperation(_ operation: Operation) -> Foundation.Operation? {
         return nil
     }
     
-    func evaluateForOperation(operation: Operation, completion: OperationConditionResult -> Void) {
-        completion(.Satisfied)
+    func evaluateForOperation(_ operation: Operation, completion: @escaping (OperationConditionResult) -> Void) {
+        completion(.satisfied)
     }
 }
 
@@ -36,4 +36,4 @@ struct MutuallyExclusive<T>: OperationCondition {
 enum Alert { }
 
 /// A condition describing that the targeted operation may present an alert.
-typealias AlertPresentation = MutuallyExclusive<Alert>
+internal typealias AlertPresentation = MutuallyExclusive<Alert>

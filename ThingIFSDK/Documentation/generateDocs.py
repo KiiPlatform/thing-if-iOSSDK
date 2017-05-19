@@ -52,7 +52,7 @@ class SwiftDocGenerator(object):
             for ignore in self.ignores:
                 ignoreList.append(ignore)
 
-        processArg = ["jazzy", '-c','--output', self.output, '--xcodebuild-arguments', '-project,../{0},-scheme,{1}'.format(self.project, self.scheme), '--author', self.author, '--author_url', self.author_url, '--github_url', self.github_url, '--swift-version', self.swift_version, '--exclude', ','.join(ignoreList)]
+        processArg = ["jazzy", '-c','--output', self.output, '--xcodebuild-arguments', '-project,../{0}'.format(self.project), '--author', self.author, '--author_url', self.author_url, '--github_url', self.github_url, '--swift-version', self.swift_version, '--exclude', ','.join(ignoreList)]
 
         processArg = filter(bool, processArg)
         print("Command: " + " ".join(processArg))

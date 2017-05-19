@@ -7,12 +7,32 @@
 
 import Foundation
 
-public class GatewayInformation {
+/** Gateway inforamtion. */
+public struct GatewayInformation {
 
+    /* Vendor thing ID.*/
     public let vendorThingID: String
 
-    init(vendorThingID: String)
+    /** Initialize `GatewayInformation`.
+
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameters vendorThingID: Vendor thing ID.
+     */
+    public init(_ vendorThingID: String)
     {
         self.vendorThingID = vendorThingID
+    }
+}
+
+extension GatewayInformation: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let id = jsonObject["vendorThingID"] as? String else {
+            throw ThingIFError.jsonParseError
+        }
+        self.init(id)
     }
 }

@@ -5,142 +5,75 @@
 import Foundation
 
 /** Class represents Command */
-public class Command: NSObject, NSCoding {
+public struct Command {
 
-    // MARK: - Implements NSCoding protocol
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.commandID, forKey: "commandID")
-        aCoder.encodeObject(self.targetID, forKey: "targetID")
-        aCoder.encodeObject(self.issuerID, forKey: "issuerID")
-        aCoder.encodeObject(self.schemaName, forKey: "schemaName")
-        aCoder.encodeInteger(self.schemaVersion, forKey: "schemaVersion")
-        aCoder.encodeObject(self.actions, forKey: "actions")
-        aCoder.encodeObject(self.actionResults, forKey: "actionResults")
-        aCoder.encodeInteger(self.commandState.rawValue, forKey: "commandState")
-        aCoder.encodeObject(self.firedByTriggerID, forKey: "firedByTriggerID")
-        if let date = self.created {
-            aCoder.encodeDouble(date.timeIntervalSince1970, forKey: "created")
-        }
-        if let date = self.modified {
-            aCoder.encodeDouble(date.timeIntervalSince1970, forKey: "modified")
-        }
-        aCoder.encodeObject(self.title, forKey: "title")
-        aCoder.encodeObject(self.commandDescription, forKey: "commandDescription")
-        aCoder.encodeObject(self.metadata, forKey: "metadata")
-    }
-
-    // MARK: - Implements NSCoding protocol
-    public required init(coder aDecoder: NSCoder) {
-        self.commandID = aDecoder.decodeObjectForKey("commandID") as! String
-        self.targetID = aDecoder.decodeObjectForKey("targetID") as! TypedID
-        self.issuerID = aDecoder.decodeObjectForKey("issuerID") as! TypedID
-        self.schemaName = aDecoder.decodeObjectForKey("schemaName") as! String
-        self.schemaVersion = aDecoder.decodeIntegerForKey("schemaVersion")
-        self.actions = aDecoder.decodeObjectForKey("actions")
-                as! [Dictionary<String, AnyObject>];
-        self.actionResults = aDecoder.decodeObjectForKey("actionResults")
-                as! [Dictionary<String, AnyObject>];
-        self.commandState =
-            CommandState(rawValue: aDecoder.decodeIntegerForKey("commandState"))!;
-        self.firedByTriggerID = aDecoder.decodeObjectForKey("firedByTriggerID") as? String
-        if aDecoder.containsValueForKey("created") {
-            self.created = NSDate(timeIntervalSince1970: aDecoder.decodeDoubleForKey("created"))
-        } else {
-            self.created = nil
-        }
-        if aDecoder.containsValueForKey("modified") {
-            self.modified = NSDate(timeIntervalSince1970: aDecoder.decodeDoubleForKey("modified"))
-        } else {
-            self.modified = nil
-        }
-        self.title = aDecoder.decodeObjectForKey("title") as? String
-        self.commandDescription = aDecoder.decodeObjectForKey("commandDescription") as? String
-        self.metadata = aDecoder.decodeObjectForKey("metadata") as? Dictionary<String, AnyObject>
-    }
-
-
+    // MARK: Properties
     /** ID of the Command. */
-    public let commandID: String
+    public let commandID: String?
     /** ID of the Command Target. */
     public let targetID: TypedID
     /** ID of the issuer of the Command. */
     public let issuerID: TypedID
-    /** Name of the Schema of which this Command is defined. */
-    public let schemaName: String
-    /** Version of the Schema of which this Command is defined. */
-    public let schemaVersion: Int
     /** Actions to be executed. */
-    public let actions: [Dictionary<String, AnyObject>]
+    public let aliasActions: [AliasAction]
     /** Results of the action. */
-    public let actionResults: [Dictionary<String, AnyObject>]
+    public let aliasActionResults: [AliasActionResult]
     /** State of the Command. */
-    public let commandState: CommandState
-    /** ID of the trigger which fired this command */
+    public let commandState: CommandState?
+    /** ID of the trigger which fired this command. */
     public let firedByTriggerID: String?
     /** Creation time of the Command.*/
-    public let created: NSDate?
+    public let created: Date?
     /** Modification time of the Command. */
-    public let modified: NSDate?
+    public let modified: Date?
     /** Title of the Command */
     public let title: String?
     /** Description of the Command */
     public let commandDescription: String?
     /** Metadata of the Command */
-    public let metadata: Dictionary<String, AnyObject>?
+    public let metadata: [String : Any]?
 
-    public override init() {
-        // TODO: implement it with proper initilizer.
-        self.commandID = ""
-        self.targetID = TypedID(type: "", id: "")
-        self.issuerID = TypedID(type: "", id: "")
-        self.schemaName = ""
-        self.schemaVersion = 0
-        self.actions = []
-        self.actionResults = []
-        self.commandState = CommandState.SENDING
-        self.firedByTriggerID = nil
-        self.created = nil
-        self.modified = nil
-        self.title = nil
-        self.commandDescription = nil
-        self.metadata = nil
-    }
+    /** Initialize `Command`.
 
-    init(commandID: String?,
+     Developers rarely use this initializer. If you want to recreate
+     same instance from stored data or transmitted data, you can use
+     this method.
+
+     - Parameter commandID: ID of the Command.
+     - Parameter issuerID: ID of the issuer of the Command.
+     - Parameter targetID: ID of the Command Target.
+     - Parameter aliasActions: Array of actions. Must not be empty.
+     - Parameter aliasActionResults: Results of the action.
+     - Parameter commandState: State of the Command.
+     - Parameter firedByTriggerID: ID of the trigger which fired this
+       command.
+     - Parameter created: Creation time of the Command.
+     - Parameter modified: Modification time of the Command.
+     - Parameter title: Title of a command. This should be equal or
+       less than 50 characters.
+     - Parameter commandDescription: Description of a comand. This
+       should be equal or less than 200 characters.
+     - Parameter metadata: Meta data of a command.
+     */
+    public init(_ commandID: String?,
          targetID: TypedID,
          issuerID: TypedID,
-         schemaName: String,
-         schemaVersion: Int,
-         actions:[Dictionary<String, AnyObject>],
-         actionResults:[Dictionary<String, AnyObject>]?,
-         commandState: CommandState?,
+         aliasActions: [AliasAction],
+         aliasActionResults: [AliasActionResult] = [],
+         commandState: CommandState? = nil,
          firedByTriggerID: String? = nil,
-         created: NSDate? = nil,
-         modified: NSDate? = nil,
+         created: Date? = nil,
+         modified: Date? = nil,
          title: String? = nil,
          commandDescription: String? = nil,
-         metadata: Dictionary<String, AnyObject>? = nil) {
-        if commandID != nil {
-            self.commandID = commandID!
-        }else {
-            self.commandID = ""
-        }
+         metadata: [String : Any]? = nil) {
+        self.commandID = commandID
         self.targetID = targetID
         self.issuerID = issuerID
-        self.schemaName = schemaName
-        self.schemaVersion = schemaVersion
-        self.actions = actions
+        self.aliasActions = aliasActions
 
-        if actionResults != nil {
-            self.actionResults = actionResults!
-        }else {
-            self.actionResults = []
-        }
-        if commandState != nil {
-            self.commandState = commandState!
-        }else {
-            self.commandState = CommandState.SENDING
-        }
+        self.aliasActionResults = aliasActionResults
+        self.commandState = commandState
         self.firedByTriggerID = firedByTriggerID
         self.created = created
         self.modified = modified
@@ -148,92 +81,101 @@ public class Command: NSObject, NSCoding {
         self.commandDescription = commandDescription
         self.metadata = metadata
     }
-    
-    public override func isEqual(object: AnyObject?) -> Bool {
-        guard let aCommand = object as? Command else{
-            return false
-        }
-        
-        return self.commandID == aCommand.commandID &&
-            self.targetID == aCommand.targetID &&
-            self.issuerID == aCommand.issuerID &&
-            self.schemaName == aCommand.schemaName &&
-            self.schemaVersion == aCommand.schemaVersion
-        
+
+    /** Get actions associated with an alias.
+
+     - Parameter alias: Alias to get action.
+     - Returns Array of `AliasAction`.
+     */
+    public func getAliasActions(_ alias: String) -> [AliasAction] {
+        return self.aliasActions.filter { $0.alias == alias }
     }
 
-    class func commandWithNSDictionary(nsDict: NSDictionary!) -> Command?{
+    /** Get action results associated with an alias and action name.
 
-        let commandID = nsDict["commandID"] as? String
-        let schemaName = nsDict["schema"] as? String
-        // actions array
-        var actionsArray = [Dictionary<String, AnyObject>]()
-        if let actions = nsDict["actions"] as? [NSDictionary] {
-            actionsArray = actions as! [Dictionary<String, AnyObject>]
+     - Parameter alias: Alias to get action result.
+     - Parameter alias: Action name to get action result.
+     - Returns Array of `AliasAction`.
+     */
+    public func getActionResult(
+      _ alias: String,
+      actionName: String) -> [ActionResult]
+    {
+        var retval: [ActionResult] = []
+        for results in self.aliasActionResults.filter({ $0.alias == alias }) {
+            retval += results.results.filter { $0.actionName == actionName }
         }
-        // actionResult array
-        var actionsResultArray = [Dictionary<String, AnyObject>]()
-        if let actionResults = nsDict["actionResults"] as? [NSDictionary] {
-            actionsResultArray = actionResults as! [Dictionary<String, AnyObject>]
-        }
-        let schemaVersion = nsDict["schemaVersion"] as? Int
-
-        var targetID: TypedID?
-        if let targetString = nsDict["target"] as? String {
-            var targetInfoArray = targetString.componentsSeparatedByString(":")
-            if targetInfoArray.count == 2 {
-                targetID = TypedID(type: targetInfoArray[0], id: targetInfoArray[1])
-            }
-        }
-
-        var issuerID: TypedID?
-        if let issureString = nsDict["issuer"] as? String {
-            var issuerInfoArray = issureString.componentsSeparatedByString(":")
-            if issuerInfoArray.count == 2 {
-                issuerID = TypedID(type: issuerInfoArray[0], id: issuerInfoArray[1])
-            }
-        }
-
-        var commandState: CommandState?
-        if let commandStateString = nsDict["commandState"] as? String {
-            switch commandStateString {
-            case "SENDING":
-                commandState = CommandState.SENDING
-            case "DELIVERED":
-                commandState = CommandState.DELIVERED
-            case "INCOMPLETE":
-                commandState = CommandState.INCOMPLETE
-            default:
-                commandState = CommandState.DONE
-            }
-        }
-        if targetID == nil || issuerID == nil || schemaName == nil || schemaVersion == nil {
-            return nil
-        }
-        var created: NSDate? = nil
-        if let createdAt = nsDict["createdAt"] as? NSNumber {
-            created = NSDate(timeIntervalSince1970: (createdAt.doubleValue)/1000.0)
-        }
-        var modified: NSDate? = nil
-        if let modifiedAt = nsDict["modifiedAt"] as? NSNumber {
-            modified = NSDate(timeIntervalSince1970: (modifiedAt.doubleValue)/1000.0)
-        }
-        return Command(commandID: commandID, targetID: targetID!, issuerID: issuerID!, schemaName: schemaName!, schemaVersion: schemaVersion!, actions: actionsArray, actionResults: actionsResultArray, commandState: commandState, firedByTriggerID: nsDict["firedByTriggerID"] as? String, created: created, modified: modified, title: nsDict["title"] as? String, commandDescription: nsDict["description"] as? String, metadata: nsDict["metadata"] as? Dictionary<String, AnyObject>)
+        return retval
     }
+
+}
+
+extension Command: FromJsonObject {
+
+    internal init(_ jsonObject: [String : Any]) throws {
+        guard let aliasActions =
+                jsonObject["actions"] as? [[String : Any]] else {
+            throw ThingIFError.jsonParseError
+        }
+
+        let aliasActionResults: [AliasActionResult]
+        if let results = jsonObject["actionResults"] as? [[String : Any]] {
+            aliasActionResults = try results.map { try AliasActionResult($0) }
+        } else {
+            aliasActionResults = []
+        }
+
+        let commandState: CommandState?
+        if let state = jsonObject["commandState"] as? String {
+            commandState = CommandState(rawValue: state)
+        } else {
+            commandState = nil
+        }
+
+        let created: Date?
+        if let date = jsonObject["created"] as? Int64 {
+            created = Date(timeIntervalSince1970InMillis: date)
+        } else {
+            created = nil
+        }
+
+        let modified: Date?
+        if let date = jsonObject["modified"] as? Int64 {
+            modified = Date(timeIntervalSince1970InMillis: date)
+        } else {
+            modified = nil
+        }
+
+        self.init(
+          jsonObject["commandID"] as? String,
+          targetID: try TypedID(jsonObject["target"] as? String),
+          issuerID: try TypedID(jsonObject["issuer"] as? String),
+          aliasActions: try aliasActions.map { try AliasAction($0) },
+          aliasActionResults: aliasActionResults,
+          commandState: commandState,
+          firedByTriggerID: jsonObject["firedByTriggerID"] as? String,
+          created: created,
+          modified: modified,
+          title: jsonObject["title"] as? String,
+          commandDescription: jsonObject["description"] as? String,
+          metadata: jsonObject["metadata"] as? [String : Any])
+    }
+
 }
 
 /** Enum represents state of the Command. */
-public enum CommandState: Int {
-    /* NOTE: These numbers must not be changed.
-       These numbers are used serialization and deserialization
-       If thses numbers are changed, then serialization and deserialization
-       is broken. */
-    /** SENDING Command */
-    case SENDING = 1
-    /** Command is published to the Target. */
-    case DELIVERED = 2
-    /** Target returns execution result but not completed all actions successfully. */
-    case INCOMPLETE = 3
+public enum CommandState: String {
+    /** Command is sending */
+    case sending = "SENDING"
+
+    /** Command is send but failed. */
+    case sendFailed = "SEND_FAILED"
+
+    /** Target returns execution result but not completed all actions
+     successfully.
+     */
+    case incomplete = "INCOMPLETE"
+
     /** Target returns execution result and all actions successfully done. */
-    case DONE = 4
+    case done = "DONE"
 }

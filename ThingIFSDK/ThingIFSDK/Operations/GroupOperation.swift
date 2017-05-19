@@ -22,20 +22,29 @@ import Foundation
     be executed before the rest of the operations in the initial chain of operations.
 */
 class GroupOperation: Operation {
-    private let internalQueue = OperationQueue()
-    private let startingOperation = NSBlockOperation(block: {})
-    private let finishingOperation = NSBlockOperation(block: {})
+    fileprivate let internalQueue = OperationQueue()
+    fileprivate let startingOperation = Foundation.BlockOperation(block: {})
+    fileprivate let finishingOperation = Foundation.BlockOperation(block: {})
 
-    private var aggregatedErrors = [NSError]()
+    private var lockingQueue = DispatchQueue(label: "lockQueue")
+    private var safeAggregatedErrors = [NSError]()
+    fileprivate var aggregatedErrors : [NSError] {
+        get{
+            return lockingQueue.sync{  safeAggregatedErrors }
+        }
+        set(newAggregatedErrors){
+            lockingQueue.sync{  safeAggregatedErrors = newAggregatedErrors }
+        }
+    }
     
-    convenience init(operations: NSOperation...) {
+    convenience init(operations: Foundation.Operation...) {
         self.init(operations: operations)
     }
     
-    init(operations: [NSOperation]) {
+    init(operations: [Foundation.Operation]) {
         super.init()
         
-        internalQueue.suspended = true
+        internalQueue.isSuspended = true
         internalQueue.delegate = self
         internalQueue.addOperation(startingOperation)
 
@@ -50,11 +59,11 @@ class GroupOperation: Operation {
     }
     
     override func execute() {
-        internalQueue.suspended = false
+        internalQueue.isSuspended = false
         internalQueue.addOperation(finishingOperation)
     }
     
-    func addOperation(operation: NSOperation) {
+    func addOperation(_ operation: Foundation.Operation) {
         internalQueue.addOperation(operation)
     }
     
@@ -63,18 +72,18 @@ class GroupOperation: Operation {
         Errors aggregated through this method will be included in the final array
         of errors reported to observers and to the `finished(_:)` method.
     */
-    final func aggregateError(error: NSError) {
+    final func aggregateError(_ error: NSError) {
         aggregatedErrors.append(error)
     }
     
-    func operationDidFinish(operation: NSOperation, withErrors errors: [NSError]) {
+    func operationDidFinish(_ operation: Foundation.Operation, withErrors errors: [NSError]) {
         // For use by subclassers.
     }
 }
 
 extension GroupOperation: OperationQueueDelegate {
-    final func operationQueue(operationQueue: OperationQueue, willAddOperation operation: NSOperation) {
-        assert(!finishingOperation.finished && !finishingOperation.executing, "cannot add new operations to a group after the group has completed")
+    final func operationQueue(_ operationQueue: OperationQueue, willAddOperation operation: Foundation.Operation) {
+        assert(!finishingOperation.isFinished && !finishingOperation.isExecuting, "cannot add new operations to a group after the group has completed")
         
         /*
             Some operation in this group has produced a new operation to execute.
@@ -97,11 +106,11 @@ extension GroupOperation: OperationQueueDelegate {
         }
     }
     
-    final func operationQueue(operationQueue: OperationQueue, operationDidFinish operation: NSOperation, withErrors errors: [NSError]) {
-        aggregatedErrors.appendContentsOf(errors)
+    final func operationQueue(_ operationQueue: OperationQueue, operationDidFinish operation: Foundation.Operation, withErrors errors: [NSError]) {
+        aggregatedErrors = aggregatedErrors + errors
         
         if operation === finishingOperation {
-            internalQueue.suspended = true
+            internalQueue.isSuspended = true
             finish(aggregatedErrors)
         }
         else if operation !== startingOperation {
