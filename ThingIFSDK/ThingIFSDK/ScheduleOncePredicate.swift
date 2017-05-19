@@ -5,7 +5,7 @@
 //  Created by syahRiza on 5/10/16.
 //  Copyright (c) 2016 Kii. All rights reserved.
 //
-
+import Foundation
 /** Class represents ScheduleOncePredicate. */
 public struct ScheduleOncePredicate: Predicate {
     /** Specified schedule. */

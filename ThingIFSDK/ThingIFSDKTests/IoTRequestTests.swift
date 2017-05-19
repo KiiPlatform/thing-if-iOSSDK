@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import ThingIFSDK
+@testable import ThingIF
 
 class IoTRequestTests: XCTestCase {
 
@@ -22,7 +22,7 @@ class IoTRequestTests: XCTestCase {
     }
 
     func testRequestInvalidURL(){
-        let operationQueue = ThingIFSDK.OperationQueue()
+        let operationQueue = ThingIF.OperationQueue()
         let expectation = self.expectation(description: "testRequestInvalidURL")
         let appID = "dummyApp"
         let targetStr = "dummy_target"

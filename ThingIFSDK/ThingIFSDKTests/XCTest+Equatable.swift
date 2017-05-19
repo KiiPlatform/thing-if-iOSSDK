@@ -7,7 +7,7 @@
 //
 
 import Foundation
-@testable import ThingIFSDK
+@testable import ThingIF
 
 public protocol EquatableWrapper: Equatable, CustomStringConvertible {
     associatedtype T

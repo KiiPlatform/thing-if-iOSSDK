@@ -13,7 +13,7 @@ open class SDKVersion {
     open let versionString:String
     internal var kiiSDKHeader:String
     private init() {
-        let b:Bundle? = Bundle.allFrameworks.filter{$0.bundleIdentifier == "Kii-Corporation.ThingIFSDK"}.first
+        let b:Bundle? = Bundle.allFrameworks.filter{$0.bundleIdentifier == "Kii-Corporation.ThingIF"}.first
         if let v = b?.infoDictionary?["CFBundleShortVersionString"] as? String {
             versionString = v
         } else {

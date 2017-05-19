@@ -86,7 +86,7 @@
 		7D36B6C41BD4D9DD00D9B821 /* ThingIFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */; };
 		A56B0A431C5B43B100E653EF /* TriggeredServerCodeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */; };
 		B63385D81E7EB01B0095466B /* ThingIFAPIPostNewCommandTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63385D71E7EB01B0095466B /* ThingIFAPIPostNewCommandTests.swift */; };
-		B63FC8AE1CEEDBFF0042C747 /* ThingIFSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */; };
+		B63FC8AE1CEEDBFF0042C747 /* ThingIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIF.framework */; };
 		B645506C1E78ECC600D8FACF /* GatewayAPILoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645506B1E78ECC600D8FACF /* GatewayAPILoginTests.swift */; };
 		B645506E1E79087F00D8FACF /* GatewayAPIOnboardGatewayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645506D1E79087F00D8FACF /* GatewayAPIOnboardGatewayTests.swift */; };
 		B64550701E79467600D8FACF /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = B645506F1E79467600D8FACF /* Action.swift */; };
@@ -158,7 +158,7 @@
 		B6C2DB531E5BF129008DBA83 /* StatePredicateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C2DB521E5BF129008DBA83 /* StatePredicateTests.swift */; };
 		B6C2DB551E5C0F8D008DBA83 /* OnboardWithThingIDOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C2DB541E5C0F8D008DBA83 /* OnboardWithThingIDOptionsTests.swift */; };
 		B6C2DB571E5C15C2008DBA83 /* OnboardWithVendorThingIDOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C2DB561E5C15C2008DBA83 /* OnboardWithVendorThingIDOptionsTests.swift */; };
-		B6C33F011E49770B00DF2BF5 /* ThingIFSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */; };
+		B6C33F011E49770B00DF2BF5 /* ThingIF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DD44DE91BD4B7CD00AE0249 /* ThingIF.framework */; };
 		B6C33F0C1E4977C700DF2BF5 /* AggregationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F071E4977C700DF2BF5 /* AggregationTests.swift */; };
 		B6C33F0D1E4977C700DF2BF5 /* SmallTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C33F081E4977C700DF2BF5 /* SmallTestBase.swift */; };
 		B6C33F0E1E4977C700DF2BF5 /* testapp.plist in Resources */ = {isa = PBXBuildFile; fileRef = B6C33F091E4977C700DF2BF5 /* testapp.plist */; };
@@ -290,7 +290,7 @@
 		7D36B6B81BD4D43700D9B821 /* ThingIFAPI+Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ThingIFAPI+Trigger.swift"; sourceTree = "<group>"; };
 		7D36B6C11BD4D51D00D9B821 /* ThingIFSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThingIFSDK.h; sourceTree = "<group>"; };
 		7D36B6C31BD4D9DD00D9B821 /* ThingIFError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFError.swift; sourceTree = "<group>"; };
-		7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThingIFSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DD44DE91BD4B7CD00AE0249 /* ThingIF.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThingIF.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A56B0A421C5B43B100E653EF /* TriggeredServerCodeResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggeredServerCodeResult.swift; sourceTree = "<group>"; };
 		B63385D71E7EB01B0095466B /* ThingIFAPIPostNewCommandTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThingIFAPIPostNewCommandTests.swift; sourceTree = "<group>"; };
 		B63FC8A91CEEDBFF0042C747 /* ThingIFSDKLargeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThingIFSDKLargeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -416,7 +416,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B63FC8AE1CEEDBFF0042C747 /* ThingIFSDK.framework in Frameworks */,
+				B63FC8AE1CEEDBFF0042C747 /* ThingIF.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,7 +424,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6C33F011E49770B00DF2BF5 /* ThingIFSDK.framework in Frameworks */,
+				B6C33F011E49770B00DF2BF5 /* ThingIF.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,7 +457,7 @@
 		7417A3041B65CF8400D116A5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */,
+				7DD44DE91BD4B7CD00AE0249 /* ThingIF.framework */,
 				B63FC8A91CEEDBFF0042C747 /* ThingIFSDKLargeTests.xctest */,
 				B6C33EFC1E49770B00DF2BF5 /* ThingIFSDKTests.xctest */,
 			);
@@ -711,9 +711,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		7DD44DB91BD4B7CD00AE0249 /* ThingIFSDK */ = {
+		7DD44DB91BD4B7CD00AE0249 /* ThingIF */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7DD44DE61BD4B7CD00AE0249 /* Build configuration list for PBXNativeTarget "ThingIFSDK" */;
+			buildConfigurationList = 7DD44DE61BD4B7CD00AE0249 /* Build configuration list for PBXNativeTarget "ThingIF" */;
 			buildPhases = (
 				7DD44DBA1BD4B7CD00AE0249 /* Sources */,
 				7DD44DE21BD4B7CD00AE0249 /* Frameworks */,
@@ -724,9 +724,9 @@
 			);
 			dependencies = (
 			);
-			name = ThingIFSDK;
+			name = ThingIF;
 			productName = IoTCloudSDK;
-			productReference = 7DD44DE91BD4B7CD00AE0249 /* ThingIFSDK.framework */;
+			productReference = 7DD44DE91BD4B7CD00AE0249 /* ThingIF.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		B63FC8A81CEEDBFF0042C747 /* ThingIFSDKLargeTests */ = {
@@ -801,7 +801,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7DD44DB91BD4B7CD00AE0249 /* ThingIFSDK */,
+				7DD44DB91BD4B7CD00AE0249 /* ThingIF */,
 				B63FC8A81CEEDBFF0042C747 /* ThingIFSDKLargeTests */,
 				B6C33EFB1E49770B00DF2BF5 /* ThingIFSDKTests */,
 			);
@@ -1043,12 +1043,12 @@
 /* Begin PBXTargetDependency section */
 		B63FC8B01CEEDBFF0042C747 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7DD44DB91BD4B7CD00AE0249 /* ThingIFSDK */;
+			target = 7DD44DB91BD4B7CD00AE0249 /* ThingIF */;
 			targetProxy = B63FC8AF1CEEDBFF0042C747 /* PBXContainerItemProxy */;
 		};
 		B6C33F031E49770B00DF2BF5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7DD44DB91BD4B7CD00AE0249 /* ThingIFSDK */;
+			target = 7DD44DB91BD4B7CD00AE0249 /* ThingIF */;
 			targetProxy = B6C33F021E49770B00DF2BF5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1073,7 +1073,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.13.1;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1123,7 +1123,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 0.13.1;
+				CURRENT_PROJECT_VERSION = 1.0.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1154,7 +1154,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 0.13.1;
+				DYLIB_CURRENT_VERSION = 1.0.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "ThingIFSDK-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1176,7 +1176,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 0.13.1;
+				DYLIB_CURRENT_VERSION = 1.0.0;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "ThingIFSDK-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1264,7 +1264,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7DD44DE61BD4B7CD00AE0249 /* Build configuration list for PBXNativeTarget "ThingIFSDK" */ = {
+		7DD44DE61BD4B7CD00AE0249 /* Build configuration list for PBXNativeTarget "ThingIF" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7DD44DE71BD4B7CD00AE0249 /* Debug */,

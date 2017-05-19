@@ -6,7 +6,7 @@
 //
 
 import UIKit
-@testable import ThingIFSDK
+@testable import ThingIF
 
 open class TestSetting {
 
