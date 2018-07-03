@@ -91,3 +91,32 @@ jobs:
         path: /tmp/circleci-artifacts
     - store_artifacts:
         path: /tmp/circleci-test-results
+    - persist_to_workspace:
+        root: .
+        paths:
+            - ThingIF.podspec
+            - ThingIFSDK/Documentation
+            - circleci_scripts
+  deploy:
+    working_directory: ~/deploy
+    macos:
+      xcode: '9.4.0'
+    steps:
+      - attach_workspace:
+          at: .
+      - run: bash circleci_scripts/release_doc.sh
+      - run: pod trunk push --verbose
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+){0,2}([-+].+)?/
