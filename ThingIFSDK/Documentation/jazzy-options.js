@@ -6,7 +6,6 @@
     "author_url": "http://kii.com",
     "github_url": "https://github.com/KiiPlatform/thing-if-iOSSDK",
     "output": "docs",
-    "swift-version": "4.1.2",
 
     "doc-archive-prefix": "ThingIFSDK-Documentation",
 
