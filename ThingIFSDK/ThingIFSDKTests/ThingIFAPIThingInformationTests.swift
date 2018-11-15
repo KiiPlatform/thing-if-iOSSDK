@@ -483,11 +483,9 @@ class ThingIFAPIThingInformationTests: SmallTestBase {
 
         // mock response
 
-        // TODO: When server response fixed, change to
-        // FIRMWARE_VERSION_NOT_FOUND.
         sharedMockSession.mockResponse = (
           try JSONSerialization.data(
-            withJSONObject: ["errorCode" : "THING_WITHOUT_THING_TYPE"],
+            withJSONObject: ["errorCode" : "THING_WITHOUT_FIRMWARE_VERSION"],
             options: .prettyPrinted),
           HTTPURLResponse(
             url: URL(string:setting.app.baseURL)!,

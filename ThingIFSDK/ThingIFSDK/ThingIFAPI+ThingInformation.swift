@@ -122,11 +122,9 @@ extension ThingIFAPI {
                 json, error -> (String?, ThingIFError?) in
 
                 if let error = error {
-                    // TODO: When server response fixed, change to
-                    // FIRMWARE_VERSION_NOT_FOUND.
                     switch error {
                     case .errorResponse(let response) where
-                           response.errorCode == "THING_WITHOUT_THING_TYPE":
+                           response.errorCode == "THING_WITHOUT_FIRMWARE_VERSION":
                         return (nil, nil)
                     default:
                         return (nil, error)
